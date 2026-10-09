@@ -26,7 +26,7 @@
   },
   "comingSoonMessage": "Bientôt disponible",
   "@comingSoonMessage": {
-    "description": "Centered message on the placeholder page of a tab whose feature is not built yet (\"Coming soon\"). One line."
+    "description": "Centered message on the placeholder page of a tab whose feature is not built yet, and on the temporary home tab above its quiz button until the learning path arrives (\"Coming soon\"). One line."
   },
   "commonRetry": "Réessayer",
   "@commonRetry": {
@@ -34,11 +34,11 @@
   },
   "commonBack": "Retour",
   "@commonBack": {
-    "description": "Tooltip and screen-reader label of the back arrow at the top left of a screen."
+    "description": "Tooltip and screen-reader label of the back arrow at the top left of a screen, and label of the button that leaves the quiz screen when the quiz cannot start (\"Back\"). One short word."
   },
   "errorStorage": "Oups, on n'a pas pu lire ou enregistrer tes données.",
   "@errorStorage": {
-    "description": "Error shown to a child on the \"Qui joue ?\" screen or under the button of the player creation when the local database fails. Friendly tone, informal \"tu\", no technical words."
+    "description": "Error shown to a child on the \"Qui joue ?\" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal \"tu\", no technical words."
   },
   "errorNotFound": "Ce joueur n'existe plus.",
   "@errorNotFound": {
@@ -46,7 +46,7 @@
   },
   "errorUnknown": "Oups, quelque chose s'est mal passé.",
   "@errorUnknown": {
-    "description": "Generic error shown to a child on the \"Qui joue ?\" screen or the player creation when nothing more precise is known. Friendly tone."
+    "description": "Generic error shown to a child on the \"Qui joue ?\" screen, the player creation, and the quiz and results screens when nothing more precise is known. Friendly tone."
   },
   "whoIsPlayingTitle": "Qui joue ?",
   "@whoIsPlayingTitle": {
@@ -237,5 +237,197 @@
   "deleteProfileConfirm": "Supprimer",
   "@deleteProfileConfirm": {
     "description": "Destructive button of the deletion dialog, enabled once the nickname is typed again (\"Delete\"). Infinitive verb, one word."
+  },
+  "quizQuitTooltip": "Quitter le quiz",
+  "@quizQuitTooltip": {
+    "description": "Tooltip and screen-reader label of the cross at the top left of the quiz screen (\"Leave the quiz\")."
+  },
+  "quizProgressLabel": "Question {current} sur {total}",
+  "@quizProgressLabel": {
+    "description": "Screen-reader label of the quiz progress bar (\"Question 4 of 10\"). Never displayed.",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "4"
+      },
+      "total": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "quizTimeLeftLabel": "Temps restant",
+  "@quizTimeLeftLabel": {
+    "description": "Screen-reader label of the timer bar of the quiz (\"Time left\"). Never displayed."
+  },
+  "quizMultiplicationUnit": "Table de {number}",
+  "@quizMultiplicationUnit": {
+    "description": "Small label above a multiplication question naming its table (\"Table of 5\"). One short line in a pill.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "quizTrueFalseLabel": "Vrai ou faux ?",
+  "@quizTrueFalseLabel": {
+    "description": "Small label above a true-or-false question (\"True or false?\"). One short line in a pill."
+  },
+  "quizHintMultipleChoice": "Touche la bonne réponse",
+  "@quizHintMultipleChoice": {
+    "description": "Hint in a dashed box under the four answer buttons of a multiple-choice question (\"Tap the right answer\"). Speaks to a child with \"tu\"."
+  },
+  "quizHintTrueFalse": "Ce calcul est-il juste ?",
+  "@quizHintTrueFalse": {
+    "description": "Hint in a dashed box under the true and false buttons, asking whether the calculation shown is right (\"Is this calculation right?\"). One or two short lines."
+  },
+  "quizTrue": "Vrai",
+  "@quizTrue": {
+    "description": "Label of the button that says the statement is true (\"True\"). One word."
+  },
+  "quizFalse": "Faux",
+  "@quizFalse": {
+    "description": "Label of the button that says the statement is false (\"False\"). One word."
+  },
+  "quizKeypadErase": "Effacer",
+  "@quizKeypadErase": {
+    "description": "Tooltip and screen-reader label of the keypad key that erases the last digit (\"Erase\"). Infinitive verb."
+  },
+  "quizKeypadValidate": "Valider",
+  "@quizKeypadValidate": {
+    "description": "Label of the keypad key that submits the typed number (\"Submit\"). Infinitive verb, one word."
+  },
+  "quizFeedbackRight": "Bravo !",
+  "@quizFeedbackRight": {
+    "description": "Title of the green message after a right answer (\"Well done!\"). One short line."
+  },
+  "quizFeedbackWrong": "Presque !",
+  "@quizFeedbackWrong": {
+    "description": "Title of the red message after a wrong answer (\"Almost!\"). Encouraging, never blaming. One short line."
+  },
+  "quizFeedbackTimeUp": "Temps écoulé !",
+  "@quizFeedbackTimeUp": {
+    "description": "Title of the red message when the time to answer ran out (\"Time is up!\"). One short line."
+  },
+  "quizLightning": "Éclair !",
+  "@quizLightning": {
+    "description": "Mention next to the title of the green message when the right answer came in under 3 seconds (\"Lightning!\"). One short word."
+  },
+  "quizContinue": "Continuer",
+  "@quizContinue": {
+    "description": "Button under the answer feedback that shows the next question (\"Continue\"). Infinitive verb."
+  },
+  "quizQuitTitle": "Quitter le quiz ?",
+  "@quizQuitTitle": {
+    "description": "Title of the dialog that confirms leaving a quiz (\"Leave the quiz?\")."
+  },
+  "quizQuitMessage": "Tes réponses comptent pour ta progression, mais cette partie ne te donnera pas de récompense.",
+  "@quizQuitMessage": {
+    "description": "Body of the dialog that confirms leaving a quiz: the answers given still help the child progress, but the game gives no reward. Informal \"tu\"."
+  },
+  "quizQuitConfirm": "Quitter",
+  "@quizQuitConfirm": {
+    "description": "Button of the quit dialog that leaves the quiz (\"Leave\"). Infinitive verb, one word."
+  },
+  "quizQuitCancel": "Continuer à jouer",
+  "@quizQuitCancel": {
+    "description": "Button of the quit dialog that goes back to the quiz (\"Keep playing\")."
+  },
+  "quizSpokenTimes": "fois",
+  "@quizSpokenTimes": {
+    "description": "Word read by the screen reader for the multiplication sign of a question (\"times\"). The reader joins the words in the order of the operation: number, this word, number, \"quizSpokenEquals\", then a number or \"quizSpokenBlank\", such as \"5 fois 7 égale combien\". Never displayed."
+  },
+  "quizSpokenEquals": "égale",
+  "@quizSpokenEquals": {
+    "description": "Word read by the screen reader for the equals sign of a question (\"equals\"), as in \"5 fois 7 égale combien\". Joined with the other words in the order of the operation. Never displayed."
+  },
+  "quizSpokenBlank": "combien",
+  "@quizSpokenBlank": {
+    "description": "Word read by the screen reader for the missing number at the end of a question (\"how much\"), as in \"5 fois 7 égale combien\". Joined with the other words in the order of the operation. Never displayed."
+  },
+  "quizProvisionalStart": "Jouer à la table de 5",
+  "@quizProvisionalStart": {
+    "description": "Temporary button of the home tab that starts a quiz on the table of 5, until the learning path arrives (\"Play the table of 5\")."
+  },
+  "quizModeFreeTraining": "Entraînement libre",
+  "@quizModeFreeTraining": {
+    "description": "Name of the free training mode, shown under the results title (\"Free training\")."
+  },
+  "resultsTitle": "Partie terminée !",
+  "@resultsTitle": {
+    "description": "Big title of the results screen after a quiz (\"Game over!\" in a cheerful sense, \"All done!\"). One line."
+  },
+  "resultsSubtitle": "{unit} · {mode}",
+  "@resultsSubtitle": {
+    "description": "Line under the results title: the unit and the mode of the quiz, such as \"Table de 5 · Entraînement libre\". Keep the middle dot.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "Table de 5"
+      },
+      "mode": {
+        "type": "String",
+        "example": "Entraînement libre"
+      }
+    }
+  },
+  "resultsCorrectCount": "{correct} / {total}",
+  "@resultsCorrectCount": {
+    "description": "Big number of a results tile: right answers out of the scored questions (\"9 / 10\"). Keep it short, it shares a row with another tile.",
+    "placeholders": {
+      "correct": {
+        "type": "int",
+        "example": "9"
+      },
+      "total": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "resultsCorrectLabel": "{correct, plural, one{réussie} other{réussies}}",
+  "@resultsCorrectLabel": {
+    "description": "Small label under the right-answer count of the results (\"right\"), agreeing in number with the count. Feminine in French because it stands for \"questions réussies\". One word.",
+    "placeholders": {
+      "correct": {
+        "type": "int",
+        "example": "9"
+      }
+    }
+  },
+  "resultsAverageTime": "{seconds} s",
+  "@resultsAverageTime": {
+    "description": "Big number of a results tile: average answer time in seconds with one decimal (\"2,4 s\"). Keep the unit abbreviated.",
+    "placeholders": {
+      "seconds": {
+        "type": "double",
+        "format": "decimalPatternDigits",
+        "optionalParameters": {
+          "decimalDigits": 1
+        },
+        "example": "2.4"
+      }
+    }
+  },
+  "resultsAverageTimeLabel": "en moyenne",
+  "@resultsAverageTimeLabel": {
+    "description": "Small label under the average answer time of the results (\"on average\")."
+  },
+  "resultsToReview": "À revoir",
+  "@resultsToReview": {
+    "description": "Heading of the results card listing the facts the child missed (\"To review\")."
+  },
+  "resultsNothingToReview": "Aucune erreur, bravo !",
+  "@resultsNothingToReview": {
+    "description": "Shown in the \"To review\" card when the child missed nothing (\"No mistake, well done!\")."
+  },
+  "resultsContinue": "Continuer",
+  "@resultsContinue": {
+    "description": "Main button of the results screen, back to the home (\"Continue\"). Infinitive verb."
+  },
+  "resultsReplay": "Rejouer",
+  "@resultsReplay": {
+    "description": "Second button of the results screen, plays the same quiz again (\"Play again\"). Infinitive verb."
   }
 }

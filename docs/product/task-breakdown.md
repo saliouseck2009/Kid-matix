@@ -236,17 +236,17 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 - [x] **F3-07** `QuizBloc` : événements `QuizStarted`, `AnswerSubmitted`, `TimerTicked`, `TimeExpired`, `NextRequested`, `QuizPaused`, `QuizResumed`, `QuizAbandoned` ; états préparation, question en cours, retour sur réponse, terminé.
 - [x] **F3-08** Chrono dans le BLoC, alimenté par le `Ticker` : barre qui se vide, changement de couleur dans les 3 dernières secondes, temps écoulé compté comme une erreur.
 - [x] **F3-09** Trois modes de chrono lus dans les réglages du profil : normal, détendu (temps × 1,5), sans chrono.
-- [ ] **F3-10** Pause du chrono quand l'app passe en arrière-plan.
-- [ ] **F3-11** Écran Quiz : bouton quitter, barre de progression, compteur de combo, carte de la question.
-- [ ] **F3-12** Zones de réponse : 4 boutons, pavé numérique intégré (0 à 9, Effacer, Valider), boutons Vrai et Faux, opération à trous.
-- [ ] **F3-13** Retour en moins de 100 ms : couleur avec coche ou croix, opération complète après une erreur, bouton « Continuer ».
-- [ ] **F3-14** Quitter le quiz avec une confirmation.
-- [ ] **F3-15** Écran Résultats : bonnes réponses, temps moyen, faits à revoir, « Continuer » et « Rejouer ». L'écran reçoit seulement l'identifiant de la session et la charge avec son propre Cubit. Les étoiles arrivent avec F5, les XP et le niveau avec F7.
+- [x] **F3-10** Pause du chrono quand l'app passe en arrière-plan.
+- [x] **F3-11** Écran Quiz : bouton quitter, barre de progression, compteur de combo, carte de la question.
+- [x] **F3-12** Zones de réponse : 4 boutons, pavé numérique intégré (0 à 9, Effacer, Valider), boutons Vrai et Faux, opération à trous.
+- [x] **F3-13** Retour en moins de 100 ms : couleur avec coche ou croix, opération complète après une erreur, bouton « Continuer ».
+- [x] **F3-14** Quitter le quiz avec une confirmation.
+- [x] **F3-15** Écran Résultats : bonnes réponses, temps moyen, faits à revoir, « Continuer » et « Rejouer ». L'écran reçoit seulement l'identifiant de la session et la charge avec son propre Cubit. Les étoiles arrivent avec F5, les XP et le niveau avec F7.
 
 **Tests**
 
 - [x] **F3-16** Tests de `QuizBloc` avec un ticker factice : bonne réponse, erreur, temps écoulé, pause, reprise, abandon.
-- [ ] **F3-17** Un test de widget de l'écran Quiz par format de question.
+- [x] **F3-17** Un test de widget de l'écran Quiz par format de question.
 - [x] **F3-18** Test du retour d'un fait raté 3 questions plus tard.
 
 **Terminé quand :** depuis un bouton provisoire, un joueur répond à 10 questions de la table de 5 dans les 4 formats, avec chrono, et voit ses résultats.

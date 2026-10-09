@@ -193,4 +193,135 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get deleteProfileConfirm => 'Supprimer';
+
+  @override
+  String get quizQuitTooltip => 'Quitter le quiz';
+
+  @override
+  String quizProgressLabel(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String get quizTimeLeftLabel => 'Temps restant';
+
+  @override
+  String quizMultiplicationUnit(int number) {
+    return 'Table de $number';
+  }
+
+  @override
+  String get quizTrueFalseLabel => 'Vrai ou faux ?';
+
+  @override
+  String get quizHintMultipleChoice => 'Touche la bonne réponse';
+
+  @override
+  String get quizHintTrueFalse => 'Ce calcul est-il juste ?';
+
+  @override
+  String get quizTrue => 'Vrai';
+
+  @override
+  String get quizFalse => 'Faux';
+
+  @override
+  String get quizKeypadErase => 'Effacer';
+
+  @override
+  String get quizKeypadValidate => 'Valider';
+
+  @override
+  String get quizFeedbackRight => 'Bravo !';
+
+  @override
+  String get quizFeedbackWrong => 'Presque !';
+
+  @override
+  String get quizFeedbackTimeUp => 'Temps écoulé !';
+
+  @override
+  String get quizLightning => 'Éclair !';
+
+  @override
+  String get quizContinue => 'Continuer';
+
+  @override
+  String get quizQuitTitle => 'Quitter le quiz ?';
+
+  @override
+  String get quizQuitMessage =>
+      'Tes réponses comptent pour ta progression, mais cette partie ne te donnera pas de récompense.';
+
+  @override
+  String get quizQuitConfirm => 'Quitter';
+
+  @override
+  String get quizQuitCancel => 'Continuer à jouer';
+
+  @override
+  String get quizSpokenTimes => 'fois';
+
+  @override
+  String get quizSpokenEquals => 'égale';
+
+  @override
+  String get quizSpokenBlank => 'combien';
+
+  @override
+  String get quizProvisionalStart => 'Jouer à la table de 5';
+
+  @override
+  String get quizModeFreeTraining => 'Entraînement libre';
+
+  @override
+  String get resultsTitle => 'Partie terminée !';
+
+  @override
+  String resultsSubtitle(String unit, String mode) {
+    return '$unit · $mode';
+  }
+
+  @override
+  String resultsCorrectCount(int correct, int total) {
+    return '$correct / $total';
+  }
+
+  @override
+  String resultsCorrectLabel(int correct) {
+    String _temp0 = intl.Intl.pluralLogic(
+      correct,
+      locale: localeName,
+      other: 'réussies',
+      one: 'réussie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String resultsAverageTime(double seconds) {
+    final intl.NumberFormat secondsNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String secondsString = secondsNumberFormat.format(seconds);
+
+    return '$secondsString s';
+  }
+
+  @override
+  String get resultsAverageTimeLabel => 'en moyenne';
+
+  @override
+  String get resultsToReview => 'À revoir';
+
+  @override
+  String get resultsNothingToReview => 'Aucune erreur, bravo !';
+
+  @override
+  String get resultsContinue => 'Continuer';
+
+  @override
+  String get resultsReplay => 'Rejouer';
 }
