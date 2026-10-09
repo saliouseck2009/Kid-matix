@@ -59,4 +59,13 @@ abstract final class AppColors {
 
   /// Light red behind a wrong-answer message.
   static const Color redTint = Color(0xFFFBE3DF);
+
+  /// Red a player can pick for their avatar.
+  static const Color avatarRed = Color(0xFFD9482F);
+
+  /// Blue a player can pick for their avatar.
+  static const Color avatarBlue = Color(0xFF1F6FD6);
+
+  /// Pink a player can pick for their avatar.
+  static const Color avatarPink = Color(0xFFB8328A);
 }
