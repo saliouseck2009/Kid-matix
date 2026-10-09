@@ -201,15 +201,15 @@ Ce lot est du Dart pur : il fabrique les questions et valide les réponses, sans
 
 **Domaine multiplication**
 
-- [ ] **F2-05** `MultiplicationDomain` : 12 unités (tables de 1 à 12), 120 items de clé `mul:7x8`, ordre du parcours, une astuce par table.
+- [x] **F2-05** `MultiplicationDomain` : 12 unités (tables de 1 à 12), 120 items de clé `mul:7x8`, ordre du parcours, une astuce par table.
 - [x] **F2-06** Types de questions de la version 1.0 : choix multiple, saisie, opération à trous, vrai ou faux.
 - [x] **F2-07** `DistractorGenerator` : résultat voisin dans la même table, résultat de la table voisine, confusion avec l'addition, chiffres inversés ; jamais de doublon ni de nombre négatif ; position de la bonne réponse aléatoire.
-- [ ] **F2-08** Vrai ou faux : affirmation vraie une fois sur deux, erreur plausible sinon.
+- [x] **F2-08** Vrai ou faux : affirmation vraie une fois sur deux, erreur plausible sinon.
 - [ ] **F2-09** `QuestionGenerator` : construit les questions d'une liste d'items avec les types autorisés ; jamais le même fait deux fois de suite ; tirage reproductible avec une graine.
 
 **Tests**
 
-- [ ] **F2-10** Les 120 clés sont uniques et stables.
+- [x] **F2-10** Les 120 clés sont uniques et stables.
 - [x] **F2-11** Mauvaises réponses : 3 choix distincts, différents de la bonne réponse, pour les 120 faits.
 - [ ] **F2-12** Même graine, mêmes questions ; validation de chaque type de question.
 
