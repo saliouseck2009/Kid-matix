@@ -9,8 +9,8 @@ import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_params.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_creation_cubit.dart';
-import 'package:kid_matix/features/profile/presentation/bloc/profile_creation_state.dart';
-import 'package:kid_matix/features/profile/presentation/bloc/profile_creation_status.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/profile_form_state.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/profile_form_status.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../helpers/profile_fixtures.dart';
@@ -46,19 +46,19 @@ void main() {
     selectProfile: mockSelectProfile,
   );
 
-  ProfileCreationState filledState(String nickname) {
-    return const ProfileCreationState.initial().copyWith(nickname: nickname);
+  ProfileFormState filledState(String nickname) {
+    return const ProfileFormState.initial().copyWith(nickname: nickname);
   }
 
   group('ProfileCreationCubit', () {
     test('starts empty with the first avatar in violet', () {
       // Act
-      final ProfileCreationState actualState = buildCubit().state;
+      final ProfileFormState actualState = buildCubit().state;
       // Assert
-      expect(actualState, const ProfileCreationState.initial());
+      expect(actualState, const ProfileFormState.initial());
       expect(actualState.canSubmit, isFalse);
     });
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'records the nickname, avatar and color',
       build: buildCubit,
       act: (ProfileCreationCubit cubit) => cubit
@@ -66,26 +66,26 @@ void main() {
         ..pickAvatar(ProfileAvatar.avatar5)
         ..pickColor(ProfileColor.blue),
       skip: 2,
-      expect: () => <ProfileCreationState>[
+      expect: () => <ProfileFormState>[
         filledState(
           'Awa',
         ).copyWith(avatar: ProfileAvatar.avatar5, color: ProfileColor.blue),
       ],
     );
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'shows the nickname error instead of saving a broken nickname',
       build: buildCubit,
       seed: () => filledState('A'),
       act: (ProfileCreationCubit cubit) => cubit.submit(),
       expect: () => <Matcher>[
-        isA<ProfileCreationState>()
+        isA<ProfileFormState>()
             .having(
-              (ProfileCreationState state) => state.showsNicknameError,
+              (ProfileFormState state) => state.showsNicknameError,
               'showsNicknameError',
               isTrue,
             )
             .having(
-              (ProfileCreationState state) => state.nicknameError,
+              (ProfileFormState state) => state.nicknameError,
               'nicknameError',
               NicknameError.tooShort,
             ),
@@ -94,15 +94,15 @@ void main() {
         () => mockCreateProfile.call(params: any(named: 'params')),
       ),
     );
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'creates the player and makes them the active one',
       build: buildCubit,
       seed: () => filledState('Awa').copyWith(color: ProfileColor.green),
       act: (ProfileCreationCubit cubit) => cubit.submit(),
-      expect: () => <ProfileCreationState>[
+      expect: () => <ProfileFormState>[
         filledState('Awa').copyWith(
           color: ProfileColor.green,
-          status: ProfileCreationStatus.submitting,
+          status: ProfileFormStatus.submitting,
         ),
       ],
       verify: (_) {
@@ -118,7 +118,7 @@ void main() {
         verify(() => mockSelectProfile.call(params: 'new-id')).called(1);
       },
     );
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'reports a taken nickname',
       setUp: () =>
           when(
@@ -130,9 +130,9 @@ void main() {
       seed: () => filledState('Awa'),
       act: (ProfileCreationCubit cubit) => cubit.submit(),
       skip: 1,
-      expect: () => <ProfileCreationState>[
+      expect: () => <ProfileFormState>[
         filledState('Awa').copyWith(
-          status: ProfileCreationStatus.failed,
+          status: ProfileFormStatus.failed,
           showsNicknameError: true,
           failureCode: AppErrorCode.conflict,
         ),
@@ -141,7 +141,7 @@ void main() {
         () => mockSelectProfile.call(params: any(named: 'params')),
       ),
     );
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'reports a failure to open the new player',
       setUp: () =>
           when(
@@ -154,29 +154,29 @@ void main() {
       act: (ProfileCreationCubit cubit) => cubit.submit(),
       skip: 1,
       expect: () => <Matcher>[
-        isA<ProfileCreationState>().having(
-          (ProfileCreationState state) => state.failureCode,
+        isA<ProfileFormState>().having(
+          (ProfileFormState state) => state.failureCode,
           'failureCode',
           AppErrorCode.cache,
         ),
       ],
     );
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'clears the failure when the nickname changes',
       build: buildCubit,
       seed: () => filledState('Awa').copyWith(
-        status: ProfileCreationStatus.failed,
+        status: ProfileFormStatus.failed,
         failureCode: AppErrorCode.conflict,
       ),
       act: (ProfileCreationCubit cubit) => cubit.changeNickname('Awa B'),
-      expect: () => <ProfileCreationState>[filledState('Awa B')],
+      expect: () => <ProfileFormState>[filledState('Awa B')],
     );
-    blocTest<ProfileCreationCubit, ProfileCreationState>(
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'does nothing while the nickname is empty',
       build: buildCubit,
       seed: () => filledState('   '),
       act: (ProfileCreationCubit cubit) => cubit.submit(),
-      expect: () => <ProfileCreationState>[],
+      expect: () => <ProfileFormState>[],
     );
   });
 }

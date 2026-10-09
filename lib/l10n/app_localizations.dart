@@ -309,6 +309,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'C\'est parti !'**
   String get createProfileButton;
+
+  /// Button that closes a confirmation dialog without doing anything ("Cancel"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get commonCancel;
+
+  /// Button of the Profile tab that goes back to the player selection so another child can play ("Switch player"). No data is lost. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer de joueur'**
+  String get switchPlayerButton;
+
+  /// Button of the Profile tab that opens the form to change the nickname, avatar or color ("Edit my profile"). Action label, informal first person; may differ from profileEditTitle, the title of the screen it opens. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier mon profil'**
+  String get editProfileButton;
+
+  /// Destructive button at the bottom of the Profile tab that deletes the active player and all their progress ("Delete this player"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer ce joueur'**
+  String get deleteProfileButton;
+
+  /// Title at the top of the profile edit screen, where a player changes their nickname, avatar or color ("Edit my profile"). Screen title next to a back arrow, one line. Same French words as editProfileButton, the button that opens this screen, but a separate key: the title may be worded differently in other languages.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier mon profil'**
+  String get profileEditTitle;
+
+  /// Main button of the profile edit screen that saves the changes ("Save"). Infinitive verb, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get saveProfileButton;
+
+  /// Title of the dialog that confirms the deletion of a player ("Delete Awa?"). {nickname} is the child's nickname (up to 12 characters). Short question, one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer {nickname} ?'**
+  String deleteProfileTitle(String nickname);
+
+  /// Body of the deletion dialog, read by a child, above a text field: everything the player earned is erased, and the child must type the nickname again in the field to confirm ("All their progress will be erased. To confirm, type their nickname: Awa"). {nickname} is the player's nickname, shown at the end so the child can copy it. Informal "tu", two or three lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toute sa progression sera effacée. Pour confirmer, écris son pseudo : {nickname}'**
+  String deleteProfileMessage(String nickname);
+
+  /// Destructive button of the deletion dialog, enabled once the nickname is typed again ("Delete"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get deleteProfileConfirm;
 }
 
 class _AppLocalizationsDelegate

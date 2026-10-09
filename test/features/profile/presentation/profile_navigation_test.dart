@@ -3,16 +3,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
-import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/main.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/fake_profile_session_service.dart';
 import '../helpers/profile_fixtures.dart';
 
+MockWatchProfileChangesUseCase _buildQuietWatch() {
+  final MockWatchProfileChangesUseCase mockWatch =
+      MockWatchProfileChangesUseCase();
+  when(mockWatch.call).thenAnswer((_) => const Stream<void>.empty());
+  return mockWatch;
+}
+
 void main() {
   late FakeProfileSessionService session;
   late MockGetProfilesUseCase mockGetProfiles;
+  late MockGetProfileUseCase mockGetProfile;
+  late MockClearActiveProfileUseCase mockClearActive;
 
   setUp(() {
     mockGetProfiles = MockGetProfilesUseCase();
@@ -21,6 +29,14 @@ void main() {
         buildProfile(),
       ]),
     );
+    mockGetProfile = MockGetProfileUseCase();
+    when(
+      () => mockGetProfile.call(params: any(named: 'params')),
+    ).thenAnswer((_) async => DataSuccess<ProfileEntity>(buildProfile()));
+    mockClearActive = MockClearActiveProfileUseCase();
+    when(
+      mockClearActive.call,
+    ).thenAnswer((_) async => const DataSuccess<void>(null));
   });
 
   Future<void> pumpApp(WidgetTester tester) async {
@@ -30,10 +46,14 @@ void main() {
       KidMatixApp(
         router: createAppRouter(
           session: session,
-          profilePages: ProfilePages(
+          profilePages: buildProfilePages(
             getProfiles: mockGetProfiles,
-            createProfile: MockCreateProfileUseCase(),
-            selectProfile: MockSelectProfileUseCase(),
+            getProfile: mockGetProfile,
+            tabUseCases: buildTabUseCases(
+              getProfile: mockGetProfile,
+              watchChanges: _buildQuietWatch(),
+              clearActiveProfile: mockClearActive,
+            ),
           ),
         ),
       ),
@@ -90,6 +110,53 @@ void main() {
       // Assert
       expect(find.text('Qui joue ?'), findsNothing);
       expect(find.text('Bientôt disponible'), findsOneWidget);
+    });
+    testWidgets('shows the active player in the Profile tab', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      session = FakeProfileSessionService(activeProfileId: 'profile-1');
+      await pumpApp(tester);
+      // Act
+      await tester.tap(find.text('Profil'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Awa'), findsOneWidget);
+      expect(find.text('Niveau 1'), findsOneWidget);
+      expect(find.text('Changer de joueur'), findsOneWidget);
+    });
+    testWidgets('opens the edit form over the tabs and comes back', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      session = FakeProfileSessionService(activeProfileId: 'profile-1');
+      await pumpApp(tester);
+      await tester.tap(find.text('Profil'));
+      await tester.pumpAndSettle();
+      // Act
+      await tester.tap(find.text('Modifier mon profil'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Enregistrer'), findsOneWidget);
+      expect(find.text('Parcours'), findsNothing);
+      await tester.tap(find.byTooltip('Retour'));
+      await tester.pumpAndSettle();
+      expect(find.text('Changer de joueur'), findsOneWidget);
+    });
+    testWidgets('lets another child play', (WidgetTester tester) async {
+      // Arrange
+      session = FakeProfileSessionService(activeProfileId: 'profile-1');
+      await pumpApp(tester);
+      await tester.tap(find.text('Profil'));
+      await tester.pumpAndSettle();
+      // Act
+      await tester.tap(find.text('Changer de joueur'));
+      await tester.pump();
+      session.update(hasProfiles: true);
+      await tester.pumpAndSettle();
+      // Assert
+      verify(mockClearActive.call).called(1);
+      expect(find.text('Qui joue\u00a0?'), findsOneWidget);
     });
   });
 }

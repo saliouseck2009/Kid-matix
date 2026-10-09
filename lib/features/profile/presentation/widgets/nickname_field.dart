@@ -10,6 +10,7 @@ class NicknameField extends StatelessWidget {
   const NicknameField({
     required this.onChanged,
     required this.onSubmitted,
+    this.initialValue,
     this.errorText,
     super.key,
   });
@@ -23,6 +24,9 @@ class NicknameField extends StatelessWidget {
 
   /// Called when the player validates from the keyboard.
   final VoidCallback onSubmitted;
+
+  /// Nickname already in the field when it appears.
+  final String? initialValue;
 
   /// Error to show under the field, or `null` to show the rule hint.
   final String? errorText;
@@ -39,9 +43,10 @@ class NicknameField extends StatelessWidget {
       children: <Widget>[
         Text(context.l10n.nicknameLabel, style: textTheme.titleMedium),
         const SizedBox(height: _gap),
-        TextField(
+        TextFormField(
+          initialValue: initialValue,
           onChanged: onChanged,
-          onSubmitted: (_) => onSubmitted(),
+          onFieldSubmitted: (_) => onSubmitted(),
           textCapitalization: TextCapitalization.words,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.done,

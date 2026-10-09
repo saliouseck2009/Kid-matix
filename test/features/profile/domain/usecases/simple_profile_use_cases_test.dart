@@ -2,7 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
+import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:mocktail/mocktail.dart';
@@ -34,6 +36,43 @@ void main() {
         (actualState as DataSuccess<List<ProfileEntity>>).data,
         expectedProfiles,
       );
+    });
+  });
+
+  group('GetProfileUseCase', () {
+    test('reads the given profile', () async {
+      // Arrange
+      final ProfileEntity expectedProfile = buildProfile();
+      when(
+        () => mockRepository.getProfile(profileId: any(named: 'profileId')),
+      ).thenAnswer((_) async => DataSuccess<ProfileEntity>(expectedProfile));
+      final GetProfileUseCase useCase = GetProfileUseCase(
+        repository: mockRepository,
+      );
+      // Act
+      final DataState<ProfileEntity> actualState = await useCase(
+        params: 'profile-1',
+      );
+      // Assert
+      expect((actualState as DataSuccess<ProfileEntity>).data, expectedProfile);
+      verify(() => mockRepository.getProfile(profileId: 'profile-1')).called(1);
+    });
+  });
+
+  group('ClearActiveProfileUseCase', () {
+    test('forgets the active player', () async {
+      // Arrange
+      when(
+        mockRepository.clearActiveProfileId,
+      ).thenAnswer((_) async => const DataSuccess<void>(null));
+      final ClearActiveProfileUseCase useCase = ClearActiveProfileUseCase(
+        repository: mockRepository,
+      );
+      // Act
+      final DataState<void> actualState = await useCase();
+      // Assert
+      expect(actualState, isA<DataSuccess<void>>());
+      verify(mockRepository.clearActiveProfileId).called(1);
     });
   });
 
