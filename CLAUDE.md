@@ -118,9 +118,11 @@ Inside a lot: domain, then data, then presentation, then tests.
   `tool/logs/check.log`. Run it yourself and fix what it reports. It exits
   non-zero on failure. Commit generated files (`app_localizations*.dart`,
   `*.g.dart`) with their source: CI fails when they are stale.
-- CI: `.github/workflows/ci.yml` runs `tool/check.sh` with Flutter 3.47.6 on
-  every pull request; a pull request merges only when `CI / check` is
-  green.
+- CI: `.github/workflows/ci.yml` runs four jobs with Flutter 3.47.6 on
+  every pull request — `analyze`, `test`, `build android`, `build ios` —
+  each one a group of `tool/check.sh`; a pull request merges only when all
+  are green. Before a pull request that touches `android/`, `ios/`,
+  `pubspec.yaml` or plugins, also run `bash tool/check.sh build`.
 - A lot is done only when every step is OK, its tasks are ticked in
   `docs/product/task-breakdown.md`, its "Terminé quand" criterion has been
   checked on a device or emulator, and `docs/status.md` is updated.
