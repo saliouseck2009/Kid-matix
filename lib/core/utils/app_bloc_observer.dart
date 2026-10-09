@@ -10,8 +10,7 @@ import 'package:kid_matix/core/services/crash_reporter.dart';
 /// debug builds only.
 final class AppBlocObserver extends BlocObserver {
   /// Creates an observer that forwards errors to [crashReporter].
-  const AppBlocObserver({required CrashReporter crashReporter})
-    : _crashReporter = crashReporter;
+  const AppBlocObserver({required this._crashReporter});
 
   static const String _logName = 'bloc';
 

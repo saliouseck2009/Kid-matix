@@ -31,15 +31,13 @@ final class ValidationException extends AppException {
 /// The requested item does not exist.
 final class NotFoundException extends AppException {
   /// Creates a missing-item failure.
-  const NotFoundException({super.message})
-    : super(code: AppErrorCode.notFound);
+  const NotFoundException({super.message}) : super(code: AppErrorCode.notFound);
 }
 
 /// The operation clashes with existing data.
 final class ConflictException extends AppException {
   /// Creates a conflict failure.
-  const ConflictException({super.message})
-    : super(code: AppErrorCode.conflict);
+  const ConflictException({super.message}) : super(code: AppErrorCode.conflict);
 }
 
 /// Any failure that has no dedicated type.
