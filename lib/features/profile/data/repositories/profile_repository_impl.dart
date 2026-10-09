@@ -17,8 +17,9 @@ import 'package:sqflite/sqflite.dart';
 
 /// [ProfileRepository] over the local database and the device preferences.
 ///
-/// After each write it tells the [TableChangeBus] that the `profile` table
-/// changed, so the screens watching it reload.
+/// After each write, the choice of the active player included, it tells the
+/// [TableChangeBus] that the `profile` table changed, so the screens and the
+/// session watching it reload.
 final class ProfileRepositoryImpl implements ProfileRepository {
   /// Creates the repository.
   const ProfileRepositoryImpl({
@@ -128,9 +129,15 @@ final class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<DataState<void>> setActiveProfileId({required String profileId}) {
-    return _guard(
-      () => _activeProfile.writeActiveProfileId(profileId: profileId),
-    );
+    return _guard(() async {
+      await _activeProfile.writeActiveProfileId(profileId: profileId);
+      _notifyProfilesChanged();
+    });
+  }
+
+  @override
+  Stream<void> watchProfileChanges() {
+    return _changeBus.watchTable(table: ProfileTable.name);
   }
 
   Future<ProfileLocalModel> _readProfile(String profileId) async {

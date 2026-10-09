@@ -11,7 +11,7 @@ import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart
 /// Takes the edited profile. Fails with a `ValidationException` when the
 /// nickname breaks the rules and a `ConflictException` when another player
 /// already uses it.
-final class UpdateProfileUseCase
+class UpdateProfileUseCase
     implements UseCase<DataState<ProfileEntity>, ProfileEntity> {
   /// Creates the use case.
   const UpdateProfileUseCase({

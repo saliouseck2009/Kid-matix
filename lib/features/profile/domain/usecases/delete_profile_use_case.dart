@@ -6,7 +6,7 @@ import 'package:kid_matix/features/profile/domain/repositories/profile_repositor
 ///
 /// Takes the identifier of the profile to delete. The screen asks the child
 /// to type the nickname again before calling it.
-final class DeleteProfileUseCase implements UseCase<DataState<void>, String> {
+class DeleteProfileUseCase implements UseCase<DataState<void>, String> {
   /// Creates the use case over [repository].
   const DeleteProfileUseCase({required this._repository});
 

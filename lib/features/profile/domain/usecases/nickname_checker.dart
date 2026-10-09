@@ -6,7 +6,7 @@ import 'package:kid_matix/features/profile/domain/repositories/profile_repositor
 /// Checks that a nickname follows the rules and is free on the device.
 ///
 /// Shared by the use cases that create and rename a profile.
-final class NicknameChecker {
+class NicknameChecker {
   /// Creates a checker that looks nicknames up in [repository].
   const NicknameChecker({required this._repository});
 

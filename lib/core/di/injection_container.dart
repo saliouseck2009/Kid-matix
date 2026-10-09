@@ -15,6 +15,7 @@ import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
 import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
+import 'package:kid_matix/features/profile/injection.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -30,6 +31,7 @@ final GetIt sl = GetIt.instance;
 Future<void> configureDependencies() async {
   _registerCoreServices();
   _registerCoreStorage();
+  registerProfileFeature(sl);
 }
 
 void _registerCoreServices() {
