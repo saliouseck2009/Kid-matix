@@ -276,6 +276,15 @@ void main() {
       // Assert
       expect(_dataOf(actualState), 'p-awa');
     });
+    test('tells the watchers when a player is chosen', () async {
+      // Arrange
+      await repository.createProfile(profile: inputAwa);
+      final Future<void> actualChange = repository.watchProfileChanges().first;
+      // Act
+      await repository.setActiveProfileId(profileId: 'p-awa');
+      // Assert
+      await expectLater(actualChange, completes);
+    });
     test('is forgotten when it points to no profile', () async {
       // Arrange
       await repository.setActiveProfileId(profileId: 'gone');

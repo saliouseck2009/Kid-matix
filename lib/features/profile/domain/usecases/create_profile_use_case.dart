@@ -15,7 +15,7 @@ import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart
 /// Fails with a `LimitReachedException` when the device already holds
 /// [ProfileLimits.maxProfiles] profiles, a `ValidationException` when the
 /// nickname breaks the rules, and a `ConflictException` when it is taken.
-final class CreateProfileUseCase
+class CreateProfileUseCase
     implements UseCase<DataState<ProfileEntity>, CreateProfileParams> {
   /// Creates the use case.
   const CreateProfileUseCase({

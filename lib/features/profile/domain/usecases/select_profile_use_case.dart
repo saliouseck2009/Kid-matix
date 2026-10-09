@@ -7,7 +7,7 @@ import 'package:kid_matix/features/profile/domain/repositories/profile_repositor
 ///
 /// Takes the identifier of the chosen profile and returns that profile.
 /// Fails with a `NotFoundException` when it does not exist.
-final class SelectProfileUseCase
+class SelectProfileUseCase
     implements UseCase<DataState<ProfileEntity>, String> {
   /// Creates the use case over [repository].
   const SelectProfileUseCase({required this._repository});
