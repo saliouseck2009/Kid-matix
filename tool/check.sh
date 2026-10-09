@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Runs code generation, formatting, analysis and every test, and writes the
-# whole output to tool/logs/check.log.
+# Runs code generation, formatting, analysis, every test and the git hook
+# tests, and writes the whole output to tool/logs/check.log.
 # Run it from anywhere:  bash tool/check.sh
 set -uo pipefail
 cd "$(dirname "$0")/.."
@@ -37,6 +37,7 @@ run_all() {
   run_step "format" dart format lib test
   run_step "analyze" flutter analyze
   run_step "test" flutter test
+  run_step "git hooks" bash tool/hooks_test.sh
   echo
   if [ "${#FAILED_STEPS[@]}" -eq 0 ]; then
     echo "===== SUMMARY: ALL STEPS OK ====="
