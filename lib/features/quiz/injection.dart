@@ -7,6 +7,7 @@ import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_reposit
 import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.dart';
 
 /// Registers the quiz feature in [sl]; Blocs are never registered.
@@ -26,6 +27,9 @@ void registerQuizFeature(GetIt sl) {
 
 void _registerUseCases(GetIt sl) {
   sl.registerLazySingleton<QuestionGenerator>(QuestionGenerator.new);
+  sl.registerLazySingleton<GetTimeLimitUseCase>(
+    () => GetTimeLimitUseCase(settings: sl()),
+  );
   sl.registerLazySingleton<BuildQuizUseCase>(
     () => BuildQuizUseCase(
       domains: sl(),

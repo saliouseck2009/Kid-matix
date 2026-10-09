@@ -3,7 +3,6 @@ import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
@@ -19,21 +18,7 @@ void main() {
   late MockQuizSessionRepository mockRepository;
   late FakeClock clock;
 
-  setUpAll(() {
-    registerFallbackValue(
-      QuizSessionEntity(
-        id: '',
-        profileId: '',
-        domainId: '',
-        mode: QuizMode.freeTraining,
-        status: QuizSessionStatus.completed,
-        startedAt: quizStart,
-        duration: Duration.zero,
-        questionCount: 0,
-        correctCount: 0,
-      ),
-    );
-  });
+  setUpAll(registerQuizFallbacks);
 
   setUp(() {
     mockRepository = MockQuizSessionRepository();

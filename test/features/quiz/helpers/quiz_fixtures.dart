@@ -9,6 +9,8 @@ import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
 import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_repository.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_use_case.dart';
@@ -47,6 +49,23 @@ final class FixedIdGenerator implements IdGenerator {
 
 /// When the test quizzes start.
 final DateTime quizStart = DateTime(2026, 10, 9, 17);
+
+/// Lets mocktail match any session; call it in `setUpAll`.
+void registerQuizFallbacks() {
+  registerFallbackValue(
+    QuizSessionEntity(
+      id: '',
+      profileId: '',
+      domainId: '',
+      mode: QuizMode.freeTraining,
+      status: QuizSessionStatus.completed,
+      startedAt: quizStart,
+      duration: Duration.zero,
+      questionCount: 0,
+      correctCount: 0,
+    ),
+  );
+}
 
 /// Registries holding the multiplication domain and the 1.0 types.
 DomainRegistry buildDomainRegistry() {
