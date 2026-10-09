@@ -30,6 +30,7 @@ owner. Add a line here whenever a new decision is taken.
 | Constants are `lowerCamelCase`; the `SCREAMING_SNAKE_CASE` rule of `dart-guidelines.md` is dropped | It contradicts the default Dart lint. Owner: "laisse tomber cette règle" |
 | Constructors use initializing formals for private fields (`required this._repository`) | The `prefer_initializing_formals` lint of this SDK requires it, and `flutter analyze` must stay clean. The rule examples show the older `: _x = x` form; the lint wins. Callers still pass the public name |
 | Game-rule values (boss hit points, XP per answer, timer durations...) are named constants in the domain of the feature that owns them; they move to `core/constants/` only when a second feature needs them | The rules reserve `core/` for code used by at least two features |
+| A new player's settings: normal timer, daily goal of 20 XP, sounds and vibrations on, reduced motion and "unlock everything" off | Owner chose 20 XP: reached in one short session, so a child succeeds on the first day; it can be raised in the settings (F10) |
 | Crash reporting goes through the `CrashReporter` interface; 1.0 uses the local `LogCrashReporter` | The rules ask for Crashlytics or Sentry, but 1.0 has no network and no third-party SDK |
 | No `app/` folder: router, theme, DI and shared widgets live in `core/` | Structure of the owner's rules |
 | `DataState<T>` (`DataSuccess` / `DataFailed`) and typed `AppException` with an `AppErrorCode` replace the `Result` type of the first specs | Owner's rules |
