@@ -43,6 +43,7 @@ owner. Add a line here whenever a new decision is taken.
 | The Results page receives only the session id and loads the session with its own Cubit | Only primitive ids go through routes |
 | sqflite exposes no streams: repositories call `TableChangeBus.notifyChanged` after each write and Blocs reload on `watchTable` | Keeps the map, profile and leaderboard fresh |
 | One migration class per schema version, run by `MigrationRunner`; the database opens lazily and only once a first migration exists (F1) | Rules: `version` + `onUpgrade`, one migration per version |
+| Migrations live in `core/storage/migrations/` (`migration_NNN_xxx.dart`), with their SQL written out in full rather than built from the data layer's column constants | The schema version is global to the app, `core/` may not import features, and a released migration must never change when a constant is renamed later |
 | Feature folders are not scaffolded ahead of time; each is created by its lot | No empty folders or dead code |
 | Models use `json_serializable`; `tool/check.sh` runs `build_runner` only when `@JsonSerializable` appears in `lib/` | Keeps the check fast until F1 |
 | `audioplayers` is added in F10, `flutter_local_notifications` in F18 — not before | No unused dependency |
