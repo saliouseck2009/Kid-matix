@@ -79,6 +79,25 @@ void main() {
       expect(domain.findItem('mul:7x11'), isNull);
       expect(domain.findItem('div:56/7'), isNull);
     });
+    test('finds a table from its key', () {
+      // Assert
+      expect(domain.findUnit('mul:7')?.number, 7);
+      expect(domain.findUnit('mul:13'), isNull);
+    });
+    test('describes a fact with its result', () {
+      // Act
+      final List<PromptToken> actualStatement = domain.describeItem(
+        const MultiplicationFact(table: 5, multiplier: 8),
+      );
+      // Assert
+      expect(actualStatement, const <PromptToken>[
+        NumberToken(5),
+        OperatorToken(MathOperator.multiply),
+        NumberToken(8),
+        EqualsToken(),
+        NumberToken(40),
+      ]);
+    });
     test('orders the learning path from the simplest table', () {
       // Act
       final List<String> actualPath = domain.path
@@ -117,6 +136,7 @@ void main() {
       final Question actualQuestion = build(QuestionTypeIds.multipleChoice);
       // Assert
       expect(actualQuestion.itemKey, 'mul:7x8');
+      expect(actualQuestion.unitKey, 'mul:7');
       expect(actualQuestion.prompt, const <PromptToken>[
         NumberToken(7),
         OperatorToken(MathOperator.multiply),

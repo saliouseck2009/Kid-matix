@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
@@ -27,7 +28,7 @@ final class MultiplicationDomain implements LearningDomain {
        );
 
   /// Identifier of the domain.
-  static const String domainId = 'multiplication';
+  static const String domainId = LearningDomainIds.multiplication;
 
   /// Number of tables, from 1 to [tableCount].
   static const int tableCount = 12;
@@ -85,15 +86,26 @@ final class MultiplicationDomain implements LearningDomain {
   MultiplicationFact? findItem(String key) => _factsByKey[key];
 
   @override
+  MultiplicationTable? findUnit(String key) {
+    for (final MultiplicationTable table in tables) {
+      if (table.key == key) return table;
+    }
+    return null;
+  }
+
+  @override
+  List<PromptToken> describeItem(LearningItem item) {
+    final MultiplicationFact fact = _requireFact(item);
+    return _prompt(fact.table, fact.multiplier, NumberToken(fact.product));
+  }
+
+  @override
   Question buildQuestion({
     required LearningItem item,
     required String questionTypeId,
     required RandomSource random,
   }) {
-    final MultiplicationFact? fact = findItem(item.key);
-    if (fact == null) {
-      throw ArgumentError.value(item.key, 'item', 'Not a multiplication fact');
-    }
+    final MultiplicationFact fact = _requireFact(item);
     return switch (questionTypeId) {
       QuestionTypeIds.multipleChoice => _buildMultipleChoice(fact, random),
       QuestionTypeIds.typedAnswer => _buildTypedAnswer(fact),
@@ -115,6 +127,7 @@ final class MultiplicationDomain implements LearningDomain {
     ];
     return Question(
       itemKey: fact.key,
+      unitKey: tables[fact.table - 1].key,
       questionTypeId: QuestionTypeIds.multipleChoice,
       prompt: _prompt(fact.table, fact.multiplier, const BlankToken()),
       choices: random.shuffled(values).map(NumberAnswer.new).toList(),
@@ -126,6 +139,7 @@ final class MultiplicationDomain implements LearningDomain {
   Question _buildTypedAnswer(MultiplicationFact fact) {
     return Question(
       itemKey: fact.key,
+      unitKey: tables[fact.table - 1].key,
       questionTypeId: QuestionTypeIds.typedAnswer,
       prompt: _prompt(fact.table, fact.multiplier, const BlankToken()),
       expectedAnswer: NumberAnswer(fact.product),
@@ -138,6 +152,7 @@ final class MultiplicationDomain implements LearningDomain {
     final PromptToken product = NumberToken(fact.product);
     return Question(
       itemKey: fact.key,
+      unitKey: tables[fact.table - 1].key,
       questionTypeId: QuestionTypeIds.missingNumber,
       prompt: hidesMultiplier
           ? _prompt(fact.table, null, product)
@@ -157,10 +172,19 @@ final class MultiplicationDomain implements LearningDomain {
         : _distractors.generate(fact: fact, random: random, count: 1).single;
     return Question(
       itemKey: fact.key,
+      unitKey: tables[fact.table - 1].key,
       questionTypeId: QuestionTypeIds.trueFalse,
       prompt: _prompt(fact.table, fact.multiplier, NumberToken(shown)),
       expectedAnswer: BooleanAnswer(value: isTrue),
     );
+  }
+
+  MultiplicationFact _requireFact(LearningItem item) {
+    final MultiplicationFact? fact = findItem(item.key);
+    if (fact == null) {
+      throw ArgumentError.value(item.key, 'item', 'Not a multiplication fact');
+    }
+    return fact;
   }
 
   /// `left × right = result`, a `null` operand shown as the blank.

@@ -19,6 +19,7 @@ final class MultiplicationTable implements LearningUnit {
       );
 
   /// Number of the table, from 1 to 12.
+  @override
   final int number;
 
   /// Facts of the table, multiplier 1 first.
