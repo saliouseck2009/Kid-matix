@@ -129,6 +129,7 @@ class _AppTabBarLabel extends StatelessWidget {
     return ConstrainedBox(
       constraints: const BoxConstraints(minHeight: AppSizes.tabBarItemHeight),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(item.icon, size: AppSizes.tabBarIconSize, color: color),
