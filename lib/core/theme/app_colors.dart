@@ -33,6 +33,9 @@ abstract final class AppColors {
   /// Outline of white controls.
   static const Color violetBorder = Color(0xFFDDD6FF);
 
+  /// Stronger violet outline: text fields and dashed hint boxes.
+  static const Color violetStrongBorder = Color(0xFFA99BF0);
+
   /// Reward color: stars, crowns, streaks.
   static const Color yellow = Color(0xFFFFC531);
 

@@ -12,6 +12,8 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     required this.border,
     required this.mutedText,
     required this.warmTint,
+    required this.secondaryDepth,
+    required this.strongBorder,
     required this.avatarBackgrounds,
   });
 
@@ -23,6 +25,8 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     border: AppColors.violetBorder,
     mutedText: AppColors.muted,
     warmTint: AppColors.yellowTint,
+    secondaryDepth: AppColors.yellowDepth,
+    strongBorder: AppColors.violetStrongBorder,
     avatarBackgrounds: <Color>[
       AppColors.violet,
       AppColors.green,
@@ -51,6 +55,12 @@ final class AppPalette extends ThemeExtension<AppPalette> {
   /// Background of reward elements.
   final Color warmTint;
 
+  /// Raised edge and shadow of secondary (yellow) elements.
+  final Color secondaryDepth;
+
+  /// Outline of text fields and dashed hint boxes.
+  final Color strongBorder;
+
   /// Colors a player can pick for their avatar, in the order of the color
   /// picker: violet, green, yellow, red, blue, pink.
   final List<Color> avatarBackgrounds;
@@ -63,6 +73,8 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     Color? border,
     Color? mutedText,
     Color? warmTint,
+    Color? secondaryDepth,
+    Color? strongBorder,
     List<Color>? avatarBackgrounds,
   }) {
     return AppPalette(
@@ -72,6 +84,8 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       border: border ?? this.border,
       mutedText: mutedText ?? this.mutedText,
       warmTint: warmTint ?? this.warmTint,
+      secondaryDepth: secondaryDepth ?? this.secondaryDepth,
+      strongBorder: strongBorder ?? this.strongBorder,
       avatarBackgrounds: avatarBackgrounds ?? this.avatarBackgrounds,
     );
   }
@@ -86,6 +100,8 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       border: Color.lerp(border, other.border, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
       warmTint: Color.lerp(warmTint, other.warmTint, t)!,
+      secondaryDepth: Color.lerp(secondaryDepth, other.secondaryDepth, t)!,
+      strongBorder: Color.lerp(strongBorder, other.strongBorder, t)!,
       avatarBackgrounds: t < 0.5 ? avatarBackgrounds : other.avatarBackgrounds,
     );
   }

@@ -27,5 +27,167 @@
   "comingSoonMessage": "Bientôt disponible",
   "@comingSoonMessage": {
     "description": "Shown on a tab whose feature is not built yet."
+  },
+  "commonRetry": "Réessayer",
+  "@commonRetry": {
+    "description": "Button that runs a failed action again (load the players, save the profile). Infinitive verb, one line."
+  },
+  "commonBack": "Retour",
+  "@commonBack": {
+    "description": "Tooltip and screen-reader label of the back arrow at the top left of a screen."
+  },
+  "errorStorage": "Oups, on n'a pas pu lire ou enregistrer tes données.",
+  "@errorStorage": {
+    "description": "Shown to a child when the local database fails. Friendly tone, informal \"tu\"."
+  },
+  "errorNotFound": "Ce joueur n'existe plus.",
+  "@errorNotFound": {
+    "description": "Shown when the chosen player was deleted in the meantime."
+  },
+  "errorUnknown": "Oups, quelque chose s'est mal passé.",
+  "@errorUnknown": {
+    "description": "Generic error shown to a child when nothing more precise is known. Friendly tone."
+  },
+  "whoIsPlayingTitle": "Qui joue ?",
+  "@whoIsPlayingTitle": {
+    "description": "Title of the player selection screen shown at launch (\"Who is playing?\"). Big title, one line."
+  },
+  "whoIsPlayingSubtitle": "Choisis ton joueur pour commencer.",
+  "@whoIsPlayingSubtitle": {
+    "description": "Line under the title of the player selection screen; speaks to the child with \"tu\"."
+  },
+  "profileLevel": "Niveau {level}",
+  "@profileLevel": {
+    "description": "Player level under the nickname on a player card.",
+    "placeholders": {
+      "level": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "newPlayerButton": "Nouveau joueur",
+  "@newPlayerButton": {
+    "description": "Label of the dashed card that opens the creation of a player (\"New player\"). Fits on one line in half the screen width."
+  },
+  "profileLimitHint": "Jusqu'à {maxProfiles} joueurs sur ce téléphone.",
+  "@profileLimitHint": {
+    "description": "Footer of the player selection screen: how many players the phone can hold.",
+    "placeholders": {
+      "maxProfiles": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "profileLimitReached": "Il y a déjà {maxProfiles} joueurs sur ce téléphone.",
+  "@profileLimitReached": {
+    "description": "Shown when a child tries to create a player but the phone already holds the maximum.",
+    "placeholders": {
+      "maxProfiles": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "profileCreationTitle": "Nouveau joueur",
+  "@profileCreationTitle": {
+    "description": "Title of the screen that creates a player (\"New player\")."
+  },
+  "nicknameLabel": "Ton pseudo",
+  "@nicknameLabel": {
+    "description": "Label above the nickname field of the player creation (\"Your nickname\"), informal \"tu\"."
+  },
+  "nicknameHint": "Écris ton pseudo",
+  "@nicknameHint": {
+    "description": "Placeholder inside the empty nickname field (\"Type your nickname\")."
+  },
+  "nicknameRulesHint": "{minLength} à {maxLength} lettres ou chiffres",
+  "@nicknameRulesHint": {
+    "description": "Hint under the nickname field: allowed length.",
+    "placeholders": {
+      "minLength": {
+        "type": "int",
+        "example": "2"
+      },
+      "maxLength": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "nicknameTooShort": "Il faut au moins {minLength} lettres ou chiffres.",
+  "@nicknameTooShort": {
+    "description": "Error under the nickname field when it is too short. Speaks to a child, no blame.",
+    "placeholders": {
+      "minLength": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "nicknameTooLong": "Pas plus de {maxLength} lettres ou chiffres.",
+  "@nicknameTooLong": {
+    "description": "Error under the nickname field when it is too long.",
+    "placeholders": {
+      "maxLength": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "nicknameInvalidCharacters": "Seulement des lettres, des chiffres et des espaces.",
+  "@nicknameInvalidCharacters": {
+    "description": "Error under the nickname field when it contains another character (punctuation, emoji)."
+  },
+  "nicknameTaken": "Ce nom est déjà pris sur ce téléphone.",
+  "@nicknameTaken": {
+    "description": "Error under the nickname field when another player of the phone already uses this nickname, ignoring case and accents. Wording from the specifications."
+  },
+  "avatarPickerLabel": "Choisis ton avatar",
+  "@avatarPickerLabel": {
+    "description": "Heading of the grid of 12 characters in the player creation (\"Choose your avatar\")."
+  },
+  "avatarOptionLabel": "Avatar {number}",
+  "@avatarOptionLabel": {
+    "description": "Screen-reader label of one character of the avatar grid.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "colorPickerLabel": "Ta couleur",
+  "@colorPickerLabel": {
+    "description": "Heading of the row of color swatches in the player creation (\"Your color\")."
+  },
+  "profileColorViolet": "Violet",
+  "@profileColorViolet": {
+    "description": "Screen-reader name of the violet color swatch."
+  },
+  "profileColorGreen": "Vert",
+  "@profileColorGreen": {
+    "description": "Screen-reader name of the green color swatch."
+  },
+  "profileColorYellow": "Jaune",
+  "@profileColorYellow": {
+    "description": "Screen-reader name of the yellow color swatch."
+  },
+  "profileColorRed": "Rouge",
+  "@profileColorRed": {
+    "description": "Screen-reader name of the red color swatch."
+  },
+  "profileColorBlue": "Bleu",
+  "@profileColorBlue": {
+    "description": "Screen-reader name of the blue color swatch."
+  },
+  "profileColorPink": "Rose",
+  "@profileColorPink": {
+    "description": "Screen-reader name of the pink color swatch."
+  },
+  "createProfileButton": "C'est parti !",
+  "@createProfileButton": {
+    "description": "Main button that creates the player and starts the game (\"Let's go!\"). One line."
   }
 }

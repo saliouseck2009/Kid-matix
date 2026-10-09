@@ -11,4 +11,10 @@ abstract final class AppRoutes {
 
   /// Profile tab.
   static const String profile = '/profile';
+
+  /// "Qui joue ?": the player selection, shown while nobody is playing.
+  static const String whoIsPlaying = '/players';
+
+  /// Creation of a new player, opened from [whoIsPlaying].
+  static const String profileCreation = '/players/new';
 }
