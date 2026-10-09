@@ -29,6 +29,9 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
       (AnswerSubmitted event, Emitter<QuizState> emit) =>
           _submit(event.answer, emit),
     );
+    on<DigitTyped>(_onDigitTyped);
+    on<DigitErased>(_onDigitErased);
+    on<TypedAnswerValidated>(_onTypedAnswerValidated);
     on<TimeExpired>(
       (TimeExpired event, Emitter<QuizState> emit) => _submit(null, emit),
     );
@@ -75,6 +78,25 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     emit(next);
     final Duration? limit = next.run.timeLimit;
     if (limit != null && next.elapsed >= limit) add(const TimeExpired());
+  }
+
+  void _onDigitTyped(DigitTyped event, Emitter<QuizState> emit) {
+    final QuizState current = state;
+    if (current is QuizAsking) emit(current.withDigit(event.digit));
+  }
+
+  void _onDigitErased(DigitErased event, Emitter<QuizState> emit) {
+    final QuizState current = state;
+    if (current is QuizAsking) emit(current.withoutLastDigit());
+  }
+
+  Future<void> _onTypedAnswerValidated(
+    TypedAnswerValidated event,
+    Emitter<QuizState> emit,
+  ) async {
+    final QuizState current = state;
+    if (current is! QuizAsking || current.typedDigits.isEmpty) return;
+    await _submit(NumberAnswer(int.parse(current.typedDigits)), emit);
   }
 
   Future<void> _submit(Answer? answer, Emitter<QuizState> emit) async {

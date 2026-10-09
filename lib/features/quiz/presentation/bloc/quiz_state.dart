@@ -25,7 +25,11 @@ final class QuizAsking extends QuizState {
     required this.run,
     this.elapsed = Duration.zero,
     this.isPaused = false,
+    this.typedDigits = '',
   });
+
+  /// Most digits the keypad accepts; every answer of version 1.0 fits.
+  static const int maxTypedDigits = 3;
 
   /// Quiz being played; its current turn is the question shown.
   final QuizRun run;
@@ -35,6 +39,9 @@ final class QuizAsking extends QuizState {
 
   /// Whether the app is in the background.
   final bool isPaused;
+
+  /// Digits typed on the keypad so far, for written answers.
+  final String typedDigits;
 
   /// Question shown.
   QuizTurn get turn => run.currentTurn!;
@@ -56,12 +63,33 @@ final class QuizAsking extends QuizState {
     return limit != null && limit - elapsed <= QuizTimeLimits.warning;
   }
 
-  /// Returns a copy with [elapsed] and [isPaused] replaced.
-  QuizAsking copyWith({Duration? elapsed, bool? isPaused}) {
+  /// Returns the state with [digit] typed after the others; a leading 0
+  /// is replaced, and digits past [maxTypedDigits] are ignored.
+  QuizAsking withDigit(int digit) {
+    if (typedDigits.length >= maxTypedDigits) return this;
+    final String kept = typedDigits == '0' ? '' : typedDigits;
+    return copyWith(typedDigits: '$kept$digit');
+  }
+
+  /// Returns the state with the last typed digit erased.
+  QuizAsking withoutLastDigit() {
+    if (typedDigits.isEmpty) return this;
+    return copyWith(
+      typedDigits: typedDigits.substring(0, typedDigits.length - 1),
+    );
+  }
+
+  /// Returns a copy with the given fields replaced.
+  QuizAsking copyWith({
+    Duration? elapsed,
+    bool? isPaused,
+    String? typedDigits,
+  }) {
     return QuizAsking(
       run: run,
       elapsed: elapsed ?? this.elapsed,
       isPaused: isPaused ?? this.isPaused,
+      typedDigits: typedDigits ?? this.typedDigits,
     );
   }
 }

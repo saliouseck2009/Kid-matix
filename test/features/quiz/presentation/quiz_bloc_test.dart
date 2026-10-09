@@ -286,5 +286,39 @@ void main() {
       expect(actualState.remainingFraction, isNull);
       expect(actualState.elapsed, const Duration(seconds: 30));
     });
+    test('builds the number typed on the keypad', () async {
+      // Arrange
+      await start();
+      // Act
+      for (final int digit in <int>[0, 3, 5, 1, 7]) {
+        bloc.add(DigitTyped(digit: digit));
+      }
+      bloc.add(const DigitErased());
+      await pumpEventQueue();
+      // Assert
+      expect((bloc.state as QuizAsking).typedDigits, '35');
+    });
+    test('submits the typed number on validation', () async {
+      // Arrange
+      await start();
+      bloc
+        ..add(const DigitTyped(digit: 5))
+        ..add(const TypedAnswerValidated());
+      // Act
+      await pumpEventQueue();
+      // Assert
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(actualState.givenAnswer, const NumberAnswer(5));
+      expect(actualState.submission.answer.isCorrect, isTrue);
+    });
+    test('ignores a validation with nothing typed', () async {
+      // Arrange
+      await start();
+      // Act
+      bloc.add(const TypedAnswerValidated());
+      await pumpEventQueue();
+      // Assert
+      expect(bloc.state, isA<QuizAsking>());
+    });
   });
 }
