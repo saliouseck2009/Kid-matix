@@ -173,10 +173,10 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 **Présentation**
 
 - [x] **F1-09** `ProfilesBloc` (chargement, liste, erreurs « pseudo pris » et « limite atteinte ») et `ProfileSessionService`.
-- [ ] **F1-10** Écran « Qui joue ? » : grille de cartes (avatar, pseudo, niveau, série), carte « Nouveau joueur », mascotte.
-- [ ] **F1-11** Écran de création : pseudo, choix parmi 12 avatars, couleur de fond, messages d'erreur adaptés à l'enfant. Maquette : `02-profile-creation.png`.
+- [x] **F1-10** Écran « Qui joue ? » : grille de cartes (avatar, pseudo, niveau, série), carte « Nouveau joueur », mascotte.
+- [x] **F1-11** Écran de création : pseudo, choix parmi 12 avatars, couleur de fond, messages d'erreur adaptés à l'enfant. Maquette : `02-profile-creation.png`.
 - [x] **F1-12** Les 12 avatars en ressources vectorielles.
-- [ ] **F1-13** Premier lancement : ouverture directe de la création de profil.
+- [x] **F1-13** Premier lancement : ouverture directe de la création de profil.
 - [ ] **F1-14** Renommer un joueur et changer son avatar.
 - [ ] **F1-15** Supprimer un joueur après une confirmation où l'enfant retape son pseudo.
 
@@ -184,7 +184,7 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 
 - [x] **F1-16** Tests unitaires : normalisation du pseudo, doublon à la casse et aux accents près, limite de 10 profils.
 - [x] **F1-17** Tests du repository sur une base en mémoire, cascade comprise.
-- [ ] **F1-18** Tests de `ProfilesBloc` et test de widget de « Qui joue ? ».
+- [x] **F1-18** Tests de `ProfilesBloc` et test de widget de « Qui joue ? ».
 
 **Terminé quand :** on crée trois joueurs, on en choisit un, on ferme l'app, et on retrouve la liste et le dernier joueur au relancement.
 
