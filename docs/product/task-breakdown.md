@@ -221,7 +221,7 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 
 **Domaine**
 
-- [ ] **F3-01** Entité `QuizSession` : identifiant UUID, mode, domaine, début, durée, nombre de questions et de réussites.
+- [x] **F3-01** Entité `QuizSession` : identifiant UUID, mode, domaine, début, durée, nombre de questions et de réussites.
 - [ ] **F3-02** `BuildQuiz` : construit la session à partir d'un mode et d'une liste d'items.
 - [ ] **F3-03** `SubmitAnswer` : valide la réponse, mesure le temps, marque « Éclair » sous 3 secondes.
 - [ ] **F3-04** Un fait raté revient 3 questions plus tard dans la session, une seule fois.
