@@ -49,6 +49,7 @@ owner. Add a line here whenever a new decision is taken.
 | An `i18n-guardian` subagent (`.claude/agents/`) audits every feature before its pull request: hard-coded user-facing strings, ARB descriptions, placeholders, plurals | Owner's request. Prepares the extra languages of F21 |
 | Generated localizations live in `lib/l10n/` (`nullable-getter: false`), read with `context.l10n` | Texts only through `AppLocalizations` |
 | One branch per task (`<type>/<slug>`, task id first), Conventional Commits, one GitHub pull request per task merged with a merge commit; no commit or push on `main`. Rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/` | Owner's request: each feature on its own branch, clean commits, pull requests. Local hooks because there is no CI yet |
+| CI is GitHub Actions running `tool/check.sh` on Ubuntu with Flutter 3.47.6 (pinned in the workflow); with `CI=true` the script fails on unformatted code and on stale generated files instead of rewriting them. Generated code is committed | Owner's request. One script for local and CI keeps both identical; committed generated code builds without a generation step |
 | Verification is one command: `bash tool/check.sh` (pub get, gen-l10n, build_runner if needed, format, analyze, test) | A lot is done only when every step is OK |
 
 ## Open points

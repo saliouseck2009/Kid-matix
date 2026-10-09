@@ -115,7 +115,12 @@ Inside a lot: domain, then data, then presentation, then tests.
 - After every change: `bash tool/check.sh`. It runs `pub get`, `gen-l10n`,
   `build_runner` (once a `@JsonSerializable` model exists), the formatter,
   `flutter analyze` and all tests, and writes the full output to
-  `tool/logs/check.log`. Run it yourself and fix what it reports.
+  `tool/logs/check.log`. Run it yourself and fix what it reports. It exits
+  non-zero on failure. Commit generated files (`app_localizations*.dart`,
+  `*.g.dart`) with their source: CI fails when they are stale.
+- CI: `.github/workflows/ci.yml` runs `tool/check.sh` with Flutter 3.47.6 on
+  every pull request; a pull request merges only when `CI / check` is
+  green.
 - A lot is done only when every step is OK, its tasks are ticked in
   `docs/product/task-breakdown.md`, its "Terminé quand" criterion has been
   checked on a device or emulator, and `docs/status.md` is updated.
