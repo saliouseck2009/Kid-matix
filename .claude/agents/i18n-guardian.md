@@ -136,9 +136,13 @@ widget that displays it.
 6. Delete ARB keys that no Dart file uses any more (search
    `l10n\.keyName\b` before deleting).
 
-French typography in ARB values: keep the conventions already used in the
-file. Flag, without changing on your own, inconsistent spaces before
-`? ! : ;`, quote styles or apostrophes.
+French typography in ARB values (owner's decision, `docs/decisions.md`):
+
+- a no-break space (U+00A0) before `?`, `!`, `:` and `;`, and inside
+  guillemets (`«\u00a0texte\u00a0»`), so the sign never starts a line;
+  write it as the real character in the ARB, never as a plain space;
+- the straight apostrophe `'`, as in the mockups, never `’`;
+- fix any value that breaks these two rules, and say so in the report.
 
 ## 4. ARB quality check
 
