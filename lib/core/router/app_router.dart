@@ -4,20 +4,49 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
+import 'package:kid_matix/core/router/profile_session_redirect.dart';
+import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/widgets/coming_soon_page.dart';
+import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 typedef _TitleResolver = String Function(AppLocalizations l10n);
 
-/// Builds the router of the app: a shell with one branch per tab.
+/// Builds the router of the app: the player selection, then a shell with
+/// one branch per tab.
 ///
-/// Each tab shows a placeholder until its feature is delivered. The redirect
-/// to the player selection arrives with the profile feature (lot F1).
-GoRouter createAppRouter() {
+/// The router listens to [session]: while nobody is playing it shows "Qui
+/// joue ?" or the profile creation (see [redirectForProfileSession]). Each
+/// tab shows a placeholder until its feature is delivered.
+GoRouter createAppRouter({
+  required ProfileSessionService session,
+  required ProfilePages profilePages,
+}) {
   return GoRouter(
     initialLocation: AppRoutes.learningPath,
     debugLogDiagnostics: kDebugMode,
+    refreshListenable: session,
+    redirect: (BuildContext context, GoRouterState state) {
+      return redirectForProfileSession(
+        session: session,
+        location: state.matchedLocation,
+      );
+    },
     routes: <RouteBase>[
+      GoRoute(
+        path: AppRoutes.whoIsPlaying,
+        builder: (BuildContext context, GoRouterState state) {
+          return profilePages.buildWhoIsPlayingPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.profileCreation,
+        builder: (BuildContext context, GoRouterState state) {
+          return profilePages.buildProfileCreationPage(
+            canGoBack: session.hasProfiles,
+          );
+        },
+      ),
       StatefulShellRoute.indexedStack(
         builder: (
           BuildContext context,

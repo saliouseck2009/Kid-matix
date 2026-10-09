@@ -8,8 +8,10 @@ import 'package:kid_matix/core/di/injection_container.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
+import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
+import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Entry point: wires dependencies and error reporting, then starts the app.
@@ -32,7 +34,20 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
   ]);
-  runApp(KidMatixApp(router: createAppRouter()));
+  final ProfileSessionService session = sl<ProfileSessionService>();
+  await session.restore();
+  runApp(
+    KidMatixApp(
+      router: createAppRouter(
+        session: session,
+        profilePages: ProfilePages(
+          getProfiles: sl(),
+          createProfile: sl(),
+          selectProfile: sl(),
+        ),
+      ),
+    ),
+  );
 }
 
 /// Root widget: router, theme and localization of the app.
