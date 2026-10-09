@@ -1,0 +1,14 @@
+import 'package:kid_matix/features/quiz/data/models/quiz_answer_local_model.dart';
+import 'package:kid_matix/features/quiz/data/models/quiz_session_local_model.dart';
+
+/// Quiz sessions stored in the local SQLite database.
+///
+/// Methods throw the `sqflite` exceptions as they come; the repository turns
+/// them into typed failures.
+abstract interface class QuizSessionLocalDataSource {
+  /// Inserts [session] and its [answers] in one transaction.
+  Future<void> insertSession({
+    required QuizSessionLocalModel session,
+    required List<QuizAnswerLocalModel> answers,
+  });
+}

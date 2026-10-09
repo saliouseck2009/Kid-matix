@@ -229,7 +229,7 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 
 **Données**
 
-- [ ] **F3-06** Migration : table `quiz_session`, conservée comme un journal jamais modifié ; repository associé.
+- [x] **F3-06** Migration : table `quiz_session`, conservée comme un journal jamais modifié ; repository associé.
 
 **Présentation**
 
