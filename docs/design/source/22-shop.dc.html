@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Boutique</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#221A4D}a:hover{color:#5B3DF5}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 20px 24px; background: #F4F1FF; color: #221A4D; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Retour au profil" style="display: flex; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; background: #FFFFFF; border: none; border-radius: 999px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<h1 style="flex: 1; margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">Boutique</h1>
+<div role="img" aria-label="240 pièces" style="display: flex; align-items: center; gap: 6px; padding: 8px 14px 8px 8px; background: #FFFFFF; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">
+<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#E0A100"/><circle cx="12" cy="12" r="8" fill="#FFC531"/><path d="M9 9l6 6m0-6l-6 6" stroke="#221A4D" stroke-width="2.2" stroke-linecap="round"/></svg>
+<span>240</span>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; background: #FFFFFF; border-radius: 18px">
+<button type="button" aria-pressed="true" style="min-height: 48px; background: #5B3DF5; color: #FFFFFF; border: none; border-radius: 14px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; cursor: pointer">Avatars</button>
+<button type="button" aria-pressed="false" style="min-height: 48px; background: transparent; color: #221A4D; border: none; border-radius: 14px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; cursor: pointer">Thèmes</button>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{items}}" as="i" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 12px 12px; background: #FFFFFF; border: 3px solid {{i.ring}}; border-radius: 24px">
+<svg viewBox="0 0 64 64" width="76" height="76" aria-hidden="true">
+<path d="{{i.ears}}" fill="{{i.earFill}}"/>
+<circle cx="32" cy="34" r="26" fill="{{i.bg}}"/>
+<circle cx="23" cy="31" r="4" fill="{{i.face}}"/>
+<circle cx="41" cy="31" r="4" fill="{{i.face}}"/>
+<path d="M23 43q9 8 18 0" fill="none" stroke="{{i.face}}" stroke-width="4" stroke-linecap="round"/>
+</svg>
+<button type="button" style="display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 46px; background: {{i.btnBg}}; color: {{i.btnFg}}; border: none; border-radius: 14px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 17px; cursor: pointer">
+<sc-if value="{{i.priced}}" hint-placeholder-val="{{false}}">
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#E0A100"/><circle cx="12" cy="12" r="8" fill="#FFC531"/><path d="M9 9l6 6m0-6l-6 6" stroke="#221A4D" stroke-width="2.2" stroke-linecap="round"/></svg>
+</sc-if>
+<span>{{i.cta}}</span>
+</button>
+</div>
+</sc-for>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+const cat = 'M10 6l8 20 14-10zM54 6l-8 20-14-10z';
+const bear = 'M4 14a9 9 0 1 0 18 0a9 9 0 1 0-18 0zM42 14a9 9 0 1 0 18 0a9 9 0 1 0-18 0z';
+const bunny = 'M17 24V5q7-2 9 6v11zM47 24V5q-7-2-9 6v11z';
+const antenna = 'M22 12l-4-10h4l4 9zM42 12l4-10h-4l-4 9z';
+const horn = 'M32 2l6 10h-12z';
+const crown = 'M16 14l4-12 6 7 6-8 6 8 6-7 4 12z';
+const worn = { ring: '#5B3DF5', cta: 'Porté', priced: false, btnBg: '#E4DEFF', btnFg: '#4A2FD6' };
+const owned = { ring: 'transparent', cta: 'Choisir', priced: false, btnBg: '#F4F1FF', btnFg: '#221A4D' };
+const buy = (n) => ({ ring: 'transparent', cta: String(n), priced: true, btnBg: '#5B3DF5', btnFg: '#FFFFFF' });
+const tooDear = (n) => ({ ring: 'transparent', cta: String(n), priced: true, btnBg: '#ECE8FB', btnFg: '#5D567A' });
+const mk = (ears, bg, face, earFill, s) => Object.assign({ ears: ears, bg: bg, face: face, earFill: earFill }, s);
+return {
+items: [
+mk(cat, '#5B3DF5', '#FFFFFF', '#5B3DF5', worn),
+mk(bear, '#137A4B', '#FFFFFF', '#137A4B', owned),
+mk(bunny, '#1F6FD6', '#FFFFFF', '#1F6FD6', buy(80)),
+mk(antenna, '#B8328A', '#FFFFFF', '#B8328A', buy(80)),
+mk(horn, '#D9482F', '#FFFFFF', '#8F2114', buy(120)),
+mk(crown, '#FFC531', '#221A4D', '#E0A100', tooDear(300))
+]
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Défis</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#221A4D}a:hover{color:#5B3DF5}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F1FF; color: #221A4D; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column">
+
+<div style="flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 24px 24px 0">
+
+<h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 30px; line-height: 1.1">Défis</h1>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+
+<button type="button" style="display: flex; align-items: center; gap: 12px; min-height: 84px; padding: 12px 14px; background: #5B3DF5; color: #FFFFFF; border: none; border-bottom: 6px solid #3A22B8; border-radius: 22px; text-align: left; cursor: pointer">
+<span style="display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px; background: #FFFFFF; border-radius: 999px">
+<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="#4A2FD6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Révision du jour</span>
+<span style="font-size: 14px; font-weight: 700">10 questions choisies pour toi</span>
+</span>
+<span style="padding: 6px 10px; background: #FFC531; border-radius: 999px; font-size: 14px; font-weight: 800; color: #221A4D">8 à revoir</span>
+</button>
+
+<button type="button" style="display: flex; align-items: center; gap: 12px; min-height: 80px; padding: 12px 14px; background: #FFFFFF; color: #221A4D; border: none; border-radius: 22px; text-align: left; cursor: pointer">
+<span style="display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px; background: #FFF3CF; border-radius: 999px">
+<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="#221A4D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M10 2h4"/></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Contre-la-montre</span>
+<span style="font-size: 14px; font-weight: 700; color: #5D567A">60 secondes, un maximum de réponses</span>
+</span>
+<span style="font-size: 14px; font-weight: 800; color: #4A2FD6">Record 18</span>
+</button>
+
+<button type="button" style="display: flex; align-items: center; gap: 12px; min-height: 80px; padding: 12px 14px; background: #FFFFFF; color: #221A4D; border: none; border-radius: 22px; text-align: left; cursor: pointer">
+<span style="display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px; background: #FBE3DF; border-radius: 999px">
+<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="#C8321F"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.4A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Survie</span>
+<span style="font-size: 14px; font-weight: 700; color: #5D567A">3 vies, de plus en plus vite</span>
+</span>
+<span style="font-size: 14px; font-weight: 800; color: #4A2FD6">Record 24</span>
+</button>
+
+<a href="Monstres.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 80px; box-sizing: border-box; padding: 12px 14px; background: #FFFFFF; border-radius: 22px; text-decoration: none; color: #221A4D">
+<span style="display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px; background: #E4DEFF; border-radius: 999px">
+<svg viewBox="0 0 64 64" width="36" height="36" aria-hidden="true"><path d="M14 16l-4-10 12 6zM50 16l4-10-12 6z" fill="#FFC531"/><rect x="8" y="10" width="48" height="48" rx="22" fill="#8E78FF"/><circle cx="32" cy="30" r="10" fill="#FFFFFF"/><circle cx="33" cy="32" r="4.5" fill="#221A4D"/><path d="M22 46h20" stroke="#221A4D" stroke-width="4" stroke-linecap="round"/></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Chasse aux monstres</span>
+<span style="font-size: 14px; font-weight: 700; color: #5D567A">3 monstres à apprivoiser</span>
+</span>
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+
+<a href="Duel.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 80px; box-sizing: border-box; padding: 12px 14px; background: #FFFFFF; border-radius: 22px; text-decoration: none; color: #221A4D">
+<span style="display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px; background: #DDF3E6; border-radius: 999px">
+<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="#0C5A36" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20V4M3 8l4-4 4 4M17 4v16M13 16l4 4 4-4"/></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Duel</span>
+<span style="font-size: 14px; font-weight: 700; color: #5D567A">2 joueurs, 1 téléphone</span>
+</span>
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+
+<a href="DefiCode.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 80px; box-sizing: border-box; padding: 12px 14px; background: transparent; border: 3px dashed #A99BF0; border-radius: 22px; text-decoration: none; color: #221A4D">
+<span style="display: flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px; background: #E4DEFF; border-radius: 999px">
+<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="#4A2FD6" stroke-width="2.4" stroke-linecap="round"><path d="M9 4L7 20M17 4l-2 16M4 9h16M3 15h16"/></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">J'ai un code</span>
+<span style="font-size: 14px; font-weight: 700; color: #5D567A">Rejoue le défi d'un ami</span>
+</span>
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+
+</div>
+</div>
+
+<nav aria-label="Navigation principale" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 8px 12px 12px; background: #FFFFFF; border-top: 2px solid #E4DEFF">
+<button type="button" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 56px; padding: 6px 0; background: transparent; border: none; border-radius: 16px; color: #5D567A; font-size: 13px; font-weight: 800; cursor: pointer">
+<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4m0 1h11l-2 4 2 4H5"/></svg>
+<span>Parcours</span>
+</button>
+<a href="Entrainement.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 56px; box-sizing: border-box; padding: 6px 0; border-radius: 16px; color: #5D567A; font-size: 13px; font-weight: 800; text-decoration: none">
+<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+<span>S'entraîner</span>
+</a>
+<button type="button" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 56px; padding: 6px 0; background: #E4DEFF; border: none; border-radius: 16px; color: #4A2FD6; font-size: 13px; font-weight: 800; cursor: pointer">
+<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="#4A2FD6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></svg>
+<span>Défis</span>
+</button>
+<button type="button" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 56px; padding: 6px 0; background: transparent; border: none; border-radius: 16px; color: #5D567A; font-size: 13px; font-weight: 800; cursor: pointer">
+<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+<span>Profil</span>
+</button>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

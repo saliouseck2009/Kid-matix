@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Quiz relier les paires</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#221A4D}a:hover{color:#5B3DF5}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 24px; background: #F4F1FF; color: #221A4D; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Quitter le quiz" style="display: flex; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; background: #FFFFFF; border: none; border-radius: 999px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+<div role="img" aria-label="Question 8 sur 12" style="flex: 1; height: 18px; background: #E4DEFF; border-radius: 999px; overflow: hidden">
+<div style="width: 67%; height: 100%; background: #5B3DF5; border-radius: 999px"></div>
+</div>
+<div style="display: flex; align-items: center; gap: 2px; padding: 8px 12px; background: #FFC531; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px">
+<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="#221A4D"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></svg>
+<span>×4</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px; line-height: 1.15">Relie chaque opération à son résultat</h1>
+<p style="margin: 0; font-size: 15px; font-weight: 800; color: #5D567A">1 paire trouvée sur 4</p>
+</div>
+
+<div style="flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; align-content: center">
+
+<button type="button" disabled="disabled" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 88px; background: #137A4B; color: #FFFFFF; border: 2px solid #0C5A36; border-bottom: 7px solid #0C5A36; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 32px">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+<span>3 × 4</span>
+</button>
+<button type="button" style="min-height: 88px; background: #FFFFFF; color: #221A4D; border: 2px solid #DDD6FF; border-bottom: 7px solid #DDD6FF; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 36px; cursor: pointer">30</button>
+
+<button type="button" aria-pressed="true" style="min-height: 88px; background: #E4DEFF; color: #221A4D; border: 4px solid #5B3DF5; border-bottom: 7px solid #5B3DF5; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 32px; cursor: pointer">5 × 6</button>
+<button type="button" disabled="disabled" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 88px; background: #137A4B; color: #FFFFFF; border: 2px solid #0C5A36; border-bottom: 7px solid #0C5A36; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 36px">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+<span>12</span>
+</button>
+
+<button type="button" style="min-height: 88px; background: #FFFFFF; color: #221A4D; border: 2px solid #DDD6FF; border-bottom: 7px solid #DDD6FF; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 32px; cursor: pointer">2 × 9</button>
+<button type="button" style="min-height: 88px; background: #FFFFFF; color: #221A4D; border: 2px solid #DDD6FF; border-bottom: 7px solid #DDD6FF; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 36px; cursor: pointer">35</button>
+
+<button type="button" style="min-height: 88px; background: #FFFFFF; color: #221A4D; border: 2px solid #DDD6FF; border-bottom: 7px solid #DDD6FF; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 32px; cursor: pointer">7 × 5</button>
+<button type="button" style="min-height: 88px; background: #FFFFFF; color: #221A4D; border: 2px solid #DDD6FF; border-bottom: 7px solid #DDD6FF; border-radius: 22px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 36px; cursor: pointer">18</button>
+
+</div>
+
+<div style="display: flex; align-items: center; justify-content: center; min-height: 84px; box-sizing: border-box; padding: 16px; border: 3px dashed #C9BFFF; border-radius: 24px; font-size: 17px; font-weight: 800; color: #5D567A; text-align: center">Touche maintenant le résultat de 5 × 6</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

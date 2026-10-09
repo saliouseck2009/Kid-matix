@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Combat de boss</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#FFFFFF}a:hover{color:#FFC531}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 20px; background: #221A4D; color: #FFFFFF; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; gap: 12px">
+
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="Parcours.dc.html" aria-label="Quitter le combat" style="display: flex; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; background: #3A2F73; border-radius: 999px; text-decoration: none">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</a>
+<h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 22px">Boss de la table de 5</h1>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<span style="font-size: 15px; font-weight: 800; color: #C9BFFF">Vie du boss</span>
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px">7 / 12</span>
+</div>
+<div role="img" aria-label="Vie du boss : 7 sur 12" style="height: 18px; background: #3A2F73; border-radius: 999px; overflow: hidden">
+<div style="width: 58%; height: 100%; background: #FF8A75; border-radius: 999px"></div>
+</div>
+</div>
+
+<div style="position: relative; flex: 1; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 200 170" width="248" height="211" aria-hidden="true">
+<path d="M52 40l-14-30 34 16z" fill="#FFC531"/>
+<path d="M148 40l14-30-34 16z" fill="#FFC531"/>
+<path d="M32 100q-24 4-20 30" fill="none" stroke="#8E78FF" stroke-width="14" stroke-linecap="round"/>
+<path d="M168 100q24 4 20 30" fill="none" stroke="#8E78FF" stroke-width="14" stroke-linecap="round"/>
+<rect x="30" y="28" width="140" height="132" rx="60" fill="#8E78FF"/>
+<circle cx="100" cy="78" r="30" fill="#FFFFFF"/>
+<circle cx="104" cy="83" r="13" fill="#221A4D"/>
+<path d="M64 46q36-14 72 0" fill="none" stroke="#221A4D" stroke-width="7" stroke-linecap="round"/>
+<rect x="64" y="120" width="72" height="24" rx="10" fill="#221A4D"/>
+<path d="M72 120l7 11 7-11zM89 120l7 11 7-11zM106 120l7 11 7-11z" fill="#FFFFFF"/>
+</svg>
+<div style="position: absolute; right: 4px; top: 18px; padding: 8px 14px; background: #FFC531; border-radius: 16px; transform: rotate(6deg); font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 17px; line-height: 1.15; color: #221A4D; text-align: center">Coup critique !<br>−2</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: center; gap: 14px">
+<div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 52px; line-height: 1">5 × 9 =</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px">
+<div style="display: flex; align-items: center; justify-content: center; min-width: 116px; height: 72px; box-sizing: border-box; padding: 0 16px; background: #FFFFFF; border: 4px solid #FFC531; border-radius: 20px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 46px; color: #221A4D">45</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">1</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">2</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">3</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">4</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">5</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">6</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">7</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">8</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">9</button>
+<button type="button" aria-label="Effacer" style="display: flex; align-items: center; justify-content: center; min-height: 62px; background: transparent; color: #FFFFFF; border: 2px solid #5D4FA8; border-radius: 18px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11v12H9l-6-6zM13 10l4 4m0-4l-4 4"/></svg>
+</button>
+<button type="button" style="min-height: 62px; background: #3A2F73; color: #FFFFFF; border: none; border-bottom: 5px solid #15103A; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; cursor: pointer">0</button>
+<a href="Resultats.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 62px; box-sizing: border-box; background: #FFC531; border-bottom: 5px solid #E0A100; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px; color: #221A4D; text-decoration: none">Valider</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
