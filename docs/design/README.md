@@ -90,7 +90,7 @@ never use raw colors: they read `Theme.of(context)`, `context.palette`
 | monster | `#8E78FF` | Boss body | To add with F6 |
 | boss health | `#FF8A75` | Boss health bar fill | To add with F6 |
 | mastery statuses | new `#E3DEF7`, to review `#E8604C`, in progress `#FFC531`, acquired `#A99BF0`, mastered `#4A2FD6` | Mastery grid cells | To add with F10 |
-| avatar colors | `#5B3DF5`, `#137A4B`, `#FFC531`, `#D9482F`, `#1F6FD6`, `#B8328A` | Profile background choices (violet, green, yellow, red, blue, pink) | To add with F1 |
+| avatar colors | `#5B3DF5`, `#137A4B`, `#FFC531`, `#D9482F`, `#1F6FD6`, `#B8328A` | Profile background choices (violet, green, yellow, red, blue, pink) | `AppPalette.avatarBackgrounds` |
 
 Color never carries meaning alone: right and wrong answers also show a check
 or a cross, mastery statuses also have a label.

@@ -12,6 +12,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     required this.border,
     required this.mutedText,
     required this.warmTint,
+    required this.avatarBackgrounds,
   });
 
   /// Palette of the light theme, the only theme of version 1.0.
@@ -22,6 +23,14 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     border: AppColors.violetBorder,
     mutedText: AppColors.muted,
     warmTint: AppColors.yellowTint,
+    avatarBackgrounds: <Color>[
+      AppColors.violet,
+      AppColors.green,
+      AppColors.yellow,
+      AppColors.avatarRed,
+      AppColors.avatarBlue,
+      AppColors.avatarPink,
+    ],
   );
 
   /// Raised edge under a primary button.
@@ -42,6 +51,10 @@ final class AppPalette extends ThemeExtension<AppPalette> {
   /// Background of reward elements.
   final Color warmTint;
 
+  /// Colors a player can pick for their avatar, in the order of the color
+  /// picker: violet, green, yellow, red, blue, pink.
+  final List<Color> avatarBackgrounds;
+
   @override
   AppPalette copyWith({
     Color? primaryDepth,
@@ -50,6 +63,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     Color? border,
     Color? mutedText,
     Color? warmTint,
+    List<Color>? avatarBackgrounds,
   }) {
     return AppPalette(
       primaryDepth: primaryDepth ?? this.primaryDepth,
@@ -58,6 +72,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       border: border ?? this.border,
       mutedText: mutedText ?? this.mutedText,
       warmTint: warmTint ?? this.warmTint,
+      avatarBackgrounds: avatarBackgrounds ?? this.avatarBackgrounds,
     );
   }
 
@@ -71,6 +86,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       border: Color.lerp(border, other.border, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
       warmTint: Color.lerp(warmTint, other.warmTint, t)!,
+      avatarBackgrounds: t < 0.5 ? avatarBackgrounds : other.avatarBackgrounds,
     );
   }
 }
