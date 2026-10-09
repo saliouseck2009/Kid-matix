@@ -1,4 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/question_type_registry.dart';
+import 'package:kid_matix/core/quiz/question_types/version_one_question_types.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
@@ -15,6 +18,7 @@ import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
 import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
+import 'package:kid_matix/features/multiplication/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +35,9 @@ final GetIt sl = GetIt.instance;
 Future<void> configureDependencies() async {
   _registerCoreServices();
   _registerCoreStorage();
+  _registerQuizEngine();
   registerProfileFeature(sl);
+  registerMultiplicationFeature(sl);
 }
 
 void _registerCoreServices() {
@@ -54,6 +60,15 @@ void _registerCoreStorage() {
       migrationRunner: MigrationRunner(migrations: appMigrations),
     ),
   );
+}
+
+void _registerQuizEngine() {
+  sl.registerLazySingleton<DomainRegistry>(DomainRegistry.new);
+  sl.registerLazySingleton<QuestionTypeRegistry>(() {
+    final QuestionTypeRegistry registry = QuestionTypeRegistry();
+    versionOneQuestionTypes.forEach(registry.register);
+    return registry;
+  });
 }
 
 Future<String> _resolveDatabasePath() async {
