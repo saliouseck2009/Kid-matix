@@ -10,6 +10,7 @@ const List<String> _pureCoreFolders = <String>[
   'constants',
   'entities',
   'error',
+  'quiz',
   'services',
   'usecases',
 ];
@@ -18,6 +19,7 @@ const List<String> _pureCoreFolders = <String>[
 const List<String> _flutterFreeCoreFolders = <String>[
   'entities',
   'error',
+  'quiz',
   'usecases',
 ];
 
