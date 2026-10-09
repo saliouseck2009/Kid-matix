@@ -46,6 +46,7 @@ owner. Add a line here whenever a new decision is taken.
 | Models use `json_serializable`; `tool/check.sh` runs `build_runner` only when `@JsonSerializable` appears in `lib/` | Keeps the check fast until F1 |
 | `audioplayers` is added in F10, `flutter_local_notifications` in F18 — not before | No unused dependency |
 | Fredoka and Nunito are bundled as variable fonts; weight is set through the `wght` axis | Offline app: no `google_fonts` download at runtime |
+| An `i18n-guardian` subagent (`.claude/agents/`) audits every feature before its pull request: hard-coded user-facing strings, ARB descriptions, placeholders, plurals | Owner's request. Prepares the extra languages of F21 |
 | Generated localizations live in `lib/l10n/` (`nullable-getter: false`), read with `context.l10n` | Texts only through `AppLocalizations` |
 | One branch per task (`<type>/<slug>`, task id first), Conventional Commits, merged into `main` with `--no-ff`; rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/` | Owner's request: each feature on its own branch and clean commits. Local hooks because there is no CI yet |
 | Verification is one command: `bash tool/check.sh` (pub get, gen-l10n, build_runner if needed, format, analyze, test) | A lot is done only when every step is OK |

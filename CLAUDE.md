@@ -122,6 +122,10 @@ Inside a lot: domain, then data, then presentation, then tests.
 - Tick a task (`- [ ]` to `- [x]`) in the same commit as the code that
   completes it.
 - Every schema change is a new numbered migration with its test.
+- Before opening the pull request of a change that touches user-visible
+  text, a widget, a Bloc state, an error or `lib/l10n/app_fr.arb`, run the
+  `i18n-guardian` agent (`.claude/agents/i18n-guardian.md`): no hard-coded
+  user-facing string, every text in the ARB with its description.
 - When a product rule is missing or ambiguous, or a screen has no mockup, ask
   the owner instead of guessing; record the answer in `docs/decisions.md`.
 - Commit at the end of each coherent step (see "Git" below).
