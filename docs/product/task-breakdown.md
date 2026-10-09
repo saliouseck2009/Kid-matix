@@ -174,7 +174,7 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 
 - [x] **F1-09** `ProfilesBloc` (chargement, liste, erreurs « pseudo pris » et « limite atteinte ») et `ProfileSessionService`.
 - [x] **F1-10** Écran « Qui joue ? » : grille de cartes (avatar, pseudo, niveau, série), carte « Nouveau joueur », mascotte.
-- [ ] **F1-11** Écran de création : pseudo, choix parmi 12 avatars, couleur de fond, messages d'erreur adaptés à l'enfant. Maquette : `02-profile-creation.png`.
+- [x] **F1-11** Écran de création : pseudo, choix parmi 12 avatars, couleur de fond, messages d'erreur adaptés à l'enfant. Maquette : `02-profile-creation.png`.
 - [x] **F1-12** Les 12 avatars en ressources vectorielles.
 - [ ] **F1-13** Premier lancement : ouverture directe de la création de profil.
 - [ ] **F1-14** Renommer un joueur et changer son avatar.
