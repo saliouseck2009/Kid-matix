@@ -194,8 +194,8 @@ Ce lot est du Dart pur : il fabrique les questions et valide les réponses, sans
 
 **Contrats génériques**
 
-- [ ] **F2-01** Contrats `LearningDomain`, unité et item, chaque item portant une clé stable.
-- [ ] **F2-02** Contrat `QuestionType` : modèle de question, règle de validation, nature de la réponse (reconnue ou produite).
+- [x] **F2-01** Contrats `LearningDomain`, unité et item, chaque item portant une clé stable.
+- [x] **F2-02** Contrat `QuestionType` : modèle de question, règle de validation, nature de la réponse (reconnue ou produite).
 - [x] **F2-03** Modèles `Question` (énoncé, choix, réponse attendue, type, clé de l'item) et `Answer`.
 - [ ] **F2-04** Registres `DomainRegistry` et `QuestionTypeRegistry`.
 
