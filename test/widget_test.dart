@@ -20,6 +20,17 @@ void main() {
         expect(find.text(expectedTab), findsWidgets);
       }
     });
+    testWidgets('keeps the page visible above the tab bar', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      const String expectedMessage = 'Bientôt disponible';
+      // Act
+      await tester.pumpWidget(KidMatixApp(router: createAppRouter()));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text(expectedMessage).hitTestable(), findsOneWidget);
+    });
     testWidgets('opens a tab when the player taps it', (
       WidgetTester tester,
     ) async {
