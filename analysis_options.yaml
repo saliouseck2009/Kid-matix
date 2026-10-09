@@ -1,0 +1,39 @@
+# Static analysis aligned with docs/rules (Flutter and Dart guidelines).
+include: package:flutter_lints/flutter.yaml
+
+formatter:
+  page_width: 80
+  trailing_commas: preserve
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  exclude:
+    - build/**
+    - "**/*.g.dart"
+    - lib/l10n/app_localizations*.dart
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+
+linter:
+  rules:
+    always_declare_return_types: true
+    always_use_package_imports: true
+    annotate_overrides: true
+    avoid_dynamic_calls: true
+    avoid_print: true
+    avoid_void_async: true
+    lines_longer_than_80_chars: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_single_quotes: true
+    type_annotate_public_apis: true
+    unawaited_futures: true

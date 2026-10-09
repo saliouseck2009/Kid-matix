@@ -1,0 +1,31 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Kid Matix",
+  "@appTitle": {
+    "description": "Provisional application name."
+  },
+  "mainNavigationLabel": "Navigation principale",
+  "@mainNavigationLabel": {
+    "description": "Screen-reader label of the bottom tab bar."
+  },
+  "tabLearningPath": "Parcours",
+  "@tabLearningPath": {
+    "description": "Label of the learning path tab."
+  },
+  "tabTraining": "S'entraîner",
+  "@tabTraining": {
+    "description": "Label of the free training tab."
+  },
+  "tabChallenges": "Défis",
+  "@tabChallenges": {
+    "description": "Label of the challenges tab."
+  },
+  "tabProfile": "Profil",
+  "@tabProfile": {
+    "description": "Label of the profile tab."
+  },
+  "comingSoonMessage": "Bientôt disponible",
+  "@comingSoonMessage": {
+    "description": "Shown on a tab whose feature is not built yet."
+  }
+}
