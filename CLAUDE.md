@@ -33,7 +33,7 @@ commit messages and technical docs stay in English.
 | `docs/design/source/*.dc.html` | Markup of each mockup: exact sizes, colors, SVG paths |
 | `docs/decisions.md` | Decisions already taken and open points |
 | `docs/rules/*.md` | The owner's coding rules |
-| `docs/git-workflow.md` | Branch and commit rules, enforced by `.githooks/` |
+| `docs/git-workflow.md` | Branch, commit and pull request rules, enforced by `.githooks/` |
 
 Priority when documents disagree: `docs/rules/` > this file and
 `docs/decisions.md` > task breakdown > specifications.
@@ -137,6 +137,9 @@ Rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/`
   lowercase, no final period, 72 characters at most, a body that says why,
   `Refs: F1-03` in the footer. One coherent, green step per commit; never mix
   a refactor, a formatting pass and a feature.
-- When the task is done and `tool/check.sh` is green, merge it into `main`
-  with `git merge --no-ff` and delete the branch. Ask the owner before any
-  `git push`.
+- Every change reaches `main` through a GitHub pull request; never push to
+  `main` (the `pre-push` hook refuses it). When the task is done and
+  `tool/check.sh` is green, push the branch and open one pull request per
+  task, titled like a commit header, with how it was checked and
+  `Refs: F1-03`. The owner merges with a merge commit (no squash); then
+  `git switch main && git pull --ff-only` and delete the local branch.

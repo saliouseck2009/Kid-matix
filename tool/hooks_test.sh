@@ -6,6 +6,7 @@ cd "$(dirname "$0")/.."
 
 readonly commit_msg_hook=".githooks/commit-msg"
 readonly pre_commit_hook=".githooks/pre-commit"
+readonly pre_push_hook=".githooks/pre-push"
 
 failures=0
 work_dir="$(mktemp -d)"
@@ -44,6 +45,22 @@ expect_branch() {
   fi
 }
 
+expect_push() {
+  local expected="$1"
+  local remote_ref="$2"
+  local sha="0123456789abcdef0123456789abcdef01234567"
+  if printf 'refs/heads/x %s %s %s\n' "$sha" "$remote_ref" "$sha" |
+    bash "$pre_push_hook" origin url 2>/dev/null; then
+    actual="accepted"
+  else
+    actual="rejected"
+  fi
+  if [ "$actual" != "$expected" ]; then
+    echo "FAIL pre-push: expected $expected, got $actual for: $remote_ref"
+    failures=$((failures + 1))
+  fi
+}
+
 expect_message accepted 'feat(profile): add the nickname uniqueness check'
 expect_message accepted 'fix: keep the tab bar at its natural height'
 expect_message accepted 'refactor(learning-path)!: rename the node states'
@@ -70,6 +87,11 @@ expect_branch rejected 'master'
 expect_branch rejected 'feature/profile'
 expect_branch rejected 'feat/Profile_Repository'
 expect_branch rejected 'my-branch'
+
+expect_push accepted 'refs/heads/feat/f1-03-profile-repository'
+expect_push accepted 'refs/tags/v1.0.0'
+expect_push rejected 'refs/heads/main'
+expect_push rejected 'refs/heads/master'
 
 if [ "$failures" -eq 0 ]; then
   echo "All hook tests passed."

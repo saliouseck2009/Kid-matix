@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Refuses pushes to main: changes reach main through a pull request.
+# Installed by tool/setup.sh (git config core.hooksPath .githooks).
+# Rules: docs/git-workflow.md
+set -euo pipefail
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main | refs/heads/master)
+      echo "pre-push: pushing to '${remote_ref#refs/heads/}' is not allowed." >&2
+      echo "Push your branch and open a pull request:" >&2
+      echo "  git push -u origin HEAD" >&2
+      echo "See docs/git-workflow.md." >&2
+      exit 1
+      ;;
+  esac
+done
