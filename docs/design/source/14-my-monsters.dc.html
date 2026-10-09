@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Mes monstres</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#221A4D}a:hover{color:#5B3DF5}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 20px 24px; background: #F4F1FF; color: #221A4D; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; gap: 14px">
+
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Retour aux défis" style="display: flex; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; background: #FFFFFF; border: none; border-radius: 999px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">Mes monstres</h1>
+</div>
+
+<p style="margin: 0; font-size: 16px; font-weight: 700; color: #5D567A; line-height: 1.3">Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.</p>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{wild}}" as="m" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 14px; min-height: 88px; box-sizing: border-box; padding: 12px 16px; background: #FFFFFF; border-radius: 22px">
+<svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true" style="flex: none">
+<path d="M14 16l-4-10 12 6zM50 16l4-10-12 6z" fill="#221A4D"/>
+<rect x="8" y="10" width="48" height="48" rx="22" fill="{{m.color}}"/>
+<circle cx="32" cy="30" r="10" fill="#FFFFFF"/>
+<circle cx="33" cy="32" r="4.5" fill="#221A4D"/>
+<path d="M22 22l20-4" stroke="#221A4D" stroke-width="4" stroke-linecap="round"/>
+<path d="M22 47h20" stroke="#221A4D" stroke-width="4" stroke-linecap="round"/>
+</svg>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 28px; line-height: 1">{{m.fact}}</span>
+<span style="font-size: 14px; font-weight: 800; color: #5D567A">{{m.note}}</span>
+</div>
+<div role="img" aria-label="{{m.note}}" style="height: 12px; background: #E4DEFF; border-radius: 999px; overflow: hidden">
+<div style="width: {{m.pct}}; height: 100%; background: #5B3DF5; border-radius: 999px"></div>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<button type="button" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 66px; background: #5B3DF5; color: #FFFFFF; border: none; border-bottom: 6px solid #3A22B8; border-radius: 18px; cursor: pointer">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.1">Lancer la chasse</span>
+<span style="font-size: 14px; font-weight: 800">10 questions</span>
+</button>
+
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding: 16px; background: #FFFFFF; border-radius: 24px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px">Apprivoisés</h2>
+<span style="font-size: 14px; font-weight: 800; color: #5D567A">4 monstres</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{tamed}}" as="m" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; background: #F4F1FF; border-radius: 16px">
+<svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
+<path d="M14 16l-4-10 12 6zM50 16l4-10-12 6z" fill="#221A4D"/>
+<rect x="8" y="10" width="48" height="48" rx="22" fill="{{m.color}}"/>
+<circle cx="32" cy="30" r="10" fill="#FFFFFF"/>
+<circle cx="32" cy="31" r="4.5" fill="#221A4D"/>
+<path d="M23 45q9 8 18 0" fill="none" stroke="#221A4D" stroke-width="4" stroke-linecap="round"/>
+</svg>
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px">{{m.fact}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+wild: [
+{ fact: '7 × 8', color: '#8E78FF', pct: '25%', note: 'Très coriace' },
+{ fact: '6 × 9', color: '#FF8A75', pct: '50%', note: 'Coriace' },
+{ fact: '8 × 4', color: '#FFC531', pct: '80%', note: 'Presque apprivoisé' }
+],
+tamed: [
+{ fact: '6 × 7', color: '#A99BF0' },
+{ fact: '9 × 3', color: '#FFC531' },
+{ fact: '4 × 7', color: '#7FD3A8' },
+{ fact: '8 × 6', color: '#FF8A75' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

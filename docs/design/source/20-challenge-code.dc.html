@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Défi par code</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#221A4D}a:hover{color:#5B3DF5}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 20px 24px; background: #F4F1FF; color: #221A4D; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Retour" style="display: flex; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; background: #FFFFFF; border: none; border-radius: 999px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">Défier un ami</h1>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 20px; background: #5B3DF5; border-radius: 28px; color: #FFFFFF">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Contre-la-montre</span>
+<span style="font-size: 14px; font-weight: 800">Tables de 2 et de 5</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; padding: 6px 14px; background: #FFC531; border-radius: 16px; color: #221A4D">
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 26px; line-height: 1">18</span>
+<span style="font-size: 12px; font-weight: 800">à battre</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 8px; background: #FFFFFF; border-radius: 20px; color: #221A4D">
+<span style="font-size: 14px; font-weight: 800; color: #5D567A">Ton code de défi</span>
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 32px; letter-spacing: 2px">K7M2-QX9T-B4</span>
+</div>
+<button type="button" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; background: #FFC531; color: #221A4D; border: none; border-bottom: 5px solid #E0A100; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="#221A4D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+<span>Copier le code</span>
+</button>
+</div>
+
+<p style="margin: 0; font-size: 16px; font-weight: 700; color: #5D567A; line-height: 1.3; text-align: center">Donne ce code à un ami. Il jouera exactement les mêmes questions que toi.</p>
+
+<div style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 800; color: #5D567A">
+<span style="flex: 1; height: 2px; background: #DDD6FF"></span>
+<span>ou</span>
+<span style="flex: 1; height: 2px; background: #DDD6FF"></span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #FFFFFF; border-radius: 28px">
+<label for="code" style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px">Tu as reçu un code ?</label>
+<input id="code" type="text" maxlength="12" placeholder="Écris le code ici" style="height: 56px; box-sizing: border-box; padding: 0 16px; background: #F4F1FF; border: 2px solid #A99BF0; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 22px; font-weight: 600; color: #221A4D; text-transform: uppercase">
+<button type="button" style="min-height: 56px; background: #5B3DF5; color: #FFFFFF; border: none; border-bottom: 6px solid #3A22B8; border-radius: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 20px; cursor: pointer">Jouer ce défi</button>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Réglages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#221A4D}a:hover{color:#5B3DF5}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; box-sizing: border-box; padding: 20px 24px; background: #F4F1FF; color: #221A4D; font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 800; display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Retour au profil" style="display: flex; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; background: #FFFFFF; border: none; border-radius: 999px; cursor: pointer">
+<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px">Réglages</h1>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 800; color: #5D567A">Sons</h2>
+<div style="display: flex; flex-direction: column; padding: 0 16px; background: #FFFFFF; border-radius: 20px">
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; border-bottom: 2px solid #F4F1FF">
+<span>Sons</span>
+<button type="button" role="switch" aria-checked="true" aria-label="Sons" style="display: flex; align-items: center; justify-content: flex-end; width: 56px; height: 32px; padding: 3px; background: #5B3DF5; border: none; border-radius: 999px; cursor: pointer"><span style="width: 26px; height: 26px; background: #FFFFFF; border-radius: 999px"></span></button>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px">
+<span>Vibrations</span>
+<button type="button" role="switch" aria-checked="true" aria-label="Vibrations" style="display: flex; align-items: center; justify-content: flex-end; width: 56px; height: 32px; padding: 3px; background: #5B3DF5; border: none; border-radius: 999px; cursor: pointer"><span style="width: 26px; height: 26px; background: #FFFFFF; border-radius: 999px"></span></button>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 800; color: #5D567A">Jeu</h2>
+<div style="display: flex; flex-direction: column; padding: 0 16px; background: #FFFFFF; border-radius: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 0; border-bottom: 2px solid #F4F1FF">
+<span>Chrono</span>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; background: #F4F1FF; border-radius: 16px">
+<button type="button" aria-pressed="true" style="min-height: 44px; background: #5B3DF5; color: #FFFFFF; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer">Normal</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; background: transparent; color: #221A4D; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer">Détendu</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; background: transparent; color: #221A4D; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer">Sans</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 0; border-bottom: 2px solid #F4F1FF">
+<span>Objectif du jour</span>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; background: #F4F1FF; border-radius: 16px">
+<button type="button" aria-pressed="false" style="min-height: 44px; background: transparent; color: #221A4D; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer">20 XP</button>
+<button type="button" aria-pressed="true" style="min-height: 44px; background: #5B3DF5; color: #FFFFFF; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer">50 XP</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; background: transparent; color: #221A4D; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer">100 XP</button>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; border-bottom: 2px solid #F4F1FF">
+<span>Tout débloquer</span>
+<button type="button" role="switch" aria-checked="false" aria-label="Tout débloquer" style="display: flex; align-items: center; justify-content: flex-start; width: 56px; height: 32px; padding: 3px; background: #8A82A8; border: none; border-radius: 999px; cursor: pointer"><span style="width: 26px; height: 26px; background: #FFFFFF; border-radius: 999px"></span></button>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; border-bottom: 2px solid #F4F1FF">
+<span>Animations réduites</span>
+<button type="button" role="switch" aria-checked="false" aria-label="Animations réduites" style="display: flex; align-items: center; justify-content: flex-start; width: 56px; height: 32px; padding: 3px; background: #8A82A8; border: none; border-radius: 999px; cursor: pointer"><span style="width: 26px; height: 26px; background: #FFFFFF; border-radius: 999px"></span></button>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px">
+<span>Afficher le classement</span>
+<button type="button" role="switch" aria-checked="true" aria-label="Afficher le classement" style="display: flex; align-items: center; justify-content: flex-end; width: 56px; height: 32px; padding: 3px; background: #5B3DF5; border: none; border-radius: 999px; cursor: pointer"><span style="width: 26px; height: 26px; background: #FFFFFF; border-radius: 999px"></span></button>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 800; color: #5D567A">Rappel</h2>
+<div style="display: flex; flex-direction: column; padding: 0 16px; background: #FFFFFF; border-radius: 20px">
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; border-bottom: 2px solid #F4F1FF">
+<span>Rappel quotidien</span>
+<button type="button" role="switch" aria-checked="false" aria-label="Rappel quotidien" style="display: flex; align-items: center; justify-content: flex-start; width: 56px; height: 32px; padding: 3px; background: #8A82A8; border: none; border-radius: 999px; cursor: pointer"><span style="width: 26px; height: 26px; background: #FFFFFF; border-radius: 999px"></span></button>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; color: #5D567A">
+<span>Heure du rappel</span>
+<span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px">17:00</span>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 800; color: #5D567A">Sauvegarde</h2>
+<div style="display: flex; flex-direction: column; padding: 0 16px; background: #FFFFFF; border-radius: 20px">
+<button type="button" style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; padding: 0; background: transparent; border: none; border-bottom: 2px solid #F4F1FF; font-size: 17px; font-weight: 800; color: #221A4D; cursor: pointer">
+<span>Exporter mon profil</span>
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+</button>
+<button type="button" style="display: flex; align-items: center; justify-content: space-between; min-height: 54px; padding: 0; background: transparent; border: none; font-size: 17px; font-weight: 800; color: #221A4D; cursor: pointer">
+<span>Importer un profil</span>
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="#5D567A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+</button>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 800; color: #5D567A">Ce joueur</h2>
+<div style="display: flex; flex-direction: column; padding: 0 16px; background: #FFFFFF; border-radius: 20px">
+<button type="button" style="display: flex; align-items: center; min-height: 54px; padding: 0; background: transparent; border: none; border-bottom: 2px solid #F4F1FF; font-size: 17px; font-weight: 800; color: #C8321F; cursor: pointer">Réinitialiser ma progression</button>
+<button type="button" style="display: flex; align-items: center; min-height: 54px; padding: 0; background: transparent; border: none; font-size: 17px; font-weight: 800; color: #C8321F; cursor: pointer">Supprimer ce joueur</button>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
