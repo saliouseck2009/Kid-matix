@@ -5,7 +5,7 @@ reaches `main` through a GitHub pull request. The hooks in `.githooks/`
 enforce the branch, commit and push rules locally; `tool/setup.sh`
 installs them (`git config core.hooksPath .githooks`) and
 `tool/hooks_test.sh` (run by `tool/check.sh`) tests them. On GitHub, the
-`CI` workflow runs the same `tool/check.sh` on every pull request.
+`CI` workflow runs the same `tool/check.sh` groups on every pull request.
 
 ## Branches
 
@@ -86,7 +86,7 @@ Then on GitHub (or with `gh`):
    (`feat(profile): add the profile repository`); the description says what
    the task delivers, how it was checked (`tool/check.sh`, device or
    emulator) and ends with the task id (`Refs: F1-03`).
-2. The `CI / check` status must be green (see "Continuous integration").
+2. Every `CI` job must be green (see "Continuous integration").
    A red run is fixed with new commits on the branch, never by merging
    anyway.
 3. The owner reviews and merges with **"Create a merge commit"**, so
@@ -107,9 +107,23 @@ commits; push them with `git push --force-with-lease`.
 ## Continuous integration
 
 `.github/workflows/ci.yml` runs on every pull request, on every push to
-`main` and on demand. Its single job, `check`, installs Flutter 3.47.6 (the
-version of `FLUTTER_VERSION` in the workflow) on Ubuntu and runs
-`bash tool/check.sh`. With `CI=true`, the script rewrites nothing:
+`main` and on demand. Its four jobs run in parallel, each with Flutter
+3.47.6 (`FLUTTER_VERSION` in the workflow), and each runs one group of
+`tool/check.sh`, so a local run reproduces it exactly:
+
+| Job | Runner | Command | Checks |
+| --- | --- | --- | --- |
+| `analyze` | Ubuntu | `bash tool/check.sh analyze` | `gen-l10n`, `build_runner`, generated files committed, format, `flutter analyze` |
+| `test` | Ubuntu | `bash tool/check.sh test` | `flutter test --coverage` (the `coverage` artifact holds `lcov.info`), git hook tests |
+| `build android` | Ubuntu, Java 17 | `bash tool/check.sh build-android` | Debug APK |
+| `build ios` | macOS | `bash tool/check.sh build-ios` | Debug iOS app, no code signing |
+
+Locally, `bash tool/check.sh` (no argument) runs `analyze` then `test`:
+the check after every change. `bash tool/check.sh build` adds both
+builds (iOS only on macOS); run it before a pull request that touches
+`android/`, `ios/`, `pubspec.yaml` or the plugins.
+
+With `CI=true`, the script rewrites nothing:
 
 - the format step fails if `dart format` would change a file;
 - the "generated files committed" step fails if `gen-l10n` or
@@ -117,9 +131,9 @@ version of `FLUTTER_VERSION` in the workflow) on Ubuntu and runs
   generated code (`lib/l10n/app_localizations*.dart`, `*.g.dart`) is always
   committed with its source.
 
-When the run fails, the `check-log` artifact holds `tool/logs/check.log`.
-Reproduce locally with `bash tool/check.sh` (or `CI=true bash
-tool/check.sh` on a clean tree for the exact CI behavior).
+When a job fails, its `check-<group>-log` artifact holds
+`tool/logs/check-<group>.log`. Reproduce locally with the job's command
+(prefix it with `CI=true` on a clean tree for the exact CI behavior).
 
 Upgrading Flutter is its own change on its own branch (`chore/bump-flutter`):
 update `FLUTTER_VERSION` in the workflow and the version in
@@ -132,5 +146,6 @@ the server, protect `main` in the repository settings (Settings, Branches,
 or Rules):
 
 - require a pull request before merging;
-- require the status check `check` to pass, with the branch up to date;
+- require the status checks `analyze`, `test`, `build android` and
+  `build ios` to pass, with the branch up to date;
 - block force pushes and deletion.
