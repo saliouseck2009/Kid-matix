@@ -19,12 +19,11 @@ GoRouter createAppRouter() {
     debugLogDiagnostics: kDebugMode,
     routes: <RouteBase>[
       StatefulShellRoute.indexedStack(
-        builder:
-            (
-              BuildContext context,
-              GoRouterState state,
-              StatefulNavigationShell navigationShell,
-            ) => AppShell(navigationShell: navigationShell),
+        builder: (
+          BuildContext context,
+          GoRouterState state,
+          StatefulNavigationShell navigationShell,
+        ) => AppShell(navigationShell: navigationShell),
         branches: <StatefulShellBranch>[
           _createPlaceholderBranch(
             path: AppRoutes.learningPath,

@@ -163,8 +163,7 @@ void main() {
       final List<String> actualViolations = <String>[];
       final Iterable<_SourceFile> guardedCoreFiles = sourceFiles.where(
         (_SourceFile file) =>
-            file.isInCore &&
-            !_compositionCoreFolders.contains(file.coreFolder),
+            file.isInCore && !_compositionCoreFolders.contains(file.coreFolder),
       );
       // Act
       for (final _SourceFile file in guardedCoreFiles) {
@@ -183,8 +182,7 @@ void main() {
       final List<String> actualViolations = <String>[];
       final Iterable<_SourceFile> pureCoreFiles = sourceFiles.where(
         (_SourceFile file) =>
-            file.isInCore &&
-            _flutterFreeCoreFolders.contains(file.coreFolder),
+            file.isInCore && _flutterFreeCoreFolders.contains(file.coreFolder),
       );
       // Act
       for (final _SourceFile file in pureCoreFiles) {
