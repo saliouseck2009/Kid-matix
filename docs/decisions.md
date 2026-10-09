@@ -30,6 +30,7 @@ owner. Add a line here whenever a new decision is taken.
 | Constants are `lowerCamelCase`; the `SCREAMING_SNAKE_CASE` rule of `dart-guidelines.md` is dropped | It contradicts the default Dart lint. Owner: "laisse tomber cette règle" |
 | Constructors use initializing formals for private fields (`required this._repository`) | The `prefer_initializing_formals` lint of this SDK requires it, and `flutter analyze` must stay clean. The rule examples show the older `: _x = x` form; the lint wins. Callers still pass the public name |
 | Game-rule values (boss hit points, XP per answer, timer durations...) are named constants in the domain of the feature that owns them; they move to `core/constants/` only when a second feature needs them | The rules reserve `core/` for code used by at least two features |
+| A new player's settings: normal timer, daily goal of 20 XP, sounds and vibrations on, reduced motion and "unlock everything" off | Owner chose 20 XP: reached in one short session, so a child succeeds on the first day; it can be raised in the settings (F10) |
 | Crash reporting goes through the `CrashReporter` interface; 1.0 uses the local `LogCrashReporter` | The rules ask for Crashlytics or Sentry, but 1.0 has no network and no third-party SDK |
 | No `app/` folder: router, theme, DI and shared widgets live in `core/` | Structure of the owner's rules |
 | `DataState<T>` (`DataSuccess` / `DataFailed`) and typed `AppException` with an `AppErrorCode` replace the `Result` type of the first specs | Owner's rules |
@@ -42,14 +43,18 @@ owner. Add a line here whenever a new decision is taken.
 | The Results page receives only the session id and loads the session with its own Cubit | Only primitive ids go through routes |
 | sqflite exposes no streams: repositories call `TableChangeBus.notifyChanged` after each write and Blocs reload on `watchTable` | Keeps the map, profile and leaderboard fresh |
 | One migration class per schema version, run by `MigrationRunner`; the database opens lazily and only once a first migration exists (F1) | Rules: `version` + `onUpgrade`, one migration per version |
+| Migrations live in `core/storage/migrations/` (`migration_NNN_xxx.dart`), with their SQL written out in full rather than built from the data layer's column constants | The schema version is global to the app, `core/` may not import features, and a released migration must never change when a constant is renamed later |
 | Feature folders are not scaffolded ahead of time; each is created by its lot | No empty folders or dead code |
 | Models use `json_serializable`; `tool/check.sh` runs `build_runner` only when `@JsonSerializable` appears in `lib/` | Keeps the check fast until F1 |
 | `audioplayers` is added in F10, `flutter_local_notifications` in F18 — not before | No unused dependency |
 | Fredoka and Nunito are bundled as variable fonts; weight is set through the `wght` axis | Offline app: no `google_fonts` download at runtime |
 | An `i18n-guardian` subagent (`.claude/agents/`) audits every feature before its pull request: hard-coded user-facing strings, ARB descriptions, placeholders, plurals | Owner's request. Prepares the extra languages of F21 |
 | Generated localizations live in `lib/l10n/` (`nullable-getter: false`), read with `context.l10n` | Texts only through `AppLocalizations` |
+| French typography in user-facing texts: a no-break space (U+00A0) before `? ! : ;` and inside « », straight apostrophe `'` | Owner. The sign never starts a line on its own; the apostrophe matches the mockups. Checked by the `i18n-guardian` agent |
+| "Bientôt disponible" stays as the placeholder text of tabs not built yet | Owner. Each lot replaces its tab |
 | One branch per task (`<type>/<slug>`, task id first), Conventional Commits, one GitHub pull request per task merged with a merge commit; no commit or push on `main`. Rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/` | Owner's request: each feature on its own branch, clean commits, pull requests. Local hooks keep mistakes from reaching the remote at all |
 | CI is GitHub Actions with four parallel jobs — analyze, test (with coverage), debug Android build on Ubuntu, debug iOS build without signing on macOS — each running one group of `tool/check.sh` with Flutter 3.47.6 (pinned in the workflow); with `CI=true` the script fails on unformatted code and on stale generated files instead of rewriting them. Generated code is committed | Owner's request. One script for local and CI keeps both identical; committed generated code builds without a generation step |
+| The launcher name is "Kid Matix" on Android and iOS until the final name is chosen (F11-07) | Owner. Android showed the package name `kid_matix` |
 | Verification is one command: `bash tool/check.sh` (pub get, gen-l10n, build_runner if needed, format, analyze, test) | A lot is done only when every step is OK |
 
 ## Open points

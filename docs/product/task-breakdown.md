@@ -158,17 +158,17 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 
 **Domaine**
 
-- [ ] **F1-01** Entités `Profile` (identifiant UUID, pseudo, avatar, couleur, XP total, niveau, dates) et `ProfileSettings`.
-- [ ] **F1-02** Contrat `ProfileRepository`.
-- [ ] **F1-03** Règles du pseudo : 2 à 12 caractères, lettres, chiffres et espaces ; forme normalisée sans casse ni accents pour l'unicité.
-- [ ] **F1-04** Cas d'usage `GetProfiles`, `CreateProfile` (pseudo unique, 10 profils au plus), `UpdateProfile`, `DeleteProfile`, `SelectProfile`.
+- [x] **F1-01** Entités `Profile` (identifiant UUID, pseudo, avatar, couleur, XP total, niveau, dates) et `ProfileSettings`.
+- [x] **F1-02** Contrat `ProfileRepository`.
+- [x] **F1-03** Règles du pseudo : 2 à 12 caractères, lettres, chiffres et espaces ; forme normalisée sans casse ni accents pour l'unicité.
+- [x] **F1-04** Cas d'usage `GetProfiles`, `CreateProfile` (pseudo unique, 10 profils au plus), `UpdateProfile`, `DeleteProfile`, `SelectProfile`.
 
 **Données**
 
-- [ ] **F1-05** Migration : tables `profile` (index unique sur le pseudo normalisé, colonne de compte distant laissée vide) et `profile_settings`.
-- [ ] **F1-06** Source de données locale, modèles et conversions, implémentation du repository.
-- [ ] **F1-07** Dernier joueur actif mémorisé dans shared_preferences.
-- [ ] **F1-08** Suppression d'un profil en cascade sur toutes ses données.
+- [x] **F1-05** Migration : tables `profile` (index unique sur le pseudo normalisé, colonne de compte distant laissée vide) et `profile_settings`.
+- [x] **F1-06** Source de données locale, modèles et conversions, implémentation du repository.
+- [x] **F1-07** Dernier joueur actif mémorisé dans shared_preferences.
+- [x] **F1-08** Suppression d'un profil en cascade sur toutes ses données.
 
 **Présentation**
 
@@ -182,8 +182,8 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 
 **Tests**
 
-- [ ] **F1-16** Tests unitaires : normalisation du pseudo, doublon à la casse et aux accents près, limite de 10 profils.
-- [ ] **F1-17** Tests du repository sur une base en mémoire, cascade comprise.
+- [x] **F1-16** Tests unitaires : normalisation du pseudo, doublon à la casse et aux accents près, limite de 10 profils.
+- [x] **F1-17** Tests du repository sur une base en mémoire, cascade comprise.
 - [ ] **F1-18** Tests de `ProfilesBloc` et test de widget de « Qui joue ? ».
 
 **Terminé quand :** on crée trois joueurs, on en choisit un, on ferme l'app, et on retrouve la liste et le dernier joueur au relancement.
