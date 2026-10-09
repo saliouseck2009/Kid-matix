@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# One-time project setup: downloads the bundled fonts and adds the packages.
+# One-time project setup: downloads the bundled fonts, adds the packages and
+# installs the git hooks.
 # Run it from anywhere:  bash tool/setup.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -47,6 +48,10 @@ flutter pub add --dev \
   bloc_test \
   mocktail \
   sqflite_common_ffi
+
+# Branch and commit rules of docs/git-workflow.md.
+git config core.hooksPath .githooks
+echo "Git hooks installed from .githooks/"
 
 echo
 echo "Setup done. Now run: bash tool/check.sh"

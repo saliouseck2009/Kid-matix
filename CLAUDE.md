@@ -33,6 +33,7 @@ commit messages and technical docs stay in English.
 | `docs/design/source/*.dc.html` | Markup of each mockup: exact sizes, colors, SVG paths |
 | `docs/decisions.md` | Decisions already taken and open points |
 | `docs/rules/*.md` | The owner's coding rules |
+| `docs/git-workflow.md` | Branch and commit rules, enforced by `.githooks/` |
 
 Priority when documents disagree: `docs/rules/` > this file and
 `docs/decisions.md` > task breakdown > specifications.
@@ -123,5 +124,19 @@ Inside a lot: domain, then data, then presentation, then tests.
 - Every schema change is a new numbered migration with its test.
 - When a product rule is missing or ambiguous, or a screen has no mockup, ask
   the owner instead of guessing; record the answer in `docs/decisions.md`.
-- Commit at the end of each coherent step, with conventional messages
-  (`feat(profile): ...`, `test(quiz): ...`, `chore: ...`).
+- Commit at the end of each coherent step (see "Git" below).
+
+## Git
+
+Rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/`
+(installed by `tool/setup.sh`; check with `git config core.hooksPath`).
+
+- Never commit on `main`. One branch per task, named `<type>/<slug>` with
+  the task id first: `feat/f1-03-profile-repository`, `fix/f0-tab-bar-height`.
+- Commits follow Conventional Commits: `type(scope): subject`, imperative,
+  lowercase, no final period, 72 characters at most, a body that says why,
+  `Refs: F1-03` in the footer. One coherent, green step per commit; never mix
+  a refactor, a formatting pass and a feature.
+- When the task is done and `tool/check.sh` is green, merge it into `main`
+  with `git merge --no-ff` and delete the branch. Ask the owner before any
+  `git push`.

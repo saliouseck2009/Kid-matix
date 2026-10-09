@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Checks that the commit message follows Conventional Commits.
+# Installed by tool/setup.sh (git config core.hooksPath .githooks).
+# Rules: docs/git-workflow.md
+set -euo pipefail
+
+readonly message_file="$1"
+readonly max_header_length=72
+readonly max_body_line_length=100
+readonly header_pattern='^(feat|fix|refactor|test|docs|chore|build|ci|perf|style|revert)(\([a-z0-9]+(-[a-z0-9]+)*\))?!?: [a-z0-9`].*[^. ]$'
+readonly generated_pattern='^(Merge |Revert "|fixup! |squash! |amend! )'
+
+fail() {
+  echo "commit-msg: $1" >&2
+  echo "Expected: <type>(<scope>): <subject>, for example" >&2
+  echo "  feat(profile): add the nickname uniqueness check" >&2
+  echo "See docs/git-workflow.md." >&2
+  exit 1
+}
+
+# Keep the lines git will record: drop comments and everything below the
+# scissors line written by 'git commit --verbose'.
+lines=()
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in
+    '# ------------------------ >8 ------------------------'*) break ;;
+    '#'*) continue ;;
+  esac
+  lines+=("$line")
+done < "$message_file"
+
+if [ "${#lines[@]}" -eq 0 ] || [ -z "${lines[0]}" ]; then
+  fail "the message is empty or starts with a blank line."
+fi
+
+header="${lines[0]}"
+
+if printf '%s' "$header" | grep -Eq "$generated_pattern"; then
+  exit 0
+fi
+
+if [ "${#header}" -gt "$max_header_length" ]; then
+  fail "the header has ${#header} characters; the limit is $max_header_length."
+fi
+
+if ! printf '%s' "$header" | grep -Eq "$header_pattern"; then
+  fail "the header '$header' is not a conventional commit header
+(lowercase type and scope, lowercase subject, no final period)."
+fi
+
+if [ "${#lines[@]}" -gt 1 ] && [ -n "${lines[1]}" ]; then
+  fail "leave a blank line between the header and the body."
+fi
+
+for line in "${lines[@]:1}"; do
+  if [ "${#line}" -gt "$max_body_line_length" ]; then
+    fail "a body line is longer than $max_body_line_length characters; wrap it."
+  fi
+done
