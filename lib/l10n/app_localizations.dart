@@ -94,43 +94,43 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('fr')];
 
-  /// Provisional application name.
+  /// Provisional application name, shown as the task-switcher title. Brand name: keep as is, do not translate.
   ///
   /// In fr, this message translates to:
   /// **'Kid Matix'**
   String get appTitle;
 
-  /// Screen-reader label of the bottom tab bar.
+  /// Screen-reader label of the bottom tab bar of the main shell ("Main navigation"). Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Navigation principale'**
   String get mainNavigationLabel;
 
-  /// Label of the learning path tab.
+  /// Label of the learning path tab in the bottom tab bar, also the title of its placeholder page. Noun ("Path"), one short word.
   ///
   /// In fr, this message translates to:
   /// **'Parcours'**
   String get tabLearningPath;
 
-  /// Label of the free training tab.
+  /// Label of the free training tab in the bottom tab bar, also the title of its placeholder page. Infinitive verb ("Practice"), one short word.
   ///
   /// In fr, this message translates to:
   /// **'S\'entraîner'**
   String get tabTraining;
 
-  /// Label of the challenges tab.
+  /// Label of the challenges tab in the bottom tab bar, also the title of its placeholder page. Plural noun ("Challenges"), one short word.
   ///
   /// In fr, this message translates to:
   /// **'Défis'**
   String get tabChallenges;
 
-  /// Label of the profile tab.
+  /// Label of the profile tab in the bottom tab bar, also the title of its placeholder page. Noun ("Profile"), one short word.
   ///
   /// In fr, this message translates to:
   /// **'Profil'**
   String get tabProfile;
 
-  /// Shown on a tab whose feature is not built yet.
+  /// Centered message on the placeholder page of a tab whose feature is not built yet ("Coming soon"). One line.
   ///
   /// In fr, this message translates to:
   /// **'Bientôt disponible'**
@@ -148,19 +148,19 @@ abstract class AppLocalizations {
   /// **'Retour'**
   String get commonBack;
 
-  /// Shown to a child when the local database fails. Friendly tone, informal "tu".
+  /// Error shown to a child on the "Qui joue ?" screen or under the button of the player creation when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
   /// In fr, this message translates to:
   /// **'Oups, on n\'a pas pu lire ou enregistrer tes données.'**
   String get errorStorage;
 
-  /// Shown when the chosen player was deleted in the meantime.
+  /// Error shown on the "Qui joue ?" screen or the player creation when the chosen player was deleted in the meantime ("This player no longer exists").
   ///
   /// In fr, this message translates to:
   /// **'Ce joueur n\'existe plus.'**
   String get errorNotFound;
 
-  /// Generic error shown to a child when nothing more precise is known. Friendly tone.
+  /// Generic error shown to a child on the "Qui joue ?" screen or the player creation when nothing more precise is known. Friendly tone.
   ///
   /// In fr, this message translates to:
   /// **'Oups, quelque chose s\'est mal passé.'**
@@ -178,7 +178,7 @@ abstract class AppLocalizations {
   /// **'Choisis ton joueur pour commencer.'**
   String get whoIsPlayingSubtitle;
 
-  /// Player level under the nickname on a player card.
+  /// Player level under the nickname on a player card of the "Qui joue ?" screen ("Level 4"). Short, one line in half the screen width.
   ///
   /// In fr, this message translates to:
   /// **'Niveau {level}'**
@@ -190,55 +190,55 @@ abstract class AppLocalizations {
   /// **'Nouveau joueur'**
   String get newPlayerButton;
 
-  /// Footer of the player selection screen: how many players the phone can hold.
+  /// Footer of the "Qui joue ?" screen: how many players the phone can hold ("Up to 10 players on this phone"). One or two lines.
   ///
   /// In fr, this message translates to:
-  /// **'Jusqu\'à {maxProfiles} joueurs sur ce téléphone.'**
+  /// **'{maxProfiles, plural, one{Jusqu\'à {maxProfiles} joueur sur ce téléphone.} other{Jusqu\'à {maxProfiles} joueurs sur ce téléphone.}}'**
   String profileLimitHint(int maxProfiles);
 
-  /// Shown when a child tries to create a player but the phone already holds the maximum.
+  /// Error under the button of the player creation when the phone already holds the maximum number of players ("There are already 10 players on this phone").
   ///
   /// In fr, this message translates to:
-  /// **'Il y a déjà {maxProfiles} joueurs sur ce téléphone.'**
+  /// **'{maxProfiles, plural, one{Il y a déjà {maxProfiles} joueur sur ce téléphone.} other{Il y a déjà {maxProfiles} joueurs sur ce téléphone.}}'**
   String profileLimitReached(int maxProfiles);
 
-  /// Title of the screen that creates a player ("New player").
+  /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:
   /// **'Nouveau joueur'**
   String get profileCreationTitle;
 
-  /// Label above the nickname field of the player creation ("Your nickname"), informal "tu".
+  /// Label above the nickname field of the player creation ("Your nickname"), informal "tu". One line.
   ///
   /// In fr, this message translates to:
   /// **'Ton pseudo'**
   String get nicknameLabel;
 
-  /// Placeholder inside the empty nickname field ("Type your nickname").
+  /// Placeholder inside the empty nickname field of the player creation ("Type your nickname"). Imperative, informal "tu", one line.
   ///
   /// In fr, this message translates to:
   /// **'Écris ton pseudo'**
   String get nicknameHint;
 
-  /// Hint under the nickname field: allowed length.
+  /// Hint under the nickname field of the player creation: allowed length and characters ("2 to 12 letters or digits"). One line.
   ///
   /// In fr, this message translates to:
-  /// **'{minLength} à {maxLength} lettres ou chiffres'**
+  /// **'{maxLength, plural, one{{minLength} à {maxLength} lettre ou chiffre} other{{minLength} à {maxLength} lettres ou chiffres}}'**
   String nicknameRulesHint(int minLength, int maxLength);
 
-  /// Error under the nickname field when it is too short. Speaks to a child, no blame.
+  /// Error under the nickname field of the player creation when the nickname is too short ("At least 2 letters or digits are needed"). Speaks to a child, no blame.
   ///
   /// In fr, this message translates to:
-  /// **'Il faut au moins {minLength} lettres ou chiffres.'**
+  /// **'{minLength, plural, one{Il faut au moins {minLength} lettre ou chiffre.} other{Il faut au moins {minLength} lettres ou chiffres.}}'**
   String nicknameTooShort(int minLength);
 
-  /// Error under the nickname field when it is too long.
+  /// Error under the nickname field of the player creation when the nickname is too long ("No more than 12 letters or digits"). Speaks to a child, no blame.
   ///
   /// In fr, this message translates to:
-  /// **'Pas plus de {maxLength} lettres ou chiffres.'**
+  /// **'{maxLength, plural, one{Pas plus de {maxLength} lettre ou chiffre.} other{Pas plus de {maxLength} lettres ou chiffres.}}'**
   String nicknameTooLong(int maxLength);
 
-  /// Error under the nickname field when it contains another character (punctuation, emoji).
+  /// Error under the nickname field of the player creation when it contains another character (punctuation, emoji) ("Only letters, digits and spaces").
   ///
   /// In fr, this message translates to:
   /// **'Seulement des lettres, des chiffres et des espaces.'**
@@ -256,55 +256,55 @@ abstract class AppLocalizations {
   /// **'Choisis ton avatar'**
   String get avatarPickerLabel;
 
-  /// Screen-reader label of one character of the avatar grid.
+  /// Screen-reader label of one character of the avatar grid of the player creation ("Avatar 3"). Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Avatar {number}'**
   String avatarOptionLabel(int number);
 
-  /// Heading of the row of color swatches in the player creation ("Your color").
+  /// Heading of the row of color swatches in the player creation ("Your color"), informal "tu". One line.
   ///
   /// In fr, this message translates to:
   /// **'Ta couleur'**
   String get colorPickerLabel;
 
-  /// Screen-reader name of the violet color swatch.
+  /// Screen-reader name of the violet color swatch of the player creation. Color adjective, one word. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Violet'**
   String get profileColorViolet;
 
-  /// Screen-reader name of the green color swatch.
+  /// Screen-reader name of the green color swatch of the player creation. Color adjective, one word. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Vert'**
   String get profileColorGreen;
 
-  /// Screen-reader name of the yellow color swatch.
+  /// Screen-reader name of the yellow color swatch of the player creation. Color adjective, one word. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Jaune'**
   String get profileColorYellow;
 
-  /// Screen-reader name of the red color swatch.
+  /// Screen-reader name of the red color swatch of the player creation. Color adjective, one word. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Rouge'**
   String get profileColorRed;
 
-  /// Screen-reader name of the blue color swatch.
+  /// Screen-reader name of the blue color swatch of the player creation. Color adjective, one word. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Bleu'**
   String get profileColorBlue;
 
-  /// Screen-reader name of the pink color swatch.
+  /// Screen-reader name of the pink color swatch of the player creation. Color adjective, one word. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'Rose'**
   String get profileColorPink;
 
-  /// Main button that creates the player and starts the game ("Let's go!"). One line.
+  /// Main button of the player creation that creates the player and starts the game ("Let's go!"). One line on a full-width button.
   ///
   /// In fr, this message translates to:
   /// **'C\'est parti !'**

@@ -2,31 +2,31 @@
   "@@locale": "fr",
   "appTitle": "Kid Matix",
   "@appTitle": {
-    "description": "Provisional application name."
+    "description": "Provisional application name, shown as the task-switcher title. Brand name: keep as is, do not translate."
   },
   "mainNavigationLabel": "Navigation principale",
   "@mainNavigationLabel": {
-    "description": "Screen-reader label of the bottom tab bar."
+    "description": "Screen-reader label of the bottom tab bar of the main shell (\"Main navigation\"). Never displayed."
   },
   "tabLearningPath": "Parcours",
   "@tabLearningPath": {
-    "description": "Label of the learning path tab."
+    "description": "Label of the learning path tab in the bottom tab bar, also the title of its placeholder page. Noun (\"Path\"), one short word."
   },
   "tabTraining": "S'entraîner",
   "@tabTraining": {
-    "description": "Label of the free training tab."
+    "description": "Label of the free training tab in the bottom tab bar, also the title of its placeholder page. Infinitive verb (\"Practice\"), one short word."
   },
   "tabChallenges": "Défis",
   "@tabChallenges": {
-    "description": "Label of the challenges tab."
+    "description": "Label of the challenges tab in the bottom tab bar, also the title of its placeholder page. Plural noun (\"Challenges\"), one short word."
   },
   "tabProfile": "Profil",
   "@tabProfile": {
-    "description": "Label of the profile tab."
+    "description": "Label of the profile tab in the bottom tab bar, also the title of its placeholder page. Noun (\"Profile\"), one short word."
   },
   "comingSoonMessage": "Bientôt disponible",
   "@comingSoonMessage": {
-    "description": "Shown on a tab whose feature is not built yet."
+    "description": "Centered message on the placeholder page of a tab whose feature is not built yet (\"Coming soon\"). One line."
   },
   "commonRetry": "Réessayer",
   "@commonRetry": {
@@ -38,15 +38,15 @@
   },
   "errorStorage": "Oups, on n'a pas pu lire ou enregistrer tes données.",
   "@errorStorage": {
-    "description": "Shown to a child when the local database fails. Friendly tone, informal \"tu\"."
+    "description": "Error shown to a child on the \"Qui joue ?\" screen or under the button of the player creation when the local database fails. Friendly tone, informal \"tu\", no technical words."
   },
   "errorNotFound": "Ce joueur n'existe plus.",
   "@errorNotFound": {
-    "description": "Shown when the chosen player was deleted in the meantime."
+    "description": "Error shown on the \"Qui joue ?\" screen or the player creation when the chosen player was deleted in the meantime (\"This player no longer exists\")."
   },
   "errorUnknown": "Oups, quelque chose s'est mal passé.",
   "@errorUnknown": {
-    "description": "Generic error shown to a child when nothing more precise is known. Friendly tone."
+    "description": "Generic error shown to a child on the \"Qui joue ?\" screen or the player creation when nothing more precise is known. Friendly tone."
   },
   "whoIsPlayingTitle": "Qui joue ?",
   "@whoIsPlayingTitle": {
@@ -58,7 +58,7 @@
   },
   "profileLevel": "Niveau {level}",
   "@profileLevel": {
-    "description": "Player level under the nickname on a player card.",
+    "description": "Player level under the nickname on a player card of the \"Qui joue ?\" screen (\"Level 4\"). Short, one line in half the screen width.",
     "placeholders": {
       "level": {
         "type": "int",
@@ -70,9 +70,9 @@
   "@newPlayerButton": {
     "description": "Label of the dashed card that opens the creation of a player (\"New player\"). Fits on one line in half the screen width."
   },
-  "profileLimitHint": "Jusqu'à {maxProfiles} joueurs sur ce téléphone.",
+  "profileLimitHint": "{maxProfiles, plural, one{Jusqu'à {maxProfiles} joueur sur ce téléphone.} other{Jusqu'à {maxProfiles} joueurs sur ce téléphone.}}",
   "@profileLimitHint": {
-    "description": "Footer of the player selection screen: how many players the phone can hold.",
+    "description": "Footer of the \"Qui joue ?\" screen: how many players the phone can hold (\"Up to 10 players on this phone\"). One or two lines.",
     "placeholders": {
       "maxProfiles": {
         "type": "int",
@@ -80,9 +80,9 @@
       }
     }
   },
-  "profileLimitReached": "Il y a déjà {maxProfiles} joueurs sur ce téléphone.",
+  "profileLimitReached": "{maxProfiles, plural, one{Il y a déjà {maxProfiles} joueur sur ce téléphone.} other{Il y a déjà {maxProfiles} joueurs sur ce téléphone.}}",
   "@profileLimitReached": {
-    "description": "Shown when a child tries to create a player but the phone already holds the maximum.",
+    "description": "Error under the button of the player creation when the phone already holds the maximum number of players (\"There are already 10 players on this phone\").",
     "placeholders": {
       "maxProfiles": {
         "type": "int",
@@ -92,19 +92,19 @@
   },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
-    "description": "Title of the screen that creates a player (\"New player\")."
+    "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."
   },
   "nicknameLabel": "Ton pseudo",
   "@nicknameLabel": {
-    "description": "Label above the nickname field of the player creation (\"Your nickname\"), informal \"tu\"."
+    "description": "Label above the nickname field of the player creation (\"Your nickname\"), informal \"tu\". One line."
   },
   "nicknameHint": "Écris ton pseudo",
   "@nicknameHint": {
-    "description": "Placeholder inside the empty nickname field (\"Type your nickname\")."
+    "description": "Placeholder inside the empty nickname field of the player creation (\"Type your nickname\"). Imperative, informal \"tu\", one line."
   },
-  "nicknameRulesHint": "{minLength} à {maxLength} lettres ou chiffres",
+  "nicknameRulesHint": "{maxLength, plural, one{{minLength} à {maxLength} lettre ou chiffre} other{{minLength} à {maxLength} lettres ou chiffres}}",
   "@nicknameRulesHint": {
-    "description": "Hint under the nickname field: allowed length.",
+    "description": "Hint under the nickname field of the player creation: allowed length and characters (\"2 to 12 letters or digits\"). One line.",
     "placeholders": {
       "minLength": {
         "type": "int",
@@ -116,9 +116,9 @@
       }
     }
   },
-  "nicknameTooShort": "Il faut au moins {minLength} lettres ou chiffres.",
+  "nicknameTooShort": "{minLength, plural, one{Il faut au moins {minLength} lettre ou chiffre.} other{Il faut au moins {minLength} lettres ou chiffres.}}",
   "@nicknameTooShort": {
-    "description": "Error under the nickname field when it is too short. Speaks to a child, no blame.",
+    "description": "Error under the nickname field of the player creation when the nickname is too short (\"At least 2 letters or digits are needed\"). Speaks to a child, no blame.",
     "placeholders": {
       "minLength": {
         "type": "int",
@@ -126,9 +126,9 @@
       }
     }
   },
-  "nicknameTooLong": "Pas plus de {maxLength} lettres ou chiffres.",
+  "nicknameTooLong": "{maxLength, plural, one{Pas plus de {maxLength} lettre ou chiffre.} other{Pas plus de {maxLength} lettres ou chiffres.}}",
   "@nicknameTooLong": {
-    "description": "Error under the nickname field when it is too long.",
+    "description": "Error under the nickname field of the player creation when the nickname is too long (\"No more than 12 letters or digits\"). Speaks to a child, no blame.",
     "placeholders": {
       "maxLength": {
         "type": "int",
@@ -138,7 +138,7 @@
   },
   "nicknameInvalidCharacters": "Seulement des lettres, des chiffres et des espaces.",
   "@nicknameInvalidCharacters": {
-    "description": "Error under the nickname field when it contains another character (punctuation, emoji)."
+    "description": "Error under the nickname field of the player creation when it contains another character (punctuation, emoji) (\"Only letters, digits and spaces\")."
   },
   "nicknameTaken": "Ce nom est déjà pris sur ce téléphone.",
   "@nicknameTaken": {
@@ -150,7 +150,7 @@
   },
   "avatarOptionLabel": "Avatar {number}",
   "@avatarOptionLabel": {
-    "description": "Screen-reader label of one character of the avatar grid.",
+    "description": "Screen-reader label of one character of the avatar grid of the player creation (\"Avatar 3\"). Never displayed.",
     "placeholders": {
       "number": {
         "type": "int",
@@ -160,34 +160,34 @@
   },
   "colorPickerLabel": "Ta couleur",
   "@colorPickerLabel": {
-    "description": "Heading of the row of color swatches in the player creation (\"Your color\")."
+    "description": "Heading of the row of color swatches in the player creation (\"Your color\"), informal \"tu\". One line."
   },
   "profileColorViolet": "Violet",
   "@profileColorViolet": {
-    "description": "Screen-reader name of the violet color swatch."
+    "description": "Screen-reader name of the violet color swatch of the player creation. Color adjective, one word. Never displayed."
   },
   "profileColorGreen": "Vert",
   "@profileColorGreen": {
-    "description": "Screen-reader name of the green color swatch."
+    "description": "Screen-reader name of the green color swatch of the player creation. Color adjective, one word. Never displayed."
   },
   "profileColorYellow": "Jaune",
   "@profileColorYellow": {
-    "description": "Screen-reader name of the yellow color swatch."
+    "description": "Screen-reader name of the yellow color swatch of the player creation. Color adjective, one word. Never displayed."
   },
   "profileColorRed": "Rouge",
   "@profileColorRed": {
-    "description": "Screen-reader name of the red color swatch."
+    "description": "Screen-reader name of the red color swatch of the player creation. Color adjective, one word. Never displayed."
   },
   "profileColorBlue": "Bleu",
   "@profileColorBlue": {
-    "description": "Screen-reader name of the blue color swatch."
+    "description": "Screen-reader name of the blue color swatch of the player creation. Color adjective, one word. Never displayed."
   },
   "profileColorPink": "Rose",
   "@profileColorPink": {
-    "description": "Screen-reader name of the pink color swatch."
+    "description": "Screen-reader name of the pink color swatch of the player creation. Color adjective, one word. Never displayed."
   },
   "createProfileButton": "C'est parti !",
   "@createProfileButton": {
-    "description": "Main button that creates the player and starts the game (\"Let's go!\"). One line."
+    "description": "Main button of the player creation that creates the player and starts the game (\"Let's go!\"). One line on a full-width button."
   }
 }

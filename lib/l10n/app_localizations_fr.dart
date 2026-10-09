@@ -62,12 +62,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String profileLimitHint(int maxProfiles) {
-    return 'Jusqu\'à $maxProfiles joueurs sur ce téléphone.';
+    String _temp0 = intl.Intl.pluralLogic(
+      maxProfiles,
+      locale: localeName,
+      other: 'Jusqu\'à $maxProfiles joueurs sur ce téléphone.',
+      one: 'Jusqu\'à $maxProfiles joueur sur ce téléphone.',
+    );
+    return '$_temp0';
   }
 
   @override
   String profileLimitReached(int maxProfiles) {
-    return 'Il y a déjà $maxProfiles joueurs sur ce téléphone.';
+    String _temp0 = intl.Intl.pluralLogic(
+      maxProfiles,
+      locale: localeName,
+      other: 'Il y a déjà $maxProfiles joueurs sur ce téléphone.',
+      one: 'Il y a déjà $maxProfiles joueur sur ce téléphone.',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -81,17 +93,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String nicknameRulesHint(int minLength, int maxLength) {
-    return '$minLength à $maxLength lettres ou chiffres';
+    String _temp0 = intl.Intl.pluralLogic(
+      maxLength,
+      locale: localeName,
+      other: '$minLength à $maxLength lettres ou chiffres',
+      one: '$minLength à $maxLength lettre ou chiffre',
+    );
+    return '$_temp0';
   }
 
   @override
   String nicknameTooShort(int minLength) {
-    return 'Il faut au moins $minLength lettres ou chiffres.';
+    String _temp0 = intl.Intl.pluralLogic(
+      minLength,
+      locale: localeName,
+      other: 'Il faut au moins $minLength lettres ou chiffres.',
+      one: 'Il faut au moins $minLength lettre ou chiffre.',
+    );
+    return '$_temp0';
   }
 
   @override
   String nicknameTooLong(int maxLength) {
-    return 'Pas plus de $maxLength lettres ou chiffres.';
+    String _temp0 = intl.Intl.pluralLogic(
+      maxLength,
+      locale: localeName,
+      other: 'Pas plus de $maxLength lettres ou chiffres.',
+      one: 'Pas plus de $maxLength lettre ou chiffre.',
+    );
+    return '$_temp0';
   }
 
   @override
