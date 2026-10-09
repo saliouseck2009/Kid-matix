@@ -162,4 +162,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get createProfileButton => 'C\'est parti !';
+
+  @override
+  String get commonCancel => 'Annuler';
+
+  @override
+  String get switchPlayerButton => 'Changer de joueur';
+
+  @override
+  String get editProfileButton => 'Modifier mon profil';
+
+  @override
+  String get deleteProfileButton => 'Supprimer ce joueur';
+
+  @override
+  String get profileEditTitle => 'Modifier mon profil';
+
+  @override
+  String get saveProfileButton => 'Enregistrer';
+
+  @override
+  String deleteProfileTitle(String nickname) {
+    return 'Supprimer $nickname ?';
+  }
+
+  @override
+  String deleteProfileMessage(String nickname) {
+    return 'Toute sa progression sera effacée. Pour confirmer, écris son pseudo : $nickname';
+  }
+
+  @override
+  String get deleteProfileConfirm => 'Supprimer';
 }
