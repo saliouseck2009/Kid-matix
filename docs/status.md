@@ -11,7 +11,8 @@ middle of one). Last update: 2026-10-09.
 | F1 · Profiles ("Qui joue ?") | **Next** |
 | F2 – F21 | Not started |
 
-Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS.
+Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
+(`.github/workflows/ci.yml`) pins the same Flutter version.
 
 ## Git
 
