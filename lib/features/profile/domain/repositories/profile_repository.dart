@@ -54,6 +54,10 @@ abstract interface class ProfileRepository {
   /// Remembers [profileId] as the active player across app launches.
   Future<DataState<void>> setActiveProfileId({required String profileId});
 
+  /// Forgets the active player: nobody is playing until a player is chosen
+  /// again on "Qui joue ?".
+  Future<DataState<void>> clearActiveProfileId();
+
   /// Emits an event after each change to the profiles or to the active
   /// player.
   Stream<void> watchProfileChanges();

@@ -285,6 +285,19 @@ void main() {
       // Assert
       await expectLater(actualChange, completes);
     });
+    test('is forgotten when the player switches', () async {
+      // Arrange
+      await repository.createProfile(profile: inputAwa);
+      await repository.setActiveProfileId(profileId: 'p-awa');
+      final Future<void> actualChange = repository.watchProfileChanges().first;
+      // Act
+      await repository.clearActiveProfileId();
+      // Assert
+      final DataState<String?> actualState = await repository
+          .getActiveProfileId();
+      expect(_dataOf(actualState), isNull);
+      await expectLater(actualChange, completes);
+    });
     test('is forgotten when it points to no profile', () async {
       // Arrange
       await repository.setActiveProfileId(profileId: 'gone');

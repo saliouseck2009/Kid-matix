@@ -189,5 +189,53 @@
   "createProfileButton": "C'est parti !",
   "@createProfileButton": {
     "description": "Main button of the player creation that creates the player and starts the game (\"Let's go!\"). One line on a full-width button."
+  },
+  "commonCancel": "Annuler",
+  "@commonCancel": {
+    "description": "Button that closes a confirmation dialog without doing anything (\"Cancel\"). Infinitive verb, one word."
+  },
+  "switchPlayerButton": "Changer de joueur",
+  "@switchPlayerButton": {
+    "description": "Button of the Profile tab that goes back to the player selection so another child can play (\"Switch player\"). No data is lost. One line."
+  },
+  "editProfileButton": "Modifier mon profil",
+  "@editProfileButton": {
+    "description": "Button of the Profile tab that opens the form to change the nickname, avatar or color (\"Edit my profile\"). Action label, informal first person; may differ from profileEditTitle, the title of the screen it opens. One line."
+  },
+  "deleteProfileButton": "Supprimer ce joueur",
+  "@deleteProfileButton": {
+    "description": "Destructive button at the bottom of the Profile tab that deletes the active player and all their progress (\"Delete this player\"). One line."
+  },
+  "profileEditTitle": "Modifier mon profil",
+  "@profileEditTitle": {
+    "description": "Title at the top of the profile edit screen, where a player changes their nickname, avatar or color (\"Edit my profile\"). Screen title next to a back arrow, one line. Same French words as editProfileButton, the button that opens this screen, but a separate key: the title may be worded differently in other languages."
+  },
+  "saveProfileButton": "Enregistrer",
+  "@saveProfileButton": {
+    "description": "Main button of the profile edit screen that saves the changes (\"Save\"). Infinitive verb, one line."
+  },
+  "deleteProfileTitle": "Supprimer {nickname} ?",
+  "@deleteProfileTitle": {
+    "description": "Title of the dialog that confirms the deletion of a player (\"Delete Awa?\"). {nickname} is the child's nickname (up to 12 characters). Short question, one or two lines.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "deleteProfileMessage": "Toute sa progression sera effacée. Pour confirmer, écris son pseudo : {nickname}",
+  "@deleteProfileMessage": {
+    "description": "Body of the deletion dialog, read by a child, above a text field: everything the player earned is erased, and the child must type the nickname again in the field to confirm (\"All their progress will be erased. To confirm, type their nickname: Awa\"). {nickname} is the player's nickname, shown at the end so the child can copy it. Informal \"tu\", two or three lines.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "deleteProfileConfirm": "Supprimer",
+  "@deleteProfileConfirm": {
+    "description": "Destructive button of the deletion dialog, enabled once the nickname is typed again (\"Delete\"). Infinitive verb, one word."
   }
 }

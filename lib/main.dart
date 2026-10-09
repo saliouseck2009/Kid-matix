@@ -11,6 +11,7 @@ import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -42,8 +43,16 @@ Future<void> main() async {
         session: session,
         profilePages: ProfilePages(
           getProfiles: sl(),
+          getProfile: sl(),
           createProfile: sl(),
+          updateProfile: sl(),
           selectProfile: sl(),
+          tabUseCases: ProfileTabUseCases(
+            getProfile: sl(),
+            watchChanges: sl(),
+            clearActiveProfile: sl(),
+            deleteProfile: sl(),
+          ),
         ),
       ),
     ),

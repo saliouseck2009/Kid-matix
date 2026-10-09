@@ -22,7 +22,10 @@ GoRouter createAppRouter({
   required ProfileSessionService session,
   required ProfilePages profilePages,
 }) {
+  final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>();
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.learningPath,
     debugLogDiagnostics: kDebugMode,
     refreshListenable: session,
@@ -66,15 +69,50 @@ GoRouter createAppRouter({
             path: AppRoutes.challenges,
             resolveTitle: (AppLocalizations l10n) => l10n.tabChallenges,
           ),
-          _createPlaceholderBranch(
-            path: AppRoutes.profile,
-            resolveTitle: (AppLocalizations l10n) => l10n.tabProfile,
+          _createProfileBranch(
+            session: session,
+            profilePages: profilePages,
+            rootNavigatorKey: rootNavigatorKey,
           ),
         ],
       ),
     ],
   );
 }
+
+/// Profile tab, with the edition of the player opened over the tab bar.
+StatefulShellBranch _createProfileBranch({
+  required ProfileSessionService session,
+  required ProfilePages profilePages,
+  required GlobalKey<NavigatorState> rootNavigatorKey,
+}) {
+  return StatefulShellBranch(
+    routes: <RouteBase>[
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (BuildContext context, GoRouterState state) {
+          final String? profileId = session.activeProfileId;
+          if (profileId == null) return const SizedBox.shrink();
+          return profilePages.buildProfileTabPage(profileId: profileId);
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: _lastSegment(AppRoutes.profileEdit),
+            parentNavigatorKey: rootNavigatorKey,
+            builder: (BuildContext context, GoRouterState state) {
+              final String? profileId = session.activeProfileId;
+              if (profileId == null) return const SizedBox.shrink();
+              return profilePages.buildProfileEditPage(profileId: profileId);
+            },
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+/// Path of a sub-route, relative to its parent route.
+String _lastSegment(String path) => path.split('/').last;
 
 StatefulShellBranch _createPlaceholderBranch({
   required String path,

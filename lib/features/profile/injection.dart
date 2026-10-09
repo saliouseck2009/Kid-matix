@@ -6,9 +6,11 @@ import 'package:kid_matix/features/profile/data/datasources/profile_local_data_s
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
+import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_session_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
@@ -68,6 +70,12 @@ void _registerUseCases(GetIt sl) {
   );
   sl.registerLazySingleton<GetProfileSessionUseCase>(
     () => GetProfileSessionUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<GetProfileUseCase>(
+    () => GetProfileUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<ClearActiveProfileUseCase>(
+    () => ClearActiveProfileUseCase(repository: sl()),
   );
   sl.registerLazySingleton<WatchProfileChangesUseCase>(
     () => WatchProfileChangesUseCase(repository: sl()),

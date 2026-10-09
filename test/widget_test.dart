@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
-import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/main.dart';
 
 import 'features/profile/helpers/profile_fixtures.dart';
@@ -11,11 +10,7 @@ import 'helpers/fake_profile_session_service.dart';
 GoRouter _createPlayingRouter() {
   return createAppRouter(
     session: FakeProfileSessionService(activeProfileId: 'p-1'),
-    profilePages: ProfilePages(
-      getProfiles: MockGetProfilesUseCase(),
-      createProfile: MockCreateProfileUseCase(),
-      selectProfile: MockSelectProfileUseCase(),
-    ),
+    profilePages: buildProfilePages(),
   );
 }
 

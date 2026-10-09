@@ -136,6 +136,14 @@ final class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<DataState<void>> clearActiveProfileId() {
+    return _guard(() async {
+      await _activeProfile.clearActiveProfileId();
+      _notifyProfilesChanged();
+    });
+  }
+
+  @override
   Stream<void> watchProfileChanges() {
     return _changeBus.watchTable(table: ProfileTable.name);
   }

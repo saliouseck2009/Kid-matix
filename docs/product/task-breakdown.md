@@ -177,8 +177,8 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 - [x] **F1-11** Écran de création : pseudo, choix parmi 12 avatars, couleur de fond, messages d'erreur adaptés à l'enfant. Maquette : `02-profile-creation.png`.
 - [x] **F1-12** Les 12 avatars en ressources vectorielles.
 - [x] **F1-13** Premier lancement : ouverture directe de la création de profil.
-- [ ] **F1-14** Renommer un joueur et changer son avatar.
-- [ ] **F1-15** Supprimer un joueur après une confirmation où l'enfant retape son pseudo.
+- [x] **F1-14** Renommer un joueur et changer son avatar.
+- [x] **F1-15** Supprimer un joueur après une confirmation où l'enfant retape son pseudo.
 
 **Tests**
 
