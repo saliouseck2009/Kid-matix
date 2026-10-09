@@ -7,32 +7,28 @@ middle of one). Last update: 2026-10-09.
 
 | Lot | State |
 | --- | --- |
-| F0 · Foundation | Implemented. One fix awaiting a check run (see below) |
+| F0 · Foundation | **Done** (closed 2026-10-09) |
 | F1 · Profiles ("Qui joue ?") | **Next** |
 | F2 – F21 | Not started |
 
-Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. Git: one commit
-(`56c5f31 chore: F0 foundation scaffold`); everything after it is uncommitted.
+Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS.
 
-## To close F0
+## Git
 
-The last full `bash tool/check.sh` run was green (format, analyze, 21 tests).
-Two changes were made after that run and have **not** been checked yet:
+Every change goes through its own branch and Conventional Commits, merged
+into `main` with `--no-ff` — rules in `docs/git-workflow.md`, enforced by
+`.githooks/`. On a new clone, `bash tool/setup.sh` installs the hooks
+(`git config core.hooksPath .githooks`). Nothing has been pushed to
+`origin` yet.
 
-1. `lib/core/widgets/app_tab_bar.dart` — the tab bar filled the whole screen
-   on a real launch, because the `Column` of a tab label took all the height
-   offered by `Scaffold.bottomNavigationBar`. Fix: `mainAxisSize:
-   MainAxisSize.min` on that column.
-2. `test/widget_test.dart` — new regression test "keeps the page visible above
-   the tab bar" (`find.text('Bientôt disponible').hitTestable()`).
+## F0 closure
 
-Steps:
-
-- [ ] Run `bash tool/check.sh`; every step must be OK (22 tests expected).
-- [ ] Launch the app: lavender ground, page title and "Bientôt disponible"
-      in the middle, white tab bar at the bottom with four tabs, the selected
-      one highlighted; tapping a tab switches the page.
-- [ ] Commit (handoff docs included).
+- `bash tool/check.sh`: every step OK (format, analyze, 22 tests, git hook
+  tests).
+- Checked on the Android emulator (API 36): lavender ground, page title and
+  "Bientôt disponible" in the middle, white tab bar with four tabs, the
+  selected one highlighted; tapping "Défis" switches the page and the
+  highlight.
 
 Known gaps left on purpose, to handle in the lot named:
 
@@ -73,6 +69,8 @@ Known gaps left on purpose, to handle in the lot named:
 Tasks F1-01 to F1-18 in `docs/product/task-breakdown.md`; rules in section 3
 of `docs/product/specifications.md`; mockups `01-who-is-playing` and
 `02-profile-creation` in `docs/design/screens/`.
+Each task gets its own branch from `main`, for example
+`feat/f1-01-profile-entity`, merged once `tool/check.sh` is green.
 
 What F1 must wire in addition to its own feature folder:
 
