@@ -40,6 +40,7 @@ void main() {
         ValidationException(),
         NotFoundException(),
         ConflictException(),
+        LimitReachedException(),
         UnknownException(),
       ];
       const List<AppErrorCode> expectedCodes = <AppErrorCode>[
@@ -47,6 +48,7 @@ void main() {
         AppErrorCode.validation,
         AppErrorCode.notFound,
         AppErrorCode.conflict,
+        AppErrorCode.limitReached,
         AppErrorCode.unknown,
       ];
       // Act

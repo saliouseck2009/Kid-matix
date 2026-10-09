@@ -40,6 +40,13 @@ final class ConflictException extends AppException {
   const ConflictException({super.message}) : super(code: AppErrorCode.conflict);
 }
 
+/// A business limit is reached, such as the number of profiles.
+final class LimitReachedException extends AppException {
+  /// Creates a limit failure.
+  const LimitReachedException({super.message})
+    : super(code: AppErrorCode.limitReached);
+}
+
 /// Any failure that has no dedicated type.
 final class UnknownException extends AppException {
   /// Creates an unclassified failure.

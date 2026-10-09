@@ -15,6 +15,9 @@ enum AppErrorCode {
   /// The operation clashes with existing data.
   conflict,
 
+  /// A business limit is reached, such as the number of profiles.
+  limitReached,
+
   /// Any failure that has no dedicated code.
   unknown,
 }
