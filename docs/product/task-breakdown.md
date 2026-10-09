@@ -165,7 +165,7 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 
 **Données**
 
-- [ ] **F1-05** Migration : tables `profile` (index unique sur le pseudo normalisé, colonne de compte distant laissée vide) et `profile_settings`.
+- [x] **F1-05** Migration : tables `profile` (index unique sur le pseudo normalisé, colonne de compte distant laissée vide) et `profile_settings`.
 - [ ] **F1-06** Source de données locale, modèles et conversions, implémentation du repository.
 - [ ] **F1-07** Dernier joueur actif mémorisé dans shared_preferences.
 - [ ] **F1-08** Suppression d'un profil en cascade sur toutes ses données.
