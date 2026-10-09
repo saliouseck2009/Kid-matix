@@ -5,12 +5,14 @@ import 'package:kid_matix/main.dart';
 
 import 'features/profile/helpers/profile_fixtures.dart';
 import 'helpers/fake_profile_session_service.dart';
+import 'helpers/test_quiz_pages.dart';
 
 /// Router of an app where a player is already active.
 GoRouter _createPlayingRouter() {
   return createAppRouter(
     session: FakeProfileSessionService(activeProfileId: 'p-1'),
     profilePages: buildProfilePages(),
+    quizPages: buildTestQuizPages(),
   );
 }
 

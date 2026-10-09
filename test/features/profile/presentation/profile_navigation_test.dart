@@ -7,6 +7,7 @@ import 'package:kid_matix/main.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/fake_profile_session_service.dart';
+import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/profile_fixtures.dart';
 
 MockWatchProfileChangesUseCase _buildQuietWatch() {
@@ -55,6 +56,7 @@ void main() {
               clearActiveProfile: mockClearActive,
             ),
           ),
+          quizPages: buildTestQuizPages(),
         ),
       ),
     );
