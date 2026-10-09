@@ -166,9 +166,9 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 **Données**
 
 - [x] **F1-05** Migration : tables `profile` (index unique sur le pseudo normalisé, colonne de compte distant laissée vide) et `profile_settings`.
-- [ ] **F1-06** Source de données locale, modèles et conversions, implémentation du repository.
-- [ ] **F1-07** Dernier joueur actif mémorisé dans shared_preferences.
-- [ ] **F1-08** Suppression d'un profil en cascade sur toutes ses données.
+- [x] **F1-06** Source de données locale, modèles et conversions, implémentation du repository.
+- [x] **F1-07** Dernier joueur actif mémorisé dans shared_preferences.
+- [x] **F1-08** Suppression d'un profil en cascade sur toutes ses données.
 
 **Présentation**
 
@@ -183,7 +183,7 @@ Plusieurs enfants partagent le téléphone, chacun avec son pseudo ; ce lot livr
 **Tests**
 
 - [x] **F1-16** Tests unitaires : normalisation du pseudo, doublon à la casse et aux accents près, limite de 10 profils.
-- [ ] **F1-17** Tests du repository sur une base en mémoire, cascade comprise.
+- [x] **F1-17** Tests du repository sur une base en mémoire, cascade comprise.
 - [ ] **F1-18** Tests de `ProfilesBloc` et test de widget de « Qui joue ? ».
 
 **Terminé quand :** on crée trois joueurs, on en choisit un, on ferme l'app, et on retrouve la liste et le dernier joueur au relancement.
