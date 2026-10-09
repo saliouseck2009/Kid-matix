@@ -8,8 +8,9 @@ middle of one). Last update: 2026-10-09.
 | Lot | State |
 | --- | --- |
 | F0 · Foundation | **Done** (closed 2026-10-09) |
-| F1 · Profiles ("Qui joue ?") | **Next** |
-| F2 – F21 | Not started |
+| F1 · Profiles ("Qui joue ?") | **Done** (closed 2026-10-09) |
+| F2 · Quiz engine and multiplication domain | **Next** |
+| F3 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -31,16 +32,30 @@ hooks (`git config core.hooksPath .githooks`). `main` is on `origin`
   selected one highlighted; tapping "Défis" switches the page and the
   highlight.
 
+## F1 closure
+
+- `bash tool/check.sh`: every step OK (166 tests, git hook tests); CI green
+  on every pull request (analyze, test, build android, build ios).
+- Checked on the Android emulator (API 36), the lot's "done when" included:
+  first launch opens the creation; three players created; one chosen; app
+  killed and relaunched on the same player; rename from the Profile tab;
+  deletion after retyping the nickname, back to "Qui joue ?".
+- Coverage of `features/profile`: 98 % on `domain/` and on `data/`.
+
 Known gaps left on purpose, to handle in the lot named:
 
 - Portrait is locked at runtime only (`SystemChrome` in `main.dart`).
   `ios/Runner/Info.plist` and `AndroidManifest.xml` still allow landscape —
   restrict them by F11 at the latest.
-- `appMigrations` is empty and nothing opens the database yet — F1-05.
-- The router has no `redirect`; the four tabs show `ComingSoonPage`
-  placeholders — F1-09 for the redirect, then each lot replaces its tab.
-- `configureDependencies()` registers only core services — each lot adds its
-  `registerXxxFeature()`.
+- The Profile tab is the minimal F1 version (player, edit, switch, delete);
+  F10 builds the full screen of mockup 12 around it.
+- The streak pill of the player cards arrives with F7-15.
+- The mascot of "Qui joue ?" is a static drawing in the profile feature;
+  F8 replaces it with the growing mascot.
+- The tabs Parcours, S'entraîner and Défis still show `ComingSoonPage`.
+- Texts proposed without a mockup, waiting for the owner's confirmation:
+  the nickname errors, the storage and generic errors, "Enregistrer",
+  "Supprimer Awa ?", the deletion message and "Annuler".
 
 ## What F0 delivered
 
@@ -65,31 +80,39 @@ Known gaps left on purpose, to handle in the lot named:
   database, `TableChangeBus`, seeded random source, `DepthButton`, app shell.
 - `tool/setup.sh`, `tool/check.sh`, `analysis_options.yaml`.
 
-## Starting F1
+## What F1 delivered
 
-Tasks F1-01 to F1-18 in `docs/product/task-breakdown.md`; rules in section 3
-of `docs/product/specifications.md`; mockups `01-who-is-playing` and
-`02-profile-creation` in `docs/design/screens/`.
-Each task gets its own branch from `main`, for example
-`feat/f1-01-profile-entity`, and its own pull request once `tool/check.sh` is green.
+- `features/profile/`: entities (`ProfileEntity`, `ProfileSettingsEntity`,
+  `NicknameRules`), repository and its use cases, sqflite and preferences
+  data sources, `ProfilesBloc`, `ProfileCreationCubit`, `ProfileEditCubit`,
+  `ProfileTabCubit`, the pages "Qui joue ?", creation, edit and the Profile
+  tab, the 12 avatars (`ProfileAvatarPainter`), `ProfilePages` for the
+  router, `registerProfileFeature()`.
+- `core/storage/migrations/migration_001_create_profile_tables.dart`: the
+  database now opens.
+- `core/services/profile_session_service.dart` and
+  `core/router/profile_session_redirect.dart`: the router guards the app
+  with the active player.
+- `core/error`: `AppErrorCode.limitReached` and `LimitReachedException`.
+- Theme: avatar colors, `secondaryDepth`, `strongBorder`.
 
-What F1 must wire in addition to its own feature folder:
+## Starting F2
 
-- First migration (version 1): tables `profile` and `profile_settings`, with
-  the common columns, a unique index on the normalized nickname and the empty
-  remote-account column. Register it in `appMigrations`; from then on the
-  database opens.
-- `ProfileSessionService` interface in `core/services/`, implemented in
-  `features/profile/`, exposed as a `Listenable` so `createAppRouter()` can
-  use it as `refreshListenable` and `redirect` to "Qui joue ?" when no player
-  is active. New routes go in `AppRoutes`.
-- `registerProfileFeature()` in `features/profile/injection.dart`, called
-  from `configureDependencies()`.
-- First `@JsonSerializable` models: `tool/check.sh` then starts running
-  `build_runner` by itself.
-- Shared entities other features will need (the profile summary read by the
-  shell, for instance) go to `core/entities/`, not to the feature.
-- Colors to add to the theme for these screens: see "To add with F1" in
-  `docs/design/README.md`.
-- The streak pill on profile cards arrives with F7-15; until then the card
-  shows avatar, nickname and level.
+Tasks F2-01 to F2-12 in `docs/product/task-breakdown.md`; rules in sections
+5, 6 and 12 of `docs/product/specifications.md`. No screen and no database:
+the whole lot is pure Dart, and its "done when" is that all tests pass and
+the lot imports no Flutter package.
+
+- The quiz engine contracts (`LearningDomain`, unit, item, `QuestionType`,
+  `Question`, `Answer`, `DomainRegistry`, `QuestionTypeRegistry`) live in
+  `core/` (decision already taken), in a pure-Dart folder that the
+  architecture test must list among the folders a domain layer may import.
+- The multiplication domain is a new feature, `features/multiplication/`,
+  domain layer only for now.
+- Draws go through the seeded `RandomSource` of `core/services/`, so "same
+  seed, same questions" holds (F2-12).
+- Item keys (`mul:7x8`) are stored by the mastery engine (F4): they never
+  change once released.
+- The answer widget of a question type belongs to the quiz screen (F3); in
+  F2 a `QuestionType` only describes its model, validation rule and answer
+  nature (recognized or produced).

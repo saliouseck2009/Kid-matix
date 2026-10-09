@@ -99,6 +99,22 @@ Then on GitHub (or with `gh`):
 One pull request per task. A pull request that grows beyond one task is
 split. Fixes asked in review are new commits on the same branch.
 
+### Stacked pull requests
+
+When a task needs a branch that is not merged yet, its branch starts from
+that branch and its pull request targets it (base = the parent branch), so
+the diff shows only the new task. Merge them strictly in order:
+
+1. merge the parent pull request into `main`;
+2. check that the stacked pull request now targets `main` (GitHub retargets
+   it by itself only when the parent branch is deleted on merge; otherwise
+   use "Edit" next to its title and choose `main`);
+3. only then merge the stacked pull request.
+
+A stacked pull request merged into its parent branch after the parent
+reached `main` never reaches `main` (it happened with #15, recovered by
+#16).
+
 Never rewrite history that is already on `origin` (`push --force` on `main`
 is forbidden). On your own branch, before the pull request is reviewed,
 `git commit --fixup` and `git rebase -i --autosquash main` are fine to tidy
