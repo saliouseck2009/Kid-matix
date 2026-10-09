@@ -10,12 +10,10 @@ import 'package:sqflite/sqflite.dart';
 final class AppDatabase {
   /// Creates the database wrapper; nothing is opened until [database] is read.
   AppDatabase({
-    required DatabaseFactory databaseFactory,
-    required DatabasePathResolver resolvePath,
-    required MigrationRunner migrationRunner,
-  }) : _databaseFactory = databaseFactory,
-       _resolvePath = resolvePath,
-       _migrationRunner = migrationRunner;
+    required this._databaseFactory,
+    required this._resolvePath,
+    required this._migrationRunner,
+  });
 
   /// Name of the database file inside the platform databases directory.
   static const String fileName = 'kid_matix.db';

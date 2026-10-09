@@ -4,9 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// [LocalStorage] backed by `shared_preferences`.
 final class SharedPreferencesLocalStorage implements LocalStorage {
   /// Creates a storage that reads and writes through [preferences].
-  const SharedPreferencesLocalStorage({
-    required SharedPreferencesAsync preferences,
-  }) : _preferences = preferences;
+  const SharedPreferencesLocalStorage({required this._preferences});
 
   final SharedPreferencesAsync _preferences;
 
