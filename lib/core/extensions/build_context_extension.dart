@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/theme/app_feedback_palette.dart';
 import 'package:kid_matix/core/theme/app_palette.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -9,4 +10,8 @@ extension BuildContextExtension on BuildContext {
 
   /// Design colors that Material's `ColorScheme` has no slot for.
   AppPalette get palette => Theme.of(this).extension<AppPalette>()!;
+
+  /// Colors of right and wrong answers.
+  AppFeedbackPalette get feedbackPalette =>
+      Theme.of(this).extension<AppFeedbackPalette>()!;
 }

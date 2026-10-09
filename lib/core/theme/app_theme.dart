@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/theme/app_colors.dart';
+import 'package:kid_matix/core/theme/app_feedback_palette.dart';
 import 'package:kid_matix/core/theme/app_palette.dart';
 import 'package:kid_matix/core/theme/app_text_theme.dart';
 
@@ -11,7 +12,10 @@ abstract final class AppTheme {
     colorScheme: _lightColorScheme,
     scaffoldBackgroundColor: AppColors.ground,
     textTheme: AppTextTheme.build(color: AppColors.ink),
-    extensions: const <ThemeExtension<AppPalette>>[AppPalette.light],
+    extensions: const <ThemeExtension<Object?>>[
+      AppPalette.light,
+      AppFeedbackPalette.light,
+    ],
   );
 
   static const ColorScheme _lightColorScheme = ColorScheme(

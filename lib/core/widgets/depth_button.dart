@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/theme/app_feedback_palette.dart';
 import 'package:kid_matix/core/theme/app_palette.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 
@@ -25,30 +26,62 @@ class DepthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final AppPalette palette = context.palette;
-    final bool isPrimary = variant == DepthButtonVariant.primary;
-    final Color depthColor = isPrimary ? palette.primaryDepth : palette.border;
+    final _DepthColors colors = _resolveColors(context);
     return Semantics(
       button: true,
       enabled: onPressed != null,
       child: Container(
         padding: const EdgeInsets.only(bottom: AppSizes.buttonDepth),
         decoration: BoxDecoration(
-          color: depthColor,
+          color: colors.depth,
           borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
         child: _DepthButtonFace(
           label: label,
           onPressed: onPressed,
-          faceColor: isPrimary ? colorScheme.primary : colorScheme.surface,
-          labelColor: isPrimary ? colorScheme.onPrimary : palette.primaryText,
-          outlineColor: isPrimary ? null : palette.border,
+          faceColor: colors.face,
+          labelColor: colors.label,
+          outlineColor: colors.outline,
         ),
       ),
     );
   }
+
+  _DepthColors _resolveColors(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final AppPalette palette = context.palette;
+    final AppFeedbackPalette feedback = context.feedbackPalette;
+    return switch (variant) {
+      DepthButtonVariant.primary => (
+        face: colorScheme.primary,
+        depth: palette.primaryDepth,
+        label: colorScheme.onPrimary,
+        outline: null,
+      ),
+      DepthButtonVariant.secondary => (
+        face: colorScheme.surface,
+        depth: palette.border,
+        label: palette.primaryText,
+        outline: palette.border,
+      ),
+      DepthButtonVariant.success => (
+        face: feedback.right,
+        depth: feedback.rightDepth,
+        label: feedback.onFeedback,
+        outline: null,
+      ),
+      DepthButtonVariant.danger => (
+        face: feedback.wrong,
+        depth: feedback.wrongDepth,
+        label: feedback.onFeedback,
+        outline: null,
+      ),
+    };
+  }
 }
+
+/// Colors of one variant of a [DepthButton].
+typedef _DepthColors = ({Color face, Color depth, Color label, Color? outline});
 
 class _DepthButtonFace extends StatelessWidget {
   const _DepthButtonFace({

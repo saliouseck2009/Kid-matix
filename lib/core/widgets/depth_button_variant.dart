@@ -5,4 +5,10 @@ enum DepthButtonVariant {
 
   /// White with an outline, for the alternative action.
   secondary,
+
+  /// Green, to go on after a right answer.
+  success,
+
+  /// Red, to go on after a wrong answer.
+  danger,
 }
