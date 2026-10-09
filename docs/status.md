@@ -15,11 +15,11 @@ Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS.
 
 ## Git
 
-Every change goes through its own branch and Conventional Commits, merged
-into `main` with `--no-ff` — rules in `docs/git-workflow.md`, enforced by
-`.githooks/`. On a new clone, `bash tool/setup.sh` installs the hooks
-(`git config core.hooksPath .githooks`). Nothing has been pushed to
-`origin` yet.
+Every change goes through its own branch, Conventional Commits and a GitHub
+pull request merged with a merge commit — rules in `docs/git-workflow.md`,
+enforced by `.githooks/`. On a new clone, `bash tool/setup.sh` installs the
+hooks (`git config core.hooksPath .githooks`). `main` is on `origin`
+(github.com/saliouseck2009/Kid-matix).
 
 ## F0 closure
 
@@ -70,7 +70,7 @@ Tasks F1-01 to F1-18 in `docs/product/task-breakdown.md`; rules in section 3
 of `docs/product/specifications.md`; mockups `01-who-is-playing` and
 `02-profile-creation` in `docs/design/screens/`.
 Each task gets its own branch from `main`, for example
-`feat/f1-01-profile-entity`, merged once `tool/check.sh` is green.
+`feat/f1-01-profile-entity`, and its own pull request once `tool/check.sh` is green.
 
 What F1 must wire in addition to its own feature folder:
 

@@ -47,7 +47,7 @@ owner. Add a line here whenever a new decision is taken.
 | `audioplayers` is added in F10, `flutter_local_notifications` in F18 — not before | No unused dependency |
 | Fredoka and Nunito are bundled as variable fonts; weight is set through the `wght` axis | Offline app: no `google_fonts` download at runtime |
 | Generated localizations live in `lib/l10n/` (`nullable-getter: false`), read with `context.l10n` | Texts only through `AppLocalizations` |
-| One branch per task (`<type>/<slug>`, task id first), Conventional Commits, merged into `main` with `--no-ff`; rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/` | Owner's request: each feature on its own branch and clean commits. Local hooks because there is no CI yet |
+| One branch per task (`<type>/<slug>`, task id first), Conventional Commits, one GitHub pull request per task merged with a merge commit; no commit or push on `main`. Rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/` | Owner's request: each feature on its own branch, clean commits, pull requests. Local hooks because there is no CI yet |
 | Verification is one command: `bash tool/check.sh` (pub get, gen-l10n, build_runner if needed, format, analyze, test) | A lot is done only when every step is OK |
 
 ## Open points

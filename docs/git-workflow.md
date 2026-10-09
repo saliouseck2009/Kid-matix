@@ -1,14 +1,17 @@
 # Git workflow
 
-Binding for every change, by the owner or by a coding session. The hooks in
-`.githooks/` enforce the branch and commit rules locally; `tool/setup.sh`
+Binding for every change, by the owner or by a coding session. Every change
+reaches `main` through a GitHub pull request. The hooks in `.githooks/`
+enforce the branch, commit and push rules locally; `tool/setup.sh`
 installs them (`git config core.hooksPath .githooks`) and
 `tool/hooks_test.sh` (run by `tool/check.sh`) tests them.
 
 ## Branches
 
-- `main` always builds and passes `bash tool/check.sh`. Nobody commits on it
-  directly: the `pre-commit` hook refuses it.
+- `main` always builds and passes `bash tool/check.sh`. Nobody commits or
+  pushes on it directly: the `pre-commit` hook refuses a commit on `main` and
+  the `pre-push` hook refuses a push to `main`. It only moves when a pull
+  request is merged.
 - One branch per task of `docs/product/task-breakdown.md`, or per
   self-contained change outside the breakdown (a fix, a dependency bump, a
   docs update). Never two tasks on one branch.
@@ -72,17 +75,33 @@ bash tool/check.sh
 git add -p
 git commit
 # when the task is done and check.sh is green:
-git switch main
-git merge --no-ff feat/f1-03-profile-repository
-git branch -d feat/f1-03-profile-repository
-git push
+git push -u origin HEAD
+gh pr create --fill --base main
 ```
 
-Merging with `--no-ff` keeps one merge commit per task, so `git log
---first-parent main` reads as the list of delivered tasks. When the work goes
-through GitHub pull requests instead, use "Create a merge commit" for the
-same result; the branch rules do not change.
+Then on GitHub (or with `gh`):
+
+1. The pull request title follows the commit header format
+   (`feat(profile): add the profile repository`); the description says what
+   the task delivers, how it was checked (`tool/check.sh`, device or
+   emulator) and ends with the task id (`Refs: F1-03`).
+2. The owner reviews and merges with **"Create a merge commit"**, so
+   `git log --first-parent main` reads as the list of delivered tasks. No
+   squash, no rebase merge.
+3. The branch is deleted after the merge (`gh pr merge --merge
+   --delete-branch`).
+4. Locally: `git switch main && git pull --ff-only && git branch -d <branch>`.
+
+One pull request per task. A pull request that grows beyond one task is
+split. Fixes asked in review are new commits on the same branch.
 
 Never rewrite history that is already on `origin` (`push --force` on `main`
-is forbidden). On your own unpushed branch, `git commit --fixup` and
-`git rebase -i --autosquash main` are fine to tidy commits before merging.
+is forbidden). On your own branch, before the pull request is reviewed,
+`git commit --fixup` and `git rebase -i --autosquash main` are fine to tidy
+commits; push them with `git push --force-with-lease`.
+
+## Protection on GitHub
+
+The hooks are local and `--no-verify` skips them. To make the rule hold on
+the server, protect `main` in the repository settings (Settings, Branches):
+require a pull request before merging, and block force pushes and deletion.
