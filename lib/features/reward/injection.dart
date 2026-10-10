@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/core/services/reward_service.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
+import 'package:kid_matix/features/reward/domain/services/reward_service_impl.dart';
 import 'package:kid_matix/features/reward/data/datasources/reward_local_data_source.dart';
 import 'package:kid_matix/features/reward/data/datasources/reward_local_data_source_impl.dart';
 import 'package:kid_matix/features/reward/data/repositories/reward_repository_impl.dart';
@@ -38,6 +40,10 @@ void registerRewardFeature(GetIt sl) {
   );
   sl.registerLazySingleton<WatchRewardChangesUseCase>(
     () => WatchRewardChangesUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<RewardService>(
+    () =>
+        RewardServiceImpl(getLevel: sl(), getBadges: sl(), watchChanges: sl()),
   );
   sl<SessionSavedHooks>().add(
     RewardSessionHook(
