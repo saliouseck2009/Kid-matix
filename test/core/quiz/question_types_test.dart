@@ -11,6 +11,7 @@ import 'package:kid_matix/core/quiz/question_types/version_one_question_types.da
 Question _buildQuestion(String questionTypeId, Answer expectedAnswer) {
   return Question(
     itemKey: 'mul:7x8',
+    unitKey: 'mul:7',
     questionTypeId: questionTypeId,
     prompt: const <PromptToken>[
       NumberToken(7),

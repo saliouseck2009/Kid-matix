@@ -5,6 +5,7 @@ import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
@@ -27,6 +28,12 @@ final class _FakeDomain implements LearningDomain {
 
   @override
   LearningItem? findItem(String key) => null;
+
+  @override
+  LearningUnit? findUnit(String key) => null;
+
+  @override
+  List<PromptToken> describeItem(LearningItem item) => const <PromptToken>[];
 
   @override
   Question buildQuestion({

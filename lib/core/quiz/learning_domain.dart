@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 
@@ -22,6 +23,13 @@ abstract interface class LearningDomain {
 
   /// Returns the item of [key], or `null` when the domain has none.
   LearningItem? findItem(String key);
+
+  /// Returns the unit of [key], or `null` when the domain has none.
+  LearningUnit? findUnit(String key);
+
+  /// The whole fact of [item] with its answer, such as `5 × 8 = 40`, shown
+  /// in the results among the facts to review.
+  List<PromptToken> describeItem(LearningItem item);
 
   /// Builds a question of type [questionTypeId] about [item], drawing
   /// choices and positions from [random].

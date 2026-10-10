@@ -8,6 +8,7 @@ final class Question {
   /// Creates a question.
   Question({
     required this.itemKey,
+    required this.unitKey,
     required this.questionTypeId,
     required List<PromptToken> prompt,
     required this.expectedAnswer,
@@ -17,6 +18,9 @@ final class Question {
 
   /// Key of the item the question asks about, such as `mul:7x8`.
   final String itemKey;
+
+  /// Key of the unit of the item, such as `mul:7`.
+  final String unitKey;
 
   /// Identifier of the question type, such as `multipleChoice`.
   final String questionTypeId;
@@ -35,6 +39,7 @@ final class Question {
     return identical(this, other) ||
         other is Question &&
             other.itemKey == itemKey &&
+            other.unitKey == unitKey &&
             other.questionTypeId == questionTypeId &&
             _haveSameElements(other.prompt, prompt) &&
             _haveSameElements(other.choices, choices) &&
@@ -44,6 +49,7 @@ final class Question {
   @override
   int get hashCode => Object.hash(
     itemKey,
+    unitKey,
     questionTypeId,
     Object.hashAll(prompt),
     Object.hashAll(choices),

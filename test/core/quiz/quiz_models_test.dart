@@ -7,6 +7,7 @@ import 'package:kid_matix/core/quiz/question.dart';
 Question _buildQuestion({List<Answer>? choices}) {
   return Question(
     itemKey: 'mul:7x8',
+    unitKey: 'mul:7',
     questionTypeId: 'multipleChoice',
     prompt: const <PromptToken>[
       NumberToken(7),

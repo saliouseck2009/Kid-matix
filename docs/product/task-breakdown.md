@@ -221,11 +221,11 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 
 **Domaine**
 
-- [ ] **F3-01** Entité `QuizSession` : identifiant UUID, mode, domaine, début, durée, nombre de questions et de réussites.
-- [ ] **F3-02** `BuildQuiz` : construit la session à partir d'un mode et d'une liste d'items.
-- [ ] **F3-03** `SubmitAnswer` : valide la réponse, mesure le temps, marque « Éclair » sous 3 secondes.
-- [ ] **F3-04** Un fait raté revient 3 questions plus tard dans la session, une seule fois.
-- [ ] **F3-05** `CompleteSession` écrit la session en une seule transaction ; `AbandonSession` garde les réponses données sans attribuer de récompense.
+- [x] **F3-01** Entité `QuizSession` : identifiant UUID, mode, domaine, début, durée, nombre de questions et de réussites.
+- [x] **F3-02** `BuildQuiz` : construit la session à partir d'un mode et d'une liste d'items.
+- [x] **F3-03** `SubmitAnswer` : valide la réponse, mesure le temps, marque « Éclair » sous 3 secondes.
+- [x] **F3-04** Un fait raté revient 3 questions plus tard dans la session, une seule fois.
+- [x] **F3-05** `CompleteSession` écrit la session en une seule transaction ; `AbandonSession` garde les réponses données sans attribuer de récompense.
 
 **Données**
 
@@ -247,7 +247,7 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 
 - [ ] **F3-16** Tests de `QuizBloc` avec un ticker factice : bonne réponse, erreur, temps écoulé, pause, reprise, abandon.
 - [ ] **F3-17** Un test de widget de l'écran Quiz par format de question.
-- [ ] **F3-18** Test du retour d'un fait raté 3 questions plus tard.
+- [x] **F3-18** Test du retour d'un fait raté 3 questions plus tard.
 
 **Terminé quand :** depuis un bouton provisoire, un joueur répond à 10 questions de la table de 5 dans les 4 formats, avec chrono, et voit ses résultats.
 

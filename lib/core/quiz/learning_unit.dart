@@ -7,6 +7,9 @@ abstract interface class LearningUnit {
   /// Stable key, such as `mul:7`.
   String get key;
 
+  /// Number shown to name the unit, such as 7 for "Table de 7".
+  int get number;
+
   /// Items of the unit, in their natural order.
   List<LearningItem> get items;
 }
