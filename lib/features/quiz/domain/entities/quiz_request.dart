@@ -17,6 +17,9 @@ final class QuizRequest {
     this.questionCount,
     this.baseTimeLimit,
     this.sourceKey,
+    this.followUpItemKeys = const <String>[],
+    this.followUpQuestionCount = 0,
+    this.isBossFight = false,
   });
 
   /// Creates the request of [profileId] to play [spec].
@@ -34,6 +37,9 @@ final class QuizRequest {
       questionCount: spec.questionCount,
       baseTimeLimit: spec.baseTimeLimit,
       sourceKey: spec.sourceKey,
+      followUpItemKeys: spec.followUpItemKeys,
+      followUpQuestionCount: spec.followUpQuestionCount,
+      isBossFight: spec.isBossFight,
     );
   }
 
@@ -65,4 +71,15 @@ final class QuizRequest {
   /// What the quiz is played for, such as a stage of the learning path,
   /// or `null`.
   final String? sourceKey;
+
+  /// Items the mastery engine draws the follow-up questions from, after
+  /// the main ones: the weakest first, each once.
+  final List<String> followUpItemKeys;
+
+  /// Most follow-up questions; 0 for none.
+  final int followUpQuestionCount;
+
+  /// Whether the quiz is a boss fight: every right answer hits the boss,
+  /// and the fight ends when it falls or flees.
+  final bool isBossFight;
 }

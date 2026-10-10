@@ -20,6 +20,7 @@ QuizSessionLocalModel _$QuizSessionLocalModelFromJson(
   correctCount: (json['correct_count'] as num).toInt(),
   updatedAt: (json['updated_at'] as num).toInt(),
   sourceKey: json['source_key'] as String?,
+  bossOutcome: $enumDecodeNullable(_$BossOutcomeEnumMap, json['boss_outcome']),
   deletedAt: (json['deleted_at'] as num?)?.toInt(),
 );
 
@@ -36,6 +37,7 @@ Map<String, dynamic> _$QuizSessionLocalModelToJson(
   'question_count': instance.questionCount,
   'correct_count': instance.correctCount,
   'source_key': instance.sourceKey,
+  'boss_outcome': _$BossOutcomeEnumMap[instance.bossOutcome],
   'updated_at': instance.updatedAt,
   'deleted_at': instance.deletedAt,
 };
@@ -48,4 +50,9 @@ const _$QuizModeEnumMap = {
 const _$QuizSessionStatusEnumMap = {
   QuizSessionStatus.completed: 'completed',
   QuizSessionStatus.abandoned: 'abandoned',
+};
+
+const _$BossOutcomeEnumMap = {
+  BossOutcome.defeated: 'defeated',
+  BossOutcome.fled: 'fled',
 };

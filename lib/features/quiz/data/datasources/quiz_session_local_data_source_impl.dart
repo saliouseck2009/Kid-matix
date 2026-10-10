@@ -58,6 +58,7 @@ final class QuizSessionLocalDataSourceImpl
         session.startedAt + session.durationMs,
       ),
       sourceKey: session.sourceKey,
+      bossOutcome: session.bossOutcome?.name,
     );
   }
 

@@ -14,6 +14,7 @@ final class SavedQuizSession {
     required this.correctCount,
     required this.endedAt,
     this.sourceKey,
+    this.bossOutcome,
   });
 
   /// Identifier of the session.
@@ -39,6 +40,10 @@ final class SavedQuizSession {
 
   /// What the quiz was played for, or `null`.
   final String? sourceKey;
+
+  /// How a boss fight ended, `defeated` or `fled`, or `null` for another
+  /// quiz.
+  final String? bossOutcome;
 }
 
 /// Writes what a feature keeps from a quiz session, inside the

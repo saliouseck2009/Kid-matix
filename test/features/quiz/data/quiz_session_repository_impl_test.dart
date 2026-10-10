@@ -10,6 +10,7 @@ import 'package:kid_matix/features/quiz/data/datasources/quiz_session_local_data
 import 'package:kid_matix/features/quiz/data/models/quiz_answer_local_model.dart';
 import 'package:kid_matix/features/quiz/data/models/quiz_session_local_model.dart';
 import 'package:kid_matix/features/quiz/data/repositories/quiz_session_repository_impl.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
@@ -32,6 +33,7 @@ QuizSessionEntity _buildSession({String profileId = 'p1'}) {
     questionCount: 2,
     correctCount: 1,
     sourceKey: 'path:mul:5:training',
+    bossOutcome: BossOutcome.defeated,
   );
 }
 
@@ -195,6 +197,7 @@ void main() {
         expect(actualSession.isCompleted, isTrue);
         expect(actualSession.correctCount, 1);
         expect(actualSession.sourceKey, 'path:mul:5:training');
+        expect(actualSession.bossOutcome, 'defeated');
         expect(
           actualSession.endedAt,
           quizStart.add(const Duration(seconds: 75)),

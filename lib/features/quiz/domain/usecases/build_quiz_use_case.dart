@@ -13,6 +13,7 @@ import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
@@ -53,7 +54,11 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         ValidationException(message: 'Unknown domain or items.'),
       );
     }
-    final DataState<List<QuizItemPlan>> plans = await _plan(params, items);
+    final DataState<List<QuizItemPlan>> main = await _plan(params, items);
+    final DataState<List<QuizItemPlan>> plans =
+        main is DataSuccess<List<QuizItemPlan>>
+        ? await _addFollowUp(params, main.data)
+        : main;
     return switch (plans) {
       DataSuccess<List<QuizItemPlan>>(:final data) => _generate(
         params,
@@ -97,6 +102,32 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
     );
   }
 
+  /// [plans] followed by up to `followUpQuestionCount` of the weakest
+  /// follow-up items, each once.
+  Future<DataState<List<QuizItemPlan>>> _addFollowUp(
+    BuildQuizParams params,
+    List<QuizItemPlan> plans,
+  ) async {
+    if (params.followUpQuestionCount <= 0 || params.followUpItemKeys.isEmpty) {
+      return DataSuccess<List<QuizItemPlan>>(plans);
+    }
+    final DataState<List<QuizItemPlan>> drawn = await _mastery.planQuiz(
+      request: QuizPlanRequest(
+        profileId: params.profileId,
+        domainId: params.domainId,
+        itemKeys: params.followUpItemKeys,
+        questionTypeIds: params.questionTypeIds,
+        questionCount: params.followUpQuestionCount,
+      ),
+    );
+    if (drawn is! DataSuccess<List<QuizItemPlan>>) return drawn;
+    final Set<String> seen = <String>{};
+    return DataSuccess<List<QuizItemPlan>>(<QuizItemPlan>[
+      ...plans,
+      ...drawn.data.where((QuizItemPlan plan) => seen.add(plan.itemKey)),
+    ]);
+  }
+
   DataState<QuizRun> _generate(
     BuildQuizParams params,
     LearningDomain domain,
@@ -135,6 +166,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       questionTypeIds: params.questionTypeIds,
       timeLimit: params.timeLimit,
       sourceKey: params.sourceKey,
+      boss: params.isBossFight ? const BossFight() : null,
       queue: questions
           .map((Question question) => QuizTurn(question: question))
           .toList(),

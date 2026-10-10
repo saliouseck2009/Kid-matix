@@ -93,7 +93,10 @@ void main() {
       await (await versionFour.database).insert('profile', _profileRow);
       await versionFour.close();
       // Act
-      final AppDatabase versionFive = _openDatabase(appMigrations, inputPath);
+      final AppDatabase versionFive = _openDatabase(
+        appMigrations.take(5).toList(),
+        inputPath,
+      );
       final Database upgraded = await versionFive.database;
       // Assert
       expect(await upgraded.getVersion(), 5);
