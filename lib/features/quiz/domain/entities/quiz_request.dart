@@ -11,6 +11,7 @@ final class QuizRequest {
     required this.mode,
     required this.itemKeys,
     required this.questionTypeIds,
+    this.questionCount,
     this.baseTimeLimit,
   });
 
@@ -23,8 +24,11 @@ final class QuizRequest {
   /// How the quiz is started.
   final QuizMode mode;
 
-  /// Items to ask, in order.
+  /// Items to draw the questions from.
   final List<String> itemKeys;
+
+  /// Scored questions to ask, or `null` for as many as [itemKeys].
+  final int? questionCount;
 
   /// Question types to draw from.
   final List<String> questionTypeIds;

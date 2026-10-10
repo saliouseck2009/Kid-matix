@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
+import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
@@ -15,8 +19,12 @@ import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dart';
 
-/// Judges the answer to the current question and moves the quiz on.
+/// Judges the answer to the current question, records it in the mastery
+/// of its item and moves the quiz on.
 ///
+/// The progress is saved at each answer, so a quiz left or an app closed
+/// midway loses nothing; a progress that cannot be saved is logged and
+/// never stops the game.
 /// A missed fact comes back 3 questions later, once per session, with a
 /// question drawn again; that second chance does not count in the score.
 /// Fails with a `ValidationException` when the quiz is over or its domain
@@ -27,6 +35,7 @@ class SubmitAnswerUseCase
   const SubmitAnswerUseCase({
     required this._questionTypes,
     required this._domains,
+    required this._mastery,
     required this._generator,
     required this._random,
   });
@@ -35,7 +44,10 @@ class SubmitAnswerUseCase
   static const int retryDelay = 2;
 
   final QuestionTypeRegistry _questionTypes;
+  static const String _logName = 'quiz';
+
   final DomainRegistry _domains;
+  final MasteryService _mastery;
   final QuestionGenerator _generator;
   final RandomSource _random;
 
@@ -55,6 +67,7 @@ class SubmitAnswerUseCase
       );
     }
     final QuizAnswerEntity answer = _judge(turn, type, params);
+    await _record(run, answer);
     final List<QuizTurn> queue = <QuizTurn>[...run.queue.skip(1)];
     if (_needsRetry(run, turn, answer)) {
       queue.insert(
@@ -94,6 +107,23 @@ class SubmitAnswerUseCase
       isRetry: turn.isRetry,
       answerTime: params.answerTime,
     );
+  }
+
+  Future<void> _record(QuizRun run, QuizAnswerEntity answer) async {
+    final DataState<void> recorded = await _mastery.recordAnswer(
+      answer: ItemAnswer(
+        profileId: run.profileId,
+        domainId: run.domainId,
+        itemKey: answer.itemKey,
+        questionTypeId: answer.questionTypeId,
+        isCorrect: answer.isCorrect,
+        answerTime: answer.answerTime,
+        isRetry: answer.isRetry,
+      ),
+    );
+    if (recorded case DataFailed<void>(:final exception)) {
+      log('Progress not recorded', name: _logName, error: exception);
+    }
   }
 
   bool _needsRetry(QuizRun run, QuizTurn turn, QuizAnswerEntity answer) {

@@ -11,6 +11,7 @@ final class BuildQuizParams {
     required this.mode,
     required this.itemKeys,
     required this.questionTypeIds,
+    this.questionCount,
     this.timeLimit,
   });
 
@@ -23,8 +24,11 @@ final class BuildQuizParams {
   /// How the quiz is started.
   final QuizMode mode;
 
-  /// Items to ask, one scored question each, in this order.
+  /// Items to draw the questions from.
   final List<String> itemKeys;
+
+  /// Scored questions to ask, or `null` for as many as [itemKeys].
+  final int? questionCount;
 
   /// Question types to draw from.
   final List<String> questionTypeIds;

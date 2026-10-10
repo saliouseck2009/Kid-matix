@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
+import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -9,15 +10,20 @@ import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dar
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
+import '../../../helpers/fake_mastery_service.dart';
 import '../helpers/quiz_fixtures.dart';
 
 const Duration _quick = Duration(seconds: 2);
 const Duration _slow = Duration(seconds: 5);
 
 void main() {
+  late FakeMasteryService mastery;
   late SubmitAnswerUseCase useCase;
 
-  setUp(() => useCase = buildSubmitAnswerUseCase());
+  setUp(() {
+    mastery = FakeMasteryService();
+    useCase = buildSubmitAnswerUseCase(mastery: mastery);
+  });
 
   Future<QuizSubmission> answer(
     QuizRun run, {
@@ -175,6 +181,54 @@ void main() {
       expect(actualRun.isFinished, isTrue);
       expect(actualRun.answers, hasLength(3));
       expect(actualRun.correctCount, 1);
+    });
+  });
+
+  group('recording the mastery', () {
+    test('records each answer as soon as it is given', () async {
+      // Arrange
+      final QuizRun inputRun = await buildRun(tableKeys(5));
+      // Act
+      final QuizSubmission actualFirst = await answer(inputRun, isRight: true);
+      await answer(actualFirst.run, isRight: false, timesOut: true);
+      // Assert
+      final List<ItemAnswer> actualRecorded = mastery.recordedAnswers;
+      expect(actualRecorded, hasLength(2));
+      expect(actualRecorded.first.profileId, 'profile-1');
+      expect(actualRecorded.first.domainId, 'multiplication');
+      expect(actualRecorded.first.itemKey, 'mul:5x1');
+      expect(actualRecorded.first.questionTypeId, 'typedAnswer');
+      expect(actualRecorded.first.isCorrect, isTrue);
+      expect(actualRecorded.first.answerTime, _quick);
+      expect(actualRecorded.last.itemKey, 'mul:5x2');
+      expect(actualRecorded.last.isCorrect, isFalse);
+    });
+    test('tells the mastery engine about a second chance', () async {
+      // Arrange
+      QuizRun run = (await answer(
+        await buildRun(tableKeys(5)),
+        isRight: false,
+      )).run;
+      for (int index = 0; index < 2; index++) {
+        run = (await answer(run, isRight: true)).run;
+      }
+      // Act
+      await answer(run, isRight: true);
+      // Assert
+      expect(mastery.recordedAnswers.last.itemKey, 'mul:5x1');
+      expect(mastery.recordedAnswers.last.isRetry, isTrue);
+    });
+    test('goes on when the progress cannot be saved', () async {
+      // Arrange
+      mastery.failure = const CacheException();
+      final QuizRun inputRun = await buildRun(tableKeys(5));
+      // Act
+      final QuizSubmission actualSubmission = await answer(
+        inputRun,
+        isRight: true,
+      );
+      // Assert
+      expect(actualSubmission.run.answers, hasLength(1));
     });
   });
 }

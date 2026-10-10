@@ -57,6 +57,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         domainId: request.domainId,
         mode: request.mode,
         itemKeys: request.itemKeys,
+        questionCount: request.questionCount,
         questionTypeIds: request.questionTypeIds,
         timeLimit: await _useCases.getTimeLimit(params: request),
       ),

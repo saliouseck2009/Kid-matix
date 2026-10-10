@@ -3,6 +3,7 @@ import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/multiplication/domain/entities/multiplication_fact.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
@@ -137,6 +138,76 @@ void main() {
       );
       // Assert
       expect(actualQuestions, isEmpty);
+    });
+  });
+
+  group('QuestionGenerator.generatePlanned', () {
+    test('asks each plan with one of its own types', () {
+      // Arrange
+      final List<QuizItemPlan> inputPlans = <QuizItemPlan>[
+        QuizItemPlan(
+          itemKey: 'mul:7x8',
+          questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+        ),
+        QuizItemPlan(
+          itemKey: 'mul:7x9',
+          questionTypeIds: const <String>[
+            QuestionTypeIds.trueFalse,
+            'matchPairs',
+          ],
+        ),
+      ];
+      // Act
+      final List<Question> actualQuestions = _generator.generatePlanned(
+        domain: _domain,
+        plans: inputPlans,
+        random: DartRandomSource(seed: 3),
+      );
+      // Assert
+      expect(
+        actualQuestions.map(
+          (Question question) =>
+              '${question.itemKey} ${question.questionTypeId}',
+        ),
+        <String>['mul:7x8 typedAnswer', 'mul:7x9 trueFalse'],
+      );
+    });
+    test('never asks the same planned item twice in a row', () {
+      // Arrange
+      QuizItemPlan plan(String itemKey) => QuizItemPlan(
+        itemKey: itemKey,
+        questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+      );
+      // Act
+      final List<Question> actualQuestions = _generator.generatePlanned(
+        domain: _domain,
+        plans: <QuizItemPlan>[
+          plan('mul:7x8'),
+          plan('mul:7x8'),
+          plan('mul:2x2'),
+        ],
+        random: DartRandomSource(seed: 3),
+      );
+      // Assert
+      expect(
+        actualQuestions.map((Question question) => question.itemKey),
+        <String>['mul:7x8', 'mul:2x2', 'mul:7x8'],
+      );
+    });
+    test('refuses a plan of an unknown item', () {
+      // Act
+      List<Question> actualGenerate() => _generator.generatePlanned(
+        domain: _domain,
+        plans: <QuizItemPlan>[
+          QuizItemPlan(
+            itemKey: 'mul:13x1',
+            questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+          ),
+        ],
+        random: DartRandomSource(seed: 3),
+      );
+      // Assert
+      expect(actualGenerate, throwsArgumentError);
     });
   });
 }

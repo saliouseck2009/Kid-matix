@@ -269,7 +269,7 @@ L'app suit chaque fait pour chaque joueur et fait revenir les faits fragiles au 
 **Données**
 
 - [x] **F4-09** Migration : table `item_progress`, une ligne par joueur, domaine et item, créée à la première présentation.
-- [ ] **F4-10** Enregistrement à chaque réponse, pour qu'un abandon ou une fermeture de l'app ne perde rien.
+- [x] **F4-10** Enregistrement à chaque réponse, pour qu'un abandon ou une fermeture de l'app ne perde rien.
 
 **Présentation**
 
@@ -280,7 +280,7 @@ L'app suit chaque fait pour chaque joueur et fait revenir les faits fragiles au 
 
 - [x] **F4-13** Tests de `MasteryPolicy` : montées, retours en boîte 1, plafond, délais avec une horloge factice, médiane.
 - [x] **F4-14** Test du tirage pondéré avec une graine, et du choix du format selon la boîte.
-- [ ] **F4-15** Test : fermer l'app en plein quiz conserve les réponses déjà données.
+- [x] **F4-15** Test : fermer l'app en plein quiz conserve les réponses déjà données.
 
 **Terminé quand :** rejouer une table fait évoluer les boîtes de ses faits, et les faits ratés reviennent en priorité à la session suivante.
 
