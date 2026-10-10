@@ -19,6 +19,7 @@ import 'package:kid_matix/features/multiplication/domain/services/multiplication
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
+import '../../../helpers/fake_mastery_service.dart';
 
 final class _MockRepository extends Mock implements StageProgressRepository {}
 
@@ -82,6 +83,24 @@ void main() {
         <String>{'mul:1', 'mul:2', 'mul:10'},
       );
     });
+    test('fights the boss on the table, then on the tables seen', () {
+      // Act
+      final QuizSpec actualFirst = specOf('mul:1', StageKind.boss);
+      final QuizSpec actualFifth = specOf('mul:5', StageKind.boss);
+      // Assert
+      expect(actualFirst.isBossFight, isTrue);
+      expect(actualFirst.baseTimeLimit, const Duration(seconds: 8));
+      expect(actualFirst.questionTypeIds, hasLength(4));
+      expect(actualFirst.followUpQuestionCount, 10);
+      expect(actualFirst.followUpItemKeys, actualFirst.itemKeys);
+      expect(actualFifth.itemKeys.first, 'mul:5x1');
+      expect(
+        actualFifth.followUpItemKeys
+            .map((String key) => key.split('x').first)
+            .toSet(),
+        <String>{'mul:1', 'mul:2', 'mul:10'},
+      );
+    });
     test('has no quiz for an unknown table or review', () {
       // Assert
       expect(
@@ -108,14 +127,17 @@ void main() {
     late _MockRepository mockRepository;
     late _MockSettings mockSettings;
     late GetLearningPathUseCase useCase;
+    late FakeMasteryService mastery;
 
     setUp(() {
       mockRepository = _MockRepository();
       mockSettings = _MockSettings();
+      mastery = FakeMasteryService();
       useCase = GetLearningPathUseCase(
         repository: mockRepository,
         domains: DomainRegistry()..register(domain),
         settings: mockSettings,
+        mastery: mastery,
       );
       when(
         () => mockSettings.readEverythingUnlocked(
@@ -205,8 +227,13 @@ void main() {
         params: _params,
       )).exceptionOrNull;
       // Assert
+      mastery.failure = const CacheException();
+      final AppException? actualMastery = (await useCase(
+        params: _params,
+      )).exceptionOrNull;
       expect(actualSettings, isA<CacheException>());
       expect(actualProgress, isA<CacheException>());
+      expect(actualMastery, isA<CacheException>());
     });
     test('tells whether a stage can be played now', () async {
       // Arrange

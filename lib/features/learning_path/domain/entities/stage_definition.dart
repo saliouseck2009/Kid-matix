@@ -27,8 +27,9 @@ final class StageDefinition {
   /// Time per question of the boss fight.
   static const Duration bossTimeLimit = Duration(seconds: 8);
 
-  /// Most questions of the boss fight.
-  static const int bossQuestionCount = 20;
+  /// Most follow-up questions of the boss fight, after the facts of its
+  /// table.
+  static const int bossFollowUpCount = 10;
 
   /// The five stages of a table, in order.
   static const List<StageDefinition> tableStages = <StageDefinition>[
@@ -63,7 +64,6 @@ final class StageDefinition {
       kind: StageKind.boss,
       questionTypeIds: _allTypes,
       selection: QuizSelection.shuffled,
-      questionCount: bossQuestionCount,
       baseTimeLimit: bossTimeLimit,
     ),
   ];

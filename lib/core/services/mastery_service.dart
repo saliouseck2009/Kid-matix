@@ -16,4 +16,11 @@ abstract interface class MasteryService {
 
   /// Updates the progress of the item of [answer] as soon as it is given.
   Future<DataState<void>> recordAnswer({required ItemAnswer answer});
+
+  /// Returns the keys of the items of [domainId] that [profileId] has
+  /// mastered.
+  Future<DataState<Set<String>>> readMasteredItems({
+    required String profileId,
+    required String domainId,
+  });
 }

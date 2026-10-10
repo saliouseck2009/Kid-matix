@@ -17,6 +17,19 @@ final class FakeMasteryService implements MasteryService {
   /// Answers recorded so far, in order.
   final List<ItemAnswer> recordedAnswers = <ItemAnswer>[];
 
+  /// Items reported as mastered.
+  final Set<String> masteredItems = <String>{};
+
+  @override
+  Future<DataState<Set<String>>> readMasteredItems({
+    required String profileId,
+    required String domainId,
+  }) async {
+    final AppException? error = failure;
+    if (error != null) return DataFailed<Set<String>>(error);
+    return DataSuccess<Set<String>>(Set<String>.of(masteredItems));
+  }
+
   @override
   Future<DataState<List<QuizItemPlan>>> planQuiz({
     required QuizPlanRequest request,

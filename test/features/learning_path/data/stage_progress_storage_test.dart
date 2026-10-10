@@ -134,6 +134,41 @@ void main() {
       expect(actualOther, isEmpty);
       expect(await readProgress(), isEmpty);
     });
+    test('gives a defeated boss at least 1 star, a fled one none', () async {
+      // Act
+      await save(
+        SavedQuizSession(
+          id: 's2',
+          profileId: 'p1',
+          domainId: 'multiplication',
+          isCompleted: true,
+          questionCount: 20,
+          correctCount: 11,
+          endedAt: DateTime(2026, 10, 10, 17),
+          sourceKey: 'path:mul:5:boss',
+          bossOutcome: 'defeated',
+        ),
+      );
+      await save(
+        SavedQuizSession(
+          id: 's3',
+          profileId: 'p1',
+          domainId: 'multiplication',
+          isCompleted: true,
+          questionCount: 20,
+          correctCount: 11,
+          endedAt: DateTime(2026, 10, 10, 17),
+          sourceKey: 'path:mul:2:boss',
+          bossOutcome: 'fled',
+        ),
+      );
+      // Assert
+      final Map<String, int> actualStars = <String, int>{
+        for (final StageProgressEntity stage in await readProgress())
+          stage.unitKey: stage.bestStars,
+      };
+      expect(actualStars, <String, int>{'mul:5': 1, 'mul:2': 0});
+    });
     test('stores the review of a group of tables', () async {
       // Act
       await save(_session(sourceKey: 'path:review:1:review'));

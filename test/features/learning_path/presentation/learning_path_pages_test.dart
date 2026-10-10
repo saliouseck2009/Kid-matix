@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/widgets/crown_mark.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
@@ -100,6 +101,36 @@ void main() {
     });
   });
 
+  group('crowns', () {
+    testWidgets('crowns the table whose boss is defeated', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      pages = buildTestPathPages(
+        repository: InMemoryStageProgressRepository(<StageProgressEntity>[
+          ..._progress(),
+          _done('mul:1', StageKind.speed),
+          _done('mul:1', StageKind.boss),
+        ]),
+      );
+      // Act
+      await pumpPage(
+        tester,
+        pages.buildLearningPathPage(
+          profileId: 'p1',
+          onOpenTable: (String unitKey) {},
+          onPlay: (StageSource source) {},
+        ),
+      );
+      // Assert
+      expect(
+        find.bySemanticsLabel('Table de 1, terminée, 3 étoiles, couronne'),
+        findsOneWidget,
+      );
+      expect(find.byType(CrownMark), findsOneWidget);
+    });
+  });
+
   group('TableDetailPage', () {
     testWidgets('lists the five stages and plays the next one', (
       WidgetTester tester,
@@ -127,8 +158,8 @@ void main() {
       expect(find.text('Écriture'), findsOneWidget);
       expect(find.text('5 · Combat de boss'), findsOneWidget);
       expect(
-        find.bySemanticsLabel(RegExp('Bientôt disponible')),
-        findsOneWidget,
+        find.bySemanticsLabel(RegExp('Verrouillée')),
+        findsNWidgets(3),
       );
       expect(
         playedStage,

@@ -356,6 +356,10 @@ void main() {
       final MasteryServiceImpl service = MasteryServiceImpl(
         planQuiz: planQuiz(),
         recordAnswer: recordAnswer(),
+        getGrid: GetMasteryGridUseCase(
+          repository: repository,
+          domains: domains,
+        ),
       );
       // Act
       final List<QuizItemPlan> actualPlans = (await service.planQuiz(
@@ -370,6 +374,35 @@ void main() {
       // Assert
       expect(actualPlans, hasLength(4));
       expect(actualRecord, isA<DataSuccess<void>>());
+      expect(actualFailure, isA<ValidationException>());
+    });
+    test('reads the mastered items', () async {
+      // Arrange
+      final MasteryServiceImpl service = MasteryServiceImpl(
+        planQuiz: planQuiz(),
+        recordAnswer: recordAnswer(),
+        getGrid: GetMasteryGridUseCase(
+          repository: repository,
+          domains: domains,
+        ),
+      );
+      await repository.saveProgress(
+        progress: buildProgress('mul:7x8', box: 5).copyWith(
+          lastAnswerTimes: List<Duration>.filled(5, const Duration(seconds: 1)),
+        ),
+      );
+      await repository.saveProgress(progress: buildProgress('mul:7x9', box: 4));
+      // Act
+      final Set<String> actualMastered = (await service.readMasteredItems(
+        profileId: 'p1',
+        domainId: 'multiplication',
+      )).requireData;
+      final AppException? actualFailure = (await service.readMasteredItems(
+        profileId: 'p1',
+        domainId: 'division',
+      )).exceptionOrNull;
+      // Assert
+      expect(actualMastered, <String>{'mul:7x8'});
       expect(actualFailure, isA<ValidationException>());
     });
   });

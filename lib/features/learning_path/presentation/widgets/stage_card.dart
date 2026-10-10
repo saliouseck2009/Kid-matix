@@ -105,9 +105,7 @@ class _StageEnd extends StatelessWidget {
       final bool isBoss = stage.kind == StageKind.boss;
       return Icon(
         Icons.lock_outline_rounded,
-        semanticLabel: stage.isComingSoon
-            ? context.l10n.comingSoonMessage
-            : context.l10n.pathLocked,
+        semanticLabel: context.l10n.pathLocked,
         color: isBoss ? context.palette.softBorder : context.palette.mutedText,
       );
     }

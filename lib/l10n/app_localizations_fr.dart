@@ -509,4 +509,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get resultsStageTitle => 'Étape terminée !';
+
+  @override
+  String pathTableNodeCrowned(String label, String crown) {
+    String _temp0 = intl.Intl.selectLogic(
+      crown,
+      {
+        'golden': 'couronne dorée',
+        'other': 'couronne',
+      },
+    );
+    return '$label, $_temp0';
+  }
 }

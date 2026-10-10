@@ -681,5 +681,19 @@
   "resultsStageTitle": "Étape terminée !",
   "@resultsStageTitle": {
     "description": "Title of the results screen after a stage of the learning path (\"Stage done!\")."
+  },
+  "pathTableNodeCrowned": "{label}, {crown, select, golden{couronne dorée} other{couronne}}",
+  "@pathTableNodeCrowned": {
+    "description": "Screen-reader label of a table whose boss is defeated: the label of the table followed by its crown (\"Table of 1, done, 3 stars, crown\"). `crown` is `golden` once every fact of the table is mastered, `crown` otherwise.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Table de 1, terminée, 3 étoiles"
+      },
+      "crown": {
+        "type": "String",
+        "example": "golden"
+      }
+    }
   }
 }

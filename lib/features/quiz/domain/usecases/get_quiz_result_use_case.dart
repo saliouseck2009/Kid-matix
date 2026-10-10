@@ -1,6 +1,7 @@
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/learning_path_service.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
@@ -37,6 +38,7 @@ class GetQuizResultUseCase
                 sourceKey: session.sourceKey,
                 correctCount: session.correctCount,
                 questionCount: session.questionCount,
+                isBossDefeated: session.bossOutcome == BossOutcome.defeated,
               )
             : null,
       ),

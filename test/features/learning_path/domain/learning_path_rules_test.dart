@@ -67,6 +67,43 @@ void main() {
       expect(_stars.starsFor(correctCount: 12, questionCount: 15), 2);
       expect(_stars.starsFor(correctCount: 14, questionCount: 15), 2);
     });
+    test('gives a defeated boss at least 1 star and a fled one none', () {
+      // Assert
+      expect(
+        _stars.starsForStage(
+          stage: StageKind.boss,
+          correctCount: 11,
+          questionCount: 20,
+          isBossDefeated: true,
+        ),
+        1,
+      );
+      expect(
+        _stars.starsForStage(
+          stage: StageKind.boss,
+          correctCount: 12,
+          questionCount: 12,
+          isBossDefeated: true,
+        ),
+        3,
+      );
+      expect(
+        _stars.starsForStage(
+          stage: StageKind.boss,
+          correctCount: 13,
+          questionCount: 20,
+        ),
+        0,
+      );
+      expect(
+        _stars.starsForStage(
+          stage: StageKind.training,
+          correctCount: 8,
+          questionCount: 10,
+        ),
+        2,
+      );
+    });
     test('gives nothing for a quiz without questions', () {
       // Assert
       expect(_stars.starsFor(correctCount: 0, questionCount: 0), 0);
@@ -132,7 +169,7 @@ void main() {
       // Assert
       expect(actualNumbers, <int>[1, 2, 10, 5, 3, 4, 6, 9, 7, 8, 11, 12]);
     });
-    test('keeps the boss fight closed until it is delivered', () {
+    test('opens the boss fight once stage 4 has a star', () {
       // Act
       final TablePathNode actualTable = _build(<StageProgressEntity>[
         for (final StageKind stage in <StageKind>[
@@ -145,10 +182,34 @@ void main() {
       ]).tables.first;
       // Assert
       final StageState actualBoss = actualTable.stageOf(StageKind.boss);
-      expect(actualBoss.isUnlocked, isTrue);
-      expect(actualBoss.isComingSoon, isTrue);
-      expect(actualBoss.isPlayable, isFalse);
-      expect(actualTable.nextStage, isNull);
+      expect(actualBoss.isPlayable, isTrue);
+      expect(actualTable.nextStage?.kind, StageKind.boss);
+      expect(actualTable.crown, TableCrown.none);
+    });
+    test('crowns a table whose boss is defeated, golden once mastered', () {
+      // Arrange
+      final List<StageProgressEntity> inputProgress = <StageProgressEntity>[
+        _done('mul:1', StageKind.boss),
+        _done('mul:2', StageKind.boss),
+      ];
+      final Set<String> inputMastered = <String>{
+        for (int multiplier = 1; multiplier <= 10; multiplier++)
+          'mul:2x$multiplier',
+      };
+      // Act
+      final LearningPathEntity actualPath = _builder.build(
+        domainId: 'multiplication',
+        units: _units,
+        progress: inputProgress,
+        isEverythingUnlocked: false,
+        masteredItemKeys: inputMastered,
+      );
+      // Assert
+      expect(
+        actualPath.tables.take(3).map((TablePathNode table) => table.crown),
+        <TableCrown>[TableCrown.crown, TableCrown.golden, TableCrown.none],
+      );
+      expect(actualPath.defeatedBosses, <String>['mul:1', 'mul:2']);
     });
     test('puts a review after every group of 3 tables', () {
       // Act
@@ -203,7 +264,7 @@ void main() {
       expect(_statuses(actualPath).skip(1).toSet(), <String>{'open'});
       final TablePathNode actualLast = actualPath.tables.last;
       expect(actualLast.stageOf(StageKind.speed).isPlayable, isTrue);
-      expect(actualLast.stageOf(StageKind.boss).isPlayable, isFalse);
+      expect(actualLast.stageOf(StageKind.boss).isPlayable, isTrue);
       expect(actualPath.findReview('review:4')?.stage.isPlayable, isTrue);
     });
     test('keeps the last table current once every table is done', () {

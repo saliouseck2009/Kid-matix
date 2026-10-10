@@ -10,6 +10,7 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 
 import '../features/quiz/helpers/quiz_fixtures.dart';
+import 'fake_mastery_service.dart';
 import 'test_quiz_pages.dart';
 
 /// [StageProgressRepository] over a list the test fills, which tells its
@@ -54,6 +55,7 @@ LearningPathUseCases buildTestPathUseCases({
       repository: stages,
       domains: buildDomainRegistry(),
       settings: settings,
+      mastery: FakeMasteryService(),
     ),
     watchChanges: WatchLearningPathChangesUseCase(repository: stages),
   );

@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_definition.dart';
@@ -10,7 +11,9 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_
 /// once the writing stage (3) has one, so a child slow with the timer is
 /// never stuck. A review follows every group of 3 tables and opens with
 /// the last table of its group; it never locks anything. "Tout
-/// débloquer" opens every table and stage.
+/// débloquer" opens every table and stage. Defeating the boss of a table
+/// crowns it; the crown is golden once every fact of the table is
+/// mastered.
 final class LearningPathBuilder {
   /// Creates the builder.
   const LearningPathBuilder();
@@ -20,9 +23,6 @@ final class LearningPathBuilder {
 
   /// Stage that opens the next table.
   static const StageKind gateStage = StageKind.writing;
-
-  /// Stages not delivered yet: the boss fight comes with lot F6.
-  static const Set<StageKind> comingSoon = <StageKind>{StageKind.boss};
 
   /// Prefix of the review keys, `review:1` to `review:4`.
   static const String reviewKeyPrefix = 'review';
@@ -36,6 +36,7 @@ final class LearningPathBuilder {
     required List<LearningUnit> units,
     required List<StageProgressEntity> progress,
     required bool isEverythingUnlocked,
+    Set<String> masteredItemKeys = const <String>{},
   }) {
     final Map<String, int> stars = <String, int>{
       for (final StageProgressEntity stage in progress)
@@ -67,6 +68,7 @@ final class LearningPathBuilder {
             isEverythingUnlocked,
             starsOf,
           ),
+          crown: _crownOf(unit, starsOf, masteredItemKeys),
         ),
       );
       if ((index + 1) % groupSize == 0) {
@@ -74,6 +76,18 @@ final class LearningPathBuilder {
       }
     }
     return LearningPathEntity(domainId: domainId, nodes: nodes);
+  }
+
+  TableCrown _crownOf(
+    LearningUnit unit,
+    int Function(String, StageKind) starsOf,
+    Set<String> masteredItemKeys,
+  ) {
+    if (starsOf(unit.key, StageKind.boss) == 0) return TableCrown.none;
+    final bool isMastered = unit.items.every(
+      (LearningItem item) => masteredItemKeys.contains(item.key),
+    );
+    return isMastered ? TableCrown.golden : TableCrown.crown;
   }
 
   TableStatus _statusOf(bool isUnlocked, bool isDone, bool isCurrent) {
@@ -99,7 +113,6 @@ final class LearningPathBuilder {
           definition: definition,
           stars: starsOf(unitKey, definition.kind),
           isUnlocked: isUnlocked,
-          isComingSoon: comingSoon.contains(definition.kind),
         ),
       );
     }

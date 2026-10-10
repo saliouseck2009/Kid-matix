@@ -783,6 +783,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Étape terminée !'**
   String get resultsStageTitle;
+
+  /// Screen-reader label of a table whose boss is defeated: the label of the table followed by its crown ("Table of 1, done, 3 stars, crown"). `crown` is `golden` once every fact of the table is mastered, `crown` otherwise.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label}, {crown, select, golden{couronne dorée} other{couronne}}'**
+  String pathTableNodeCrowned(String label, String crown);
 }
 
 class _AppLocalizationsDelegate
