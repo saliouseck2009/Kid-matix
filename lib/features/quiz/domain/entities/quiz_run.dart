@@ -1,5 +1,6 @@
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_combo.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:meta/meta.dart';
@@ -81,6 +82,9 @@ final class QuizRun {
   List<QuizAnswerEntity> get scoredAnswers => boss != null
       ? answers
       : answers.where((QuizAnswerEntity answer) => !answer.isRetry).toList();
+
+  /// Right answers in a row so far.
+  int get combo => QuizCombo.countOf(answers);
 
   /// Right answers among the scored questions.
   int get correctCount =>

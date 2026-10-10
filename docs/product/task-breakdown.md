@@ -356,7 +356,7 @@ XP, niveaux, série quotidienne, objectif du jour, combo et badges récompensent
 - [x] **F7-03** `StreakPolicy` : + 1 par jour avec une session terminée, selon l'horloge du téléphone ; une date qui recule ne change rien ; meilleure série conservée.
 - [x] **F7-04** Joker hebdomadaire qui sauve la série après un jour manqué.
 - [x] **F7-05** Objectif du jour : 20, 50 ou 100 XP au choix, avec la progression de la journée.
-- [ ] **F7-06** Combo : compteur de bonnes réponses d'affilée, paliers à 3, 5 et 10.
+- [x] **F7-06** Combo : compteur de bonnes réponses d'affilée, paliers à 3, 5 et 10.
 - [x] **F7-07** `BadgeEvaluator` et badges du lancement : Premier pas, Sans-faute, Éclair, Régulier, Dompteur de chaque table, Les 120. Sprinter arrive avec F9 et Survivant avec F12.
 - [x] **F7-08** Cas d'usage `GetStreak` et `GetBadges`.
 
@@ -367,11 +367,11 @@ XP, niveaux, série quotidienne, objectif du jour, combo et badges récompensent
 
 **Présentation**
 
-- [ ] **F7-11** Écran Résultats complet : XP gagnés, progression du niveau, badges obtenus.
-- [ ] **F7-12** Célébrations de fin d'étape, de montée de niveau et de badge, que l'enfant passe d'un appui.
-- [ ] **F7-13** Bandeau du Parcours : série, couronnes, jauge de l'objectif du jour.
-- [ ] **F7-14** Compteur de combo et paliers fêtés pendant le quiz.
-- [ ] **F7-15** Série affichée sur les cartes de « Qui joue ? ».
+- [x] **F7-11** Écran Résultats complet : XP gagnés, progression du niveau, badges obtenus.
+- [x] **F7-12** Célébrations de fin d'étape, de montée de niveau et de badge, que l'enfant passe d'un appui.
+- [x] **F7-13** Bandeau du Parcours : série, couronnes, jauge de l'objectif du jour.
+- [x] **F7-14** Compteur de combo et paliers fêtés pendant le quiz.
+- [x] **F7-15** Série affichée sur les cartes de « Qui joue ? ».
 
 **Tests**
 

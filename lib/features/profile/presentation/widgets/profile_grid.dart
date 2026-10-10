@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/widgets/app_pill.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_limits.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/new_player_card.dart';
@@ -16,6 +17,7 @@ class ProfileGrid extends StatelessWidget {
     required this.canAddProfile,
     required this.onProfileTap,
     required this.onNewPlayerTap,
+    this.footerOf,
     super.key,
   });
 
@@ -40,6 +42,9 @@ class ProfileGrid extends StatelessWidget {
 
   /// Called when the "new player" card is tapped.
   final VoidCallback onNewPlayerTap;
+
+  /// Footer of the card of a player, such as their streak pill, or `null`.
+  final Widget Function(String profileId)? footerOf;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +74,7 @@ class ProfileGrid extends StatelessWidget {
                 key: ValueKey<String>(profile.id),
                 profile: profile,
                 onTap: () => onProfileTap(profile),
+                footer: footerOf?.call(profile.id),
               );
             },
           ),
@@ -103,7 +109,17 @@ class ProfileGrid extends StatelessWidget {
         ProfileCard.avatarSize +
         ProfileCard.gap * 2 +
         _measureLine(scaler, textTheme.titleLarge) +
-        _measureLine(scaler, textTheme.bodySmall);
+        _measureLine(scaler, textTheme.bodySmall) +
+        (footerOf == null
+            ? 0
+            : ProfileCard.gap + _measurePill(scaler, textTheme));
+  }
+
+  /// Height of a pill footer, such as the streak.
+  double _measurePill(TextScaler scaler, TextTheme textTheme) {
+    final double line = _measureLine(scaler, textTheme.labelLarge);
+    final double content = line > AppPill.iconSize ? line : AppPill.iconSize;
+    return content + AppPill.verticalPadding * 2;
   }
 
   double _measureLine(TextScaler scaler, TextStyle? style) {

@@ -7,13 +7,14 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_map.dart';
 
 /// The home of the app: the map of the 12 tables.
 ///
-/// The header with the streak, the crowns and the daily goal arrives with
-/// the rewards (lot F7).
+/// Its header shows the player, the streak, the crowns and the daily
+/// goal.
 class LearningPathPage extends StatelessWidget {
   /// Creates the map of the path of [params].
   const LearningPathPage({
@@ -21,6 +22,7 @@ class LearningPathPage extends StatelessWidget {
     required this.useCases,
     required this.onOpenTable,
     required this.onPlay,
+    this.header,
     super.key,
   });
 
@@ -35,6 +37,9 @@ class LearningPathPage extends StatelessWidget {
 
   /// Starts a stage.
   final ValueChanged<StageSource> onPlay;
+
+  /// Player, streak and daily goal at the top of the map, or `null`.
+  final PathHeaderSlots? header;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +67,7 @@ class LearningPathPage extends StatelessWidget {
                   labels: labels,
                   onOpenTable: onOpenTable,
                   onPlay: onPlay,
+                  header: header,
                 ),
               };
             },

@@ -187,6 +187,27 @@ void main() {
       // Assert
       expect(find.text('Bravo !'), findsOneWidget);
     });
+    testWidgets('celebrates a combo of 3 right answers', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(
+        tester,
+        questionTypeId: QuestionTypeIds.typedAnswer,
+        itemKeys: const <String>['mul:5x2', 'mul:5x3', 'mul:5x4', 'mul:5x5'],
+      );
+      // Act
+      for (int index = 0; index < 3; index++) {
+        await typeNumber(tester, expectedNumber(tester));
+        if (index < 2) {
+          await tester.tap(find.text('Continuer'));
+          await tester.pumpAndSettle();
+        }
+      }
+      // Assert
+      expect(find.text('Combo de 3 !'), findsOneWidget);
+      expect(find.bySemanticsLabel('Combo de 3'), findsOneWidget);
+    });
     testWidgets('opens the results after the last question', (
       WidgetTester tester,
     ) async {

@@ -21,7 +21,11 @@ class AppPill extends StatelessWidget {
   /// Background of the pill; defaults to the palette tint.
   final Color? backgroundColor;
 
-  static const double _iconSize = 18;
+  /// Size of the leading icon.
+  static const double iconSize = 18;
+
+  /// Padding above and below the label.
+  static const double verticalPadding = AppSizes.space8;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class AppPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSizes.space12,
-        vertical: AppSizes.space8,
+        vertical: verticalPadding,
       ),
       decoration: BoxDecoration(
         color: backgroundColor ?? context.palette.tint,
@@ -39,7 +43,7 @@ class AppPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: AppSizes.space4,
         children: <Widget>[
-          if (leadingIcon != null) Icon(leadingIcon, size: _iconSize),
+          if (leadingIcon != null) Icon(leadingIcon, size: iconSize),
           Text(label, style: Theme.of(context).textTheme.labelLarge),
         ],
       ),

@@ -44,12 +44,15 @@ final class QuizPages {
   }
 
   /// Results of the session [sessionId]; [describeSource] names what the
-  /// session was played for.
+  /// session was played for, and the reward slots show what it earned.
   Widget buildResultsPage({
     required String sessionId,
     required ValueChanged<String?> onContinue,
     required ValueChanged<String> onReplay,
     SourceDescriber? describeSource,
+    Widget Function(Widget child)? rewardsScope,
+    Widget? xpTile,
+    Widget? rewardsCard,
   }) {
     return ResultsPage(
       sessionId: sessionId,
@@ -58,6 +61,9 @@ final class QuizPages {
       onContinue: onContinue,
       onReplay: onReplay,
       describeSource: describeSource,
+      rewardsScope: rewardsScope,
+      xpTile: xpTile,
+      rewardsCard: rewardsCard,
     );
   }
 }

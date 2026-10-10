@@ -7,6 +7,7 @@ import 'features/profile/helpers/profile_fixtures.dart';
 import 'helpers/fake_profile_session_service.dart';
 import 'helpers/test_path_pages.dart';
 import 'helpers/test_quiz_pages.dart';
+import 'helpers/test_reward_pages.dart';
 
 /// Router of an app where a player is already active.
 GoRouter _createPlayingRouter() {
@@ -15,6 +16,7 @@ GoRouter _createPlayingRouter() {
     profilePages: buildProfilePages(),
     quizPages: buildTestQuizPages(),
     pathPages: buildTestPathPages(),
+    rewardPages: buildTestRewardPages(),
   );
 }
 
