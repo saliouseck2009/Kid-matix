@@ -351,13 +351,13 @@ XP, niveaux, série quotidienne, objectif du jour, combo et badges récompensent
 
 **Domaine**
 
-- [ ] **F7-01** `XpPolicy`, avec un numéro de version : 10 XP par bonne réponse, + 5 pour une réponse « Éclair », + 20 par étape terminée, + 50 pour un sans-faute.
-- [ ] **F7-02** Niveaux : le niveau N demande 100 × N XP de plus que le précédent.
-- [ ] **F7-03** `StreakPolicy` : + 1 par jour avec une session terminée, selon l'horloge du téléphone ; une date qui recule ne change rien ; meilleure série conservée.
-- [ ] **F7-04** Joker hebdomadaire qui sauve la série après un jour manqué.
+- [x] **F7-01** `XpPolicy`, avec un numéro de version : 10 XP par bonne réponse, + 5 pour une réponse « Éclair », + 20 par étape terminée, + 50 pour un sans-faute.
+- [x] **F7-02** Niveaux : le niveau N demande 100 × N XP de plus que le précédent.
+- [x] **F7-03** `StreakPolicy` : + 1 par jour avec une session terminée, selon l'horloge du téléphone ; une date qui recule ne change rien ; meilleure série conservée.
+- [x] **F7-04** Joker hebdomadaire qui sauve la série après un jour manqué.
 - [ ] **F7-05** Objectif du jour : 20, 50 ou 100 XP au choix, avec la progression de la journée.
 - [ ] **F7-06** Combo : compteur de bonnes réponses d'affilée, paliers à 3, 5 et 10.
-- [ ] **F7-07** `BadgeEvaluator` et badges du lancement : Premier pas, Sans-faute, Éclair, Régulier, Dompteur de chaque table, Les 120. Sprinter arrive avec F9 et Survivant avec F12.
+- [x] **F7-07** `BadgeEvaluator` et badges du lancement : Premier pas, Sans-faute, Éclair, Régulier, Dompteur de chaque table, Les 120. Sprinter arrive avec F9 et Survivant avec F12.
 - [ ] **F7-08** Cas d'usage `GetStreak` et `GetBadges`.
 
 **Données**
@@ -375,9 +375,9 @@ XP, niveaux, série quotidienne, objectif du jour, combo et badges récompensent
 
 **Tests**
 
-- [ ] **F7-16** Tests de `XpPolicy` et du calcul des niveaux.
-- [ ] **F7-17** Tests de `StreakPolicy` avec une horloge factice : jour suivant, jour manqué avec et sans joker, date qui recule.
-- [ ] **F7-18** Tests de `BadgeEvaluator`, un cas par badge.
+- [x] **F7-16** Tests de `XpPolicy` et du calcul des niveaux.
+- [x] **F7-17** Tests de `StreakPolicy` avec une horloge factice : jour suivant, jour manqué avec et sans joker, date qui recule.
+- [x] **F7-18** Tests de `BadgeEvaluator`, un cas par badge.
 
 **Terminé quand :** une étape terminée affiche les XP gagnés, fait avancer le niveau, l'objectif du jour et la série, et débloque le badge Premier pas.
 
