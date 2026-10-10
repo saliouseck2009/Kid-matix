@@ -420,7 +420,7 @@ Deux modes hors parcours : l'enfant choisit ses tables pour s'entraîner, ou ten
 - [x] **F9-01** Entraînement libre : une ou plusieurs tables, 10, 20 ou 30 questions, avec ou sans chrono ; questions tirées avec le tirage pondéré de F4.
 - [x] **F9-02** Contre-la-montre : 60 secondes au total, score égal au nombre de bonnes réponses ; la question en cours est remplacée au retour d'arrière-plan.
 - [x] **F9-03** Entité `Record` et cas d'usage `GetRecords` : meilleur score par joueur et par mode.
-- [ ] **F9-04** Badge Sprinter : 20 bonnes réponses en Contre-la-montre.
+- [x] **F9-04** Badge Sprinter : 20 bonnes réponses en Contre-la-montre.
 
 **Données**
 
@@ -436,7 +436,7 @@ Deux modes hors parcours : l'enfant choisit ses tables pour s'entraîner, ou ten
 **Tests**
 
 - [x] **F9-10** Tests du Contre-la-montre avec un ticker factice : fin à 60 secondes, pause, question remplacée.
-- [ ] **F9-11** Tests des records et du badge Sprinter.
+- [x] **F9-11** Tests des records et du badge Sprinter.
 
 **Terminé quand :** un joueur lance un entraînement sur les tables de 2 et de 5, puis bat son propre record en Contre-la-montre.
 

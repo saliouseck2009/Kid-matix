@@ -14,6 +14,7 @@ final class SessionRewardInput {
     required this.itemCount,
     required this.now,
     this.crownedUnitKey,
+    this.isTimeAttack = false,
   });
 
   /// Whether the quiz was completed rather than abandoned.
@@ -42,4 +43,7 @@ final class SessionRewardInput {
 
   /// When the quiz ended.
   final DateTime now;
+
+  /// Whether the quiz was a time attack.
+  final bool isTimeAttack;
 }

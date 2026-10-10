@@ -872,6 +872,10 @@
   "@rewardBadgeLightning": {
     "description": "Name of the badge for 20 lightning answers in all (\"Lightning\", noun). Short: title of the badge celebration and of the badge list of the results."
   },
+  "rewardBadgeSprinter": "Sprinter",
+  "@rewardBadgeSprinter": {
+    "description": "Name of the badge for 20 right answers in one time attack (\"Sprinter\", a fast runner). Short: title of the badge celebration and of the badge list of the results."
+  },
   "rewardBadgeRegular": "Régulier",
   "@rewardBadgeRegular": {
     "description": "Name of the badge for a 7-day streak (\"Steady\", adjective describing the player). Short: title of the badge celebration and of the badge list of the results."
@@ -901,6 +905,10 @@
   "rewardBadgeLightningHint": "20 réponses éclair au total.",
   "@rewardBadgeLightningHint": {
     "description": "Line under the Éclair badge in its celebration (\"20 lightning answers in all.\"). One or two lines."
+  },
+  "rewardBadgeSprinterHint": "20 bonnes réponses en Contre-la-montre.",
+  "@rewardBadgeSprinterHint": {
+    "description": "Line under the Sprinter badge in its celebration (\"20 right answers in a time attack.\"). One or two lines."
   },
   "rewardBadgeRegularHint": "7 jours de jeu d'affilée.",
   "@rewardBadgeRegularHint": {

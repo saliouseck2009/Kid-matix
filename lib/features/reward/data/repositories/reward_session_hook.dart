@@ -4,6 +4,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/learning_path_service.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
@@ -68,6 +69,7 @@ final class RewardSessionHook implements SessionSavedHook {
       masteredItemCount: await _masteredCount(session),
       itemCount: _itemCount(session.domainId),
       now: session.endedAt,
+      isTimeAttack: session.mode == QuizMode.timeAttack,
     );
     return (Transaction transaction) => _write(transaction, session, input);
   }

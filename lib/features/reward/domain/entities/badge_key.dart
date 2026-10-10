@@ -10,6 +10,9 @@ abstract final class BadgeKey {
   /// Éclair: 20 lightning answers in all.
   static const String lightning = 'lightning';
 
+  /// Sprinter: 20 right answers in one time attack.
+  static const String sprinter = 'sprinter';
+
   /// Régulier: a 7-day streak.
   static const String regular = 'regular';
 
