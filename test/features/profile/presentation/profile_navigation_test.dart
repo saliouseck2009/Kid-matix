@@ -7,6 +7,7 @@ import 'package:kid_matix/main.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/fake_profile_session_service.dart';
+import '../../../helpers/test_path_pages.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/profile_fixtures.dart';
 
@@ -57,6 +58,7 @@ void main() {
             ),
           ),
           quizPages: buildTestQuizPages(),
+          pathPages: buildTestPathPages(),
         ),
       ),
     );
@@ -111,7 +113,7 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.text('Qui joue ?'), findsNothing);
-      expect(find.text('Bientôt disponible'), findsOneWidget);
+      expect(find.text('Jouer'), findsOneWidget);
     });
     testWidgets('shows the active player in the Profile tab', (
       WidgetTester tester,

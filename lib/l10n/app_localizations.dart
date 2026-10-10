@@ -520,12 +520,6 @@ abstract class AppLocalizations {
   /// **'combien'**
   String get quizSpokenBlank;
 
-  /// Temporary button of the home tab that starts a quiz on the table of 5, until the learning path arrives ("Play the table of 5").
-  ///
-  /// In fr, this message translates to:
-  /// **'Jouer à la table de 5'**
-  String get quizProvisionalStart;
-
   /// Name of the game mode shown under the results title after a stage of the learning path ("Learning path"), after the table name and a middle dot.
   ///
   /// In fr, this message translates to:
@@ -544,7 +538,7 @@ abstract class AppLocalizations {
   /// **'Partie terminée !'**
   String get resultsTitle;
 
-  /// Line under the results title: the unit and the mode of the quiz, such as "Table de 5 · Entraînement libre". Keep the middle dot.
+  /// Line under the results title: the unit and the mode of the quiz, such as "Table de 5 · Entraînement libre", or the stage name after a stage of the learning path, such as "Table de 5 · Entraînement". Keep the middle dot.
   ///
   /// In fr, this message translates to:
   /// **'{unit} · {mode}'**
@@ -597,6 +591,198 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Rejouer'**
   String get resultsReplay;
+
+  /// Name of stage 1 of a table in the learning path ("Discovery"): the whole table and its tip.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découverte'**
+  String get pathStageDiscovery;
+
+  /// One-line description under the name of the Discovery stage ("The table and its tip").
+  ///
+  /// In fr, this message translates to:
+  /// **'La table et son astuce'**
+  String get pathStageDiscoveryHint;
+
+  /// Name of stage 2 of a table ("Training"): the 10 facts shuffled, answers to pick.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entraînement'**
+  String get pathStageTraining;
+
+  /// One-line description under the name of the Training stage ("10 shuffled questions").
+  ///
+  /// In fr, this message translates to:
+  /// **'10 questions mélangées'**
+  String get pathStageTrainingHint;
+
+  /// Name of stage 3 of a table ("Writing"): the child writes the answers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écriture'**
+  String get pathStageWriting;
+
+  /// One-line description under the name of the Writing stage ("Write the answer yourself"). Talks to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écris la réponse toi-même'**
+  String get pathStageWritingHint;
+
+  /// Name of stage 4 of a table ("Speed"): every format with a timer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vitesse'**
+  String get pathStageSpeed;
+
+  /// One-line description under the name of the Speed stage ("10 seconds per question").
+  ///
+  /// In fr, this message translates to:
+  /// **'10 secondes par question'**
+  String get pathStageSpeedHint;
+
+  /// Name of stage 5 of a table ("Boss fight").
+  ///
+  /// In fr, this message translates to:
+  /// **'Combat de boss'**
+  String get pathStageBoss;
+
+  /// One-line description under the name of the boss stage ("Beat the monster of the table"). Talks to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bats le monstre de la table'**
+  String get pathStageBossHint;
+
+  /// Name of the review stage that follows every group of 3 tables on the map ("Review").
+  ///
+  /// In fr, this message translates to:
+  /// **'Révision'**
+  String get pathStageReview;
+
+  /// Description of the review stage ("15 questions on the tables already seen").
+  ///
+  /// In fr, this message translates to:
+  /// **'15 questions sur les tables déjà vues'**
+  String get pathStageReviewHint;
+
+  /// Title of a stage card with its number, such as "1 · Découverte". Keep the middle dot.
+  ///
+  /// In fr, this message translates to:
+  /// **'{number} · {name}'**
+  String pathStageNumbered(int number, String name);
+
+  /// Line of the call card next to the current table on the map, such as "Étape 2 sur 5 · Entraînement" ("Stage 2 of 5 · Training").
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {number} sur {total} · {name}'**
+  String pathCurrentStage(int number, int total, String name);
+
+  /// Button that starts the next stage, on the map and on the table detail ("Play").
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouer'**
+  String get pathPlay;
+
+  /// Button at the bottom of the table detail that shows the whole table and its tip ("See the table").
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir la table'**
+  String get pathShowTable;
+
+  /// Stars of a table on its detail screen, out of the stars it can earn ("3 stars out of 15").
+  ///
+  /// In fr, this message translates to:
+  /// **'{stars, plural, =0{0 étoile sur {total}} =1{1 étoile sur {total}} other{{stars} étoiles sur {total}}}'**
+  String pathTableStars(int stars, int total);
+
+  /// Hint under the stars of a table on its detail screen ("Beat the boss to win the crown."). Talks to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bats le boss pour gagner la couronne.'**
+  String get pathCrownHint;
+
+  /// Tooltip and screen-reader label of the back arrow of the table detail ("Back to the learning path").
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au parcours'**
+  String get pathTableBack;
+
+  /// Screen-reader label of a finished table on the map ("Table of 1, done, 3 stars").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, terminée, {stars, plural, =0{aucune étoile} =1{1 étoile} other{{stars} étoiles}}'**
+  String pathTableNodeDone(String name, int stars);
+
+  /// Screen-reader label of the current table on the map ("Table of 5, in progress").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, en cours'**
+  String pathTableNodeCurrent(String name);
+
+  /// Screen-reader label of a table opened by "Tout débloquer" and not started ("Table of 7, open").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, ouverte'**
+  String pathTableNodeOpen(String name);
+
+  /// Screen-reader label of a locked table on the map ("Table of 3, locked").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, verrouillée'**
+  String pathTableNodeLocked(String name);
+
+  /// Screen-reader label of a review node on the map that is not open yet ("Review, locked"). `name` is the name of the review stage ("Révision", feminine in French).
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, verrouillée'**
+  String pathReviewNodeLocked(String name);
+
+  /// Screen-reader label of the lock icon of a stage that is not open yet ("Locked").
+  ///
+  /// In fr, this message translates to:
+  /// **'Verrouillée'**
+  String get pathLocked;
+
+  /// Screen-reader label of a row of stars ("2 stars out of 3").
+  ///
+  /// In fr, this message translates to:
+  /// **'{stars, plural, =0{Aucune étoile sur {max}} =1{1 étoile sur {max}} other{{stars} étoiles sur {max}}}'**
+  String starsLabel(int stars, int max);
+
+  /// Title of the Discovery stage that shows a whole multiplication table ("Here is the table of 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Voici la table de {number}'**
+  String pathDiscoveryTitle(int number);
+
+  /// Screen-reader label of the empty progress bar at the top of the Discovery stage ("Before the first question").
+  ///
+  /// In fr, this message translates to:
+  /// **'Avant la première question'**
+  String get pathDiscoveryProgress;
+
+  /// Title of the tip card of the Discovery stage ("The tip").
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'astuce'**
+  String get pathTipTitle;
+
+  /// Button at the bottom of the Discovery stage that starts its questions ("My turn to play"). Spoken by the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'À moi de jouer'**
+  String get pathDiscoveryStart;
+
+  /// Tip of a multiplication table, shown at its Discovery stage. `table` is the number of the table as text, from 1 to 12; `other` is the table of 12. One or two short sentences for a child of 6 to 11, with an example.
+  ///
+  /// In fr, this message translates to:
+  /// **'{table, select, 1{Multiplier par 1 ne change rien : 1 × 7 = 7.} 2{Multiplier par 2, c\'est ajouter le nombre à lui-même : 2 × 6 = 6 + 6.} 3{Les résultats avancent de 3 en 3 : 3, 6, 9, 12…} 4{Multiplier par 4, c\'est doubler deux fois : 4 × 6, c\'est le double de 12.} 5{Les résultats de la table de 5 finissent toujours par 0 ou par 5.} 6{6 fois un nombre pair finit par le même chiffre : 6 × 4 = 24.} 7{Pour 7 × 8, pense à 5, 6, 7, 8 : 56 = 7 × 8.} 8{Multiplier par 8, c\'est doubler trois fois : 8 × 3 = 24.} 9{Les deux chiffres du résultat font toujours 9 : 9 × 4 = 36 et 3 + 6 = 9.} 10{Multiplier par 10, c\'est ajouter un 0 à droite : 10 × 7 = 70.} 11{Jusqu\'à 11 × 9, on écrit le chiffre deux fois : 11 × 4 = 44.} other{12 fois un nombre, c\'est 10 fois plus 2 fois : 12 × 3 = 30 + 6.}}'**
+  String pathMultiplicationTip(String table);
+
+  /// Title of the results screen after a stage of the learning path ("Stage done!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape terminée !'**
+  String get resultsStageTitle;
 }
 
 class _AppLocalizationsDelegate

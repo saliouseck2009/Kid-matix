@@ -380,10 +380,6 @@
   "@quizSpokenBlank": {
     "description": "Word read by the screen reader for the missing number at the end of a question (\"how much\"), as in \"5 fois 7 égale combien\". Joined with the other words in the order of the operation. Never displayed."
   },
-  "quizProvisionalStart": "Jouer à la table de 5",
-  "@quizProvisionalStart": {
-    "description": "Temporary button of the home tab that starts a quiz on the table of 5, until the learning path arrives (\"Play the table of 5\")."
-  },
   "quizModePath": "Parcours",
   "@quizModePath": {
     "description": "Name of the game mode shown under the results title after a stage of the learning path (\"Learning path\"), after the table name and a middle dot."
@@ -398,7 +394,7 @@
   },
   "resultsSubtitle": "{unit} · {mode}",
   "@resultsSubtitle": {
-    "description": "Line under the results title: the unit and the mode of the quiz, such as \"Table de 5 · Entraînement libre\". Keep the middle dot.",
+    "description": "Line under the results title: the unit and the mode of the quiz, such as \"Table de 5 · Entraînement libre\", or the stage name after a stage of the learning path, such as \"Table de 5 · Entraînement\". Keep the middle dot.",
     "placeholders": {
       "unit": {
         "type": "String",
@@ -467,5 +463,223 @@
   "resultsReplay": "Rejouer",
   "@resultsReplay": {
     "description": "Second button of the results screen, plays the same quiz again (\"Play again\"). Infinitive verb."
+  },
+  "pathStageDiscovery": "Découverte",
+  "@pathStageDiscovery": {
+    "description": "Name of stage 1 of a table in the learning path (\"Discovery\"): the whole table and its tip."
+  },
+  "pathStageDiscoveryHint": "La table et son astuce",
+  "@pathStageDiscoveryHint": {
+    "description": "One-line description under the name of the Discovery stage (\"The table and its tip\")."
+  },
+  "pathStageTraining": "Entraînement",
+  "@pathStageTraining": {
+    "description": "Name of stage 2 of a table (\"Training\"): the 10 facts shuffled, answers to pick."
+  },
+  "pathStageTrainingHint": "10 questions mélangées",
+  "@pathStageTrainingHint": {
+    "description": "One-line description under the name of the Training stage (\"10 shuffled questions\")."
+  },
+  "pathStageWriting": "Écriture",
+  "@pathStageWriting": {
+    "description": "Name of stage 3 of a table (\"Writing\"): the child writes the answers."
+  },
+  "pathStageWritingHint": "Écris la réponse toi-même",
+  "@pathStageWritingHint": {
+    "description": "One-line description under the name of the Writing stage (\"Write the answer yourself\"). Talks to the child."
+  },
+  "pathStageSpeed": "Vitesse",
+  "@pathStageSpeed": {
+    "description": "Name of stage 4 of a table (\"Speed\"): every format with a timer."
+  },
+  "pathStageSpeedHint": "10 secondes par question",
+  "@pathStageSpeedHint": {
+    "description": "One-line description under the name of the Speed stage (\"10 seconds per question\")."
+  },
+  "pathStageBoss": "Combat de boss",
+  "@pathStageBoss": {
+    "description": "Name of stage 5 of a table (\"Boss fight\")."
+  },
+  "pathStageBossHint": "Bats le monstre de la table",
+  "@pathStageBossHint": {
+    "description": "One-line description under the name of the boss stage (\"Beat the monster of the table\"). Talks to the child."
+  },
+  "pathStageReview": "Révision",
+  "@pathStageReview": {
+    "description": "Name of the review stage that follows every group of 3 tables on the map (\"Review\")."
+  },
+  "pathStageReviewHint": "15 questions sur les tables déjà vues",
+  "@pathStageReviewHint": {
+    "description": "Description of the review stage (\"15 questions on the tables already seen\")."
+  },
+  "pathStageNumbered": "{number} · {name}",
+  "@pathStageNumbered": {
+    "description": "Title of a stage card with its number, such as \"1 · Découverte\". Keep the middle dot.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      },
+      "name": {
+        "type": "String",
+        "example": "Découverte"
+      }
+    }
+  },
+  "pathCurrentStage": "Étape {number} sur {total} · {name}",
+  "@pathCurrentStage": {
+    "description": "Line of the call card next to the current table on the map, such as \"Étape 2 sur 5 · Entraînement\" (\"Stage 2 of 5 · Training\").",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      },
+      "name": {
+        "type": "String",
+        "example": "Entraînement"
+      }
+    }
+  },
+  "pathPlay": "Jouer",
+  "@pathPlay": {
+    "description": "Button that starts the next stage, on the map and on the table detail (\"Play\")."
+  },
+  "pathShowTable": "Voir la table",
+  "@pathShowTable": {
+    "description": "Button at the bottom of the table detail that shows the whole table and its tip (\"See the table\")."
+  },
+  "pathTableStars": "{stars, plural, =0{0 étoile sur {total}} =1{1 étoile sur {total}} other{{stars} étoiles sur {total}}}",
+  "@pathTableStars": {
+    "description": "Stars of a table on its detail screen, out of the stars it can earn (\"3 stars out of 15\").",
+    "placeholders": {
+      "stars": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "pathCrownHint": "Bats le boss pour gagner la couronne.",
+  "@pathCrownHint": {
+    "description": "Hint under the stars of a table on its detail screen (\"Beat the boss to win the crown.\"). Talks to the child."
+  },
+  "pathTableBack": "Retour au parcours",
+  "@pathTableBack": {
+    "description": "Tooltip and screen-reader label of the back arrow of the table detail (\"Back to the learning path\")."
+  },
+  "pathTableNodeDone": "{name}, terminée, {stars, plural, =0{aucune étoile} =1{1 étoile} other{{stars} étoiles}}",
+  "@pathTableNodeDone": {
+    "description": "Screen-reader label of a finished table on the map (\"Table of 1, done, 3 stars\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 1"
+      },
+      "stars": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "pathTableNodeCurrent": "{name}, en cours",
+  "@pathTableNodeCurrent": {
+    "description": "Screen-reader label of the current table on the map (\"Table of 5, in progress\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 5"
+      }
+    }
+  },
+  "pathTableNodeOpen": "{name}, ouverte",
+  "@pathTableNodeOpen": {
+    "description": "Screen-reader label of a table opened by \"Tout débloquer\" and not started (\"Table of 7, open\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 7"
+      }
+    }
+  },
+  "pathTableNodeLocked": "{name}, verrouillée",
+  "@pathTableNodeLocked": {
+    "description": "Screen-reader label of a locked table on the map (\"Table of 3, locked\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 3"
+      }
+    }
+  },
+  "pathReviewNodeLocked": "{name}, verrouillée",
+  "@pathReviewNodeLocked": {
+    "description": "Screen-reader label of a review node on the map that is not open yet (\"Review, locked\"). `name` is the name of the review stage (\"Révision\", feminine in French).",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Révision"
+      }
+    }
+  },
+  "pathLocked": "Verrouillée",
+  "@pathLocked": {
+    "description": "Screen-reader label of the lock icon of a stage that is not open yet (\"Locked\")."
+  },
+  "starsLabel": "{stars, plural, =0{Aucune étoile sur {max}} =1{1 étoile sur {max}} other{{stars} étoiles sur {max}}}",
+  "@starsLabel": {
+    "description": "Screen-reader label of a row of stars (\"2 stars out of 3\").",
+    "placeholders": {
+      "stars": {
+        "type": "int",
+        "example": "2"
+      },
+      "max": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "pathDiscoveryTitle": "Voici la table de {number}",
+  "@pathDiscoveryTitle": {
+    "description": "Title of the Discovery stage that shows a whole multiplication table (\"Here is the table of 5\").",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "pathDiscoveryProgress": "Avant la première question",
+  "@pathDiscoveryProgress": {
+    "description": "Screen-reader label of the empty progress bar at the top of the Discovery stage (\"Before the first question\")."
+  },
+  "pathTipTitle": "L'astuce",
+  "@pathTipTitle": {
+    "description": "Title of the tip card of the Discovery stage (\"The tip\")."
+  },
+  "pathDiscoveryStart": "À moi de jouer",
+  "@pathDiscoveryStart": {
+    "description": "Button at the bottom of the Discovery stage that starts its questions (\"My turn to play\"). Spoken by the child."
+  },
+  "pathMultiplicationTip": "{table, select, 1{Multiplier par 1 ne change rien : 1 × 7 = 7.} 2{Multiplier par 2, c'est ajouter le nombre à lui-même : 2 × 6 = 6 + 6.} 3{Les résultats avancent de 3 en 3 : 3, 6, 9, 12…} 4{Multiplier par 4, c'est doubler deux fois : 4 × 6, c'est le double de 12.} 5{Les résultats de la table de 5 finissent toujours par 0 ou par 5.} 6{6 fois un nombre pair finit par le même chiffre : 6 × 4 = 24.} 7{Pour 7 × 8, pense à 5, 6, 7, 8 : 56 = 7 × 8.} 8{Multiplier par 8, c'est doubler trois fois : 8 × 3 = 24.} 9{Les deux chiffres du résultat font toujours 9 : 9 × 4 = 36 et 3 + 6 = 9.} 10{Multiplier par 10, c'est ajouter un 0 à droite : 10 × 7 = 70.} 11{Jusqu'à 11 × 9, on écrit le chiffre deux fois : 11 × 4 = 44.} other{12 fois un nombre, c'est 10 fois plus 2 fois : 12 × 3 = 30 + 6.}}",
+  "@pathMultiplicationTip": {
+    "description": "Tip of a multiplication table, shown at its Discovery stage. `table` is the number of the table as text, from 1 to 12; `other` is the table of 12. One or two short sentences for a child of 6 to 11, with an example.",
+    "placeholders": {
+      "table": {
+        "type": "String",
+        "example": "5"
+      }
+    }
+  },
+  "resultsStageTitle": "Étape terminée !",
+  "@resultsStageTitle": {
+    "description": "Title of the results screen after a stage of the learning path (\"Stage done!\")."
   }
 }

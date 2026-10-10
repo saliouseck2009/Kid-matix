@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/services/clock.dart';
@@ -5,6 +7,7 @@ import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/app_migrations.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
+import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/stage_progress_local_data_source_impl.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_repository_impl.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_session_hook.dart';
@@ -43,6 +46,7 @@ void main() {
   late StageProgressLocalDataSourceImpl dataSource;
   late StageProgressSessionHook hook;
   late StageProgressRepositoryImpl repository;
+  late TableChangeBus changeBus;
 
   setUpAll(sqfliteFfiInit);
 
@@ -66,10 +70,17 @@ void main() {
       progress: dataSource,
       clock: _StoppedClock(),
     );
-    repository = StageProgressRepositoryImpl(progress: dataSource);
+    changeBus = TableChangeBus();
+    repository = StageProgressRepositoryImpl(
+      progress: dataSource,
+      changeBus: changeBus,
+    );
   });
 
-  tearDown(() => appDatabase.close());
+  tearDown(() async {
+    await changeBus.dispose();
+    await appDatabase.close();
+  });
 
   Future<List<String>> save(SavedQuizSession session) async {
     final Database database = await appDatabase.database;
@@ -134,6 +145,21 @@ void main() {
   });
 
   group('StageProgressRepositoryImpl', () {
+    test('tells when the stars or the player change', () async {
+      // Arrange
+      int actualCount = 0;
+      final StreamSubscription<void> subscription = repository
+          .watchChanges()
+          .listen((_) => actualCount++);
+      // Act
+      changeBus.notifyChanged(table: 'stage_progress');
+      changeBus.notifyChanged(table: 'profile');
+      changeBus.notifyChanged(table: 'quiz_session');
+      await pumpEventQueue();
+      // Assert
+      expect(actualCount, 2);
+      await subscription.cancel();
+    });
     test('fails to read once the database is closed', () async {
       // Arrange
       await (await appDatabase.database).close();

@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
+import 'package:kid_matix/core/router/play_routes.dart';
 import 'package:kid_matix/core/router/profile_session_redirect.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/widgets/coming_soon_page.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
+import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
@@ -14,15 +17,16 @@ import 'package:kid_matix/l10n/app_localizations.dart';
 typedef _TitleResolver = String Function(AppLocalizations l10n);
 
 /// Builds the router of the app: the player selection, then a shell with
-/// one branch per tab.
+/// one branch per tab; the learning path is the home.
 ///
 /// The router listens to [session]: while nobody is playing it shows "Qui
-/// joue ?" or the profile creation (see [redirectForProfileSession]). Each
-/// tab shows a placeholder until its feature is delivered.
+/// joue ?" or the profile creation (see [redirectForProfileSession]). The
+/// tabs not delivered yet show a placeholder.
 GoRouter createAppRouter({
   required ProfileSessionService session,
   required ProfilePages profilePages,
   required QuizPages quizPages,
+  required LearningPathPages pathPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -52,7 +56,11 @@ GoRouter createAppRouter({
           );
         },
       ),
-      ..._createQuizRoutes(session: session, quizPages: quizPages),
+      ...createPlayRoutes(
+        session: session,
+        pathPages: pathPages,
+        quizPages: quizPages,
+      ),
       StatefulShellRoute.indexedStack(
         builder: (
           BuildContext context,
@@ -65,10 +73,14 @@ GoRouter createAppRouter({
               GoRoute(
                 path: AppRoutes.learningPath,
                 builder: (BuildContext context, GoRouterState state) {
-                  return quizPages.buildProvisionalLauncher(
-                    onStart: () => context.go(
-                      AppRoutes.quizOf(QuizPages.provisionalUnitKey),
-                    ),
+                  final String? profileId = session.activeProfileId;
+                  if (profileId == null) return const SizedBox.shrink();
+                  return pathPages.buildLearningPathPage(
+                    profileId: profileId,
+                    onOpenTable: (String unitKey) =>
+                        context.go(AppRoutes.tableDetailOf(unitKey)),
+                    onPlay: (StageSource source) =>
+                        playStage(context, pathPages, source),
                   );
                 },
               ),
@@ -91,39 +103,6 @@ GoRouter createAppRouter({
       ),
     ],
   );
-}
-
-/// The quiz and its results, full screen without the tab bar.
-List<RouteBase> _createQuizRoutes({
-  required ProfileSessionService session,
-  required QuizPages quizPages,
-}) {
-  return <RouteBase>[
-    GoRoute(
-      path: AppRoutes.quiz,
-      builder: (BuildContext context, GoRouterState state) {
-        final String? profileId = session.activeProfileId;
-        if (profileId == null) return const SizedBox.shrink();
-        return quizPages.buildQuizPage(
-          profileId: profileId,
-          unitKey: state.pathParameters[AppRoutes.unitKeyParameter]!,
-          onCompleted: (String sessionId) =>
-              context.go(AppRoutes.quizResultsOf(sessionId)),
-          onLeft: () => context.go(AppRoutes.learningPath),
-        );
-      },
-    ),
-    GoRoute(
-      path: AppRoutes.quizResults,
-      builder: (BuildContext context, GoRouterState state) {
-        return quizPages.buildResultsPage(
-          sessionId: state.pathParameters[AppRoutes.sessionIdParameter]!,
-          onContinue: () => context.go(AppRoutes.learningPath),
-          onReplay: (String unitKey) => context.go(AppRoutes.quizOf(unitKey)),
-        );
-      },
-    ),
-  ];
 }
 
 /// Profile tab, with the edition of the player opened over the tab bar.

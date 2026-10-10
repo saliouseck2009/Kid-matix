@@ -8,4 +8,7 @@ abstract interface class StageProgressRepository {
     required String profileId,
     required String domainId,
   });
+
+  /// Emits an event each time the stars or the player's settings change.
+  Stream<void> watchChanges();
 }

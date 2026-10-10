@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/widgets/star_row.dart';
+import 'package:kid_matix/l10n/app_localizations.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
@@ -26,13 +28,17 @@ QuizAnswerEntity _answer(String itemKey, {bool isCorrect = true}) {
   );
 }
 
-QuizResultEntity _buildResult({required bool hasMistake}) {
+QuizResultEntity _buildResult({
+  required bool hasMistake,
+  String? sourceKey,
+}) {
   return QuizResultEntity(
     session: QuizSessionEntity(
       id: 's1',
       profileId: 'p1',
       domainId: 'multiplication',
-      mode: QuizMode.freeTraining,
+      mode: sourceKey == null ? QuizMode.freeTraining : QuizMode.path,
+      sourceKey: sourceKey,
       status: QuizSessionStatus.completed,
       startedAt: quizStart,
       duration: const Duration(minutes: 1),
@@ -78,8 +84,10 @@ void main() {
           learningPath: const FixedLearningPathService(),
         ),
         domains: buildDomainRegistry(),
-        onContinue: () => isContinued = true,
-        onReplay: (String unitKey) => replayedUnit = unitKey,
+        onContinue: (String? sourceKey) => isContinued = true,
+        onReplay: (String sourceKey) => replayedUnit = sourceKey,
+        describeSource: (String? sourceKey, AppLocalizations l10n) =>
+            sourceKey == null ? null : 'Entraînement',
       ),
     );
     await tester.pumpAndSettle();
@@ -113,20 +121,49 @@ void main() {
       // Assert
       expect(find.text('Aucune erreur, bravo !'), findsOneWidget);
     });
-    testWidgets('continues or replays the same table', (
+    testWidgets('shows the stars and the name of a stage', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(
+          _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
+        ),
+      );
+      // Assert
+      expect(find.text('Étape terminée !'), findsOneWidget);
+      expect(find.text('Table de 5 · Entraînement'), findsOneWidget);
+      expect(find.bySemanticsLabel('3 étoiles sur 3'), findsOneWidget);
+    });
+    testWidgets('continues or replays the same stage', (
       WidgetTester tester,
     ) async {
       // Arrange
       await pumpResults(
         tester,
-        DataSuccess<QuizResultEntity>(_buildResult(hasMistake: true)),
+        DataSuccess<QuizResultEntity>(
+          _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
+        ),
       );
       // Act
       await tester.tap(find.text('Rejouer'));
       await tester.tap(find.text('Continuer'));
       // Assert
-      expect(replayedUnit, 'mul:5');
+      expect(replayedUnit, 'path:mul:5:training');
       expect(isContinued, isTrue);
+    });
+    testWidgets('offers no replay nor stars without a source', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(_buildResult(hasMistake: true)),
+      );
+      // Assert
+      expect(find.text('Rejouer'), findsNothing);
+      expect(find.byType(StarRow), findsNothing);
     });
     testWidgets('explains a session that cannot be read', (
       WidgetTester tester,

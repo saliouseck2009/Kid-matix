@@ -7,6 +7,8 @@ import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
+import 'package:kid_matix/core/widgets/star_row.dart';
+import 'package:kid_matix/l10n/app_localizations.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
@@ -17,10 +19,16 @@ import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_session_error_message.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/result_tile.dart';
 
+/// Names what a session was played for from its source key, or `null`.
+typedef SourceDescriber = String? Function(
+  String? sourceKey,
+  AppLocalizations l10n,
+);
+
 /// Results of a quiz, loaded from the session identifier alone.
 ///
-/// Stars arrive with the learning path (F5), XP and level with the rewards
-/// (F7).
+/// A stage of the learning path shows its stars; XP and level arrive
+/// with the rewards (F7).
 class ResultsPage extends StatelessWidget {
   /// Creates the results of the session [sessionId].
   const ResultsPage({
@@ -29,6 +37,7 @@ class ResultsPage extends StatelessWidget {
     required this.domains,
     required this.onContinue,
     required this.onReplay,
+    this.describeSource,
     super.key,
   });
 
@@ -41,11 +50,17 @@ class ResultsPage extends StatelessWidget {
   /// Learning domains, to name units and facts.
   final DomainRegistry domains;
 
-  /// Called by "Continuer".
-  final VoidCallback onContinue;
+  /// Called by "Continuer" with the source key of the session, to go back
+  /// where the quiz was started.
+  final ValueChanged<String?> onContinue;
 
-  /// Called by "Rejouer" with the unit to play again.
+  /// Called by "Rejouer" with the source key of the session; the button
+  /// shows only for a quiz played for a source.
   final ValueChanged<String> onReplay;
+
+  /// Names what a session was played for, such as "Entraînement" for a
+  /// stage, or `null` to name its mode.
+  final SourceDescriber? describeSource;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +83,7 @@ class ResultsPage extends StatelessWidget {
                   labels: QuizLabels(domains: domains, l10n: context.l10n),
                   onContinue: onContinue,
                   onReplay: onReplay,
+                  describeSource: describeSource,
                 ),
               };
             },
@@ -84,18 +100,23 @@ class _ResultsView extends StatelessWidget {
     required this.labels,
     required this.onContinue,
     required this.onReplay,
+    required this.describeSource,
   });
 
   static const double _mascotSize = 140;
+  static const double _starSize = 64;
 
   final QuizResultEntity result;
   final QuizLabels labels;
-  final VoidCallback onContinue;
+  final ValueChanged<String?> onContinue;
   final ValueChanged<String> onReplay;
+  final SourceDescriber? describeSource;
 
   @override
   Widget build(BuildContext context) {
     final String domainId = result.session.domainId;
+    final int? stars = result.stars;
+    final String? sourceKey = result.session.sourceKey;
     final LearningUnit? unit = labels.findCommonUnit(
       result.askedItemKeys,
       domainId,
@@ -108,13 +129,20 @@ class _ResultsView extends StatelessWidget {
         children: <Widget>[
           const Center(child: MascotIllustration(size: _mascotSize)),
           _ResultsTitle(
+            title: stars == null
+                ? context.l10n.resultsTitle
+                : context.l10n.resultsStageTitle,
             subtitle: unit == null
-                ? _describeMode(context, result.session.mode)
+                ? _describeMode(context)
                 : context.l10n.resultsSubtitle(
                     labels.describeUnit(unit, domainId),
-                    _describeMode(context, result.session.mode),
+                    _describeMode(context),
                   ),
           ),
+          if (stars != null)
+            Center(
+              child: StarRow(count: stars, size: _starSize),
+            ),
           _ResultTiles(result: result),
           FactsToReviewCard(
             facts: <String>[
@@ -125,21 +153,26 @@ class _ResultsView extends StatelessWidget {
           const SizedBox(height: AppSizes.space8),
           DepthButton(
             label: context.l10n.resultsContinue,
-            onPressed: onContinue,
+            onPressed: () => onContinue(sourceKey),
           ),
-          if (unit != null)
+          if (sourceKey != null)
             DepthButton(
               label: context.l10n.resultsReplay,
               variant: DepthButtonVariant.secondary,
-              onPressed: () => onReplay(unit.key),
+              onPressed: () => onReplay(sourceKey),
             ),
         ],
       ),
     );
   }
 
-  static String _describeMode(BuildContext context, QuizMode mode) {
-    return switch (mode) {
+  String _describeMode(BuildContext context) {
+    final String? source = describeSource?.call(
+      result.session.sourceKey,
+      context.l10n,
+    );
+    if (source != null) return source;
+    return switch (result.session.mode) {
       QuizMode.freeTraining => context.l10n.quizModeFreeTraining,
       QuizMode.path => context.l10n.quizModePath,
     };
@@ -147,8 +180,9 @@ class _ResultsView extends StatelessWidget {
 }
 
 class _ResultsTitle extends StatelessWidget {
-  const _ResultsTitle({required this.subtitle});
+  const _ResultsTitle({required this.title, required this.subtitle});
 
+  final String title;
   final String subtitle;
 
   @override
@@ -159,7 +193,7 @@ class _ResultsTitle extends StatelessWidget {
         Semantics(
           header: true,
           child: Text(
-            context.l10n.resultsTitle,
+            title,
             textAlign: TextAlign.center,
             style: textTheme.displaySmall,
           ),

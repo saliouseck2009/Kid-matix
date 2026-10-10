@@ -6,7 +6,7 @@ import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
-import 'package:kid_matix/features/quiz/presentation/widgets/prompt_reading.dart';
+import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Texts of the quiz that depend on the learning domain.

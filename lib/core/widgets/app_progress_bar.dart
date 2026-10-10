@@ -8,6 +8,7 @@ class AppProgressBar extends StatelessWidget {
   const AppProgressBar({
     required this.value,
     required this.semanticLabel,
+    this.color,
     super.key,
   }) : assert(value >= 0 && value <= 1, 'value must be between 0 and 1.');
 
@@ -16,6 +17,9 @@ class AppProgressBar extends StatelessWidget {
 
   /// Full localized description of the progress for screen readers.
   final String semanticLabel;
+
+  /// Color of the filled part; the primary color when `null`.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class AppProgressBar extends StatelessWidget {
           heightFactor: 1,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: color ?? Theme.of(context).colorScheme.primary,
               borderRadius: radius,
             ),
           ),

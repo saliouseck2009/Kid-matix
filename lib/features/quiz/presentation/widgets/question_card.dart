@@ -3,7 +3,7 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
-import 'package:kid_matix/features/quiz/presentation/widgets/prompt_reading.dart';
+import 'package:kid_matix/core/extensions/prompt_reading.dart';
 
 /// White card of the question: a label, the operation and the mascot.
 class QuestionCard extends StatelessWidget {

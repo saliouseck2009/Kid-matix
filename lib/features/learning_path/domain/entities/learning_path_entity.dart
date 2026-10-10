@@ -91,6 +91,19 @@ final class TablePathNode extends PathNode {
   int get totalStars =>
       stages.fold(0, (int sum, StageState stage) => sum + stage.stars);
 
+  /// Stars shown under the table on the map: the average of the stages
+  /// played, rounded down; 0 before any star.
+  int get averageStars {
+    final List<StageState> played = stages
+        .where((StageState stage) => stage.stars > 0)
+        .toList();
+    if (played.isEmpty) return 0;
+    return totalStars ~/ played.length;
+  }
+
+  /// Most stars the table can earn.
+  int get maxStars => stages.length * StageDefinition.maxStars;
+
   /// The first open stage without a star, or `null` when every open stage
   /// has one.
   StageState? get nextStage {
