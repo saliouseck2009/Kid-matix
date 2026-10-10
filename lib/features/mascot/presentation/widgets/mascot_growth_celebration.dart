@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/entities/game_feedback.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/entities/mascot_look.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
@@ -8,9 +12,14 @@ import 'package:kid_matix/features/mascot/domain/entities/mascot_entity.dart';
 import 'package:kid_matix/features/mascot/domain/services/mascot_rules.dart';
 import 'package:kid_matix/features/mascot/presentation/widgets/mascot_look_of.dart';
 
-/// Shows the growth of [mascot] to its new stage, full screen, closed by
-/// one tap.
-Future<void> showMascotGrowth(BuildContext context, MascotEntity mascot) {
+/// Shows the growth of [mascot] to its new stage, full screen, with the
+/// [feedback] of a celebration; closed by one tap.
+Future<void> showMascotGrowth(
+  BuildContext context,
+  MascotEntity mascot, {
+  required GameFeedbackService feedback,
+}) {
+  unawaited(feedback.play(GameFeedback.celebration));
   return showGeneralDialog<void>(
     context: context,
     barrierDismissible: true,

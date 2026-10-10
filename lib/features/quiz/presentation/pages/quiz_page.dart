@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/entities/game_feedback.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
@@ -24,6 +28,7 @@ class QuizPage extends StatelessWidget {
     required this.useCases,
     required this.ticker,
     required this.domains,
+    required this.feedback,
     required this.onCompleted,
     required this.onLeft,
     super.key,
@@ -41,6 +46,9 @@ class QuizPage extends StatelessWidget {
   /// Learning domains, to name units and facts.
   final DomainRegistry domains;
 
+  /// Sound and vibration of each answer.
+  final GameFeedbackService feedback;
+
   /// Called with the saved session identifier after the last question.
   final ValueChanged<String> onCompleted;
 
@@ -54,22 +62,35 @@ class QuizPage extends StatelessWidget {
           QuizBloc(useCases: useCases, ticker: ticker)
             ..add(QuizStarted(request: request)),
       child: _QuizLifecycle(
-        child: BlocConsumer<QuizBloc, QuizState>(
+        child: BlocListener<QuizBloc, QuizState>(
           listenWhen: (QuizState previous, QuizState current) =>
-              current is QuizCompleted || current is QuizLeft,
-          listener: (BuildContext context, QuizState state) => switch (state) {
-            QuizCompleted(:final session) => onCompleted(session.id),
-            _ => onLeft(),
-          },
-          builder: (BuildContext context, QuizState state) {
-            final Widget scaffold = _QuizScaffold(
-              state: state,
-              labels: QuizLabels(domains: domains, l10n: context.l10n),
-              onLeft: onLeft,
-            );
-            if (!request.isBossFight) return scaffold;
-            return Theme(data: AppTheme.boss, child: scaffold);
-          },
+              current is QuizShowingFeedback &&
+              previous is! QuizShowingFeedback,
+          listener: (BuildContext context, QuizState state) => unawaited(
+            feedback.play(
+              (state as QuizShowingFeedback).submission.answer.isCorrect
+                  ? GameFeedback.rightAnswer
+                  : GameFeedback.wrongAnswer,
+            ),
+          ),
+          child: BlocConsumer<QuizBloc, QuizState>(
+            listenWhen: (QuizState previous, QuizState current) =>
+                current is QuizCompleted || current is QuizLeft,
+            listener: (BuildContext context, QuizState state) =>
+                switch (state) {
+                  QuizCompleted(:final session) => onCompleted(session.id),
+                  _ => onLeft(),
+                },
+            builder: (BuildContext context, QuizState state) {
+              final Widget scaffold = _QuizScaffold(
+                state: state,
+                labels: QuizLabels(domains: domains, l10n: context.l10n),
+                onLeft: onLeft,
+              );
+              if (!request.isBossFight) return scaffold;
+              return Theme(data: AppTheme.boss, child: scaffold);
+            },
+          ),
         ),
       ),
     );

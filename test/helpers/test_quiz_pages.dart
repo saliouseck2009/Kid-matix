@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_repository.dart';
@@ -12,6 +13,7 @@ import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 
 import '../features/quiz/helpers/quiz_fixtures.dart';
 import 'fixed_learning_path_service.dart';
+import 'recording_game_feedback.dart';
 
 /// [PlayerSettingsService] that always answers [mode].
 final class FixedPlayerSettings implements PlayerSettingsService {
@@ -35,6 +37,14 @@ final class FixedPlayerSettings implements PlayerSettingsService {
   @override
   Future<DataState<int>> readDailyGoalXp({required String profileId}) async =>
       const DataSuccess<int>(20);
+
+  @override
+  Future<DataState<({bool isSoundOn, bool isVibrationOn})>> readFeedback({
+    required String profileId,
+  }) async => const DataSuccess<({bool isSoundOn, bool isVibrationOn})>((
+    isSoundOn: true,
+    isVibrationOn: true,
+  ));
 
   @override
   Future<DataState<TimerMode>> readTimerMode({
@@ -76,6 +86,7 @@ QuizPages buildTestQuizPages({
   QuizSessionRepository? repository,
   Ticker ticker = const SilentTicker(),
   PlayerSettingsService settings = const FixedPlayerSettings(),
+  GameFeedbackService? feedback,
 }) {
   final QuizSessionRepository sessions =
       repository ?? MockQuizSessionRepository();
@@ -87,5 +98,6 @@ QuizPages buildTestQuizPages({
     ),
     ticker: ticker,
     domains: buildDomainRegistry(),
+    feedback: feedback ?? RecordingGameFeedback(),
   );
 }

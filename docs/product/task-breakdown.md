@@ -457,7 +457,7 @@ L'onglet Profil montre la progression du joueur ; les réglages règlent les son
 - [x] **F10-06** Liste des badges obtenus et à obtenir, collection de monstres vaincus.
 - [x] **F10-07** Bouton « Changer de joueur », retour à « Qui joue ? ».
 - [x] **F10-08** Écran Réglages : sons, vibrations, mode de chrono, objectif du jour, « Tout débloquer », animations réduites. Maquette : `13-settings.png`.
-- [ ] **F10-09** Ajout du paquet audioplayers ; sons et vibrations : bonne réponse, erreur, célébrations ; coupure séparée des deux.
+- [x] **F10-09** Ajout du paquet audioplayers ; sons et vibrations : bonne réponse, erreur, célébrations ; coupure séparée des deux.
 - [x] **F10-10** Réinitialiser la progression après une confirmation où l'enfant retape son pseudo.
 
 **Tests**

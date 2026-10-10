@@ -20,6 +20,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/boss_monster.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
 
 import '../../../helpers/pump_localized.dart';
+import '../../../helpers/recording_game_feedback.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/quiz_fixtures.dart';
 
@@ -173,6 +174,7 @@ void main() {
           useCases: buildTestQuizUseCases(repository: mockRepository),
           ticker: const SilentTicker(),
           domains: buildDomainRegistry(),
+          feedback: RecordingGameFeedback(),
           onCompleted: (String sessionId) {},
           onLeft: () {},
         ),

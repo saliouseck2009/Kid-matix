@@ -12,6 +12,7 @@ import 'package:kid_matix/features/reward/presentation/bloc/reward_use_cases.dar
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 
 import '../features/quiz/helpers/quiz_fixtures.dart';
+import 'recording_game_feedback.dart';
 import 'test_quiz_pages.dart';
 
 /// [RewardRepository] holding the values the test sets.
@@ -82,5 +83,6 @@ RewardPages buildTestRewardPages({
       watchChanges: WatchRewardChangesUseCase(repository: rewards),
     ),
     domains: buildDomainRegistry(),
+    feedback: RecordingGameFeedback(),
   );
 }

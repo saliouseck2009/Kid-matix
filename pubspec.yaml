@@ -10,6 +10,7 @@ environment:
 # Third-party packages are added by tool/setup.sh with `flutter pub add`, so
 # that each one is pinned to the latest version compatible with this SDK.
 dependencies:
+  audioplayers: ^6.8.1
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -38,6 +39,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+
+  assets:
+    - assets/sounds/
 
   fonts:
     - family: Fredoka

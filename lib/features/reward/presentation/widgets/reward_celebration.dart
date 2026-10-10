@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/entities/game_feedback.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
@@ -7,11 +11,13 @@ import 'package:kid_matix/features/reward/domain/entities/session_rewards_entity
 import 'package:kid_matix/features/reward/presentation/widgets/badge_labels.dart';
 
 /// Shows the celebrations of [rewards] one after the other: the new level,
-/// then each new badge. One tap closes each of them.
+/// then each new badge, each with the [feedback] of a celebration. One tap
+/// closes each of them.
 Future<void> showRewardCelebrations(
   BuildContext context, {
   required SessionRewardsEntity rewards,
   required BadgeLabels labels,
+  required GameFeedbackService feedback,
 }) async {
   final List<(String, String, String)> celebrations =
       <(String, String, String)>[
@@ -30,6 +36,7 @@ Future<void> showRewardCelebrations(
       ];
   for (final (String kicker, String title, String hint) in celebrations) {
     if (!context.mounted) return;
+    unawaited(feedback.play(GameFeedback.celebration));
     await showGeneralDialog<void>(
       context: context,
       barrierDismissible: true,

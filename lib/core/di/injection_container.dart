@@ -30,6 +30,7 @@ import 'package:kid_matix/features/multiplication/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
 import 'package:kid_matix/features/quiz/injection.dart';
 import 'package:kid_matix/features/reward/injection.dart';
+import 'package:kid_matix/features/setting/injection.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -53,6 +54,7 @@ Future<void> configureDependencies() async {
   registerRewardFeature(sl);
   registerMascotFeature(sl);
   registerChallengeFeature(sl);
+  registerSettingFeature(sl);
   registerQuizFeature(sl);
 }
 

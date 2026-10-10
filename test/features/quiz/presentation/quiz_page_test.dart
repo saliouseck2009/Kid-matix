@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/entities/game_feedback.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
@@ -14,6 +15,7 @@ import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
 
 import '../../../helpers/pump_localized.dart';
+import '../../../helpers/recording_game_feedback.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/quiz_fixtures.dart';
 
@@ -21,10 +23,12 @@ void main() {
   late MockQuizSessionRepository mockRepository;
   late bool isLeft;
   late String? completedSessionId;
+  late RecordingGameFeedback feedback;
 
   setUpAll(registerQuizFallbacks);
 
   setUp(() {
+    feedback = RecordingGameFeedback();
     mockRepository = MockQuizSessionRepository();
     isLeft = false;
     completedSessionId = null;
@@ -57,6 +61,7 @@ void main() {
         useCases: buildTestQuizUseCases(repository: mockRepository),
         ticker: const SilentTicker(),
         domains: buildDomainRegistry(),
+        feedback: feedback,
         onCompleted: (String sessionId) => completedSessionId = sessionId,
         onLeft: () => isLeft = true,
       ),
@@ -101,6 +106,7 @@ void main() {
       expect(find.text('Bravo !'), findsOneWidget);
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
       expect(find.text('Continuer'), findsOneWidget);
+      expect(feedback.played, <GameFeedback>[GameFeedback.rightAnswer]);
     });
     testWidgets('shows the whole operation after a mistake', (
       WidgetTester tester,
@@ -121,6 +127,7 @@ void main() {
       expect(find.text('Retiens aussi : 7 × 5 = 35'), findsOneWidget);
       expect(find.text('Pas grave, tu vas y arriver !'), findsOneWidget);
       expect(find.byIcon(Icons.close_rounded), findsWidgets);
+      expect(feedback.played, <GameFeedback>[GameFeedback.wrongAnswer]);
     });
     testWidgets('shows the help card after two mistakes on a fact', (
       WidgetTester tester,

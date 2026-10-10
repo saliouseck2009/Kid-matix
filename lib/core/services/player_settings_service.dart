@@ -14,4 +14,10 @@ abstract interface class PlayerSettingsService {
 
   /// Returns the XP the player [profileId] aims to earn each day.
   Future<DataState<int>> readDailyGoalXp({required String profileId});
+
+  /// Returns whether the player [profileId] left the sounds and the
+  /// vibrations on.
+  Future<DataState<({bool isSoundOn, bool isVibrationOn})>> readFeedback({
+    required String profileId,
+  });
 }
