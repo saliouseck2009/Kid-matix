@@ -5,22 +5,28 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
+import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
+import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
+import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 
-/// Builds a quiz: one scored question per item, ready to be played.
+/// Builds a quiz ready to be played.
 ///
-/// Fails with a `ValidationException` when the domain, an item or every
-/// question type is unknown, or when no item is given.
+/// The mastery engine chooses the items among those given, low boxes
+/// more often, and the question types fit for each one. Fails with a
+/// `ValidationException` when the domain, an item or every question type
+/// is unknown, or when no item is given.
 class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   /// Creates the use case.
   const BuildQuizUseCase({
     required this._domains,
+    required this._mastery,
     required this._generator,
     required this._random,
     required this._idGenerator,
@@ -28,6 +34,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   });
 
   final DomainRegistry _domains;
+  final MasteryService _mastery;
   final QuestionGenerator _generator;
   final RandomSource _random;
   final IdGenerator _idGenerator;
@@ -44,11 +51,36 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         ValidationException(message: 'Unknown domain or items.'),
       );
     }
-    try {
-      final List<Question> questions = _generator.generate(
-        domain: domain,
-        items: items,
+    final DataState<List<QuizItemPlan>> plans = await _mastery.planQuiz(
+      request: QuizPlanRequest(
+        profileId: params.profileId,
+        domainId: domain.id,
+        itemKeys: params.itemKeys,
         questionTypeIds: params.questionTypeIds,
+        questionCount: params.questionCount ?? items.length,
+      ),
+    );
+    return switch (plans) {
+      DataSuccess<List<QuizItemPlan>>(:final data) => _generate(
+        params,
+        domain,
+        data,
+      ),
+      DataFailed<List<QuizItemPlan>>(:final exception) => DataFailed<QuizRun>(
+        exception,
+      ),
+    };
+  }
+
+  DataState<QuizRun> _generate(
+    BuildQuizParams params,
+    LearningDomain domain,
+    List<QuizItemPlan> plans,
+  ) {
+    try {
+      final List<Question> questions = _generator.generatePlanned(
+        domain: domain,
+        plans: plans,
         random: _random,
       );
       return DataSuccess<QuizRun>(_createRun(params, questions));

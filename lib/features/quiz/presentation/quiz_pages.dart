@@ -29,6 +29,9 @@ final class QuizPages {
   /// Unit of the temporary home button; removed with lot F5.
   static const String provisionalUnitKey = 'mul:5';
 
+  /// Scored questions of a free training quiz.
+  static const int freeTrainingQuestionCount = 10;
+
   final QuizUseCases _useCases;
   final GetQuizResultUseCase _getResult;
   final Ticker _ticker;
@@ -39,7 +42,7 @@ final class QuizPages {
     return ProvisionalQuizLauncherPage(onStart: onStart);
   }
 
-  /// Free training quiz of [profileId] on every item of the unit
+  /// Free training quiz of [profileId] drawn among the items of the unit
   /// [unitKey], with every question type of its domain.
   Widget buildQuizPage({
     required String profileId,
@@ -83,6 +86,7 @@ final class QuizPages {
         domainId: domain.id,
         mode: QuizMode.freeTraining,
         itemKeys: unit.items.map((LearningItem item) => item.key).toList(),
+        questionCount: freeTrainingQuestionCount,
         questionTypeIds: domain.questionTypeIds,
         baseTimeLimit: QuizTimeLimits.freeTraining,
       );

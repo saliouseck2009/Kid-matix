@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/question_types/version_one_question_types.da
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
+import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -18,6 +19,7 @@ import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.d
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
+import '../../../helpers/fake_mastery_service.dart';
 
 /// Test double of [QuizSessionRepository].
 final class MockQuizSessionRepository extends Mock
@@ -87,10 +89,12 @@ List<String> tableKeys(int table) {
   ];
 }
 
-/// [BuildQuizUseCase] over the real registries and a seeded draw.
-BuildQuizUseCase buildQuizUseCase({int seed = 5}) {
+/// [BuildQuizUseCase] over the real registries and a seeded draw; the
+/// mastery engine plans the items in the order given by default.
+BuildQuizUseCase buildQuizUseCase({int seed = 5, MasteryService? mastery}) {
   return BuildQuizUseCase(
     domains: buildDomainRegistry(),
+    mastery: mastery ?? FakeMasteryService(),
     generator: const QuestionGenerator(),
     random: DartRandomSource(seed: seed),
     idGenerator: const FixedIdGenerator('session-1'),
@@ -98,11 +102,16 @@ BuildQuizUseCase buildQuizUseCase({int seed = 5}) {
   );
 }
 
-/// [SubmitAnswerUseCase] over the real registries and a seeded draw.
-SubmitAnswerUseCase buildSubmitAnswerUseCase({int seed = 5}) {
+/// [SubmitAnswerUseCase] over the real registries and a seeded draw; the
+/// answers go to [mastery], a [FakeMasteryService] by default.
+SubmitAnswerUseCase buildSubmitAnswerUseCase({
+  int seed = 5,
+  MasteryService? mastery,
+}) {
   return SubmitAnswerUseCase(
     questionTypes: buildQuestionTypeRegistry(),
     domains: buildDomainRegistry(),
+    mastery: mastery ?? FakeMasteryService(),
     generator: const QuestionGenerator(),
     random: DartRandomSource(seed: seed),
   );
