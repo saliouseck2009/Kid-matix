@@ -5,17 +5,22 @@ import 'package:kid_matix/features/reward/domain/entities/session_reward_outcome
 import 'package:kid_matix/features/reward/domain/entities/streak_entity.dart';
 import 'package:kid_matix/features/reward/domain/services/session_reward_calculator.dart';
 
-SessionRewardInput _input({bool isCompleted = true, int correct = 9}) {
+SessionRewardInput _input({
+  bool isCompleted = true,
+  int correct = 9,
+  bool isTimeAttack = false,
+}) {
   return SessionRewardInput(
     isCompleted: isCompleted,
     correctCount: correct,
-    questionCount: 10,
+    questionCount: isTimeAttack ? correct : 10,
     lightningCount: 4,
-    isStage: true,
-    crownedUnitKey: 'mul:5',
+    isStage: !isTimeAttack,
+    crownedUnitKey: isTimeAttack ? null : 'mul:5',
     masteredItemCount: 0,
     itemCount: 120,
     now: DateTime(2026, 10, 10, 18),
+    isTimeAttack: isTimeAttack,
   );
 }
 
@@ -60,6 +65,35 @@ void main() {
       expect(actualOutcome.streak, inputStreak);
       expect(actualOutcome.lightningAnswers, 17);
       expect(actualOutcome.newBadges, isEmpty);
+    });
+    test('unlocks Sprinter with 20 right answers in a time attack', () {
+      // Act
+      final List<String> actualBadges = <String>[
+        for (final int inputScore in <int>[19, 20])
+          ...calculator
+              .calculate(
+                input: _input(correct: inputScore, isTimeAttack: true),
+                totalXp: 0,
+                streak: const StreakEntity.empty(),
+                lightningAnswers: 0,
+                unlocked: const <String>{},
+              )
+              .newBadges,
+      ];
+      // Assert
+      expect(actualBadges, <String>[BadgeKey.sprinter]);
+    });
+    test('gives no Sprinter for 20 right answers outside a time attack', () {
+      // Act
+      final SessionRewardOutcome actualOutcome = calculator.calculate(
+        input: _input(correct: 20),
+        totalXp: 0,
+        streak: const StreakEntity.empty(),
+        lightningAnswers: 0,
+        unlocked: const <String>{},
+      );
+      // Assert
+      expect(actualOutcome.newBadges, isNot(contains(BadgeKey.sprinter)));
     });
   });
 }

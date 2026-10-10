@@ -636,6 +636,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rewardBadgeLightning => 'Éclair';
 
   @override
+  String get rewardBadgeSprinter => 'Sprinter';
+
+  @override
   String get rewardBadgeRegular => 'Régulier';
 
   @override
@@ -654,6 +657,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rewardBadgeLightningHint => '20 réponses éclair au total.';
+
+  @override
+  String get rewardBadgeSprinterHint =>
+      '20 bonnes réponses en Contre-la-montre.';
 
   @override
   String get rewardBadgeRegularHint => '7 jours de jeu d\'affilée.';

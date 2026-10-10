@@ -3,13 +3,16 @@ import 'package:kid_matix/features/reward/domain/entities/badge_key.dart';
 
 /// Decides which badges a completed quiz unlocks.
 ///
-/// Sprinter comes with lot F9 and Survivant with lot F12.
+/// Survivant comes with lot F12.
 final class BadgeEvaluator {
   /// Creates the evaluator.
   const BadgeEvaluator();
 
   /// Lightning answers of the Éclair badge.
   static const int lightningAnswersForBadge = 20;
+
+  /// Right answers in one time attack of the Sprinter badge.
+  static const int timeAttackScoreForBadge = 20;
 
   /// Streak of the Régulier badge.
   static const int streakForBadge = 7;
@@ -25,6 +28,7 @@ final class BadgeEvaluator {
       if (facts.isPerfectStage) BadgeKey.perfect,
       if (facts.lightningAnswerCount >= lightningAnswersForBadge)
         BadgeKey.lightning,
+      if (facts.timeAttackScore >= timeAttackScoreForBadge) BadgeKey.sprinter,
       if (facts.streak >= streakForBadge) BadgeKey.regular,
       for (final String unitKey in facts.crownedUnitKeys)
         BadgeKey.tamerOf(unitKey),

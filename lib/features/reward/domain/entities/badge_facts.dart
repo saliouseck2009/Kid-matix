@@ -12,6 +12,7 @@ final class BadgeFacts {
     required Set<String> crownedUnitKeys,
     required this.masteredItemCount,
     required this.itemCount,
+    this.timeAttackScore = 0,
   }) : crownedUnitKeys = Set<String>.unmodifiable(crownedUnitKeys);
 
   /// Whether the quiz was a stage of the learning path.
@@ -34,4 +35,7 @@ final class BadgeFacts {
 
   /// Items of the domain.
   final int itemCount;
+
+  /// Right answers of the quiz when it was a time attack, 0 otherwise.
+  final int timeAttackScore;
 }

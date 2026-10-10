@@ -928,6 +928,12 @@ abstract class AppLocalizations {
   /// **'Éclair'**
   String get rewardBadgeLightning;
 
+  /// Name of the badge for 20 right answers in one time attack ("Sprinter", a fast runner). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sprinter'**
+  String get rewardBadgeSprinter;
+
   /// Name of the badge for a 7-day streak ("Steady", adjective describing the player). Short: title of the badge celebration and of the badge list of the results.
   ///
   /// In fr, this message translates to:
@@ -963,6 +969,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'20 réponses éclair au total.'**
   String get rewardBadgeLightningHint;
+
+  /// Line under the Sprinter badge in its celebration ("20 right answers in a time attack."). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'20 bonnes réponses en Contre-la-montre.'**
+  String get rewardBadgeSprinterHint;
 
   /// Line under the Régulier badge in its celebration ("7 days of play in a row."). One or two lines.
   ///

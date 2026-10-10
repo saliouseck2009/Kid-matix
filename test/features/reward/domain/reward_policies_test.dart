@@ -33,6 +33,7 @@ BadgeFacts _facts({
   int streak = 0,
   Set<String> crowned = const <String>{},
   int mastered = 0,
+  int timeAttackScore = 0,
 }) {
   return BadgeFacts(
     isStageCompleted: isStageCompleted,
@@ -42,6 +43,7 @@ BadgeFacts _facts({
     crownedUnitKeys: crowned,
     masteredItemCount: mastered,
     itemCount: 120,
+    timeAttackScore: timeAttackScore,
   );
 }
 
@@ -264,6 +266,7 @@ void main() {
             BadgeKey.perfect,
           ),
           'Éclair': (_facts(lightning: 20), BadgeKey.lightning),
+          'Sprinter': (_facts(timeAttackScore: 20), BadgeKey.sprinter),
           'Régulier': (_facts(streak: 7), BadgeKey.regular),
           'Dompteur de la table de 7': (
             _facts(crowned: <String>{'mul:7'}),
@@ -286,7 +289,12 @@ void main() {
     test('unlocks nothing below the thresholds', () {
       // Act
       final List<String> actualBadges = _badges.newBadges(
-        facts: _facts(lightning: 19, streak: 6, mastered: 119),
+        facts: _facts(
+          lightning: 19,
+          streak: 6,
+          mastered: 119,
+          timeAttackScore: 19,
+        ),
         unlocked: const <String>{},
       );
       // Assert

@@ -74,6 +74,7 @@ final class SessionRewardCalculator {
           crownedUnitKeys: crowned == null ? <String>{} : <String>{crowned},
           masteredItemCount: input.masteredItemCount,
           itemCount: input.itemCount,
+          timeAttackScore: input.isTimeAttack ? input.correctCount : 0,
         ),
         unlocked: unlocked,
       ),
