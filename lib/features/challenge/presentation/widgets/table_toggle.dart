@@ -56,6 +56,7 @@ class TableToggle extends StatelessWidget {
               height: _height - AppSizes.buttonDepth,
               child: Center(
                 child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   child: ExcludeSemantics(
                     child: Text(
                       mark,

@@ -45,6 +45,7 @@ class ProfileStatTile extends StatelessWidget {
           spacing: 2,
           children: <Widget>[
             FittedBox(
+              fit: BoxFit.scaleDown,
               child: Text(
                 value,
                 style: textTheme.titleLarge?.copyWith(fontSize: _valueSize),
