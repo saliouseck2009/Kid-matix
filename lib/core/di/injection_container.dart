@@ -18,6 +18,7 @@ import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
 import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
+import 'package:kid_matix/features/mastery/injection.dart';
 import 'package:kid_matix/features/multiplication/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
 import 'package:kid_matix/features/quiz/injection.dart';
@@ -39,6 +40,7 @@ Future<void> configureDependencies() async {
   _registerQuizEngine();
   registerProfileFeature(sl);
   registerMultiplicationFeature(sl);
+  registerMasteryFeature(sl);
   registerQuizFeature(sl);
 }
 

@@ -262,13 +262,13 @@ L'app suit chaque fait pour chaque joueur et fait revenir les faits fragiles au 
 - [x] **F4-03** Plafond à la boîte 3 pour une réponse en choix multiple ou en vrai ou faux ; seule une saisie fait monter plus haut.
 - [x] **F4-04** Délais de révision par boîte : le lendemain, 2, 4, 7 puis 15 jours.
 - [x] **F4-05** Statut « maîtrisé » : boîte 5 et temps médian des 5 dernières réponses sous 3 secondes.
-- [ ] **F4-06** Cas d'usage `GetDueFacts` et `GetMasteryGrid`.
+- [x] **F4-06** Cas d'usage `GetDueFacts` et `GetMasteryGrid`.
 - [x] **F4-07** Tirage pondéré : les boîtes basses sortent plus souvent ; hors de leur table, les faits en × 1 et × 10 sortent deux fois moins.
 - [x] **F4-08** Format selon le niveau : choix multiple d'abord pour les boîtes 1 et 2, saisie et opérations à trous à partir de la boîte 3.
 
 **Données**
 
-- [ ] **F4-09** Migration : table `item_progress`, une ligne par joueur, domaine et item, créée à la première présentation.
+- [x] **F4-09** Migration : table `item_progress`, une ligne par joueur, domaine et item, créée à la première présentation.
 - [ ] **F4-10** Enregistrement à chaque réponse, pour qu'un abandon ou une fermeture de l'app ne perde rien.
 
 **Présentation**
