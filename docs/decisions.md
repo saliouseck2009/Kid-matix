@@ -98,7 +98,6 @@ Ask the owner when the lot that needs the answer starts.
 | Point | Needed by |
 | --- | --- |
 | Final app name, icon and splash screen | F11-07 |
-| Animation tool for the mascot: Rive, Lottie or hand-animated vector drawing | Start of F8 |
 | Final illustrations for the mascot, the 12 monsters and the 12 avatars (current drawings are provisional) | Any time; code must not depend on the drawings |
 | Screens not drawn yet (see `docs/design/README.md`) | F4, F12, F14 |
 | Which tables a guest without a profile gets in a duel | F14-02 |
