@@ -326,9 +326,9 @@ La cinquième étape de chaque table est un duel contre le monstre de cette tabl
 - [x] **F6-01** Règles du combat : le boss a 12 points de vie, une bonne réponse en retire 1, une réponse « Éclair » en retire 2.
 - [x] **F6-02** Une erreur ne coûte rien au joueur : la bonne réponse s'affiche et le fait revient plus tard dans le combat.
 - [x] **F6-03** Victoire quand la vie tombe à zéro ; après 20 questions sans y parvenir, le monstre s'enfuit et le combat peut être retenté.
-- [ ] **F6-04** Questions : les 10 faits de la table, puis jusqu'à 10 faits des tables déjà vues parmi les plus fragiles ; 8 secondes par question.
-- [ ] **F6-05** Étoiles calculées sur les questions jouées ; couronne à la victoire, dorée quand tous les faits de la table sont maîtrisés.
-- [ ] **F6-06** Collection de monstres vaincus, déduite de `StageProgress` sans nouvelle table.
+- [x] **F6-04** Questions : les 10 faits de la table, puis jusqu'à 10 faits des tables déjà vues parmi les plus fragiles ; 8 secondes par question.
+- [x] **F6-05** Étoiles calculées sur les questions jouées ; couronne à la victoire, dorée quand tous les faits de la table sont maîtrisés.
+- [x] **F6-06** Collection de monstres vaincus, déduite de `StageProgress` sans nouvelle table.
 
 **Présentation**
 
@@ -336,7 +336,7 @@ La cinquième étape de chaque table est un duel contre le monstre de cette tabl
 - [ ] **F6-08** Écran Combat de boss : fond sombre, monstre, barre de vie, question, pavé numérique.
 - [ ] **F6-09** Animations courtes : coup, coup critique, riposte, fuite, victoire ; version fixe si les animations sont réduites.
 - [ ] **F6-10** Les 12 monstres en ressources vectorielles, un par table.
-- [ ] **F6-11** Couronnes affichées sur la carte du parcours.
+- [x] **F6-11** Couronnes affichées sur la carte du parcours.
 
 **Tests**
 

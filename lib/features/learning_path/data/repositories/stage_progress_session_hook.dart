@@ -11,7 +11,8 @@ import 'package:sqflite/sqflite.dart';
 /// same transaction.
 ///
 /// Only a completed quiz played for a stage counts: an abandoned one
-/// earns no star.
+/// earns no star. A defeated boss earns at least 1 star, a boss that fled
+/// none.
 final class StageProgressSessionHook implements SessionSavedHook {
   /// Creates the hook.
   const StageProgressSessionHook({
@@ -23,6 +24,9 @@ final class StageProgressSessionHook implements SessionSavedHook {
   final StageProgressLocalDataSource _progress;
   final Clock _clock;
   final StarPolicy _stars;
+
+  /// Outcome of a session whose boss was defeated.
+  static const String bossDefeated = 'defeated';
 
   @override
   Future<List<String>> onSessionSaved({
@@ -38,15 +42,21 @@ final class StageProgressSessionHook implements SessionSavedHook {
         domainId: session.domainId,
         unitKey: source.unitKey,
         stage: source.stage,
-        bestStars: _stars.starsFor(
-          correctCount: session.correctCount,
-          questionCount: session.questionCount,
-        ),
+        bestStars: _starsOf(source, session),
         bestScore: session.correctCount,
         completedAt: session.endedAt.millisecondsSinceEpoch,
         updatedAt: _clock.now().millisecondsSinceEpoch,
       ),
     );
     return const <String>[LearningPathTables.stageProgress];
+  }
+
+  int _starsOf(StageSource source, SavedQuizSession session) {
+    return _stars.starsForStage(
+      stage: source.stage,
+      correctCount: session.correctCount,
+      questionCount: session.questionCount,
+      isBossDefeated: session.bossOutcome == bossDefeated,
+    );
   }
 }

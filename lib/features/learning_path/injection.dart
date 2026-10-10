@@ -24,6 +24,7 @@ void registerLearningPathFeature(GetIt sl) {
       repository: sl(),
       domains: sl(),
       settings: sl(),
+      mastery: sl(),
     ),
   );
   sl.registerLazySingleton<WatchLearningPathChangesUseCase>(

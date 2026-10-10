@@ -19,6 +19,13 @@ final class LearningPathEntity {
   /// The tables of the path, in order.
   List<TablePathNode> get tables => nodes.whereType<TablePathNode>().toList();
 
+  /// Keys of the tables whose boss is defeated, in path order: the
+  /// monsters of the player's collection.
+  List<String> get defeatedBosses => <String>[
+    for (final TablePathNode table in tables)
+      if (table.crown != TableCrown.none) table.unitKey,
+  ];
+
   /// The table the player is working on, or `null` when none is open.
   TablePathNode? get currentTable {
     for (final TablePathNode table in tables) {
@@ -59,6 +66,18 @@ enum TableStatus {
   locked,
 }
 
+/// The crown of a table.
+enum TableCrown {
+  /// Its boss is still standing.
+  none,
+
+  /// Its boss is defeated.
+  crown,
+
+  /// Its boss is defeated and every fact of the table is mastered.
+  golden,
+}
+
 /// One node of the map.
 @immutable
 sealed class PathNode {
@@ -76,6 +95,7 @@ final class TablePathNode extends PathNode {
     required this.number,
     required this.status,
     required List<StageState> stages,
+    this.crown = TableCrown.none,
   }) : stages = List<StageState>.unmodifiable(stages);
 
   /// Number of the table, such as 5.
@@ -86,6 +106,9 @@ final class TablePathNode extends PathNode {
 
   /// Its five stages, in order.
   final List<StageState> stages;
+
+  /// The crown won by defeating its boss.
+  final TableCrown crown;
 
   /// Stars of every stage added up.
   int get totalStars =>
@@ -147,7 +170,6 @@ final class StageState {
     required this.definition,
     required this.stars,
     required this.isUnlocked,
-    this.isComingSoon = false,
   });
 
   /// What the stage is made of.
@@ -159,12 +181,9 @@ final class StageState {
   /// Whether the previous stage, or table, opens it.
   final bool isUnlocked;
 
-  /// Whether the stage arrives with a later version of the app.
-  final bool isComingSoon;
-
   /// Which stage it is.
   StageKind get kind => definition.kind;
 
   /// Whether the player can start it.
-  bool get isPlayable => isUnlocked && !isComingSoon;
+  bool get isPlayable => isUnlocked;
 }

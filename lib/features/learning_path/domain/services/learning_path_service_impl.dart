@@ -14,11 +14,15 @@ final class LearningPathServiceImpl implements LearningPathService {
     required String? sourceKey,
     required int correctCount,
     required int questionCount,
+    bool isBossDefeated = false,
   }) {
-    if (StageSource.tryParse(sourceKey) == null) return null;
-    return _stars.starsFor(
+    final StageSource? source = StageSource.tryParse(sourceKey);
+    if (source == null) return null;
+    return _stars.starsForStage(
+      stage: source.stage,
       correctCount: correctCount,
       questionCount: questionCount,
+      isBossDefeated: isBossDefeated,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/widgets/crown_mark.dart';
 import 'package:kid_matix/core/widgets/star_row.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
@@ -16,6 +17,7 @@ class TableNode extends StatelessWidget {
 
   static const double _size = 88;
   static const double _currentSize = 104;
+  static const double _crownOffset = -6;
 
   /// Table shown.
   final TablePathNode table;
@@ -40,14 +42,28 @@ class TableNode extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: 4,
           children: <Widget>[
-            UnitBadge(
-              mark: labels.unitMark(table.number),
-              size: isCurrent ? _currentSize : _size,
-              style: switch (table.status) {
-                TableStatus.current => UnitBadgeStyle.current,
-                TableStatus.locked => UnitBadgeStyle.locked,
-                TableStatus.done || TableStatus.open => UnitBadgeStyle.reached,
-              },
+            Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                UnitBadge(
+                  mark: labels.unitMark(table.number),
+                  size: isCurrent ? _currentSize : _size,
+                  style: switch (table.status) {
+                    TableStatus.current => UnitBadgeStyle.current,
+                    TableStatus.locked => UnitBadgeStyle.locked,
+                    TableStatus.done ||
+                    TableStatus.open => UnitBadgeStyle.reached,
+                  },
+                ),
+                if (table.crown != TableCrown.none)
+                  Positioned(
+                    right: _crownOffset,
+                    top: _crownOffset,
+                    child: CrownMark(
+                      isGolden: table.crown == TableCrown.golden,
+                    ),
+                  ),
+              ],
             ),
             if (!isCurrent && table.averageStars > 0)
               StarRow(count: table.averageStars),

@@ -68,11 +68,18 @@ final class PathLabels {
   /// What a screen reader says of [table] on the map.
   String describeTable(TablePathNode table) {
     final String name = unitName(table.number);
-    return switch (table.status) {
+    final String label = switch (table.status) {
       TableStatus.done => l10n.pathTableNodeDone(name, table.averageStars),
       TableStatus.current => l10n.pathTableNodeCurrent(name),
       TableStatus.open => l10n.pathTableNodeOpen(name),
       TableStatus.locked => l10n.pathTableNodeLocked(name),
+    };
+    return switch (table.crown) {
+      TableCrown.none => label,
+      TableCrown.crown || TableCrown.golden => l10n.pathTableNodeCrowned(
+        label,
+        table.crown.name,
+      ),
     };
   }
 

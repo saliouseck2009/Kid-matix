@@ -27,6 +27,7 @@ final class StageQuizSpecs {
         : StageDefinition.tableStages.firstWhere(
             (StageDefinition stage) => stage.kind == source.stage,
           );
+    final bool isBoss = source.stage == StageKind.boss;
     return QuizSpec(
       domainId: domain.id,
       mode: QuizMode.path,
@@ -39,7 +40,25 @@ final class StageQuizSpecs {
       questionCount: definition.questionCount,
       baseTimeLimit: definition.baseTimeLimit,
       sourceKey: source.toKey(),
+      isBossFight: isBoss,
+      followUpItemKeys: isBoss
+          ? _bossFollowUp(domain, units.single)
+          : const <String>[],
+      followUpQuestionCount: isBoss ? StageDefinition.bossFollowUpCount : 0,
     );
+  }
+
+  /// Facts the boss of [unit] adds after its own: those of the tables seen
+  /// before it on the path, or its own for the first table.
+  List<String> _bossFollowUp(LearningDomain domain, LearningUnit unit) {
+    final List<LearningUnit> seen = domain.path
+        .takeWhile((LearningUnit other) => other.key != unit.key)
+        .toList();
+    return <String>[
+      for (final LearningUnit other
+          in seen.isEmpty ? <LearningUnit>[unit] : seen)
+        for (final LearningItem item in other.items) item.key,
+    ];
   }
 
   /// The tables of [source]: its own, or every table up to a review.

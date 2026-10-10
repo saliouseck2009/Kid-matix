@@ -13,5 +13,6 @@ final class FixedLearningPathService implements LearningPathService {
     required String? sourceKey,
     required int correctCount,
     required int questionCount,
+    bool isBossDefeated = false,
   }) => sourceKey == null ? null : stars;
 }
