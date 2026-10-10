@@ -41,6 +41,21 @@ final class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
   }
 
   @override
+  Future<ProfileSettingsLocalModel?> getSettings({
+    required String profileId,
+  }) async {
+    final Database database = await _database.database;
+    final List<Map<String, Object?>> rows = await database.query(
+      ProfileSettingsTable.name,
+      where: '${ProfileSettingsTable.profileId} = ? AND $_isLive',
+      whereArgs: <Object>[profileId],
+    );
+    return rows.isEmpty
+        ? null
+        : ProfileSettingsLocalModel.fromJson(rows.single);
+  }
+
+  @override
   Future<int> countProfiles() async {
     final Database database = await _database.database;
     final List<Map<String, Object?>> rows = await database.rawQuery(

@@ -233,9 +233,9 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 
 **Présentation**
 
-- [ ] **F3-07** `QuizBloc` : événements `QuizStarted`, `AnswerSubmitted`, `TimerTicked`, `TimeExpired`, `NextRequested`, `QuizPaused`, `QuizResumed`, `QuizAbandoned` ; états préparation, question en cours, retour sur réponse, terminé.
-- [ ] **F3-08** Chrono dans le BLoC, alimenté par le `Ticker` : barre qui se vide, changement de couleur dans les 3 dernières secondes, temps écoulé compté comme une erreur.
-- [ ] **F3-09** Trois modes de chrono lus dans les réglages du profil : normal, détendu (temps × 1,5), sans chrono.
+- [x] **F3-07** `QuizBloc` : événements `QuizStarted`, `AnswerSubmitted`, `TimerTicked`, `TimeExpired`, `NextRequested`, `QuizPaused`, `QuizResumed`, `QuizAbandoned` ; états préparation, question en cours, retour sur réponse, terminé.
+- [x] **F3-08** Chrono dans le BLoC, alimenté par le `Ticker` : barre qui se vide, changement de couleur dans les 3 dernières secondes, temps écoulé compté comme une erreur.
+- [x] **F3-09** Trois modes de chrono lus dans les réglages du profil : normal, détendu (temps × 1,5), sans chrono.
 - [ ] **F3-10** Pause du chrono quand l'app passe en arrière-plan.
 - [ ] **F3-11** Écran Quiz : bouton quitter, barre de progression, compteur de combo, carte de la question.
 - [ ] **F3-12** Zones de réponse : 4 boutons, pavé numérique intégré (0 à 9, Effacer, Valider), boutons Vrai et Faux, opération à trous.
@@ -245,7 +245,7 @@ Ce lot livre la boucle de jeu : une série de questions avec chrono, un retour i
 
 **Tests**
 
-- [ ] **F3-16** Tests de `QuizBloc` avec un ticker factice : bonne réponse, erreur, temps écoulé, pause, reprise, abandon.
+- [x] **F3-16** Tests de `QuizBloc` avec un ticker factice : bonne réponse, erreur, temps écoulé, pause, reprise, abandon.
 - [ ] **F3-17** Un test de widget de l'écran Quiz par format de question.
 - [x] **F3-18** Test du retour d'un fait raté 3 questions plus tard.
 

@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 
 /// Access to the players stored on the device and to the active player.
 ///
@@ -13,6 +14,13 @@ abstract interface class ProfileRepository {
   ///
   /// Fails with a `NotFoundException` when there is none.
   Future<DataState<ProfileEntity>> getProfile({required String profileId});
+
+  /// Returns the game settings of the profile [profileId].
+  ///
+  /// Fails with a `NotFoundException` when there are none.
+  Future<DataState<ProfileSettingsEntity>> getProfileSettings({
+    required String profileId,
+  });
 
   /// Returns how many profiles exist.
   Future<DataState<int>> countProfiles();

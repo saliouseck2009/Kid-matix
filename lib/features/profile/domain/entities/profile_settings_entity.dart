@@ -1,5 +1,5 @@
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
-import 'package:kid_matix/features/profile/domain/entities/timer_mode.dart';
+import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:meta/meta.dart';
 
 /// Game settings of one player.

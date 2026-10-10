@@ -94,6 +94,21 @@ void main() {
         expectedSettings,
       );
     });
+    test('reads the settings of a profile, or fails without one', () async {
+      // Arrange
+      await repository.createProfile(profile: inputAwa);
+      // Act
+      final DataState<ProfileSettingsEntity> actualState = await repository
+          .getProfileSettings(profileId: 'p-awa');
+      final DataState<ProfileSettingsEntity> actualMissing = await repository
+          .getProfileSettings(profileId: 'missing');
+      // Assert
+      expect(
+        _dataOf(actualState),
+        const ProfileSettingsEntity.defaults(profileId: 'p-awa'),
+      );
+      expect(_exceptionOf(actualMissing), isA<NotFoundException>());
+    });
     test('counts the profiles', () async {
       // Arrange
       await repository.createProfile(profile: inputAwa);
