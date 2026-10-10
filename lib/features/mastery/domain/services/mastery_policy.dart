@@ -6,14 +6,19 @@ import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
 /// The spaced repetition rules: boxes, review days and mastery.
 ///
 /// A right answer moves the item up one box, a wrong one or a timeout
-/// sends it back to box 1. An answer picked among choices never moves it
-/// past [recognizedBoxCap]: only a written answer goes higher.
+/// sends it back to box 1. Box 1 holds only the items to review, so the
+/// first right answer of a new item moves it straight to
+/// [firstRightBox]. An answer picked among choices never moves it past
+/// [recognizedBoxCap]: only a written answer goes higher.
 final class MasteryPolicy {
   /// Creates the policy.
   const MasteryPolicy();
 
   /// Box of an item answered wrong.
   static const int firstBox = 1;
+
+  /// Box of a new item answered right the first time.
+  static const int firstRightBox = 2;
 
   /// Highest box an answer picked among choices can reach.
   static const int recognizedBoxCap = 3;
@@ -80,6 +85,7 @@ final class MasteryPolicy {
   int _nextBox(int box, MasteryAnswer answer) {
     if (!answer.isCorrect) return firstBox;
     if (answer.isRetry) return box < firstBox ? firstBox : box;
+    if (box == 0) return firstRightBox;
     final int cap = answer.answerNature == AnswerNature.recognized
         ? recognizedBoxCap
         : lastBox;

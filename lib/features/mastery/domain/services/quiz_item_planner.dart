@@ -8,9 +8,11 @@ import 'package:kid_matix/features/mastery/domain/services/mastery_policy.dart';
 
 /// Chooses the items of a quiz and the format of each question.
 ///
-/// Items are drawn with replacement, low boxes more often, and weighted
-/// by the domain. Items in the first boxes are asked with answers to
-/// pick, the others with answers to write.
+/// Every item to review (box 1) is asked once first, so missed facts
+/// come back at the next quiz; the other questions are drawn with
+/// replacement, low boxes more often, and weighted by the domain. The
+/// order is then shuffled. Items in the first boxes are asked with
+/// answers to pick, the others with answers to write.
 final class QuizItemPlanner {
   /// Creates the planner.
   const QuizItemPlanner();
@@ -41,16 +43,29 @@ final class QuizItemPlanner {
         boxDrawWeights[_boxOf(progressByKey, item)] * domain.drawWeightOf(item),
     ];
     final int total = weights.fold(0, (int sum, int weight) => sum + weight);
-    return List<QuizItemPlan>.generate(count, (_) {
-      final LearningItem item = items[_pickIndex(weights, total, random)];
-      return QuizItemPlan(
-        itemKey: item.key,
-        questionTypeIds: questionTypesFor(
-          box: _boxOf(progressByKey, item),
-          questionTypeNatures: questionTypeNatures,
-        ),
-      );
-    });
+    final List<LearningItem> chosen = <LearningItem>[
+      ...items
+          .where(
+            (LearningItem item) =>
+                _boxOf(progressByKey, item) == MasteryPolicy.firstBox,
+          )
+          .take(count),
+    ];
+    while (chosen.length < count) {
+      chosen.add(items[_pickIndex(weights, total, random)]);
+    }
+    return random
+        .shuffled(chosen)
+        .map(
+          (LearningItem item) => QuizItemPlan(
+            itemKey: item.key,
+            questionTypeIds: questionTypesFor(
+              box: _boxOf(progressByKey, item),
+              questionTypeNatures: questionTypeNatures,
+            ),
+          ),
+        )
+        .toList();
   }
 
   /// Question types fit for an item of [box]: answers to pick up to

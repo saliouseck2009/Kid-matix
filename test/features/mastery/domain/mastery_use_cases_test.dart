@@ -116,8 +116,8 @@ void main() {
         domainId: 'multiplication',
         itemKey: 'mul:7x8',
       )).requireData;
-      expect(actualProgress.box, 1);
-      expect(actualProgress.nextReviewAt, DateTime(2026, 10, 11));
+      expect(actualProgress.box, 2);
+      expect(actualProgress.nextReviewAt, DateTime(2026, 10, 12));
       expect(actualStored, actualProgress);
     });
     test('caps a picked answer at box 3', () async {
