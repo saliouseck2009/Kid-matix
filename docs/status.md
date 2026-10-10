@@ -13,8 +13,9 @@ middle of one). Last update: 2026-10-10.
 | F3 · Quiz session and results | **Done** (closed 2026-10-10) |
 | F4 · Mastery and spaced repetition | **Done** (closed 2026-10-10) |
 | F5 · Learning path | **Done** (closed 2026-10-10) |
-| F6 · Boss fight | **Next** |
-| F7 – F21 | Not started |
+| F6 · Boss fight | **Done** (closed 2026-10-10) |
+| F7 · Rewards | **Next** |
+| F8 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -251,15 +252,52 @@ Known gaps left on purpose, to handle in the lot named:
 - Core widgets: `StarRow`, `BackToParent`; locked colors in the palette;
   `PromptReading` moved to `core/extensions/`.
 
-## Starting F6
+## F6 closure
 
-Tasks F6-01 to F6-13 in `docs/product/task-breakdown.md`; rules in
-sections 4 and 7 of `docs/product/specifications.md`; mockup `08` in
-`docs/design/screens/`.
+- `bash tool/check.sh`: every step OK (440 tests); CI green on #39 to #41.
+- Checked on the Android emulator (API 36), the lot's "done when"
+  included: the database upgraded to version 6; on the table of 1 the
+  Speed stage then the boss were played; the boss was defeated (12 right
+  answers out of 13, outcome `defeated`, 2 stars), the map showed the
+  crown on the table of 1 ("Table de 1, terminée, 2 étoiles, couronne"),
+  and the table joined the defeated monsters. The fight screen matches
+  mockup 08.
 
-- Stage 5 opens: 12 hit points, a lightning answer hits twice, a mistake
-  costs nothing, the boss flees after 20 questions.
-- Questions: the 10 facts of the table, then up to 10 of the weakest
-  facts of the tables already seen; 8 seconds each.
-- The crown (golden once every fact of the table is mastered) shows on
-  the map; the defeated monsters are read from `stage_progress`.
+Known gaps left on purpose, to handle in the lot named:
+
+- The collection of defeated monsters has no screen yet
+  (`LearningPathEntity.defeatedBosses`): the Profile screen (F10) and "Mes
+  monstres" (F13) show it.
+- The blow animations follow the system's reduced motion; the player
+  setting comes with F10.
+- The 12 monsters are provisional drawings.
+- Texts proposed without a mockup, waiting for the owner: "Touché ! −1",
+  "Riposte !", "Vaincu !", "Il s'enfuit !", "Boss vaincu !", "Le monstre
+  s'est enfui"; still from F5: the 12 table tips.
+
+## What F6 delivered
+
+- Quiz: `BossFight` (12 hit points, critical hit, flight after 20
+  questions), `BossOutcome`, follow-up questions drawn by the mastery
+  engine, boss mode of `QuizBloc` (`bossBlow`), the boss fight screen
+  (`BossHeader`, `BossArena`, `BossMonster`), boss result titles.
+- `core/storage/migrations/migration_006_add_quiz_session_boss_outcome.dart`.
+- Learning path: stage 5 opens, boss quiz spec, `StarPolicy.starsForStage`
+  (a defeated boss earns at least 1 star), `TableCrown` and the crowns on
+  the map, `defeatedBosses`.
+- `MasteryService.readMasteredItems` for the golden crown.
+- Theme: `AppTheme.boss`; core widgets `MonsterIllustration`, `CrownMark`.
+
+## Starting F7
+
+Tasks F7-01 to F7-18 in `docs/product/task-breakdown.md`; rules in
+section 7 of `docs/product/specifications.md`; mockups `09` (results) and
+`03` (header band of the map).
+
+- `features/reward/` is created: XP, levels, streak and its weekly joker,
+  daily goal, combo, badges; the `streak` and `badge_unlock` tables, XP
+  and level on the profile.
+- Every reward is written by a `SessionSavedHook`, inside the transaction
+  that saves the session.
+- The results show the XP, the level progress and the new badges; the
+  map gets its header band; the quiz counts the combo.
