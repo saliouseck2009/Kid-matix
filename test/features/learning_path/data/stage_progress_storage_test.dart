@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
@@ -33,6 +34,7 @@ SavedQuizSession _session({
     id: 's1',
     profileId: 'p1',
     domainId: 'multiplication',
+    mode: QuizMode.path,
     isCompleted: isCompleted,
     questionCount: 10,
     correctCount: correctCount,
@@ -139,6 +141,7 @@ void main() {
           id: 's2',
           profileId: 'p1',
           domainId: 'multiplication',
+          mode: QuizMode.path,
           isCompleted: true,
           questionCount: 20,
           correctCount: 11,
@@ -152,6 +155,7 @@ void main() {
           id: 's3',
           profileId: 'p1',
           domainId: 'multiplication',
+          mode: QuizMode.path,
           isCompleted: true,
           questionCount: 20,
           correctCount: 11,
