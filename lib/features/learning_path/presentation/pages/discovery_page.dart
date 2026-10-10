@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
+import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/app_progress_bar.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
@@ -44,42 +45,45 @@ class DiscoveryPage extends StatelessWidget {
       l10n: context.l10n,
     );
     final VoidCallback? play = onPlay;
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.space24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: 18,
-            children: <Widget>[
-              _DiscoveryTopBar(isPlaying: play != null, onClose: onClose),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: 18,
-                    children: <Widget>[
-                      Semantics(
-                        header: true,
-                        child: Text(
-                          context.l10n.pathDiscoveryTitle(unit.number),
-                          style: Theme.of(context).textTheme.headlineMedium,
+    return BackToParent(
+      onBack: onClose,
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSizes.space24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 18,
+              children: <Widget>[
+                _DiscoveryTopBar(isPlaying: play != null, onClose: onClose),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 18,
+                      children: <Widget>[
+                        Semantics(
+                          header: true,
+                          child: Text(
+                            context.l10n.pathDiscoveryTitle(unit.number),
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
                         ),
-                      ),
-                      UnitFactsGrid(
-                        facts: unit.items.map(_describe).toList(),
-                      ),
-                      TipCard(tip: labels.unitTip(unit.number)),
-                    ],
+                        UnitFactsGrid(
+                          facts: unit.items.map(_describe).toList(),
+                        ),
+                        TipCard(tip: labels.unitTip(unit.number)),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              if (play != null)
-                DepthButton(
-                  label: context.l10n.pathDiscoveryStart,
-                  onPressed: play,
-                ),
-            ],
+                if (play != null)
+                  DepthButton(
+                    label: context.l10n.pathDiscoveryStart,
+                    onPressed: play,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

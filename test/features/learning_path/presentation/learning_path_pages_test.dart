@@ -167,6 +167,23 @@ void main() {
       );
       expect(isPlayed, isTrue);
     });
+    testWidgets('goes back with the system back button', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      bool isClosed = false;
+      await pumpPage(
+        tester,
+        pages.buildDiscoveryPage(
+          unitKey: 'mul:5',
+          onClose: () => isClosed = true,
+        ),
+      );
+      // Act
+      await tester.binding.handlePopRoute();
+      // Assert
+      expect(isClosed, isTrue);
+    });
     testWidgets('only shows the table from "Voir la table"', (
       WidgetTester tester,
     ) async {

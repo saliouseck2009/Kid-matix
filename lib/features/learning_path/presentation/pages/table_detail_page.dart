@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
+import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
@@ -56,37 +57,40 @@ class TableDetailPage extends StatelessWidget {
       create: (_) =>
           LearningPathBloc(params: params, useCases: useCases)
             ..add(const LearningPathStarted()),
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocBuilder<LearningPathBloc, LearningPathState>(
-            builder: (BuildContext context, LearningPathState state) {
-              final PathLabels labels = PathLabels(
-                domainId: params.domainId,
-                l10n: context.l10n,
-              );
-              final TablePathNode? table = switch (state) {
-                LearningPathLoaded(:final path) => path.findTable(unitKey),
-                _ => null,
-              };
-              return switch (state) {
-                LearningPathLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                LearningPathFailure(:final errorCode) => Center(
-                  child: Text(labels.describeError(errorCode)),
-                ),
-                LearningPathLoaded() when table == null => Center(
-                  child: Text(context.l10n.errorUnknown),
-                ),
-                LearningPathLoaded() => _TableDetailView(
-                  table: table!,
-                  labels: labels,
-                  onBack: onBack,
-                  onPlay: onPlay,
-                  onShowTable: onShowTable,
-                ),
-              };
-            },
+      child: BackToParent(
+        onBack: onBack,
+        child: Scaffold(
+          body: SafeArea(
+            child: BlocBuilder<LearningPathBloc, LearningPathState>(
+              builder: (BuildContext context, LearningPathState state) {
+                final PathLabels labels = PathLabels(
+                  domainId: params.domainId,
+                  l10n: context.l10n,
+                );
+                final TablePathNode? table = switch (state) {
+                  LearningPathLoaded(:final path) => path.findTable(unitKey),
+                  _ => null,
+                };
+                return switch (state) {
+                  LearningPathLoading() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  LearningPathFailure(:final errorCode) => Center(
+                    child: Text(labels.describeError(errorCode)),
+                  ),
+                  LearningPathLoaded() when table == null => Center(
+                    child: Text(context.l10n.errorUnknown),
+                  ),
+                  LearningPathLoaded() => _TableDetailView(
+                    table: table!,
+                    labels: labels,
+                    onBack: onBack,
+                    onPlay: onPlay,
+                    onShowTable: onShowTable,
+                  ),
+                };
+              },
+            ),
           ),
         ),
       ),
