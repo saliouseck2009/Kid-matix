@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
+import 'package:kid_matix/core/widgets/speech_bubble.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 
 /// White card of the question: a label, the operation and the mascot.
@@ -13,6 +15,8 @@ class QuestionCard extends StatelessWidget {
     required this.prompt,
     this.blankText,
     this.blankColor,
+    this.mascotMood = MascotMood.neutral,
+    this.mascotMessage,
     super.key,
   });
 
@@ -32,6 +36,12 @@ class QuestionCard extends StatelessWidget {
   /// Color of the typed digits; the text color when `null`.
   final Color? blankColor;
 
+  /// Face the mascot makes.
+  final MascotMood mascotMood;
+
+  /// What the mascot says, or `null`.
+  final String? mascotMessage;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,11 +51,21 @@ class QuestionCard extends StatelessWidget {
       ),
       child: Stack(
         children: <Widget>[
-          const Positioned(
+          Positioned(
             right: AppSizes.space12,
             bottom: 0,
-            child: MascotIllustration(size: _mascotSize),
+            child: MascotIllustration(size: _mascotSize, mood: mascotMood),
           ),
+          if (mascotMessage case final String message)
+            Positioned(
+              left: AppSizes.space12,
+              right: _mascotSize + AppSizes.space16,
+              bottom: AppSizes.space12,
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: SpeechBubble(text: message, color: context.palette.tint),
+              ),
+            ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(AppSizes.space16),

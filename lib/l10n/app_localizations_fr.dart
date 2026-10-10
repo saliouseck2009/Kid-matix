@@ -712,4 +712,145 @@ class AppLocalizationsFr extends AppLocalizations {
   String quizComboMilestone(int count) {
     return 'Combo de $count !';
   }
+
+  @override
+  String mascotGoalReminder(int xp) {
+    return 'Encore $xp XP pour ton objectif du jour !';
+  }
+
+  @override
+  String get mascotGoalReached => 'Objectif du jour atteint, bravo !';
+
+  @override
+  String get mascotEncouragement => 'Pas grave, tu vas y arriver !';
+
+  @override
+  String mascotComboCheer(int count) {
+    return 'Bravo, $count d\'affilée !';
+  }
+
+  @override
+  String get mascotCardTitle => 'Ta mascotte grandit';
+
+  @override
+  String mascotCardStage(int stage, int total, int level) {
+    return 'Stade $stage sur $total · prochain au niveau $level';
+  }
+
+  @override
+  String mascotCardLastStage(int stage, int total) {
+    return 'Stade $stage sur $total · taille maximale';
+  }
+
+  @override
+  String mascotGrewTitle(String name) {
+    return '$name a grandi !';
+  }
+
+  @override
+  String mascotGrewHint(int stage, int total) {
+    return 'Stade $stage sur $total';
+  }
+
+  @override
+  String get mascotPageTitle => 'Ma mascotte';
+
+  @override
+  String get mascotOpenTooltip => 'Voir ma mascotte';
+
+  @override
+  String get mascotNameLabel => 'Son nom';
+
+  @override
+  String get mascotRename => 'Changer le nom';
+
+  @override
+  String get mascotAccessoriesTitle => 'Accessoires';
+
+  @override
+  String get mascotSlotHead => 'Tête';
+
+  @override
+  String get mascotSlotEyes => 'Yeux';
+
+  @override
+  String get mascotSlotNeck => 'Cou';
+
+  @override
+  String get mascotSlotBack => 'Dos';
+
+  @override
+  String get mascotAccessoryCap => 'Casquette';
+
+  @override
+  String get mascotAccessoryRoundGlasses => 'Lunettes rondes';
+
+  @override
+  String get mascotAccessoryCape => 'Cape';
+
+  @override
+  String get mascotAccessoryBowTie => 'Nœud papillon';
+
+  @override
+  String get mascotAccessoryScarf => 'Écharpe';
+
+  @override
+  String get mascotAccessoryWizardHat => 'Chapeau de magicien';
+
+  @override
+  String get mascotAccessorySunglasses => 'Lunettes de soleil';
+
+  @override
+  String get mascotAccessoryBackpack => 'Sac à dos';
+
+  @override
+  String get mascotAccessoryHeadphones => 'Casque audio';
+
+  @override
+  String get mascotAccessoryMedal => 'Médaille';
+
+  @override
+  String get mascotAccessoryWings => 'Ailes';
+
+  @override
+  String get mascotAccessoryKingCrown => 'Couronne de roi';
+
+  @override
+  String get mascotAccessoryPartyHat => 'Chapeau de fête';
+
+  @override
+  String get mascotAccessoryLightningGoggles => 'Lunettes éclair';
+
+  @override
+  String get mascotAccessoryGoldenCape => 'Cape dorée';
+
+  @override
+  String mascotUnlockCrown(int rank) {
+    String _temp0 = intl.Intl.pluralLogic(
+      rank,
+      locale: localeName,
+      other: 'À la ${rank}e couronne',
+      one: 'À la 1re couronne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mascotUnlockRegular => 'Avec le badge Régulier';
+
+  @override
+  String get mascotUnlockLightning => 'Avec le badge Éclair';
+
+  @override
+  String get mascotUnlockAllFacts => 'Avec le badge Les 120';
+
+  @override
+  String mascotAccessoryWorn(String name) {
+    return '$name, sur ta mascotte';
+  }
+
+  @override
+  String mascotAccessoryLocked(String name, String hint) {
+    return '$name, à débloquer. $hint';
+  }
 }

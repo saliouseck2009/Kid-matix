@@ -1041,6 +1041,240 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Combo de {count} !'**
   String quizComboMilestone(int count);
+
+  /// Bubble of the mascot on the map while the daily goal is not reached ("{xp} more XP for your daily goal!"). Talks to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Encore {xp} XP pour ton objectif du jour !'**
+  String mascotGoalReminder(int xp);
+
+  /// Bubble of the mascot on the map once the daily goal is reached ("Daily goal reached, well done!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif du jour atteint, bravo !'**
+  String get mascotGoalReached;
+
+  /// Bubble of the mascot on the question card after a mistake ("No worries, you'll get there!"). Warm, never blaming.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas grave, tu vas y arriver !'**
+  String get mascotEncouragement;
+
+  /// Bubble of the mascot on the question card at a combo milestone ("Well done, {count} in a row!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Bravo, {count} d\'affilée !'**
+  String mascotComboCheer(int count);
+
+  /// Title of the mascot card of the Profile tab ("Your mascot is growing"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta mascotte grandit'**
+  String get mascotCardTitle;
+
+  /// Line of the mascot card: the stage and the level of the next one ("Stage 1 of 5 · next at level 5"). Keep the middle dot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stade {stage} sur {total} · prochain au niveau {level}'**
+  String mascotCardStage(int stage, int total, int level);
+
+  /// Line of the mascot card once the mascot reached its last stage ("Stage 5 of 5 · fully grown").
+  ///
+  /// In fr, this message translates to:
+  /// **'Stade {stage} sur {total} · taille maximale'**
+  String mascotCardLastStage(int stage, int total);
+
+  /// Title of the celebration when the mascot reaches a new stage ("Lim grew!"); {name} is the name the child gave it.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} a grandi !'**
+  String mascotGrewTitle(String name);
+
+  /// Line under the growth celebration ("Stage 2 of 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Stade {stage} sur {total}'**
+  String mascotGrewHint(int stage, int total);
+
+  /// Title of the mascot screen opened from the Profile tab ("My mascot").
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma mascotte'**
+  String get mascotPageTitle;
+
+  /// Screen-reader label of the mascot card of the Profile tab, which opens the mascot screen ("See my mascot").
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir ma mascotte'**
+  String get mascotOpenTooltip;
+
+  /// Label of the field where the child names the mascot ("Its name").
+  ///
+  /// In fr, this message translates to:
+  /// **'Son nom'**
+  String get mascotNameLabel;
+
+  /// Button that saves the new name of the mascot ("Change the name").
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer le nom'**
+  String get mascotRename;
+
+  /// Title of the list of accessories on the mascot screen ("Accessories").
+  ///
+  /// In fr, this message translates to:
+  /// **'Accessoires'**
+  String get mascotAccessoriesTitle;
+
+  /// Name of the group of accessories worn on the head ("Head").
+  ///
+  /// In fr, this message translates to:
+  /// **'Tête'**
+  String get mascotSlotHead;
+
+  /// Name of the group of accessories worn on the eyes ("Eyes").
+  ///
+  /// In fr, this message translates to:
+  /// **'Yeux'**
+  String get mascotSlotEyes;
+
+  /// Name of the group of accessories worn on the neck ("Neck").
+  ///
+  /// In fr, this message translates to:
+  /// **'Cou'**
+  String get mascotSlotNeck;
+
+  /// Name of the group of accessories worn on the back ("Back").
+  ///
+  /// In fr, this message translates to:
+  /// **'Dos'**
+  String get mascotSlotBack;
+
+  /// Name of a mascot accessory ("Cap").
+  ///
+  /// In fr, this message translates to:
+  /// **'Casquette'**
+  String get mascotAccessoryCap;
+
+  /// Name of a mascot accessory ("Round glasses").
+  ///
+  /// In fr, this message translates to:
+  /// **'Lunettes rondes'**
+  String get mascotAccessoryRoundGlasses;
+
+  /// Name of a mascot accessory ("Cape").
+  ///
+  /// In fr, this message translates to:
+  /// **'Cape'**
+  String get mascotAccessoryCape;
+
+  /// Name of a mascot accessory ("Bow tie").
+  ///
+  /// In fr, this message translates to:
+  /// **'Nœud papillon'**
+  String get mascotAccessoryBowTie;
+
+  /// Name of a mascot accessory ("Scarf").
+  ///
+  /// In fr, this message translates to:
+  /// **'Écharpe'**
+  String get mascotAccessoryScarf;
+
+  /// Name of a mascot accessory ("Wizard hat").
+  ///
+  /// In fr, this message translates to:
+  /// **'Chapeau de magicien'**
+  String get mascotAccessoryWizardHat;
+
+  /// Name of a mascot accessory ("Sunglasses").
+  ///
+  /// In fr, this message translates to:
+  /// **'Lunettes de soleil'**
+  String get mascotAccessorySunglasses;
+
+  /// Name of a mascot accessory ("Backpack").
+  ///
+  /// In fr, this message translates to:
+  /// **'Sac à dos'**
+  String get mascotAccessoryBackpack;
+
+  /// Name of a mascot accessory ("Headphones").
+  ///
+  /// In fr, this message translates to:
+  /// **'Casque audio'**
+  String get mascotAccessoryHeadphones;
+
+  /// Name of a mascot accessory ("Medal").
+  ///
+  /// In fr, this message translates to:
+  /// **'Médaille'**
+  String get mascotAccessoryMedal;
+
+  /// Name of a mascot accessory ("Wings").
+  ///
+  /// In fr, this message translates to:
+  /// **'Ailes'**
+  String get mascotAccessoryWings;
+
+  /// Name of a mascot accessory ("King's crown").
+  ///
+  /// In fr, this message translates to:
+  /// **'Couronne de roi'**
+  String get mascotAccessoryKingCrown;
+
+  /// Name of a mascot accessory ("Party hat").
+  ///
+  /// In fr, this message translates to:
+  /// **'Chapeau de fête'**
+  String get mascotAccessoryPartyHat;
+
+  /// Name of a mascot accessory ("Lightning goggles").
+  ///
+  /// In fr, this message translates to:
+  /// **'Lunettes éclair'**
+  String get mascotAccessoryLightningGoggles;
+
+  /// Name of a mascot accessory ("Golden cape").
+  ///
+  /// In fr, this message translates to:
+  /// **'Cape dorée'**
+  String get mascotAccessoryGoldenCape;
+
+  /// How to unlock a locked accessory: win the n-th crown ("With the 3rd crown"). Shown under the accessory tile, one short line. French ordinals stay plain text, not superscript: "1re" for 1 (couronne is feminine), "{rank}e" otherwise.
+  ///
+  /// In fr, this message translates to:
+  /// **'{rank, plural, =1{À la 1re couronne} other{À la {rank}e couronne}}'**
+  String mascotUnlockCrown(int rank);
+
+  /// How to unlock an accessory earned with the Régulier badge ("With the Steady badge").
+  ///
+  /// In fr, this message translates to:
+  /// **'Avec le badge Régulier'**
+  String get mascotUnlockRegular;
+
+  /// How to unlock an accessory earned with the Éclair badge ("With the Lightning badge").
+  ///
+  /// In fr, this message translates to:
+  /// **'Avec le badge Éclair'**
+  String get mascotUnlockLightning;
+
+  /// How to unlock an accessory earned with the Les 120 badge ("With The 120 badge").
+  ///
+  /// In fr, this message translates to:
+  /// **'Avec le badge Les 120'**
+  String get mascotUnlockAllFacts;
+
+  /// Screen-reader label of an accessory the mascot wears ("Cap, on your mascot"). Accessory names have mixed grammatical genders, so the wording must not agree with {name}. Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, sur ta mascotte'**
+  String mascotAccessoryWorn(String name);
+
+  /// Screen-reader label of a locked accessory with how to unlock it ("Cape, to unlock. With the 3rd crown"). Accessory names have mixed grammatical genders, so the wording must not agree with {name}; {hint} is a full phrase starting with a capital letter (mascotUnlock* keys).
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, à débloquer. {hint}'**
+  String mascotAccessoryLocked(String name, String hint);
 }
 
 class _AppLocalizationsDelegate

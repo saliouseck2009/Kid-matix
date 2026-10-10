@@ -20,6 +20,7 @@ class PathMap extends StatefulWidget {
     required this.onOpenTable,
     required this.onPlay,
     this.header,
+    this.mascot,
     super.key,
   });
 
@@ -37,6 +38,9 @@ class PathMap extends StatefulWidget {
 
   /// Widgets of other features at the top of the map, or `null`.
   final PathHeaderSlots? header;
+
+  /// The mascot, shown under the current table, or `null`.
+  final Widget? mascot;
 
   @override
   State<PathMap> createState() => _PathMapState();
@@ -76,6 +80,16 @@ class _PathMapState extends State<PathMap> {
       }
       previousX = x;
       rows.add(_buildRow(node, x));
+      if (node case TablePathNode(status: TableStatus.current)) {
+        if (widget.mascot case final Widget mascot) {
+          rows.add(
+            Padding(
+              padding: const EdgeInsets.only(top: AppSizes.space8),
+              child: mascot,
+            ),
+          );
+        }
+      }
     }
     final Widget map = SingleChildScrollView(
       padding: const EdgeInsets.all(AppSizes.space24),

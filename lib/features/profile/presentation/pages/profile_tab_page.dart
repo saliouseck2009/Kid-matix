@@ -21,6 +21,7 @@ class ProfileTabPage extends StatelessWidget {
   const ProfileTabPage({
     required this.profileId,
     required this.useCases,
+    this.mascotCard,
     super.key,
   });
 
@@ -29,6 +30,9 @@ class ProfileTabPage extends StatelessWidget {
 
   /// Use cases of the tab.
   final ProfileTabUseCases useCases;
+
+  /// Card of the mascot under the player, or `null`.
+  final Widget? mascotCard;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,10 @@ class ProfileTabPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
             ProfileTabFailure() => _ProfileTabFailureView(state: state),
-            ProfileTabLoaded() => _ProfileTabView(profile: state.profile),
+            ProfileTabLoaded() => _ProfileTabView(
+              profile: state.profile,
+              mascotCard: mascotCard,
+            ),
           };
         },
       ),
@@ -51,15 +58,17 @@ class ProfileTabPage extends StatelessWidget {
 }
 
 class _ProfileTabView extends StatelessWidget {
-  const _ProfileTabView({required this.profile});
+  const _ProfileTabView({required this.profile, required this.mascotCard});
 
   static const double _avatarSize = 92;
 
   final ProfileEntity profile;
+  final Widget? mascotCard;
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final Widget? mascot = mascotCard;
     final ProfileTabCubit cubit = context.read<ProfileTabCubit>();
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSizes.space24),
@@ -90,6 +99,10 @@ class _ProfileTabView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSizes.space24),
+          if (mascot != null) ...<Widget>[
+            mascot,
+            const SizedBox(height: AppSizes.space24),
+          ],
           DepthButton(
             label: context.l10n.editProfileButton,
             variant: DepthButtonVariant.secondary,

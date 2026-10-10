@@ -67,8 +67,15 @@ final class ProfilePages {
   }
 
   /// Profile tab of the player [profileId].
-  Widget buildProfileTabPage({required String profileId}) {
-    return ProfileTabPage(profileId: profileId, useCases: _tabUseCases);
+  Widget buildProfileTabPage({
+    required String profileId,
+    Widget? mascotCard,
+  }) {
+    return ProfileTabPage(
+      profileId: profileId,
+      useCases: _tabUseCases,
+      mascotCard: mascotCard,
+    );
   }
 
   /// Edition of the player [profileId].

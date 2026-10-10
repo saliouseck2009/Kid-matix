@@ -397,17 +397,17 @@ La mascotte donne un but visible aux XP : elle grandit avec le niveau du joueur 
 
 **Présentation**
 
-- [ ] **F8-05** Widget Mascotte : 5 stades, accessoires, trois humeurs (neutre, joie, encouragement).
-- [ ] **F8-06** Présence sur l'accueil, pendant le quiz et sur l'écran Résultats.
-- [ ] **F8-07** Messages : encouragement après une erreur, félicitations aux paliers, rappel de l'objectif du jour.
-- [ ] **F8-08** Carte Mascotte du Profil : stade en cours, prochain stade, choix des accessoires, changement du nom.
-- [ ] **F8-09** Célébration au changement de stade.
-- [ ] **F8-10** Dessins des 5 stades et des accessoires ; choix de l'outil d'animation (Rive, Lottie ou dessin vectoriel animé à la main) à trancher au début du lot.
+- [x] **F8-05** Widget Mascotte : 5 stades, accessoires, trois humeurs (neutre, joie, encouragement).
+- [x] **F8-06** Présence sur l'accueil, pendant le quiz et sur l'écran Résultats.
+- [x] **F8-07** Messages : encouragement après une erreur, félicitations aux paliers, rappel de l'objectif du jour.
+- [x] **F8-08** Carte Mascotte du Profil : stade en cours, prochain stade, choix des accessoires, changement du nom.
+- [x] **F8-09** Célébration au changement de stade.
+- [x] **F8-10** Dessins des 5 stades et des accessoires ; choix de l'outil d'animation (Rive, Lottie ou dessin vectoriel animé à la main) à trancher au début du lot.
 
 **Tests**
 
 - [x] **F8-11** Tests des règles de stade et de déblocage des accessoires.
-- [ ] **F8-12** Test de widget de la mascotte dans chaque stade.
+- [x] **F8-12** Test de widget de la mascotte dans chaque stade.
 
 **Terminé quand :** un joueur qui atteint le niveau 5 voit sa mascotte changer de stade, et peut lui mettre un accessoire gagné avec une couronne.
 

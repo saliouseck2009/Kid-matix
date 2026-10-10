@@ -23,6 +23,7 @@ class LearningPathPage extends StatelessWidget {
     required this.onOpenTable,
     required this.onPlay,
     this.header,
+    this.mascot,
     super.key,
   });
 
@@ -40,6 +41,9 @@ class LearningPathPage extends StatelessWidget {
 
   /// Player, streak and daily goal at the top of the map, or `null`.
   final PathHeaderSlots? header;
+
+  /// The mascot under the current table, or `null`.
+  final Widget? mascot;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +72,7 @@ class LearningPathPage extends StatelessWidget {
                   onOpenTable: onOpenTable,
                   onPlay: onPlay,
                   header: header,
+                  mascot: mascot,
                 ),
               };
             },

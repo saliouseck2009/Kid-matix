@@ -119,6 +119,7 @@ void main() {
       expect(find.text('Presque !'), findsOneWidget);
       expect(find.text('5 × 7 = 35'), findsOneWidget);
       expect(find.text('Retiens aussi : 7 × 5 = 35'), findsOneWidget);
+      expect(find.text('Pas grave, tu vas y arriver !'), findsOneWidget);
       expect(find.byIcon(Icons.close_rounded), findsWidgets);
     });
     testWidgets('shows the help card after two mistakes on a fact', (
@@ -206,6 +207,7 @@ void main() {
       }
       // Assert
       expect(find.text('Combo de 3 !'), findsOneWidget);
+      expect(find.text("Bravo, 3 d'affilée !"), findsOneWidget);
       expect(find.bySemanticsLabel('Combo de 3'), findsOneWidget);
     });
     testWidgets('opens the results after the last question', (

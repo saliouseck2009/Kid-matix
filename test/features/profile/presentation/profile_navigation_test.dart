@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
+import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/main.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -11,6 +12,7 @@ import '../../../helpers/test_path_pages.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/profile_fixtures.dart';
 import '../../../helpers/test_reward_pages.dart';
+import '../../../helpers/test_mascot_pages.dart';
 
 MockWatchProfileChangesUseCase _buildQuietWatch() {
   final MockWatchProfileChangesUseCase mockWatch =
@@ -42,11 +44,14 @@ void main() {
     ).thenAnswer((_) async => const DataSuccess<void>(null));
   });
 
+  final MascotPages mascotPages = buildTestMascotPages();
+
   Future<void> pumpApp(WidgetTester tester) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
       KidMatixApp(
+        scope: testMascotScope(mascotPages),
         router: createAppRouter(
           session: session,
           profilePages: buildProfilePages(
@@ -61,6 +66,7 @@ void main() {
           quizPages: buildTestQuizPages(),
           pathPages: buildTestPathPages(),
           rewardPages: buildTestRewardPages(),
+          mascotPages: mascotPages,
         ),
       ),
     );

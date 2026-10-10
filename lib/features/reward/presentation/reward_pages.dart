@@ -10,6 +10,7 @@ import 'package:kid_matix/features/reward/presentation/bloc/reward_value_cubit.d
 import 'package:kid_matix/features/reward/presentation/bloc/reward_value_state.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/badge_labels.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/daily_goal_card.dart';
+import 'package:kid_matix/features/reward/presentation/widgets/daily_goal_reminder.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/reward_celebration.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/session_rewards_widgets.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/streak_pill.dart';
@@ -84,6 +85,18 @@ final class RewardPages {
         changes: _useCases.watchChanges(),
       )..load(),
       child: const StreakPill(),
+    );
+  }
+
+  /// What the mascot says about the daily goal of [profileId].
+  Widget buildGoalReminder({required String profileId}) {
+    return BlocProvider<RewardValueCubit<DailyGoalProgress>>(
+      key: ValueKey<String>('reminder-$profileId'),
+      create: (_) => RewardValueCubit<DailyGoalProgress>(
+        read: () => _useCases.getDailyGoal(params: profileId),
+        changes: _useCases.watchChanges(),
+      )..load(),
+      child: const DailyGoalReminder(),
     );
   }
 

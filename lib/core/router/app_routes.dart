@@ -15,6 +15,9 @@ abstract final class AppRoutes {
   /// Edition of the active player, opened from the [profile] tab.
   static const String profileEdit = '/profile/edit';
 
+  /// Mascot screen, opened from the [profile] tab.
+  static const String mascot = '/profile/mascot';
+
   /// "Qui joue ?": the player selection, shown while nobody is playing.
   static const String whoIsPlaying = '/players';
 

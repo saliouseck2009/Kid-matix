@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
@@ -110,6 +111,8 @@ class QuizPlayView extends StatelessWidget {
                 prompt: data.question.prompt,
                 blankText: data.typedDigits,
                 blankColor: _blankColor(context, data),
+                mascotMood: _moodOf(data),
+                mascotMessage: _mascotMessage(context, data),
               ),
             },
           ),
@@ -117,6 +120,29 @@ class QuizPlayView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Face of the mascot: happy after a right answer, encouraging after a
+  /// mistake.
+  MascotMood _moodOf(_PlayData data) {
+    return switch (data.isRight) {
+      true => MascotMood.happy,
+      false => MascotMood.encouraging,
+      null => MascotMood.neutral,
+    };
+  }
+
+  /// What the mascot says: a kind word after a mistake, a cheer at a
+  /// combo milestone.
+  String? _mascotMessage(BuildContext context, _PlayData data) {
+    final int combo = data.run.combo;
+    return switch (data.isRight) {
+      false => context.l10n.mascotEncouragement,
+      true when QuizCombo.isMilestone(combo) => context.l10n.mascotComboCheer(
+        combo,
+      ),
+      _ => null,
+    };
   }
 
   /// Number of the monster of a fight: the number of its table.

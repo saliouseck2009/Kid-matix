@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/features/reward/domain/entities/session_rewards_entity.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/badge_labels.dart';
@@ -82,7 +83,10 @@ class RewardCelebration extends StatelessWidget {
               spacing: AppSizes.space16,
               children: <Widget>[
                 const Spacer(),
-                const MascotIllustration(size: _mascotSize),
+                const MascotIllustration(
+                  size: _mascotSize,
+                  mood: MascotMood.happy,
+                ),
                 if (kicker.isNotEmpty)
                   Text(
                     kicker,
