@@ -15,8 +15,9 @@ middle of one). Last update: 2026-10-10.
 | F5 · Learning path | **Done** (closed 2026-10-10) |
 | F6 · Boss fight | **Done** (closed 2026-10-10) |
 | F7 · Rewards | **Done** (closed 2026-10-10) |
-| F8 · Growing mascot | **Next** |
-| F9 – F21 | Not started |
+| F8 · Growing mascot | **Done** (closed 2026-10-10) |
+| F9 · Free training and Against the clock | **Next** |
+| F10 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -327,16 +328,54 @@ Known gaps left on purpose, to handle in the lot named:
   the rewards. Map header (player, streak, crowns, daily goal); streak on
   the cards of "Qui joue ?".
 
-## Starting F8
+## F8 closure
 
-Tasks F8-01 to F8-12 in `docs/product/task-breakdown.md`; rules in
-section 7 of `docs/product/specifications.md` ("Mascotte qui grandit");
-mockup `12` for the mascot card of the profile.
+- `bash tool/check.sh`: every step OK (532 tests); CI green on #47 to #49.
+- Checked on the Android emulator (API 36), the lot's "done when"
+  included: the database upgraded to version 8; Awa played the table of 2
+  with its boss and the Discovery of the table of 10 and went from level
+  2 to level 5; back on the map, "Lim a grandi ! · Stade 2 sur 5" showed
+  and the mascot grew ears; on the mascot screen the cap earned with the
+  first crown was put on, stored (`mascot` row) and worn on every screen.
+  Fixed there: a stage reached during a quiz was never celebrated; the
+  map now checks it as soon as it shows.
 
-- `features/mascot/` is created: 5 stages reached at levels 1, 5, 10, 20
-  and 30, never going back; accessories unlocked by crowns and badges;
-  the mascot name and the accessories worn stored on the profile.
-- The mascot replaces the static drawing on the map, in the quiz and on
-  the results, with three moods.
-- The animation tool (Rive, Lottie or hand-animated vector drawing) is
-  chosen at the start of the lot.
+Known gaps left on purpose, to handle in the lot named:
+
+- The 5 stages and the 15 accessories are provisional drawings.
+- The mascot screen has no mockup; F10 builds the full Profile screen
+  around the mascot card.
+- Waiting for the owner: the mascot messages, "Lim a grandi !", the names
+  of the 15 accessories and their screen-reader texts; still the 12 table
+  tips, the boss and reward texts and the no-break spaces in the tips.
+
+## What F8 delivered
+
+- `features/mascot/`: `MascotRules` (stages at levels 1, 5, 10, 20, 30;
+  name "Lim", 12 characters at most), the `mascot` storage, the use cases
+  `GetMascot`, `UpdateMascot` (name, accessory worn, stage celebrated),
+  `WatchMascotChanges`, `MascotCubit`, the mascot card of the Profile
+  tab, the mascot screen, the map mascot with the daily goal reminder,
+  the growth celebration, `MascotPages`.
+- `core/entities/`: `MascotAccessory` (catalog of 15), `AccessorySlot`,
+  `MascotLook`, `MascotMood`.
+- `core/widgets/`: `MascotPainter` (5 stages, 3 moods),
+  `MascotAccessoryPainter`, `MascotIllustration`, `MascotLookScope`,
+  `SpeechBubble`.
+- `core/services/`: `CrownService` (learning path) and `RewardService`
+  (reward): the mascot reads the crowns, the level and the badges.
+- `core/storage/migrations/migration_008_create_mascot_table.dart`.
+- Quiz: the mascot reacts to each answer and to the combo milestones.
+
+## Starting F9
+
+Tasks F9-01 to F9-11 in `docs/product/task-breakdown.md`; rules in
+section 5 of `docs/product/specifications.md` ("Modes de jeu",
+"Chronomètre") and the Sprinter badge of section 7; mockups `10` and `11`.
+
+- Free training: the child picks one or more tables, 10, 20 or 30
+  questions, with or without timer; the questions use the weighted draw.
+- Against the clock: 60 seconds in all, score = right answers, a record
+  per player; the question is replaced when the app comes back from the
+  background.
+- The S'entraîner and Défis tabs still show `ComingSoonPage`.
