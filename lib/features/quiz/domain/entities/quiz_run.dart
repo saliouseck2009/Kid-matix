@@ -25,6 +25,9 @@ final class QuizRun {
        queue = List<QuizTurn>.unmodifiable(queue),
        answers = List<QuizAnswerEntity>.unmodifiable(answers);
 
+  /// Mistakes on the same fact after which its help card shows.
+  static const int helpMistakeCount = 2;
+
   /// Identifier the session will be saved under.
   final String sessionId;
 
@@ -68,6 +71,18 @@ final class QuizRun {
   int get correctCount => answers
       .where((QuizAnswerEntity answer) => answer.isCorrect && !answer.isRetry)
       .length;
+
+  /// Wrong answers given on the fact [itemKey] so far.
+  int mistakeCountOf(String itemKey) => answers
+      .where(
+        (QuizAnswerEntity answer) =>
+            answer.itemKey == itemKey && !answer.isCorrect,
+      )
+      .length;
+
+  /// Whether the fact [itemKey] was missed often enough to show its help
+  /// card.
+  bool needsHelp(String itemKey) => mistakeCountOf(itemKey) >= helpMistakeCount;
 
   /// Whether the fact [itemKey] already had or awaits its second chance.
   bool hasRetry(String itemKey) {

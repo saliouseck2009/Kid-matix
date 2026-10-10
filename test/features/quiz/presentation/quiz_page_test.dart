@@ -118,7 +118,37 @@ void main() {
       // Assert
       expect(find.text('Presque !'), findsOneWidget);
       expect(find.text('5 × 7 = 35'), findsOneWidget);
+      expect(find.text('Retiens aussi : 7 × 5 = 35'), findsOneWidget);
       expect(find.byIcon(Icons.close_rounded), findsWidgets);
+    });
+    testWidgets('shows the help card after two mistakes on a fact', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(
+        tester,
+        questionTypeId: QuestionTypeIds.typedAnswer,
+        itemKeys: const <String>['mul:5x7'],
+      );
+      await typeNumber(tester, 34);
+      expect(find.text("Fiche d'aide · Table de 5"), findsNothing);
+      await tester.tap(find.text('Continuer'));
+      await tester.pumpAndSettle();
+      // Act
+      await typeNumber(tester, 34);
+      // Assert
+      expect(find.text("Fiche d'aide · Table de 5"), findsOneWidget);
+      expect(find.text('5 × 1 = 5'), findsOneWidget);
+      expect(find.text('5 × 10 = 50'), findsOneWidget);
+      expect(find.text('5 rangées de 7 points'), findsOneWidget);
+      expect(
+        tester.getSemantics(find.bySemanticsLabel('5 fois 7 égale 35')),
+        matchesSemantics(
+          label: '5 fois 7 égale 35',
+          hasSelectedState: true,
+          isSelected: true,
+        ),
+      );
     });
     testWidgets('asks a true or false question', (WidgetTester tester) async {
       // Arrange

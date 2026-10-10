@@ -244,6 +244,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizLightning => 'Éclair !';
 
   @override
+  String quizMirrorReminder(String fact) {
+    return 'Retiens aussi : $fact';
+  }
+
+  @override
+  String quizHelpTitle(String unit) {
+    return 'Fiche d\'aide · $unit';
+  }
+
+  @override
+  String quizHelpDotGridLabel(int rows, int columns) {
+    String _temp0 = intl.Intl.pluralLogic(
+      rows,
+      locale: localeName,
+      other: '$rows rangées',
+      one: '1 rangée',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      columns,
+      locale: localeName,
+      other: '$columns points',
+      one: '1 point',
+    );
+    return '$_temp0 de $_temp1';
+  }
+
+  @override
   String get quizContinue => 'Continuer';
 
   @override

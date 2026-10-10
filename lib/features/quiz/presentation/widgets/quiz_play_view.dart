@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -17,6 +18,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_ans
 import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_feedback_panel.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_header.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/quiz_help_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_hint_box.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_timer_bar.dart';
@@ -65,17 +67,37 @@ class QuizPlayView extends StatelessWidget {
               isRunningOut: isRunningOut,
             ),
           Expanded(
-            child: QuestionCard(
-              label: labels.describeQuestion(data.question, data.run.domainId),
-              prompt: data.question.prompt,
-              blankText: data.typedDigits,
-              blankColor: _blankColor(context, data),
-            ),
+            child: switch (_helpOf(data)) {
+              final ItemHelp help => QuizHelpCard(
+                help: help,
+                unitName: labels.describeUnitOf(
+                  data.question,
+                  data.run.domainId,
+                ),
+              ),
+              null => QuestionCard(
+                label: labels.describeQuestion(
+                  data.question,
+                  data.run.domainId,
+                ),
+                prompt: data.question.prompt,
+                blankText: data.typedDigits,
+                blankColor: _blankColor(context, data),
+              ),
+            },
           ),
           _AnswerZone(data: data, labels: labels),
         ],
       ),
     );
+  }
+
+  /// Help card of a fact just missed for the second time, or `null`.
+  ItemHelp? _helpOf(_PlayData data) {
+    if (data.isRight != false) return null;
+    final String itemKey = data.question.itemKey;
+    if (!data.run.needsHelp(itemKey)) return null;
+    return labels.helpOf(itemKey, data.run.domainId);
   }
 
   Color? _blankColor(BuildContext context, _PlayData data) {
@@ -223,6 +245,9 @@ class _Feedback extends StatelessWidget {
     final bool isRight = feedback.submission.answer.isCorrect;
     final bool isTimedOut = feedback.submission.answer.isTimedOut;
     final bool isLightning = feedback.submission.answer.isLightning;
+    final String? mirror = isRight
+        ? null
+        : labels.describeMirror(data.question.itemKey, data.run.domainId);
     return QuizFeedbackPanel(
       isRight: isRight,
       title: isRight
@@ -233,6 +258,7 @@ class _Feedback extends StatelessWidget {
       detail: isRight
           ? (isLightning ? context.l10n.quizLightning : '')
           : labels.describeItem(data.question.itemKey, data.run.domainId),
+      reminder: mirror == null ? null : context.l10n.quizMirrorReminder(mirror),
       onContinue: () => context.read<QuizBloc>().add(const NextRequested()),
     );
   }
