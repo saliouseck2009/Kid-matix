@@ -521,4 +521,47 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$label, $_temp0';
   }
+
+  @override
+  String quizBossTitleMultiplication(int number) {
+    return 'Boss de la table de $number';
+  }
+
+  @override
+  String get quizBossLife => 'Vie du boss';
+
+  @override
+  String quizBossLifeValue(int left, int total) {
+    return '$left / $total';
+  }
+
+  @override
+  String quizBossLifeSpoken(int left, int total) {
+    return 'Vie du boss : $left sur $total';
+  }
+
+  @override
+  String quizBossHit(int damage) {
+    return 'Touché !\n−$damage';
+  }
+
+  @override
+  String quizBossCriticalHit(int damage) {
+    return 'Coup critique !\n−$damage';
+  }
+
+  @override
+  String get quizBossStrikeBack => 'Riposte !';
+
+  @override
+  String get quizBossDefeated => 'Vaincu !';
+
+  @override
+  String get quizBossFled => 'Il s\'enfuit !';
+
+  @override
+  String get resultsBossDefeated => 'Boss vaincu !';
+
+  @override
+  String get resultsBossFled => 'Le monstre s\'est enfui';
 }

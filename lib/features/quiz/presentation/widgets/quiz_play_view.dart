@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
@@ -14,6 +15,8 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_feedback.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_keypad.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/boss_arena.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/boss_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_feedback_panel.dart';
@@ -46,18 +49,29 @@ class QuizPlayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _PlayData data = _PlayData.of(state);
+    final BossFight? boss = data.run.boss;
     return Padding(
       padding: const EdgeInsets.all(AppSizes.space24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 20,
         children: <Widget>[
-          QuizHeader(
-            current: data.rank,
-            answeredCount: data.run.answers.length,
-            total: data.run.turnCount,
-            onQuit: onQuit,
-          ),
+          if (boss == null)
+            QuizHeader(
+              current: data.rank,
+              answeredCount: data.run.answers.length,
+              total: data.run.turnCount,
+              onQuit: onQuit,
+            )
+          else
+            BossHeader(
+              title: labels.describeBoss(
+                _monsterNumberOf(data),
+                data.run.domainId,
+              ),
+              boss: boss,
+              onQuit: onQuit,
+            ),
           if (data.timer case (
             final double remainingFraction,
             final bool isRunningOut,
@@ -75,6 +89,17 @@ class QuizPlayView extends StatelessWidget {
                   data.run.domainId,
                 ),
               ),
+              null when boss != null => BossArena(
+                monsterNumber: _monsterNumberOf(data),
+                prompt: data.question.prompt,
+                blowCount: data.run.answers.length,
+                blow: data.feedback?.bossBlow,
+                outcome: data.run.bossOutcome,
+                blankText: data.typedDigits,
+                blankColor: data.isRight == null
+                    ? null
+                    : _blankColor(context, data),
+              ),
               null => QuestionCard(
                 label: labels.describeQuestion(
                   data.question,
@@ -90,6 +115,11 @@ class QuizPlayView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Number of the monster of a fight: the number of its table.
+  int _monsterNumberOf(_PlayData data) {
+    return labels.unitNumberOf(data.question, data.run.domainId) ?? 1;
   }
 
   /// Help card of a fact just missed for the second time, or `null`.

@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
@@ -94,6 +95,18 @@ final class QuizAsking extends QuizState {
   }
 }
 
+/// What the last answer did to the boss of a fight.
+enum BossBlow {
+  /// A right answer took 1 hit point.
+  hit,
+
+  /// A lightning answer took 2 hit points.
+  criticalHit,
+
+  /// A wrong answer: the monster strikes back, the player loses nothing.
+  strikeBack,
+}
+
 /// The answer was judged; the player reads the feedback.
 final class QuizShowingFeedback extends QuizState {
   /// Creates the state.
@@ -104,6 +117,14 @@ final class QuizShowingFeedback extends QuizState {
 
   /// Answer the player gave, or `null` when the time ran out.
   final Answer? givenAnswer;
+
+  /// What the answer did to the boss, or `null` outside a boss fight.
+  BossBlow? get bossBlow {
+    final BossFight? boss = submission.run.boss;
+    if (boss == null) return null;
+    if (boss.lastDamage == 0) return BossBlow.strikeBack;
+    return boss.isLastHitCritical ? BossBlow.criticalHit : BossBlow.hit;
+  }
 }
 
 /// Every question was answered and the session is saved.

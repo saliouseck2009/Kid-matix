@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
@@ -60,11 +61,15 @@ class QuizPage extends StatelessWidget {
             QuizCompleted(:final session) => onCompleted(session.id),
             _ => onLeft(),
           },
-          builder: (BuildContext context, QuizState state) => _QuizScaffold(
-            state: state,
-            labels: QuizLabels(domains: domains, l10n: context.l10n),
-            onLeft: onLeft,
-          ),
+          builder: (BuildContext context, QuizState state) {
+            final Widget scaffold = _QuizScaffold(
+              state: state,
+              labels: QuizLabels(domains: domains, l10n: context.l10n),
+              onLeft: onLeft,
+            );
+            if (!request.isBossFight) return scaffold;
+            return Theme(data: AppTheme.boss, child: scaffold);
+          },
         ),
       ),
     );

@@ -695,5 +695,87 @@
         "example": "golden"
       }
     }
+  },
+  "quizBossTitleMultiplication": "Boss de la table de {number}",
+  "@quizBossTitleMultiplication": {
+    "description": "Title of the boss fight screen of a multiplication table (\"Boss of the table of 5\").",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "quizBossLife": "Vie du boss",
+  "@quizBossLife": {
+    "description": "Label above the life bar of the boss (\"Boss life\")."
+  },
+  "quizBossLifeValue": "{left} / {total}",
+  "@quizBossLifeValue": {
+    "description": "Hit points left out of the total, right of the life label, such as \"7 / 12\". Keep the slash.",
+    "placeholders": {
+      "left": {
+        "type": "int",
+        "example": "7"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "quizBossLifeSpoken": "Vie du boss : {left} sur {total}",
+  "@quizBossLifeSpoken": {
+    "description": "Screen-reader label of the life bar of the boss (\"Boss life: 7 out of 12\").",
+    "placeholders": {
+      "left": {
+        "type": "int",
+        "example": "7"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "quizBossHit": "Touché !\n−{damage}",
+  "@quizBossHit": {
+    "description": "Bubble next to the monster after a right answer, on two lines: the exclamation, then the hit points taken with a minus sign (U+2212), such as \"Hit!\" then \"−1\". Keep the line break; each line stays one or two words.",
+    "placeholders": {
+      "damage": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "quizBossCriticalHit": "Coup critique !\n−{damage}",
+  "@quizBossCriticalHit": {
+    "description": "Bubble next to the monster after a right answer under 3 seconds, on two lines: the exclamation, then the hit points taken with a minus sign (U+2212), such as \"Critical hit!\" then \"−2\". Keep the line break; each line stays short.",
+    "placeholders": {
+      "damage": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "quizBossStrikeBack": "Riposte !",
+  "@quizBossStrikeBack": {
+    "description": "Bubble next to the monster after a wrong answer: the monster strikes back, but the child loses nothing (\"Strike back!\")."
+  },
+  "quizBossDefeated": "Vaincu !",
+  "@quizBossDefeated": {
+    "description": "Bubble when the boss loses its last hit point (\"Defeated!\")."
+  },
+  "quizBossFled": "Il s'enfuit !",
+  "@quizBossFled": {
+    "description": "Bubble when the boss flees after the last question of the fight (\"It runs away!\")."
+  },
+  "resultsBossDefeated": "Boss vaincu !",
+  "@resultsBossDefeated": {
+    "description": "Title of the results after a won boss fight (\"Boss defeated!\")."
+  },
+  "resultsBossFled": "Le monstre s'est enfui",
+  "@resultsBossFled": {
+    "description": "Title of the results after a boss fight where the monster fled; the child can try again (\"The monster ran away\"). No blame."
   }
 }

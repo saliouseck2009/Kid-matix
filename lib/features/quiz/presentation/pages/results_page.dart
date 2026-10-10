@@ -10,6 +10,7 @@ import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/core/widgets/star_row.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/results_cubit.dart';
@@ -129,9 +130,12 @@ class _ResultsView extends StatelessWidget {
         children: <Widget>[
           const Center(child: MascotIllustration(size: _mascotSize)),
           _ResultsTitle(
-            title: stars == null
-                ? context.l10n.resultsTitle
-                : context.l10n.resultsStageTitle,
+            title: switch (result.session.bossOutcome) {
+              BossOutcome.defeated => context.l10n.resultsBossDefeated,
+              BossOutcome.fled => context.l10n.resultsBossFled,
+              null when stars != null => context.l10n.resultsStageTitle,
+              null => context.l10n.resultsTitle,
+            },
             subtitle: unit == null
                 ? _describeMode(context)
                 : context.l10n.resultsSubtitle(
