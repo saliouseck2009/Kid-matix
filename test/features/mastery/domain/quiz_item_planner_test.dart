@@ -90,6 +90,33 @@ void main() {
       expect(actualRatio, closeTo(0.5, 0.1));
       expect(actualCounts['mul:7x10']! / actualCounts['mul:7x8']!, lessThan(1));
     });
+    test('asks every item to review at least once', () {
+      // Arrange
+      final Map<String, ItemProgressEntity> inputProgress =
+          <String, ItemProgressEntity>{
+            for (final LearningItem item in tableOfSeven)
+              item.key: _progress(item.key, 2),
+            'mul:7x3': _progress('mul:7x3', 1),
+            'mul:7x6': _progress('mul:7x6', 1),
+          };
+      for (int seed = 0; seed < 20; seed++) {
+        // Act
+        final List<String> actualKeys = _planner
+            .plan(
+              domain: domain,
+              items: tableOfSeven,
+              progressByKey: inputProgress,
+              questionTypeNatures: _allTypes,
+              count: 5,
+              random: DartRandomSource(seed: seed),
+            )
+            .map((QuizItemPlan plan) => plan.itemKey)
+            .toList();
+        // Assert
+        expect(actualKeys, hasLength(5));
+        expect(actualKeys, containsAll(<String>['mul:7x3', 'mul:7x6']));
+      }
+    });
     test('plans nothing without items', () {
       // Act
       final List<QuizItemPlan> actualPlans = _planner.plan(

@@ -66,7 +66,7 @@ void main() {
       expect(actualProgress.correctCount, 0);
       expect(actualProgress.presentationCount, 1);
     });
-    test('moves a new item to box 1 after its first right answer', () {
+    test('moves a new item to box 2 after its first right answer', () {
       // Act
       final ItemProgressEntity actualProgress = _policy.apply(
         progress: _progress(),
@@ -74,7 +74,17 @@ void main() {
         now: _now,
       );
       // Assert
-      expect(actualProgress.box, 1);
+      expect(actualProgress.box, MasteryPolicy.firstRightBox);
+    });
+    test('moves a new item to box 1 after a first mistake', () {
+      // Act
+      final ItemProgressEntity actualProgress = _policy.apply(
+        progress: _progress(),
+        answer: _answer(isCorrect: false),
+        now: _now,
+      );
+      // Assert
+      expect(actualProgress.box, MasteryPolicy.firstBox);
     });
     test('never moves a picked answer past box 3', () {
       // Arrange
