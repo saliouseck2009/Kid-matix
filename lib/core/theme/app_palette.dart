@@ -15,6 +15,9 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     required this.secondaryDepth,
     required this.strongBorder,
     required this.softBorder,
+    required this.lockedFace,
+    required this.lockedDepth,
+    required this.lockedSurface,
     required this.avatarBackgrounds,
   });
 
@@ -29,6 +32,9 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     secondaryDepth: AppColors.yellowDepth,
     strongBorder: AppColors.violetStrongBorder,
     softBorder: AppColors.violetSoftBorder,
+    lockedFace: AppColors.lockedFace,
+    lockedDepth: AppColors.lockedDepth,
+    lockedSurface: AppColors.lockedSurface,
     avatarBackgrounds: <Color>[
       AppColors.violet,
       AppColors.green,
@@ -66,6 +72,15 @@ final class AppPalette extends ThemeExtension<AppPalette> {
   /// Dashed outline of hint boxes.
   final Color softBorder;
 
+  /// Face of a locked node of the learning path.
+  final Color lockedFace;
+
+  /// Raised edge of a locked node, and badge of a locked stage.
+  final Color lockedDepth;
+
+  /// Background of a locked stage card.
+  final Color lockedSurface;
+
   /// Colors a player can pick for their avatar, in the order of the color
   /// picker: violet, green, yellow, red, blue, pink.
   final List<Color> avatarBackgrounds;
@@ -81,6 +96,9 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     Color? secondaryDepth,
     Color? strongBorder,
     Color? softBorder,
+    Color? lockedFace,
+    Color? lockedDepth,
+    Color? lockedSurface,
     List<Color>? avatarBackgrounds,
   }) {
     return AppPalette(
@@ -93,6 +111,9 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       secondaryDepth: secondaryDepth ?? this.secondaryDepth,
       strongBorder: strongBorder ?? this.strongBorder,
       softBorder: softBorder ?? this.softBorder,
+      lockedFace: lockedFace ?? this.lockedFace,
+      lockedDepth: lockedDepth ?? this.lockedDepth,
+      lockedSurface: lockedSurface ?? this.lockedSurface,
       avatarBackgrounds: avatarBackgrounds ?? this.avatarBackgrounds,
     );
   }
@@ -110,6 +131,9 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       secondaryDepth: Color.lerp(secondaryDepth, other.secondaryDepth, t)!,
       strongBorder: Color.lerp(strongBorder, other.strongBorder, t)!,
       softBorder: Color.lerp(softBorder, other.softBorder, t)!,
+      lockedFace: Color.lerp(lockedFace, other.lockedFace, t)!,
+      lockedDepth: Color.lerp(lockedDepth, other.lockedDepth, t)!,
+      lockedSurface: Color.lerp(lockedSurface, other.lockedSurface, t)!,
       avatarBackgrounds: t < 0.5 ? avatarBackgrounds : other.avatarBackgrounds,
     );
   }

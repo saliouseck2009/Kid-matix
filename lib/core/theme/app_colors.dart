@@ -39,6 +39,15 @@ abstract final class AppColors {
   /// Soft violet outline of the dashed hint boxes.
   static const Color violetSoftBorder = Color(0xFFC9BFFF);
 
+  /// Face of a locked node of the learning path.
+  static const Color lockedFace = Color(0xFFE3DEF7);
+
+  /// Raised edge of a locked node, and badge of a locked stage.
+  static const Color lockedDepth = Color(0xFFCFC8EC);
+
+  /// Background of a locked stage card.
+  static const Color lockedSurface = Color(0xFFECE8FB);
+
   /// Reward color: stars, crowns, streaks.
   static const Color yellow = Color(0xFFFFC531);
 
