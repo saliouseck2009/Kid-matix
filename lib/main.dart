@@ -101,6 +101,8 @@ GoRouter _createRouter(
         watchChanges: sl(),
         clearActiveProfile: sl(),
         deleteProfile: sl(),
+        getStats: sl(),
+        watchProgress: sl(),
       ),
     ),
     pathPages: LearningPathPages(

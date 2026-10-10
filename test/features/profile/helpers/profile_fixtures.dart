@@ -5,15 +5,21 @@ import 'package:kid_matix/features/profile/domain/repositories/profile_repositor
 import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/get_profile_stats_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/update_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/watch_profile_changes_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/watch_progress_changes_use_case.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../../helpers/fixed_progress_services.dart';
+
+export '../../../helpers/fixed_progress_services.dart';
 
 /// Test double of [ProfileRepository].
 final class MockProfileRepository extends Mock implements ProfileRepository {}
@@ -54,12 +60,24 @@ ProfileTabUseCases buildTabUseCases({
   WatchProfileChangesUseCase? watchChanges,
   ClearActiveProfileUseCase? clearActiveProfile,
   DeleteProfileUseCase? deleteProfile,
+  FixedRewardService? rewards,
+  FixedCrownService? crowns,
 }) {
+  final FixedRewardService rewardService = rewards ?? FixedRewardService();
+  final FixedCrownService crownService = crowns ?? FixedCrownService();
   return ProfileTabUseCases(
     getProfile: getProfile ?? _quietGetProfile(),
     watchChanges: watchChanges ?? _quietWatch(),
     clearActiveProfile: clearActiveProfile ?? MockClearActiveProfileUseCase(),
     deleteProfile: deleteProfile ?? MockDeleteProfileUseCase(),
+    getStats: GetProfileStatsUseCase(
+      rewards: rewardService,
+      crowns: crownService,
+    ),
+    watchProgress: WatchProgressChangesUseCase(
+      rewards: rewardService,
+      crowns: crownService,
+    ),
   );
 }
 

@@ -164,6 +164,42 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonCancel => 'Annuler';
 
   @override
+  String profileStreakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours',
+      one: '1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStreakLabel => 'de série';
+
+  @override
+  String profileCrownsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'couronnes',
+      one: 'couronne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String profileBadgesLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'badges',
+      one: 'badge',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get switchPlayerButton => 'Changer de joueur';
 
   @override

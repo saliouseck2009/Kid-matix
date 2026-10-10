@@ -4,24 +4,28 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
+import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
-import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_stats_entity.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_cubit.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/progress_cubit.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_state.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/delete_profile_dialog.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_error_message.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/profile_header.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/profile_stat_tile.dart';
 
-/// Profile tab of lot F1: the active player and how to switch, edit or
-/// delete them. The full profile screen of lot F10 grows around it.
+/// The Profile tab (mockup 12): the player, their streak, crowns and
+/// badges, the mascot card and the sections of the other features.
 class ProfileTabPage extends StatelessWidget {
   /// Creates the tab of the player [profileId].
   const ProfileTabPage({
     required this.profileId,
     required this.useCases,
     this.mascotCard,
+    this.sections = const <Widget>[],
     super.key,
   });
 
@@ -31,14 +35,29 @@ class ProfileTabPage extends StatelessWidget {
   /// Use cases of the tab.
   final ProfileTabUseCases useCases;
 
-  /// Card of the mascot under the player, or `null`.
+  /// Card of the mascot under the figures, or `null`.
   final Widget? mascotCard;
+
+  /// Cards of the other features under the mascot, such as the mastery
+  /// grid.
+  final List<Widget> sections;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProfileTabCubit>(
-      create: (_) =>
-          ProfileTabCubit(profileId: profileId, useCases: useCases)..load(),
+    return MultiBlocProvider(
+      providers: <BlocProvider<Object?>>[
+        BlocProvider<ProfileTabCubit>(
+          create: (_) =>
+              ProfileTabCubit(profileId: profileId, useCases: useCases)..load(),
+        ),
+        BlocProvider<ProgressCubit>(
+          create: (_) => ProgressCubit(
+            profileId: profileId,
+            getStats: useCases.getStats,
+            watchChanges: useCases.watchProgress,
+          )..load(),
+        ),
+      ],
       child: BlocBuilder<ProfileTabCubit, ProfileTabState>(
         builder: (BuildContext context, ProfileTabState state) {
           return switch (state) {
@@ -49,6 +68,7 @@ class ProfileTabPage extends StatelessWidget {
             ProfileTabLoaded() => _ProfileTabView(
               profile: state.profile,
               mascotCard: mascotCard,
+              sections: sections,
             ),
           };
         },
@@ -58,64 +78,92 @@ class ProfileTabPage extends StatelessWidget {
 }
 
 class _ProfileTabView extends StatelessWidget {
-  const _ProfileTabView({required this.profile, required this.mascotCard});
+  const _ProfileTabView({
+    required this.profile,
+    required this.mascotCard,
+    required this.sections,
+  });
 
-  static const double _avatarSize = 92;
+  static const double _gap = 14;
+  static const EdgeInsets _padding = EdgeInsets.fromLTRB(
+    AppSizes.space24,
+    20,
+    AppSizes.space24,
+    AppSizes.space24,
+  );
 
   final ProfileEntity profile;
   final Widget? mascotCard;
+  final List<Widget> sections;
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
     final Widget? mascot = mascotCard;
     final ProfileTabCubit cubit = context.read<ProfileTabCubit>();
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSizes.space24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Center(
-            child: ProfileAvatarView(
-              avatar: profile.avatar,
-              color: profile.color,
-              size: _avatarSize,
+    return ListView(
+      padding: _padding,
+      children: <Widget>[
+        ProfileHeader(
+          profile: profile,
+          onEdit: () => context.go(AppRoutes.profileEdit),
+          actions: <Widget>[
+            AppIconButton(
+              icon: Icons.swap_vert_rounded,
+              tooltip: context.l10n.switchPlayerButton,
+              onPressed: cubit.switchPlayer,
             ),
-          ),
-          const SizedBox(height: AppSizes.space12),
-          Semantics(
-            header: true,
-            child: Text(
-              profile.nickname,
-              textAlign: TextAlign.center,
-              style: textTheme.headlineMedium,
-            ),
-          ),
-          Text(
-            context.l10n.profileLevel(profile.level),
-            textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: context.palette.mutedText,
-            ),
-          ),
-          const SizedBox(height: AppSizes.space24),
-          if (mascot != null) ...<Widget>[
-            mascot,
-            const SizedBox(height: AppSizes.space24),
           ],
-          DepthButton(
-            label: context.l10n.editProfileButton,
-            variant: DepthButtonVariant.secondary,
-            onPressed: () => context.go(AppRoutes.profileEdit),
+        ),
+        const SizedBox(height: _gap),
+        const _ProgressTiles(),
+        if (mascot != null) ...<Widget>[const SizedBox(height: _gap), mascot],
+        for (final Widget section in sections) ...<Widget>[
+          const SizedBox(height: _gap),
+          section,
+        ],
+        const SizedBox(height: AppSizes.space24),
+        _DeleteProfileButton(profile: profile),
+      ],
+    );
+  }
+}
+
+/// Streak, crowns and badges, side by side; dashes until they are read.
+class _ProgressTiles extends StatelessWidget {
+  const _ProgressTiles();
+
+  static const double _gap = 10;
+  static const String _unknown = '–';
+
+  @override
+  Widget build(BuildContext context) {
+    final ProfileStatsEntity? stats = context.watch<ProgressCubit>().state;
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: _gap,
+        children: <Widget>[
+          Expanded(
+            child: ProfileStatTile(
+              value: stats == null
+                  ? _unknown
+                  : context.l10n.profileStreakDays(stats.streak),
+              label: context.l10n.profileStreakLabel,
+              isHighlighted: true,
+            ),
           ),
-          const SizedBox(height: AppSizes.space12),
-          DepthButton(
-            label: context.l10n.switchPlayerButton,
-            variant: DepthButtonVariant.secondary,
-            onPressed: cubit.switchPlayer,
+          Expanded(
+            child: ProfileStatTile(
+              value: stats == null ? _unknown : '${stats.crownCount}',
+              label: context.l10n.profileCrownsLabel(stats?.crownCount ?? 0),
+            ),
           ),
-          const SizedBox(height: AppSizes.space24),
-          _DeleteProfileButton(profile: profile),
+          Expanded(
+            child: ProfileStatTile(
+              value: stats == null ? _unknown : '${stats.badgeCount}',
+              label: context.l10n.profileBadgesLabel(stats?.badgeCount ?? 0),
+            ),
+          ),
         ],
       ),
     );

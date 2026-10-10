@@ -137,7 +137,7 @@ void main() {
       // Assert
       expect(find.text('Awa'), findsOneWidget);
       expect(find.text('Niveau 1'), findsOneWidget);
-      expect(find.text('Changer de joueur'), findsOneWidget);
+      expect(find.byTooltip('Changer de joueur'), findsOneWidget);
     });
     testWidgets('opens the edit form over the tabs and comes back', (
       WidgetTester tester,
@@ -148,14 +148,14 @@ void main() {
       await tester.tap(find.text('Profil'));
       await tester.pumpAndSettle();
       // Act
-      await tester.tap(find.text('Modifier mon profil'));
+      await tester.tap(find.text('Awa'));
       await tester.pumpAndSettle();
       // Assert
       expect(find.text('Enregistrer'), findsOneWidget);
       expect(find.text('Parcours'), findsNothing);
       await tester.tap(find.byTooltip('Retour'));
       await tester.pumpAndSettle();
-      expect(find.text('Changer de joueur'), findsOneWidget);
+      expect(find.byTooltip('Changer de joueur'), findsOneWidget);
     });
     testWidgets('lets another child play', (WidgetTester tester) async {
       // Arrange
@@ -164,7 +164,7 @@ void main() {
       await tester.tap(find.text('Profil'));
       await tester.pumpAndSettle();
       // Act
-      await tester.tap(find.text('Changer de joueur'));
+      await tester.tap(find.byTooltip('Changer de joueur'));
       await tester.pump();
       session.update(hasProfiles: true);
       await tester.pumpAndSettle();

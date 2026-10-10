@@ -2,8 +2,10 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/reward_service.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/player_level.dart';
+import 'package:kid_matix/features/reward/domain/entities/streak_summary.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_badges_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_player_level_use_case.dart';
+import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/watch_reward_changes_use_case.dart';
 
 /// [RewardService] over the use cases of the reward feature.
@@ -12,11 +14,13 @@ final class RewardServiceImpl implements RewardService {
   const RewardServiceImpl({
     required this._getLevel,
     required this._getBadges,
+    required this._getStreak,
     required this._watchChanges,
   });
 
   final GetPlayerLevelUseCase _getLevel;
   final GetBadgesUseCase _getBadges;
+  final GetStreakUseCase _getStreak;
   final WatchRewardChangesUseCase _watchChanges;
 
   @override
@@ -24,6 +28,16 @@ final class RewardServiceImpl implements RewardService {
     return switch (await _getLevel(params: profileId)) {
       DataSuccess<PlayerLevel>(:final data) => DataSuccess<int>(data.level),
       DataFailed<PlayerLevel>(:final exception) => DataFailed<int>(exception),
+    };
+  }
+
+  @override
+  Future<DataState<int>> readStreak({required String profileId}) async {
+    return switch (await _getStreak(params: profileId)) {
+      DataSuccess<StreakSummary>(:final data) => DataSuccess<int>(data.current),
+      DataFailed<StreakSummary>(:final exception) => DataFailed<int>(
+        exception,
+      ),
     };
   }
 
