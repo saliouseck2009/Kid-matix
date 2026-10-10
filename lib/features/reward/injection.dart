@@ -42,8 +42,12 @@ void registerRewardFeature(GetIt sl) {
     () => WatchRewardChangesUseCase(repository: sl()),
   );
   sl.registerLazySingleton<RewardService>(
-    () =>
-        RewardServiceImpl(getLevel: sl(), getBadges: sl(), watchChanges: sl()),
+    () => RewardServiceImpl(
+      getLevel: sl(),
+      getBadges: sl(),
+      getStreak: sl(),
+      watchChanges: sl(),
+    ),
   );
   sl<SessionSavedHooks>().add(
     RewardSessionHook(

@@ -446,16 +446,16 @@ L'onglet Profil montre la progression du joueur ; les réglages règlent les son
 
 **Domaine**
 
-- [ ] **F10-01** Cas d'usage `GetProfileStats` : série, couronnes, badges, niveau.
+- [x] **F10-01** Cas d'usage `GetProfileStats` : série, couronnes, badges, niveau.
 - [ ] **F10-02** Cas d'usage `GetSettings`, `UpdateSettings` et `ResetProgress`.
 
 **Présentation**
 
 - [ ] **F10-03** `ProgressCubit` et `SettingsCubit`.
-- [ ] **F10-04** Écran Profil : avatar, niveau, tuiles série, couronnes et badges, carte Mascotte.
+- [x] **F10-04** Écran Profil : avatar, niveau, tuiles série, couronnes et badges, carte Mascotte.
 - [ ] **F10-05** Grille de maîtrise 12 × 10 colorée par statut, avec sa légende ; chaque statut a aussi un libellé pour les lecteurs d'écran.
 - [ ] **F10-06** Liste des badges obtenus et à obtenir, collection de monstres vaincus.
-- [ ] **F10-07** Bouton « Changer de joueur », retour à « Qui joue ? ».
+- [x] **F10-07** Bouton « Changer de joueur », retour à « Qui joue ? ».
 - [ ] **F10-08** Écran Réglages : sons, vibrations, mode de chrono, objectif du jour, « Tout débloquer », animations réduites. Maquette : `13-settings.png`.
 - [ ] **F10-09** Ajout du paquet audioplayers ; sons et vibrations : bonne réponse, erreur, célébrations ; coupure séparée des deux.
 - [ ] **F10-10** Réinitialiser la progression après une confirmation où l'enfant retape son pseudo.

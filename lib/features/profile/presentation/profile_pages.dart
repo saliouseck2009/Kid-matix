@@ -70,11 +70,13 @@ final class ProfilePages {
   Widget buildProfileTabPage({
     required String profileId,
     Widget? mascotCard,
+    List<Widget> sections = const <Widget>[],
   }) {
     return ProfileTabPage(
       profileId: profileId,
       useCases: _tabUseCases,
       mascotCard: mascotCard,
+      sections: sections,
     );
   }
 

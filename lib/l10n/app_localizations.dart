@@ -310,6 +310,30 @@ abstract class AppLocalizations {
   /// **'Annuler'**
   String get commonCancel;
 
+  /// Streak figure on its tile of the Profile tab, above "de série" ("6 days").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 jour} other{{count} jours}}'**
+  String profileStreakDays(int count);
+
+  /// Label under the streak figure on the Profile tab, completing it: "6 jours / de série" ("in a row").
+  ///
+  /// In fr, this message translates to:
+  /// **'de série'**
+  String get profileStreakLabel;
+
+  /// Label under the number of crowned tables on the Profile tab ("crowns"); the number is shown above it.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{couronne} other{couronnes}}'**
+  String profileCrownsLabel(int count);
+
+  /// Label under the number of badges unlocked on the Profile tab ("badges"); the number is shown above it.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{badge} other{badges}}'**
+  String profileBadgesLabel(int count);
+
   /// Button of the Profile tab that goes back to the player selection so another child can play ("Switch player"). No data is lost. One line.
   ///
   /// In fr, this message translates to:

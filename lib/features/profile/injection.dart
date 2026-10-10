@@ -12,12 +12,14 @@ import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_session_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/get_profile_stats_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/update_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/watch_profile_changes_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/watch_progress_changes_use_case.dart';
 import 'package:kid_matix/features/profile/presentation/session/profile_session_service_impl.dart';
 
 /// Registers the profile feature in [sl]; Blocs are never registered.
@@ -81,6 +83,12 @@ void _registerUseCases(GetIt sl) {
   );
   sl.registerLazySingleton<ClearActiveProfileUseCase>(
     () => ClearActiveProfileUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<GetProfileStatsUseCase>(
+    () => GetProfileStatsUseCase(rewards: sl(), crowns: sl()),
+  );
+  sl.registerLazySingleton<WatchProgressChangesUseCase>(
+    () => WatchProgressChangesUseCase(rewards: sl(), crowns: sl()),
   );
   sl.registerLazySingleton<WatchProfileChangesUseCase>(
     () => WatchProfileChangesUseCase(repository: sl()),
