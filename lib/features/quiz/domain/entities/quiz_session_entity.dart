@@ -1,5 +1,5 @@
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
 import 'package:meta/meta.dart';

@@ -299,6 +299,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizProvisionalStart => 'Jouer à la table de 5';
 
   @override
+  String get quizModePath => 'Parcours';
+
+  @override
   String get quizModeFreeTraining => 'Entraînement libre';
 
   @override

@@ -1,4 +1,4 @@
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:meta/meta.dart';
 
 /// A quiz to play, as the screen that starts it describes it.

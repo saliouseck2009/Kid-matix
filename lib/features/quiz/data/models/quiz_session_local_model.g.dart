@@ -38,7 +38,10 @@ Map<String, dynamic> _$QuizSessionLocalModelToJson(
   'deleted_at': instance.deletedAt,
 };
 
-const _$QuizModeEnumMap = {QuizMode.freeTraining: 'freeTraining'};
+const _$QuizModeEnumMap = {
+  QuizMode.freeTraining: 'freeTraining',
+  QuizMode.path: 'path',
+};
 
 const _$QuizSessionStatusEnumMap = {
   QuizSessionStatus.completed: 'completed',

@@ -526,6 +526,12 @@ abstract class AppLocalizations {
   /// **'Jouer à la table de 5'**
   String get quizProvisionalStart;
 
+  /// Name of the game mode shown under the results title after a stage of the learning path ("Learning path"), after the table name and a middle dot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parcours'**
+  String get quizModePath;
+
   /// Name of the free training mode, shown under the results title ("Free training").
   ///
   /// In fr, this message translates to:

@@ -8,7 +8,7 @@ import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 
 import 'package:mocktail/mocktail.dart';
 
