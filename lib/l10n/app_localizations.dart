@@ -789,6 +789,72 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{label}, {crown, select, golden{couronne dorée} other{couronne}}'**
   String pathTableNodeCrowned(String label, String crown);
+
+  /// Title of the boss fight screen of a multiplication table ("Boss of the table of 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Boss de la table de {number}'**
+  String quizBossTitleMultiplication(int number);
+
+  /// Label above the life bar of the boss ("Boss life").
+  ///
+  /// In fr, this message translates to:
+  /// **'Vie du boss'**
+  String get quizBossLife;
+
+  /// Hit points left out of the total, right of the life label, such as "7 / 12". Keep the slash.
+  ///
+  /// In fr, this message translates to:
+  /// **'{left} / {total}'**
+  String quizBossLifeValue(int left, int total);
+
+  /// Screen-reader label of the life bar of the boss ("Boss life: 7 out of 12").
+  ///
+  /// In fr, this message translates to:
+  /// **'Vie du boss : {left} sur {total}'**
+  String quizBossLifeSpoken(int left, int total);
+
+  /// Bubble next to the monster after a right answer, on two lines: the exclamation, then the hit points taken with a minus sign (U+2212), such as "Hit!" then "−1". Keep the line break; each line stays one or two words.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touché !\n−{damage}'**
+  String quizBossHit(int damage);
+
+  /// Bubble next to the monster after a right answer under 3 seconds, on two lines: the exclamation, then the hit points taken with a minus sign (U+2212), such as "Critical hit!" then "−2". Keep the line break; each line stays short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coup critique !\n−{damage}'**
+  String quizBossCriticalHit(int damage);
+
+  /// Bubble next to the monster after a wrong answer: the monster strikes back, but the child loses nothing ("Strike back!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Riposte !'**
+  String get quizBossStrikeBack;
+
+  /// Bubble when the boss loses its last hit point ("Defeated!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Vaincu !'**
+  String get quizBossDefeated;
+
+  /// Bubble when the boss flees after the last question of the fight ("It runs away!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Il s\'enfuit !'**
+  String get quizBossFled;
+
+  /// Title of the results after a won boss fight ("Boss defeated!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Boss vaincu !'**
+  String get resultsBossDefeated;
+
+  /// Title of the results after a boss fight where the monster fled; the child can try again ("The monster ran away"). No blame.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le monstre s\'est enfui'**
+  String get resultsBossFled;
 }
 
 class _AppLocalizationsDelegate

@@ -332,16 +332,16 @@ La cinquième étape de chaque table est un duel contre le monstre de cette tabl
 
 **Présentation**
 
-- [ ] **F6-07** Mode boss du `QuizBloc` : vie du boss, coup, coup critique, riposte, fuite, victoire.
-- [ ] **F6-08** Écran Combat de boss : fond sombre, monstre, barre de vie, question, pavé numérique.
-- [ ] **F6-09** Animations courtes : coup, coup critique, riposte, fuite, victoire ; version fixe si les animations sont réduites.
-- [ ] **F6-10** Les 12 monstres en ressources vectorielles, un par table.
+- [x] **F6-07** Mode boss du `QuizBloc` : vie du boss, coup, coup critique, riposte, fuite, victoire.
+- [x] **F6-08** Écran Combat de boss : fond sombre, monstre, barre de vie, question, pavé numérique.
+- [x] **F6-09** Animations courtes : coup, coup critique, riposte, fuite, victoire ; version fixe si les animations sont réduites.
+- [x] **F6-10** Les 12 monstres en ressources vectorielles, un par table.
 - [x] **F6-11** Couronnes affichées sur la carte du parcours.
 
 **Tests**
 
-- [ ] **F6-12** Tests des règles : victoire avec 60 % de bonnes réponses sans coup critique, fuite à la 20e question, coup critique, erreur sans coût.
-- [ ] **F6-13** Tests du mode boss du `QuizBloc` et test de widget de l'écran.
+- [x] **F6-12** Tests des règles : victoire avec 60 % de bonnes réponses sans coup critique, fuite à la 20e question, coup critique, erreur sans coût.
+- [x] **F6-13** Tests du mode boss du `QuizBloc` et test de widget de l'écran.
 
 **Terminé quand :** battre le boss de la table de 1 pose sa couronne sur la carte et ajoute le monstre à la collection.
 

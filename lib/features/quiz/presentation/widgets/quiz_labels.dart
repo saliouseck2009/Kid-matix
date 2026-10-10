@@ -37,6 +37,22 @@ final class QuizLabels {
     return unit == null ? '' : describeUnit(unit, domainId);
   }
 
+  /// Number of the unit of [question], such as 5, or `null` when its
+  /// domain lacks it.
+  int? unitNumberOf(Question question, String domainId) {
+    return domains.find(domainId)?.findUnit(question.unitKey)?.number;
+  }
+
+  /// Title of the boss fight of the unit [number].
+  String describeBoss(int number, String domainId) {
+    return switch (domainId) {
+      LearningDomainIds.multiplication => l10n.quizBossTitleMultiplication(
+        number,
+      ),
+      _ => '',
+    };
+  }
+
   /// Name of [unit], such as "Table de 5".
   String describeUnit(LearningUnit unit, String domainId) {
     return switch (domainId) {
