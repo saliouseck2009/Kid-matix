@@ -33,6 +33,10 @@ final class FixedPlayerSettings implements PlayerSettingsService {
   }) async => DataSuccess<bool>(isEverythingUnlocked);
 
   @override
+  Future<DataState<int>> readDailyGoalXp({required String profileId}) async =>
+      const DataSuccess<int>(20);
+
+  @override
   Future<DataState<TimerMode>> readTimerMode({
     required String profileId,
   }) async => DataSuccess<TimerMode>(mode);

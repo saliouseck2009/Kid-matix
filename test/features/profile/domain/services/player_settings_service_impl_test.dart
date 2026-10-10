@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/domain/services/player_settings_service_impl.dart';
 import 'package:mocktail/mocktail.dart';
@@ -60,6 +61,26 @@ void main() {
       )).requireData;
       // Assert
       expect(actualUnlocked, isTrue);
+    });
+    test('reads the daily goal of the player', () async {
+      // Arrange
+      when(
+        () => mockRepository.getProfileSettings(
+          profileId: any(named: 'profileId'),
+        ),
+      ).thenAnswer(
+        (_) async => DataSuccess<ProfileSettingsEntity>(
+          const ProfileSettingsEntity.defaults(
+            profileId: 'p-1',
+          ).copyWith(dailyGoal: DailyGoal.intense),
+        ),
+      );
+      // Act
+      final int actualGoal = (await service.readDailyGoalXp(
+        profileId: 'p-1',
+      )).requireData;
+      // Assert
+      expect(actualGoal, 100);
     });
     test('forwards a failure to read the settings', () async {
       // Arrange

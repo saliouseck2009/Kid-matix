@@ -224,6 +224,29 @@ void main() {
       // Assert
       expect(actualStage, 2);
       expect(actualOther, isNull);
+      expect(inputService.isStage('path:mul:5:speed'), isTrue);
+      expect(inputService.isStage('duel:1'), isFalse);
+      expect(
+        inputService.crownedUnitOf(
+          sourceKey: 'path:mul:5:boss',
+          isBossDefeated: true,
+        ),
+        'mul:5',
+      );
+      expect(
+        inputService.crownedUnitOf(
+          sourceKey: 'path:mul:5:boss',
+          isBossDefeated: false,
+        ),
+        isNull,
+      );
+      expect(
+        inputService.crownedUnitOf(
+          sourceKey: 'path:mul:5:speed',
+          isBossDefeated: true,
+        ),
+        isNull,
+      );
     });
   });
 }

@@ -27,6 +27,14 @@ final class PlayerSettingsServiceImpl implements PlayerSettingsService {
     );
   }
 
+  @override
+  Future<DataState<int>> readDailyGoalXp({required String profileId}) {
+    return _read(
+      profileId,
+      (ProfileSettingsEntity settings) => settings.dailyGoal.xp,
+    );
+  }
+
   Future<DataState<T>> _read<T>(
     String profileId,
     T Function(ProfileSettingsEntity settings) pick,
