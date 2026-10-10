@@ -106,9 +106,10 @@ that branch and its pull request targets it (base = the parent branch), so
 the diff shows only the new task. Merge them strictly in order:
 
 1. merge the parent pull request into `main`;
-2. check that the stacked pull request now targets `main` (GitHub retargets
-   it by itself only when the parent branch is deleted on merge; otherwise
-   use "Edit" next to its title and choose `main`);
+2. check that the stacked pull request now targets `main`: the repository
+   deletes a branch once its pull request is merged ("Automatically delete
+   head branches" is on), and GitHub then retargets the stacked pull
+   request to `main` by itself;
 3. only then merge the stacked pull request.
 
 A stacked pull request merged into its parent branch after the parent

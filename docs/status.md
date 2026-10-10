@@ -9,8 +9,9 @@ middle of one). Last update: 2026-10-09.
 | --- | --- |
 | F0 · Foundation | **Done** (closed 2026-10-09) |
 | F1 · Profiles ("Qui joue ?") | **Done** (closed 2026-10-09) |
-| F2 · Quiz engine and multiplication domain | **Next** |
-| F3 – F21 | Not started |
+| F2 · Quiz engine and multiplication domain | **Done** (closed 2026-10-09) |
+| F3 · Quiz session and results | **Next** |
+| F4 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -96,23 +97,43 @@ Known gaps left on purpose, to handle in the lot named:
 - `core/error`: `AppErrorCode.limitReached` and `LimitReachedException`.
 - Theme: avatar colors, `secondaryDepth`, `strongBorder`.
 
-## Starting F2
+## F2 closure
 
-Tasks F2-01 to F2-12 in `docs/product/task-breakdown.md`; rules in sections
-5, 6 and 12 of `docs/product/specifications.md`. No screen and no database:
-the whole lot is pure Dart, and its "done when" is that all tests pass and
-the lot imports no Flutter package.
+- `bash tool/check.sh`: every step OK (190 tests); CI green on #18, #19 and
+  #20.
+- "Done when" checked: all tests pass and `core/quiz` and
+  `features/multiplication` import no Flutter package.
+- No screen in this lot, so no device check.
 
-- The quiz engine contracts (`LearningDomain`, unit, item, `QuestionType`,
-  `Question`, `Answer`, `DomainRegistry`, `QuestionTypeRegistry`) live in
-  `core/` (decision already taken), in a pure-Dart folder that the
-  architecture test must list among the folders a domain layer may import.
-- The multiplication domain is a new feature, `features/multiplication/`,
-  domain layer only for now.
-- Draws go through the seeded `RandomSource` of `core/services/`, so "same
-  seed, same questions" holds (F2-12).
-- Item keys (`mul:7x8`) are stored by the mastery engine (F4): they never
-  change once released.
-- The answer widget of a question type belongs to the quiz screen (F3); in
-  F2 a `QuestionType` only describes its model, validation rule and answer
-  nature (recognized or produced).
+## What F2 delivered
+
+- `core/quiz/`: `LearningDomain`, `LearningUnit`, `LearningItem`,
+  `QuestionType` and `AnswerNature`, `Question` with a prompt made of
+  tokens, `Answer` (number or true/false), `DomainRegistry`,
+  `QuestionTypeRegistry`, `QuestionGenerator`, and the four question types
+  of version 1.0 in `question_types/`.
+- `features/multiplication/`: `MultiplicationFact` (key `mul:7x8`),
+  `MultiplicationTable` (key `mul:7`), `MultiplicationTip`,
+  `DistractorGenerator`, `MultiplicationDomain`, and
+  `registerMultiplicationFeature()`.
+- The app registers the question types and the domain at startup.
+- Left for lot F5: the wording of the 12 table tips (the domain only names
+  them; the specifications give one example, for the table of 5).
+
+## Starting F3
+
+Tasks F3-01 to F3-18 in `docs/product/task-breakdown.md`; rules in sections
+5, 7 and 9 of `docs/product/specifications.md`; mockups `06`, `06b`, `06c`,
+`07` and `09` in `docs/design/screens/`. The keypad of the typed answer and
+the missing-number answer zone have no mockup: they are derived from the
+existing screens.
+
+- `features/quiz/` is created: session entity, use cases, the
+  `quiz_session` migration (version 2), `QuizBloc` driven by the injected
+  `Ticker`, the quiz and results screens.
+- The quiz builds its questions with `QuestionGenerator` and the
+  registries; it never imports `features/multiplication`.
+- The timer mode comes from the player's `ProfileSettingsEntity`, owned by
+  the profile feature: the quiz reads it through an interface of
+  `core/services/`.
+- The streak, XP and stars of the mockups arrive with F5 and F7.
