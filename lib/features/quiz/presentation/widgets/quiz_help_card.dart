@@ -3,7 +3,7 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
-import 'package:kid_matix/features/quiz/presentation/widgets/prompt_reading.dart';
+import 'package:kid_matix/core/extensions/prompt_reading.dart';
 
 /// Help card shown in place of the question after two mistakes on the
 /// same fact: the whole unit with the fact highlighted, and its dots.
