@@ -20,6 +20,7 @@ import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/multiplication/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
+import 'package:kid_matix/features/quiz/injection.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -38,6 +39,7 @@ Future<void> configureDependencies() async {
   _registerQuizEngine();
   registerProfileFeature(sl);
   registerMultiplicationFeature(sl);
+  registerQuizFeature(sl);
 }
 
 void _registerCoreServices() {

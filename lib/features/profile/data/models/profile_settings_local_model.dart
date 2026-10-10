@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kid_matix/features/profile/data/models/sqlite_bool_converter.dart';
+import 'package:kid_matix/core/storage/sqlite_bool_converter.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/timer_mode.dart';
