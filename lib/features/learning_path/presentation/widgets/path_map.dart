@@ -11,7 +11,7 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/table_node
 
 /// The scrolling map of the learning path: the tables zigzag down, joined
 /// by dots, with a review after every group of 3 and a call card next to
-/// the current table.
+/// the current table. The header, when given, stays above the map.
 class PathMap extends StatefulWidget {
   /// Creates the map of [path].
   const PathMap({
@@ -77,25 +77,34 @@ class _PathMapState extends State<PathMap> {
       previousX = x;
       rows.add(_buildRow(node, x));
     }
-    return SingleChildScrollView(
+    final Widget map = SingleChildScrollView(
       padding: const EdgeInsets.all(AppSizes.space24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          if (widget.header case final PathHeaderSlots slots) ...<Widget>[
-            PathHeader(
-              slots: slots,
-              crowns: widget.path.tables
-                  .where(
-                    (TablePathNode table) => table.crown != TableCrown.none,
-                  )
-                  .length,
-            ),
-            const SizedBox(height: AppSizes.space24),
-          ],
-          ...rows,
-        ],
+        children: rows,
       ),
+    );
+    final PathHeaderSlots? slots = widget.header;
+    if (slots == null) return map;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSizes.space24,
+            AppSizes.space24,
+            AppSizes.space24,
+            0,
+          ),
+          child: PathHeader(
+            slots: slots,
+            crowns: widget.path.tables
+                .where((TablePathNode table) => table.crown != TableCrown.none)
+                .length,
+          ),
+        ),
+        Expanded(child: map),
+      ],
     );
   }
 
