@@ -30,6 +30,7 @@ QuizSessionEntity _buildSession({String profileId = 'p1'}) {
     duration: const Duration(seconds: 75),
     questionCount: 2,
     correctCount: 1,
+    sourceKey: 'path:mul:5:training',
   );
 }
 

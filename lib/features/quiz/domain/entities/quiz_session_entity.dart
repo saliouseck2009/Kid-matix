@@ -19,6 +19,7 @@ final class QuizSessionEntity {
     required this.duration,
     required this.questionCount,
     required this.correctCount,
+    this.sourceKey,
   });
 
   /// Records [run], ended at [endedAt] with [status].
@@ -42,6 +43,7 @@ final class QuizSessionEntity {
       duration: endedAt.difference(run.startedAt),
       questionCount: answeredCount,
       correctCount: run.correctCount,
+      sourceKey: run.sourceKey,
     );
   }
 
@@ -72,6 +74,10 @@ final class QuizSessionEntity {
   /// Right answers among the scored questions.
   final int correctCount;
 
+  /// What the quiz was played for, such as a stage of the learning path,
+  /// or `null`.
+  final String? sourceKey;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -84,7 +90,8 @@ final class QuizSessionEntity {
             other.startedAt == startedAt &&
             other.duration == duration &&
             other.questionCount == questionCount &&
-            other.correctCount == correctCount;
+            other.correctCount == correctCount &&
+            other.sourceKey == sourceKey;
   }
 
   @override
@@ -98,5 +105,6 @@ final class QuizSessionEntity {
     duration,
     questionCount,
     correctCount,
+    sourceKey,
   );
 }

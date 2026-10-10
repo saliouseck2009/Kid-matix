@@ -21,6 +21,7 @@ final class QuizRun {
     required List<QuizTurn> queue,
     List<QuizAnswerEntity> answers = const <QuizAnswerEntity>[],
     this.timeLimit,
+    this.sourceKey,
   }) : questionTypeIds = List<String>.unmodifiable(questionTypeIds),
        queue = List<QuizTurn>.unmodifiable(queue),
        answers = List<QuizAnswerEntity>.unmodifiable(answers);
@@ -51,6 +52,9 @@ final class QuizRun {
 
   /// Time to answer each question, or `null` without a timer.
   final Duration? timeLimit;
+
+  /// What the quiz is played for, or `null`.
+  final String? sourceKey;
 
   /// Questions left, the current one first.
   final List<QuizTurn> queue;
@@ -109,6 +113,7 @@ final class QuizRun {
       scoredQuestionCount: scoredQuestionCount,
       questionTypeIds: questionTypeIds,
       timeLimit: timeLimit,
+      sourceKey: sourceKey,
       queue: queue ?? this.queue,
       answers: answers ?? this.answers,
     );
