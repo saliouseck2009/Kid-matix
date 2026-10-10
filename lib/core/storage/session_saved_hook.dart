@@ -15,6 +15,7 @@ final class SavedQuizSession {
     required this.endedAt,
     this.sourceKey,
     this.bossOutcome,
+    this.lightningCount = 0,
   });
 
   /// Identifier of the session.
@@ -44,20 +45,29 @@ final class SavedQuizSession {
   /// How a boss fight ended, `defeated` or `fled`, or `null` for another
   /// quiz.
   final String? bossOutcome;
+
+  /// Lightning answers among the scored ones.
+  final int lightningCount;
 }
+
+/// What a hook writes inside the transaction that saves a session; it
+/// returns the tables written, to notify once the transaction is
+/// committed.
+typedef SessionWrite = Future<List<String>> Function(Transaction transaction);
 
 /// Writes what a feature keeps from a quiz session, inside the
 /// transaction that saves the session: all or nothing.
 ///
-/// The learning path stores the stars of a stage this way; rewards will
-/// follow. Implemented in the data layer of the owning feature.
+/// The learning path stores the stars of a stage this way, the rewards
+/// the XP, the streak and the badges. Implemented in the data layer of
+/// the owning feature.
 abstract interface class SessionSavedHook {
-  /// Writes with [transaction] what [session] changes, and returns the
-  /// tables written, to notify once the transaction is committed.
-  Future<List<String>> onSessionSaved({
-    required Transaction transaction,
-    required SavedQuizSession session,
-  });
+  /// Reads, before the transaction opens, what the hook needs from other
+  /// features, and returns the write to run inside it.
+  ///
+  /// Reading the database while the transaction is open would wait for it
+  /// forever: every read of another feature happens here.
+  Future<SessionWrite> prepare({required SavedQuizSession session});
 }
 
 /// The [SessionSavedHook]s of the app, added by each feature at startup.

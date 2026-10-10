@@ -4,6 +4,7 @@ import 'package:kid_matix/features/quiz/data/datasources/quiz_session_local_data
 import 'package:kid_matix/features/quiz/data/datasources/quiz_tables.dart';
 import 'package:kid_matix/features/quiz/data/models/quiz_answer_local_model.dart';
 import 'package:kid_matix/features/quiz/data/models/quiz_session_local_model.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -25,6 +26,11 @@ final class QuizSessionLocalDataSourceImpl
     required QuizSessionLocalModel session,
     required List<QuizAnswerLocalModel> answers,
   }) async {
+    final SavedQuizSession saved = _savedSessionOf(session, answers);
+    final List<SessionWrite> writes = <SessionWrite>[
+      for (final SessionSavedHook hook in _hooks.hooks)
+        await hook.prepare(session: saved),
+    ];
     final Database database = await _database.database;
     return database.transaction((Transaction transaction) async {
       await transaction.insert(QuizTables.session, session.toJson());
@@ -34,19 +40,17 @@ final class QuizSessionLocalDataSourceImpl
       }
       await batch.commit(noResult: true);
       final List<String> tables = <String>[];
-      for (final SessionSavedHook hook in _hooks.hooks) {
-        tables.addAll(
-          await hook.onSessionSaved(
-            transaction: transaction,
-            session: _savedSessionOf(session),
-          ),
-        );
+      for (final SessionWrite write in writes) {
+        tables.addAll(await write(transaction));
       }
       return tables;
     });
   }
 
-  static SavedQuizSession _savedSessionOf(QuizSessionLocalModel session) {
+  static SavedQuizSession _savedSessionOf(
+    QuizSessionLocalModel session,
+    List<QuizAnswerLocalModel> answers,
+  ) {
     return SavedQuizSession(
       id: session.id,
       profileId: session.profileId,
@@ -59,6 +63,14 @@ final class QuizSessionLocalDataSourceImpl
       ),
       sourceKey: session.sourceKey,
       bossOutcome: session.bossOutcome?.name,
+      lightningCount: answers
+          .map((QuizAnswerLocalModel answer) => answer.toEntity())
+          .where(
+            (QuizAnswerEntity answer) =>
+                answer.isLightning &&
+                (session.bossOutcome != null || !answer.isRetry),
+          )
+          .length,
     );
   }
 

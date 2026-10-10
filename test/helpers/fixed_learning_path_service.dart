@@ -15,4 +15,13 @@ final class FixedLearningPathService implements LearningPathService {
     required int questionCount,
     bool isBossDefeated = false,
   }) => sourceKey == null ? null : stars;
+
+  @override
+  bool isStage(String? sourceKey) => sourceKey != null;
+
+  @override
+  String? crownedUnitOf({
+    required String? sourceKey,
+    required bool isBossDefeated,
+  }) => null;
 }

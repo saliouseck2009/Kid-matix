@@ -11,4 +11,7 @@ abstract interface class PlayerSettingsService {
   /// Returns whether "Tout débloquer" opens every table of the learning
   /// path for the player [profileId].
   Future<DataState<bool>> readEverythingUnlocked({required String profileId});
+
+  /// Returns the XP the player [profileId] aims to earn each day.
+  Future<DataState<int>> readDailyGoalXp({required String profileId});
 }

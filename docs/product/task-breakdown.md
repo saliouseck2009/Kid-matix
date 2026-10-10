@@ -355,15 +355,15 @@ XP, niveaux, série quotidienne, objectif du jour, combo et badges récompensent
 - [x] **F7-02** Niveaux : le niveau N demande 100 × N XP de plus que le précédent.
 - [x] **F7-03** `StreakPolicy` : + 1 par jour avec une session terminée, selon l'horloge du téléphone ; une date qui recule ne change rien ; meilleure série conservée.
 - [x] **F7-04** Joker hebdomadaire qui sauve la série après un jour manqué.
-- [ ] **F7-05** Objectif du jour : 20, 50 ou 100 XP au choix, avec la progression de la journée.
+- [x] **F7-05** Objectif du jour : 20, 50 ou 100 XP au choix, avec la progression de la journée.
 - [ ] **F7-06** Combo : compteur de bonnes réponses d'affilée, paliers à 3, 5 et 10.
 - [x] **F7-07** `BadgeEvaluator` et badges du lancement : Premier pas, Sans-faute, Éclair, Régulier, Dompteur de chaque table, Les 120. Sprinter arrive avec F9 et Survivant avec F12.
-- [ ] **F7-08** Cas d'usage `GetStreak` et `GetBadges`.
+- [x] **F7-08** Cas d'usage `GetStreak` et `GetBadges`.
 
 **Données**
 
-- [ ] **F7-09** Migration : tables `streak` et `badge_unlock` ; XP total et niveau sur le profil.
-- [ ] **F7-10** Écriture de toutes les récompenses dans la transaction de fin de session.
+- [x] **F7-09** Migration : tables `streak` et `badge_unlock` ; XP total et niveau sur le profil.
+- [x] **F7-10** Écriture de toutes les récompenses dans la transaction de fin de session.
 
 **Présentation**
 

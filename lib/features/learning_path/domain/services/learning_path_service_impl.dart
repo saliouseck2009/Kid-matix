@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/services/learning_path_service.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/domain/services/star_policy.dart';
 
@@ -8,6 +9,21 @@ final class LearningPathServiceImpl implements LearningPathService {
   const LearningPathServiceImpl({this._stars = const StarPolicy()});
 
   final StarPolicy _stars;
+
+  @override
+  bool isStage(String? sourceKey) => StageSource.tryParse(sourceKey) != null;
+
+  @override
+  String? crownedUnitOf({
+    required String? sourceKey,
+    required bool isBossDefeated,
+  }) {
+    final StageSource? source = StageSource.tryParse(sourceKey);
+    if (source == null || source.stage != StageKind.boss || !isBossDefeated) {
+      return null;
+    }
+    return source.unitKey;
+  }
 
   @override
   int? starsFor({
