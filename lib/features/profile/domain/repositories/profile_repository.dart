@@ -22,6 +22,13 @@ abstract interface class ProfileRepository {
     required String profileId,
   });
 
+  /// Replaces the game settings of their profile with [settings].
+  ///
+  /// Fails with a `NotFoundException` when the profile has none.
+  Future<DataState<void>> updateProfileSettings({
+    required ProfileSettingsEntity settings,
+  });
+
   /// Returns how many profiles exist.
   Future<DataState<int>> countProfiles();
 

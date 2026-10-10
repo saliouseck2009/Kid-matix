@@ -12,6 +12,9 @@ final class MascotRules {
   /// Level at which each stage starts: index 0 is stage 1.
   static const List<int> stageLevels = <int>[1, 5, 10, 20, 30];
 
+  /// Stage of a new player.
+  static const int firstStage = 1;
+
   /// Last stage.
   static int get lastStage => stageLevels.length;
 

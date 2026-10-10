@@ -1,5 +1,4 @@
 import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
-import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_stats_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/watch_profile_changes_use_case.dart';
@@ -13,7 +12,6 @@ final class ProfileTabUseCases {
     required this.getProfile,
     required this.watchChanges,
     required this.clearActiveProfile,
-    required this.deleteProfile,
     required this.getStats,
     required this.watchProgress,
   });
@@ -26,9 +24,6 @@ final class ProfileTabUseCases {
 
   /// Lets another child play.
   final ClearActiveProfileUseCase clearActiveProfile;
-
-  /// Deletes the player.
-  final DeleteProfileUseCase deleteProfile;
 
   /// Reads the streak, crowns and badges.
   final GetProfileStatsUseCase getStats;

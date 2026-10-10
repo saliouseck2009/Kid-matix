@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/delete_profile_dialog.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/nickname_confirm_dialog.dart';
 
 import '../../../helpers/pump_localized.dart';
 
@@ -30,7 +30,7 @@ void main() {
     );
   }
 
-  group('DeleteProfileDialog', () {
+  group('NicknameConfirmDialog', () {
     testWidgets('asks the child to type the nickname again', (
       WidgetTester tester,
     ) async {

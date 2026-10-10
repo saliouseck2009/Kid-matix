@@ -1,4 +1,9 @@
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
+import 'package:kid_matix/features/profile/domain/usecases/reset_progress_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/update_settings_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/get_settings_use_case.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
@@ -54,12 +59,60 @@ final class MockClearActiveProfileUseCase extends Mock
 final class MockDeleteProfileUseCase extends Mock
     implements DeleteProfileUseCase {}
 
+/// Test double of [GetSettingsUseCase].
+final class MockGetSettingsUseCase extends Mock implements GetSettingsUseCase {}
+
+/// Test double of [UpdateSettingsUseCase].
+final class MockUpdateSettingsUseCase extends Mock
+    implements UpdateSettingsUseCase {}
+
+/// Test double of [ResetProgressUseCase].
+final class MockResetProgressUseCase extends Mock
+    implements ResetProgressUseCase {}
+
+/// Doubles of every use case of the settings screen: the player of
+/// [buildProfile] with the default settings, every write succeeding.
+SettingsUseCases buildSettingsUseCases({
+  GetSettingsUseCase? getSettings,
+  UpdateSettingsUseCase? updateSettings,
+  ResetProgressUseCase? resetProgress,
+  DeleteProfileUseCase? deleteProfile,
+}) {
+  registerFallbackValue(const ProfileSettingsEntity.defaults(profileId: ''));
+  final MockGetSettingsUseCase quietSettings = MockGetSettingsUseCase();
+  when(() => quietSettings.call(params: any(named: 'params'))).thenAnswer(
+    (Invocation invocation) async => DataSuccess<ProfileSettingsEntity>(
+      ProfileSettingsEntity.defaults(
+        profileId: invocation.namedArguments[#params] as String,
+      ),
+    ),
+  );
+  final MockUpdateSettingsUseCase quietUpdate = MockUpdateSettingsUseCase();
+  when(
+    () => quietUpdate.call(params: any(named: 'params')),
+  ).thenAnswer((_) async => const DataSuccess<void>(null));
+  final MockResetProgressUseCase quietReset = MockResetProgressUseCase();
+  when(
+    () => quietReset.call(params: any(named: 'params')),
+  ).thenAnswer((_) async => const DataSuccess<void>(null));
+  final MockDeleteProfileUseCase quietDelete = MockDeleteProfileUseCase();
+  when(
+    () => quietDelete.call(params: any(named: 'params')),
+  ).thenAnswer((_) async => const DataSuccess<void>(null));
+  return SettingsUseCases(
+    getProfile: _quietGetProfile(),
+    getSettings: getSettings ?? quietSettings,
+    updateSettings: updateSettings ?? quietUpdate,
+    resetProgress: resetProgress ?? quietReset,
+    deleteProfile: deleteProfile ?? quietDelete,
+  );
+}
+
 /// Doubles of every use case of the Profile tab.
 ProfileTabUseCases buildTabUseCases({
   GetProfileUseCase? getProfile,
   WatchProfileChangesUseCase? watchChanges,
   ClearActiveProfileUseCase? clearActiveProfile,
-  DeleteProfileUseCase? deleteProfile,
   FixedRewardService? rewards,
   FixedCrownService? crowns,
 }) {
@@ -69,7 +122,6 @@ ProfileTabUseCases buildTabUseCases({
     getProfile: getProfile ?? _quietGetProfile(),
     watchChanges: watchChanges ?? _quietWatch(),
     clearActiveProfile: clearActiveProfile ?? MockClearActiveProfileUseCase(),
-    deleteProfile: deleteProfile ?? MockDeleteProfileUseCase(),
     getStats: GetProfileStatsUseCase(
       rewards: rewardService,
       crowns: crownService,
@@ -105,6 +157,7 @@ ProfilePages buildProfilePages({
   UpdateProfileUseCase? updateProfile,
   SelectProfileUseCase? selectProfile,
   ProfileTabUseCases? tabUseCases,
+  SettingsUseCases? settingsUseCases,
 }) {
   return ProfilePages(
     getProfiles: getProfiles ?? MockGetProfilesUseCase(),
@@ -113,6 +166,7 @@ ProfilePages buildProfilePages({
     updateProfile: updateProfile ?? MockUpdateProfileUseCase(),
     selectProfile: selectProfile ?? MockSelectProfileUseCase(),
     tabUseCases: tabUseCases ?? buildTabUseCases(),
+    settingsUseCases: settingsUseCases ?? buildSettingsUseCases(),
   );
 }
 

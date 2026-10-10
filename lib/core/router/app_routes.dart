@@ -15,6 +15,9 @@ abstract final class AppRoutes {
   /// Edition of the active player, opened from the [profile] tab.
   static const String profileEdit = '/profile/edit';
 
+  /// Settings of the active player, opened from the [profile] tab.
+  static const String settings = '/profile/settings';
+
   /// Mascot screen, opened from the [profile] tab.
   static const String mascot = '/profile/mascot';
 

@@ -16,7 +16,7 @@ final class MascotRecord {
   const MascotRecord.initial()
     : name = MascotRules.defaultName,
       worn = const <MascotAccessory>[],
-      celebratedStage = 1;
+      celebratedStage = MascotRules.firstStage;
 
   /// Name of the mascot.
   final String name;

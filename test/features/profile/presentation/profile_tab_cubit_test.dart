@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kid_matix/core/error/app_error_code.dart';
-import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_cubit.dart';
@@ -15,22 +13,17 @@ import '../helpers/profile_fixtures.dart';
 void main() {
   late MockGetProfileUseCase mockGetProfile;
   late MockClearActiveProfileUseCase mockClearActive;
-  late MockDeleteProfileUseCase mockDelete;
   late StreamController<void> changes;
 
   setUp(() {
     mockGetProfile = MockGetProfileUseCase();
     mockClearActive = MockClearActiveProfileUseCase();
-    mockDelete = MockDeleteProfileUseCase();
     changes = StreamController<void>.broadcast();
     when(
       () => mockGetProfile.call(params: any(named: 'params')),
     ).thenAnswer((_) async => DataSuccess<ProfileEntity>(buildProfile()));
     when(
       mockClearActive.call,
-    ).thenAnswer((_) async => const DataSuccess<void>(null));
-    when(
-      () => mockDelete.call(params: any(named: 'params')),
     ).thenAnswer((_) async => const DataSuccess<void>(null));
   });
 
@@ -46,7 +39,6 @@ void main() {
         getProfile: mockGetProfile,
         watchChanges: mockWatch,
         clearActiveProfile: mockClearActive,
-        deleteProfile: mockDelete,
       ),
     );
   }
@@ -99,34 +91,6 @@ void main() {
       skip: 2,
       expect: () => <Matcher>[isA<ProfileTabLoading>()],
       verify: (_) => verify(mockClearActive.call).called(1),
-    );
-    blocTest<ProfileTabCubit, ProfileTabState>(
-      'deletes the player',
-      build: buildCubit,
-      act: (ProfileTabCubit cubit) async {
-        await cubit.load();
-        await cubit.deleteProfile();
-      },
-      skip: 2,
-      expect: () => <Matcher>[isA<ProfileTabLoading>()],
-      verify: (_) =>
-          verify(() => mockDelete.call(params: 'profile-1')).called(1),
-    );
-    blocTest<ProfileTabCubit, ProfileTabState>(
-      'reports a failed deletion',
-      setUp: () => when(
-        () => mockDelete.call(params: any(named: 'params')),
-      ).thenAnswer((_) async => const DataFailed<void>(CacheException())),
-      build: buildCubit,
-      act: (ProfileTabCubit cubit) => cubit.deleteProfile(),
-      expect: () => <Matcher>[
-        isA<ProfileTabLoading>(),
-        isA<ProfileTabFailure>().having(
-          (ProfileTabFailure state) => state.errorCode,
-          'errorCode',
-          AppErrorCode.cache,
-        ),
-      ],
     );
   });
 }

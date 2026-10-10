@@ -11,6 +11,7 @@ class ChoiceSegments<T> extends StatelessWidget {
     required this.labelOf,
     required this.onSelected,
     this.labelStyle,
+    this.backgroundColor,
     super.key,
   });
 
@@ -32,6 +33,9 @@ class ChoiceSegments<T> extends StatelessWidget {
   /// Style of the texts; the theme's medium title by default.
   final TextStyle? labelStyle;
 
+  /// Color of the band; the surface color by default.
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
@@ -40,7 +44,7 @@ class ChoiceSegments<T> extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSizes.space4),
       decoration: BoxDecoration(
-        color: scheme.surface,
+        color: backgroundColor ?? scheme.surface,
         borderRadius: BorderRadius.circular(_radius),
       ),
       child: Row(

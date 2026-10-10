@@ -12,7 +12,6 @@ import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_cubit.d
 import 'package:kid_matix/features/profile/presentation/bloc/progress_cubit.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_state.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/delete_profile_dialog.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_error_message.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_header.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_stat_tile.dart';
@@ -112,6 +111,11 @@ class _ProfileTabView extends StatelessWidget {
               tooltip: context.l10n.switchPlayerButton,
               onPressed: cubit.switchPlayer,
             ),
+            AppIconButton(
+              icon: Icons.tune_rounded,
+              tooltip: context.l10n.settingsTitle,
+              onPressed: () => context.go(AppRoutes.settings),
+            ),
           ],
         ),
         const SizedBox(height: _gap),
@@ -121,8 +125,6 @@ class _ProfileTabView extends StatelessWidget {
           const SizedBox(height: _gap),
           section,
         ],
-        const SizedBox(height: AppSizes.space24),
-        _DeleteProfileButton(profile: profile),
       ],
     );
   }
@@ -166,34 +168,6 @@ class _ProgressTiles extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _DeleteProfileButton extends StatelessWidget {
-  const _DeleteProfileButton({required this.profile});
-
-  final ProfileEntity profile;
-
-  Future<void> _confirmAndDelete(BuildContext context) async {
-    final ProfileTabCubit cubit = context.read<ProfileTabCubit>();
-    final bool isConfirmed = await confirmProfileDeletion(
-      context,
-      nickname: profile.nickname,
-    );
-    if (isConfirmed) await cubit.deleteProfile();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => _confirmAndDelete(context),
-      style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.error,
-        minimumSize: const Size.fromHeight(AppSizes.minTouchTarget),
-        textStyle: Theme.of(context).textTheme.labelLarge,
-      ),
-      child: Text(context.l10n.deleteProfileButton),
     );
   }
 }

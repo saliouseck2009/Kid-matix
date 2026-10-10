@@ -178,6 +178,18 @@ StatefulShellBranch _createProfileBranch({
             },
           ),
           GoRoute(
+            path: _lastSegment(AppRoutes.settings),
+            parentNavigatorKey: rootNavigatorKey,
+            builder: (BuildContext context, GoRouterState state) {
+              final String? profileId = session.activeProfileId;
+              if (profileId == null) return const SizedBox.shrink();
+              return profilePages.buildSettingsPage(
+                profileId: profileId,
+                onBack: () => context.go(AppRoutes.profile),
+              );
+            },
+          ),
+          GoRoute(
             path: _lastSegment(AppRoutes.mascot),
             parentNavigatorKey: rootNavigatorKey,
             builder: (BuildContext context, GoRouterState state) {
