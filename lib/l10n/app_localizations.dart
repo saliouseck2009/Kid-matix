@@ -130,7 +130,7 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get tabProfile;
 
-  /// Centered message on the placeholder page of a tab whose feature is not built yet ("Coming soon"). One line.
+  /// Centered message on the placeholder page of a tab whose feature is not built yet, and on the temporary home tab above its quiz button until the learning path arrives ("Coming soon"). One line.
   ///
   /// In fr, this message translates to:
   /// **'Bientôt disponible'**
@@ -142,13 +142,13 @@ abstract class AppLocalizations {
   /// **'Réessayer'**
   String get commonRetry;
 
-  /// Tooltip and screen-reader label of the back arrow at the top left of a screen.
+  /// Tooltip and screen-reader label of the back arrow at the top left of a screen, and label of the button that leaves the quiz screen when the quiz cannot start ("Back"). One short word.
   ///
   /// In fr, this message translates to:
   /// **'Retour'**
   String get commonBack;
 
-  /// Error shown to a child on the "Qui joue ?" screen or under the button of the player creation when the local database fails. Friendly tone, informal "tu", no technical words.
+  /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
   /// In fr, this message translates to:
   /// **'Oups, on n\'a pas pu lire ou enregistrer tes données.'**
@@ -160,7 +160,7 @@ abstract class AppLocalizations {
   /// **'Ce joueur n\'existe plus.'**
   String get errorNotFound;
 
-  /// Generic error shown to a child on the "Qui joue ?" screen or the player creation when nothing more precise is known. Friendly tone.
+  /// Generic error shown to a child on the "Qui joue ?" screen, the player creation, and the quiz and results screens when nothing more precise is known. Friendly tone.
   ///
   /// In fr, this message translates to:
   /// **'Oups, quelque chose s\'est mal passé.'**
@@ -363,6 +363,216 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Supprimer'**
   String get deleteProfileConfirm;
+
+  /// Tooltip and screen-reader label of the cross at the top left of the quiz screen ("Leave the quiz").
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter le quiz'**
+  String get quizQuitTooltip;
+
+  /// Screen-reader label of the quiz progress bar ("Question 4 of 10"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Question {current} sur {total}'**
+  String quizProgressLabel(int current, int total);
+
+  /// Screen-reader label of the timer bar of the quiz ("Time left"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Temps restant'**
+  String get quizTimeLeftLabel;
+
+  /// Small label above a multiplication question naming its table ("Table of 5"). One short line in a pill.
+  ///
+  /// In fr, this message translates to:
+  /// **'Table de {number}'**
+  String quizMultiplicationUnit(int number);
+
+  /// Small label above a true-or-false question ("True or false?"). One short line in a pill.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vrai ou faux ?'**
+  String get quizTrueFalseLabel;
+
+  /// Hint in a dashed box under the four answer buttons of a multiple-choice question ("Tap the right answer"). Speaks to a child with "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche la bonne réponse'**
+  String get quizHintMultipleChoice;
+
+  /// Hint in a dashed box under the true and false buttons, asking whether the calculation shown is right ("Is this calculation right?"). One or two short lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce calcul est-il juste ?'**
+  String get quizHintTrueFalse;
+
+  /// Label of the button that says the statement is true ("True"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vrai'**
+  String get quizTrue;
+
+  /// Label of the button that says the statement is false ("False"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faux'**
+  String get quizFalse;
+
+  /// Tooltip and screen-reader label of the keypad key that erases the last digit ("Erase"). Infinitive verb.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer'**
+  String get quizKeypadErase;
+
+  /// Label of the keypad key that submits the typed number ("Submit"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Valider'**
+  String get quizKeypadValidate;
+
+  /// Title of the green message after a right answer ("Well done!"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bravo !'**
+  String get quizFeedbackRight;
+
+  /// Title of the red message after a wrong answer ("Almost!"). Encouraging, never blaming. One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Presque !'**
+  String get quizFeedbackWrong;
+
+  /// Title of the red message when the time to answer ran out ("Time is up!"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Temps écoulé !'**
+  String get quizFeedbackTimeUp;
+
+  /// Mention next to the title of the green message when the right answer came in under 3 seconds ("Lightning!"). One short word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éclair !'**
+  String get quizLightning;
+
+  /// Button under the answer feedback that shows the next question ("Continue"). Infinitive verb.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get quizContinue;
+
+  /// Title of the dialog that confirms leaving a quiz ("Leave the quiz?").
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter le quiz ?'**
+  String get quizQuitTitle;
+
+  /// Body of the dialog that confirms leaving a quiz: the answers given still help the child progress, but the game gives no reward. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tes réponses comptent pour ta progression, mais cette partie ne te donnera pas de récompense.'**
+  String get quizQuitMessage;
+
+  /// Button of the quit dialog that leaves the quiz ("Leave"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get quizQuitConfirm;
+
+  /// Button of the quit dialog that goes back to the quiz ("Keep playing").
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer à jouer'**
+  String get quizQuitCancel;
+
+  /// Word read by the screen reader for the multiplication sign of a question ("times"). The reader joins the words in the order of the operation: number, this word, number, "quizSpokenEquals", then a number or "quizSpokenBlank", such as "5 fois 7 égale combien". Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'fois'**
+  String get quizSpokenTimes;
+
+  /// Word read by the screen reader for the equals sign of a question ("equals"), as in "5 fois 7 égale combien". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'égale'**
+  String get quizSpokenEquals;
+
+  /// Word read by the screen reader for the missing number at the end of a question ("how much"), as in "5 fois 7 égale combien". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'combien'**
+  String get quizSpokenBlank;
+
+  /// Temporary button of the home tab that starts a quiz on the table of 5, until the learning path arrives ("Play the table of 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouer à la table de 5'**
+  String get quizProvisionalStart;
+
+  /// Name of the free training mode, shown under the results title ("Free training").
+  ///
+  /// In fr, this message translates to:
+  /// **'Entraînement libre'**
+  String get quizModeFreeTraining;
+
+  /// Big title of the results screen after a quiz ("Game over!" in a cheerful sense, "All done!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partie terminée !'**
+  String get resultsTitle;
+
+  /// Line under the results title: the unit and the mode of the quiz, such as "Table de 5 · Entraînement libre". Keep the middle dot.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit} · {mode}'**
+  String resultsSubtitle(String unit, String mode);
+
+  /// Big number of a results tile: right answers out of the scored questions ("9 / 10"). Keep it short, it shares a row with another tile.
+  ///
+  /// In fr, this message translates to:
+  /// **'{correct} / {total}'**
+  String resultsCorrectCount(int correct, int total);
+
+  /// Small label under the right-answer count of the results ("right"), agreeing in number with the count. Feminine in French because it stands for "questions réussies". One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'{correct, plural, one{réussie} other{réussies}}'**
+  String resultsCorrectLabel(int correct);
+
+  /// Big number of a results tile: average answer time in seconds with one decimal ("2,4 s"). Keep the unit abbreviated.
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds} s'**
+  String resultsAverageTime(double seconds);
+
+  /// Small label under the average answer time of the results ("on average").
+  ///
+  /// In fr, this message translates to:
+  /// **'en moyenne'**
+  String get resultsAverageTimeLabel;
+
+  /// Heading of the results card listing the facts the child missed ("To review").
+  ///
+  /// In fr, this message translates to:
+  /// **'À revoir'**
+  String get resultsToReview;
+
+  /// Shown in the "To review" card when the child missed nothing ("No mistake, well done!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune erreur, bravo !'**
+  String get resultsNothingToReview;
+
+  /// Main button of the results screen, back to the home ("Continue"). Infinitive verb.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get resultsContinue;
+
+  /// Second button of the results screen, plays the same quiz again ("Play again"). Infinitive verb.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejouer'**
+  String get resultsReplay;
 }
 
 class _AppLocalizationsDelegate

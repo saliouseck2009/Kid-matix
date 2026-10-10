@@ -9,6 +9,7 @@ import 'package:kid_matix/features/quiz/data/datasources/quiz_tables.dart';
 import 'package:kid_matix/features/quiz/data/models/quiz_answer_local_model.dart';
 import 'package:kid_matix/features/quiz/data/models/quiz_session_local_model.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_repository.dart';
 import 'package:sqflite/sqflite.dart';
@@ -63,6 +64,43 @@ final class QuizSessionRepositoryImpl implements QuizSessionRepository {
         stackTrace: stackTrace,
       );
       return DataFailed<void>(CacheException(message: error.toString()));
+    }
+  }
+
+  @override
+  Future<DataState<QuizResultEntity>> getResult({
+    required String sessionId,
+  }) async {
+    try {
+      final QuizSessionLocalModel? session = await _sessions.getSession(
+        sessionId: sessionId,
+      );
+      if (session == null) {
+        return DataFailed<QuizResultEntity>(
+          NotFoundException(message: 'No session $sessionId.'),
+        );
+      }
+      final List<QuizAnswerLocalModel> answers = await _sessions.getAnswers(
+        sessionId: sessionId,
+      );
+      return DataSuccess<QuizResultEntity>(
+        QuizResultEntity(
+          session: session.toEntity(),
+          answers: answers
+              .map((QuizAnswerLocalModel answer) => answer.toEntity())
+              .toList(),
+        ),
+      );
+    } on DatabaseException catch (error, stackTrace) {
+      log(
+        'Result not read',
+        name: _logName,
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return DataFailed<QuizResultEntity>(
+        CacheException(message: error.toString()),
+      );
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/dashed_border_painter.dart';
+import 'package:kid_matix/core/widgets/dashed_border_painter.dart';
 
 /// Dashed card of "Qui joue ?" that opens the creation of a player.
 class NewPlayerCard extends StatelessWidget {

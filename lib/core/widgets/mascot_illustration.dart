@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/mascot_painter.dart';
+import 'package:kid_matix/core/widgets/mascot_painter.dart';
 
-/// The mascot greeting the players, [size] wide; decorative.
+/// The mascot, [size] wide; decorative. Provisional until lot F8.
 class MascotIllustration extends StatelessWidget {
   /// Creates the mascot drawing.
   const MascotIllustration({required this.size, super.key});

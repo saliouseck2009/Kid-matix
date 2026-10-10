@@ -11,4 +11,10 @@ abstract interface class QuizSessionLocalDataSource {
     required QuizSessionLocalModel session,
     required List<QuizAnswerLocalModel> answers,
   });
+
+  /// Returns the session [sessionId], or `null` when there is none.
+  Future<QuizSessionLocalModel?> getSession({required String sessionId});
+
+  /// Returns the answers of [sessionId], in order.
+  Future<List<QuizAnswerLocalModel>> getAnswers({required String sessionId});
 }

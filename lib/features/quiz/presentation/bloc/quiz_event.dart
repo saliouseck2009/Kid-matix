@@ -25,6 +25,27 @@ final class AnswerSubmitted extends QuizEvent {
   final Answer answer;
 }
 
+/// The player typed [digit] on the keypad.
+final class DigitTyped extends QuizEvent {
+  /// Creates the event.
+  const DigitTyped({required this.digit});
+
+  /// Digit typed, from 0 to 9.
+  final int digit;
+}
+
+/// The player erased the last digit typed.
+final class DigitErased extends QuizEvent {
+  /// Creates the event.
+  const DigitErased();
+}
+
+/// The player validated the number typed on the keypad.
+final class TypedAnswerValidated extends QuizEvent {
+  /// Creates the event.
+  const TypedAnswerValidated();
+}
+
 /// One tick of the timer went by.
 final class TimerTicked extends QuizEvent {
   /// Creates the event.

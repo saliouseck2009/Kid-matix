@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 
 /// The journal of the quiz sessions played on the device.
@@ -10,4 +11,9 @@ abstract interface class QuizSessionRepository {
     required QuizSessionEntity session,
     required List<QuizAnswerEntity> answers,
   });
+
+  /// Reads the session [sessionId] and its answers.
+  ///
+  /// Fails with a `NotFoundException` when there is no such session.
+  Future<DataState<QuizResultEntity>> getResult({required String sessionId});
 }

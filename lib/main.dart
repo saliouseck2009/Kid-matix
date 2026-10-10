@@ -13,6 +13,8 @@ import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
+import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Entry point: wires dependencies and error reporting, then starts the app.
@@ -37,24 +39,38 @@ Future<void> main() async {
   ]);
   final ProfileSessionService session = sl<ProfileSessionService>();
   await session.restore();
-  runApp(
-    KidMatixApp(
-      router: createAppRouter(
-        session: session,
-        profilePages: ProfilePages(
-          getProfiles: sl(),
-          getProfile: sl(),
-          createProfile: sl(),
-          updateProfile: sl(),
-          selectProfile: sl(),
-          tabUseCases: ProfileTabUseCases(
-            getProfile: sl(),
-            watchChanges: sl(),
-            clearActiveProfile: sl(),
-            deleteProfile: sl(),
-          ),
-        ),
+  runApp(KidMatixApp(router: _createRouter(session)));
+}
+
+/// Builds the router with the pages of each feature, their dependencies
+/// resolved here at the composition root.
+GoRouter _createRouter(ProfileSessionService session) {
+  return createAppRouter(
+    session: session,
+    profilePages: ProfilePages(
+      getProfiles: sl(),
+      getProfile: sl(),
+      createProfile: sl(),
+      updateProfile: sl(),
+      selectProfile: sl(),
+      tabUseCases: ProfileTabUseCases(
+        getProfile: sl(),
+        watchChanges: sl(),
+        clearActiveProfile: sl(),
+        deleteProfile: sl(),
       ),
+    ),
+    quizPages: QuizPages(
+      useCases: QuizUseCases(
+        getTimeLimit: sl(),
+        buildQuiz: sl(),
+        submitAnswer: sl(),
+        completeSession: sl(),
+        abandonSession: sl(),
+      ),
+      getResult: sl(),
+      ticker: sl(),
+      domains: sl(),
     ),
   );
 }

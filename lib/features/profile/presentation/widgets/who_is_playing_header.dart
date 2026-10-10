@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/mascot_illustration.dart';
+import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 
 /// Mascot, title and invitation at the top of "Qui joue ?".
 class WhoIsPlayingHeader extends StatelessWidget {

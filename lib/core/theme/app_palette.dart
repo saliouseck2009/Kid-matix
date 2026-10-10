@@ -14,6 +14,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     required this.warmTint,
     required this.secondaryDepth,
     required this.strongBorder,
+    required this.softBorder,
     required this.avatarBackgrounds,
   });
 
@@ -27,6 +28,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     warmTint: AppColors.yellowTint,
     secondaryDepth: AppColors.yellowDepth,
     strongBorder: AppColors.violetStrongBorder,
+    softBorder: AppColors.violetSoftBorder,
     avatarBackgrounds: <Color>[
       AppColors.violet,
       AppColors.green,
@@ -61,6 +63,9 @@ final class AppPalette extends ThemeExtension<AppPalette> {
   /// Outline of text fields and dashed hint boxes.
   final Color strongBorder;
 
+  /// Dashed outline of hint boxes.
+  final Color softBorder;
+
   /// Colors a player can pick for their avatar, in the order of the color
   /// picker: violet, green, yellow, red, blue, pink.
   final List<Color> avatarBackgrounds;
@@ -75,6 +80,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     Color? warmTint,
     Color? secondaryDepth,
     Color? strongBorder,
+    Color? softBorder,
     List<Color>? avatarBackgrounds,
   }) {
     return AppPalette(
@@ -86,6 +92,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       warmTint: warmTint ?? this.warmTint,
       secondaryDepth: secondaryDepth ?? this.secondaryDepth,
       strongBorder: strongBorder ?? this.strongBorder,
+      softBorder: softBorder ?? this.softBorder,
       avatarBackgrounds: avatarBackgrounds ?? this.avatarBackgrounds,
     );
   }
@@ -102,6 +109,7 @@ final class AppPalette extends ThemeExtension<AppPalette> {
       warmTint: Color.lerp(warmTint, other.warmTint, t)!,
       secondaryDepth: Color.lerp(secondaryDepth, other.secondaryDepth, t)!,
       strongBorder: Color.lerp(strongBorder, other.strongBorder, t)!,
+      softBorder: Color.lerp(softBorder, other.softBorder, t)!,
       avatarBackgrounds: t < 0.5 ? avatarBackgrounds : other.avatarBackgrounds,
     );
   }

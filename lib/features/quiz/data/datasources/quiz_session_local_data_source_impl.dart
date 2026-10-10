@@ -28,4 +28,29 @@ final class QuizSessionLocalDataSourceImpl
       await batch.commit(noResult: true);
     });
   }
+
+  @override
+  Future<QuizSessionLocalModel?> getSession({required String sessionId}) async {
+    final Database database = await _database.database;
+    final List<Map<String, Object?>> rows = await database.query(
+      QuizTables.session,
+      where: 'id = ? AND deleted_at IS NULL',
+      whereArgs: <Object>[sessionId],
+    );
+    return rows.isEmpty ? null : QuizSessionLocalModel.fromJson(rows.single);
+  }
+
+  @override
+  Future<List<QuizAnswerLocalModel>> getAnswers({
+    required String sessionId,
+  }) async {
+    final Database database = await _database.database;
+    final List<Map<String, Object?>> rows = await database.query(
+      QuizTables.answer,
+      where: 'session_id = ? AND deleted_at IS NULL',
+      whereArgs: <Object>[sessionId],
+      orderBy: 'position',
+    );
+    return rows.map(QuizAnswerLocalModel.fromJson).toList();
+  }
 }

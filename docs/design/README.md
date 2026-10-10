@@ -82,7 +82,7 @@ never use raw colors: they read `Theme.of(context)`, `context.palette`
 | red | `#C8321F` | Wrong answer, destructive action | `AppColors.red` |
 | red depth | `#8F2114` | Raised edge under red | `AppColors.redDepth` |
 | red tint | `#FBE3DF` | Wrong-answer message | `AppColors.redTint` |
-| dashed violet | `#C9BFFF`, `#A99BF0` | Dashed hint boxes, "new player" card, text field outline | `#A99BF0`: `AppPalette.strongBorder`; `#C9BFFF` to add with F3 |
+| dashed violet | `#C9BFFF`, `#A99BF0` | Dashed hint boxes, "new player" card, text field outline | `#A99BF0`: `AppPalette.strongBorder`; `#C9BFFF`: `AppPalette.softBorder` |
 | neutral pill | `#ECE8FB` | "Pas de série" pill | To add with F1 |
 | locked | `#E3DEF7`, edge `#CFC8EC` | Locked nodes and stages, empty star, "new" mastery cell | To add with F5 |
 | toggle off | `#8A82A8` | Track of a switched-off toggle | To add with F10 |

@@ -7,6 +7,7 @@ import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_reposit
 import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.dart';
 
@@ -52,5 +53,8 @@ void _registerUseCases(GetIt sl) {
   );
   sl.registerLazySingleton<AbandonSessionUseCase>(
     () => AbandonSessionUseCase(repository: sl(), clock: sl()),
+  );
+  sl.registerLazySingleton<GetQuizResultUseCase>(
+    () => GetQuizResultUseCase(repository: sl()),
   );
 }

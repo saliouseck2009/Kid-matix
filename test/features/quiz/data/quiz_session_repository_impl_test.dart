@@ -11,6 +11,7 @@ import 'package:kid_matix/features/quiz/data/models/quiz_session_local_model.dar
 import 'package:kid_matix/features/quiz/data/repositories/quiz_session_repository_impl.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -129,6 +130,25 @@ void main() {
       expect(actualState.exceptionOrNull, isA<CacheException>());
       final Database database = await appDatabase.database;
       expect(await database.query('quiz_answer'), isEmpty);
+    });
+    test('reads a saved session with its answers', () async {
+      // Arrange
+      await repository.saveSession(session: _buildSession(), answers: _answers);
+      // Act
+      final QuizResultEntity actualResult = (await repository.getResult(
+        sessionId: 's1',
+      )).requireData;
+      // Assert
+      expect(actualResult.session, _buildSession());
+      expect(actualResult.answers, _answers);
+    });
+    test('fails to read a session that does not exist', () async {
+      // Act
+      final AppException? actualException = (await repository.getResult(
+        sessionId: 'missing',
+      )).exceptionOrNull;
+      // Assert
+      expect(actualException, isA<NotFoundException>());
     });
   });
 }
