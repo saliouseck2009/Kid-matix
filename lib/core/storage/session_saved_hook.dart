@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -9,6 +10,7 @@ final class SavedQuizSession {
     required this.id,
     required this.profileId,
     required this.domainId,
+    required this.mode,
     required this.isCompleted,
     required this.questionCount,
     required this.correctCount,
@@ -26,6 +28,9 @@ final class SavedQuizSession {
 
   /// Learning domain.
   final String domainId;
+
+  /// How the quiz was started.
+  final QuizMode mode;
 
   /// Whether the quiz was completed rather than abandoned.
   final bool isCompleted;

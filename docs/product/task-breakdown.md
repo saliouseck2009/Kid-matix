@@ -417,14 +417,14 @@ Deux modes hors parcours : l'enfant choisit ses tables pour s'entraîner, ou ten
 
 **Domaine**
 
-- [ ] **F9-01** Entraînement libre : une ou plusieurs tables, 10, 20 ou 30 questions, avec ou sans chrono ; questions tirées avec le tirage pondéré de F4.
-- [ ] **F9-02** Contre-la-montre : 60 secondes au total, score égal au nombre de bonnes réponses ; la question en cours est remplacée au retour d'arrière-plan.
-- [ ] **F9-03** Entité `Record` et cas d'usage `GetRecords` : meilleur score par joueur et par mode.
+- [x] **F9-01** Entraînement libre : une ou plusieurs tables, 10, 20 ou 30 questions, avec ou sans chrono ; questions tirées avec le tirage pondéré de F4.
+- [x] **F9-02** Contre-la-montre : 60 secondes au total, score égal au nombre de bonnes réponses ; la question en cours est remplacée au retour d'arrière-plan.
+- [x] **F9-03** Entité `Record` et cas d'usage `GetRecords` : meilleur score par joueur et par mode.
 - [ ] **F9-04** Badge Sprinter : 20 bonnes réponses en Contre-la-montre.
 
 **Données**
 
-- [ ] **F9-05** Migration : table `record`, mise à jour dans la transaction de fin de session.
+- [x] **F9-05** Migration : table `record`, mise à jour dans la transaction de fin de session.
 
 **Présentation**
 

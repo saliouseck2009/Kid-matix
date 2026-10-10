@@ -55,6 +55,7 @@ final class QuizSessionLocalDataSourceImpl
       id: session.id,
       profileId: session.profileId,
       domainId: session.domainId,
+      mode: session.mode,
       isCompleted: session.status == QuizSessionStatus.completed,
       questionCount: session.questionCount,
       correctCount: session.correctCount,

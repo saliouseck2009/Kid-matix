@@ -1,8 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/services/crown_service.dart';
+import 'package:kid_matix/core/services/open_units_service.dart';
 import 'package:kid_matix/core/services/learning_path_service.dart';
 import 'package:kid_matix/features/learning_path/domain/services/crown_service_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/services/open_units_service_impl.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/stage_progress_local_data_source.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/stage_progress_local_data_source_impl.dart';
@@ -38,6 +40,12 @@ void registerLearningPathFeature(GetIt sl) {
     () => CrownServiceImpl(
       getPath: sl(),
       watchChanges: sl(),
+      domainId: LearningDomainIds.multiplication,
+    ),
+  );
+  sl.registerLazySingleton<OpenUnitsService>(
+    () => OpenUnitsServiceImpl(
+      getPath: sl(),
       domainId: LearningDomainIds.multiplication,
     ),
   );
