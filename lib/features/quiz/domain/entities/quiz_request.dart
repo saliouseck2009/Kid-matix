@@ -20,6 +20,8 @@ final class QuizRequest {
     this.followUpItemKeys = const <String>[],
     this.followUpQuestionCount = 0,
     this.isBossFight = false,
+    this.totalTimeLimit,
+    this.keepsTimer = false,
   });
 
   /// Creates the request of [profileId] to play [spec].
@@ -40,6 +42,8 @@ final class QuizRequest {
       followUpItemKeys: spec.followUpItemKeys,
       followUpQuestionCount: spec.followUpQuestionCount,
       isBossFight: spec.isBossFight,
+      totalTimeLimit: spec.totalTimeLimit,
+      keepsTimer: spec.keepsTimer,
     );
   }
 
@@ -82,4 +86,12 @@ final class QuizRequest {
   /// Whether the quiz is a boss fight: every right answer hits the boss,
   /// and the fight ends when it falls or flees.
   final bool isBossFight;
+
+  /// Time to play the whole quiz, or `null` when it ends with its last
+  /// question.
+  final Duration? totalTimeLimit;
+
+  /// Whether the player chose to play with [baseTimeLimit]: the timer then
+  /// stays even when their setting turns it off.
+  final bool keepsTimer;
 }

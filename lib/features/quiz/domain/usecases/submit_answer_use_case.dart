@@ -28,8 +28,9 @@ import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dar
 /// never stops the game.
 /// A missed fact comes back 3 questions later, once per session, with a
 /// question drawn again; that second chance does not count in the score,
-/// except in a boss fight. In a boss fight every right answer hits the
-/// boss, and the fight ends when it falls or after its last question.
+/// except in a boss fight; a quiz against the clock gives none. In a boss
+/// fight every right answer hits the boss, and the fight ends when it
+/// falls or after its last question.
 /// Fails with a `ValidationException` when the quiz is over or its domain
 /// or question type is unknown.
 class SubmitAnswerUseCase
@@ -135,6 +136,7 @@ class SubmitAnswerUseCase
 
   bool _needsRetry(QuizRun run, QuizTurn turn, QuizAnswerEntity answer) {
     return !answer.isCorrect &&
+        !run.isAgainstTheClock &&
         !turn.isRetry &&
         !run.hasRetry(turn.question.itemKey);
   }

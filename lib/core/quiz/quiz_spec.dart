@@ -22,6 +22,8 @@ final class QuizSpec {
     List<String> followUpItemKeys = const <String>[],
     this.followUpQuestionCount = 0,
     this.isBossFight = false,
+    this.totalTimeLimit,
+    this.keepsTimer = false,
   }) : followUpItemKeys = List<String>.unmodifiable(followUpItemKeys),
        itemKeys = List<String>.unmodifiable(itemKeys),
        questionTypeIds = List<String>.unmodifiable(questionTypeIds);
@@ -62,4 +64,13 @@ final class QuizSpec {
   /// Whether the quiz is a boss fight: every right answer hits the boss,
   /// and the fight ends when it falls or flees.
   final bool isBossFight;
+
+  /// Time to play the whole quiz, or `null` when it ends with its last
+  /// question. With it, the quiz is against the clock: it ends when the
+  /// time runs out, every answer counts and no question comes back.
+  final Duration? totalTimeLimit;
+
+  /// Whether the player chose to play with [baseTimeLimit]: the timer then
+  /// stays even when their setting turns it off.
+  final bool keepsTimer;
 }

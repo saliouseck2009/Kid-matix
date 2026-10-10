@@ -302,6 +302,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizModeFreeTraining => 'Entraînement libre';
 
   @override
+  String get quizModeTimeAttack => 'Contre-la-montre';
+
+  @override
+  String quizScoreSpoken(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bonnes réponses',
+      one: '1 bonne réponse',
+      zero: 'Aucune bonne réponse',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizClockLeftSpoken(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: 'Encore $seconds secondes',
+      one: 'Encore 1 seconde',
+      zero: 'Plus de temps',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsTitle => 'Partie terminée !';
 
   @override

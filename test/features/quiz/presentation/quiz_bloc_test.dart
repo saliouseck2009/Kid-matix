@@ -286,6 +286,25 @@ void main() {
       expect(actualState.remainingFraction, isNull);
       expect(actualState.elapsed, const Duration(seconds: 30));
     });
+    test('keeps the timer the player chose for this quiz', () async {
+      // Arrange
+      when(
+        () => mockSettings.readTimerMode(profileId: any(named: 'profileId')),
+      ).thenAnswer((_) async => const DataSuccess<TimerMode>(TimerMode.off));
+      final QuizRequest inputRequest = QuizRequest(
+        profileId: 'profile-1',
+        domainId: MultiplicationDomain.domainId,
+        mode: QuizMode.freeTraining,
+        itemKeys: tableKeys(5),
+        questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+        baseTimeLimit: QuizTimeLimits.freeTraining,
+        keepsTimer: true,
+      );
+      // Act
+      final QuizAsking actualState = await start(request: inputRequest);
+      // Assert
+      expect(actualState.run.timeLimit, QuizTimeLimits.freeTraining);
+    });
     test('builds the number typed on the keypad', () async {
       // Arrange
       await start();

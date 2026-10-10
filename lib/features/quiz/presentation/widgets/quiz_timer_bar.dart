@@ -9,6 +9,7 @@ class QuizTimerBar extends StatelessWidget {
   const QuizTimerBar({
     required this.remainingFraction,
     required this.isRunningOut,
+    this.semanticLabel,
     super.key,
   });
 
@@ -21,6 +22,9 @@ class QuizTimerBar extends StatelessWidget {
   /// Whether the timer is in its last seconds.
   final bool isRunningOut;
 
+  /// What a screen reader says of the bar; "Temps restant" by default.
+  final String? semanticLabel;
+
   @override
   Widget build(BuildContext context) {
     final BorderRadius radius = BorderRadius.circular(AppSizes.radiusPill);
@@ -28,7 +32,7 @@ class QuizTimerBar extends StatelessWidget {
         ? context.feedbackPalette.wrong
         : Theme.of(context).colorScheme.secondary;
     return Semantics(
-      label: context.l10n.quizTimeLeftLabel,
+      label: semanticLabel ?? context.l10n.quizTimeLeftLabel,
       excludeSemantics: true,
       child: Row(
         spacing: AppSizes.space8,
