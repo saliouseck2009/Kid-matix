@@ -130,12 +130,6 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get tabProfile;
 
-  /// Centered message on the placeholder page of a tab whose feature is not built yet, and on the temporary home tab above its quiz button until the learning path arrives ("Coming soon"). One line.
-  ///
-  /// In fr, this message translates to:
-  /// **'Bientôt disponible'**
-  String get comingSoonMessage;
-
   /// Button that runs a failed action again (load the players, save the profile). Infinitive verb, one line.
   ///
   /// In fr, this message translates to:
@@ -1305,6 +1299,102 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{name}, à débloquer. {hint}'**
   String mascotAccessoryLocked(String name, String hint);
+
+  /// Title of the free training screen, where the child picks tables, a question count and the timer ("Practise").
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'entraîner'**
+  String get trainingTitle;
+
+  /// Line under the title of the free training screen ("Pick one or more tables."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis une ou plusieurs tables.'**
+  String get trainingSubtitle;
+
+  /// Title above the choice of 10, 20 or 30 questions on the free training screen ("How many questions?").
+  ///
+  /// In fr, this message translates to:
+  /// **'Combien de questions ?'**
+  String get trainingQuestionCountTitle;
+
+  /// Title above the timer choice on the free training screen ("Timer").
+  ///
+  /// In fr, this message translates to:
+  /// **'Chrono'**
+  String get trainingTimerTitle;
+
+  /// Choice of a timer on each question of the free training ("With timer"). Half of a two-option switch: keep it short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avec chrono'**
+  String get trainingWithTimer;
+
+  /// Choice of no timer for the free training ("No timer"). Half of a two-option switch: keep it short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans chrono'**
+  String get trainingWithoutTimer;
+
+  /// Line above the disabled "Lancer" button of the free training while no table is chosen ("Pick at least one table").
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis au moins une table'**
+  String get trainingNoTable;
+
+  /// Button that starts the free training ("Start").
+  ///
+  /// In fr, this message translates to:
+  /// **'Lancer'**
+  String get trainingLaunch;
+
+  /// Title of the challenges screen ("Challenges").
+  ///
+  /// In fr, this message translates to:
+  /// **'Défis'**
+  String get challengesTitle;
+
+  /// Line under "Contre-la-montre" on its card of the challenges screen ("60 seconds, as many answers as you can").
+  ///
+  /// In fr, this message translates to:
+  /// **'60 secondes, un maximum de réponses'**
+  String get challengeTimeAttackSubtitle;
+
+  /// Title of the card on the results of a time attack that beat the player's best score ("New record!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau record !'**
+  String get resultsNewRecord;
+
+  /// Line of the new record card on the results when the player had no record yet ("Your first record"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton premier record'**
+  String get resultsFirstRecord;
+
+  /// Summary above the "Lancer" button of the free training: tables chosen, a middle dot, then the question count ("2 tables · 10 questions").
+  ///
+  /// In fr, this message translates to:
+  /// **'{tables, plural, =1{1 table} other{{tables} tables}} · {questions} questions'**
+  String trainingSummary(int tables, int questions);
+
+  /// Best score of the player, shown at the end of a challenge card ("Best 18"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Record {score}'**
+  String challengeRecord(int score);
+
+  /// Line of the new record card on the results, with the record just beaten ("Previous best: 15").
+  ///
+  /// In fr, this message translates to:
+  /// **'Ancien record : {previous}'**
+  String resultsRecordBeaten(int previous);
+
+  /// Score of the new record on its card of the results ("18 right answers").
+  ///
+  /// In fr, this message translates to:
+  /// **'{score, plural, =1{1 bonne réponse} other{{score} bonnes réponses}}'**
+  String resultsRecordScore(int score);
 }
 
 class _AppLocalizationsDelegate

@@ -10,6 +10,7 @@ import 'helpers/test_path_pages.dart';
 import 'helpers/test_quiz_pages.dart';
 import 'helpers/test_reward_pages.dart';
 import 'helpers/test_mascot_pages.dart';
+import 'helpers/test_challenge_pages.dart';
 
 /// Mascot of the test player.
 final MascotPages mascotPages = buildTestMascotPages();
@@ -23,6 +24,7 @@ GoRouter _createPlayingRouter() {
     pathPages: buildTestPathPages(),
     rewardPages: buildTestRewardPages(),
     mascotPages: mascotPages,
+    challengePages: buildTestChallengePages(),
   );
 }
 
@@ -81,7 +83,7 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.text(inputTab), findsNWidgets(2));
-      expect(find.text('Bientôt disponible'), findsOneWidget);
+      expect(find.text('Contre-la-montre'), findsOneWidget);
     });
   });
 }

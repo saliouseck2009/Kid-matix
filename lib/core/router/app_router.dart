@@ -1,29 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
 import 'package:kid_matix/core/router/play_routes.dart';
 import 'package:kid_matix/core/router/profile_session_redirect.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
-import 'package:kid_matix/core/widgets/coming_soon_page.dart';
+import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
-import 'package:kid_matix/l10n/app_localizations.dart';
-
-typedef _TitleResolver = String Function(AppLocalizations l10n);
 
 /// Builds the router of the app: the player selection, then a shell with
 /// one branch per tab; the learning path is the home.
 ///
 /// The router listens to [session]: while nobody is playing it shows "Qui
-/// joue ?" or the profile creation (see [redirectForProfileSession]). The
-/// tabs not delivered yet show a placeholder.
+/// joue ?" or the profile creation (see [redirectForProfileSession]).
 GoRouter createAppRouter({
   required ProfileSessionService session,
   required ProfilePages profilePages,
@@ -31,6 +26,7 @@ GoRouter createAppRouter({
   required LearningPathPages pathPages,
   required RewardPages rewardPages,
   required MascotPages mascotPages,
+  required ChallengePages challengePages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -68,6 +64,7 @@ GoRouter createAppRouter({
         pathPages: pathPages,
         quizPages: quizPages,
         rewardPages: rewardPages,
+        challengePages: challengePages,
       ),
       StatefulShellRoute.indexedStack(
         builder: (
@@ -110,13 +107,23 @@ GoRouter createAppRouter({
               ),
             ],
           ),
-          _createPlaceholderBranch(
+          _createChallengeBranch(
+            session: session,
             path: AppRoutes.training,
-            resolveTitle: (AppLocalizations l10n) => l10n.tabTraining,
+            build: (String profileId, ValueChanged<String> onPlay) =>
+                challengePages.buildTrainingPage(
+                  profileId: profileId,
+                  onLaunch: onPlay,
+                ),
           ),
-          _createPlaceholderBranch(
+          _createChallengeBranch(
+            session: session,
             path: AppRoutes.challenges,
-            resolveTitle: (AppLocalizations l10n) => l10n.tabChallenges,
+            build: (String profileId, ValueChanged<String> onPlay) =>
+                challengePages.buildChallengesPage(
+                  profileId: profileId,
+                  onPlay: onPlay,
+                ),
           ),
           _createProfileBranch(
             session: session,
@@ -179,16 +186,24 @@ StatefulShellBranch _createProfileBranch({
 /// Path of a sub-route, relative to its parent route.
 String _lastSegment(String path) => path.split('/').last;
 
-StatefulShellBranch _createPlaceholderBranch({
+/// A tab of the challenge feature at [path], whose page plays a quiz by
+/// its source key.
+StatefulShellBranch _createChallengeBranch({
+  required ProfileSessionService session,
   required String path,
-  required _TitleResolver resolveTitle,
+  required Widget Function(String profileId, ValueChanged<String> onPlay) build,
 }) {
   return StatefulShellBranch(
     routes: <RouteBase>[
       GoRoute(
         path: path,
         builder: (BuildContext context, GoRouterState state) {
-          return ComingSoonPage(title: resolveTitle(context.l10n));
+          final String? profileId = session.activeProfileId;
+          if (profileId == null) return const SizedBox.shrink();
+          return build(
+            profileId,
+            (String sourceKey) => context.go(AppRoutes.playOf(sourceKey)),
+          );
         },
       ),
     ],
