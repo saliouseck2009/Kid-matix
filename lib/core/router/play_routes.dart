@@ -7,6 +7,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
+import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 
 /// The full-screen routes without the tab bar: the detail of a table, its
 /// whole table, the quiz of a stage and its results.
@@ -14,6 +15,7 @@ List<RouteBase> createPlayRoutes({
   required ProfileSessionService session,
   required LearningPathPages pathPages,
   required QuizPages quizPages,
+  required RewardPages rewardPages,
 }) {
   return <RouteBase>[
     GoRoute(
@@ -79,13 +81,21 @@ List<RouteBase> createPlayRoutes({
     GoRoute(
       path: AppRoutes.quizResults,
       builder: (BuildContext context, GoRouterState state) {
+        final String sessionId =
+            state.pathParameters[AppRoutes.sessionIdParameter]!;
         return quizPages.buildResultsPage(
-          sessionId: state.pathParameters[AppRoutes.sessionIdParameter]!,
+          sessionId: sessionId,
           onContinue: (String? sourceKey) =>
               context.go(_originOf(pathPages, sourceKey)),
           onReplay: (String sourceKey) =>
               context.go(AppRoutes.playOf(sourceKey)),
           describeSource: pathPages.describeSource,
+          rewardsScope: (Widget child) => rewardPages.buildSessionRewardsScope(
+            sessionId: sessionId,
+            child: child,
+          ),
+          xpTile: rewardPages.buildSessionXpTile(),
+          rewardsCard: rewardPages.buildSessionLevelCard(),
         );
       },
     ),

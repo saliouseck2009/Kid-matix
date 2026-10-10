@@ -10,6 +10,7 @@ import '../../../helpers/fake_profile_session_service.dart';
 import '../../../helpers/test_path_pages.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/profile_fixtures.dart';
+import '../../../helpers/test_reward_pages.dart';
 
 MockWatchProfileChangesUseCase _buildQuietWatch() {
   final MockWatchProfileChangesUseCase mockWatch =
@@ -59,6 +60,7 @@ void main() {
           ),
           quizPages: buildTestQuizPages(),
           pathPages: buildTestPathPages(),
+          rewardPages: buildTestRewardPages(),
         ),
       ),
     );

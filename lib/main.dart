@@ -17,6 +17,8 @@ import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cas
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
+import 'package:kid_matix/features/reward/presentation/bloc/reward_use_cases.dart';
+import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Entry point: wires dependencies and error reporting, then starts the app.
@@ -65,6 +67,15 @@ GoRouter _createRouter(ProfileSessionService session) {
     pathPages: LearningPathPages(
       useCases: LearningPathUseCases(
         getLearningPath: sl(),
+        watchChanges: sl(),
+      ),
+      domains: sl(),
+    ),
+    rewardPages: RewardPages(
+      useCases: RewardUseCases(
+        getStreak: sl(),
+        getDailyGoal: sl(),
+        getSessionRewards: sl(),
         watchChanges: sl(),
       ),
       domains: sl(),

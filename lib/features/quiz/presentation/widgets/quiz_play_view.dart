@@ -7,6 +7,7 @@ import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_combo.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
@@ -62,6 +63,7 @@ class QuizPlayView extends StatelessWidget {
               answeredCount: data.run.answers.length,
               total: data.run.turnCount,
               onQuit: onQuit,
+              combo: data.run.combo,
             )
           else
             BossHeader(
@@ -286,10 +288,23 @@ class _Feedback extends StatelessWidget {
           ? context.l10n.quizFeedbackTimeUp
           : context.l10n.quizFeedbackWrong,
       detail: isRight
-          ? (isLightning ? context.l10n.quizLightning : '')
+          ? _rightDetail(context, feedback, isLightning)
           : labels.describeItem(data.question.itemKey, data.run.domainId),
       reminder: mirror == null ? null : context.l10n.quizMirrorReminder(mirror),
       onContinue: () => context.read<QuizBloc>().add(const NextRequested()),
     );
+  }
+
+  /// "Combo de 5 !" at a combo milestone, "Éclair !" for a fast answer.
+  String _rightDetail(
+    BuildContext context,
+    QuizShowingFeedback feedback,
+    bool isLightning,
+  ) {
+    final int combo = feedback.submission.run.combo;
+    if (QuizCombo.isMilestone(combo)) {
+      return context.l10n.quizComboMilestone(combo);
+    }
+    return isLightning ? context.l10n.quizLightning : '';
   }
 }

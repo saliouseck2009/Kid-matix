@@ -39,6 +39,9 @@ class ResultsPage extends StatelessWidget {
     required this.onContinue,
     required this.onReplay,
     this.describeSource,
+    this.rewardsScope,
+    this.xpTile,
+    this.rewardsCard,
     super.key,
   });
 
@@ -63,31 +66,46 @@ class ResultsPage extends StatelessWidget {
   /// stage, or `null` to name its mode.
   final SourceDescriber? describeSource;
 
+  /// Wraps the page to provide the rewards of the quiz, or `null`.
+  final Widget Function(Widget child)? rewardsScope;
+
+  /// First tile of the results: the XP earned, or `null`.
+  final Widget? xpTile;
+
+  /// Card under the tiles: the level and the new badges, or `null`.
+  final Widget? rewardsCard;
+
   @override
   Widget build(BuildContext context) {
+    final Widget Function(Widget child) scope =
+        rewardsScope ?? (Widget child) => child;
     return BlocProvider<ResultsCubit>(
       create: (_) =>
           ResultsCubit(sessionId: sessionId, getResult: getResult)..load(),
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocBuilder<ResultsCubit, ResultsState>(
-            builder: (BuildContext context, ResultsState state) {
-              return switch (state) {
-                ResultsLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                ResultsFailure(:final errorCode) => Center(
-                  child: Text(errorCode.toQuizMessage(context.l10n)),
-                ),
-                ResultsLoaded(:final result) => _ResultsView(
-                  result: result,
-                  labels: QuizLabels(domains: domains, l10n: context.l10n),
-                  onContinue: onContinue,
-                  onReplay: onReplay,
-                  describeSource: describeSource,
-                ),
-              };
-            },
+      child: scope(
+        Scaffold(
+          body: SafeArea(
+            child: BlocBuilder<ResultsCubit, ResultsState>(
+              builder: (BuildContext context, ResultsState state) {
+                return switch (state) {
+                  ResultsLoading() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  ResultsFailure(:final errorCode) => Center(
+                    child: Text(errorCode.toQuizMessage(context.l10n)),
+                  ),
+                  ResultsLoaded(:final result) => _ResultsView(
+                    result: result,
+                    labels: QuizLabels(domains: domains, l10n: context.l10n),
+                    onContinue: onContinue,
+                    onReplay: onReplay,
+                    describeSource: describeSource,
+                    xpTile: xpTile,
+                    rewardsCard: rewardsCard,
+                  ),
+                };
+              },
+            ),
           ),
         ),
       ),
@@ -102,6 +120,8 @@ class _ResultsView extends StatelessWidget {
     required this.onContinue,
     required this.onReplay,
     required this.describeSource,
+    required this.xpTile,
+    required this.rewardsCard,
   });
 
   static const double _mascotSize = 140;
@@ -112,9 +132,12 @@ class _ResultsView extends StatelessWidget {
   final ValueChanged<String?> onContinue;
   final ValueChanged<String> onReplay;
   final SourceDescriber? describeSource;
+  final Widget? xpTile;
+  final Widget? rewardsCard;
 
   @override
   Widget build(BuildContext context) {
+    final Widget? rewards = rewardsCard;
     final String domainId = result.session.domainId;
     final int? stars = result.stars;
     final String? sourceKey = result.session.sourceKey;
@@ -147,7 +170,8 @@ class _ResultsView extends StatelessWidget {
             Center(
               child: StarRow(count: stars, size: _starSize),
             ),
-          _ResultTiles(result: result),
+          _ResultTiles(result: result, xpTile: xpTile),
+          ?rewards,
           FactsToReviewCard(
             facts: <String>[
               for (final String key in result.missedItemKeys)
@@ -215,11 +239,12 @@ class _ResultsTitle extends StatelessWidget {
 }
 
 class _ResultTiles extends StatelessWidget {
-  const _ResultTiles({required this.result});
+  const _ResultTiles({required this.result, required this.xpTile});
 
   static const int _millisecondsPerSecond = 1000;
 
   final QuizResultEntity result;
+  final Widget? xpTile;
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +253,7 @@ class _ResultTiles extends StatelessWidget {
     return Row(
       spacing: AppSizes.space12,
       children: <Widget>[
+        if (xpTile case final Widget tile) Expanded(child: tile),
         Expanded(
           child: ResultTile(
             value: context.l10n.resultsCorrectCount(

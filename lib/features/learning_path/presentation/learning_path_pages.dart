@@ -12,6 +12,7 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/learning_path/presentation/pages/discovery_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/learning_path_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/table_detail_page.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -40,6 +41,7 @@ final class LearningPathPages {
     required String profileId,
     required ValueChanged<String> onOpenTable,
     required ValueChanged<StageSource> onPlay,
+    PathHeaderSlots? header,
   }) {
     return LearningPathPage(
       key: ValueKey<String>(profileId),
@@ -47,6 +49,7 @@ final class LearningPathPages {
       useCases: _useCases,
       onOpenTable: onOpenTable,
       onPlay: onPlay,
+      header: header,
     );
   }
 

@@ -45,6 +45,28 @@ class CrownMark extends StatelessWidget {
   }
 }
 
+/// A bare crown of [size], painted in [color]; decorative.
+class CrownGlyph extends StatelessWidget {
+  /// Creates the crown.
+  const CrownGlyph({required this.color, this.size = 18, super.key});
+
+  /// Color of the crown.
+  final Color color;
+
+  /// Width and height of the crown.
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExcludeSemantics(
+      child: CustomPaint(
+        size: Size.square(size),
+        painter: _CrownPainter(color: color),
+      ),
+    );
+  }
+}
+
 class _CrownPainter extends CustomPainter {
   _CrownPainter({required this.color});
 

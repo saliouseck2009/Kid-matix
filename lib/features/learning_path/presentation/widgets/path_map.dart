@@ -4,6 +4,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/learning_path_e
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/current_table_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_dots.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/review_node.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/table_node.dart';
@@ -18,6 +19,7 @@ class PathMap extends StatefulWidget {
     required this.labels,
     required this.onOpenTable,
     required this.onPlay,
+    this.header,
     super.key,
   });
 
@@ -32,6 +34,9 @@ class PathMap extends StatefulWidget {
 
   /// Starts a stage.
   final ValueChanged<StageSource> onPlay;
+
+  /// Widgets of other features at the top of the map, or `null`.
+  final PathHeaderSlots? header;
 
   @override
   State<PathMap> createState() => _PathMapState();
@@ -76,7 +81,20 @@ class _PathMapState extends State<PathMap> {
       padding: const EdgeInsets.all(AppSizes.space24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: rows,
+        children: <Widget>[
+          if (widget.header case final PathHeaderSlots slots) ...<Widget>[
+            PathHeader(
+              slots: slots,
+              crowns: widget.path.tables
+                  .where(
+                    (TablePathNode table) => table.crown != TableCrown.none,
+                  )
+                  .length,
+            ),
+            const SizedBox(height: AppSizes.space24),
+          ],
+          ...rows,
+        ],
       ),
     );
   }

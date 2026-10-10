@@ -5,10 +5,16 @@ import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_card_frame.dart';
 
-/// Card of one player on "Qui joue ?": avatar, nickname and level.
+/// Card of one player on "Qui joue ?": avatar, nickname, level and an
+/// optional footer, the streak pill.
 class ProfileCard extends StatelessWidget {
   /// Creates the card of [profile].
-  const ProfileCard({required this.profile, required this.onTap, super.key});
+  const ProfileCard({
+    required this.profile,
+    required this.onTap,
+    this.footer,
+    super.key,
+  });
 
   /// Size of the avatar drawing.
   static const double avatarSize = 72;
@@ -29,6 +35,9 @@ class ProfileCard extends StatelessWidget {
 
   /// Called when the player taps the card.
   final VoidCallback onTap;
+
+  /// Widget under the level, such as the streak pill, or `null`.
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +69,10 @@ class ProfileCard extends StatelessWidget {
                 color: context.palette.mutedText,
               ),
             ),
+            if (footer case final Widget below) ...<Widget>[
+              const SizedBox(height: gap),
+              below,
+            ],
           ],
         ),
       ),

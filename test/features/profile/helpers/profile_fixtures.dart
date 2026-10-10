@@ -12,6 +12,7 @@ import 'package:kid_matix/features/profile/domain/usecases/update_profile_use_ca
 import 'package:kid_matix/features/profile/domain/usecases/watch_profile_changes_use_case.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
+import 'package:kid_matix/core/error/data_state.dart';
 import 'package:mocktail/mocktail.dart';
 
 /// Test double of [ProfileRepository].
@@ -55,11 +56,27 @@ ProfileTabUseCases buildTabUseCases({
   DeleteProfileUseCase? deleteProfile,
 }) {
   return ProfileTabUseCases(
-    getProfile: getProfile ?? MockGetProfileUseCase(),
-    watchChanges: watchChanges ?? MockWatchProfileChangesUseCase(),
+    getProfile: getProfile ?? _quietGetProfile(),
+    watchChanges: watchChanges ?? _quietWatch(),
     clearActiveProfile: clearActiveProfile ?? MockClearActiveProfileUseCase(),
     deleteProfile: deleteProfile ?? MockDeleteProfileUseCase(),
   );
+}
+
+/// A [GetProfileUseCase] double that returns [buildProfile].
+GetProfileUseCase _quietGetProfile() {
+  final MockGetProfileUseCase mock = MockGetProfileUseCase();
+  when(
+    () => mock.call(params: any(named: 'params')),
+  ).thenAnswer((_) async => DataSuccess<ProfileEntity>(buildProfile()));
+  return mock;
+}
+
+/// A [WatchProfileChangesUseCase] double that never emits.
+WatchProfileChangesUseCase _quietWatch() {
+  final MockWatchProfileChangesUseCase mock = MockWatchProfileChangesUseCase();
+  when(mock.call).thenAnswer((_) => const Stream<void>.empty());
+  return mock;
 }
 
 /// Profile pages over doubles; pass the ones a test drives.

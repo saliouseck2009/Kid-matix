@@ -178,7 +178,7 @@ abstract class AppLocalizations {
   /// **'Choisis ton joueur pour commencer.'**
   String get whoIsPlayingSubtitle;
 
-  /// Player level under the nickname on a player card of the "Qui joue ?" screen ("Level 4"). Short, one line in half the screen width.
+  /// Player level under the nickname on a player card of the "Qui joue ?" screen, on the profile tab and on the player badge of the map header ("Level 4"). Short, one line in half the screen width.
   ///
   /// In fr, this message translates to:
   /// **'Niveau {level}'**
@@ -855,6 +855,192 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Le monstre s\'est enfui'**
   String get resultsBossFled;
+
+  /// Big number of the first results tile: the XP earned by the quiz, such as "+130". The unit is in the label under it (rewardXpEarnedLabel); keep only the sign and the number.
+  ///
+  /// In fr, this message translates to:
+  /// **'+{xp}'**
+  String rewardXpEarned(int xp);
+
+  /// Label under the XP earned on the first results tile ("XP earned"). XP means experience points. Short, one line in a third of the screen width.
+  ///
+  /// In fr, this message translates to:
+  /// **'XP gagnés'**
+  String get rewardXpEarnedLabel;
+
+  /// Level of the player, bold title of the level card on the results screen ("Level 4"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Niveau {level}'**
+  String rewardLevel(int level);
+
+  /// Right of the level on the level card of the results: the XP still missing for the next level ("70 more XP for level 5"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Encore {xp} XP pour le niveau {next}'**
+  String rewardXpToNextLevel(int xp, int next);
+
+  /// Screen-reader label of the bar towards the next level ("Progress towards level 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Progression vers le niveau {next}'**
+  String rewardLevelProgressSpoken(int next);
+
+  /// Title of the results card listing the badges the quiz unlocked ("New badge" or "New badges"). Only shown when at least one badge was unlocked. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{Nouveau badge} other{Nouveaux badges}}'**
+  String rewardNewBadgesTitle(int count);
+
+  /// Name of the badge for completing a first stage ("First step"). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Premier pas'**
+  String get rewardBadgeFirstStep;
+
+  /// Name of the badge for completing a stage at 100 % ("Flawless", noun). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans-faute'**
+  String get rewardBadgePerfect;
+
+  /// Name of the badge for 20 lightning answers in all ("Lightning", noun). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éclair'**
+  String get rewardBadgeLightning;
+
+  /// Name of the badge for a 7-day streak ("Steady", adjective describing the player). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régulier'**
+  String get rewardBadgeRegular;
+
+  /// Name of the badge for defeating the boss of a multiplication table ("Tamer of the table of 7"). Title of the badge celebration and of the badge list of the results; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dompteur de la table de {number}'**
+  String rewardBadgeTamerMultiplication(int number);
+
+  /// Name of the badge for mastering the 120 multiplication facts ("The 120"). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les 120'**
+  String get rewardBadgeAllFacts;
+
+  /// Line under the badge name in its celebration ("You completed your first stage."). Talks to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu as terminé ta première étape.'**
+  String get rewardBadgeFirstStepHint;
+
+  /// Line under the Sans-faute badge in its celebration ("A stage without a single mistake."). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une étape sans aucune erreur.'**
+  String get rewardBadgePerfectHint;
+
+  /// Line under the Éclair badge in its celebration ("20 lightning answers in all."). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'20 réponses éclair au total.'**
+  String get rewardBadgeLightningHint;
+
+  /// Line under the Régulier badge in its celebration ("7 days of play in a row."). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'7 jours de jeu d\'affilée.'**
+  String get rewardBadgeRegularHint;
+
+  /// Line under a tamer badge in its celebration ("You beat the boss of this table."). Talks to the child (informal tu). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu as battu le boss de cette table.'**
+  String get rewardBadgeTamerHint;
+
+  /// Line under the Les 120 badge in its celebration ("You master every multiplication."). Talks to the child (informal tu). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu maîtrises toutes les multiplications.'**
+  String get rewardBadgeAllFactsHint;
+
+  /// Big title of the full-screen celebration when the player reaches a new level ("Level 5!"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Niveau {level} !'**
+  String rewardLevelUpTitle(int level);
+
+  /// Line under the level-up title ("You move up a level, well done."). Talks to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu passes au niveau supérieur, bravo.'**
+  String get rewardLevelUpHint;
+
+  /// Small title above the badge name in its full-screen celebration ("New badge!"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau badge !'**
+  String get rewardBadgeUnlocked;
+
+  /// Hint at the bottom of a full-screen celebration: one tap closes it ("Tap the screen to go on"). Imperative, informal tu; also the accessibility label of the dismiss barrier. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche l\'écran pour continuer'**
+  String get rewardTapToContinue;
+
+  /// Streak pill, next to a flame icon, on the player cards of "Qui joue ?" and on the map header ("6 days"): days of play in a row. Never shown for 0 (rewardNoStreak is shown instead). Very short, a few characters.
+  ///
+  /// In fr, this message translates to:
+  /// **'{days, plural, =1{1 jour} other{{days} jours}}'**
+  String rewardStreakDays(int days);
+
+  /// Streak pill of a player without a current streak, on the player cards of "Qui joue ?" and on the map header ("No streak"). Very short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de série'**
+  String get rewardNoStreak;
+
+  /// Screen-reader label of the streak pill: days of play in a row ("6-day streak", "No streak" for 0).
+  ///
+  /// In fr, this message translates to:
+  /// **'{days, plural, =0{Pas de série} =1{Série de 1 jour} other{Série de {days} jours}}'**
+  String rewardStreakSpoken(int days);
+
+  /// Title of the daily goal card under the map header ("Daily goal"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif du jour'**
+  String get rewardDailyGoalTitle;
+
+  /// XP earned today out of the daily goal, right of the title of the daily goal card ("30 / 50 XP"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'{earned} / {goal} XP'**
+  String rewardDailyGoalValue(int earned, int goal);
+
+  /// Screen-reader label of the daily goal bar ("Daily goal: 30 out of 50 XP").
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif du jour : {earned} sur {goal} XP'**
+  String rewardDailyGoalSpoken(int earned, int goal);
+
+  /// Screen-reader label of the crown pill on the map header: the pill shows only a crown icon and the number ("3 crowns").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune couronne} =1{1 couronne} other{{count} couronnes}}'**
+  String pathCrownsSpoken(int count);
+
+  /// Screen-reader label of the combo pill in the quiz header, which shows only a flame icon and the number: right answers in a row ("Combo of 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Combo de {count}'**
+  String quizComboSpoken(int count);
+
+  /// Mention next to the title of the green message ("Bravo !") when the right answers in a row reach 3, 5 or 10 ("Combo of 5!"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Combo de {count} !'**
+  String quizComboMilestone(int count);
 }
 
 class _AppLocalizationsDelegate

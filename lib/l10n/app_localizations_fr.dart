@@ -564,4 +564,152 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get resultsBossFled => 'Le monstre s\'est enfui';
+
+  @override
+  String rewardXpEarned(int xp) {
+    return '+$xp';
+  }
+
+  @override
+  String get rewardXpEarnedLabel => 'XP gagnés';
+
+  @override
+  String rewardLevel(int level) {
+    return 'Niveau $level';
+  }
+
+  @override
+  String rewardXpToNextLevel(int xp, int next) {
+    return 'Encore $xp XP pour le niveau $next';
+  }
+
+  @override
+  String rewardLevelProgressSpoken(int next) {
+    return 'Progression vers le niveau $next';
+  }
+
+  @override
+  String rewardNewBadgesTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nouveaux badges',
+      one: 'Nouveau badge',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rewardBadgeFirstStep => 'Premier pas';
+
+  @override
+  String get rewardBadgePerfect => 'Sans-faute';
+
+  @override
+  String get rewardBadgeLightning => 'Éclair';
+
+  @override
+  String get rewardBadgeRegular => 'Régulier';
+
+  @override
+  String rewardBadgeTamerMultiplication(int number) {
+    return 'Dompteur de la table de $number';
+  }
+
+  @override
+  String get rewardBadgeAllFacts => 'Les 120';
+
+  @override
+  String get rewardBadgeFirstStepHint => 'Tu as terminé ta première étape.';
+
+  @override
+  String get rewardBadgePerfectHint => 'Une étape sans aucune erreur.';
+
+  @override
+  String get rewardBadgeLightningHint => '20 réponses éclair au total.';
+
+  @override
+  String get rewardBadgeRegularHint => '7 jours de jeu d\'affilée.';
+
+  @override
+  String get rewardBadgeTamerHint => 'Tu as battu le boss de cette table.';
+
+  @override
+  String get rewardBadgeAllFactsHint =>
+      'Tu maîtrises toutes les multiplications.';
+
+  @override
+  String rewardLevelUpTitle(int level) {
+    return 'Niveau $level !';
+  }
+
+  @override
+  String get rewardLevelUpHint => 'Tu passes au niveau supérieur, bravo.';
+
+  @override
+  String get rewardBadgeUnlocked => 'Nouveau badge !';
+
+  @override
+  String get rewardTapToContinue => 'Touche l\'écran pour continuer';
+
+  @override
+  String rewardStreakDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days jours',
+      one: '1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rewardNoStreak => 'Pas de série';
+
+  @override
+  String rewardStreakSpoken(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Série de $days jours',
+      one: 'Série de 1 jour',
+      zero: 'Pas de série',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rewardDailyGoalTitle => 'Objectif du jour';
+
+  @override
+  String rewardDailyGoalValue(int earned, int goal) {
+    return '$earned / $goal XP';
+  }
+
+  @override
+  String rewardDailyGoalSpoken(int earned, int goal) {
+    return 'Objectif du jour : $earned sur $goal XP';
+  }
+
+  @override
+  String pathCrownsSpoken(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count couronnes',
+      one: '1 couronne',
+      zero: 'Aucune couronne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizComboSpoken(int count) {
+    return 'Combo de $count';
+  }
+
+  @override
+  String quizComboMilestone(int count) {
+    return 'Combo de $count !';
+  }
 }

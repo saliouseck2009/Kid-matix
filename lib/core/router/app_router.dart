@@ -12,6 +12,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_source.da
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
+import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 typedef _TitleResolver = String Function(AppLocalizations l10n);
@@ -27,6 +28,7 @@ GoRouter createAppRouter({
   required ProfilePages profilePages,
   required QuizPages quizPages,
   required LearningPathPages pathPages,
+  required RewardPages rewardPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -45,7 +47,10 @@ GoRouter createAppRouter({
       GoRoute(
         path: AppRoutes.whoIsPlaying,
         builder: (BuildContext context, GoRouterState state) {
-          return profilePages.buildWhoIsPlayingPage();
+          return profilePages.buildWhoIsPlayingPage(
+            footerOf: (String profileId) =>
+                rewardPages.buildStreakPill(profileId: profileId),
+          );
         },
       ),
       GoRoute(
@@ -60,6 +65,7 @@ GoRouter createAppRouter({
         session: session,
         pathPages: pathPages,
         quizPages: quizPages,
+        rewardPages: rewardPages,
       ),
       StatefulShellRoute.indexedStack(
         builder: (
@@ -81,6 +87,17 @@ GoRouter createAppRouter({
                         context.go(AppRoutes.tableDetailOf(unitKey)),
                     onPlay: (StageSource source) =>
                         playStage(context, pathPages, source),
+                    header: (
+                      player: profilePages.buildPlayerBadge(
+                        profileId: profileId,
+                      ),
+                      streak: rewardPages.buildStreakPill(
+                        profileId: profileId,
+                      ),
+                      dailyGoal: rewardPages.buildDailyGoalCard(
+                        profileId: profileId,
+                      ),
+                    ),
                   );
                 },
               ),
