@@ -430,12 +430,12 @@ Deux modes hors parcours : l'enfant choisit ses tables pour s'entraîner, ou ten
 
 - [ ] **F9-06** Écran S'entraîner : choix des tables, du nombre de questions et du chrono, bouton « Lancer ». Maquette : `10-training.png`.
 - [ ] **F9-07** Écran Défis : carte Contre-la-montre et records personnels ; les autres défis s'y ajoutent en version 1.1. Maquette : `11-challenges.png`.
-- [ ] **F9-08** Chrono global de 60 secondes dans le `QuizBloc` et affichage du score en direct.
+- [x] **F9-08** Chrono global de 60 secondes dans le `QuizBloc` et affichage du score en direct.
 - [ ] **F9-09** « Nouveau record » sur l'écran Résultats.
 
 **Tests**
 
-- [ ] **F9-10** Tests du Contre-la-montre avec un ticker factice : fin à 60 secondes, pause, question remplacée.
+- [x] **F9-10** Tests du Contre-la-montre avec un ticker factice : fin à 60 secondes, pause, question remplacée.
 - [ ] **F9-11** Tests des records et du badge Sprinter.
 
 **Terminé quand :** un joueur lance un entraînement sur les tables de 2 et de 5, puis bat son propre record en Contre-la-montre.

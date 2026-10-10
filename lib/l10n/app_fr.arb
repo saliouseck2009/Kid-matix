@@ -388,6 +388,30 @@
   "@quizModeFreeTraining": {
     "description": "Name of the free training mode, shown under the results title (\"Free training\")."
   },
+  "quizModeTimeAttack": "Contre-la-montre",
+  "@quizModeTimeAttack": {
+    "description": "Name of the time attack challenge (as many right answers as possible in 60 seconds), shown under the results title and on the challenges screen (\"Against the clock\")."
+  },
+  "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
+  "@quizScoreSpoken": {
+    "description": "Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "quizClockLeftSpoken": "{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}",
+  "@quizClockLeftSpoken": {
+    "description": "Screen-reader text of the bar showing the time left to play a whole quiz against the clock (\"{seconds} seconds left\").",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
   "resultsTitle": "Partie terminée !",
   "@resultsTitle": {
     "description": "Big title of the results screen after a quiz (\"Game over!\" in a cheerful sense, \"All done!\"). One line."

@@ -23,6 +23,7 @@ final class QuizRun {
     required List<QuizTurn> queue,
     List<QuizAnswerEntity> answers = const <QuizAnswerEntity>[],
     this.timeLimit,
+    this.totalTimeLimit,
     this.sourceKey,
     this.boss,
   }) : questionTypeIds = List<String>.unmodifiable(questionTypeIds),
@@ -56,6 +57,10 @@ final class QuizRun {
   /// Time to answer each question, or `null` without a timer.
   final Duration? timeLimit;
 
+  /// Time to play the whole quiz, or `null` when it ends with its last
+  /// question.
+  final Duration? totalTimeLimit;
+
   /// What the quiz is played for, or `null`.
   final String? sourceKey;
 
@@ -77,9 +82,13 @@ final class QuizRun {
   /// Questions of the whole quiz so far, second chances included.
   int get turnCount => answers.length + queue.length;
 
-  /// Answers that count in the score: every answer of a boss fight,
-  /// second chances excluded otherwise.
-  List<QuizAnswerEntity> get scoredAnswers => boss != null
+  /// Whether the quiz is against the clock: it ends when
+  /// [totalTimeLimit] runs out, and a missed fact does not come back.
+  bool get isAgainstTheClock => totalTimeLimit != null;
+
+  /// Answers that count in the score: every answer of a boss fight or of
+  /// a quiz against the clock, second chances excluded otherwise.
+  List<QuizAnswerEntity> get scoredAnswers => boss != null || isAgainstTheClock
       ? answers
       : answers.where((QuizAnswerEntity answer) => !answer.isRetry).toList();
 
@@ -121,6 +130,13 @@ final class QuizRun {
         );
   }
 
+  /// Returns the quiz without its current question, unanswered: the next
+  /// one replaces it.
+  QuizRun withoutCurrentTurn() => copyWith(queue: queue.skip(1).toList());
+
+  /// Returns the quiz ended now: the questions left are dropped.
+  QuizRun stopped() => copyWith(queue: const <QuizTurn>[]);
+
   /// Returns a copy with [queue] and [answers] replaced.
   QuizRun copyWith({
     List<QuizTurn>? queue,
@@ -136,6 +152,7 @@ final class QuizRun {
       scoredQuestionCount: scoredQuestionCount,
       questionTypeIds: questionTypeIds,
       timeLimit: timeLimit,
+      totalTimeLimit: totalTimeLimit,
       sourceKey: sourceKey,
       boss: boss ?? this.boss,
       queue: queue ?? this.queue,
@@ -149,6 +166,7 @@ final class QuizRun {
         other is QuizRun &&
             other.sessionId == sessionId &&
             other.timeLimit == timeLimit &&
+            other.totalTimeLimit == totalTimeLimit &&
             other.boss == boss &&
             _isSameList(other.queue, queue) &&
             _isSameList(other.answers, answers);
@@ -158,6 +176,7 @@ final class QuizRun {
   int get hashCode => Object.hash(
     sessionId,
     timeLimit,
+    totalTimeLimit,
     boss,
     Object.hashAll(queue),
     Object.hashAll(answers),

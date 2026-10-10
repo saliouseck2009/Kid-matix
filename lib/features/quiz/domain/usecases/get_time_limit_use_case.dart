@@ -7,8 +7,9 @@ import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 
 /// Time to answer each question of a quiz for its player.
 ///
-/// Normal timer: the base time; relaxed: 1.5 times longer; off: no timer.
-/// Returns `null` without a timer. When the settings cannot be read, the
+/// Normal timer: the base time; relaxed: 1.5 times longer; off: no timer,
+/// unless the player chose the timer for this quiz. Returns `null`
+/// without a timer. When the settings cannot be read, the
 /// normal timer applies.
 class GetTimeLimitUseCase implements UseCase<Duration?, QuizRequest> {
   /// Creates the use case.
@@ -29,7 +30,8 @@ class GetTimeLimitUseCase implements UseCase<Duration?, QuizRequest> {
         base *
             QuizTimeLimits.relaxedNumerator ~/
             QuizTimeLimits.relaxedDenominator,
-      DataSuccess<TimerMode>(data: TimerMode.off) => null,
+      DataSuccess<TimerMode>(data: TimerMode.off) =>
+        params.keepsTimer ? base : null,
       DataFailed<TimerMode>() => base,
     };
   }

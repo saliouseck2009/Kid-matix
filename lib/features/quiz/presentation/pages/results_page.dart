@@ -209,6 +209,7 @@ class _ResultsView extends StatelessWidget {
     return switch (result.session.mode) {
       QuizMode.freeTraining => context.l10n.quizModeFreeTraining,
       QuizMode.path => context.l10n.quizModePath,
+      QuizMode.timeAttack => context.l10n.quizModeTimeAttack,
     };
   }
 }

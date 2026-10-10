@@ -27,6 +27,7 @@ final class QuizAsking extends QuizState {
     this.elapsed = Duration.zero,
     this.isPaused = false,
     this.typedDigits = '',
+    this.playedTime = Duration.zero,
   });
 
   /// Most digits the keypad accepts; every answer of version 1.0 fits.
@@ -43,6 +44,9 @@ final class QuizAsking extends QuizState {
 
   /// Digits typed on the keypad so far, for written answers.
   final String typedDigits;
+
+  /// Time played since the first question, pauses excluded.
+  final Duration playedTime;
 
   /// Question shown.
   QuizTurn get turn => run.currentTurn!;
@@ -85,12 +89,14 @@ final class QuizAsking extends QuizState {
     Duration? elapsed,
     bool? isPaused,
     String? typedDigits,
+    Duration? playedTime,
   }) {
     return QuizAsking(
       run: run,
       elapsed: elapsed ?? this.elapsed,
       isPaused: isPaused ?? this.isPaused,
       typedDigits: typedDigits ?? this.typedDigits,
+      playedTime: playedTime ?? this.playedTime,
     );
   }
 }
@@ -110,13 +116,35 @@ enum BossBlow {
 /// The answer was judged; the player reads the feedback.
 final class QuizShowingFeedback extends QuizState {
   /// Creates the state.
-  const QuizShowingFeedback({required this.submission, this.givenAnswer});
+  const QuizShowingFeedback({
+    required this.submission,
+    this.givenAnswer,
+    this.playedTime = Duration.zero,
+    this.shownFor = Duration.zero,
+  });
 
   /// Judged answer and the quiz after it.
   final QuizSubmission submission;
 
   /// Answer the player gave, or `null` when the time ran out.
   final Answer? givenAnswer;
+
+  /// Time played since the first question, pauses excluded.
+  final Duration playedTime;
+
+  /// Time the feedback has been shown, counted only against the clock,
+  /// where the next question comes by itself.
+  final Duration shownFor;
+
+  /// Returns a copy with the times replaced.
+  QuizShowingFeedback copyWith({Duration? playedTime, Duration? shownFor}) {
+    return QuizShowingFeedback(
+      submission: submission,
+      givenAnswer: givenAnswer,
+      playedTime: playedTime ?? this.playedTime,
+      shownFor: shownFor ?? this.shownFor,
+    );
+  }
 
   /// What the answer did to the boss, or `null` outside a boss fight.
   BossBlow? get bossBlow {

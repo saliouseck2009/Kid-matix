@@ -19,6 +19,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/answer_feedback.dar
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_keypad.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_arena.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_header.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/clock_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_feedback_panel.dart';
@@ -52,13 +53,21 @@ class QuizPlayView extends StatelessWidget {
   Widget build(BuildContext context) {
     final _PlayData data = _PlayData.of(state);
     final BossFight? boss = data.run.boss;
+    final Duration? totalTime = data.run.totalTimeLimit;
     return Padding(
       padding: const EdgeInsets.all(AppSizes.space24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 20,
         children: <Widget>[
-          if (boss == null)
+          if (totalTime != null)
+            ClockHeader(
+              timeLeft: totalTime - data.playedTime,
+              totalTime: totalTime,
+              score: data.run.correctCount,
+              onQuit: onQuit,
+            )
+          else if (boss == null)
             QuizHeader(
               current: data.rank,
               answeredCount: data.run.answers.length,
@@ -152,7 +161,7 @@ class QuizPlayView extends StatelessWidget {
 
   /// Help card of a fact just missed for the second time, or `null`.
   ItemHelp? _helpOf(_PlayData data) {
-    if (data.isRight != false) return null;
+    if (data.isRight != false || data.run.isAgainstTheClock) return null;
     final String itemKey = data.question.itemKey;
     if (!data.run.needsHelp(itemKey)) return null;
     return labels.helpOf(itemKey, data.run.domainId);
@@ -173,6 +182,7 @@ final class _PlayData {
     required this.run,
     required this.question,
     required this.rank,
+    required this.playedTime,
     this.typedDigits,
     this.feedback,
     this.timer,
@@ -184,6 +194,7 @@ final class _PlayData {
         run: submission.run,
         question: submission.turn.question,
         rank: submission.run.answers.length,
+        playedTime: state.playedTime,
         typedDigits: _typedOf(state.givenAnswer, submission.turn.question),
         feedback: state,
         timer: _frozenTimer(submission.run.timeLimit, submission),
@@ -192,6 +203,7 @@ final class _PlayData {
         run: (state as QuizAsking).run,
         question: state.turn.question,
         rank: state.answeredCount + 1,
+        playedTime: state.playedTime,
         typedDigits: state.typedDigits.isEmpty ? null : state.typedDigits,
         timer: switch (state.remainingFraction) {
           final double fraction => (fraction, state.isRunningOut),
@@ -204,6 +216,7 @@ final class _PlayData {
   final QuizRun run;
   final Question question;
   final int rank;
+  final Duration playedTime;
   final String? typedDigits;
   final QuizShowingFeedback? feedback;
 
@@ -317,7 +330,9 @@ class _Feedback extends StatelessWidget {
           ? _rightDetail(context, feedback, isLightning)
           : labels.describeItem(data.question.itemKey, data.run.domainId),
       reminder: mirror == null ? null : context.l10n.quizMirrorReminder(mirror),
-      onContinue: () => context.read<QuizBloc>().add(const NextRequested()),
+      onContinue: data.run.isAgainstTheClock
+          ? null
+          : () => context.read<QuizBloc>().add(const NextRequested()),
     );
   }
 

@@ -6,7 +6,8 @@ import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_hint_box.dart';
 
-/// Message after an answer: a title, a detail and "Continuer".
+/// Message after an answer: a title, a detail and "Continuer", left out
+/// when the next question comes by itself.
 ///
 /// Green after a right answer, with "Éclair !" when it was fast; red
 /// after a mistake, with the whole operation and, when it has one, the
@@ -17,7 +18,7 @@ class QuizFeedbackPanel extends StatelessWidget {
     required this.isRight,
     required this.title,
     required this.detail,
-    required this.onContinue,
+    this.onContinue,
     this.reminder,
     super.key,
   });
@@ -41,8 +42,8 @@ class QuizFeedbackPanel extends StatelessWidget {
   /// "Retiens aussi : 8 × 7 = 56" after a mistake, or `null`.
   final String? reminder;
 
-  /// Called by "Continuer".
-  final VoidCallback onContinue;
+  /// Called by "Continuer", or `null` to leave the button out.
+  final VoidCallback? onContinue;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +51,7 @@ class QuizFeedbackPanel extends StatelessWidget {
     final Color textColor = isRight ? palette.rightDepth : palette.wrongDepth;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final String? reminder = this.reminder;
+    final VoidCallback? onContinue = this.onContinue;
     return Container(
       constraints: const BoxConstraints(minHeight: QuizHintBox.height),
       padding: _padding,
@@ -93,13 +95,14 @@ class QuizFeedbackPanel extends StatelessWidget {
               ],
             ),
           ),
-          DepthButton(
-            label: context.l10n.quizContinue,
-            variant: isRight
-                ? DepthButtonVariant.success
-                : DepthButtonVariant.danger,
-            onPressed: onContinue,
-          ),
+          if (onContinue != null)
+            DepthButton(
+              label: context.l10n.quizContinue,
+              variant: isRight
+                  ? DepthButtonVariant.success
+                  : DepthButtonVariant.danger,
+              onPressed: onContinue,
+            ),
         ],
       ),
     );

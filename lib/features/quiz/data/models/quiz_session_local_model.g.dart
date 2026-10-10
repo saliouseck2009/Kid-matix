@@ -45,6 +45,7 @@ Map<String, dynamic> _$QuizSessionLocalModelToJson(
 const _$QuizModeEnumMap = {
   QuizMode.freeTraining: 'freeTraining',
   QuizMode.path: 'path',
+  QuizMode.timeAttack: 'timeAttack',
 };
 
 const _$QuizSessionStatusEnumMap = {

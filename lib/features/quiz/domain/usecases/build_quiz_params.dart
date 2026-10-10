@@ -19,6 +19,7 @@ final class BuildQuizParams {
     this.followUpItemKeys = const <String>[],
     this.followUpQuestionCount = 0,
     this.isBossFight = false,
+    this.totalTimeLimit,
   });
 
   /// Player of the quiz.
@@ -59,4 +60,8 @@ final class BuildQuizParams {
   /// Whether the quiz is a boss fight: every right answer hits the boss,
   /// and the fight ends when it falls or flees.
   final bool isBossFight;
+
+  /// Time to play the whole quiz, or `null` when it ends with its last
+  /// question.
+  final Duration? totalTimeLimit;
 }

@@ -165,6 +165,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       scoredQuestionCount: questions.length,
       questionTypeIds: params.questionTypeIds,
       timeLimit: params.timeLimit,
+      totalTimeLimit: params.totalTimeLimit,
       sourceKey: params.sourceKey,
       boss: params.isBossFight ? const BossFight() : null,
       queue: questions
