@@ -29,26 +29,25 @@ final class StageProgressSessionHook implements SessionSavedHook {
   static const String bossDefeated = 'defeated';
 
   @override
-  Future<List<String>> onSessionSaved({
-    required Transaction transaction,
-    required SavedQuizSession session,
-  }) async {
+  Future<SessionWrite> prepare({required SavedQuizSession session}) async {
     final StageSource? source = StageSource.tryParse(session.sourceKey);
-    if (source == null || !session.isCompleted) return const <String>[];
-    await _progress.keepBest(
-      executor: transaction,
-      result: StageProgressLocalModel(
-        profileId: session.profileId,
-        domainId: session.domainId,
-        unitKey: source.unitKey,
-        stage: source.stage,
-        bestStars: _starsOf(source, session),
-        bestScore: session.correctCount,
-        completedAt: session.endedAt.millisecondsSinceEpoch,
-        updatedAt: _clock.now().millisecondsSinceEpoch,
-      ),
+    if (source == null || !session.isCompleted) {
+      return (Transaction transaction) async => const <String>[];
+    }
+    final StageProgressLocalModel result = StageProgressLocalModel(
+      profileId: session.profileId,
+      domainId: session.domainId,
+      unitKey: source.unitKey,
+      stage: source.stage,
+      bestStars: _starsOf(source, session),
+      bestScore: session.correctCount,
+      completedAt: session.endedAt.millisecondsSinceEpoch,
+      updatedAt: _clock.now().millisecondsSinceEpoch,
     );
-    return const <String>[LearningPathTables.stageProgress];
+    return (Transaction transaction) async {
+      await _progress.keepBest(executor: transaction, result: result);
+      return const <String>[LearningPathTables.stageProgress];
+    };
   }
 
   int _starsOf(StageSource source, SavedQuizSession session) {

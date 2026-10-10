@@ -64,13 +64,14 @@ final class _RecordingHook implements SessionSavedHook {
   final List<SavedQuizSession> sessions = <SavedQuizSession>[];
 
   @override
-  Future<List<String>> onSessionSaved({
-    required Transaction transaction,
-    required SavedQuizSession session,
-  }) async {
-    if (isBroken) await transaction.execute('INSERT INTO nowhere VALUES (1)');
+  Future<SessionWrite> prepare({required SavedQuizSession session}) async {
     sessions.add(session);
-    return <String>['stage_progress'];
+    return (Transaction transaction) async {
+      if (isBroken) {
+        await transaction.execute('INSERT INTO nowhere VALUES (1)');
+      }
+      return <String>['stage_progress'];
+    };
   }
 }
 
@@ -196,6 +197,7 @@ void main() {
         expect(actualSession.id, 's1');
         expect(actualSession.isCompleted, isTrue);
         expect(actualSession.correctCount, 1);
+        expect(actualSession.lightningCount, 1);
         expect(actualSession.sourceKey, 'path:mul:5:training');
         expect(actualSession.bossOutcome, 'defeated');
         expect(

@@ -84,10 +84,8 @@ void main() {
 
   Future<List<String>> save(SavedQuizSession session) async {
     final Database database = await appDatabase.database;
-    return database.transaction(
-      (Transaction transaction) =>
-          hook.onSessionSaved(transaction: transaction, session: session),
-    );
+    final SessionWrite write = await hook.prepare(session: session);
+    return database.transaction(write);
   }
 
   Future<List<StageProgressEntity>> readProgress() async {
