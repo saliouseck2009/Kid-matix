@@ -428,10 +428,10 @@ Deux modes hors parcours : l'enfant choisit ses tables pour s'entraîner, ou ten
 
 **Présentation**
 
-- [ ] **F9-06** Écran S'entraîner : choix des tables, du nombre de questions et du chrono, bouton « Lancer ». Maquette : `10-training.png`.
-- [ ] **F9-07** Écran Défis : carte Contre-la-montre et records personnels ; les autres défis s'y ajoutent en version 1.1. Maquette : `11-challenges.png`.
+- [x] **F9-06** Écran S'entraîner : choix des tables, du nombre de questions et du chrono, bouton « Lancer ». Maquette : `10-training.png`.
+- [x] **F9-07** Écran Défis : carte Contre-la-montre et records personnels ; les autres défis s'y ajoutent en version 1.1. Maquette : `11-challenges.png`.
 - [x] **F9-08** Chrono global de 60 secondes dans le `QuizBloc` et affichage du score en direct.
-- [ ] **F9-09** « Nouveau record » sur l'écran Résultats.
+- [x] **F9-09** « Nouveau record » sur l'écran Résultats.
 
 **Tests**
 

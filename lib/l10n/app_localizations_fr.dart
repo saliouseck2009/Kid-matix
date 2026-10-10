@@ -28,9 +28,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tabProfile => 'Profil';
 
   @override
-  String get comingSoonMessage => 'Bientôt disponible';
-
-  @override
   String get commonRetry => 'Réessayer';
 
   @override
@@ -309,8 +306,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count bonnes réponses',
-      one: '1 bonne réponse',
+      other: '$count bonnes réponses',
+      one: '1 bonne réponse',
       zero: 'Aucune bonne réponse',
     );
     return '$_temp0';
@@ -321,8 +318,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       seconds,
       locale: localeName,
-      other: 'Encore $seconds secondes',
-      one: 'Encore 1 seconde',
+      other: 'Encore $seconds secondes',
+      one: 'Encore 1 seconde',
       zero: 'Plus de temps',
     );
     return '$_temp0';
@@ -886,5 +883,74 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String mascotAccessoryLocked(String name, String hint) {
     return '$name, à débloquer. $hint';
+  }
+
+  @override
+  String get trainingTitle => 'S\'entraîner';
+
+  @override
+  String get trainingSubtitle => 'Choisis une ou plusieurs tables.';
+
+  @override
+  String get trainingQuestionCountTitle => 'Combien de questions ?';
+
+  @override
+  String get trainingTimerTitle => 'Chrono';
+
+  @override
+  String get trainingWithTimer => 'Avec chrono';
+
+  @override
+  String get trainingWithoutTimer => 'Sans chrono';
+
+  @override
+  String get trainingNoTable => 'Choisis au moins une table';
+
+  @override
+  String get trainingLaunch => 'Lancer';
+
+  @override
+  String get challengesTitle => 'Défis';
+
+  @override
+  String get challengeTimeAttackSubtitle =>
+      '60 secondes, un maximum de réponses';
+
+  @override
+  String get resultsNewRecord => 'Nouveau record !';
+
+  @override
+  String get resultsFirstRecord => 'Ton premier record';
+
+  @override
+  String trainingSummary(int tables, int questions) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tables,
+      locale: localeName,
+      other: '$tables tables',
+      one: '1 table',
+    );
+    return '$_temp0 · $questions questions';
+  }
+
+  @override
+  String challengeRecord(int score) {
+    return 'Record $score';
+  }
+
+  @override
+  String resultsRecordBeaten(int previous) {
+    return 'Ancien record : $previous';
+  }
+
+  @override
+  String resultsRecordScore(int score) {
+    String _temp0 = intl.Intl.pluralLogic(
+      score,
+      locale: localeName,
+      other: '$score bonnes réponses',
+      one: '1 bonne réponse',
+    );
+    return '$_temp0';
   }
 }

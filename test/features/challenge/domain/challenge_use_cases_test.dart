@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
-import 'package:kid_matix/core/error/data_state.dart';
-import 'package:kid_matix/core/services/open_units_service.dart';
 import 'package:kid_matix/features/challenge/data/datasources/training_choice_local_data_source_impl.dart';
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
@@ -11,26 +9,9 @@ import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
+import '../helpers/challenge_fakes.dart';
 import '../../../helpers/in_memory_local_storage.dart';
 import '../../../helpers/test_quiz_pages.dart';
-
-/// [OpenUnitsService] that returns fixed units, or fails.
-final class _FixedOpenUnits implements OpenUnitsService {
-  const _FixedOpenUnits(this.unitKeys);
-
-  final List<String>? unitKeys;
-
-  @override
-  Future<DataState<List<String>>> readOpenUnitKeys({
-    required String profileId,
-  }) async {
-    final List<String>? keys = unitKeys;
-    if (keys == null) {
-      return const DataFailed<List<String>>(CacheException(message: 'down'));
-    }
-    return DataSuccess<List<String>>(keys);
-  }
-}
 
 void main() {
   late InMemoryLocalStorage storage;
@@ -49,7 +30,7 @@ void main() {
   }) {
     return GetTrainingChoiceUseCase(
       repository: repository,
-      openUnits: _FixedOpenUnits(openUnits),
+      openUnits: FixedOpenUnits(openUnits),
       settings: FixedPlayerSettings(timerMode),
     );
   }
@@ -126,7 +107,7 @@ void main() {
     test('plays on every table open to the player', () async {
       // Act
       final TimeAttackSource actualSource = (await const GetTimeAttackUseCase(
-        openUnits: _FixedOpenUnits(<String>['mul:1', 'mul:2']),
+        openUnits: FixedOpenUnits(<String>['mul:1', 'mul:2']),
       )(params: 'p1')).requireData;
       // Assert
       expect(actualSource.unitKeys, <String>['mul:1', 'mul:2']);
@@ -134,7 +115,7 @@ void main() {
     test('fails when the open tables cannot be read', () async {
       // Act
       final AppException? actualException = (await const GetTimeAttackUseCase(
-        openUnits: _FixedOpenUnits(null),
+        openUnits: FixedOpenUnits(null),
       )(params: 'p1')).exceptionOrNull;
       // Assert
       expect(actualException, isA<CacheException>());

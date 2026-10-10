@@ -24,10 +24,6 @@
   "@tabProfile": {
     "description": "Label of the profile tab in the bottom tab bar, also the title of its placeholder page. Noun (\"Profile\"), one short word."
   },
-  "comingSoonMessage": "Bientôt disponible",
-  "@comingSoonMessage": {
-    "description": "Centered message on the placeholder page of a tab whose feature is not built yet, and on the temporary home tab above its quiz button until the learning path arrives (\"Coming soon\"). One line."
-  },
   "commonRetry": "Réessayer",
   "@commonRetry": {
     "description": "Button that runs a failed action again (load the players, save the profile). Infinitive verb, one line."
@@ -392,7 +388,7 @@
   "@quizModeTimeAttack": {
     "description": "Name of the time attack challenge (as many right answers as possible in 60 seconds), shown under the results title and on the challenges screen (\"Against the clock\")."
   },
-  "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
+  "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
   "@quizScoreSpoken": {
     "description": "Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.",
     "placeholders": {
@@ -402,7 +398,7 @@
       }
     }
   },
-  "quizClockLeftSpoken": "{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}",
+  "quizClockLeftSpoken": "{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}",
   "@quizClockLeftSpoken": {
     "description": "Screen-reader text of the bar showing the time left to play a whole quiz against the clock (\"{seconds} seconds left\").",
     "placeholders": {
@@ -1257,6 +1253,98 @@
       "hint": {
         "type": "String",
         "example": "À la 3e couronne"
+      }
+    }
+  },
+  "trainingTitle": "S'entraîner",
+  "@trainingTitle": {
+    "description": "Title of the free training screen, where the child picks tables, a question count and the timer (\"Practise\")."
+  },
+  "trainingSubtitle": "Choisis une ou plusieurs tables.",
+  "@trainingSubtitle": {
+    "description": "Line under the title of the free training screen (\"Pick one or more tables.\"). Talks to the child (informal tu)."
+  },
+  "trainingQuestionCountTitle": "Combien de questions ?",
+  "@trainingQuestionCountTitle": {
+    "description": "Title above the choice of 10, 20 or 30 questions on the free training screen (\"How many questions?\")."
+  },
+  "trainingTimerTitle": "Chrono",
+  "@trainingTimerTitle": {
+    "description": "Title above the timer choice on the free training screen (\"Timer\")."
+  },
+  "trainingWithTimer": "Avec chrono",
+  "@trainingWithTimer": {
+    "description": "Choice of a timer on each question of the free training (\"With timer\"). Half of a two-option switch: keep it short."
+  },
+  "trainingWithoutTimer": "Sans chrono",
+  "@trainingWithoutTimer": {
+    "description": "Choice of no timer for the free training (\"No timer\"). Half of a two-option switch: keep it short."
+  },
+  "trainingNoTable": "Choisis au moins une table",
+  "@trainingNoTable": {
+    "description": "Line above the disabled \"Lancer\" button of the free training while no table is chosen (\"Pick at least one table\")."
+  },
+  "trainingLaunch": "Lancer",
+  "@trainingLaunch": {
+    "description": "Button that starts the free training (\"Start\")."
+  },
+  "challengesTitle": "Défis",
+  "@challengesTitle": {
+    "description": "Title of the challenges screen (\"Challenges\")."
+  },
+  "challengeTimeAttackSubtitle": "60 secondes, un maximum de réponses",
+  "@challengeTimeAttackSubtitle": {
+    "description": "Line under \"Contre-la-montre\" on its card of the challenges screen (\"60 seconds, as many answers as you can\")."
+  },
+  "resultsNewRecord": "Nouveau record !",
+  "@resultsNewRecord": {
+    "description": "Title of the card on the results of a time attack that beat the player's best score (\"New record!\")."
+  },
+  "resultsFirstRecord": "Ton premier record",
+  "@resultsFirstRecord": {
+    "description": "Line of the new record card on the results when the player had no record yet (\"Your first record\"). Talks to the child (informal tu)."
+  },
+  "trainingSummary": "{tables, plural, =1{1 table} other{{tables} tables}} · {questions} questions",
+  "@trainingSummary": {
+    "description": "Summary above the \"Lancer\" button of the free training: tables chosen, a middle dot, then the question count (\"2 tables · 10 questions\").",
+    "placeholders": {
+      "tables": {
+        "type": "int",
+        "example": "2"
+      },
+      "questions": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "challengeRecord": "Record {score}",
+  "@challengeRecord": {
+    "description": "Best score of the player, shown at the end of a challenge card (\"Best 18\"). Short.",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "18"
+      }
+    }
+  },
+  "resultsRecordBeaten": "Ancien record : {previous}",
+  "@resultsRecordBeaten": {
+    "description": "Line of the new record card on the results, with the record just beaten (\"Previous best: 15\").",
+    "placeholders": {
+      "previous": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "resultsRecordScore": "{score, plural, =1{1 bonne réponse} other{{score} bonnes réponses}}",
+  "@resultsRecordScore": {
+    "description": "Score of the new record on its card of the results (\"18 right answers\").",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "18"
       }
     }
   }

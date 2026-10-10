@@ -25,8 +25,8 @@ void main() {
       );
       // Assert
       expect(find.text('12'), findsOneWidget);
-      expect(find.bySemanticsLabel('12 bonnes réponses'), findsOneWidget);
-      expect(find.bySemanticsLabel('Encore 42 secondes'), findsOneWidget);
+      expect(find.bySemanticsLabel('12\u00a0bonnes réponses'), findsOneWidget);
+      expect(find.bySemanticsLabel('Encore 42\u00a0secondes'), findsOneWidget);
       handle.dispose();
     });
   });

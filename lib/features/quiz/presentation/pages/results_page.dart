@@ -43,6 +43,7 @@ class ResultsPage extends StatelessWidget {
     this.rewardsScope,
     this.xpTile,
     this.rewardsCard,
+    this.recordCard,
     super.key,
   });
 
@@ -76,6 +77,9 @@ class ResultsPage extends StatelessWidget {
   /// Card under the tiles: the level and the new badges, or `null`.
   final Widget? rewardsCard;
 
+  /// Card above the tiles: a new record, or `null`.
+  final Widget? recordCard;
+
   @override
   Widget build(BuildContext context) {
     final Widget Function(Widget child) scope =
@@ -103,6 +107,7 @@ class ResultsPage extends StatelessWidget {
                     describeSource: describeSource,
                     xpTile: xpTile,
                     rewardsCard: rewardsCard,
+                    recordCard: recordCard,
                   ),
                 };
               },
@@ -123,6 +128,7 @@ class _ResultsView extends StatelessWidget {
     required this.describeSource,
     required this.xpTile,
     required this.rewardsCard,
+    required this.recordCard,
   });
 
   static const double _mascotSize = 140;
@@ -135,10 +141,12 @@ class _ResultsView extends StatelessWidget {
   final SourceDescriber? describeSource;
   final Widget? xpTile;
   final Widget? rewardsCard;
+  final Widget? recordCard;
 
   @override
   Widget build(BuildContext context) {
     final Widget? rewards = rewardsCard;
+    final Widget? record = recordCard;
     final String domainId = result.session.domainId;
     final int? stars = result.stars;
     final String? sourceKey = result.session.sourceKey;
@@ -176,6 +184,7 @@ class _ResultsView extends StatelessWidget {
             Center(
               child: StarRow(count: stars, size: _starSize),
             ),
+          ?record,
           _ResultTiles(result: result, xpTile: xpTile),
           ?rewards,
           FactsToReviewCard(
