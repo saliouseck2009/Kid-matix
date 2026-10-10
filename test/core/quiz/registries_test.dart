@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/answer_nature.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
@@ -34,6 +35,14 @@ final class _FakeDomain implements LearningDomain {
 
   @override
   int drawWeightOf(LearningItem item) => 1;
+
+  @override
+  LearningItem? mirrorOf(LearningItem item) => null;
+
+  @override
+  ItemHelp helpOf(LearningItem item) {
+    return ItemHelp(unitFacts: const <List<PromptToken>>[], itemIndex: 0);
+  }
 
   @override
   List<PromptToken> describeItem(LearningItem item) => const <PromptToken>[];

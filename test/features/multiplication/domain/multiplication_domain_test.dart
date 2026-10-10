@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
@@ -154,6 +155,43 @@ void main() {
         () => domain.drawWeightOf(const _ForeignItem()),
         throwsArgumentError,
       );
+    });
+  });
+
+  group('help after a mistake', () {
+    test('recalls the fact the other way round', () {
+      // Act
+      final LearningItem? actualMirror = domain.mirrorOf(_sevenTimesEight);
+      // Assert
+      expect(actualMirror?.key, 'mul:8x7');
+    });
+    test('has no mirror for a square or past x 10', () {
+      // Act
+      final LearningItem? actualSquare = domain.mirrorOf(
+        const MultiplicationFact(table: 7, multiplier: 7),
+      );
+      final LearningItem? actualPastTen = domain.mirrorOf(
+        const MultiplicationFact(table: 12, multiplier: 3),
+      );
+      // Assert
+      expect(actualSquare, isNull);
+      expect(actualPastTen, isNull);
+    });
+    test('gives the whole table and a grid of 7 rows of 8 dots', () {
+      // Act
+      final ItemHelp actualHelp = domain.helpOf(_sevenTimesEight);
+      // Assert
+      expect(actualHelp.unitFacts, hasLength(10));
+      expect(actualHelp.unitFacts.first, <PromptToken>[
+        const NumberToken(7),
+        const OperatorToken(MathOperator.multiply),
+        const NumberToken(1),
+        const EqualsToken(),
+        const NumberToken(7),
+      ]);
+      expect(actualHelp.itemIndex, 7);
+      expect(actualHelp.unitFacts[7].last, const NumberToken(56));
+      expect(actualHelp.dotGrid, const DotGrid(rows: 7, columns: 8));
     });
   });
 

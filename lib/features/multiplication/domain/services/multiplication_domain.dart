@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
@@ -110,6 +111,25 @@ final class MultiplicationDomain implements LearningDomain {
         easyMultipliers.contains(fact.multiplier) &&
         !easyMultipliers.contains(fact.table);
     return isEasy ? easyDrawWeight : standardDrawWeight;
+  }
+
+  @override
+  MultiplicationFact? mirrorOf(LearningItem item) {
+    final MultiplicationFact fact = _requireFact(item);
+    if (fact.table == fact.multiplier) return null;
+    return findItem(
+      MultiplicationFact(table: fact.multiplier, multiplier: fact.table).key,
+    );
+  }
+
+  @override
+  ItemHelp helpOf(LearningItem item) {
+    final MultiplicationFact fact = _requireFact(item);
+    return ItemHelp(
+      unitFacts: tables[fact.table - 1].facts.map(describeItem).toList(),
+      itemIndex: fact.multiplier - 1,
+      dotGrid: DotGrid(rows: fact.table, columns: fact.multiplier),
+    );
   }
 
   @override

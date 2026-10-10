@@ -273,8 +273,8 @@ L'app suit chaque fait pour chaque joueur et fait revenir les faits fragiles au 
 
 **Présentation**
 
-- [ ] **F4-11** Fiche d'aide après deux erreurs sur le même fait dans une session : la table et une grille de points.
-- [ ] **F4-12** Rappel du fait inversé après une erreur (8 × 7 pour 7 × 8).
+- [x] **F4-11** Fiche d'aide après deux erreurs sur le même fait dans une session : la table et une grille de points.
+- [x] **F4-12** Rappel du fait inversé après une erreur (8 × 7 pour 7 × 8).
 
 **Tests**
 

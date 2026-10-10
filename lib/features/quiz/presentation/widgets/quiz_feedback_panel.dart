@@ -9,7 +9,8 @@ import 'package:kid_matix/features/quiz/presentation/widgets/quiz_hint_box.dart'
 /// Message after an answer: a title, a detail and "Continuer".
 ///
 /// Green after a right answer, with "Éclair !" when it was fast; red
-/// after a mistake, with the whole operation.
+/// after a mistake, with the whole operation and, when it has one, the
+/// same operation the other way round.
 class QuizFeedbackPanel extends StatelessWidget {
   /// Creates the panel.
   const QuizFeedbackPanel({
@@ -17,6 +18,7 @@ class QuizFeedbackPanel extends StatelessWidget {
     required this.title,
     required this.detail,
     required this.onContinue,
+    this.reminder,
     super.key,
   });
 
@@ -36,6 +38,9 @@ class QuizFeedbackPanel extends StatelessWidget {
   /// "Éclair !" or the whole operation; may be empty.
   final String detail;
 
+  /// "Retiens aussi : 8 × 7 = 56" after a mistake, or `null`.
+  final String? reminder;
+
   /// Called by "Continuer".
   final VoidCallback onContinue;
 
@@ -44,6 +49,7 @@ class QuizFeedbackPanel extends StatelessWidget {
     final AppFeedbackPalette palette = context.feedbackPalette;
     final Color textColor = isRight ? palette.rightDepth : palette.wrongDepth;
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final String? reminder = this.reminder;
     return Container(
       constraints: const BoxConstraints(minHeight: QuizHintBox.height),
       padding: _padding,
@@ -59,18 +65,31 @@ class QuizFeedbackPanel extends StatelessWidget {
           Semantics(
             liveRegion: true,
             container: true,
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: AppSizes.space4,
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    title,
-                    style: textTheme.headlineSmall?.copyWith(color: textColor),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: textTheme.headlineSmall?.copyWith(
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      detail,
+                      style: textTheme.titleLarge?.copyWith(color: textColor),
+                    ),
+                  ],
+                ),
+                if (reminder != null)
+                  Text(
+                    reminder,
+                    style: textTheme.bodyLarge?.copyWith(color: textColor),
                   ),
-                ),
-                Text(
-                  detail,
-                  style: textTheme.titleLarge?.copyWith(color: textColor),
-                ),
               ],
             ),
           ),

@@ -454,6 +454,24 @@ abstract class AppLocalizations {
   /// **'Éclair !'**
   String get quizLightning;
 
+  /// Line under the red message after a wrong answer, recalling that the same operation the other way round gives the same result ("Remember too: 8 × 7 = 56"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retiens aussi : {fact}'**
+  String quizMirrorReminder(String fact);
+
+  /// Title of the help card shown in place of the question after two mistakes on the same fact: "Help card" followed by the name of the unit it shows, such as "Fiche d'aide · Table de 7". One short line; keep the middle dot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche d\'aide · {unit}'**
+  String quizHelpTitle(String unit);
+
+  /// Caption under the grid of dots that pictures a multiplication, also read by screen readers ("7 rows of 8 dots" for 7 × 8).
+  ///
+  /// In fr, this message translates to:
+  /// **'{rows, plural, =1{1 rangée} other{{rows} rangées}} de {columns, plural, =1{1 point} other{{columns} points}}'**
+  String quizHelpDotGridLabel(int rows, int columns);
+
   /// Button under the answer feedback that shows the next question ("Continue"). Infinitive verb.
   ///
   /// In fr, this message translates to:

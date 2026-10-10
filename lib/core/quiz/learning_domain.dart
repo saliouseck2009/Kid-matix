@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
@@ -31,6 +32,14 @@ abstract interface class LearningDomain {
   /// weight 2 comes out twice as often as an item of weight 1. Items too
   /// easy outside their own unit get a lower weight.
   int drawWeightOf(LearningItem item);
+
+  /// The item with the same answer the other way round, such as 8 x 7 for
+  /// 7 x 8, recalled after a mistake; `null` when the item reads the same
+  /// both ways or the domain lacks its mirror.
+  LearningItem? mirrorOf(LearningItem item);
+
+  /// The help card of [item], shown after two mistakes on it in a quiz.
+  ItemHelp helpOf(LearningItem item);
 
   /// The whole fact of [item] with its answer, such as `5 × 8 = 40`, shown
   /// in the results among the facts to review.
