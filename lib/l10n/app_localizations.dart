@@ -535,13 +535,13 @@ abstract class AppLocalizations {
   /// Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}'**
+  /// **'{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}'**
   String quizScoreSpoken(int count);
 
   /// Screen-reader text of the bar showing the time left to play a whole quiz against the clock ("{seconds} seconds left").
   ///
   /// In fr, this message translates to:
-  /// **'{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}'**
+  /// **'{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}'**
   String quizClockLeftSpoken(int seconds);
 
   /// Big title of the results screen after a quiz ("Game over!" in a cheerful sense, "All done!"). One line.

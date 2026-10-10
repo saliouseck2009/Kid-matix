@@ -388,7 +388,7 @@
   "@quizModeTimeAttack": {
     "description": "Name of the time attack challenge (as many right answers as possible in 60 seconds), shown under the results title and on the challenges screen (\"Against the clock\")."
   },
-  "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
+  "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
   "@quizScoreSpoken": {
     "description": "Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.",
     "placeholders": {
@@ -398,7 +398,7 @@
       }
     }
   },
-  "quizClockLeftSpoken": "{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}",
+  "quizClockLeftSpoken": "{seconds, plural, =0{Plus de temps} =1{Encore 1 seconde} other{Encore {seconds} secondes}}",
   "@quizClockLeftSpoken": {
     "description": "Screen-reader text of the bar showing the time left to play a whole quiz against the clock (\"{seconds} seconds left\").",
     "placeholders": {
