@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_cubit.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_state.dart';
@@ -11,10 +12,13 @@ import 'package:kid_matix/features/mascot/presentation/widgets/mascot_growth_cel
 /// map shows it.
 class MapMascot extends StatefulWidget {
   /// Creates the mascot with its [bubble].
-  const MapMascot({required this.bubble, super.key});
+  const MapMascot({required this.bubble, required this.feedback, super.key});
 
   /// What the mascot says, such as the daily goal reminder.
   final Widget bubble;
+
+  /// Sound and vibration of the growth celebration.
+  final GameFeedbackService feedback;
 
   @override
   State<MapMascot> createState() => _MapMascotState();
@@ -39,7 +43,9 @@ class _MapMascotState extends State<MapMascot> {
     }
     _isCelebrating = true;
     await context.read<MascotCubit>().markCelebrated(state.mascot.stage);
-    if (mounted) await showMascotGrowth(context, state.mascot);
+    if (mounted) {
+      await showMascotGrowth(context, state.mascot, feedback: widget.feedback);
+    }
     _isCelebrating = false;
   }
 

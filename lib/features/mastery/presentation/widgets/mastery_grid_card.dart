@@ -85,6 +85,7 @@ class _Grid extends StatelessWidget {
               for (int column = 1; column <= columns; column++)
                 Expanded(
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text('×$column', style: labelStyle),
                   ),
                 ),
@@ -130,14 +131,14 @@ class _Cell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LearningItem? item = domain.findItem(cell.itemKey);
-    final String fact = item == null
-        ? ''
-        : domain.describeItem(item).toSpokenText(context.l10n);
+    final String status = cell.status.nameIn(context.l10n);
     return Semantics(
-      label: context.l10n.masteryCellSpoken(
-        fact,
-        cell.status.nameIn(context.l10n),
-      ),
+      label: item == null
+          ? status
+          : context.l10n.masteryCellSpoken(
+              domain.describeItem(item).toSpokenText(context.l10n),
+              status,
+            ),
       child: Container(
         height: _height,
         decoration: BoxDecoration(

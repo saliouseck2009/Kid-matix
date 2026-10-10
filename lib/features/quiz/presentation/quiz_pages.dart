@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
@@ -19,12 +20,14 @@ final class QuizPages {
     required this._getResult,
     required this._ticker,
     required this._domains,
+    required this._feedback,
   });
 
   final QuizUseCases _useCases;
   final GetQuizResultUseCase _getResult;
   final Ticker _ticker;
   final DomainRegistry _domains;
+  final GameFeedbackService _feedback;
 
   /// Quiz of [profileId] described by [spec].
   Widget buildQuizPage({
@@ -38,6 +41,7 @@ final class QuizPages {
       useCases: _useCases,
       ticker: _ticker,
       domains: _domains,
+      feedback: _feedback,
       onCompleted: onCompleted,
       onLeft: onLeft,
     );

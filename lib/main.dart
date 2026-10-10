@@ -56,6 +56,7 @@ Future<void> main() async {
       update: sl(),
       watchChanges: sl(),
     ),
+    feedback: sl(),
   );
   runApp(
     KidMatixApp(
@@ -119,6 +120,7 @@ GoRouter _createRouter(
         watchChanges: sl(),
       ),
       domains: sl(),
+      feedback: sl(),
     ),
     quizPages: QuizPages(
       useCases: QuizUseCases(
@@ -131,6 +133,7 @@ GoRouter _createRouter(
       getResult: sl(),
       ticker: sl(),
       domains: sl(),
+      feedback: sl(),
     ),
   );
 }

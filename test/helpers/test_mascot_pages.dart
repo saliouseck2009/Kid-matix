@@ -6,6 +6,7 @@ import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dar
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 
 import '../features/mascot/helpers/mascot_fakes.dart';
+import 'recording_game_feedback.dart';
 
 /// Mascot pages over in-memory doubles.
 MascotPages buildTestMascotPages({
@@ -31,6 +32,7 @@ MascotPages buildTestMascotPages({
         crowns: crowned,
       ),
     ),
+    feedback: RecordingGameFeedback(),
   );
 }
 

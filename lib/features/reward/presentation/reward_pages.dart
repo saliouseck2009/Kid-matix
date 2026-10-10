@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/daily_goal_progress.dart';
 import 'package:kid_matix/features/reward/domain/entities/session_rewards_entity.dart';
@@ -24,10 +25,15 @@ import 'package:kid_matix/features/reward/presentation/widgets/streak_pill.dart'
 /// so no widget ever reads the service locator.
 final class RewardPages {
   /// Creates the factory.
-  const RewardPages({required this._useCases, required this._domains});
+  const RewardPages({
+    required this._useCases,
+    required this._domains,
+    required this._feedback,
+  });
 
   final RewardUseCases _useCases;
   final DomainRegistry _domains;
+  final GameFeedbackService _feedback;
 
   /// Provides the rewards of [sessionId] to [child], and plays the
   /// celebrations of a new level and of new badges once they are read.
@@ -58,6 +64,7 @@ final class RewardPages {
                     context,
                     rewards: rewards,
                     labels: BadgeLabels(domains: _domains, l10n: context.l10n),
+                    feedback: _feedback,
                   );
                 },
             child: child,

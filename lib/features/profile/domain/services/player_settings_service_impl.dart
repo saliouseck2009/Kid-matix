@@ -35,6 +35,19 @@ final class PlayerSettingsServiceImpl implements PlayerSettingsService {
     );
   }
 
+  @override
+  Future<DataState<({bool isSoundOn, bool isVibrationOn})>> readFeedback({
+    required String profileId,
+  }) {
+    return _read(
+      profileId,
+      (ProfileSettingsEntity settings) => (
+        isSoundOn: settings.isSoundEnabled,
+        isVibrationOn: settings.isVibrationEnabled,
+      ),
+    );
+  }
+
   Future<DataState<T>> _read<T>(
     String profileId,
     T Function(ProfileSettingsEntity settings) pick,

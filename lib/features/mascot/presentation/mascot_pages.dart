@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/entities/mascot_look.dart';
+import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/widgets/mascot_look_scope.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_cubit.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_state.dart';
@@ -16,9 +17,10 @@ import 'package:kid_matix/features/mascot/presentation/widgets/mascot_profile_ca
 /// so no widget ever reads the service locator.
 final class MascotPages {
   /// Creates the factory.
-  const MascotPages({required this._useCases});
+  const MascotPages({required this._useCases, required this._feedback});
 
   final MascotUseCases _useCases;
+  final GameFeedbackService _feedback;
 
   /// Provides the mascot of [profileId] to [child]: its look to every
   /// mascot drawing, and the mascot to the widgets below.
@@ -41,7 +43,7 @@ final class MascotPages {
 
   /// The mascot on the map saying [bubble], inside [buildScope].
   Widget buildMapMascot({required Widget bubble}) {
-    return MapMascot(bubble: bubble);
+    return MapMascot(bubble: bubble, feedback: _feedback);
   }
 
   /// The mascot card of the Profile tab, inside [buildScope].
