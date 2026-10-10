@@ -14,8 +14,9 @@ middle of one). Last update: 2026-10-10.
 | F4 · Mastery and spaced repetition | **Done** (closed 2026-10-10) |
 | F5 · Learning path | **Done** (closed 2026-10-10) |
 | F6 · Boss fight | **Done** (closed 2026-10-10) |
-| F7 · Rewards | **Next** |
-| F8 – F21 | Not started |
+| F7 · Rewards | **Done** (closed 2026-10-10) |
+| F8 · Growing mascot | **Next** |
+| F9 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -288,16 +289,54 @@ Known gaps left on purpose, to handle in the lot named:
 - `MasteryService.readMasteredItems` for the golden crown.
 - Theme: `AppTheme.boss`; core widgets `MonsterIllustration`, `CrownMark`.
 
-## Starting F7
+## F7 closure
 
-Tasks F7-01 to F7-18 in `docs/product/task-breakdown.md`; rules in
-section 7 of `docs/product/specifications.md`; mockups `09` (results) and
-`03` (header band of the map).
+- `bash tool/check.sh`: every step OK (491 tests); CI green on #43 to #45.
+- Checked on the Android emulator (API 36), the lot's "done when"
+  included: the database upgraded to version 7; the Discovery stage of
+  the table of 2 completed at 10 / 10 opened the celebrations "Niveau 2 !",
+  "Premier pas" and "Sans-faute"; the results showed +175 XP and the level
+  card; the map header showed the player at level 2, a 1-day streak,
+  1 crown and the daily goal at 175 / 20 XP. Fixed there: the scroll to
+  the current table hid the header, which now stays above the map.
 
-- `features/reward/` is created: XP, levels, streak and its weekly joker,
-  daily goal, combo, badges; the `streak` and `badge_unlock` tables, XP
-  and level on the profile.
-- Every reward is written by a `SessionSavedHook`, inside the transaction
-  that saves the session.
-- The results show the XP, the level progress and the new badges; the
-  map gets its header band; the quiz counts the combo.
+Known gaps left on purpose, to handle in the lot named:
+
+- The Sprinter badge comes with F9, Survivant with F12.
+- The badges have no screen of their own yet: the Profile screen (F10)
+  lists them.
+- The mascot of the results and celebrations is the static drawing; F8
+  makes it grow.
+- Waiting for the owner: the celebration texts, the badge hints,
+  "Touche l'écran pour continuer", "Combo de 3 !", "Pas de série"; still
+  the 12 table tips, the boss texts and the no-break spaces in the tips.
+
+## What F7 delivered
+
+- `features/reward/`: `XpPolicy` (version 1), `LevelPolicy`,
+  `StreakPolicy` with its weekly joker, `BadgeEvaluator` and `BadgeKey`,
+  `SessionRewardCalculator`, the reward storage written by
+  `RewardSessionHook`, the use cases `GetStreak`, `GetBadges`,
+  `GetPlayerLevel`, `GetDailyGoal`, `GetSessionRewards`,
+  `WatchRewardChanges`, the reward widgets and celebrations, `RewardPages`.
+- `core/storage/`: hooks prepare before the session transaction; migration
+  7 (`session_reward`, `streak`, `badge_unlock`, `reward_stats`).
+- `LearningPathService.isStage` / `crownedUnitOf`,
+  `PlayerSettingsService.readDailyGoalXp`.
+- Quiz: `QuizCombo`, the combo pill and its milestones; results slots for
+  the rewards. Map header (player, streak, crowns, daily goal); streak on
+  the cards of "Qui joue ?".
+
+## Starting F8
+
+Tasks F8-01 to F8-12 in `docs/product/task-breakdown.md`; rules in
+section 7 of `docs/product/specifications.md` ("Mascotte qui grandit");
+mockup `12` for the mascot card of the profile.
+
+- `features/mascot/` is created: 5 stages reached at levels 1, 5, 10, 20
+  and 30, never going back; accessories unlocked by crowns and badges;
+  the mascot name and the accessories worn stored on the profile.
+- The mascot replaces the static drawing on the map, in the quiz and on
+  the results, with three moods.
+- The animation tool (Rive, Lottie or hand-animated vector drawing) is
+  chosen at the start of the lot.
