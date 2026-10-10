@@ -1,7 +1,7 @@
 # Project status
 
 Update this file at the end of every lot (and whenever work stops in the
-middle of one). Last update: 2026-10-09.
+middle of one). Last update: 2026-10-10.
 
 ## Where we are
 
@@ -10,8 +10,9 @@ middle of one). Last update: 2026-10-09.
 | F0 · Foundation | **Done** (closed 2026-10-09) |
 | F1 · Profiles ("Qui joue ?") | **Done** (closed 2026-10-09) |
 | F2 · Quiz engine and multiplication domain | **Done** (closed 2026-10-09) |
-| F3 · Quiz session and results | **Next** |
-| F4 – F21 | Not started |
+| F3 · Quiz session and results | **Done** (closed 2026-10-10) |
+| F4 · Mastery and spaced repetition | **Next** |
+| F5 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -120,20 +121,61 @@ Known gaps left on purpose, to handle in the lot named:
 - Left for lot F5: the wording of the 12 table tips (the domain only names
   them; the specifications give one example, for the table of 5).
 
-## Starting F3
+## F3 closure
 
-Tasks F3-01 to F3-18 in `docs/product/task-breakdown.md`; rules in sections
-5, 7 and 9 of `docs/product/specifications.md`; mockups `06`, `06b`, `06c`,
-`07` and `09` in `docs/design/screens/`. The keypad of the typed answer and
-the missing-number answer zone have no mockup: they are derived from the
-existing screens.
+- `bash tool/check.sh`: every step OK (279 tests); CI green on #22 to #25.
+- Checked on the Android emulator (API 36, release build), the lot's
+  "done when" included: from the provisional "Jouer à la table de 5"
+  button, 10 questions of the table of 5 in the four formats (multiple
+  choice, true or false, keypad, missing number) with the timer; a fact
+  missed in question 1 came back in question 4 and was not scored; the
+  results showed 9 / 10, the average time and the fact to review. The
+  database upgraded from version 1 to 2 and kept the players.
+- The accessibility tree reads the prompt as a sentence ("5 fois 7 égale
+  combien").
 
-- `features/quiz/` is created: session entity, use cases, the
-  `quiz_session` migration (version 2), `QuizBloc` driven by the injected
-  `Ticker`, the quiz and results screens.
-- The quiz builds its questions with `QuestionGenerator` and the
-  registries; it never imports `features/multiplication`.
-- The timer mode comes from the player's `ProfileSettingsEntity`, owned by
-  the profile feature: the quiz reads it through an interface of
-  `core/services/`.
-- The streak, XP and stars of the mockups arrive with F5 and F7.
+Known gaps left on purpose, to handle in the lot named:
+
+- The home tab shows a provisional "Jouer à la table de 5" button
+  (`ProvisionalQuizLauncherPage`); F5 replaces it with the learning path.
+- The quiz draws its facts at random from one table; F4 brings the
+  weighted draw and the format chosen by the box.
+- The stars of the results arrive with F5, the XP and the level with F7.
+- Cold start takes 3.5 to 5 s on the emulator, even in release; to measure
+  on a real phone (SM A166P).
+- Texts proposed without a mockup, waiting for the owner's confirmation:
+  "Temps écoulé !", "Éclair !", the quit dialog, "Partie terminée !",
+  "Aucune erreur, bravo !", "Jouer à la table de 5".
+
+## What F3 delivered
+
+- `features/quiz/`: the session entities (`QuizRun`, `QuizTurn`,
+  `QuizAnswerEntity`, `QuizSessionEntity`, `QuizResultEntity`), the use
+  cases `BuildQuiz`, `SubmitAnswer` (lightning under 3 s, second chance 3
+  questions later), `CompleteSession`, `AbandonSession`, `GetTimeLimit`,
+  `GetQuizResult`, the `quiz_session` and `quiz_answer` journal,
+  `QuizBloc` driven by the `Ticker`, `ResultsCubit`, the quiz and results
+  screens, the keypad, the quit confirmation, `QuizPages` for the router,
+  `registerQuizFeature()`.
+- `core/storage/migrations/migration_002_create_quiz_session_tables.dart`.
+- `core/services/player_settings_service.dart`: the quiz reads the timer
+  mode of the active player; implemented by the profile feature.
+- `core/entities/timer_mode.dart`, `core/storage/sqlite_bool_converter.dart`,
+  the mascot drawing and the dashed border moved to `core/widgets/`.
+- Theme: `AppFeedbackPalette` (right and wrong colors), success and danger
+  `DepthButton` variants.
+- Routes `/quiz/:unitKey` and `/results/:sessionId`.
+
+## Starting F4
+
+Tasks F4-01 to F4-15 in `docs/product/task-breakdown.md`; rules in section
+6 of `docs/product/specifications.md`. The help card (F4-11) has no
+mockup: it is derived from the existing screens.
+
+- `features/mastery/` is created: `ItemProgress`, `MasteryPolicy`, the
+  `item_progress` migration (version 3), the due facts and the mastery
+  grid.
+- Each answer updates the progress of its fact as soon as it is given, so
+  an abandoned quiz loses nothing. The quiz reaches mastery through an
+  interface of `core/services/`, never by importing it.
+- The quiz uses the weighted draw and the format chosen by the box.
