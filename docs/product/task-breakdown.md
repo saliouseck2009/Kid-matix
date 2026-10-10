@@ -387,9 +387,9 @@ La mascotte donne un but visible aux XP : elle grandit avec le niveau du joueur 
 
 **Domaine**
 
-- [ ] **F8-01** Règles des 5 stades, atteints aux niveaux 1, 5, 10, 20 et 30 ; la mascotte ne régresse jamais.
-- [ ] **F8-02** Catalogue d'accessoires et règles de déblocage par couronne et par badge.
-- [ ] **F8-03** Cas d'usage `GetMascot` : stade, accessoires débloqués, accessoires portés, nom.
+- [x] **F8-01** Règles des 5 stades, atteints aux niveaux 1, 5, 10, 20 et 30 ; la mascotte ne régresse jamais.
+- [x] **F8-02** Catalogue d'accessoires et règles de déblocage par couronne et par badge.
+- [x] **F8-03** Cas d'usage `GetMascot` : stade, accessoires débloqués, accessoires portés, nom.
 
 **Données**
 
@@ -406,7 +406,7 @@ La mascotte donne un but visible aux XP : elle grandit avec le niveau du joueur 
 
 **Tests**
 
-- [ ] **F8-11** Tests des règles de stade et de déblocage des accessoires.
+- [x] **F8-11** Tests des règles de stade et de déblocage des accessoires.
 - [ ] **F8-12** Test de widget de la mascotte dans chaque stade.
 
 **Terminé quand :** un joueur qui atteint le niveau 5 voit sa mascotte changer de stade, et peut lui mettre un accessoire gagné avec une couronne.
