@@ -15,6 +15,9 @@ final class StageDefinition {
     this.baseTimeLimit,
   });
 
+  /// Most stars of a stage.
+  static const int maxStars = 3;
+
   /// Questions of the review stage.
   static const int reviewQuestionCount = 15;
 

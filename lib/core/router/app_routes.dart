@@ -18,21 +18,49 @@ abstract final class AppRoutes {
   /// "Qui joue ?": the player selection, shown while nobody is playing.
   static const String whoIsPlaying = '/players';
 
-  /// Full-screen quiz on the unit given as path parameter.
-  static const String quiz = '/quiz/:$unitKeyParameter';
+  /// Detail of the table given as path parameter, full screen.
+  static const String tableDetail = '/table/:$unitKeyParameter';
+
+  /// The whole table and its tip, opened by "Voir la table".
+  static const String tableView = '/table/:$unitKeyParameter/view';
+
+  /// The Discovery stage of the table: the table, its tip, then "À moi de
+  /// jouer".
+  static const String discovery = '/table/:$unitKeyParameter/discovery';
+
+  /// Full-screen quiz played for the source given as path parameter, such
+  /// as a stage of the learning path.
+  static const String play = '/play/:$sourceKeyParameter';
 
   /// Results of the session given as path parameter.
   static const String quizResults = '/results/:$sessionIdParameter';
 
-  /// Name of the unit parameter of [quiz].
+  /// Name of the unit parameter of [tableDetail], [tableView] and
+  /// [discovery].
   static const String unitKeyParameter = 'unitKey';
+
+  /// Name of the source parameter of [play].
+  static const String sourceKeyParameter = 'sourceKey';
 
   /// Name of the session parameter of [quizResults].
   static const String sessionIdParameter = 'sessionId';
 
-  /// Path of the quiz on [unitKey], such as `mul:5`.
-  static String quizOf(String unitKey) {
-    return '/quiz/${Uri.encodeComponent(unitKey)}';
+  /// Path of the detail of the table [unitKey], such as `mul:5`.
+  static String tableDetailOf(String unitKey) {
+    return '/table/${Uri.encodeComponent(unitKey)}';
+  }
+
+  /// Path of the whole table [unitKey] and its tip.
+  static String tableViewOf(String unitKey) => '${tableDetailOf(unitKey)}/view';
+
+  /// Path of the Discovery stage of the table [unitKey].
+  static String discoveryOf(String unitKey) {
+    return '${tableDetailOf(unitKey)}/discovery';
+  }
+
+  /// Path of the quiz played for [sourceKey].
+  static String playOf(String sourceKey) {
+    return '/play/${Uri.encodeComponent(sourceKey)}';
   }
 
   /// Path of the results of [sessionId].

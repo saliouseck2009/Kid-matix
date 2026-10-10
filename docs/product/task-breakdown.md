@@ -303,17 +303,17 @@ La carte des 12 tables devient l'accueil : chaque table a 5 étapes, des étoile
 
 **Présentation**
 
-- [ ] **F5-08** `LearningPathBloc`, rechargé après chaque session grâce au signal de changement.
-- [ ] **F5-09** Écran Parcours : carte défilante, nœuds terminé, en cours et verrouillé, étoiles sous chaque table, carte d'appel « Jouer » sur la table en cours.
-- [ ] **F5-10** Écran Détail d'une table : les 5 étapes, leurs étoiles, bouton « Voir la table ». Maquette : `04-table-detail.png`.
-- [ ] **F5-11** Étape Découverte : la table affichée en entier, son astuce, puis ses 10 questions dans l'ordre.
-- [ ] **F5-12** Étoiles sur l'écran Résultats ; « Continuer » ramène au parcours avec l'étape suivante mise en avant.
-- [ ] **F5-13** Remplacement du bouton provisoire de F3 par le lancement depuis le parcours.
+- [x] **F5-08** `LearningPathBloc`, rechargé après chaque session grâce au signal de changement.
+- [x] **F5-09** Écran Parcours : carte défilante, nœuds terminé, en cours et verrouillé, étoiles sous chaque table, carte d'appel « Jouer » sur la table en cours.
+- [x] **F5-10** Écran Détail d'une table : les 5 étapes, leurs étoiles, bouton « Voir la table ». Maquette : `04-table-detail.png`.
+- [x] **F5-11** Étape Découverte : la table affichée en entier, son astuce, puis ses 10 questions dans l'ordre.
+- [x] **F5-12** Étoiles sur l'écran Résultats ; « Continuer » ramène au parcours avec l'étape suivante mise en avant.
+- [x] **F5-13** Remplacement du bouton provisoire de F3 par le lancement depuis le parcours.
 
 **Tests**
 
 - [x] **F5-14** Tests de `StarPolicy` et des règles de déblocage, « Tout débloquer » compris.
-- [ ] **F5-15** Tests de `LearningPathBloc` et test de widget de la carte dans ses trois états de nœud.
+- [x] **F5-15** Tests de `LearningPathBloc` et test de widget de la carte dans ses trois états de nœud.
 
 **Terminé quand :** un nouveau joueur enchaîne les étapes 1 à 3 de la table de 1 et voit la table de 2 s'ouvrir.
 

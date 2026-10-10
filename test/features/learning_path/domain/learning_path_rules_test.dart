@@ -229,6 +229,8 @@ void main() {
       ]).tables.first;
       // Assert
       expect(actualTable.totalStars, 5);
+      expect(actualTable.averageStars, 2);
+      expect(actualTable.maxStars, 15);
     });
   });
 

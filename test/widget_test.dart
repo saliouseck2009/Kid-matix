@@ -5,6 +5,7 @@ import 'package:kid_matix/main.dart';
 
 import 'features/profile/helpers/profile_fixtures.dart';
 import 'helpers/fake_profile_session_service.dart';
+import 'helpers/test_path_pages.dart';
 import 'helpers/test_quiz_pages.dart';
 
 /// Router of an app where a player is already active.
@@ -13,6 +14,7 @@ GoRouter _createPlayingRouter() {
     session: FakeProfileSessionService(activeProfileId: 'p-1'),
     profilePages: buildProfilePages(),
     quizPages: buildTestQuizPages(),
+    pathPages: buildTestPathPages(),
   );
 }
 
@@ -34,16 +36,15 @@ void main() {
         expect(find.text(expectedTab), findsWidgets);
       }
     });
-    testWidgets('keeps the page visible above the tab bar', (
+    testWidgets('opens on the learning path above the tab bar', (
       WidgetTester tester,
     ) async {
-      // Arrange
-      const String expectedMessage = 'Bientôt disponible';
       // Act
       await tester.pumpWidget(KidMatixApp(router: _createPlayingRouter()));
       await tester.pumpAndSettle();
       // Assert
-      expect(find.text(expectedMessage).hitTestable(), findsOneWidget);
+      expect(find.text('Table de 1').hitTestable(), findsOneWidget);
+      expect(find.text('Jouer').hitTestable(), findsOneWidget);
     });
     testWidgets('opens a tab when the player taps it', (
       WidgetTester tester,

@@ -11,6 +11,8 @@ import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
@@ -59,6 +61,13 @@ GoRouter _createRouter(ProfileSessionService session) {
         clearActiveProfile: sl(),
         deleteProfile: sl(),
       ),
+    ),
+    pathPages: LearningPathPages(
+      useCases: LearningPathUseCases(
+        getLearningPath: sl(),
+        watchChanges: sl(),
+      ),
+      domains: sl(),
     ),
     quizPages: QuizPages(
       useCases: QuizUseCases(

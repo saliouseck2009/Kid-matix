@@ -296,9 +296,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizSpokenBlank => 'combien';
 
   @override
-  String get quizProvisionalStart => 'Jouer à la table de 5';
-
-  @override
   String get quizModePath => 'Parcours';
 
   @override
@@ -354,4 +351,162 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get resultsReplay => 'Rejouer';
+
+  @override
+  String get pathStageDiscovery => 'Découverte';
+
+  @override
+  String get pathStageDiscoveryHint => 'La table et son astuce';
+
+  @override
+  String get pathStageTraining => 'Entraînement';
+
+  @override
+  String get pathStageTrainingHint => '10 questions mélangées';
+
+  @override
+  String get pathStageWriting => 'Écriture';
+
+  @override
+  String get pathStageWritingHint => 'Écris la réponse toi-même';
+
+  @override
+  String get pathStageSpeed => 'Vitesse';
+
+  @override
+  String get pathStageSpeedHint => '10 secondes par question';
+
+  @override
+  String get pathStageBoss => 'Combat de boss';
+
+  @override
+  String get pathStageBossHint => 'Bats le monstre de la table';
+
+  @override
+  String get pathStageReview => 'Révision';
+
+  @override
+  String get pathStageReviewHint => '15 questions sur les tables déjà vues';
+
+  @override
+  String pathStageNumbered(int number, String name) {
+    return '$number · $name';
+  }
+
+  @override
+  String pathCurrentStage(int number, int total, String name) {
+    return 'Étape $number sur $total · $name';
+  }
+
+  @override
+  String get pathPlay => 'Jouer';
+
+  @override
+  String get pathShowTable => 'Voir la table';
+
+  @override
+  String pathTableStars(int stars, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stars,
+      locale: localeName,
+      other: '$stars étoiles sur $total',
+      one: '1 étoile sur $total',
+      zero: '0 étoile sur $total',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pathCrownHint => 'Bats le boss pour gagner la couronne.';
+
+  @override
+  String get pathTableBack => 'Retour au parcours';
+
+  @override
+  String pathTableNodeDone(String name, int stars) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stars,
+      locale: localeName,
+      other: '$stars étoiles',
+      one: '1 étoile',
+      zero: 'aucune étoile',
+    );
+    return '$name, terminée, $_temp0';
+  }
+
+  @override
+  String pathTableNodeCurrent(String name) {
+    return '$name, en cours';
+  }
+
+  @override
+  String pathTableNodeOpen(String name) {
+    return '$name, ouverte';
+  }
+
+  @override
+  String pathTableNodeLocked(String name) {
+    return '$name, verrouillée';
+  }
+
+  @override
+  String pathReviewNodeLocked(String name) {
+    return '$name, verrouillée';
+  }
+
+  @override
+  String get pathLocked => 'Verrouillée';
+
+  @override
+  String starsLabel(int stars, int max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stars,
+      locale: localeName,
+      other: '$stars étoiles sur $max',
+      one: '1 étoile sur $max',
+      zero: 'Aucune étoile sur $max',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pathDiscoveryTitle(int number) {
+    return 'Voici la table de $number';
+  }
+
+  @override
+  String get pathDiscoveryProgress => 'Avant la première question';
+
+  @override
+  String get pathTipTitle => 'L\'astuce';
+
+  @override
+  String get pathDiscoveryStart => 'À moi de jouer';
+
+  @override
+  String pathMultiplicationTip(String table) {
+    String _temp0 = intl.Intl.selectLogic(
+      table,
+      {
+        '1': 'Multiplier par 1 ne change rien : 1 × 7 = 7.',
+        '2': 'Multiplier par 2, c\'est ajouter le nombre à lui-même : 2 × 6 = 6 + 6.',
+        '3': 'Les résultats avancent de 3 en 3 : 3, 6, 9, 12…',
+        '4': 'Multiplier par 4, c\'est doubler deux fois : 4 × 6, c\'est le double de 12.',
+        '5':
+            'Les résultats de la table de 5 finissent toujours par 0 ou par 5.',
+        '6': '6 fois un nombre pair finit par le même chiffre : 6 × 4 = 24.',
+        '7': 'Pour 7 × 8, pense à 5, 6, 7, 8 : 56 = 7 × 8.',
+        '8': 'Multiplier par 8, c\'est doubler trois fois : 8 × 3 = 24.',
+        '9': 'Les deux chiffres du résultat font toujours 9 : 9 × 4 = 36 et 3 + 6 = 9.',
+        '10': 'Multiplier par 10, c\'est ajouter un 0 à droite : 10 × 7 = 70.',
+        '11': 'Jusqu\'à 11 × 9, on écrit le chiffre deux fois : 11 × 4 = 44.',
+        'other':
+            '12 fois un nombre, c\'est 10 fois plus 2 fois : 12 × 3 = 30 + 6.',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get resultsStageTitle => 'Étape terminée !';
 }
