@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
@@ -21,6 +22,7 @@ final class QuizSessionLocalModel {
     required this.correctCount,
     required this.updatedAt,
     this.sourceKey,
+    this.bossOutcome,
     this.deletedAt,
   });
 
@@ -40,6 +42,7 @@ final class QuizSessionLocalModel {
       questionCount: session.questionCount,
       correctCount: session.correctCount,
       sourceKey: session.sourceKey,
+      bossOutcome: session.bossOutcome,
       updatedAt: updatedAt.millisecondsSinceEpoch,
     );
   }
@@ -78,6 +81,9 @@ final class QuizSessionLocalModel {
   /// What the quiz was played for, or `null`.
   final String? sourceKey;
 
+  /// How a boss fight ended, stored by name, or `null`.
+  final BossOutcome? bossOutcome;
+
   /// Write time of the row, in milliseconds since epoch.
   final int updatedAt;
 
@@ -100,6 +106,7 @@ final class QuizSessionLocalModel {
       questionCount: questionCount,
       correctCount: correctCount,
       sourceKey: sourceKey,
+      bossOutcome: bossOutcome,
     );
   }
 }

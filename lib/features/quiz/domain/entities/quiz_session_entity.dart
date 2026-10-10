@@ -1,4 +1,4 @@
-import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
+import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
@@ -20,19 +20,18 @@ final class QuizSessionEntity {
     required this.questionCount,
     required this.correctCount,
     this.sourceKey,
+    this.bossOutcome,
   });
 
   /// Records [run], ended at [endedAt] with [status].
   ///
-  /// Only the scored answers given count: second chances are left out.
+  /// Only the scored answers count: second chances are left out, except
+  /// in a boss fight where every answer counts.
   factory QuizSessionEntity.fromRun({
     required QuizRun run,
     required QuizSessionStatus status,
     required DateTime endedAt,
   }) {
-    final int answeredCount = run.answers
-        .where((QuizAnswerEntity answer) => !answer.isRetry)
-        .length;
     return QuizSessionEntity(
       id: run.sessionId,
       profileId: run.profileId,
@@ -41,9 +40,10 @@ final class QuizSessionEntity {
       status: status,
       startedAt: run.startedAt,
       duration: endedAt.difference(run.startedAt),
-      questionCount: answeredCount,
+      questionCount: run.scoredAnswers.length,
       correctCount: run.correctCount,
       sourceKey: run.sourceKey,
+      bossOutcome: run.bossOutcome,
     );
   }
 
@@ -78,6 +78,9 @@ final class QuizSessionEntity {
   /// or `null`.
   final String? sourceKey;
 
+  /// How a boss fight ended, or `null` for another quiz.
+  final BossOutcome? bossOutcome;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -91,7 +94,8 @@ final class QuizSessionEntity {
             other.duration == duration &&
             other.questionCount == questionCount &&
             other.correctCount == correctCount &&
-            other.sourceKey == sourceKey;
+            other.sourceKey == sourceKey &&
+            other.bossOutcome == bossOutcome;
   }
 
   @override
@@ -106,5 +110,6 @@ final class QuizSessionEntity {
     questionCount,
     correctCount,
     sourceKey,
+    bossOutcome,
   );
 }
