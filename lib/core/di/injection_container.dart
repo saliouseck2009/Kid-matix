@@ -16,6 +16,7 @@ import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/app_migrations.dart';
 import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
+import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/mastery/injection.dart';
@@ -57,6 +58,7 @@ void _registerCoreStorage() {
     () => SharedPreferencesLocalStorage(preferences: SharedPreferencesAsync()),
   );
   sl.registerLazySingleton<TableChangeBus>(TableChangeBus.new);
+  sl.registerLazySingleton<SessionSavedHooks>(SessionSavedHooks.new);
   sl.registerLazySingleton<AppDatabase>(
     () => AppDatabase(
       databaseFactory: databaseFactory,

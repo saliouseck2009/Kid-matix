@@ -39,7 +39,7 @@ final class QuizSessionRepositoryImpl implements QuizSessionRepository {
   }) async {
     final DateTime now = _clock.now();
     try {
-      await _sessions.insertSession(
+      final List<String> hookTables = await _sessions.insertSession(
         session: QuizSessionLocalModel.fromEntity(
           session: session,
           updatedAt: now,
@@ -55,6 +55,9 @@ final class QuizSessionRepositoryImpl implements QuizSessionRepository {
         ],
       );
       _changeBus.notifyChanged(table: QuizTables.session);
+      for (final String table in hookTables.toSet()) {
+        _changeBus.notifyChanged(table: table);
+      }
       return const DataSuccess<void>(null);
     } on DatabaseException catch (error, stackTrace) {
       log(
