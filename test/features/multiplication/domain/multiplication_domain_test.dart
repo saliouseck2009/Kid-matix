@@ -130,6 +130,33 @@ void main() {
     });
   });
 
+  group('draw weights', () {
+    test('halves the facts x 1 and x 10 outside their own tables', () {
+      // Arrange
+      const List<MultiplicationFact> inputFacts = <MultiplicationFact>[
+        MultiplicationFact(table: 7, multiplier: 1),
+        MultiplicationFact(table: 7, multiplier: 10),
+        MultiplicationFact(table: 7, multiplier: 8),
+        MultiplicationFact(table: 1, multiplier: 7),
+        MultiplicationFact(table: 10, multiplier: 1),
+        MultiplicationFact(table: 1, multiplier: 10),
+      ];
+      // Act
+      final List<int> actualWeights = inputFacts
+          .map(domain.drawWeightOf)
+          .toList();
+      // Assert
+      expect(actualWeights, <int>[1, 1, 2, 2, 2, 2]);
+    });
+    test('rejects an item of another domain', () {
+      // Assert
+      expect(
+        () => domain.drawWeightOf(const _ForeignItem()),
+        throwsArgumentError,
+      );
+    });
+  });
+
   group('questions', () {
     test('asks 7 x 8 with four distinct choices including 56', () {
       // Act

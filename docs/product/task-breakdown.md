@@ -263,8 +263,8 @@ L'app suit chaque fait pour chaque joueur et fait revenir les faits fragiles au 
 - [x] **F4-04** Délais de révision par boîte : le lendemain, 2, 4, 7 puis 15 jours.
 - [x] **F4-05** Statut « maîtrisé » : boîte 5 et temps médian des 5 dernières réponses sous 3 secondes.
 - [ ] **F4-06** Cas d'usage `GetDueFacts` et `GetMasteryGrid`.
-- [ ] **F4-07** Tirage pondéré : les boîtes basses sortent plus souvent ; hors de leur table, les faits en × 1 et × 10 sortent deux fois moins.
-- [ ] **F4-08** Format selon le niveau : choix multiple d'abord pour les boîtes 1 et 2, saisie et opérations à trous à partir de la boîte 3.
+- [x] **F4-07** Tirage pondéré : les boîtes basses sortent plus souvent ; hors de leur table, les faits en × 1 et × 10 sortent deux fois moins.
+- [x] **F4-08** Format selon le niveau : choix multiple d'abord pour les boîtes 1 et 2, saisie et opérations à trous à partir de la boîte 3.
 
 **Données**
 
@@ -279,7 +279,7 @@ L'app suit chaque fait pour chaque joueur et fait revenir les faits fragiles au 
 **Tests**
 
 - [x] **F4-13** Tests de `MasteryPolicy` : montées, retours en boîte 1, plafond, délais avec une horloge factice, médiane.
-- [ ] **F4-14** Test du tirage pondéré avec une graine, et du choix du format selon la boîte.
+- [x] **F4-14** Test du tirage pondéré avec une graine, et du choix du format selon la boîte.
 - [ ] **F4-15** Test : fermer l'app en plein quiz conserve les réponses déjà données.
 
 **Terminé quand :** rejouer une table fait évoluer les boîtes de ses faits, et les faits ratés reviennent en priorité à la session suivante.

@@ -33,6 +33,9 @@ final class _FakeDomain implements LearningDomain {
   LearningUnit? findUnit(String key) => null;
 
   @override
+  int drawWeightOf(LearningItem item) => 1;
+
+  @override
   List<PromptToken> describeItem(LearningItem item) => const <PromptToken>[];
 
   @override
