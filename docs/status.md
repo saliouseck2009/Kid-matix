@@ -12,8 +12,9 @@ middle of one). Last update: 2026-10-10.
 | F2 · Quiz engine and multiplication domain | **Done** (closed 2026-10-09) |
 | F3 · Quiz session and results | **Done** (closed 2026-10-10) |
 | F4 · Mastery and spaced repetition | **Done** (closed 2026-10-10) |
-| F5 · Learning path | **Next** |
-| F6 – F21 | Not started |
+| F5 · Learning path | **Done** (closed 2026-10-10) |
+| F6 · Boss fight | **Next** |
+| F7 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -207,17 +208,58 @@ Known gaps left on purpose, to handle in the lot named:
 - Quiz: `questionCount` on the request (free training: 10 questions),
   answers recorded at once, `QuizHelpCard`, the mirror reminder.
 
-## Starting F5
+## F5 closure
 
-Tasks F5-01 to F5-15 in `docs/product/task-breakdown.md`; rules in section
-4 of `docs/product/specifications.md` (stages, stars, unlocking); mockups
-`03`, `04` and `05` in `docs/design/screens/`.
+- `bash tool/check.sh`: every step OK (419 tests); CI green on #34 to #37.
+- Checked on the Android emulator (API 36), the lot's "done when"
+  included: installed over the F4 version, the database upgraded from
+  version 3 to 5. A player without path progress played stages 1 to 3 of
+  the table of 1 (Discovery showed the table and its tip first, 3 stars
+  each); "Continuer" brought back the table detail with the Speed stage
+  highlighted; the map showed the table of 2 open and current. Fixed on
+  the way: the Android back button closed the app from the table detail.
 
-- `features/learning_path/` is created: the 5 stages of a table,
-  `StarPolicy`, the unlocking rules, the `stage_progress` migration
-  (version 4), the map screen and the table detail.
-- The quiz knows nothing of stages: a stage starts a quiz with its items,
-  count, formats and timer, and the end of the session reaches the
-  learning path through an interface of `core/services/`.
-- The provisional "Jouer à la table de 5" button goes away.
-- The 12 table tips need their wording for the Discovery stage (F5-11).
+Known gaps left on purpose, to handle in the lot named:
+
+- The header band of the map (player, streak, crowns, daily goal) arrives
+  with F7; the crowns on the map with F6.
+- Stage 5 (boss) stays locked with "Bientôt disponible" until F6.
+- The review node has no mockup: a small yellow round node.
+- Waiting for the owner's confirmation: the 12 table tips, the stars
+  under a table on the map (average of the stages played), and whether
+  the equations of the tips need no-break spaces.
+
+## What F5 delivered
+
+- `features/learning_path/`: `StageKind`, `StageDefinition`,
+  `StageSource` (source key `path:mul:5:training`), `StarPolicy`,
+  `LearningPathBuilder` (unlocking, reviews, boss coming soon, "Tout
+  débloquer"), `StageQuizSpecs`, `GetLearningPath`, the `stage_progress`
+  storage written by `StageProgressSessionHook`, `LearningPathService`,
+  `LearningPathBloc`, the map, the table detail and the Discovery page,
+  `LearningPathPages`.
+- `core/quiz/`: `QuizSpec`, `QuizSelection`, `QuizMode` (moved, `path`).
+- `core/storage/`: `SessionSavedHook`s run inside the transaction saving
+  a session; migrations 4 (`quiz_session.source_key`) and 5
+  (`stage_progress`).
+- `core/services/learning_path_service.dart`; `PlayerSettingsService`
+  reads "Tout débloquer".
+- `core/router/play_routes.dart`: `/table/:unitKey`, `/view`,
+  `/discovery`, `/play/:sourceKey`; the provisional quiz button is gone.
+- Results: "Étape terminée !", stage name and stars; "Continuer" goes
+  back to the table detail.
+- Core widgets: `StarRow`, `BackToParent`; locked colors in the palette;
+  `PromptReading` moved to `core/extensions/`.
+
+## Starting F6
+
+Tasks F6-01 to F6-13 in `docs/product/task-breakdown.md`; rules in
+sections 4 and 7 of `docs/product/specifications.md`; mockup `08` in
+`docs/design/screens/`.
+
+- Stage 5 opens: 12 hit points, a lightning answer hits twice, a mistake
+  costs nothing, the boss flees after 20 questions.
+- Questions: the 10 facts of the table, then up to 10 of the weakest
+  facts of the tables already seen; 8 seconds each.
+- The crown (golden once every fact of the table is mastered) shows on
+  the map; the defeated monsters are read from `stage_progress`.
