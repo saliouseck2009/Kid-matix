@@ -20,6 +20,7 @@ import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/learning_path/injection.dart';
+import 'package:kid_matix/features/mascot/injection.dart';
 import 'package:kid_matix/features/mastery/injection.dart';
 import 'package:kid_matix/features/multiplication/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
@@ -46,6 +47,7 @@ Future<void> configureDependencies() async {
   registerMasteryFeature(sl);
   registerLearningPathFeature(sl);
   registerRewardFeature(sl);
+  registerMascotFeature(sl);
   registerQuizFeature(sl);
 }
 
