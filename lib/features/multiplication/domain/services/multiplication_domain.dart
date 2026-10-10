@@ -52,6 +52,16 @@ final class MultiplicationDomain implements LearningDomain {
     12,
   ];
 
+  /// Draw weight of most facts.
+  static const int standardDrawWeight = 2;
+
+  /// Draw weight of the facts x 1 and x 10 outside the tables of 1 and
+  /// 10, half the standard one: 7 x 1 is easy once the table of 1 is known.
+  static const int easyDrawWeight = 1;
+
+  /// Multipliers that make a fact easy outside its own table.
+  static const List<int> easyMultipliers = <int>[1, 10];
+
   final DistractorGenerator _distractors;
 
   /// The 12 tables, table of 1 first.
@@ -91,6 +101,15 @@ final class MultiplicationDomain implements LearningDomain {
       if (table.key == key) return table;
     }
     return null;
+  }
+
+  @override
+  int drawWeightOf(LearningItem item) {
+    final MultiplicationFact fact = _requireFact(item);
+    final bool isEasy =
+        easyMultipliers.contains(fact.multiplier) &&
+        !easyMultipliers.contains(fact.table);
+    return isEasy ? easyDrawWeight : standardDrawWeight;
   }
 
   @override

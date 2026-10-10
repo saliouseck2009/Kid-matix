@@ -27,6 +27,11 @@ abstract interface class LearningDomain {
   /// Returns the unit of [key], or `null` when the domain has none.
   LearningUnit? findUnit(String key);
 
+  /// Relative chance of [item] when items are drawn at random: an item of
+  /// weight 2 comes out twice as often as an item of weight 1. Items too
+  /// easy outside their own unit get a lower weight.
+  int drawWeightOf(LearningItem item);
+
   /// The whole fact of [item] with its answer, such as `5 × 8 = 40`, shown
   /// in the results among the facts to review.
   List<PromptToken> describeItem(LearningItem item);
