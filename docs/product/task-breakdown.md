@@ -393,7 +393,7 @@ La mascotte donne un but visible aux XP : elle grandit avec le niveau du joueur 
 
 **Données**
 
-- [ ] **F8-04** Migration : nom de la mascotte et accessoires portés sur le profil.
+- [x] **F8-04** Migration : nom de la mascotte et accessoires portés sur le profil.
 
 **Présentation**
 
