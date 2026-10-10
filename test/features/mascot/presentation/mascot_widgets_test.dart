@@ -120,6 +120,32 @@ void main() {
       expect(find.text('Bonjour'), findsOneWidget);
       expect(repository.records['p1']!.celebratedStage, 2);
     });
+    testWidgets('the map celebrates a stage reached before it showed', (
+      WidgetTester tester,
+    ) async {
+      // Arrange: the mascot is read while the map is not shown.
+      final ValueNotifier<bool> inputShowsMap = ValueNotifier<bool>(false);
+      addTearDown(inputShowsMap.dispose);
+      await pumpInScope(
+        tester,
+        Scaffold(
+          body: ValueListenableBuilder<bool>(
+            valueListenable: inputShowsMap,
+            builder: (BuildContext context, bool showsMap, _) => showsMap
+                ? pages.buildMapMascot(
+                    bubble: const SpeechBubble(text: 'Bonjour'),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ),
+      );
+      expect(find.text('Lim a grandi\u00a0!'), findsNothing);
+      // Act
+      inputShowsMap.value = true;
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Lim a grandi\u00a0!'), findsOneWidget);
+    });
     testWidgets('the mascot reminds the daily goal', (
       WidgetTester tester,
     ) async {
