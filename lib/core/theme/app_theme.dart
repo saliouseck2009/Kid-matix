@@ -6,7 +6,7 @@ import 'package:kid_matix/core/theme/app_text_theme.dart';
 
 /// Material theme of the app, built from the design tokens.
 abstract final class AppTheme {
-  /// Light theme, the only theme of version 1.0.
+  /// Light theme of the app.
   static final ThemeData light = ThemeData(
     useMaterial3: true,
     colorScheme: _lightColorScheme,
@@ -14,6 +14,24 @@ abstract final class AppTheme {
     textTheme: AppTextTheme.build(color: AppColors.ink),
     extensions: const <ThemeExtension<Object?>>[
       AppPalette.light,
+      AppFeedbackPalette.light,
+    ],
+  );
+
+  /// Dark theme of the boss fight screen: light text and keys on the deep
+  /// indigo ground.
+  static final ThemeData boss = ThemeData(
+    useMaterial3: true,
+    colorScheme: _lightColorScheme.copyWith(
+      brightness: Brightness.dark,
+      surface: AppColors.bossSurface,
+      onSurface: AppColors.white,
+      onSurfaceVariant: AppColors.violetSoftBorder,
+    ),
+    scaffoldBackgroundColor: AppColors.ink,
+    textTheme: AppTextTheme.build(color: AppColors.white),
+    extensions: const <ThemeExtension<Object?>>[
+      AppPalette.boss,
       AppFeedbackPalette.light,
     ],
   );

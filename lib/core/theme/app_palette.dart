@@ -21,7 +21,31 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     required this.avatarBackgrounds,
   });
 
-  /// Palette of the light theme, the only theme of version 1.0.
+  /// Palette of the dark screen of the boss fight.
+  static const AppPalette boss = AppPalette(
+    primaryDepth: AppColors.violetDepth,
+    primaryText: AppColors.white,
+    tint: AppColors.bossSurface,
+    border: AppColors.bossDepth,
+    mutedText: AppColors.violetSoftBorder,
+    warmTint: AppColors.yellowTint,
+    secondaryDepth: AppColors.yellowDepth,
+    strongBorder: AppColors.violetStrongBorder,
+    softBorder: AppColors.violetSoftBorder,
+    lockedFace: AppColors.lockedFace,
+    lockedDepth: AppColors.lockedDepth,
+    lockedSurface: AppColors.lockedSurface,
+    avatarBackgrounds: <Color>[
+      AppColors.violet,
+      AppColors.green,
+      AppColors.yellow,
+      AppColors.avatarRed,
+      AppColors.avatarBlue,
+      AppColors.avatarPink,
+    ],
+  );
+
+  /// Palette of the light theme.
   static const AppPalette light = AppPalette(
     primaryDepth: AppColors.violetDepth,
     primaryText: AppColors.violetText,

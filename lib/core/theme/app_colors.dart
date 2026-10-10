@@ -48,6 +48,15 @@ abstract final class AppColors {
   /// Background of a locked stage card.
   static const Color lockedSurface = Color(0xFFECE8FB);
 
+  /// Surface of the cards and keys of the boss fight.
+  static const Color bossSurface = Color(0xFF3A2F73);
+
+  /// Raised edge under the keys of the boss fight.
+  static const Color bossDepth = Color(0xFF15103A);
+
+  /// Remaining life of the boss.
+  static const Color bossLife = Color(0xFFFF8A75);
+
   /// Reward color: stars, crowns, streaks.
   static const Color yellow = Color(0xFFFFC531);
 
