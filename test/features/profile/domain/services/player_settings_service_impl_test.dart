@@ -41,6 +41,26 @@ void main() {
       verify(() => mockRepository.getProfileSettings(profileId: 'p-1'))
           .called(1);
     });
+    test('reads whether everything is unlocked', () async {
+      // Arrange
+      when(
+        () => mockRepository.getProfileSettings(
+          profileId: any(named: 'profileId'),
+        ),
+      ).thenAnswer(
+        (_) async => DataSuccess<ProfileSettingsEntity>(
+          const ProfileSettingsEntity.defaults(
+            profileId: 'p-1',
+          ).copyWith(isEverythingUnlocked: true),
+        ),
+      );
+      // Act
+      final bool actualUnlocked = (await service.readEverythingUnlocked(
+        profileId: 'p-1',
+      )).requireData;
+      // Assert
+      expect(actualUnlocked, isTrue);
+    });
     test('forwards a failure to read the settings', () async {
       // Arrange
       when(

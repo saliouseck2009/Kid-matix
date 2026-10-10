@@ -290,12 +290,12 @@ La carte des 12 tables devient l'accueil : chaque table a 5 étapes, des étoile
 
 **Domaine**
 
-- [ ] **F5-01** Entité `StageProgress` et description des 5 étapes d'une table : nombre de questions, formats autorisés, chrono (10 secondes par question à l'étape Vitesse).
-- [ ] **F5-02** `StarPolicy` : 1 étoile dès 60 % de bonnes réponses, 2 dès 80 %, 3 pour un sans-faute ; le meilleur résultat est conservé.
-- [ ] **F5-03** Déblocage : une étape s'ouvre quand la précédente a 1 étoile ; la table suivante s'ouvre dès l'étape 3 validée.
-- [ ] **F5-04** Ordre des tables : 1, 2, 10, 5, 3, 4, 6, 9, 7, 8, 11, 12.
-- [ ] **F5-05** Étape « Révision » de 15 questions après chaque groupe de 3 tables.
-- [ ] **F5-06** `GetLearningPath` : tables, étapes, étoiles et verrous d'un joueur, réglage « Tout débloquer » pris en compte.
+- [x] **F5-01** Entité `StageProgress` et description des 5 étapes d'une table : nombre de questions, formats autorisés, chrono (10 secondes par question à l'étape Vitesse).
+- [x] **F5-02** `StarPolicy` : 1 étoile dès 60 % de bonnes réponses, 2 dès 80 %, 3 pour un sans-faute ; le meilleur résultat est conservé.
+- [x] **F5-03** Déblocage : une étape s'ouvre quand la précédente a 1 étoile ; la table suivante s'ouvre dès l'étape 3 validée.
+- [x] **F5-04** Ordre des tables : 1, 2, 10, 5, 3, 4, 6, 9, 7, 8, 11, 12.
+- [x] **F5-05** Étape « Révision » de 15 questions après chaque groupe de 3 tables.
+- [x] **F5-06** `GetLearningPath` : tables, étapes, étoiles et verrous d'un joueur, réglage « Tout débloquer » pris en compte.
 
 **Données**
 
@@ -312,7 +312,7 @@ La carte des 12 tables devient l'accueil : chaque table a 5 étapes, des étoile
 
 **Tests**
 
-- [ ] **F5-14** Tests de `StarPolicy` et des règles de déblocage, « Tout débloquer » compris.
+- [x] **F5-14** Tests de `StarPolicy` et des règles de déblocage, « Tout débloquer » compris.
 - [ ] **F5-15** Tests de `LearningPathBloc` et test de widget de la carte dans ses trois états de nœud.
 
 **Terminé quand :** un nouveau joueur enchaîne les étapes 1 à 3 de la table de 1 et voit la table de 2 s'ouvrir.
