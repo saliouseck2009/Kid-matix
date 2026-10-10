@@ -15,10 +15,21 @@ import '../features/quiz/helpers/quiz_fixtures.dart';
 /// [PlayerSettingsService] that always answers [mode].
 final class FixedPlayerSettings implements PlayerSettingsService {
   /// Creates the service.
-  const FixedPlayerSettings([this.mode = TimerMode.normal]);
+  const FixedPlayerSettings([
+    this.mode = TimerMode.normal,
+    this.isEverythingUnlocked = false,
+  ]);
 
   /// Timer mode returned.
   final TimerMode mode;
+
+  /// "Tout débloquer" returned.
+  final bool isEverythingUnlocked;
+
+  @override
+  Future<DataState<bool>> readEverythingUnlocked({
+    required String profileId,
+  }) async => DataSuccess<bool>(isEverythingUnlocked);
 
   @override
   Future<DataState<TimerMode>> readTimerMode({

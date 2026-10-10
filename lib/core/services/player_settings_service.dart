@@ -7,4 +7,8 @@ import 'package:kid_matix/core/error/data_state.dart';
 abstract interface class PlayerSettingsService {
   /// Returns how the timer behaves for the player [profileId].
   Future<DataState<TimerMode>> readTimerMode({required String profileId});
+
+  /// Returns whether "Tout débloquer" opens every table of the learning
+  /// path for the player [profileId].
+  Future<DataState<bool>> readEverythingUnlocked({required String profileId});
 }

@@ -12,17 +12,34 @@ final class PlayerSettingsServiceImpl implements PlayerSettingsService {
   final ProfileRepository _repository;
 
   @override
-  Future<DataState<TimerMode>> readTimerMode({
-    required String profileId,
-  }) async {
+  Future<DataState<TimerMode>> readTimerMode({required String profileId}) {
+    return _read(
+      profileId,
+      (ProfileSettingsEntity settings) => settings.timerMode,
+    );
+  }
+
+  @override
+  Future<DataState<bool>> readEverythingUnlocked({required String profileId}) {
+    return _read(
+      profileId,
+      (ProfileSettingsEntity settings) => settings.isEverythingUnlocked,
+    );
+  }
+
+  Future<DataState<T>> _read<T>(
+    String profileId,
+    T Function(ProfileSettingsEntity settings) pick,
+  ) async {
     final DataState<ProfileSettingsEntity> settings = await _repository
         .getProfileSettings(profileId: profileId);
     return switch (settings) {
-      DataSuccess<ProfileSettingsEntity>(:final data) => DataSuccess<TimerMode>(
-        data.timerMode,
+      DataSuccess<ProfileSettingsEntity>(:final data) => DataSuccess<T>(
+        pick(data),
       ),
-      DataFailed<ProfileSettingsEntity>(:final exception) =>
-        DataFailed<TimerMode>(exception),
+      DataFailed<ProfileSettingsEntity>(:final exception) => DataFailed<T>(
+        exception,
+      ),
     };
   }
 }
