@@ -17,8 +17,9 @@ middle of one). Last update: 2026-10-10.
 | F7 · Rewards | **Done** (closed 2026-10-10) |
 | F8 · Growing mascot | **Done** (closed 2026-10-10) |
 | F9 · Free training and Against the clock | **Done** (closed 2026-10-10) |
-| F10 · Profile and settings | **Next** |
-| F11 – F21 | Not started |
+| F10 · Profile and settings | **Done** (closed 2026-10-10) |
+| F11 · Polish and release of 1.0 | **Next** |
+| F12 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -408,14 +409,49 @@ Known gaps left on purpose, to handle in the lot named:
 - Rewards: the Sprinter badge.
 - `ComingSoonPage` is gone: every tab has its screen.
 
-## Starting F10
+## F10 closure
 
-Tasks F10-01 to F10-12 in `docs/product/task-breakdown.md`; mockups `12`
-(profile) and `13` (settings).
+- `bash tool/check.sh`: every step OK (607 tests); `tool/check.sh build`
+  OK (Android and iOS, with `audioplayers`); CI green on #56 to #59.
+- Checked on the Android emulator (API 36), the lot's "done when"
+  included: after the Discovery stage of the table of 1, the Profile tab
+  showed level 2, "1 jour de série", 2 badges and the table of 1 "En
+  cours" in the grid; the timer set to "Sans" removed the timer bar from
+  the next Speed stage and "Normal" brought it back; "Tout débloquer"
+  opened the tables on the map at once. Muting the sounds is covered by
+  unit tests (no audio on the emulator). Fixed there: the column marks of
+  the grid were enlarged by `FittedBox`.
 
-- The Profile tab today is the F1 version plus the mascot card; F10
-  builds mockup 12 around it: level, streak, crowns, badges, mastery
-  grid (`GetMasteryGridUseCase` of F4), defeated monsters
-  (`LearningPathEntity.defeatedBosses`).
-- `features/setting/` is created: sounds, vibrations, timer mode, daily
-  goal, "Tout débloquer", reduced motion; `audioplayers` is added.
+Known gaps left on purpose, to handle in the lot named:
+
+- The leaderboard (F17), reminder (F18) and backup (F20) sections of the
+  settings stay hidden until their lots.
+- The sounds are synthesized placeholders (`tool/generate_sounds.py`).
+- Waiting for the owner: the edit through the avatar and nickname of the
+  header, "Ta progression est remise à zéro.", the reset dialog, the
+  screen-reader texts of the badges, monsters and grid cells.
+
+## What F10 delivered
+
+- Profile tab (mockup 12): header, streak / crowns / badges tiles
+  (`GetProfileStats`, `ProgressCubit`), mascot card, "Mes tables" mastery
+  grid (mastery feature, `MasteryPages`), "Mes badges" (reward) and "Mes
+  monstres" (learning path) given by the router.
+- Settings screen (mockup 13) in the profile feature: `GetSettings`,
+  `UpdateSettings`, `SettingsCubit`, reduced motion applied to the whole
+  app (`ReducedMotionScope`), delete moved here.
+- Reset: `ProgressResetHook` per feature run by `ProgressResetter`
+  (`ProgressResetService`) in one transaction; `ResetProgressUseCase`;
+  nickname confirmation shared with deletion (`NicknameConfirmDialog`).
+- `features/setting/`: `GameFeedbackService` (core) with `audioplayers`
+  and haptics; sounds in `assets/sounds/`.
+- `RewardService.readStreak`, `PlayerSettingsService.readFeedback`,
+  `ChoiceSegments` moved to `core/widgets`.
+
+## Starting F11
+
+Tasks F11-01 to F11-11 in `docs/product/task-breakdown.md`. Some are
+handed to Codex in parallel (briefs in the untracked `codex/` folder):
+F11-03 and F11-04 (tests, portrait lock), F11-05 (coverage), F11-08
+(release audit), F11-09 and F11-10 (store drafts). F11-07 needs the final
+name, icon and splash from the owner; F11-11 needs the store accounts.
