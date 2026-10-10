@@ -92,14 +92,23 @@ void main() {
   Future<void> answerRight() async {
     final Answer expected =
         (bloc.state as QuizAsking).turn.question.expectedAnswer;
+    final Future<QuizState> feedback = bloc.stream.firstWhere(
+      (QuizState state) => state is QuizShowingFeedback,
+    );
     bloc.add(AnswerSubmitted(answer: expected));
-    await pumpEventQueue();
+    await feedback;
+    final Future<QuizState> next = bloc.stream.firstWhere(
+      (QuizState state) => state is QuizAsking,
+    );
     bloc.add(const NextRequested());
-    await pumpEventQueue();
+    await next;
   }
 
   test('keeps the answers given when the app closes midway', () async {
     // Arrange
+    final Future<QuizState> started = bloc.stream.firstWhere(
+      (QuizState state) => state is QuizAsking,
+    );
     bloc.add(
       QuizStarted(
         request: QuizRequest(
@@ -115,7 +124,7 @@ void main() {
         ),
       ),
     );
-    await pumpEventQueue();
+    await started;
     // Act: three answers, then the app is killed without leaving the quiz.
     for (int index = 0; index < 3; index++) {
       await answerRight();

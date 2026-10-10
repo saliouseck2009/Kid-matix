@@ -4,6 +4,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/app_migrations.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
+import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/quiz/data/datasources/quiz_session_local_data_source_impl.dart';
 import 'package:kid_matix/features/quiz/data/models/quiz_answer_local_model.dart';
@@ -53,10 +54,29 @@ const List<QuizAnswerEntity> _answers = <QuizAnswerEntity>[
   ),
 ];
 
+/// Hook that writes nothing but records what it saw.
+final class _RecordingHook implements SessionSavedHook {
+  _RecordingHook({this.isBroken = false});
+
+  final bool isBroken;
+  final List<SavedQuizSession> sessions = <SavedQuizSession>[];
+
+  @override
+  Future<List<String>> onSessionSaved({
+    required Transaction transaction,
+    required SavedQuizSession session,
+  }) async {
+    if (isBroken) await transaction.execute('INSERT INTO nowhere VALUES (1)');
+    sessions.add(session);
+    return <String>['stage_progress'];
+  }
+}
+
 void main() {
   late AppDatabase appDatabase;
   late TableChangeBus changeBus;
   late QuizSessionRepositoryImpl repository;
+  late SessionSavedHooks hooks;
 
   setUpAll(sqfliteFfiInit);
 
@@ -76,8 +96,12 @@ void main() {
       'updated_at': 0,
     });
     changeBus = TableChangeBus();
+    hooks = SessionSavedHooks();
     repository = QuizSessionRepositoryImpl(
-      sessions: QuizSessionLocalDataSourceImpl(database: appDatabase),
+      sessions: QuizSessionLocalDataSourceImpl(
+        database: appDatabase,
+        hooks: hooks,
+      ),
       clock: FakeClock(quizStart),
       changeBus: changeBus,
     );
@@ -150,6 +174,46 @@ void main() {
       )).exceptionOrNull;
       // Assert
       expect(actualException, isA<NotFoundException>());
+    });
+    test(
+      'gives the saved session to the hooks of the other features',
+      () async {
+        // Arrange
+        final _RecordingHook inputHook = _RecordingHook();
+        hooks.add(inputHook);
+        final Future<String> actualChange = changeBus
+            .watchTable(table: 'stage_progress')
+            .first;
+        // Act
+        await repository.saveSession(
+          session: _buildSession(),
+          answers: _answers,
+        );
+        // Assert
+        final SavedQuizSession actualSession = inputHook.sessions.single;
+        expect(actualSession.id, 's1');
+        expect(actualSession.isCompleted, isTrue);
+        expect(actualSession.correctCount, 1);
+        expect(actualSession.sourceKey, 'path:mul:5:training');
+        expect(
+          actualSession.endedAt,
+          quizStart.add(const Duration(seconds: 75)),
+        );
+        expect(await actualChange, 'stage_progress');
+      },
+    );
+    test('saves nothing when a hook fails', () async {
+      // Arrange
+      hooks.add(_RecordingHook(isBroken: true));
+      // Act
+      final DataState<void> actualState = await repository.saveSession(
+        session: _buildSession(),
+        answers: _answers,
+      );
+      // Assert
+      expect(actualState.exceptionOrNull, isA<CacheException>());
+      final Database database = await appDatabase.database;
+      expect(await database.query('quiz_session'), isEmpty);
     });
   });
 }

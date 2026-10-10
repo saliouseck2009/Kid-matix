@@ -299,7 +299,7 @@ La carte des 12 tables devient l'accueil : chaque table a 5 étapes, des étoile
 
 **Données**
 
-- [ ] **F5-07** Migration : table `stage_progress` ; mise à jour dans la transaction de fin de session.
+- [x] **F5-07** Migration : table `stage_progress` ; mise à jour dans la transaction de fin de session.
 
 **Présentation**
 

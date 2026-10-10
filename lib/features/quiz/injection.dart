@@ -14,7 +14,7 @@ import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.d
 /// Registers the quiz feature in [sl]; Blocs are never registered.
 void registerQuizFeature(GetIt sl) {
   sl.registerLazySingleton<QuizSessionLocalDataSource>(
-    () => QuizSessionLocalDataSourceImpl(database: sl()),
+    () => QuizSessionLocalDataSourceImpl(database: sl(), hooks: sl()),
   );
   sl.registerLazySingleton<QuizSessionRepository>(
     () => QuizSessionRepositoryImpl(
@@ -57,6 +57,6 @@ void _registerUseCases(GetIt sl) {
     () => AbandonSessionUseCase(repository: sl(), clock: sl()),
   );
   sl.registerLazySingleton<GetQuizResultUseCase>(
-    () => GetQuizResultUseCase(repository: sl()),
+    () => GetQuizResultUseCase(repository: sl(), learningPath: sl()),
   );
 }

@@ -11,6 +11,7 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 
 import '../features/quiz/helpers/quiz_fixtures.dart';
+import 'fixed_learning_path_service.dart';
 
 /// [PlayerSettingsService] that always answers [mode].
 final class FixedPlayerSettings implements PlayerSettingsService {
@@ -76,7 +77,10 @@ QuizPages buildTestQuizPages({
       repository ?? MockQuizSessionRepository();
   return QuizPages(
     useCases: buildTestQuizUseCases(repository: sessions, settings: settings),
-    getResult: GetQuizResultUseCase(repository: sessions),
+    getResult: GetQuizResultUseCase(
+      repository: sessions,
+      learningPath: const FixedLearningPathService(),
+    ),
     ticker: ticker,
     domains: buildDomainRegistry(),
   );

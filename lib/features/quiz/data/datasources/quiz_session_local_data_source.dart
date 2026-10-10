@@ -6,8 +6,10 @@ import 'package:kid_matix/features/quiz/data/models/quiz_session_local_model.dar
 /// Methods throw the `sqflite` exceptions as they come; the repository turns
 /// them into typed failures.
 abstract interface class QuizSessionLocalDataSource {
-  /// Inserts [session] and its [answers] in one transaction.
-  Future<void> insertSession({
+  /// Inserts [session] and its [answers] in one transaction, with what the
+  /// session hooks of the other features write; returns the tables those
+  /// hooks wrote.
+  Future<List<String>> insertSession({
     required QuizSessionLocalModel session,
     required List<QuizAnswerLocalModel> answers,
   });
