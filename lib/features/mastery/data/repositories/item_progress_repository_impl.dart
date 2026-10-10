@@ -98,4 +98,9 @@ final class ItemProgressRepositoryImpl implements ItemProgressRepository {
     log(message, name: _logName, error: error, stackTrace: stackTrace);
     return DataFailed<T>(CacheException(message: error.toString()));
   }
+
+  @override
+  Stream<void> watchChanges() {
+    return _changeBus.watchTable(table: MasteryTables.itemProgress);
+  }
 }

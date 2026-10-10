@@ -1,4 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
@@ -52,6 +56,17 @@ final class LearningPathPages {
       onPlay: onPlay,
       header: header,
       mascot: mascot,
+    );
+  }
+
+  /// "Mes monstres" of [profileId], for the Profile tab.
+  Widget buildMonstersCard({required String profileId}) {
+    return BlocProvider<LearningPathBloc>(
+      key: ValueKey<String>('monsters-$profileId'),
+      create: (_) =>
+          LearningPathBloc(params: _paramsOf(profileId), useCases: _useCases)
+            ..add(const LearningPathStarted()),
+      child: const MonstersCard(),
     );
   }
 

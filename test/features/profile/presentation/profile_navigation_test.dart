@@ -14,6 +14,7 @@ import '../helpers/profile_fixtures.dart';
 import '../../../helpers/test_reward_pages.dart';
 import '../../../helpers/test_mascot_pages.dart';
 import '../../../helpers/test_challenge_pages.dart';
+import '../../../helpers/test_mastery_pages.dart';
 
 MockWatchProfileChangesUseCase _buildQuietWatch() {
   final MockWatchProfileChangesUseCase mockWatch =
@@ -69,6 +70,7 @@ void main() {
           rewardPages: buildTestRewardPages(),
           mascotPages: mascotPages,
           challengePages: buildTestChallengePages(),
+          masteryPages: buildTestMasteryPages(),
         ),
       ),
     );

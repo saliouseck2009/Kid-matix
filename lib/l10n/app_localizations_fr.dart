@@ -200,6 +200,60 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get masteryGridTitle => 'Mes tables';
+
+  @override
+  String get masteryStatusNotSeen => 'Nouveau';
+
+  @override
+  String get masteryStatusToReview => 'À revoir';
+
+  @override
+  String get masteryStatusInProgress => 'En cours';
+
+  @override
+  String get masteryStatusAcquired => 'Acquis';
+
+  @override
+  String get masteryStatusMastered => 'Maîtrisé';
+
+  @override
+  String masteryCellSpoken(String fact, String status) {
+    return '$fact, $status';
+  }
+
+  @override
+  String get rewardBadgesTitle => 'Mes badges';
+
+  @override
+  String rewardBadgeEarnedSpoken(String name) {
+    return '$name, obtenu';
+  }
+
+  @override
+  String rewardBadgeLockedSpoken(String name, String hint) {
+    return '$name, à obtenir : $hint';
+  }
+
+  @override
+  String get pathMonstersTitle => 'Mes monstres';
+
+  @override
+  String pathMonstersCount(int defeated, int total) {
+    return '$defeated sur $total';
+  }
+
+  @override
+  String pathMonsterDefeatedSpoken(int number) {
+    return 'Monstre de la table de $number, vaincu';
+  }
+
+  @override
+  String pathMonsterHiddenSpoken(int number) {
+    return 'Monstre de la table de $number, pas encore vaincu';
+  }
+
+  @override
   String get switchPlayerButton => 'Changer de joueur';
 
   @override

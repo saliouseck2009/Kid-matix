@@ -19,4 +19,7 @@ abstract interface class ItemProgressRepository {
 
   /// Creates or replaces the row of [progress].
   Future<DataState<void>> saveProgress({required ItemProgressEntity progress});
+
+  /// Emits an event each time a progress may have changed.
+  Stream<void> watchChanges();
 }

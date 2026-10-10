@@ -453,8 +453,8 @@ L'onglet Profil montre la progression du joueur ; les réglages règlent les son
 
 - [ ] **F10-03** `ProgressCubit` et `SettingsCubit`.
 - [x] **F10-04** Écran Profil : avatar, niveau, tuiles série, couronnes et badges, carte Mascotte.
-- [ ] **F10-05** Grille de maîtrise 12 × 10 colorée par statut, avec sa légende ; chaque statut a aussi un libellé pour les lecteurs d'écran.
-- [ ] **F10-06** Liste des badges obtenus et à obtenir, collection de monstres vaincus.
+- [x] **F10-05** Grille de maîtrise 12 × 10 colorée par statut, avec sa légende ; chaque statut a aussi un libellé pour les lecteurs d'écran.
+- [x] **F10-06** Liste des badges obtenus et à obtenir, collection de monstres vaincus.
 - [x] **F10-07** Bouton « Changer de joueur », retour à « Qui joue ? ».
 - [ ] **F10-08** Écran Réglages : sons, vibrations, mode de chrono, objectif du jour, « Tout débloquer », animations réduites. Maquette : `13-settings.png`.
 - [ ] **F10-09** Ajout du paquet audioplayers ; sons et vibrations : bonne réponse, erreur, célébrations ; coupure séparée des deux.
@@ -463,7 +463,7 @@ L'onglet Profil montre la progression du joueur ; les réglages règlent les son
 **Tests**
 
 - [ ] **F10-11** Tests des deux Cubit et de `ResetProgress`.
-- [ ] **F10-12** Test de widget de la grille de maîtrise.
+- [x] **F10-12** Test de widget de la grille de maîtrise.
 
 **Terminé quand :** le Profil reflète une session qui vient d'être jouée, et couper les sons ou passer en « sans chrono » s'applique au quiz suivant.
 

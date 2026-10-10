@@ -10,6 +10,7 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
+import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
@@ -27,6 +28,7 @@ GoRouter createAppRouter({
   required RewardPages rewardPages,
   required MascotPages mascotPages,
   required ChallengePages challengePages,
+  required MasteryPages masteryPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -129,6 +131,11 @@ GoRouter createAppRouter({
             session: session,
             profilePages: profilePages,
             mascotPages: mascotPages,
+            sectionsOf: (String profileId) => <Widget>[
+              masteryPages.buildGridCard(profileId: profileId),
+              rewardPages.buildBadgesCard(profileId: profileId),
+              pathPages.buildMonstersCard(profileId: profileId),
+            ],
             rootNavigatorKey: rootNavigatorKey,
           ),
         ],
@@ -142,6 +149,7 @@ StatefulShellBranch _createProfileBranch({
   required ProfileSessionService session,
   required ProfilePages profilePages,
   required MascotPages mascotPages,
+  required List<Widget> Function(String profileId) sectionsOf,
   required GlobalKey<NavigatorState> rootNavigatorKey,
 }) {
   return StatefulShellBranch(
@@ -156,6 +164,7 @@ StatefulShellBranch _createProfileBranch({
             mascotCard: mascotPages.buildProfileCard(
               onOpen: () => context.go(AppRoutes.mascot),
             ),
+            sections: sectionsOf(profileId),
           );
         },
         routes: <RouteBase>[
