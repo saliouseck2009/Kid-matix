@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
-import 'package:kid_matix/features/mascot/domain/entities/accessory_slot.dart';
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/accessory_slot.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 import 'package:kid_matix/features/mascot/domain/entities/mascot_entity.dart';
 import 'package:kid_matix/features/mascot/domain/services/mascot_rules.dart';
 import 'package:kid_matix/features/mascot/domain/usecases/get_mascot_use_case.dart';

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 import 'package:kid_matix/features/mascot/domain/entities/mascot_record.dart';
 
 part 'mascot_local_model.g.dart';

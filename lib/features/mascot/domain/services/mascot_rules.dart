@@ -1,5 +1,5 @@
-import 'package:kid_matix/features/mascot/domain/entities/accessory_slot.dart';
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/accessory_slot.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 
 /// The rules of the mascot: its stages and its accessories.
 ///

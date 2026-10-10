@@ -1,5 +1,5 @@
 import 'package:kid_matix/core/error/data_state.dart';
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 import 'package:kid_matix/features/mascot/domain/entities/mascot_record.dart';
 import 'package:kid_matix/features/mascot/domain/repositories/mascot_repository.dart';
 import 'package:kid_matix/features/mascot/domain/services/mascot_rules.dart';
