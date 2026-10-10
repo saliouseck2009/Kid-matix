@@ -5,6 +5,7 @@ import 'package:kid_matix/features/mascot/data/repositories/mascot_repository_im
 import 'package:kid_matix/features/mascot/domain/repositories/mascot_repository.dart';
 import 'package:kid_matix/features/mascot/domain/usecases/get_mascot_use_case.dart';
 import 'package:kid_matix/features/mascot/domain/usecases/update_mascot_use_cases.dart';
+import 'package:kid_matix/features/mascot/domain/usecases/watch_mascot_changes_use_case.dart';
 
 /// Registers the mascot feature in [sl]; Blocs are never registered.
 void registerMascotFeature(GetIt sl) {
@@ -16,6 +17,13 @@ void registerMascotFeature(GetIt sl) {
   );
   sl.registerLazySingleton<GetMascotUseCase>(
     () => GetMascotUseCase(repository: sl(), rewards: sl(), crowns: sl()),
+  );
+  sl.registerLazySingleton<WatchMascotChangesUseCase>(
+    () => WatchMascotChangesUseCase(
+      repository: sl(),
+      rewards: sl(),
+      crowns: sl(),
+    ),
   );
   sl.registerLazySingleton<UpdateMascotUseCases>(
     () => UpdateMascotUseCases(repository: sl()),

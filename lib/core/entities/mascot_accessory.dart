@@ -1,4 +1,4 @@
-import 'package:kid_matix/features/mascot/domain/entities/accessory_slot.dart';
+import 'package:kid_matix/core/entities/accessory_slot.dart';
 
 /// The accessories of the mascot: one per crown, in the order the crowns
 /// are won, and three earned with badges.

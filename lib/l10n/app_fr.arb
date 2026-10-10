@@ -997,5 +997,235 @@
         "example": "5"
       }
     }
+  },
+  "mascotGoalReminder": "Encore {xp} XP pour ton objectif du jour !",
+  "@mascotGoalReminder": {
+    "description": "Bubble of the mascot on the map while the daily goal is not reached (\"{xp} more XP for your daily goal!\"). Talks to the child.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "mascotGoalReached": "Objectif du jour atteint, bravo !",
+  "@mascotGoalReached": {
+    "description": "Bubble of the mascot on the map once the daily goal is reached (\"Daily goal reached, well done!\")."
+  },
+  "mascotEncouragement": "Pas grave, tu vas y arriver !",
+  "@mascotEncouragement": {
+    "description": "Bubble of the mascot on the question card after a mistake (\"No worries, you'll get there!\"). Warm, never blaming."
+  },
+  "mascotComboCheer": "Bravo, {count} d'affilée !",
+  "@mascotComboCheer": {
+    "description": "Bubble of the mascot on the question card at a combo milestone (\"Well done, {count} in a row!\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "mascotCardTitle": "Ta mascotte grandit",
+  "@mascotCardTitle": {
+    "description": "Title of the mascot card of the Profile tab (\"Your mascot is growing\"). One short line."
+  },
+  "mascotCardStage": "Stade {stage} sur {total} · prochain au niveau {level}",
+  "@mascotCardStage": {
+    "description": "Line of the mascot card: the stage and the level of the next one (\"Stage 1 of 5 · next at level 5\"). Keep the middle dot.",
+    "placeholders": {
+      "stage": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      },
+      "level": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "mascotCardLastStage": "Stade {stage} sur {total} · taille maximale",
+  "@mascotCardLastStage": {
+    "description": "Line of the mascot card once the mascot reached its last stage (\"Stage 5 of 5 · fully grown\").",
+    "placeholders": {
+      "stage": {
+        "type": "int",
+        "example": "5"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "mascotGrewTitle": "{name} a grandi !",
+  "@mascotGrewTitle": {
+    "description": "Title of the celebration when the mascot reaches a new stage (\"Lim grew!\"); {name} is the name the child gave it.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lim"
+      }
+    }
+  },
+  "mascotGrewHint": "Stade {stage} sur {total}",
+  "@mascotGrewHint": {
+    "description": "Line under the growth celebration (\"Stage 2 of 5\").",
+    "placeholders": {
+      "stage": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "mascotPageTitle": "Ma mascotte",
+  "@mascotPageTitle": {
+    "description": "Title of the mascot screen opened from the Profile tab (\"My mascot\")."
+  },
+  "mascotOpenTooltip": "Voir ma mascotte",
+  "@mascotOpenTooltip": {
+    "description": "Screen-reader label of the mascot card of the Profile tab, which opens the mascot screen (\"See my mascot\")."
+  },
+  "mascotNameLabel": "Son nom",
+  "@mascotNameLabel": {
+    "description": "Label of the field where the child names the mascot (\"Its name\")."
+  },
+  "mascotRename": "Changer le nom",
+  "@mascotRename": {
+    "description": "Button that saves the new name of the mascot (\"Change the name\")."
+  },
+  "mascotAccessoriesTitle": "Accessoires",
+  "@mascotAccessoriesTitle": {
+    "description": "Title of the list of accessories on the mascot screen (\"Accessories\")."
+  },
+  "mascotSlotHead": "Tête",
+  "@mascotSlotHead": {
+    "description": "Name of the group of accessories worn on the head (\"Head\")."
+  },
+  "mascotSlotEyes": "Yeux",
+  "@mascotSlotEyes": {
+    "description": "Name of the group of accessories worn on the eyes (\"Eyes\")."
+  },
+  "mascotSlotNeck": "Cou",
+  "@mascotSlotNeck": {
+    "description": "Name of the group of accessories worn on the neck (\"Neck\")."
+  },
+  "mascotSlotBack": "Dos",
+  "@mascotSlotBack": {
+    "description": "Name of the group of accessories worn on the back (\"Back\")."
+  },
+  "mascotAccessoryCap": "Casquette",
+  "@mascotAccessoryCap": {
+    "description": "Name of a mascot accessory (\"Cap\")."
+  },
+  "mascotAccessoryRoundGlasses": "Lunettes rondes",
+  "@mascotAccessoryRoundGlasses": {
+    "description": "Name of a mascot accessory (\"Round glasses\")."
+  },
+  "mascotAccessoryCape": "Cape",
+  "@mascotAccessoryCape": {
+    "description": "Name of a mascot accessory (\"Cape\")."
+  },
+  "mascotAccessoryBowTie": "Nœud papillon",
+  "@mascotAccessoryBowTie": {
+    "description": "Name of a mascot accessory (\"Bow tie\")."
+  },
+  "mascotAccessoryScarf": "Écharpe",
+  "@mascotAccessoryScarf": {
+    "description": "Name of a mascot accessory (\"Scarf\")."
+  },
+  "mascotAccessoryWizardHat": "Chapeau de magicien",
+  "@mascotAccessoryWizardHat": {
+    "description": "Name of a mascot accessory (\"Wizard hat\")."
+  },
+  "mascotAccessorySunglasses": "Lunettes de soleil",
+  "@mascotAccessorySunglasses": {
+    "description": "Name of a mascot accessory (\"Sunglasses\")."
+  },
+  "mascotAccessoryBackpack": "Sac à dos",
+  "@mascotAccessoryBackpack": {
+    "description": "Name of a mascot accessory (\"Backpack\")."
+  },
+  "mascotAccessoryHeadphones": "Casque audio",
+  "@mascotAccessoryHeadphones": {
+    "description": "Name of a mascot accessory (\"Headphones\")."
+  },
+  "mascotAccessoryMedal": "Médaille",
+  "@mascotAccessoryMedal": {
+    "description": "Name of a mascot accessory (\"Medal\")."
+  },
+  "mascotAccessoryWings": "Ailes",
+  "@mascotAccessoryWings": {
+    "description": "Name of a mascot accessory (\"Wings\")."
+  },
+  "mascotAccessoryKingCrown": "Couronne de roi",
+  "@mascotAccessoryKingCrown": {
+    "description": "Name of a mascot accessory (\"King's crown\")."
+  },
+  "mascotAccessoryPartyHat": "Chapeau de fête",
+  "@mascotAccessoryPartyHat": {
+    "description": "Name of a mascot accessory (\"Party hat\")."
+  },
+  "mascotAccessoryLightningGoggles": "Lunettes éclair",
+  "@mascotAccessoryLightningGoggles": {
+    "description": "Name of a mascot accessory (\"Lightning goggles\")."
+  },
+  "mascotAccessoryGoldenCape": "Cape dorée",
+  "@mascotAccessoryGoldenCape": {
+    "description": "Name of a mascot accessory (\"Golden cape\")."
+  },
+  "mascotUnlockCrown": "{rank, plural, =1{À la 1re couronne} other{À la {rank}e couronne}}",
+  "@mascotUnlockCrown": {
+    "description": "How to unlock a locked accessory: win the n-th crown (\"With the 3rd crown\"). Shown under the accessory tile, one short line. French ordinals stay plain text, not superscript: \"1re\" for 1 (couronne is feminine), \"{rank}e\" otherwise.",
+    "placeholders": {
+      "rank": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mascotUnlockRegular": "Avec le badge Régulier",
+  "@mascotUnlockRegular": {
+    "description": "How to unlock an accessory earned with the Régulier badge (\"With the Steady badge\")."
+  },
+  "mascotUnlockLightning": "Avec le badge Éclair",
+  "@mascotUnlockLightning": {
+    "description": "How to unlock an accessory earned with the Éclair badge (\"With the Lightning badge\")."
+  },
+  "mascotUnlockAllFacts": "Avec le badge Les 120",
+  "@mascotUnlockAllFacts": {
+    "description": "How to unlock an accessory earned with the Les 120 badge (\"With The 120 badge\")."
+  },
+  "mascotAccessoryWorn": "{name}, sur ta mascotte",
+  "@mascotAccessoryWorn": {
+    "description": "Screen-reader label of an accessory the mascot wears (\"Cap, on your mascot\"). Accessory names have mixed grammatical genders, so the wording must not agree with {name}. Talks to the child (informal tu).",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Casquette"
+      }
+    }
+  },
+  "mascotAccessoryLocked": "{name}, à débloquer. {hint}",
+  "@mascotAccessoryLocked": {
+    "description": "Screen-reader label of a locked accessory with how to unlock it (\"Cape, to unlock. With the 3rd crown\"). Accessory names have mixed grammatical genders, so the wording must not agree with {name}; {hint} is a full phrase starting with a capital letter (mascotUnlock* keys).",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Cape"
+      },
+      "hint": {
+        "type": "String",
+        "example": "À la 3e couronne"
+      }
+    }
   }
 }

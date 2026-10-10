@@ -10,6 +10,7 @@ import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/widgets/coming_soon_page.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
+import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
@@ -29,6 +30,7 @@ GoRouter createAppRouter({
   required QuizPages quizPages,
   required LearningPathPages pathPages,
   required RewardPages rewardPages,
+  required MascotPages mascotPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -87,6 +89,11 @@ GoRouter createAppRouter({
                         context.go(AppRoutes.tableDetailOf(unitKey)),
                     onPlay: (StageSource source) =>
                         playStage(context, pathPages, source),
+                    mascot: mascotPages.buildMapMascot(
+                      bubble: rewardPages.buildGoalReminder(
+                        profileId: profileId,
+                      ),
+                    ),
                     header: (
                       player: profilePages.buildPlayerBadge(
                         profileId: profileId,
@@ -114,6 +121,7 @@ GoRouter createAppRouter({
           _createProfileBranch(
             session: session,
             profilePages: profilePages,
+            mascotPages: mascotPages,
             rootNavigatorKey: rootNavigatorKey,
           ),
         ],
@@ -126,6 +134,7 @@ GoRouter createAppRouter({
 StatefulShellBranch _createProfileBranch({
   required ProfileSessionService session,
   required ProfilePages profilePages,
+  required MascotPages mascotPages,
   required GlobalKey<NavigatorState> rootNavigatorKey,
 }) {
   return StatefulShellBranch(
@@ -135,7 +144,12 @@ StatefulShellBranch _createProfileBranch({
         builder: (BuildContext context, GoRouterState state) {
           final String? profileId = session.activeProfileId;
           if (profileId == null) return const SizedBox.shrink();
-          return profilePages.buildProfileTabPage(profileId: profileId);
+          return profilePages.buildProfileTabPage(
+            profileId: profileId,
+            mascotCard: mascotPages.buildProfileCard(
+              onOpen: () => context.go(AppRoutes.mascot),
+            ),
+          );
         },
         routes: <RouteBase>[
           GoRoute(
@@ -145,6 +159,15 @@ StatefulShellBranch _createProfileBranch({
               final String? profileId = session.activeProfileId;
               if (profileId == null) return const SizedBox.shrink();
               return profilePages.buildProfileEditPage(profileId: profileId);
+            },
+          ),
+          GoRoute(
+            path: _lastSegment(AppRoutes.mascot),
+            parentNavigatorKey: rootNavigatorKey,
+            builder: (BuildContext context, GoRouterState state) {
+              return mascotPages.buildMascotPage(
+                onBack: () => context.go(AppRoutes.profile),
+              );
             },
           ),
         ],

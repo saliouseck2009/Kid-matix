@@ -1,5 +1,5 @@
-import 'package:kid_matix/features/mascot/domain/entities/accessory_slot.dart';
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/accessory_slot.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 import 'package:meta/meta.dart';
 
 /// The mascot of a player: its name, its stage and its accessories.

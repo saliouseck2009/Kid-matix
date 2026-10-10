@@ -42,6 +42,7 @@ final class LearningPathPages {
     required ValueChanged<String> onOpenTable,
     required ValueChanged<StageSource> onPlay,
     PathHeaderSlots? header,
+    Widget? mascot,
   }) {
     return LearningPathPage(
       key: ValueKey<String>(profileId),
@@ -50,6 +51,7 @@ final class LearningPathPages {
       onOpenTable: onOpenTable,
       onPlay: onPlay,
       header: header,
+      mascot: mascot,
     );
   }
 

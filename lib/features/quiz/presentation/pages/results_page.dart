@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
+import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/core/widgets/star_row.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
@@ -151,7 +152,12 @@ class _ResultsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: AppSizes.space16,
         children: <Widget>[
-          const Center(child: MascotIllustration(size: _mascotSize)),
+          const Center(
+            child: MascotIllustration(
+              size: _mascotSize,
+              mood: MascotMood.happy,
+            ),
+          ),
           _ResultsTitle(
             title: switch (result.session.bossOutcome) {
               BossOutcome.defeated => context.l10n.resultsBossDefeated,

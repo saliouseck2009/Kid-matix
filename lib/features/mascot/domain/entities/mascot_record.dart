@@ -1,4 +1,4 @@
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 import 'package:kid_matix/features/mascot/domain/services/mascot_rules.dart';
 import 'package:meta/meta.dart';
 

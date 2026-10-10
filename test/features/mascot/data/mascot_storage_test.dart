@@ -8,7 +8,7 @@ import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/mascot/data/datasources/mascot_local_data_source_impl.dart';
 import 'package:kid_matix/features/mascot/data/models/mascot_local_model.dart';
 import 'package:kid_matix/features/mascot/data/repositories/mascot_repository_impl.dart';
-import 'package:kid_matix/features/mascot/domain/entities/mascot_accessory.dart';
+import 'package:kid_matix/core/entities/mascot_accessory.dart';
 import 'package:kid_matix/features/mascot/domain/entities/mascot_record.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

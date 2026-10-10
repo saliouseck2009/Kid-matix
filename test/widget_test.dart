@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
+import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/main.dart';
 
 import 'features/profile/helpers/profile_fixtures.dart';
@@ -8,6 +9,10 @@ import 'helpers/fake_profile_session_service.dart';
 import 'helpers/test_path_pages.dart';
 import 'helpers/test_quiz_pages.dart';
 import 'helpers/test_reward_pages.dart';
+import 'helpers/test_mascot_pages.dart';
+
+/// Mascot of the test player.
+final MascotPages mascotPages = buildTestMascotPages();
 
 /// Router of an app where a player is already active.
 GoRouter _createPlayingRouter() {
@@ -17,6 +22,7 @@ GoRouter _createPlayingRouter() {
     quizPages: buildTestQuizPages(),
     pathPages: buildTestPathPages(),
     rewardPages: buildTestRewardPages(),
+    mascotPages: mascotPages,
   );
 }
 
@@ -31,7 +37,12 @@ void main() {
         'Profil',
       ];
       // Act
-      await tester.pumpWidget(KidMatixApp(router: _createPlayingRouter()));
+      await tester.pumpWidget(
+        KidMatixApp(
+          router: _createPlayingRouter(),
+          scope: testMascotScope(mascotPages),
+        ),
+      );
       await tester.pumpAndSettle();
       // Assert
       for (final String expectedTab in expectedTabs) {
@@ -42,7 +53,12 @@ void main() {
       WidgetTester tester,
     ) async {
       // Act
-      await tester.pumpWidget(KidMatixApp(router: _createPlayingRouter()));
+      await tester.pumpWidget(
+        KidMatixApp(
+          router: _createPlayingRouter(),
+          scope: testMascotScope(mascotPages),
+        ),
+      );
       await tester.pumpAndSettle();
       // Assert
       expect(find.text('Table de 1').hitTestable(), findsOneWidget);
@@ -53,7 +69,12 @@ void main() {
     ) async {
       // Arrange
       const String inputTab = 'Défis';
-      await tester.pumpWidget(KidMatixApp(router: _createPlayingRouter()));
+      await tester.pumpWidget(
+        KidMatixApp(
+          router: _createPlayingRouter(),
+          scope: testMascotScope(mascotPages),
+        ),
+      );
       await tester.pumpAndSettle();
       // Act
       await tester.tap(find.text(inputTab));
