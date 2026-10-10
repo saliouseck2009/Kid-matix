@@ -44,6 +44,10 @@ void registerMasteryFeature(GetIt sl) {
     () => GetMasteryGridUseCase(repository: sl(), domains: sl()),
   );
   sl.registerLazySingleton<MasteryService>(
-    () => MasteryServiceImpl(planQuiz: sl(), recordAnswer: sl()),
+    () => MasteryServiceImpl(
+      planQuiz: sl(),
+      recordAnswer: sl(),
+      getGrid: sl(),
+    ),
   );
 }
