@@ -7,6 +7,7 @@ import 'package:kid_matix/core/storage/migrations/migration_005_create_stage_pro
 import 'package:kid_matix/core/storage/migrations/migration_006_add_quiz_session_boss_outcome.dart';
 import 'package:kid_matix/core/storage/migrations/migration_007_create_reward_tables.dart';
 import 'package:kid_matix/core/storage/migrations/migration_008_create_mascot_table.dart';
+import 'package:kid_matix/core/storage/migrations/migration_009_create_record_table.dart';
 
 /// Every schema migration of the app database, in version order.
 ///
@@ -21,4 +22,5 @@ const List<DatabaseMigration> appMigrations = <DatabaseMigration>[
   Migration006AddQuizSessionBossOutcome(),
   Migration007CreateRewardTables(),
   Migration008CreateMascotTable(),
+  Migration009CreateRecordTable(),
 ];
