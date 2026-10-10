@@ -9,6 +9,7 @@ final class QuizResultEntity {
   QuizResultEntity({
     required this.session,
     required List<QuizAnswerEntity> answers,
+    this.stars,
   }) : answers = List<QuizAnswerEntity>.unmodifiable(answers);
 
   /// The saved session.
@@ -16,6 +17,10 @@ final class QuizResultEntity {
 
   /// Its answers, in order.
   final List<QuizAnswerEntity> answers;
+
+  /// Stars earned by a completed stage of the learning path, or `null`
+  /// for a quiz played for something else.
+  final int? stars;
 
   /// Average time of the scored answers given before the timer ran out,
   /// or `null` when there is none.

@@ -57,6 +57,6 @@ void _registerUseCases(GetIt sl) {
     () => AbandonSessionUseCase(repository: sl(), clock: sl()),
   );
   sl.registerLazySingleton<GetQuizResultUseCase>(
-    () => GetQuizResultUseCase(repository: sl()),
+    () => GetQuizResultUseCase(repository: sl(), learningPath: sl()),
   );
 }

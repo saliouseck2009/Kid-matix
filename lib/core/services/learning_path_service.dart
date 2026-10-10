@@ -1,0 +1,14 @@
+/// The learning path, as the quiz results see it.
+///
+/// Implemented by the learning path feature, which owns the stages and
+/// their stars.
+abstract interface class LearningPathService {
+  /// Stars earned by a quiz played for [sourceKey] with [correctCount]
+  /// right answers out of [questionCount]; `null` when [sourceKey] is not
+  /// a stage of the path.
+  int? starsFor({
+    required String? sourceKey,
+    required int correctCount,
+    required int questionCount,
+  });
+}

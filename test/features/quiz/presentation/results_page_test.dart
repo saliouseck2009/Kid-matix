@@ -11,6 +11,7 @@ import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case
 import 'package:kid_matix/features/quiz/presentation/pages/results_page.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../helpers/fixed_learning_path_service.dart';
 import '../../../helpers/pump_localized.dart';
 import '../helpers/quiz_fixtures.dart';
 
@@ -72,7 +73,10 @@ void main() {
       tester,
       ResultsPage(
         sessionId: 's1',
-        getResult: GetQuizResultUseCase(repository: mockRepository),
+        getResult: GetQuizResultUseCase(
+          repository: mockRepository,
+          learningPath: const FixedLearningPathService(),
+        ),
         domains: buildDomainRegistry(),
         onContinue: () => isContinued = true,
         onReplay: (String unitKey) => replayedUnit = unitKey,
