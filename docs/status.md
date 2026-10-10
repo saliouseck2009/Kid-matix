@@ -16,8 +16,9 @@ middle of one). Last update: 2026-10-10.
 | F6 · Boss fight | **Done** (closed 2026-10-10) |
 | F7 · Rewards | **Done** (closed 2026-10-10) |
 | F8 · Growing mascot | **Done** (closed 2026-10-10) |
-| F9 · Free training and Against the clock | **Next** |
-| F10 – F21 | Not started |
+| F9 · Free training and Against the clock | **Done** (closed 2026-10-10) |
+| F10 · Profile and settings | **Next** |
+| F11 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -367,15 +368,54 @@ Known gaps left on purpose, to handle in the lot named:
 - `core/storage/migrations/migration_008_create_mascot_table.dart`.
 - Quiz: the mascot reacts to each answer and to the combo milestones.
 
-## Starting F9
+## F9 closure
 
-Tasks F9-01 to F9-11 in `docs/product/task-breakdown.md`; rules in
-section 5 of `docs/product/specifications.md` ("Modes de jeu",
-"Chronomètre") and the Sprinter badge of section 7; mockups `10` and `11`.
+- `bash tool/check.sh`: every step OK (582 tests); CI green on #51 to #54.
+- Checked on the Android emulator (API 36, release build), the lot's
+  "done when" included: a free training on the tables of 2 and 5
+  (10 / 10, "Continuer" back to the training tab with the choice kept);
+  a first time attack at 5 right answers ("Ton premier record", the card
+  shows "Record 5"), then a second at 14 ("Ancien record : 5"). The
+  replaced question and the end at 60 seconds are covered by Bloc tests
+  with a fake ticker.
 
-- Free training: the child picks one or more tables, 10, 20 or 30
-  questions, with or without timer; the questions use the weighted draw.
-- Against the clock: 60 seconds in all, score = right answers, a record
-  per player; the question is replaced when the app comes back from the
-  background.
-- The S'entraîner and Défis tabs still show `ComingSoonPage`.
+Known gaps left on purpose, to handle in the lot named:
+
+- The other challenges of the Défis screen (daily review, survival,
+  monsters, duel, code) come with F12 to F19.
+- Training and time attack have no "Défier un ami" yet (F19).
+- Waiting for the owner: the time attack quiz screen and the new record
+  card (no mockup), "Choisis au moins une table", the Sprinter hint and
+  the capital of "Contre-la-montre" inside a sentence; still the texts
+  of the earlier lots.
+
+## What F9 delivered
+
+- Quiz: a total time on the spec (`totalTimeLimit`): the Bloc counts the
+  played time during the feedback too, goes on by itself, replaces the
+  question shown after the background, ends and saves when the time is
+  up; every answer counts, no second chance. `ClockHeader` (time bar,
+  live score). `keepsTimer`: the timer chosen for a quiz wins over the
+  setting "off".
+- `core/`: `QuizMode.timeAttack`, `SavedQuizSession.mode`,
+  `OpenUnitsService` (implemented by the learning path); migration 9
+  (`record`).
+- `features/challenge/`: `TrainingSource` and `TimeAttackSource` (source
+  keys), `ChallengeRules`, `ChallengeQuizSpecs`, `RecordEntity`,
+  `RecordPolicy`, `RecordSessionHook`, the last training kept in the
+  preferences, the use cases, the training and challenges tabs, the new
+  record card of the results, `ChallengePages`.
+- Rewards: the Sprinter badge.
+- `ComingSoonPage` is gone: every tab has its screen.
+
+## Starting F10
+
+Tasks F10-01 to F10-12 in `docs/product/task-breakdown.md`; mockups `12`
+(profile) and `13` (settings).
+
+- The Profile tab today is the F1 version plus the mascot card; F10
+  builds mockup 12 around it: level, streak, crowns, badges, mastery
+  grid (`GetMasteryGridUseCase` of F4), defeated monsters
+  (`LearningPathEntity.defeatedBosses`).
+- `features/setting/` is created: sounds, vibrations, timer mode, daily
+  goal, "Tout débloquer", reduced motion; `audioplayers` is added.
