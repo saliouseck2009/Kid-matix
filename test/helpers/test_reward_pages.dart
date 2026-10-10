@@ -3,6 +3,7 @@ import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/streak_entity.dart';
 import 'package:kid_matix/features/reward/domain/repositories/reward_repository.dart';
+import 'package:kid_matix/features/reward/domain/usecases/get_badges_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_daily_goal_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_session_rewards_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
@@ -77,6 +78,7 @@ RewardPages buildTestRewardPages({
         clock: now,
       ),
       getSessionRewards: GetSessionRewardsUseCase(repository: rewards),
+      getBadges: GetBadgesUseCase(repository: rewards),
       watchChanges: WatchRewardChangesUseCase(repository: rewards),
     ),
     domains: buildDomainRegistry(),

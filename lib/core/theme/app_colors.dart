@@ -84,6 +84,9 @@ abstract final class AppColors {
   /// Light red behind a wrong-answer message.
   static const Color redTint = Color(0xFFFBE3DF);
 
+  /// Coral of the facts to review in the mastery grid.
+  static const Color coral = Color(0xFFE8604C);
+
   /// Red a player can pick for their avatar.
   static const Color avatarRed = Color(0xFFD9482F);
 

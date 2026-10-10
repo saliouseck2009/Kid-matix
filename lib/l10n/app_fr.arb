@@ -224,6 +224,110 @@
       }
     }
   },
+  "masteryGridTitle": "Mes tables",
+  "@masteryGridTitle": {
+    "description": "Title of the mastery grid card on the Profile tab: one row per multiplication table, one cell per fact (\"My tables\")."
+  },
+  "masteryStatusNotSeen": "Nouveau",
+  "@masteryStatusNotSeen": {
+    "description": "Status of a fact never asked, in the legend of the mastery grid and read with each cell (\"New\"). Masculine: it qualifies \"fait\" (fact)."
+  },
+  "masteryStatusToReview": "À revoir",
+  "@masteryStatusToReview": {
+    "description": "Status of a fact missed lately, in the legend of the mastery grid and read with each cell (\"To review\")."
+  },
+  "masteryStatusInProgress": "En cours",
+  "@masteryStatusInProgress": {
+    "description": "Status of a fact being learned (boxes 2 and 3), in the legend of the mastery grid and read with each cell (\"In progress\")."
+  },
+  "masteryStatusAcquired": "Acquis",
+  "@masteryStatusAcquired": {
+    "description": "Status of a fact known but still slow, in the legend of the mastery grid and read with each cell (\"Learned\"). Masculine: it qualifies \"fait\"."
+  },
+  "masteryStatusMastered": "Maîtrisé",
+  "@masteryStatusMastered": {
+    "description": "Status of a fact known and fast, in the legend of the mastery grid and read with each cell (\"Mastered\"). Masculine: it qualifies \"fait\"."
+  },
+  "masteryCellSpoken": "{fact}, {status}",
+  "@masteryCellSpoken": {
+    "description": "Screen-reader text of one cell of the mastery grid: the fact read aloud, then its status (\"5 fois 7 égale 35, Maîtrisé\").",
+    "placeholders": {
+      "fact": {
+        "type": "String",
+        "example": "5 fois 7 égale 35"
+      },
+      "status": {
+        "type": "String",
+        "example": "Maîtrisé"
+      }
+    }
+  },
+  "rewardBadgesTitle": "Mes badges",
+  "@rewardBadgesTitle": {
+    "description": "Title of the badge card of the Profile tab, listing the badges earned and to earn (\"My badges\")."
+  },
+  "rewardBadgeEarnedSpoken": "{name}, obtenu",
+  "@rewardBadgeEarnedSpoken": {
+    "description": "Screen-reader text of an earned badge on the Profile tab (\"Lightning, earned\"). Masculine: it qualifies \"badge\".",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Éclair"
+      }
+    }
+  },
+  "rewardBadgeLockedSpoken": "{name}, à obtenir : {hint}",
+  "@rewardBadgeLockedSpoken": {
+    "description": "Screen-reader text of a badge not earned yet on the Profile tab, with how to earn it (\"Sprinter, to earn: 20 right answers in a time attack.\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sprinter"
+      },
+      "hint": {
+        "type": "String",
+        "example": "20 bonnes réponses en Contre-la-montre."
+      }
+    }
+  },
+  "pathMonstersTitle": "Mes monstres",
+  "@pathMonstersTitle": {
+    "description": "Title of the card of the Profile tab showing the monster of each table, colored once its boss is defeated (\"My monsters\")."
+  },
+  "pathMonstersCount": "{defeated} sur {total}",
+  "@pathMonstersCount": {
+    "description": "Monsters defeated out of all, next to the title of the monster card (\"3 of 12\").",
+    "placeholders": {
+      "defeated": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "pathMonsterDefeatedSpoken": "Monstre de la table de {number}, vaincu",
+  "@pathMonsterDefeatedSpoken": {
+    "description": "Screen-reader text of a defeated monster in the monster card of the Profile tab (\"Monster of the table of 5, defeated\").",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "pathMonsterHiddenSpoken": "Monstre de la table de {number}, pas encore vaincu",
+  "@pathMonsterHiddenSpoken": {
+    "description": "Screen-reader text of a monster whose boss is still standing, shown as a gray shadow in the monster card (\"Monster of the table of 5, not defeated yet\").",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "switchPlayerButton": "Changer de joueur",
   "@switchPlayerButton": {
     "description": "Button of the Profile tab that goes back to the player selection so another child can play (\"Switch player\"). No data is lost. One line."

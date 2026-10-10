@@ -11,6 +11,7 @@ import 'helpers/test_quiz_pages.dart';
 import 'helpers/test_reward_pages.dart';
 import 'helpers/test_mascot_pages.dart';
 import 'helpers/test_challenge_pages.dart';
+import 'helpers/test_mastery_pages.dart';
 
 /// Mascot of the test player.
 final MascotPages mascotPages = buildTestMascotPages();
@@ -25,6 +26,7 @@ GoRouter _createPlayingRouter() {
     rewardPages: buildTestRewardPages(),
     mascotPages: mascotPages,
     challengePages: buildTestChallengePages(),
+    masteryPages: buildTestMasteryPages(),
   );
 }
 

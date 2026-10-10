@@ -16,6 +16,7 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
+import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
@@ -79,6 +80,11 @@ GoRouter _createRouter(
   return createAppRouter(
     session: session,
     mascotPages: mascotPages,
+    masteryPages: MasteryPages(
+      getGrid: sl(),
+      watchChanges: sl(),
+      domains: sl(),
+    ),
     challengePages: ChallengePages(
       useCases: ChallengeUseCases(
         getTrainingChoice: sl(),
@@ -117,6 +123,7 @@ GoRouter _createRouter(
         getStreak: sl(),
         getDailyGoal: sl(),
         getSessionRewards: sl(),
+        getBadges: sl(),
         watchChanges: sl(),
       ),
       domains: sl(),

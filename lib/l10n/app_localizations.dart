@@ -334,6 +334,90 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{badge} other{badges}}'**
   String profileBadgesLabel(int count);
 
+  /// Title of the mastery grid card on the Profile tab: one row per multiplication table, one cell per fact ("My tables").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes tables'**
+  String get masteryGridTitle;
+
+  /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau'**
+  String get masteryStatusNotSeen;
+
+  /// Status of a fact missed lately, in the legend of the mastery grid and read with each cell ("To review").
+  ///
+  /// In fr, this message translates to:
+  /// **'À revoir'**
+  String get masteryStatusToReview;
+
+  /// Status of a fact being learned (boxes 2 and 3), in the legend of the mastery grid and read with each cell ("In progress").
+  ///
+  /// In fr, this message translates to:
+  /// **'En cours'**
+  String get masteryStatusInProgress;
+
+  /// Status of a fact known but still slow, in the legend of the mastery grid and read with each cell ("Learned"). Masculine: it qualifies "fait".
+  ///
+  /// In fr, this message translates to:
+  /// **'Acquis'**
+  String get masteryStatusAcquired;
+
+  /// Status of a fact known and fast, in the legend of the mastery grid and read with each cell ("Mastered"). Masculine: it qualifies "fait".
+  ///
+  /// In fr, this message translates to:
+  /// **'Maîtrisé'**
+  String get masteryStatusMastered;
+
+  /// Screen-reader text of one cell of the mastery grid: the fact read aloud, then its status ("5 fois 7 égale 35, Maîtrisé").
+  ///
+  /// In fr, this message translates to:
+  /// **'{fact}, {status}'**
+  String masteryCellSpoken(String fact, String status);
+
+  /// Title of the badge card of the Profile tab, listing the badges earned and to earn ("My badges").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes badges'**
+  String get rewardBadgesTitle;
+
+  /// Screen-reader text of an earned badge on the Profile tab ("Lightning, earned"). Masculine: it qualifies "badge".
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, obtenu'**
+  String rewardBadgeEarnedSpoken(String name);
+
+  /// Screen-reader text of a badge not earned yet on the Profile tab, with how to earn it ("Sprinter, to earn: 20 right answers in a time attack.").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, à obtenir : {hint}'**
+  String rewardBadgeLockedSpoken(String name, String hint);
+
+  /// Title of the card of the Profile tab showing the monster of each table, colored once its boss is defeated ("My monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes monstres'**
+  String get pathMonstersTitle;
+
+  /// Monsters defeated out of all, next to the title of the monster card ("3 of 12").
+  ///
+  /// In fr, this message translates to:
+  /// **'{defeated} sur {total}'**
+  String pathMonstersCount(int defeated, int total);
+
+  /// Screen-reader text of a defeated monster in the monster card of the Profile tab ("Monster of the table of 5, defeated").
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre de la table de {number}, vaincu'**
+  String pathMonsterDefeatedSpoken(int number);
+
+  /// Screen-reader text of a monster whose boss is still standing, shown as a gray shadow in the monster card ("Monster of the table of 5, not defeated yet").
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre de la table de {number}, pas encore vaincu'**
+  String pathMonsterHiddenSpoken(int number);
+
   /// Button of the Profile tab that goes back to the player selection so another child can play ("Switch player"). No data is lost. One line.
   ///
   /// In fr, this message translates to:

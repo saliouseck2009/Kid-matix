@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/daily_goal_progress.dart';
 import 'package:kid_matix/features/reward/domain/entities/session_rewards_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/streak_summary.dart';
@@ -9,6 +10,7 @@ import 'package:kid_matix/features/reward/presentation/bloc/reward_use_cases.dar
 import 'package:kid_matix/features/reward/presentation/bloc/reward_value_cubit.dart';
 import 'package:kid_matix/features/reward/presentation/bloc/reward_value_state.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/badge_labels.dart';
+import 'package:kid_matix/features/reward/presentation/widgets/badges_card.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/daily_goal_card.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/daily_goal_reminder.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/reward_celebration.dart';
@@ -109,6 +111,22 @@ final class RewardPages {
         changes: _useCases.watchChanges(),
       )..load(),
       child: const DailyGoalCard(),
+    );
+  }
+
+  /// "Mes badges" of [profileId], for the Profile tab.
+  Widget buildBadgesCard({required String profileId}) {
+    return BlocProvider<RewardValueCubit<List<BadgeUnlockEntity>>>(
+      key: ValueKey<String>('badges-$profileId'),
+      create: (_) => RewardValueCubit<List<BadgeUnlockEntity>>(
+        read: () => _useCases.getBadges(params: profileId),
+        changes: _useCases.watchChanges(),
+      )..load(),
+      child: Builder(
+        builder: (BuildContext context) => BadgesCard(
+          labels: BadgeLabels(domains: _domains, l10n: context.l10n),
+        ),
+      ),
     );
   }
 }

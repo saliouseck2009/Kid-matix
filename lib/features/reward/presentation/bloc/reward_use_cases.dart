@@ -1,3 +1,4 @@
+import 'package:kid_matix/features/reward/domain/usecases/get_badges_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_daily_goal_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_session_rewards_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
@@ -10,6 +11,7 @@ final class RewardUseCases {
     required this.getStreak,
     required this.getDailyGoal,
     required this.getSessionRewards,
+    required this.getBadges,
     required this.watchChanges,
   });
 
@@ -21,6 +23,9 @@ final class RewardUseCases {
 
   /// Reads the rewards of a quiz.
   final GetSessionRewardsUseCase getSessionRewards;
+
+  /// Reads the badges of a player.
+  final GetBadgesUseCase getBadges;
 
   /// Tells when the rewards change.
   final WatchRewardChangesUseCase watchChanges;
