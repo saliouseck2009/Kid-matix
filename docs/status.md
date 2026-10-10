@@ -11,8 +11,9 @@ middle of one). Last update: 2026-10-10.
 | F1 · Profiles ("Qui joue ?") | **Done** (closed 2026-10-09) |
 | F2 · Quiz engine and multiplication domain | **Done** (closed 2026-10-09) |
 | F3 · Quiz session and results | **Done** (closed 2026-10-10) |
-| F4 · Mastery and spaced repetition | **Next** |
-| F5 – F21 | Not started |
+| F4 · Mastery and spaced repetition | **Done** (closed 2026-10-10) |
+| F5 · Learning path | **Next** |
+| F6 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -166,16 +167,57 @@ Known gaps left on purpose, to handle in the lot named:
   `DepthButton` variants.
 - Routes `/quiz/:unitKey` and `/results/:sessionId`.
 
-## Starting F4
+## F4 closure
 
-Tasks F4-01 to F4-15 in `docs/product/task-breakdown.md`; rules in section
-6 of `docs/product/specifications.md`. The help card (F4-11) has no
-mockup: it is derived from the existing screens.
+- `bash tool/check.sh`: every step OK (355 tests); CI green on #27 to #32.
+- Checked on the Android emulator (API 36), the lot's "done when"
+  included: installed over the F3 version, the database upgraded from
+  version 2 to 3 and kept the players. Three quizzes on the table of 5:
+  the boxes moved (a new fact answered right to box 2, picked answers
+  capped at box 3, a fact reached box 5 through typed answers); the facts
+  missed in the second quiz (5 x 8, 5 x 2) came back in the third. The
+  mirror reminder showed after each mistake and the help card from the
+  second mistake on a fact.
 
-- `features/mastery/` is created: `ItemProgress`, `MasteryPolicy`, the
-  `item_progress` migration (version 3), the due facts and the mastery
-  grid.
-- Each answer updates the progress of its fact as soon as it is given, so
-  an abandoned quiz loses nothing. The quiz reaches mastery through an
-  interface of `core/services/`, never by importing it.
-- The quiz uses the weighted draw and the format chosen by the box.
+Known gaps left on purpose, to handle in the lot named:
+
+- `GetDueFactsUseCase` and `GetMasteryGridUseCase` have no screen yet:
+  the daily review comes with F12, the mastery grid with F10 (mockup 12).
+- The second chance in a quiz is drawn among every allowed type, not by
+  box.
+- Waiting for the owner's confirmation: box 1 kept for missed facts (a
+  new fact answered right goes to box 2) and missed facts asked first;
+  the draw weights; the texts "Retiens aussi : 8 × 7 = 56", "Fiche
+  d'aide · Table de 7", "7 rangées de 8 points" and the help card layout
+  (no mockup).
+
+## What F4 delivered
+
+- `features/mastery/`: `ItemProgressEntity`, `MasteryPolicy` (boxes,
+  review days, status), `QuizItemPlanner` (missed facts first, weighted
+  draw, format by box), the `item_progress` repository, the use cases
+  `RecordAnswer`, `PlanQuiz`, `GetDueFacts`, `GetMasteryGrid`, and
+  `registerMasteryFeature()`.
+- `core/services/mastery_service.dart` with `ItemAnswer`,
+  `QuizPlanRequest` and `QuizItemPlan` in `core/quiz/`: the quiz plans its
+  questions and records each answer through it.
+- `core/storage/migrations/migration_003_create_item_progress_table.dart`.
+- `LearningDomain` gained `drawWeightOf`, `mirrorOf` and `helpOf`
+  (`ItemHelp`, `DotGrid`); `QuestionGenerator.generatePlanned`.
+- Quiz: `questionCount` on the request (free training: 10 questions),
+  answers recorded at once, `QuizHelpCard`, the mirror reminder.
+
+## Starting F5
+
+Tasks F5-01 to F5-15 in `docs/product/task-breakdown.md`; rules in section
+4 of `docs/product/specifications.md` (stages, stars, unlocking); mockups
+`03`, `04` and `05` in `docs/design/screens/`.
+
+- `features/learning_path/` is created: the 5 stages of a table,
+  `StarPolicy`, the unlocking rules, the `stage_progress` migration
+  (version 4), the map screen and the table detail.
+- The quiz knows nothing of stages: a stage starts a quiz with its items,
+  count, formats and timer, and the end of the session reaches the
+  learning path through an interface of `core/services/`.
+- The provisional "Jouer à la table de 5" button goes away.
+- The 12 table tips need their wording for the Discovery stage (F5-11).
