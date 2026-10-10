@@ -6,6 +6,8 @@ import 'package:kid_matix/features/mascot/domain/repositories/mascot_repository.
 import 'package:kid_matix/features/mascot/domain/usecases/get_mascot_use_case.dart';
 import 'package:kid_matix/features/mascot/domain/usecases/update_mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/domain/usecases/watch_mascot_changes_use_case.dart';
+import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/mascot/data/repositories/mascot_reset_hook.dart';
 
 /// Registers the mascot feature in [sl]; Blocs are never registered.
 void registerMascotFeature(GetIt sl) {
@@ -28,4 +30,5 @@ void registerMascotFeature(GetIt sl) {
   sl.registerLazySingleton<UpdateMascotUseCases>(
     () => UpdateMascotUseCases(repository: sl()),
   );
+  sl<ProgressResetHooks>().add(const MascotResetHook());
 }

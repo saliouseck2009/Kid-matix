@@ -14,6 +14,8 @@ import 'package:kid_matix/features/learning_path/domain/repositories/stage_progr
 import 'package:kid_matix/features/learning_path/domain/services/learning_path_service_impl.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_learning_path_changes_use_case.dart';
+import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
 
 /// Registers the learning path feature in [sl] and adds its session hook;
 /// Blocs are never registered.
@@ -52,4 +54,5 @@ void registerLearningPathFeature(GetIt sl) {
   sl<SessionSavedHooks>().add(
     StageProgressSessionHook(progress: sl(), clock: sl()),
   );
+  sl<ProgressResetHooks>().add(const StageProgressResetHook());
 }

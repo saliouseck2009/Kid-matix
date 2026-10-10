@@ -19,6 +19,7 @@ import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
@@ -48,6 +49,7 @@ Future<void> main() async {
   ]);
   final ProfileSessionService session = sl<ProfileSessionService>();
   await session.restore();
+  final ProfilePages profilePages = _createProfilePages();
   final MascotPages mascotPages = MascotPages(
     useCases: MascotUseCases(
       getMascot: sl(),
@@ -57,14 +59,17 @@ Future<void> main() async {
   );
   runApp(
     KidMatixApp(
-      router: _createRouter(session, mascotPages),
+      router: _createRouter(session, mascotPages, profilePages),
       scope: (Widget child) => ListenableBuilder(
         listenable: session,
         child: child,
         builder: (BuildContext context, Widget? child) {
           final String? profileId = session.activeProfileId;
           if (profileId == null) return child!;
-          return mascotPages.buildScope(profileId: profileId, child: child!);
+          return profilePages.buildSettingsScope(
+            profileId: profileId,
+            child: mascotPages.buildScope(profileId: profileId, child: child!),
+          );
         },
       ),
     ),
@@ -76,6 +81,7 @@ Future<void> main() async {
 GoRouter _createRouter(
   ProfileSessionService session,
   MascotPages mascotPages,
+  ProfilePages profilePages,
 ) {
   return createAppRouter(
     session: session,
@@ -96,21 +102,7 @@ GoRouter _createRouter(
       ),
       domains: sl(),
     ),
-    profilePages: ProfilePages(
-      getProfiles: sl(),
-      getProfile: sl(),
-      createProfile: sl(),
-      updateProfile: sl(),
-      selectProfile: sl(),
-      tabUseCases: ProfileTabUseCases(
-        getProfile: sl(),
-        watchChanges: sl(),
-        clearActiveProfile: sl(),
-        deleteProfile: sl(),
-        getStats: sl(),
-        watchProgress: sl(),
-      ),
-    ),
+    profilePages: profilePages,
     pathPages: LearningPathPages(
       useCases: LearningPathUseCases(
         getLearningPath: sl(),
@@ -139,6 +131,31 @@ GoRouter _createRouter(
       getResult: sl(),
       ticker: sl(),
       domains: sl(),
+    ),
+  );
+}
+
+/// The pages of the profile feature, with their use cases.
+ProfilePages _createProfilePages() {
+  return ProfilePages(
+    getProfiles: sl(),
+    getProfile: sl(),
+    createProfile: sl(),
+    updateProfile: sl(),
+    selectProfile: sl(),
+    settingsUseCases: SettingsUseCases(
+      getProfile: sl(),
+      getSettings: sl(),
+      updateSettings: sl(),
+      resetProgress: sl(),
+      deleteProfile: sl(),
+    ),
+    tabUseCases: ProfileTabUseCases(
+      getProfile: sl(),
+      watchChanges: sl(),
+      clearActiveProfile: sl(),
+      getStats: sl(),
+      watchProgress: sl(),
     ),
   );
 }

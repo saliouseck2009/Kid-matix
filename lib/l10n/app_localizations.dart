@@ -418,6 +418,120 @@ abstract class AppLocalizations {
   /// **'Monstre de la table de {number}, pas encore vaincu'**
   String pathMonsterHiddenSpoken(int number);
 
+  /// Title of the settings screen of a player ("Settings"); also the tooltip of the settings button of the Profile tab.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get settingsTitle;
+
+  /// Name of the section of the settings screen grouping the sounds and the vibrations ("Sounds").
+  ///
+  /// In fr, this message translates to:
+  /// **'Sons'**
+  String get settingsSoundSection;
+
+  /// Switch of the settings screen that turns the sound effects on or off ("Sounds").
+  ///
+  /// In fr, this message translates to:
+  /// **'Sons'**
+  String get settingsSound;
+
+  /// Switch of the settings screen that turns the vibrations on or off ("Vibrations").
+  ///
+  /// In fr, this message translates to:
+  /// **'Vibrations'**
+  String get settingsVibration;
+
+  /// Name of the section of the settings screen grouping the game settings ("Game").
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeu'**
+  String get settingsGameSection;
+
+  /// Name of the timer setting, above its three choices ("Timer").
+  ///
+  /// In fr, this message translates to:
+  /// **'Chrono'**
+  String get settingsTimer;
+
+  /// Timer choice: the normal time per question ("Normal"). A third of a switch: keep it short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Normal'**
+  String get settingsTimerNormal;
+
+  /// Timer choice: 1.5 times more time per question ("Relaxed"). A third of a switch: keep it short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Détendu'**
+  String get settingsTimerRelaxed;
+
+  /// Timer choice: no timer ("None", literally "without"). A third of a switch: keep it short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans'**
+  String get settingsTimerOff;
+
+  /// Name of the daily goal setting, above its three choices of XP ("Daily goal").
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif du jour'**
+  String get settingsDailyGoal;
+
+  /// Switch of the settings screen that opens every table and stage of the learning path ("Unlock everything").
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout débloquer'**
+  String get settingsUnlockAll;
+
+  /// Switch of the settings screen that replaces the animations by still screens ("Reduced motion").
+  ///
+  /// In fr, this message translates to:
+  /// **'Animations réduites'**
+  String get settingsReducedMotion;
+
+  /// Name of the section of the settings screen holding the actions on the player: reset and delete ("This player").
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce joueur'**
+  String get settingsPlayerSection;
+
+  /// Destructive action of the settings screen that erases the progress of the player, after a confirmation ("Reset my progress").
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser ma progression'**
+  String get resetProgressButton;
+
+  /// Confirm button of the progress reset dialog, enabled once the nickname is typed again ("Reset").
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser'**
+  String get resetProgressConfirm;
+
+  /// Message shown briefly after the progress of the player was erased ("Your progress is back to zero."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta progression est remise à zéro.'**
+  String get resetProgressDone;
+
+  /// One choice of the daily goal setting ("50 XP"). A third of a switch: keep it short.
+  ///
+  /// In fr, this message translates to:
+  /// **'{xp} XP'**
+  String settingsDailyGoalXp(int xp);
+
+  /// Title of the dialog confirming the reset of the progress of a player ("Reset Awa?").
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser {nickname} ?'**
+  String resetProgressTitle(String nickname);
+
+  /// Message of the dialog confirming the reset of the progress of a player: what is erased, what stays, and how to confirm by typing the nickname.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ses étoiles, couronnes, badges, XP et records seront effacés. Son pseudo, ses réglages et le nom de sa mascotte restent. Pour confirmer, écris son pseudo : {nickname}'**
+  String resetProgressMessage(String nickname);
+
   /// Button of the Profile tab that goes back to the player selection so another child can play ("Switch player"). No data is lost. One line.
   ///
   /// In fr, this message translates to:

@@ -10,27 +10,72 @@ import 'package:kid_matix/features/profile/domain/entities/nickname_rules.dart';
 Future<bool> confirmProfileDeletion(
   BuildContext context, {
   required String nickname,
-}) async {
+}) {
+  return _confirm(
+    context,
+    NicknameConfirmDialog(
+      nickname: nickname,
+      title: context.l10n.deleteProfileTitle(nickname),
+      message: context.l10n.deleteProfileMessage(nickname),
+      confirmLabel: context.l10n.deleteProfileConfirm,
+    ),
+  );
+}
+
+/// Asks the child to type [nickname] again before erasing their progress;
+/// resolves to `true` when it is confirmed.
+Future<bool> confirmProgressReset(
+  BuildContext context, {
+  required String nickname,
+}) {
+  return _confirm(
+    context,
+    NicknameConfirmDialog(
+      nickname: nickname,
+      title: context.l10n.resetProgressTitle(nickname),
+      message: context.l10n.resetProgressMessage(nickname),
+      confirmLabel: context.l10n.resetProgressConfirm,
+    ),
+  );
+}
+
+Future<bool> _confirm(BuildContext context, Widget dialog) async {
   final bool? isConfirmed = await showDialog<bool>(
     context: context,
-    builder: (BuildContext context) => DeleteProfileDialog(nickname: nickname),
+    builder: (BuildContext context) => dialog,
   );
   return isConfirmed ?? false;
 }
 
-/// Confirmation dialog of a player's deletion.
-class DeleteProfileDialog extends StatefulWidget {
+/// Confirmation of an action that cannot be undone, such as deleting a
+/// player: the child types the nickname again to enable it.
+class NicknameConfirmDialog extends StatefulWidget {
   /// Creates the dialog for the player [nickname].
-  const DeleteProfileDialog({required this.nickname, super.key});
+  const NicknameConfirmDialog({
+    required this.nickname,
+    required this.title,
+    required this.message,
+    required this.confirmLabel,
+    super.key,
+  });
 
   /// Nickname the child must type again.
   final String nickname;
 
+  /// Question asked, such as "Supprimer Awa ?".
+  final String title;
+
+  /// What the action does and how to confirm it.
+  final String message;
+
+  /// Text of the confirm button.
+  final String confirmLabel;
+
   @override
-  State<DeleteProfileDialog> createState() => _DeleteProfileDialogState();
+  State<NicknameConfirmDialog> createState() => _NicknameConfirmDialogState();
 }
 
-class _DeleteProfileDialogState extends State<DeleteProfileDialog> {
+class _NicknameConfirmDialogState extends State<NicknameConfirmDialog> {
   bool _isMatching = false;
 
   void _onChanged(String typed) {
@@ -44,12 +89,12 @@ class _DeleteProfileDialogState extends State<DeleteProfileDialog> {
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
     return AlertDialog(
-      title: Text(context.l10n.deleteProfileTitle(widget.nickname)),
+      title: Text(widget.title),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(context.l10n.deleteProfileMessage(widget.nickname)),
+          Text(widget.message),
           const SizedBox(height: AppSizes.space16),
           TextField(
             autofocus: true,
@@ -71,7 +116,7 @@ class _DeleteProfileDialogState extends State<DeleteProfileDialog> {
         TextButton(
           onPressed: _isMatching ? () => Navigator.of(context).pop(true) : null,
           style: TextButton.styleFrom(foregroundColor: colors.error),
-          child: Text(context.l10n.deleteProfileConfirm),
+          child: Text(widget.confirmLabel),
         ),
       ],
     );

@@ -254,6 +254,69 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get settingsTitle => 'Réglages';
+
+  @override
+  String get settingsSoundSection => 'Sons';
+
+  @override
+  String get settingsSound => 'Sons';
+
+  @override
+  String get settingsVibration => 'Vibrations';
+
+  @override
+  String get settingsGameSection => 'Jeu';
+
+  @override
+  String get settingsTimer => 'Chrono';
+
+  @override
+  String get settingsTimerNormal => 'Normal';
+
+  @override
+  String get settingsTimerRelaxed => 'Détendu';
+
+  @override
+  String get settingsTimerOff => 'Sans';
+
+  @override
+  String get settingsDailyGoal => 'Objectif du jour';
+
+  @override
+  String get settingsUnlockAll => 'Tout débloquer';
+
+  @override
+  String get settingsReducedMotion => 'Animations réduites';
+
+  @override
+  String get settingsPlayerSection => 'Ce joueur';
+
+  @override
+  String get resetProgressButton => 'Réinitialiser ma progression';
+
+  @override
+  String get resetProgressConfirm => 'Réinitialiser';
+
+  @override
+  String get resetProgressDone => 'Ta progression est remise à zéro.';
+
+  @override
+  String settingsDailyGoalXp(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String resetProgressTitle(String nickname) {
+    return 'Réinitialiser $nickname ?';
+  }
+
+  @override
+  String resetProgressMessage(String nickname) {
+    return 'Ses étoiles, couronnes, badges, XP et records seront effacés. Son pseudo, ses réglages et le nom de sa mascotte restent. Pour confirmer, écris son pseudo : $nickname';
+  }
+
+  @override
   String get switchPlayerButton => 'Changer de joueur';
 
   @override

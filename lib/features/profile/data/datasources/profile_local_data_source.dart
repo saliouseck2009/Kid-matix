@@ -15,6 +15,9 @@ abstract interface class ProfileLocalDataSource {
   /// Returns the settings of [profileId], or `null` when there are none.
   Future<ProfileSettingsLocalModel?> getSettings({required String profileId});
 
+  /// Replaces the settings of their profile; returns the rows changed.
+  Future<int> updateSettings({required ProfileSettingsLocalModel settings});
+
   /// Returns how many live profiles exist.
   Future<int> countProfiles();
 

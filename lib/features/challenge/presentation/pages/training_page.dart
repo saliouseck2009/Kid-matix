@@ -10,7 +10,7 @@ import 'package:kid_matix/features/challenge/presentation/bloc/training_cubit.da
 import 'package:kid_matix/features/challenge/presentation/bloc/training_state.dart';
 import 'package:kid_matix/features/challenge/presentation/widgets/challenge_error_message.dart';
 import 'package:kid_matix/features/challenge/presentation/widgets/challenge_labels.dart';
-import 'package:kid_matix/features/challenge/presentation/widgets/choice_segments.dart';
+import 'package:kid_matix/core/widgets/choice_segments.dart';
 import 'package:kid_matix/features/challenge/presentation/widgets/table_toggle.dart';
 
 /// The training tab: the child picks tables, a question count and the

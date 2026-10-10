@@ -12,6 +12,9 @@ import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/services/system_clock.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/core/services/uuid_id_generator.dart';
+import 'package:kid_matix/core/services/progress_reset_service.dart';
+import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/core/storage/progress_resetter.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/app_migrations.dart';
 import 'package:kid_matix/core/storage/local_storage.dart';
@@ -67,6 +70,10 @@ void _registerCoreStorage() {
   );
   sl.registerLazySingleton<TableChangeBus>(TableChangeBus.new);
   sl.registerLazySingleton<SessionSavedHooks>(SessionSavedHooks.new);
+  sl.registerLazySingleton<ProgressResetHooks>(ProgressResetHooks.new);
+  sl.registerLazySingleton<ProgressResetService>(
+    () => ProgressResetter(database: sl(), hooks: sl(), changeBus: sl()),
+  );
   sl.registerLazySingleton<AppDatabase>(
     () => AppDatabase(
       databaseFactory: databaseFactory,

@@ -63,6 +63,22 @@ final class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<DataState<void>> updateProfileSettings({
+    required ProfileSettingsEntity settings,
+  }) {
+    return _guard(() async {
+      final int changedRows = await _profiles.updateSettings(
+        settings: ProfileSettingsLocalModel.fromEntity(
+          settings: settings,
+          updatedAt: _clock.now(),
+        ),
+      );
+      if (changedRows == 0) throw _notFound(settings.profileId);
+      _notifyProfilesChanged();
+    });
+  }
+
+  @override
   Future<DataState<int>> countProfiles() => _guard(_profiles.countProfiles);
 
   @override

@@ -10,6 +10,8 @@ import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_
 import 'package:kid_matix/features/mastery/domain/usecases/watch_mastery_changes_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
+import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/mastery/data/repositories/mastery_reset_hook.dart';
 
 /// Registers the mastery feature in [sl]; Blocs are never registered.
 void registerMasteryFeature(GetIt sl) {
@@ -54,4 +56,5 @@ void registerMasteryFeature(GetIt sl) {
       getGrid: sl(),
     ),
   );
+  sl<ProgressResetHooks>().add(const MasteryResetHook());
 }

@@ -328,6 +328,100 @@
       }
     }
   },
+  "settingsTitle": "Réglages",
+  "@settingsTitle": {
+    "description": "Title of the settings screen of a player (\"Settings\"); also the tooltip of the settings button of the Profile tab."
+  },
+  "settingsSoundSection": "Sons",
+  "@settingsSoundSection": {
+    "description": "Name of the section of the settings screen grouping the sounds and the vibrations (\"Sounds\")."
+  },
+  "settingsSound": "Sons",
+  "@settingsSound": {
+    "description": "Switch of the settings screen that turns the sound effects on or off (\"Sounds\")."
+  },
+  "settingsVibration": "Vibrations",
+  "@settingsVibration": {
+    "description": "Switch of the settings screen that turns the vibrations on or off (\"Vibrations\")."
+  },
+  "settingsGameSection": "Jeu",
+  "@settingsGameSection": {
+    "description": "Name of the section of the settings screen grouping the game settings (\"Game\")."
+  },
+  "settingsTimer": "Chrono",
+  "@settingsTimer": {
+    "description": "Name of the timer setting, above its three choices (\"Timer\")."
+  },
+  "settingsTimerNormal": "Normal",
+  "@settingsTimerNormal": {
+    "description": "Timer choice: the normal time per question (\"Normal\"). A third of a switch: keep it short."
+  },
+  "settingsTimerRelaxed": "Détendu",
+  "@settingsTimerRelaxed": {
+    "description": "Timer choice: 1.5 times more time per question (\"Relaxed\"). A third of a switch: keep it short."
+  },
+  "settingsTimerOff": "Sans",
+  "@settingsTimerOff": {
+    "description": "Timer choice: no timer (\"None\", literally \"without\"). A third of a switch: keep it short."
+  },
+  "settingsDailyGoal": "Objectif du jour",
+  "@settingsDailyGoal": {
+    "description": "Name of the daily goal setting, above its three choices of XP (\"Daily goal\")."
+  },
+  "settingsUnlockAll": "Tout débloquer",
+  "@settingsUnlockAll": {
+    "description": "Switch of the settings screen that opens every table and stage of the learning path (\"Unlock everything\")."
+  },
+  "settingsReducedMotion": "Animations réduites",
+  "@settingsReducedMotion": {
+    "description": "Switch of the settings screen that replaces the animations by still screens (\"Reduced motion\")."
+  },
+  "settingsPlayerSection": "Ce joueur",
+  "@settingsPlayerSection": {
+    "description": "Name of the section of the settings screen holding the actions on the player: reset and delete (\"This player\")."
+  },
+  "resetProgressButton": "Réinitialiser ma progression",
+  "@resetProgressButton": {
+    "description": "Destructive action of the settings screen that erases the progress of the player, after a confirmation (\"Reset my progress\")."
+  },
+  "resetProgressConfirm": "Réinitialiser",
+  "@resetProgressConfirm": {
+    "description": "Confirm button of the progress reset dialog, enabled once the nickname is typed again (\"Reset\")."
+  },
+  "resetProgressDone": "Ta progression est remise à zéro.",
+  "@resetProgressDone": {
+    "description": "Message shown briefly after the progress of the player was erased (\"Your progress is back to zero.\"). Talks to the child (informal tu)."
+  },
+  "settingsDailyGoalXp": "{xp} XP",
+  "@settingsDailyGoalXp": {
+    "description": "One choice of the daily goal setting (\"50 XP\"). A third of a switch: keep it short.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "50"
+      }
+    }
+  },
+  "resetProgressTitle": "Réinitialiser {nickname} ?",
+  "@resetProgressTitle": {
+    "description": "Title of the dialog confirming the reset of the progress of a player (\"Reset Awa?\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "resetProgressMessage": "Ses étoiles, couronnes, badges, XP et records seront effacés. Son pseudo, ses réglages et le nom de sa mascotte restent. Pour confirmer, écris son pseudo : {nickname}",
+  "@resetProgressMessage": {
+    "description": "Message of the dialog confirming the reset of the progress of a player: what is erased, what stays, and how to confirm by typing the nickname.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
   "switchPlayerButton": "Changer de joueur",
   "@switchPlayerButton": {
     "description": "Button of the Profile tab that goes back to the player selection so another child can play (\"Switch player\"). No data is lost. One line."

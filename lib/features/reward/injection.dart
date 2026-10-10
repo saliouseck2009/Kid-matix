@@ -13,6 +13,8 @@ import 'package:kid_matix/features/reward/domain/usecases/get_player_level_use_c
 import 'package:kid_matix/features/reward/domain/usecases/get_session_rewards_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/watch_reward_changes_use_case.dart';
+import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/reward/data/repositories/reward_reset_hook.dart';
 
 /// Registers the reward feature in [sl] and adds its session hook;
 /// Blocs are never registered.
@@ -58,4 +60,5 @@ void registerRewardFeature(GetIt sl) {
       clock: sl(),
     ),
   );
+  sl<ProgressResetHooks>().add(const RewardResetHook());
 }

@@ -6,11 +6,10 @@ import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_state.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 
-/// Drives the Profile tab of version 1.0's lot F1: the active player, with
-/// "switch player", "edit" and "delete".
+/// Drives the Profile tab: the active player, and "switch player".
 ///
-/// Switching or deleting changes the profile session; the router then
-/// leaves the tab, so the Cubit stays in [ProfileTabLoading].
+/// Switching changes the profile session; the router then leaves the
+/// tab, so the Cubit stays in [ProfileTabLoading].
 final class ProfileTabCubit extends Cubit<ProfileTabState> {
   /// Creates the Cubit for the player [profileId].
   ProfileTabCubit({required this._profileId, required this._useCases})
@@ -30,11 +29,6 @@ final class ProfileTabCubit extends Cubit<ProfileTabState> {
 
   /// Goes back to "Qui joue ?" so another child can play.
   Future<void> switchPlayer() => _leave(_useCases.clearActiveProfile.call);
-
-  /// Deletes the player and all of their data.
-  Future<void> deleteProfile() {
-    return _leave(() => _useCases.deleteProfile(params: _profileId));
-  }
 
   @override
   Future<void> close() async {
