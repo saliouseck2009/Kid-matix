@@ -11,7 +11,7 @@ import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';

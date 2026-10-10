@@ -1,44 +1,26 @@
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
-import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:meta/meta.dart';
 
-/// A quiz to play, as the screen that starts it describes it.
+/// A quiz to play, as the feature that starts it describes it.
+///
+/// The quiz knows nothing of stages or challenges: [sourceKey] is an
+/// opaque key, stored with the session, that lets the starting feature
+/// find what the quiz was played for.
 @immutable
-final class QuizRequest {
-  /// Creates the request.
-  const QuizRequest({
-    required this.profileId,
+final class QuizSpec {
+  /// Creates the spec.
+  QuizSpec({
     required this.domainId,
     required this.mode,
-    required this.itemKeys,
-    required this.questionTypeIds,
+    required List<String> itemKeys,
+    required List<String> questionTypeIds,
     this.selection = QuizSelection.mastery,
     this.questionCount,
     this.baseTimeLimit,
     this.sourceKey,
-  });
-
-  /// Creates the request of [profileId] to play [spec].
-  factory QuizRequest.fromSpec({
-    required String profileId,
-    required QuizSpec spec,
-  }) {
-    return QuizRequest(
-      profileId: profileId,
-      domainId: spec.domainId,
-      mode: spec.mode,
-      itemKeys: spec.itemKeys,
-      questionTypeIds: spec.questionTypeIds,
-      selection: spec.selection,
-      questionCount: spec.questionCount,
-      baseTimeLimit: spec.baseTimeLimit,
-      sourceKey: spec.sourceKey,
-    );
-  }
-
-  /// Player of the quiz.
-  final String profileId;
+  }) : itemKeys = List<String>.unmodifiable(itemKeys),
+       questionTypeIds = List<String>.unmodifiable(questionTypeIds);
 
   /// Learning domain, such as `multiplication`.
   final String domainId;
@@ -46,17 +28,17 @@ final class QuizRequest {
   /// How the quiz is started.
   final QuizMode mode;
 
-  /// Items to draw the questions from.
+  /// Items to ask or draw the questions from.
   final List<String> itemKeys;
+
+  /// Question types allowed.
+  final List<String> questionTypeIds;
 
   /// How the questions are chosen among [itemKeys].
   final QuizSelection selection;
 
   /// Scored questions to ask, or `null` for as many as [itemKeys].
   final int? questionCount;
-
-  /// Question types to draw from.
-  final List<String> questionTypeIds;
 
   /// Time per question with the normal timer, or `null` for a quiz that
   /// never has a timer; the player's timer mode then applies.

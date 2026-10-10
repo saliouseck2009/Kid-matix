@@ -8,7 +8,7 @@ import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';

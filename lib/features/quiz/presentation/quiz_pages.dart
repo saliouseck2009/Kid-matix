@@ -4,7 +4,7 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/services/ticker.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';

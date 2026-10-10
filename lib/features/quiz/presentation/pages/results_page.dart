@@ -7,7 +7,7 @@ import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/results_cubit.dart';
@@ -141,6 +141,7 @@ class _ResultsView extends StatelessWidget {
   static String _describeMode(BuildContext context, QuizMode mode) {
     return switch (mode) {
       QuizMode.freeTraining => context.l10n.quizModeFreeTraining,
+      QuizMode.path => context.l10n.quizModePath,
     };
   }
 }

@@ -384,6 +384,10 @@
   "@quizProvisionalStart": {
     "description": "Temporary button of the home tab that starts a quiz on the table of 5, until the learning path arrives (\"Play the table of 5\")."
   },
+  "quizModePath": "Parcours",
+  "@quizModePath": {
+    "description": "Name of the game mode shown under the results title after a stage of the learning path (\"Learning path\"), after the table name and a middle dot."
+  },
   "quizModeFreeTraining": "Entraînement libre",
   "@quizModeFreeTraining": {
     "description": "Name of the free training mode, shown under the results title (\"Free training\")."

@@ -7,6 +7,7 @@ import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
@@ -18,8 +19,9 @@ import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 
 /// Builds a quiz ready to be played.
 ///
-/// The mastery engine chooses the items among those given, low boxes
-/// more often, and the question types fit for each one. Fails with a
+/// By default the mastery engine chooses the items among those given,
+/// missed facts first, and the question types fit for each one; a quiz
+/// can also ask every item once, in order or shuffled. Fails with a
 /// `ValidationException` when the domain, an item or every question type
 /// is unknown, or when no item is given.
 class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
@@ -51,15 +53,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         ValidationException(message: 'Unknown domain or items.'),
       );
     }
-    final DataState<List<QuizItemPlan>> plans = await _mastery.planQuiz(
-      request: QuizPlanRequest(
-        profileId: params.profileId,
-        domainId: domain.id,
-        itemKeys: params.itemKeys,
-        questionTypeIds: params.questionTypeIds,
-        questionCount: params.questionCount ?? items.length,
-      ),
-    );
+    final DataState<List<QuizItemPlan>> plans = await _plan(params, items);
     return switch (plans) {
       DataSuccess<List<QuizItemPlan>>(:final data) => _generate(
         params,
@@ -70,6 +64,37 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         exception,
       ),
     };
+  }
+
+  /// The items to ask with their types: drawn by the mastery engine, or
+  /// every item once in the given or a random order.
+  Future<DataState<List<QuizItemPlan>>> _plan(
+    BuildQuizParams params,
+    List<LearningItem> items,
+  ) async {
+    final List<LearningItem> ordered = switch (params.selection) {
+      QuizSelection.mastery => const <LearningItem>[],
+      QuizSelection.inOrder => items,
+      QuizSelection.shuffled => _random.shuffled(items),
+    };
+    if (params.selection != QuizSelection.mastery) {
+      return DataSuccess<List<QuizItemPlan>>(<QuizItemPlan>[
+        for (final LearningItem item in ordered)
+          QuizItemPlan(
+            itemKey: item.key,
+            questionTypeIds: params.questionTypeIds,
+          ),
+      ]);
+    }
+    return _mastery.planQuiz(
+      request: QuizPlanRequest(
+        profileId: params.profileId,
+        domainId: params.domainId,
+        itemKeys: params.itemKeys,
+        questionTypeIds: params.questionTypeIds,
+        questionCount: params.questionCount ?? items.length,
+      ),
+    );
   }
 
   DataState<QuizRun> _generate(
@@ -109,6 +134,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       scoredQuestionCount: questions.length,
       questionTypeIds: params.questionTypeIds,
       timeLimit: params.timeLimit,
+      sourceKey: params.sourceKey,
       queue: questions
           .map((Question question) => QuizTurn(question: question))
           .toList(),

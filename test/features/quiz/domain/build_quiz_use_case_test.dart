@@ -4,11 +4,12 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 
 import 'package:mocktail/mocktail.dart';
 
@@ -164,6 +165,51 @@ void main() {
       )(params: buildParams(itemKeys: tableKeys(5)));
       // Assert
       expect(actualState.exceptionOrNull, isA<CacheException>());
+    });
+    BuildQuizParams selectionParams(QuizSelection selection) {
+      return BuildQuizParams(
+        profileId: 'profile-1',
+        domainId: 'multiplication',
+        mode: QuizMode.path,
+        itemKeys: tableKeys(5),
+        questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+        selection: selection,
+        sourceKey: 'path:mul:5:discovery',
+      );
+    }
+
+    List<String> askedKeys(QuizRun run) =>
+        run.queue.map((QuizTurn turn) => turn.question.itemKey).toList();
+
+    test('asks every item once in order without the mastery engine', () async {
+      // Arrange
+      final FakeMasteryService inputMastery = FakeMasteryService(
+        failure: const CacheException(),
+      );
+      // Act
+      final QuizRun actualRun = (await buildQuizUseCase(
+        mastery: inputMastery,
+      )(params: selectionParams(QuizSelection.inOrder))).requireData;
+      // Assert
+      expect(askedKeys(actualRun), tableKeys(5));
+      expect(actualRun.sourceKey, 'path:mul:5:discovery');
+      expect(actualRun.mode, QuizMode.path);
+    });
+    test('asks every item once in a random order', () async {
+      // Act
+      final QuizRun actualRun = (await buildQuizUseCase()(
+        params: selectionParams(QuizSelection.shuffled),
+      )).requireData;
+      // Assert
+      expect(askedKeys(actualRun), isNot(tableKeys(5)));
+      expect(askedKeys(actualRun).toSet(), tableKeys(5).toSet());
+      expect(
+        actualRun.queue.every(
+          (QuizTurn turn) =>
+              turn.question.questionTypeId == QuestionTypeIds.multipleChoice,
+        ),
+        isTrue,
+      );
     });
   });
 }
