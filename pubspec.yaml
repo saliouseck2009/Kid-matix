@@ -35,6 +35,8 @@ dev_dependencies:
   bloc_test: ^10.0.0
   mocktail: ^1.0.5
   sqflite_common_ffi: ^2.4.3
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 flutter:
   uses-material-design: true
@@ -50,3 +52,25 @@ flutter:
     - family: Nunito
       fonts:
         - asset: assets/fonts/Nunito-Variable.ttf
+
+# App icon and launch screen, made from the mascot by
+# tool/icon/render_icon_test.dart; regenerate with
+# dart run flutter_launcher_icons && dart run flutter_native_splash:create
+flutter_launcher_icons:
+  android: true
+  ios: true
+  web:
+    generate: false
+  image_path: tool/icon/out/icon.png
+  adaptive_icon_background: "#5B3DF5"
+  adaptive_icon_foreground: tool/icon/out/icon_foreground.png
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  web: false
+  color: "#5B3DF5"
+  image: tool/icon/out/splash.png
+  android_12:
+    color: "#5B3DF5"
+    image: tool/icon/out/icon_foreground.png
+    icon_background_color: "#5B3DF5"
