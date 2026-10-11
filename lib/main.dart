@@ -11,6 +11,7 @@ import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
+import 'package:kid_matix/core/widgets/app_width_limit.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
@@ -186,7 +187,7 @@ class KidMatixApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (BuildContext context, Widget? child) {
         final Widget screen = child ?? const SizedBox.shrink();
-        return scope?.call(screen) ?? screen;
+        return AppWidthLimit(child: scope?.call(screen) ?? screen);
       },
     );
   }
