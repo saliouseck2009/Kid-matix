@@ -1,11 +1,6 @@
 # Politique de confidentialité — Kid Matix
 
-> **Brouillon à valider par le propriétaire (tâche F11-09).** À publier à une
-> adresse web publique avant l'envoi aux stores : Google Play et l'App Store
-> demandent un lien vers cette page. Les passages entre crochets sont à
-> compléter.
-
-Dernière mise à jour : [date de publication]
+Dernière mise à jour : 11 octobre 2026
 
 Kid Matix est une application qui aide les enfants à apprendre les tables de
 multiplication en jouant. Elle a été conçue pour les enfants : elle
@@ -78,12 +73,8 @@ effacer :
 Comme rien n'est envoyé sur un serveur, une donnée effacée ne peut pas être
 récupérée, et changer d'appareil fait repartir de zéro.
 
-[À trancher : voir la question sur la sauvegarde du système dans
-`docs/release/audit-1.0.md`. Si la sauvegarde automatique d'Android ou
-d'iCloud reste active, ajouter ici : « Si la sauvegarde automatique de
-l'appareil est activée, le système peut inclure les données du jeu dans la
-sauvegarde du compte Google ou iCloud du propriétaire de l'appareil. Nous n'y
-avons pas accès. »]
+La sauvegarde automatique du système (compte Google ou iCloud) est
+désactivée pour Kid Matix : les données du jeu n'y sont pas copiées.
 
 ## Enfants
 
@@ -102,6 +93,6 @@ entièrement hors ligne.
 
 ## Contact
 
-Pour toute question sur cette politique : [adresse e-mail de contact].
+Pour toute question sur cette politique : saliouseck2009@gmail.com.
 
-Éditeur : [nom ou raison sociale, pays].
+Éditeur : Saliou Seck, Sénégal.
