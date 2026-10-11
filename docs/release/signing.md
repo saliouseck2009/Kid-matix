@@ -51,5 +51,7 @@ for every version sent to the stores.
 
 They cannot change once an app is published:
 
-- Android application id: `sn.ckroot.kid_matix.kid_matix`
-- iOS bundle id: `sn.ckroot.kidmatix.kidMatix`
+- Android application id: `sn.ckroot.kidmatix`
+- iOS bundle id: `sn.ckroot.kidmatix`
+
+Both were chosen on 2026-10-11 and must not change again.

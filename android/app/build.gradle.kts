@@ -27,8 +27,8 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "sn.ckroot.kid_matix.kid_matix"
+        // The id of the app on Google Play; it never changes once published.
+        applicationId = "sn.ckroot.kidmatix"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
