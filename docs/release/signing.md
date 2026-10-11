@@ -25,6 +25,8 @@ the owner and never enter the repository.
 3. Build the bundle: `bash tool/build_release.sh android`. Without
    `key.properties` the script stops; `android/app/build.gradle.kts`
    falls back to the debug key only for local and CI release builds.
+   Check the signature: `keytool -printcert -jarfile
+   build/app/outputs/bundle/release/app-release.aab` shows your name.
 4. In the Play Console: create the app "Kid Matix", turn on Play App
    Signing, upload `build/app/outputs/bundle/release/app-release.aab` to
    the internal testing track, add the testers' emails, fill the target
