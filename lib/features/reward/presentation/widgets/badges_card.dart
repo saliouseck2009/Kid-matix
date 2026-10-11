@@ -148,7 +148,7 @@ class _BadgeTile extends StatelessWidget {
             child: Icon(
               isEarned ? icon : Icons.lock_rounded,
               size: _iconSize,
-              color: isEarned ? scheme.primary : context.palette.lockedDepth,
+              color: isEarned ? scheme.primary : context.palette.mutedText,
             ),
           ),
           Text(
