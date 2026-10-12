@@ -38,6 +38,7 @@ final class ChallengeLabels {
     return switch (ChallengeSource.tryParse(sourceKey)) {
       TrainingSource() => l10n.quizModeFreeTraining,
       TimeAttackSource() => l10n.quizModeTimeAttack,
+      SurvivalSource() => l10n.quizModeSurvival,
       null => null,
     };
   }

@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 
 /// Rules of the free training and of the challenges.
 abstract final class ChallengeRules {
@@ -27,6 +28,29 @@ abstract final class ChallengeRules {
   /// Question types of a time attack: answers to pick only, to measure
   /// the speed of recall (owner's choice).
   static const List<String> timeAttackQuestionTypeIds = <String>[
+    QuestionTypeIds.multipleChoice,
+  ];
+
+  /// Lives of a survival game: it ends at the third mistake.
+  static const int survivalLives = 3;
+
+  /// Time per question of a survival game with the normal timer: 10
+  /// seconds, half a second less every 5 right answers, never below 4
+  /// seconds (owner's choice); the relaxed timer stretches it all.
+  static const QuizTimeSchedule survivalTimeSchedule = QuizTimeSchedule(
+    start: Duration(seconds: 10),
+    step: Duration(milliseconds: 500),
+    stepEvery: 5,
+    floor: Duration(seconds: 4),
+  );
+
+  /// Questions prepared for a survival game: more than anyone answers
+  /// before losing 3 lives.
+  static const int survivalQuestionCount = 300;
+
+  /// Question types of a survival game: answers to pick only, like the
+  /// time attack (owner's choice).
+  static const List<String> survivalQuestionTypeIds = <String>[
     QuestionTypeIds.multipleChoice,
   ];
 }

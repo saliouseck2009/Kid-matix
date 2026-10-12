@@ -5,13 +5,15 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
+import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_cubit.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_state.dart';
 import 'package:kid_matix/features/challenge/presentation/widgets/challenge_card.dart';
 import 'package:kid_matix/features/challenge/presentation/widgets/challenge_error_message.dart';
 
 /// The challenges tab: each challenge with the player's record. Version
-/// 1.0 has the time attack; the other challenges come with version 1.1.
+/// 1.0 has the time attack; version 1.1 adds survival and the other
+/// challenges.
 class ChallengesPage extends StatelessWidget {
   /// Creates the page.
   const ChallengesPage({required this.onPlay, super.key});
@@ -41,24 +43,68 @@ class ChallengesPage extends StatelessWidget {
               ChallengesFailure(:final errorCode) => Text(
                 errorCode.toChallengeMessage(context.l10n),
               ),
-              ChallengesLoaded(:final timeAttack, :final records) =>
-                ChallengeCard(
-                  icon: Icons.timer_outlined,
-                  iconBackground: context.palette.warmTint,
-                  title: context.l10n.quizModeTimeAttack,
-                  subtitle: context.l10n.challengeTimeAttackSubtitle,
-                  record: switch (records[QuizMode.timeAttack]) {
-                    final RecordEntity record => context.l10n.challengeRecord(
-                      record.bestScore,
+              ChallengesLoaded(
+                :final timeAttack,
+                :final survival,
+                :final records,
+              ) =>
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: AppSizes.space12,
+                  children: <Widget>[
+                    ChallengeCard(
+                      icon: Icons.timer_outlined,
+                      iconBackground: context.palette.warmTint,
+                      title: context.l10n.quizModeTimeAttack,
+                      subtitle: context.l10n.challengeTimeAttackSubtitle,
+                      record: _recordOf(context, records[QuizMode.timeAttack]),
+                      onTap: () => onPlay(timeAttack),
                     ),
-                    null => null,
-                  },
-                  onTap: () => onPlay(timeAttack),
+                    _SurvivalCard(
+                      survival: survival,
+                      record: _recordOf(context, records[QuizMode.survival]),
+                      onPlay: onPlay,
+                    ),
+                  ],
                 ),
             },
           ],
         );
       },
+    );
+  }
+
+  static String? _recordOf(BuildContext context, RecordEntity? record) {
+    return record == null
+        ? null
+        : context.l10n.challengeRecord(record.bestScore);
+  }
+}
+
+class _SurvivalCard extends StatelessWidget {
+  const _SurvivalCard({
+    required this.survival,
+    required this.record,
+    required this.onPlay,
+  });
+
+  final SurvivalChallengeEntity survival;
+  final String? record;
+  final ValueChanged<ChallengeSource> onPlay;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChallengeCard(
+      icon: Icons.favorite_rounded,
+      iconColor: context.feedbackPalette.wrong,
+      iconBackground: context.feedbackPalette.wrongTint,
+      title: context.l10n.quizModeSurvival,
+      subtitle: context.l10n.challengeSurvivalSubtitle,
+      note: survival.keepsTimerTurnedOff
+          ? context.l10n.challengeSurvivalTimerNote
+          : null,
+      record: record,
+      onTap: () => onPlay(survival.source),
     );
   }
 }

@@ -42,6 +42,20 @@ final class ChallengeQuizSpecs {
         totalTimeLimit: ChallengeRules.timeAttackTime,
         sourceKey: source.toKey(),
       ),
+      SurvivalSource() => QuizSpec(
+        domainId: domain.id,
+        mode: QuizMode.survival,
+        itemKeys: itemKeys,
+        questionTypeIds: ChallengeRules.survivalQuestionTypeIds,
+        questionCount: ChallengeRules.survivalQuestionCount,
+        baseTimeLimit: ChallengeRules.survivalTimeSchedule.start,
+        timeSchedule: ChallengeRules.survivalTimeSchedule,
+        // The timer is the point of the mode: it stays when the player
+        // turned it off.
+        keepsTimer: true,
+        lives: ChallengeRules.survivalLives,
+        sourceKey: source.toKey(),
+      ),
     };
   }
 

@@ -98,6 +98,7 @@ GoRouter _createRouter(
         getTrainingChoice: sl(),
         saveTrainingChoice: sl(),
         getTimeAttack: sl(),
+        getSurvival: sl(),
         getRecords: sl(),
         getSessionRecord: sl(),
         watchRecordChanges: sl(),

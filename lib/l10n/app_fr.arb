@@ -1546,6 +1546,14 @@
   "@challengeTimeAttackSubtitle": {
     "description": "Line under \"Contre-la-montre\" on its card of the challenges screen (\"60 seconds, as many answers as you can\")."
   },
+  "challengeSurvivalSubtitle": "3 vies, de plus en plus vite",
+  "@challengeSurvivalSubtitle": {
+    "description": "Line under \"Survie\" on its card of the challenges screen (\"3 lives, faster and faster\")."
+  },
+  "challengeSurvivalTimerNote": "Ici, le chrono reste actif.",
+  "@challengeSurvivalTimerNote": {
+    "description": "Small line on the Survie card, shown only to a player who turned the timer off in the settings: survival keeps its timer anyway (\"Here, the timer stays on.\"). Talks to the child. One line."
+  },
   "resultsNewRecord": "Nouveau record !",
   "@resultsNewRecord": {
     "description": "Title of the card on the results of a time attack that beat the player's best score (\"New record!\")."

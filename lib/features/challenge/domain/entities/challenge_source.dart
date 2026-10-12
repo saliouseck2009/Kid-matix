@@ -4,7 +4,8 @@ import 'package:meta/meta.dart';
 /// remembers it in its opaque source key.
 ///
 /// A free training is written `training:20:timer:mul:2+mul:5`, a time
-/// attack `timeAttack:mul:1+mul:2`.
+/// attack `timeAttack:mul:1+mul:2`, a survival game
+/// `survival:mul:1+mul:2`.
 @immutable
 sealed class ChallengeSource {
   /// Creates a source on [unitKeys].
@@ -24,7 +25,8 @@ sealed class ChallengeSource {
   static ChallengeSource? tryParse(String? sourceKey) {
     if (sourceKey == null) return null;
     return TrainingSource._tryParse(sourceKey) ??
-        TimeAttackSource._tryParse(sourceKey);
+        TimeAttackSource._tryParse(sourceKey) ??
+        SurvivalSource._tryParse(sourceKey);
   }
 
   /// The source key of the quiz.
@@ -145,6 +147,39 @@ final class TimeAttackSource extends ChallengeSource {
   bool operator ==(Object other) {
     return identical(this, other) ||
         other is TimeAttackSource && other.toKey() == toKey();
+  }
+
+  @override
+  int get hashCode => toKey().hashCode;
+}
+
+/// A survival game on the units open to the player.
+final class SurvivalSource extends ChallengeSource {
+  /// Creates the source.
+  SurvivalSource({required super.unitKeys});
+
+  /// Prefix of every survival source key.
+  static const String prefix = 'survival';
+
+  @override
+  String toKey() {
+    return '$prefix${ChallengeSource.separator}'
+        '${ChallengeSource._joinUnits(unitKeys)}';
+  }
+
+  static SurvivalSource? _tryParse(String sourceKey) {
+    const String start = '$prefix${ChallengeSource.separator}';
+    if (!sourceKey.startsWith(start)) return null;
+    final List<String>? units = ChallengeSource._splitUnits(
+      sourceKey.substring(start.length),
+    );
+    return units == null ? null : SurvivalSource(unitKeys: units);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is SurvivalSource && other.toKey() == toKey();
   }
 
   @override

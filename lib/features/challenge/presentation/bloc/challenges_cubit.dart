@@ -5,6 +5,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
+import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_state.dart';
 
@@ -30,19 +31,30 @@ final class ChallengesCubit extends Cubit<ChallengesState> {
   Future<void> _reload() async {
     final DataState<TimeAttackSource> timeAttack = await _useCases
         .getTimeAttack(params: _profileId);
+    final DataState<SurvivalChallengeEntity> survival = await _useCases
+        .getSurvival(params: _profileId);
     final DataState<Map<QuizMode, RecordEntity>> records = await _useCases
         .getRecords(params: _profileId);
     if (isClosed) return;
-    emit(switch ((timeAttack, records)) {
+    emit(switch ((timeAttack, survival, records)) {
       (
         DataSuccess<TimeAttackSource>(data: final TimeAttackSource source),
+        DataSuccess<SurvivalChallengeEntity>(
+          data: final SurvivalChallengeEntity survivalGame,
+        ),
         DataSuccess<Map<QuizMode, RecordEntity>>(
           data: final Map<QuizMode, RecordEntity> best,
         ),
       ) =>
-        ChallengesLoaded(timeAttack: source, records: best),
-      (DataFailed<TimeAttackSource>(:final exception), _) ||
+        ChallengesLoaded(
+          timeAttack: source,
+          survival: survivalGame,
+          records: best,
+        ),
+      (DataFailed<TimeAttackSource>(:final exception), _, _) ||
+      (_, DataFailed<SurvivalChallengeEntity>(:final exception), _) ||
       (
+        _,
         _,
         DataFailed<Map<QuizMode, RecordEntity>>(:final exception),
       ) => ChallengesFailure(errorCode: exception.code),

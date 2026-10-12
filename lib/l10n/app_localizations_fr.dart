@@ -1085,6 +1085,12 @@ class AppLocalizationsFr extends AppLocalizations {
       '60 secondes, un maximum de réponses';
 
   @override
+  String get challengeSurvivalSubtitle => '3 vies, de plus en plus vite';
+
+  @override
+  String get challengeSurvivalTimerNote => 'Ici, le chrono reste actif.';
+
+  @override
   String get resultsNewRecord => 'Nouveau record !';
 
   @override
