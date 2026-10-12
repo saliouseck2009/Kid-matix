@@ -19,6 +19,7 @@ import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_due_facts_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -102,6 +103,7 @@ void main() {
     domains: domains,
     questionTypes: types,
     random: DartRandomSource(seed: 1),
+    clock: clock,
   );
 
   group('RecordAnswerUseCase', () {
@@ -360,6 +362,10 @@ void main() {
           repository: repository,
           domains: domains,
         ),
+        getReviewOverview: GetReviewOverviewUseCase(
+          repository: repository,
+          clock: clock,
+        ),
       );
       // Act
       final List<QuizItemPlan> actualPlans = (await service.planQuiz(
@@ -384,6 +390,10 @@ void main() {
         getGrid: GetMasteryGridUseCase(
           repository: repository,
           domains: domains,
+        ),
+        getReviewOverview: GetReviewOverviewUseCase(
+          repository: repository,
+          clock: clock,
         ),
       );
       await repository.saveProgress(

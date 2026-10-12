@@ -2,6 +2,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 
 /// The mastery engine, as the features that ask questions see it.
 ///
@@ -20,6 +21,13 @@ abstract interface class MasteryService {
   /// Returns the keys of the items of [domainId] that [profileId] has
   /// mastered.
   Future<DataState<Set<String>>> readMasteredItems({
+    required String profileId,
+    required String domainId,
+  });
+
+  /// Returns how many items of [domainId] [profileId] has to review and
+  /// has already been asked.
+  Future<DataState<ReviewOverview>> readReviewOverview({
     required String profileId,
     required String domainId,
   });

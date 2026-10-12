@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
@@ -72,6 +73,16 @@ void main() {
         isNot(TimeAttackSource(unitKeys: inputSource.unitKeys)),
       );
     });
+    test('writes and reads the daily review', () {
+      // Act
+      final String actualKey = DailyReviewSource().toKey();
+      final ChallengeSource? actualSource = ChallengeSource.tryParse(actualKey);
+      // Assert
+      expect(actualKey, 'dailyReview');
+      expect(actualSource, DailyReviewSource());
+      expect(actualSource.hashCode, DailyReviewSource().hashCode);
+      expect(actualSource!.unitKeys, isEmpty);
+    });
     test('ignores the keys of other features and broken keys', () {
       // Act & Assert
       for (final String? inputKey in <String?>[
@@ -83,6 +94,7 @@ void main() {
         'timeAttack:',
         'survival:',
         'survival:mul:1++mul:2',
+        'dailyReview:mul:2',
       ]) {
         expect(ChallengeSource.tryParse(inputKey), isNull, reason: inputKey);
       }
@@ -182,6 +194,26 @@ void main() {
       );
       // Assert
       expect(actualSpec, isNull);
+    });
+    test('reviews 10 facts of every table without timer', () {
+      // Act
+      final QuizSpec actualSpec = specs.specOf(
+        domain: domain,
+        source: DailyReviewSource(),
+      )!;
+      // Assert
+      expect(actualSpec.mode, QuizMode.dailyReview);
+      expect(actualSpec.selection, QuizSelection.review);
+      expect(actualSpec.questionCount, 10);
+      expect(actualSpec.itemKeys, hasLength(120));
+      expect(actualSpec.baseTimeLimit, isNull);
+      expect(actualSpec.totalTimeLimit, isNull);
+      expect(actualSpec.keepsTimer, isFalse);
+      expect(
+        actualSpec.questionTypeIds,
+        ChallengeRules.trainingQuestionTypeIds,
+      );
+      expect(actualSpec.sourceKey, 'dailyReview');
     });
   });
 }

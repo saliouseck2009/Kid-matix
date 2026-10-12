@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 ///
 /// A free training is written `training:20:timer:mul:2+mul:5`, a time
 /// attack `timeAttack:mul:1+mul:2`, a survival game
-/// `survival:mul:1+mul:2`.
+/// `survival:mul:1+mul:2`, the daily review `dailyReview`.
 @immutable
 sealed class ChallengeSource {
   /// Creates a source on [unitKeys].
@@ -26,7 +26,8 @@ sealed class ChallengeSource {
     if (sourceKey == null) return null;
     return TrainingSource._tryParse(sourceKey) ??
         TimeAttackSource._tryParse(sourceKey) ??
-        SurvivalSource._tryParse(sourceKey);
+        SurvivalSource._tryParse(sourceKey) ??
+        DailyReviewSource._tryParse(sourceKey);
   }
 
   /// The source key of the quiz.
@@ -184,4 +185,27 @@ final class SurvivalSource extends ChallengeSource {
 
   @override
   int get hashCode => toKey().hashCode;
+}
+
+/// The daily review: the facts the mastery engine picks among every
+/// table, so it names no unit.
+final class DailyReviewSource extends ChallengeSource {
+  /// Creates the source.
+  DailyReviewSource() : super(unitKeys: const <String>[]);
+
+  /// Source key of the daily review.
+  static const String key = 'dailyReview';
+
+  @override
+  String toKey() => key;
+
+  static DailyReviewSource? _tryParse(String sourceKey) {
+    return sourceKey == key ? DailyReviewSource() : null;
+  }
+
+  @override
+  bool operator ==(Object other) => other is DailyReviewSource;
+
+  @override
+  int get hashCode => key.hashCode;
 }

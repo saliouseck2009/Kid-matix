@@ -3,14 +3,17 @@ import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/features/challenge/data/datasources/training_choice_local_data_source_impl.dart';
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
+import '../../../helpers/fake_mastery_service.dart';
 import '../helpers/challenge_fakes.dart';
 import '../../../helpers/in_memory_local_storage.dart';
 import '../../../helpers/test_quiz_pages.dart';
@@ -159,6 +162,31 @@ void main() {
       final AppException? actualException = (await const GetSurvivalUseCase(
         openUnits: FixedOpenUnits(null),
         settings: FixedPlayerSettings(),
+      )(params: 'p1')).exceptionOrNull;
+      // Assert
+      expect(actualException, isA<CacheException>());
+    });
+  });
+  group('GetDailyReviewUseCase', () {
+    test('reads the review of the player from the mastery engine', () async {
+      // Arrange
+      final FakeMasteryService inputMastery = FakeMasteryService()
+        ..reviewOverview = const ReviewOverview(dueCount: 8, seenCount: 30);
+      // Act
+      final ReviewOverview actualOverview = (await GetDailyReviewUseCase(
+        mastery: inputMastery,
+      )(params: 'p1')).requireData;
+      // Assert
+      expect(
+        actualOverview,
+        const ReviewOverview(dueCount: 8, seenCount: 30),
+      );
+      expect(actualOverview.hasSeenItems, isTrue);
+    });
+    test('fails when the progress cannot be read', () async {
+      // Act
+      final AppException? actualException = (await GetDailyReviewUseCase(
+        mastery: FakeMasteryService(failure: const CacheException()),
       )(params: 'p1')).exceptionOrNull;
       // Assert
       expect(actualException, isA<CacheException>());

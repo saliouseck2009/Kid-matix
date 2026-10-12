@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
 import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
@@ -24,6 +25,7 @@ final class ChallengesLoaded extends ChallengesState {
     required this.timeAttack,
     required this.survival,
     required this.records,
+    required this.review,
   });
 
   /// The time attack to play.
@@ -34,6 +36,9 @@ final class ChallengesLoaded extends ChallengesState {
 
   /// Best score by mode; a mode never played has none.
   final Map<QuizMode, RecordEntity> records;
+
+  /// What the daily review holds.
+  final ReviewOverview review;
 }
 
 /// The challenges could not be read.

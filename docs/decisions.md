@@ -94,6 +94,11 @@ owner. Add a line here whenever a new decision is taken.
 | French typography in user-facing texts: a no-break space (U+00A0) before `? ! : ;`, inside « » and between a number and its unit (`2,4 s`), straight apostrophe `'` | Owner. The sign never starts a line on its own; the apostrophe matches the mockups. Checked by the `i18n-guardian` agent |
 | One branch per task (`<type>/<slug>`, task id first), Conventional Commits, one GitHub pull request per task merged with a merge commit; no commit or push on `main`. Rules in `docs/git-workflow.md`, enforced by the hooks of `.githooks/` | Owner's request: each feature on its own branch, clean commits, pull requests. Local hooks keep mistakes from reaching the remote at all |
 | CI is GitHub Actions with four parallel jobs — analyze, test (with coverage), debug Android build on Ubuntu, debug iOS build without signing on macOS — each running one group of `tool/check.sh` with Flutter 3.47.6 (pinned in the workflow); with `CI=true` the script fails on unformatted code and on stale generated files instead of rewriting them. Generated code is committed | Owner's request. One script for local and CI keeps both identical; committed generated code builds without a generation step |
+| The app is "Kid Matix"; the store title is "Kid Matix : tables de 1 à 12". Identifiers: `sn.ckroot.kid_matix.kid_matix` on Android (the Google Play app was created with it and Play never lets it change), `sn.ckroot.kidmatix` on iOS | Owner's choices at F11-07 and F11-11 |
+| The system backup is off: `android:allowBackup="false"`, and the iOS `Documents` folder is excluded from the iCloud backup | Owner's choice; no data leaves the phone, as the privacy policy says |
+| Content rating: no violence (the boss fight is a quiz with a drawn monster). Google Play audience 6-8 and 9-12; App Store "Made for Kids", ages 6-8, rated 4+ | Owner's choices at F11-09 |
+| The privacy policy is `docs/store/privacy-policy.md`, served by GitHub Pages from `main /docs` | Owner's choice |
+| The phone layout keeps a width of 600 points, centered, on a tablet | F11-06 |
 | The launcher name is "Kid Matix" on Android and iOS until the final name is chosen (F11-07) | Owner. Android showed the package name `kid_matix` |
 | Verification is one command: `bash tool/check.sh` (pub get, gen-l10n, build_runner if needed, format, analyze, test) | A lot is done only when every step is OK |
 
@@ -103,7 +108,6 @@ Ask the owner when the lot that needs the answer starts.
 
 | Point | Needed by |
 | --- | --- |
-| Final app name, icon and splash screen | F11-07 |
 | Final illustrations for the mascot, the 12 monsters and the 12 avatars (current drawings are provisional) | Any time; code must not depend on the drawings |
 | Screens not drawn yet (see `docs/design/README.md`) | F4, F12, F14 |
 | Which tables a guest without a profile gets in a duel | F14-02 |

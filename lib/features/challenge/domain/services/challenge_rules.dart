@@ -53,4 +53,12 @@ abstract final class ChallengeRules {
   static const List<String> survivalQuestionTypeIds = <String>[
     QuestionTypeIds.multipleChoice,
   ];
+
+  /// Questions of the daily review.
+  static const int dailyReviewQuestionCount = 10;
+
+  /// Question types of the daily review: the mastery engine picks among
+  /// them by box.
+  static const List<String> dailyReviewQuestionTypeIds =
+      trainingQuestionTypeIds;
 }

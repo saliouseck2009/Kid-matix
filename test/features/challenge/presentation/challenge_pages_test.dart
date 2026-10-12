@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
+import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
+import 'package:kid_matix/l10n/app_localizations_fr.dart';
 
+import '../../../helpers/fake_mastery_service.dart';
 import '../../../helpers/pump_localized.dart';
 import '../../../helpers/test_challenge_pages.dart';
 import '../helpers/challenge_fakes.dart';
@@ -119,6 +123,7 @@ void main() {
       WidgetTester tester, {
       List<RecordEntity> records = const <RecordEntity>[],
       TimerMode timerMode = TimerMode.normal,
+      ReviewOverview review = const ReviewOverview(dueCount: 0, seenCount: 0),
     }) async {
       final List<String> played = <String>[];
       final ChallengePages pages = buildTestChallengePages(
@@ -126,6 +131,7 @@ void main() {
           records: InMemoryRecordRepository(records),
           openUnits: const FixedOpenUnits(<String>['mul:1', 'mul:2']),
           timerMode: timerMode,
+          mastery: FakeMasteryService()..reviewOverview = review,
         ),
       );
       await pumpLocalized(
@@ -201,6 +207,79 @@ void main() {
       await pumpChallenges(tester, records: <RecordEntity>[_record()]);
       // Assert
       expect(find.text('Record 18'), findsOneWidget);
+    });
+    testWidgets('opens the daily review with the facts to review', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(
+        tester,
+        review: const ReviewOverview(dueCount: 8, seenCount: 30),
+      );
+      // Act
+      await tester.tap(find.text('Révision du jour'));
+      // Assert
+      expect(find.text('10 questions choisies pour toi'), findsOneWidget);
+      expect(find.text('8 à revoir'), findsOneWidget);
+      expect(played, <String>['dailyReview']);
+    });
+    testWidgets('opens the daily review without pill when none is due', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(
+        tester,
+        review: const ReviewOverview(dueCount: 0, seenCount: 4),
+      );
+      // Act
+      await tester.tap(find.text('Révision du jour'));
+      // Assert
+      expect(find.textContaining('à revoir'), findsNothing);
+      expect(played, <String>['dailyReview']);
+    });
+    testWidgets('locks the daily review before any fact was seen', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(tester);
+      // Act
+      await tester.tap(find.text('Révision du jour'));
+      // Assert
+      expect(find.text("Joue d'abord une étape du parcours"), findsOneWidget);
+      expect(find.textContaining('à revoir'), findsNothing);
+      expect(played, isEmpty);
+    });
+    testWidgets('shows the error when the review cannot be read', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final ChallengePages pages = buildTestChallengePages(
+        useCases: buildTestChallengeUseCases(
+          mastery: FakeMasteryService(failure: const CacheException()),
+        ),
+      );
+      // Act
+      await pumpLocalized(
+        tester,
+        Scaffold(
+          body: pages.buildChallengesPage(profileId: 'p1', onPlay: (_) {}),
+        ),
+      );
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Révision du jour'), findsNothing);
+      expect(find.text('Contre-la-montre'), findsNothing);
+    });
+    test('sends the daily review back to the challenges', () {
+      // Arrange
+      final ChallengePages pages = buildTestChallengePages();
+      // Act & Assert
+      expect(pages.originOf('dailyReview'), ChallengeOrigin.challenges);
+      expect(pages.specOf('dailyReview')?.mode, QuizMode.dailyReview);
+      expect(
+        pages.describeSource('dailyReview', AppLocalizationsFr()),
+        'Révision du jour',
+      );
     });
   });
 

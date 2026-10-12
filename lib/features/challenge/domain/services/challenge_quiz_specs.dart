@@ -2,6 +2,7 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dart';
@@ -9,6 +10,8 @@ import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dar
 /// Turns a free training or a challenge into the quiz to play.
 ///
 /// The mastery engine draws the questions: low boxes come more often.
+/// For the daily review it picks them among every fact of the domain:
+/// the overdue first, then the least known.
 final class ChallengeQuizSpecs {
   /// Creates the builder.
   const ChallengeQuizSpecs();
@@ -19,7 +22,12 @@ final class ChallengeQuizSpecs {
     required LearningDomain domain,
     required ChallengeSource source,
   }) {
-    final List<String>? itemKeys = _itemKeysOf(domain, source.unitKeys);
+    final List<String>? itemKeys = _itemKeysOf(domain, switch (source) {
+      DailyReviewSource() => <String>[
+        for (final LearningUnit unit in domain.units) unit.key,
+      ],
+      _ => source.unitKeys,
+    });
     if (itemKeys == null || itemKeys.isEmpty) return null;
     return switch (source) {
       TrainingSource(:final int questionCount, :final bool hasTimer) =>
@@ -54,6 +62,15 @@ final class ChallengeQuizSpecs {
         // turned it off.
         keepsTimer: true,
         lives: ChallengeRules.survivalLives,
+        sourceKey: source.toKey(),
+      ),
+      DailyReviewSource() => QuizSpec(
+        domainId: domain.id,
+        mode: QuizMode.dailyReview,
+        itemKeys: itemKeys,
+        questionTypeIds: ChallengeRules.dailyReviewQuestionTypeIds,
+        selection: QuizSelection.review,
+        questionCount: ChallengeRules.dailyReviewQuestionCount,
         sourceKey: source.toKey(),
       ),
     };

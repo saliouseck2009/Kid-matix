@@ -470,6 +470,9 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get quizModeDailyReview => 'Révision du jour';
+
+  @override
   String quizScoreSpoken(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1095,6 +1098,31 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get challengeSurvivalTimerNote => 'Ici, le chrono reste actif.';
+
+  @override
+  String challengeDailyReviewSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions choisies pour toi',
+      one: '1 question choisie pour toi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String challengeDailyReviewDue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count à revoir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get challengeDailyReviewLocked =>
+      'Joue d\'abord une étape du parcours';
 
   @override
   String get resultsNewRecord => 'Nouveau record !';

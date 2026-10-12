@@ -10,6 +10,7 @@ final class QuizPlanRequest {
     required List<String> itemKeys,
     required List<String> questionTypeIds,
     required this.questionCount,
+    this.isReview = false,
   }) : itemKeys = List<String>.unmodifiable(itemKeys),
        questionTypeIds = List<String>.unmodifiable(questionTypeIds);
 
@@ -25,6 +26,10 @@ final class QuizPlanRequest {
   /// Question types allowed in the quiz.
   final List<String> questionTypeIds;
 
-  /// Questions to plan.
+  /// Questions to plan; a review may plan fewer.
   final int questionCount;
+
+  /// Whether to plan a review: the items to review, each once, instead
+  /// of a weighted draw.
+  final bool isReview;
 }
