@@ -548,11 +548,11 @@ Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le regi
 
 À la création du profil, un test rapide ouvre d'emblée les tables que l'enfant connaît déjà.
 
-- [ ] **F16-01** Cas d'usage `RunPlacementTest` : 12 questions, une par table.
-- [ ] **F16-02** Une table réussie est ouverte dans le parcours ; ses étoiles restent à gagner.
-- [ ] **F16-03** Proposition du test en fin de création de profil, avec un bouton « Passer ».
-- [ ] **F16-04** Écran de bilan du test : tables ouvertes. Maquette : `18-placement-test-result.png`.
-- [ ] **F16-05** Tests : ouverture des bonnes tables, test passé, test abandonné en cours.
+- [x] **F16-01** Cas d'usage `RunPlacementTest` : 12 questions, une par table.
+- [x] **F16-02** Une table réussie est ouverte dans le parcours ; ses étoiles restent à gagner.
+- [x] **F16-03** Proposition du test en fin de création de profil, avec un bouton « Passer ».
+- [x] **F16-04** Écran de bilan du test : tables ouvertes. Maquette : `18-placement-test-result.png`.
+- [x] **F16-05** Tests : ouverture des bonnes tables, test passé, test abandonné en cours.
 
 **Terminé quand :** un nouveau joueur qui réussit les questions des tables de 1, 2 et 10 démarre avec ces trois tables ouvertes.
 
@@ -560,11 +560,11 @@ Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le regi
 
 Les joueurs du téléphone sont classés par XP gagnés dans la semaine.
 
-- [ ] **F17-01** Contrat `LeaderboardRepository` avec une portée (téléphone, amis, monde) ; seule la portée téléphone est implémentée.
-- [ ] **F17-02** Cas d'usage `GetLeaderboard` : XP de la semaine calculés à partir du journal des sessions, remise à zéro chaque lundi.
-- [ ] **F17-03** `LeaderboardCubit` et écran Classement : avatar, pseudo, XP de la semaine. Maquette : `19-leaderboard.png`.
-- [ ] **F17-04** Réglage pour masquer le classement.
-- [ ] **F17-05** Tests : calcul hebdomadaire avec une horloge factice, passage du dimanche au lundi, égalités.
+- [x] **F17-01** Contrat `LeaderboardRepository` avec une portée (téléphone, amis, monde) ; seule la portée téléphone est implémentée.
+- [x] **F17-02** Cas d'usage `GetLeaderboard` : XP de la semaine calculés à partir du journal des sessions, remise à zéro chaque lundi.
+- [x] **F17-03** `LeaderboardCubit` et écran Classement : avatar, pseudo, XP de la semaine. Maquette : `19-leaderboard.png`.
+- [x] **F17-04** Réglage pour masquer le classement.
+- [x] **F17-05** Tests : calcul hebdomadaire avec une horloge factice, passage du dimanche au lundi, égalités.
 
 **Terminé quand :** deux joueurs qui ont joué dans la semaine apparaissent classés, et le classement repart de zéro le lundi.
 

@@ -23,8 +23,9 @@ middle of one). Last update: 2026-10-12.
 | F13 · My monsters | **Done** (closed 2026-10-12) |
 | F14 · Duel on one phone | **Done** (closed 2026-10-12) |
 | F15 · New question formats | **Done** (closed 2026-10-12) |
-| F16 · Placement test | **Next** |
-| F17 – F18 | Not started |
+| F16 · Placement test | **Done** (closed 2026-10-12) |
+| F17 · Local leaderboard | **Done** (closed 2026-10-12) |
+| F18 · Daily reminder | **Next** |
 | F19 · Challenge by code | **Done** (closed 2026-10-12) |
 | F20 – F21 | Not started |
 
@@ -626,6 +627,53 @@ draw; both play the same questions from the first « Renvoyer un défi »),
 in a coded training (no mastery), back from the code screen to the Défis
 tab.
 
-## Starting F16
+## F17 closure
 
-Tasks in the F16 section of `docs/product/task-breakdown.md`.
+- `bash tool/check.sh`: every step OK (895 tests); coverage thresholds
+  met (`features/reward/domain` 97 %, `features/reward/data` 99 %).
+- Checked on the Android emulator (API 36, debug build) with its two
+  players: the "Classement" card at the bottom of the Profile tab opens the
+  screen of mockup 19, Chasseur first on the podium with the 120 XP of
+  today's duel, Placid second with 0 XP and "C'est toi", and the mascot
+  saying "Encore 120 XP et tu rattrapes Chasseur !". The settings switch
+  and the Monday reset were checked by the tests only (short session on
+  purpose).
+- Tests (F17-05): the week from Monday 00:00 with a fake clock (every day
+  of the week, across a month, a year and a daylight saving change),
+  Sunday 23:59:59 → Monday 00:00 starting again from zero (also over the
+  real database), ties by nickname ignoring case, quiz and duel XP summed,
+  deleted rows ignored, the setting kept on the device and hiding the
+  Profile card, and the whole path Profil → Classement → Réglages.
+- No schema change: the weekly XP are summed from `session_reward` and
+  `xp_award` when read.
+
+Texts and choices waiting for the owner: the "Classement" card at the
+bottom of the Profile tab with "Qui a gagné le plus d'XP cette
+semaine ?" (no mockup for the entry), the mascot messages other than the
+mockup's "Encore 110 XP et tu rattrapes Moussa !" ("Tu es à égalité avec
+Moussa !", "Tu es en tête cette semaine !", "Joue pour gagner tes premiers
+XP de la semaine !"), and the frame plus "C'est toi" on the active player's
+row under the podium.
+
+## F16 closure
+
+- Offered at the end of the profile creation (« Passer »); 12 typed
+  questions, one per table; a right answer opens its table, stars still
+  to win; mastery counts, no XP. Result screen of mockup 18. Rules in
+  `docs/decisions.md`. No migration: placed tables are `stage_progress`
+  rows with the stage `placement`.
+- Tests (F16-05): right tables opened (1, 2 and 10 → exactly those),
+  test passed, skipped and left midway (Bloc, page, router, real
+  database). `bash tool/check.sh`: every step OK (893 tests);
+  `learning_path` domain 99 %, data 100 %.
+- Short check on the Android emulator (API 36, debug): after « C'est
+  parti ! » the offer showed, then the keypad questions (1 × 7, 2 × 3).
+  The rest of the run was cut short: another session reinstalled the
+  app on the shared emulator. The result screen and the map are covered
+  by tests; to try on the phone.
+
+Texts waiting for the owner: the offer (no mockup: « Tu connais déjà des
+tables ? », its text, « Faire le test »), « Je ne sais pas », the quit
+dialog, the result with 0 table (« Tout est à découvrir ! », « Pas de
+souci, tu vas les apprendre une par une. Ton parcours commence par la
+table de 1. ») and with 1 table (« Elle est ouverte… Ses étoiles… »).

@@ -15,14 +15,22 @@ import 'package:kid_matix/features/profile/presentation/widgets/profile_error_me
 import 'package:kid_matix/features/profile/presentation/widgets/settings_parts.dart';
 
 /// The settings of the player (mockup 13): sounds, game, and the actions
-/// on the player. The reminder, leaderboard and backup sections come with
-/// their lots.
+/// on the player. The reminder and backup sections come with their lots.
+/// Other features add rows to the game section, such as the leaderboard
+/// switch.
 class SettingsPage extends StatelessWidget {
   /// Creates the page; the settings come from the enclosing Cubit.
-  const SettingsPage({required this.onBack, super.key});
+  const SettingsPage({
+    required this.onBack,
+    this.gameRows = const <Widget>[],
+    super.key,
+  });
 
   /// Goes back to the Profile tab.
   final VoidCallback onBack;
+
+  /// Rows of other features, at the end of the game section.
+  final List<Widget> gameRows;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +51,11 @@ class SettingsPage extends StatelessWidget {
                 SettingsFailure(:final errorCode) => Center(
                   child: Text(errorCode.toProfileMessage(context.l10n)),
                 ),
-                SettingsLoaded() => _SettingsView(state: state, onBack: onBack),
+                SettingsLoaded() => _SettingsView(
+                  state: state,
+                  onBack: onBack,
+                  gameRows: gameRows,
+                ),
               };
             },
           ),
@@ -65,12 +77,17 @@ class SettingsPage extends StatelessWidget {
 }
 
 class _SettingsView extends StatelessWidget {
-  const _SettingsView({required this.state, required this.onBack});
+  const _SettingsView({
+    required this.state,
+    required this.onBack,
+    required this.gameRows,
+  });
 
   static const double _gap = 20;
 
   final SettingsLoaded state;
   final VoidCallback onBack;
+  final List<Widget> gameRows;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -184,6 +201,7 @@ class _SettingsView extends StatelessWidget {
                     old.copyWith(isReducedMotionEnabled: isOn),
               ),
             ),
+            ...gameRows,
           ],
         ),
         const SizedBox(height: _gap),

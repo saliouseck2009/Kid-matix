@@ -663,6 +663,86 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pathCrownHint => 'Bats le boss pour gagner la couronne.';
 
   @override
+  String get placementOfferTitle => 'Tu connais déjà des tables ?';
+
+  @override
+  String get placementOfferMessage =>
+      'Réponds à une question par table, sans chrono. Chaque table que tu connais s\'ouvre tout de suite dans ton parcours.';
+
+  @override
+  String get placementOfferStart => 'Faire le test';
+
+  @override
+  String get placementOfferSkip => 'Passer';
+
+  @override
+  String placementQuestionProgress(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String get placementUnknownAnswer => 'Je ne sais pas';
+
+  @override
+  String get placementQuitTooltip => 'Arrêter le test';
+
+  @override
+  String get placementQuitTitle => 'Arrêter le test ?';
+
+  @override
+  String get placementQuitMessage =>
+      'Les tables déjà trouvées restent ouvertes dans ton parcours.';
+
+  @override
+  String get placementQuitCancel => 'Continuer le test';
+
+  @override
+  String get placementQuitConfirm => 'Arrêter';
+
+  @override
+  String placementResultTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu connais déjà $count tables !',
+      one: 'Tu connais déjà 1 table !',
+      zero: 'Tout est à découvrir !',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String placementResultSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.',
+      one: 'Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.',
+      zero: 'Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get placementLegendKnown => 'Déjà connue';
+
+  @override
+  String get placementLegendToDiscover => 'À découvrir';
+
+  @override
+  String placementTableKnown(String name) {
+    return '$name, déjà connue';
+  }
+
+  @override
+  String placementTableToDiscover(String name) {
+    return '$name, à découvrir';
+  }
+
+  @override
+  String get placementSeePath => 'Voir mon parcours';
+
+  @override
   String get pathTableBack => 'Retour au parcours';
 
   @override
@@ -1534,4 +1614,55 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pathMonstersOpenLittle => 'Voir mes petits monstres';
+
+  @override
+  String get leaderboardTitle => 'Classement';
+
+  @override
+  String get leaderboardWeekLabel => 'XP gagnés cette semaine';
+
+  @override
+  String get leaderboardResetHint => 'Remise à zéro lundi';
+
+  @override
+  String get leaderboardYou => 'C\'est toi';
+
+  @override
+  String leaderboardXp(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String leaderboardEntrySpoken(String nickname, int rank, int xp) {
+    return '$nickname, place $rank, $xp XP';
+  }
+
+  @override
+  String leaderboardEntryYouSpoken(String nickname, int rank, int xp) {
+    return '$nickname, c\'est toi, place $rank, $xp XP';
+  }
+
+  @override
+  String leaderboardChaseBehind(int xp, String nickname) {
+    return 'Encore $xp XP et tu rattrapes $nickname !';
+  }
+
+  @override
+  String leaderboardChaseTied(String nickname) {
+    return 'Tu es à égalité avec $nickname !';
+  }
+
+  @override
+  String get leaderboardChaseLeading => 'Tu es en tête cette semaine !';
+
+  @override
+  String get leaderboardChaseNotStarted =>
+      'Joue pour gagner tes premiers XP de la semaine !';
+
+  @override
+  String get leaderboardEntrySubtitle =>
+      'Qui a gagné le plus d\'XP cette semaine ?';
+
+  @override
+  String get settingsShowLeaderboard => 'Afficher le classement';
 }

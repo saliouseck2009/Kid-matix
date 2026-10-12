@@ -14,6 +14,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_source.da
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
@@ -98,7 +99,9 @@ abstract final class TestApp {
   }) {
     final LearningPathPages pages = LearningPathPages(
       useCases: LearningPathUseCases(getLearningPath: sl(), watchChanges: sl()),
+      placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
       domains: sl(),
+      clock: sl(),
     );
     final QuizSpec spec = pages.specOf(
       StageSource(unitKey: unitKey, stage: stage).toKey(),

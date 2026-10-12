@@ -8,7 +8,11 @@ import '../../../helpers/pump_localized.dart';
 import '../helpers/profile_fixtures.dart';
 
 void main() {
-  Future<bool> pumpScope(WidgetTester tester, {required bool isReduced}) async {
+  Future<bool> pumpScope(
+    WidgetTester tester, {
+    required bool isReduced,
+    bool isPlayerActive = true,
+  }) async {
     final MockGetSettingsUseCase mockGetSettings = MockGetSettingsUseCase();
     when(() => mockGetSettings.call(params: any(named: 'params'))).thenAnswer(
       (_) async => DataSuccess<ProfileSettingsEntity>(
@@ -24,6 +28,7 @@ void main() {
         settingsUseCases: buildSettingsUseCases(getSettings: mockGetSettings),
       ).buildSettingsScope(
         profileId: 'p1',
+        isPlayerActive: isPlayerActive,
         child: Builder(
           builder: (BuildContext context) {
             isDisabled = MediaQuery.disableAnimationsOf(context);
@@ -45,5 +50,14 @@ void main() {
   testWidgets('keeps the animations otherwise', (WidgetTester tester) async {
     // Act & Assert
     expect(await pumpScope(tester, isReduced: false), isFalse);
+  });
+  testWidgets('keeps the animations once the player left', (
+    WidgetTester tester,
+  ) async {
+    // Act & Assert
+    expect(
+      await pumpScope(tester, isReduced: true, isPlayerActive: false),
+      isFalse,
+    );
   });
 }

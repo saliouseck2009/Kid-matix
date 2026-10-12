@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
@@ -8,6 +9,8 @@ import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/results_page.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/answer_keypad.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
 
 /// Builds the pages of the quiz feature for the router.
 ///
@@ -77,5 +80,29 @@ final class QuizPages {
       actionOf: actionOf,
       outcomeOf: outcomeOf,
     );
+  }
+
+  /// The app keypad of the quiz, for a screen of another feature;
+  /// [onValidate] is `null` while nothing is typed.
+  Widget buildKeypad({
+    required ValueChanged<int> onDigit,
+    required VoidCallback onErase,
+    required VoidCallback? onValidate,
+  }) {
+    return AnswerKeypad(
+      onDigit: onDigit,
+      onErase: onErase,
+      onValidate: onValidate,
+    );
+  }
+
+  /// The question card of the quiz, for a screen of another feature:
+  /// [label] above [prompt], with [typedDigits] in place of its blank.
+  Widget buildQuestionCard({
+    required String label,
+    required List<PromptToken> prompt,
+    String? typedDigits,
+  }) {
+    return QuestionCard(label: label, prompt: prompt, blankText: typedDigits);
   }
 }

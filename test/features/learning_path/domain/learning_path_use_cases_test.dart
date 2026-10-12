@@ -179,6 +179,12 @@ void main() {
           ],
         ),
       );
+      when(
+        () => mockRepository.getPlacedUnitKeys(
+          profileId: any(named: 'profileId'),
+          domainId: any(named: 'domainId'),
+        ),
+      ).thenAnswer((_) async => const DataSuccess<Set<String>>(<String>{}));
     });
 
     test('builds the path of the player from the stored stars', () async {
@@ -204,6 +210,45 @@ void main() {
       )).requireData;
       // Assert
       expect(actualPath.tables.last.status, TableStatus.open);
+    });
+    test('opens the tables found by the placement test', () async {
+      // Arrange
+      when(
+        () => mockRepository.getPlacedUnitKeys(
+          profileId: any(named: 'profileId'),
+          domainId: any(named: 'domainId'),
+        ),
+      ).thenAnswer(
+        (_) async => const DataSuccess<Set<String>>(<String>{'mul:10'}),
+      );
+      // Act
+      final LearningPathEntity actualPath = (await useCase(
+        params: _params,
+      )).requireData;
+      // Assert
+      final List<String> actualOpen = <String>[
+        for (final TablePathNode table in actualPath.tables)
+          if (table.status != TableStatus.locked) table.unitKey,
+      ];
+      expect(actualOpen, <String>['mul:1', 'mul:10']);
+      expect(actualPath.tables[2].totalStars, 0);
+    });
+    test('fails when the placed tables cannot be read', () async {
+      // Arrange
+      when(
+        () => mockRepository.getPlacedUnitKeys(
+          profileId: any(named: 'profileId'),
+          domainId: any(named: 'domainId'),
+        ),
+      ).thenAnswer(
+        (_) async => const DataFailed<Set<String>>(CacheException()),
+      );
+      // Act
+      final AppException? actualException = (await useCase(
+        params: _params,
+      )).exceptionOrNull;
+      // Assert
+      expect(actualException, isA<CacheException>());
     });
     test('fails on an unknown domain', () async {
       // Act

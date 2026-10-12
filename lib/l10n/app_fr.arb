@@ -918,6 +918,112 @@
   "@pathCrownHint": {
     "description": "Hint under the stars of a table on its detail screen (\"Beat the boss to win the crown.\"). Talks to the child."
   },
+  "placementOfferTitle": "Tu connais déjà des tables ?",
+  "@placementOfferTitle": {
+    "description": "Header of the placement test offer, the full screen shown right after a new player is created (\"Do you already know some tables?\"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most."
+  },
+  "placementOfferMessage": "Réponds à une question par table, sans chrono. Chaque table que tu connais s'ouvre tout de suite dans ton parcours.",
+  "@placementOfferMessage": {
+    "description": "Text under the title of the placement test offer (\"Answer one question per table, no timer. Each table you know opens right away in your path.\"). The path is the map of tables the child plays through. Talks to the child (informal tu)."
+  },
+  "placementOfferStart": "Faire le test",
+  "@placementOfferStart": {
+    "description": "Primary full-width button of the placement test offer that starts the 12 questions (\"Take the test\"). One line, short."
+  },
+  "placementOfferSkip": "Passer",
+  "@placementOfferSkip": {
+    "description": "Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
+  },
+  "placementQuestionProgress": "Question {current} sur {total}",
+  "@placementQuestionProgress": {
+    "description": "What a screen reader says for the progress bar at the top of a placement test question (\"Question 3 of 12\"). Not shown on screen.",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "placementUnknownAnswer": "Je ne sais pas",
+  "@placementUnknownAnswer": {
+    "description": "Text button under the keypad of a placement test question: the child does not know the answer and goes to the next question (\"I don't know\"). Said by the child (first person). One line."
+  },
+  "placementQuitTooltip": "Arrêter le test",
+  "@placementQuitTooltip": {
+    "description": "Tooltip and screen-reader text of the cross icon at the top left of a placement test question, that leaves the test (\"Stop the test\"). \"Arrêter\" is an infinitive verb. Short."
+  },
+  "placementQuitTitle": "Arrêter le test ?",
+  "@placementQuitTitle": {
+    "description": "Title of the dialog confirming that the child leaves the placement test, shown by the cross or the system back (\"Stop the test?\"). Talks to the child. One line."
+  },
+  "placementQuitMessage": "Les tables déjà trouvées restent ouvertes dans ton parcours.",
+  "@placementQuitMessage": {
+    "description": "Body of the dialog confirming that the child leaves the placement test (\"The tables already found stay open in your path.\"). Talks to the child (informal tu)."
+  },
+  "placementQuitCancel": "Continuer le test",
+  "@placementQuitCancel": {
+    "description": "Dialog button that stays in the placement test (\"Go on with the test\"). \"Continuer\" is an infinitive verb. Short, one line."
+  },
+  "placementQuitConfirm": "Arrêter",
+  "@placementQuitConfirm": {
+    "description": "Dialog button that leaves the placement test for the path (\"Stop\"). \"Arrêter\" is an infinitive verb. One word if possible."
+  },
+  "placementResultTitle": "{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}",
+  "@placementResultTitle": {
+    "description": "Header of the placement test result screen, with the number of tables the child already knows (\"You already know 3 tables!\"); with none, \"Everything is to discover!\". Talks to the child (informal tu). Two short lines at most.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placementResultSubtitle": "{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}",
+  "@placementResultSubtitle": {
+    "description": "Text under the title of the placement test result. With one table or more: \"It is / They are open in your path. Its / Their stars are still to win.\" (\"Elle\"/\"Elles\" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placementLegendKnown": "Déjà connue",
+  "@placementLegendKnown": {
+    "description": "Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows (\"Already known\"; feminine in French because it agrees with \"table\"). One line, a few words."
+  },
+  "placementLegendToDiscover": "À découvrir",
+  "@placementLegendToDiscover": {
+    "description": "Legend label under the grid of the placement test result, next to the light swatch: a table still to learn (\"To discover\"). One line, a few words."
+  },
+  "placementTableKnown": "{name}, déjà connue",
+  "@placementTableKnown": {
+    "description": "What a screen reader says for a tile of the placement test result grid when the table was found (\"Table of 2, already known\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 2"
+      }
+    }
+  },
+  "placementTableToDiscover": "{name}, à découvrir",
+  "@placementTableToDiscover": {
+    "description": "What a screen reader says for a tile of the placement test result grid when the table was not found (\"Table of 7, to discover\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 7"
+      }
+    }
+  },
+  "placementSeePath": "Voir mon parcours",
+  "@placementSeePath": {
+    "description": "Primary full-width button that leaves the placement test for the path (\"See my path\"): on the result screen, and on the error screen when the test cannot be built or saved. One line."
+  },
   "pathTableBack": "Retour au parcours",
   "@pathTableBack": {
     "description": "Tooltip and screen-reader label of the back arrow of the table detail (\"Back to the learning path\")."
@@ -2179,5 +2285,107 @@
   "pathMonstersOpenLittle": "Voir mes petits monstres",
   "@pathMonstersOpenLittle": {
     "description": "Link at the bottom of the \"Mes monstres\" card of the Profile tab: opens the screen of the little monsters, the facts the player keeps missing (\"See my little monsters\")."
+  },
+  "leaderboardTitle": "Classement",
+  "@leaderboardTitle": {
+    "description": "Title of the weekly leaderboard screen, where the players of the phone are ranked by the XP earned this week, and of its card on the Profile tab (\"Leaderboard\"). Short, one line."
+  },
+  "leaderboardWeekLabel": "XP gagnés cette semaine",
+  "@leaderboardWeekLabel": {
+    "description": "Line under the title of the leaderboard: the players are ranked by the XP earned since Monday (\"XP earned this week\"). One line, shares the row with the \"Remise à zéro lundi\" pill."
+  },
+  "leaderboardResetHint": "Remise à zéro lundi",
+  "@leaderboardResetHint": {
+    "description": "Pill at the right of \"XP gagnés cette semaine\" on the leaderboard: the ranking starts again from zero every Monday (\"Reset on Monday\"). Short."
+  },
+  "leaderboardYou": "C'est toi",
+  "@leaderboardYou": {
+    "description": "Dark tag under the nickname of the active player on the leaderboard, so the child finds themselves (\"That's you\"). Informal \"tu\", short."
+  },
+  "leaderboardXp": "{xp} XP",
+  "@leaderboardXp": {
+    "description": "XP earned this week by a player of the leaderboard, under the rank on a podium step and at the right of each row (\"310 XP\"). XP means experience points. Short, one line.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "310"
+      }
+    }
+  },
+  "leaderboardEntrySpoken": "{nickname}, place {rank}, {xp} XP",
+  "@leaderboardEntrySpoken": {
+    "description": "Screen-reader text of a player of the leaderboard (\"Moussa, rank 1, 420 XP\"). Neutral wording, no gendered ordinal.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Moussa"
+      },
+      "rank": {
+        "type": "int",
+        "example": "1"
+      },
+      "xp": {
+        "type": "int",
+        "example": "420"
+      }
+    }
+  },
+  "leaderboardEntryYouSpoken": "{nickname}, c'est toi, place {rank}, {xp} XP",
+  "@leaderboardEntryYouSpoken": {
+    "description": "Screen-reader text of the active player on the leaderboard (\"Awa, that's you, rank 2, 310 XP\"). Neutral wording, no gendered ordinal.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      },
+      "rank": {
+        "type": "int",
+        "example": "2"
+      },
+      "xp": {
+        "type": "int",
+        "example": "310"
+      }
+    }
+  },
+  "leaderboardChaseBehind": "Encore {xp} XP et tu rattrapes {nickname} !",
+  "@leaderboardChaseBehind": {
+    "description": "What the mascot says at the bottom of the leaderboard: the XP the active player needs to catch up with the player just above (\"110 more XP and you catch up with Moussa!\"). Informal \"tu\", encouraging.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "110"
+      },
+      "nickname": {
+        "type": "String",
+        "example": "Moussa"
+      }
+    }
+  },
+  "leaderboardChaseTied": "Tu es à égalité avec {nickname} !",
+  "@leaderboardChaseTied": {
+    "description": "What the mascot says at the bottom of the leaderboard when the active player has as many XP this week as the player just above, who is listed before them because ties are ordered by nickname (\"You are tied with Moussa!\"). Informal \"tu\".",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Moussa"
+      }
+    }
+  },
+  "leaderboardChaseLeading": "Tu es en tête cette semaine !",
+  "@leaderboardChaseLeading": {
+    "description": "What the mascot says at the bottom of the leaderboard when the active player is first with XP this week (\"You are leading this week!\"). Informal \"tu\", cheerful."
+  },
+  "leaderboardChaseNotStarted": "Joue pour gagner tes premiers XP de la semaine !",
+  "@leaderboardChaseNotStarted": {
+    "description": "What the mascot says at the bottom of the leaderboard when nobody has earned XP yet this week, for instance on Monday morning (\"Play to earn your first XP of the week!\"). Informal \"tu\"."
+  },
+  "leaderboardEntrySubtitle": "Qui a gagné le plus d'XP cette semaine ?",
+  "@leaderboardEntrySubtitle": {
+    "description": "Line under \"Classement\" on the card of the Profile tab that opens the weekly leaderboard (\"Who earned the most XP this week?\"). One short line."
+  },
+  "settingsShowLeaderboard": "Afficher le classement",
+  "@settingsShowLeaderboard": {
+    "description": "Switch of the settings screen, in the \"Jeu\" section, that shows or hides the weekly leaderboard for every player of the phone; when off, its card disappears from the Profile tab (\"Show the leaderboard\"). Infinitive verb, one line."
   }
 }

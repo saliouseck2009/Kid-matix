@@ -12,7 +12,9 @@ import 'package:kid_matix/features/learning_path/data/repositories/stage_progres
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_session_hook.dart';
 import 'package:kid_matix/features/learning_path/domain/repositories/stage_progress_repository.dart';
 import 'package:kid_matix/features/learning_path/domain/services/learning_path_service_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/answer_placement_question_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/run_placement_test_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_learning_path_changes_use_case.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
@@ -24,7 +26,11 @@ void registerLearningPathFeature(GetIt sl) {
     () => StageProgressLocalDataSourceImpl(database: sl()),
   );
   sl.registerLazySingleton<StageProgressRepository>(
-    () => StageProgressRepositoryImpl(progress: sl(), changeBus: sl()),
+    () => StageProgressRepositoryImpl(
+      progress: sl(),
+      changeBus: sl(),
+      clock: sl(),
+    ),
   );
   sl.registerLazySingleton<GetLearningPathUseCase>(
     () => GetLearningPathUseCase(
@@ -33,6 +39,12 @@ void registerLearningPathFeature(GetIt sl) {
       settings: sl(),
       mastery: sl(),
     ),
+  );
+  sl.registerLazySingleton<RunPlacementTestUseCase>(
+    () => RunPlacementTestUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<AnswerPlacementQuestionUseCase>(
+    () => AnswerPlacementQuestionUseCase(repository: sl(), mastery: sl()),
   );
   sl.registerLazySingleton<WatchLearningPathChangesUseCase>(
     () => WatchLearningPathChangesUseCase(repository: sl()),

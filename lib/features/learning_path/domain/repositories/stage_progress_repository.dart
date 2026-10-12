@@ -9,6 +9,21 @@ abstract interface class StageProgressRepository {
     required String domainId,
   });
 
+  /// Returns the keys of the units of [domainId] that the placement test
+  /// of [profileId] opened.
+  Future<DataState<Set<String>>> getPlacedUnitKeys({
+    required String profileId,
+    required String domainId,
+  });
+
+  /// Opens [unitKey] of [domainId] for [profileId] after a right answer
+  /// to the placement test; its stages keep no star.
+  Future<DataState<void>> openUnit({
+    required String profileId,
+    required String domainId,
+    required String unitKey,
+  });
+
   /// Emits an event each time the stars or the player's settings change.
   Stream<void> watchChanges();
 }
