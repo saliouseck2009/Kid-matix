@@ -17,10 +17,13 @@ import 'package:kid_matix/features/mastery/data/repositories/item_progress_repos
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/monster_collection_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/monster_entity.dart';
+import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/services/monster_hunt_selector.dart';
 import 'package:kid_matix/features/mastery/domain/services/monster_rule.dart';
 import 'package:kid_matix/features/mastery/domain/services/quiz_item_planner.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -382,6 +385,46 @@ void main() {
         actualPlans.map((QuizItemPlan plan) => plan.itemKey).toList(),
         <String>['mul:7x8', 'mul:3x4', 'mul:7x8'],
       );
+    });
+    test('counts the monsters through the mastery service', () async {
+      // Arrange
+      final MasteryServiceImpl service = MasteryServiceImpl(
+        planQuiz: PlanQuizUseCase(
+          repository: repository,
+          domains: domains,
+          questionTypes: types,
+          random: DartRandomSource(seed: 1),
+          clock: clock,
+        ),
+        recordAnswer: RecordAnswerUseCase(
+          repository: repository,
+          questionTypes: types,
+          clock: clock,
+        ),
+        getGrid: GetMasteryGridUseCase(
+          repository: repository,
+          domains: domains,
+        ),
+        getReviewOverview: GetReviewOverviewUseCase(
+          repository: repository,
+          clock: clock,
+        ),
+        getMonsters: getMonsters(),
+      );
+      await answer('mul:7x8', isCorrect: false);
+      await answer('mul:7x8', isCorrect: false);
+      // Act
+      final int actualCount = (await service.readMonsterCount(
+        profileId: 'p1',
+        domainId: 'multiplication',
+      )).requireData;
+      final AppException? actualFailure = (await service.readMonsterCount(
+        profileId: 'p1',
+        domainId: 'division',
+      )).exceptionOrNull;
+      // Assert
+      expect(actualCount, 1);
+      expect(actualFailure, isA<ValidationException>());
     });
     test('fails on an unknown domain', () async {
       // Act

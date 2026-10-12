@@ -4,6 +4,7 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/review_overview.dart';
+import 'package:kid_matix/core/widgets/little_monster.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
 import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
@@ -15,15 +16,22 @@ import 'package:kid_matix/features/challenge/presentation/widgets/challenge_erro
 import 'package:kid_matix/features/challenge/presentation/widgets/daily_review_card.dart';
 
 /// The challenges tab: the daily review, then each challenge with the
-/// player's record.
+/// player's record, then the monster hunt.
 class ChallengesPage extends StatelessWidget {
   /// Creates the page.
-  const ChallengesPage({required this.onPlay, super.key});
+  const ChallengesPage({
+    required this.onPlay,
+    required this.onOpenMonsters,
+    super.key,
+  });
 
   static const double _cardGap = 10;
 
   /// Starts a challenge.
   final ValueChanged<ChallengeSource> onPlay;
+
+  /// Opens « Mes monstres », where the monster hunt starts.
+  final VoidCallback onOpenMonsters;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +60,7 @@ class ChallengesPage extends StatelessWidget {
                 :final survival,
                 :final records,
                 :final review,
+                :final monsterCount,
               ) =>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -73,6 +82,10 @@ class ChallengesPage extends StatelessWidget {
                       survival: survival,
                       record: _recordOf(context, records[QuizMode.survival]),
                       onPlay: onPlay,
+                    ),
+                    _MonsterHuntCard(
+                      monsterCount: monsterCount,
+                      onOpen: onOpenMonsters,
                     ),
                   ],
                 ),
@@ -114,6 +127,29 @@ class _SurvivalCard extends StatelessWidget {
           : null,
       record: record,
       onTap: () => onPlay(survival.source),
+    );
+  }
+}
+
+/// "Chasse aux monstres": how many monsters are waiting; opens « Mes
+/// monstres ».
+class _MonsterHuntCard extends StatelessWidget {
+  const _MonsterHuntCard({required this.monsterCount, required this.onOpen});
+
+  static const double _monsterSize = 34;
+
+  final int monsterCount;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChallengeCard(
+      illustration: const LittleMonster(variant: 0, size: _monsterSize),
+      iconBackground: context.palette.tint,
+      title: context.l10n.quizModeMonsterHunt,
+      subtitle: context.l10n.challengeMonsterHuntSubtitle(monsterCount),
+      hasChevron: true,
+      onTap: onOpen,
     );
   }
 }

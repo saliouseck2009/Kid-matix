@@ -26,6 +26,7 @@ final class ChallengesLoaded extends ChallengesState {
     required this.survival,
     required this.records,
     required this.review,
+    required this.monsterCount,
   });
 
   /// The time attack to play.
@@ -39,6 +40,9 @@ final class ChallengesLoaded extends ChallengesState {
 
   /// What the daily review holds.
   final ReviewOverview review;
+
+  /// Monsters the player has to tame.
+  final int monsterCount;
 }
 
 /// The challenges could not be read.

@@ -9,6 +9,7 @@ import 'package:kid_matix/features/mastery/data/datasources/item_progress_local_
 import 'package:kid_matix/features/mastery/data/repositories/item_progress_repository_impl.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -71,6 +72,7 @@ void main() {
         repository: progress,
         clock: clock,
       ),
+      getMonsters: GetMonstersUseCase(repository: progress, domains: domains),
     );
     bloc = QuizBloc(
       useCases: QuizUseCases(

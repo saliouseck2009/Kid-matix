@@ -10,8 +10,8 @@ import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_state.dart';
 
-/// Reads the challenges of a player, their records and their daily
-/// review, and follows the new records.
+/// Reads the challenges of a player, their records, their daily review
+/// and their monster count, and follows the new records.
 final class ChallengesCubit extends Cubit<ChallengesState> {
   /// Creates the Cubit of the player [profileId].
   ChallengesCubit({required this._profileId, required this._useCases})
@@ -39,8 +39,11 @@ final class ChallengesCubit extends Cubit<ChallengesState> {
     final DataState<ReviewOverview> review = await _useCases.getDailyReview(
       params: _profileId,
     );
+    final DataState<int> monsters = await _useCases.getMonsterCount(
+      params: _profileId,
+    );
     if (isClosed) return;
-    emit(switch ((timeAttack, survival, records, review)) {
+    emit(switch ((timeAttack, survival, records, review, monsters)) {
       (
         DataSuccess<TimeAttackSource>(data: final TimeAttackSource source),
         DataSuccess<SurvivalChallengeEntity>(
@@ -50,27 +53,26 @@ final class ChallengesCubit extends Cubit<ChallengesState> {
           data: final Map<QuizMode, RecordEntity> best,
         ),
         DataSuccess<ReviewOverview>(data: final ReviewOverview overview),
+        DataSuccess<int>(data: final int monsterCount),
       ) =>
         ChallengesLoaded(
           timeAttack: source,
           survival: survivalGame,
           records: best,
           review: overview,
+          monsterCount: monsterCount,
         ),
-      (DataFailed<TimeAttackSource>(:final exception), _, _, _) ||
-      (_, DataFailed<SurvivalChallengeEntity>(:final exception), _, _) ||
+      (DataFailed<TimeAttackSource>(:final exception), _, _, _, _) ||
+      (_, DataFailed<SurvivalChallengeEntity>(:final exception), _, _, _) ||
       (
         _,
         _,
         DataFailed<Map<QuizMode, RecordEntity>>(:final exception),
         _,
+        _,
       ) ||
-      (
-        _,
-        _,
-        _,
-        DataFailed<ReviewOverview>(:final exception),
-      ) => ChallengesFailure(
+      (_, _, _, DataFailed<ReviewOverview>(:final exception), _) ||
+      (_, _, _, _, DataFailed<int>(:final exception)) => ChallengesFailure(
         errorCode: exception.code,
       ),
     });

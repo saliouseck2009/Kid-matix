@@ -19,6 +19,7 @@ import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_due_facts_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
@@ -366,6 +367,10 @@ void main() {
           repository: repository,
           clock: clock,
         ),
+        getMonsters: GetMonstersUseCase(
+          repository: repository,
+          domains: domains,
+        ),
       );
       // Act
       final List<QuizItemPlan> actualPlans = (await service.planQuiz(
@@ -394,6 +399,10 @@ void main() {
         getReviewOverview: GetReviewOverviewUseCase(
           repository: repository,
           clock: clock,
+        ),
+        getMonsters: GetMonstersUseCase(
+          repository: repository,
+          domains: domains,
         ),
       );
       await repository.saveProgress(

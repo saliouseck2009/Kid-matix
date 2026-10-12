@@ -21,6 +21,12 @@ abstract final class AppRoutes {
   /// Mascot screen, opened from the [profile] tab.
   static const String mascot = '/profile/mascot';
 
+  /// « Mes monstres », opened from the [challenges] tab.
+  static const String challengeMonsters = '/challenges/monsters';
+
+  /// « Mes monstres », opened from the [profile] tab.
+  static const String profileMonsters = '/profile/monsters';
+
   /// "Qui joue ?": the player selection, shown while nobody is playing.
   static const String whoIsPlaying = '/players';
 

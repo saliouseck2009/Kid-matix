@@ -1683,6 +1683,90 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{score, plural, =1{1 bonne réponse} other{{score} bonnes réponses}}'**
   String resultsRecordScore(int score);
+
+  /// Line under "Chasse aux monstres" on its card of the challenges screen: how many little monsters (facts the player keeps missing) wait to be tamed ("3 monsters to tame"); a neutral line when there is none ("No monster for now").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun monstre pour l\'instant} =1{1 monstre à apprivoiser} other{{count} monstres à apprivoiser}}'**
+  String challengeMonsterHuntSubtitle(int count);
+
+  /// Title of the « Mes monstres » screen, which lists the facts the player keeps missing as little monsters to tame ("My monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes monstres'**
+  String get monstersPageTitle;
+
+  /// Line under the title of the « Mes monstres » screen ("These sums still resist you. Get them right to tame their monsters."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.'**
+  String get monstersIntro;
+
+  /// Encouraging text of the « Mes monstres » screen when no fact is a monster ("No monster in sight, well done! A sum missed twice will become a little monster to tame."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun monstre en vue, bravo ! Un calcul raté deux fois deviendra un petit monstre à apprivoiser.'**
+  String get monstersEmpty;
+
+  /// Label on the right of a monster whose fact was missed lately, the hardest to tame ("Very tough"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Très coriace'**
+  String get monsterToughnessVeryTough;
+
+  /// Label on the right of a monster whose fact is improving ("Tough"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coriace'**
+  String get monsterToughnessTough;
+
+  /// Label on the right of a monster whose fact is one step from being known ("Almost tamed"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Presque apprivoisé'**
+  String get monsterToughnessAlmostTamed;
+
+  /// What a screen reader says for a monster still to tame on the « Mes monstres » screen ("Monster 7 times 8, very tough").
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre {fact}, {toughness}'**
+  String monsterWildSpoken(String fact, String toughness);
+
+  /// What a screen reader says for a tamed monster of the « Apprivoisés » collection ("Monster 6 times 7, tamed").
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre {fact}, apprivoisé'**
+  String monsterTamedSpoken(String fact);
+
+  /// Main button of the « Mes monstres » screen: starts the monster hunt quiz ("Start the hunt").
+  ///
+  /// In fr, this message translates to:
+  /// **'Lancer la chasse'**
+  String get monstersHuntButton;
+
+  /// Second line of the "Lancer la chasse" button: number of questions of the hunt ("10 questions").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 question} other{{count} questions}}'**
+  String monstersHuntQuestions(int count);
+
+  /// Title of the collection of tamed monsters at the bottom of the « Mes monstres » screen ("Tamed").
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprivoisés'**
+  String get monstersTamedTitle;
+
+  /// Number of tamed monsters, at the right of "Apprivoisés" ("4 monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 monstre} other{{count} monstres}}'**
+  String monstersTamedCount(int count);
+
+  /// Link at the bottom of the "Mes monstres" card of the Profile tab: opens the screen of the little monsters, the facts the player keeps missing ("See my little monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir mes petits monstres'**
+  String get pathMonstersOpenLittle;
 }
 
 class _AppLocalizationsDelegate

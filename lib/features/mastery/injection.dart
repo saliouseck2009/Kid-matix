@@ -64,6 +64,7 @@ void registerMasteryFeature(GetIt sl) {
       recordAnswer: sl(),
       getGrid: sl(),
       getReviewOverview: sl(),
+      getMonsters: sl(),
     ),
   );
   sl<ProgressResetHooks>().add(const MasteryResetHook());

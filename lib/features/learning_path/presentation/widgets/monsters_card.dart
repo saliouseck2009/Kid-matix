@@ -8,10 +8,14 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_state.dart';
 
 /// "Mes monstres" on the Profile tab: the monster of every table, in
-/// color once its boss is defeated, as a gray shadow before.
+/// color once its boss is defeated, as a gray shadow before, and a link
+/// to the little monsters of the facts the player keeps missing.
 class MonstersCard extends StatelessWidget {
   /// Creates the card; the path comes from the enclosing Bloc.
-  const MonstersCard({super.key});
+  const MonstersCard({required this.onOpenLittle, super.key});
+
+  /// Opens the screen of the little monsters.
+  final VoidCallback onOpenLittle;
 
   static const int _columns = 4;
   static const double _gap = 10;
@@ -80,7 +84,47 @@ class MonstersCard extends StatelessWidget {
               );
             },
           ),
+          _LittleMonstersLink(onOpen: onOpenLittle),
         ],
+      ),
+    );
+  }
+}
+
+/// "Voir mes petits monstres", at the bottom of the card.
+class _LittleMonstersLink extends StatelessWidget {
+  const _LittleMonstersLink({required this.onOpen});
+
+  static const double _minHeight = 48;
+
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = context.palette.primaryText;
+    return Semantics(
+      button: true,
+      child: InkWell(
+        onTap: onOpen,
+        borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: _minHeight),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  context.l10n.pathMonstersOpenLittle,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.copyWith(color: color),
+                ),
+              ),
+              ExcludeSemantics(
+                child: Icon(Icons.chevron_right_rounded, color: color),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
