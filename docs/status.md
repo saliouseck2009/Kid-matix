@@ -19,8 +19,9 @@ middle of one). Last update: 2026-10-12.
 | F9 · Free training and Against the clock | **Done** (closed 2026-10-10) |
 | F10 · Profile and settings | **Done** (closed 2026-10-10) |
 | F11 · Polish and release of 1.0 | **Done** (closed 2026-10-12), except F11-11: builds in the test channels |
-| F12 · Daily review and Survival | **Next** |
-| F13 – F21 | Not started |
+| F12 · Daily review and Survival | **Done** (closed 2026-10-12) |
+| F13 · My monsters | **Next** |
+| F14 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -479,8 +480,25 @@ Left open, done by the owner:
 - A new personal Play account may need a closed test (12 testers for 14
   days) before production.
 
-## Starting F12
+## F12 closure
 
-Tasks F12-01 to F12-06 in `docs/product/task-breakdown.md`; mockup
-`11-challenges.png` for the Défis tab. The Daily review and Survival
-screens have no mockup of their own: ask the owner.
+- `bash tool/check.sh`: every step OK (728 tests), coverage thresholds
+  met; CI green on #75 to #78.
+- Survival checked on the Android emulator (API 36): the game ends at the
+  third mistake, a heart empties at each one, the question is replaced
+  after the background, first record then "Nouveau record !", Survivant
+  badge at 31 right answers, timer note when the setting is "Sans".
+- Daily review: the choice of the facts (overdue first, then the lowest
+  success rate, each once) is covered by tests with a fake clock,
+  including a fact missed the day before; the card and the quiz were not
+  played on a device yet.
+
+Texts waiting for the owner's confirmation: "Joue d'abord une étape du
+parcours", no pill when no fact is due, "Ici, le chrono reste actif.",
+"{n} vies sur {total}" / "Plus de vie", "Survivant" and "30 bonnes
+réponses en Survie.", the survival quiz screen (hearts, score, timer bar)
+which has no mockup.
+
+## Starting F13
+
+Tasks in the F13 section of `docs/product/task-breakdown.md`.
