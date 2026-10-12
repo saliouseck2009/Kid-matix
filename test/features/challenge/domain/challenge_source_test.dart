@@ -130,6 +130,13 @@ void main() {
       )!;
       // Assert
       expect(actualSpec.mode, QuizMode.freeTraining);
+      expect(
+        actualSpec.questionTypeIds,
+        containsAll(<String>[
+          QuestionTypeIds.findOperation,
+          QuestionTypeIds.matchPairs,
+        ]),
+      );
       expect(actualSpec.itemKeys, hasLength(20));
       expect(actualSpec.itemKeys, containsAll(<String>['mul:2x3', 'mul:5x9']));
       expect(actualSpec.questionCount, 30);
@@ -223,7 +230,7 @@ void main() {
       expect(actualSpec.keepsTimer, isFalse);
       expect(
         actualSpec.questionTypeIds,
-        ChallengeRules.trainingQuestionTypeIds,
+        ChallengeRules.versionOneQuestionTypeIds,
       );
       expect(actualSpec.sourceKey, 'dailyReview');
     });
@@ -243,7 +250,7 @@ void main() {
       expect(actualSpec.lives, isNull);
       expect(
         actualSpec.questionTypeIds,
-        ChallengeRules.trainingQuestionTypeIds,
+        ChallengeRules.versionOneQuestionTypeIds,
       );
       expect(actualSpec.sourceKey, 'monsterHunt');
     });
