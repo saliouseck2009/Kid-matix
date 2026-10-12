@@ -23,8 +23,13 @@ final class MascotPages {
   final GameFeedbackService _feedback;
 
   /// Provides the mascot of [profileId] to [child]: its look to every
-  /// mascot drawing, and the mascot to the widgets below.
-  Widget buildScope({required String profileId, required Widget child}) {
+  /// mascot drawing, and the mascot to the widgets below. Once the player
+  /// is no longer [isPlayerActive], the drawings show the first stage.
+  Widget buildScope({
+    required String profileId,
+    required Widget child,
+    bool isPlayerActive = true,
+  }) {
     return BlocProvider<MascotCubit>(
       key: ValueKey<String>('mascot-$profileId'),
       create: (_) =>
@@ -32,7 +37,7 @@ final class MascotPages {
       child: BlocBuilder<MascotCubit, MascotState>(
         builder: (BuildContext context, MascotState state) => MascotLookScope(
           look: switch (state) {
-            MascotLoaded(:final mascot) => lookOf(mascot),
+            MascotLoaded(:final mascot) when isPlayerActive => lookOf(mascot),
             _ => const MascotLook.initial(),
           },
           child: child,
