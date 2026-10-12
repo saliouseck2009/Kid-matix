@@ -51,7 +51,9 @@ for every version sent to the stores.
 
 They cannot change once an app is published:
 
-- Android application id: `sn.ckroot.kidmatix`
+- Android application id: `sn.ckroot.kid_matix.kid_matix`
 - iOS bundle id: `sn.ckroot.kidmatix`
 
-Both were chosen on 2026-10-11 and must not change again.
+The iOS bundle id was chosen on 2026-10-11. The Android id stays the
+Flutter default: the Google Play app was created with it, and Play ties
+an app to its package name for good. Neither may change again.
