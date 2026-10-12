@@ -40,6 +40,7 @@ final class ChallengeLabels {
       TimeAttackSource() => l10n.quizModeTimeAttack,
       SurvivalSource() => l10n.quizModeSurvival,
       DailyReviewSource() => l10n.quizModeDailyReview,
+      MonsterHuntSource() => l10n.quizModeMonsterHunt,
       null => null,
     };
   }

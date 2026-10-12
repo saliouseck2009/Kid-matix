@@ -17,4 +17,7 @@ enum QuizMode {
 
   /// Daily review: the facts the mastery engine picks for the player.
   dailyReview,
+
+  /// Monster hunt: the facts the player keeps missing, each asked twice.
+  monsterHunt,
 }

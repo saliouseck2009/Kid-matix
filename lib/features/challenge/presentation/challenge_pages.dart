@@ -113,7 +113,8 @@ final class ChallengePages {
       TrainingSource() => ChallengeOrigin.training,
       TimeAttackSource() ||
       SurvivalSource() ||
-      DailyReviewSource() => ChallengeOrigin.challenges,
+      DailyReviewSource() ||
+      MonsterHuntSource() => ChallengeOrigin.challenges,
       null => null,
     };
   }
