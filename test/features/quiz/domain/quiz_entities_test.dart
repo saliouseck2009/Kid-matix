@@ -3,6 +3,7 @@ import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/quiz/seeded_draw.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
@@ -58,6 +59,7 @@ void main() {
         isBossFight: true,
         totalTimeLimit: const Duration(minutes: 1),
         keepsTimer: true,
+        seededDraw: const SeededDraw(seed: 9, version: 1),
       );
       // Act
       final QuizRequest actualRequest = QuizRequest.fromSpec(
@@ -79,6 +81,7 @@ void main() {
       expect(actualRequest.isBossFight, isTrue);
       expect(actualRequest.totalTimeLimit, inputSpec.totalTimeLimit);
       expect(actualRequest.keepsTimer, isTrue);
+      expect(actualRequest.seededDraw, const SeededDraw(seed: 9, version: 1));
     });
   });
 

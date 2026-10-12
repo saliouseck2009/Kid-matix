@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
+import 'package:kid_matix/core/quiz/seeded_draw.dart';
+import 'package:kid_matix/core/quiz/question.dart';
+import 'package:kid_matix/core/quiz/frozen_question_generator.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
@@ -304,6 +308,34 @@ void main() {
       final QuizAsking actualState = await start(request: inputRequest);
       // Assert
       expect(actualState.run.timeLimit, QuizTimeLimits.freeTraining);
+    });
+    test('asks the questions of a seeded draw', () async {
+      // Arrange
+      const SeededDraw inputDraw = SeededDraw(seed: 12, version: 1);
+      final QuizRequest inputRequest = QuizRequest(
+        profileId: 'profile-1',
+        domainId: MultiplicationDomain.domainId,
+        mode: QuizMode.freeTraining,
+        itemKeys: tableKeys(5),
+        questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+        questionCount: 4,
+        seededDraw: inputDraw,
+      );
+      final List<Question> expectedQuestions = const FrozenQuestionGenerator()
+          .generate(
+            domain: MultiplicationDomain(),
+            itemKeys: tableKeys(5),
+            questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+            questionCount: 4,
+            draw: inputDraw,
+          );
+      // Act
+      final QuizAsking actualState = await start(request: inputRequest);
+      // Assert
+      expect(
+        actualState.run.queue.map((QuizTurn turn) => turn.question),
+        expectedQuestions,
+      );
     });
     test('builds the number typed on the keypad', () async {
       // Arrange

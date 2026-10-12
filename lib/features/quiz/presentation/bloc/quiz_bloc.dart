@@ -78,6 +78,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         totalTimeLimit: request.totalTimeLimit,
         lives: request.lives,
         timeSchedule: request.timeSchedule,
+        seededDraw: request.seededDraw,
         questionTypeIds: request.questionTypeIds,
         timeLimit: await _useCases.getTimeLimit(params: request),
       ),
