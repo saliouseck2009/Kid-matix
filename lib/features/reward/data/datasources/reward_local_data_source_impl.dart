@@ -4,6 +4,7 @@ import 'package:kid_matix/features/reward/data/datasources/reward_tables.dart';
 import 'package:kid_matix/features/reward/data/models/badge_unlock_local_model.dart';
 import 'package:kid_matix/features/reward/data/models/session_reward_local_model.dart';
 import 'package:kid_matix/features/reward/data/models/streak_local_model.dart';
+import 'package:kid_matix/features/reward/data/models/xp_award_local_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// [RewardLocalDataSource] over the app database.
@@ -12,6 +13,9 @@ final class RewardLocalDataSourceImpl implements RewardLocalDataSource {
   const RewardLocalDataSourceImpl({required this._database});
 
   static const String _liveProfile = 'profile_id = ? AND deleted_at IS NULL';
+
+  static const String _inRange =
+      '$_liveProfile AND earned_at >= ? AND earned_at < ?';
 
   final AppDatabase _database;
 
@@ -66,11 +70,17 @@ final class RewardLocalDataSourceImpl implements RewardLocalDataSource {
     int? from,
     int? to,
   }) async {
+    final List<Object> range = <Object>[
+      profileId,
+      from ?? 0,
+      to ?? _farFuture,
+    ];
     final List<Map<String, Object?>> rows = await executor.rawQuery(
-      'SELECT COALESCE(SUM(xp_earned), 0) AS xp '
-      'FROM ${RewardTables.sessionReward} '
-      'WHERE $_liveProfile AND earned_at >= ? AND earned_at < ?',
-      <Object>[profileId, from ?? 0, to ?? _farFuture],
+      'SELECT COALESCE(SUM(xp_earned), 0) AS xp FROM ('
+      'SELECT xp_earned FROM ${RewardTables.sessionReward} WHERE $_inRange '
+      'UNION ALL '
+      'SELECT xp_earned FROM ${RewardTables.xpAward} WHERE $_inRange)',
+      <Object>[...range, ...range],
     );
     return rows.single['xp']! as int;
   }
@@ -128,6 +138,28 @@ final class RewardLocalDataSourceImpl implements RewardLocalDataSource {
         conflictAlgorithm: ConflictAlgorithm.ignore,
       );
     }
+    await batch.commit(noResult: true);
+  }
+
+  @override
+  Future<void> writeXpAward(
+    DatabaseExecutor executor, {
+    required XpAwardLocalModel award,
+    required int totalXp,
+    required int level,
+  }) async {
+    final Batch batch = executor.batch()
+      ..insert(RewardTables.xpAward, award.toJson())
+      ..update(
+        RewardTables.profile,
+        <String, Object?>{
+          'total_xp': totalXp,
+          'level': level,
+          'updated_at': award.updatedAt,
+        },
+        where: 'id = ?',
+        whereArgs: <Object>[award.profileId],
+      );
     await batch.commit(noResult: true);
   }
 

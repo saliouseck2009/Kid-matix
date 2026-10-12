@@ -2,6 +2,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/streak_entity.dart';
+import 'package:kid_matix/features/reward/domain/entities/xp_award_entity.dart';
 import 'package:kid_matix/features/reward/domain/repositories/reward_repository.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_badges_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_daily_goal_use_case.dart';
@@ -58,6 +59,12 @@ final class InMemoryRewardRepository implements RewardRepository {
   Future<DataState<SessionXp?>> getSessionXp({
     required String sessionId,
   }) async => DataSuccess<SessionXp?>(sessionXp);
+
+  @override
+  Future<DataState<void>> saveXpAward({required XpAwardEntity award}) async {
+    xpEarned += award.xp;
+    return const DataSuccess<void>(null);
+  }
 
   @override
   Stream<void> watchChanges() => const Stream<void>.empty();
