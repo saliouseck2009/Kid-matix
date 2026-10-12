@@ -2085,6 +2085,84 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Voir mes petits monstres'**
   String get pathMonstersOpenLittle;
+
+  /// Title of the weekly leaderboard screen, where the players of the phone are ranked by the XP earned this week, and of its card on the Profile tab ("Leaderboard"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classement'**
+  String get leaderboardTitle;
+
+  /// Line under the title of the leaderboard: the players are ranked by the XP earned since Monday ("XP earned this week"). One line, shares the row with the "Remise à zéro lundi" pill.
+  ///
+  /// In fr, this message translates to:
+  /// **'XP gagnés cette semaine'**
+  String get leaderboardWeekLabel;
+
+  /// Pill at the right of "XP gagnés cette semaine" on the leaderboard: the ranking starts again from zero every Monday ("Reset on Monday"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remise à zéro lundi'**
+  String get leaderboardResetHint;
+
+  /// Dark tag under the nickname of the active player on the leaderboard, so the child finds themselves ("That's you"). Informal "tu", short.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est toi'**
+  String get leaderboardYou;
+
+  /// XP earned this week by a player of the leaderboard, under the rank on a podium step and at the right of each row ("310 XP"). XP means experience points. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'{xp} XP'**
+  String leaderboardXp(int xp);
+
+  /// Screen-reader text of a player of the leaderboard ("Moussa, rank 1, 420 XP"). Neutral wording, no gendered ordinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname}, place {rank}, {xp} XP'**
+  String leaderboardEntrySpoken(String nickname, int rank, int xp);
+
+  /// Screen-reader text of the active player on the leaderboard ("Awa, that's you, rank 2, 310 XP"). Neutral wording, no gendered ordinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname}, c\'est toi, place {rank}, {xp} XP'**
+  String leaderboardEntryYouSpoken(String nickname, int rank, int xp);
+
+  /// What the mascot says at the bottom of the leaderboard: the XP the active player needs to catch up with the player just above ("110 more XP and you catch up with Moussa!"). Informal "tu", encouraging.
+  ///
+  /// In fr, this message translates to:
+  /// **'Encore {xp} XP et tu rattrapes {nickname} !'**
+  String leaderboardChaseBehind(int xp, String nickname);
+
+  /// What the mascot says at the bottom of the leaderboard when the active player has as many XP this week as the player just above, who is listed before them because ties are ordered by nickname ("You are tied with Moussa!"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es à égalité avec {nickname} !'**
+  String leaderboardChaseTied(String nickname);
+
+  /// What the mascot says at the bottom of the leaderboard when the active player is first with XP this week ("You are leading this week!"). Informal "tu", cheerful.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es en tête cette semaine !'**
+  String get leaderboardChaseLeading;
+
+  /// What the mascot says at the bottom of the leaderboard when nobody has earned XP yet this week, for instance on Monday morning ("Play to earn your first XP of the week!"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Joue pour gagner tes premiers XP de la semaine !'**
+  String get leaderboardChaseNotStarted;
+
+  /// Line under "Classement" on the card of the Profile tab that opens the weekly leaderboard ("Who earned the most XP this week?"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui a gagné le plus d\'XP cette semaine ?'**
+  String get leaderboardEntrySubtitle;
+
+  /// Switch of the settings screen, in the "Jeu" section, that shows or hides the weekly leaderboard for every player of the phone; when off, its card disappears from the Profile tab ("Show the leaderboard"). Infinitive verb, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher le classement'**
+  String get settingsShowLeaderboard;
 }
 
 class _AppLocalizationsDelegate

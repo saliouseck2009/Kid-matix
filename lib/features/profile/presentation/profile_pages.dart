@@ -118,12 +118,13 @@ final class ProfilePages {
   Widget buildSettingsPage({
     required String profileId,
     required VoidCallback onBack,
+    List<Widget> gameRows = const <Widget>[],
   }) {
     return BlocProvider<SettingsCubit>(
       create: (_) =>
           SettingsCubit(profileId: profileId, useCases: _settingsUseCases)
             ..load(),
-      child: SettingsPage(onBack: onBack),
+      child: SettingsPage(onBack: onBack, gameRows: gameRows),
     );
   }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
+import 'package:kid_matix/features/reward/domain/entities/leaderboard_entry.dart';
 import 'package:kid_matix/main.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -16,6 +18,7 @@ import '../../../helpers/test_mascot_pages.dart';
 import '../../../helpers/test_challenge_pages.dart';
 import '../../../helpers/test_mastery_pages.dart';
 import '../../../helpers/test_duel_pages.dart';
+import '../../../helpers/test_leaderboard_pages.dart';
 
 MockWatchProfileChangesUseCase _buildQuietWatch() {
   final MockWatchProfileChangesUseCase mockWatch =
@@ -29,8 +32,10 @@ void main() {
   late MockGetProfilesUseCase mockGetProfiles;
   late MockGetProfileUseCase mockGetProfile;
   late MockClearActiveProfileUseCase mockClearActive;
+  late InMemoryLeaderboardRepository leaderboard;
 
   setUp(() {
+    leaderboard = InMemoryLeaderboardRepository();
     mockGetProfiles = MockGetProfilesUseCase();
     when(mockGetProfiles.call).thenAnswer(
       (_) async => DataSuccess<List<ProfileEntity>>(<ProfileEntity>[
@@ -76,6 +81,7 @@ void main() {
           challengePages: buildTestChallengePages(),
           masteryPages: buildTestMasteryPages(),
           duelPages: buildTestDuelPages(),
+          leaderboardPages: buildTestLeaderboardPages(leaderboard: leaderboard),
         ),
       ),
     );
@@ -212,6 +218,58 @@ void main() {
       // Assert
       expect(tester.takeException(), isNull);
       expect(find.text('Jouer'), findsOneWidget);
+    });
+    testWidgets('opens the leaderboard, then hides it from the settings', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      leaderboard.entries = <LeaderboardEntry>[
+        const LeaderboardEntry(
+          player: PlayerIdentity(
+            id: 'profile-1',
+            nickname: 'Awa',
+            avatarKey: 'avatar1',
+            colorKey: 'violet',
+          ),
+          weeklyXp: 40,
+        ),
+      ];
+      session = FakeProfileSessionService(activeProfileId: 'profile-1');
+      await pumpApp(tester);
+      await tester.tap(find.text('Profil'));
+      await tester.pumpAndSettle();
+      final Finder card = find.text('Classement');
+      await tester.scrollUntilVisible(card, 200);
+      await tester.ensureVisible(card);
+      await tester.pumpAndSettle();
+      // Act
+      await tester.tap(card);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Tu es en tête cette semaine\u00a0!'), findsOneWidget);
+      expect(find.text('Parcours'), findsNothing);
+      await tester.tap(find.byTooltip('Retour'));
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(find.byTooltip('Réglages'), -200);
+      await tester.tap(find.byTooltip('Réglages'));
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(find.text('Afficher le classement'), 200);
+      await tester.ensureVisible(find.text('Afficher le classement'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Afficher le classement'));
+      await tester.pumpAndSettle();
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Voir mes petits monstres'),
+        300,
+      );
+      await tester.drag(
+        find.text('Voir mes petits monstres'),
+        const Offset(0, -300),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Classement'), findsNothing);
     });
   });
 }

@@ -16,6 +16,7 @@ import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
+import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 
 /// Builds the router of the app: the player selection, then a shell with
@@ -33,6 +34,7 @@ GoRouter createAppRouter({
   required ChallengePages challengePages,
   required MasteryPages masteryPages,
   required DuelPages duelPages,
+  required LeaderboardPages leaderboardPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -187,12 +189,32 @@ GoRouter createAppRouter({
                 profileId: profileId,
                 onOpenLittle: () => context.go(AppRoutes.profileMonsters),
               ),
+              leaderboardPages.buildEntryCard(
+                onOpen: () => context.go(AppRoutes.leaderboard),
+              ),
+            ],
+            settingsGameRows: <Widget>[
+              leaderboardPages.buildVisibilitySwitch(),
             ],
             routes: <RouteBase>[
               _createMonstersRoute(
                 path: AppRoutes.profileMonsters,
                 monsters: monsters,
                 rootNavigatorKey: rootNavigatorKey,
+              ),
+              GoRoute(
+                path: _lastSegment(AppRoutes.leaderboard),
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (BuildContext context, GoRouterState state) {
+                  final String? profileId = session.activeProfileId;
+                  if (profileId == null) return const SizedBox.shrink();
+                  return leaderboardPages.buildLeaderboardPage(
+                    profileId: profileId,
+                    avatarOf: (PlayerIdentity player, double size) =>
+                        profilePages.buildAvatar(player: player, size: size),
+                    onBack: () => context.go(AppRoutes.profile),
+                  );
+                },
               ),
             ],
             rootNavigatorKey: rootNavigatorKey,
@@ -212,6 +234,7 @@ StatefulShellBranch _createProfileBranch({
   sectionsOf,
   required List<RouteBase> routes,
   required GlobalKey<NavigatorState> rootNavigatorKey,
+  List<Widget> settingsGameRows = const <Widget>[],
 }) {
   return StatefulShellBranch(
     routes: <RouteBase>[
@@ -247,6 +270,7 @@ StatefulShellBranch _createProfileBranch({
               return profilePages.buildSettingsPage(
                 profileId: profileId,
                 onBack: () => context.go(AppRoutes.profile),
+                gameRows: settingsGameRows,
               );
             },
           ),
