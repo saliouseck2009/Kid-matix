@@ -43,8 +43,11 @@ progression, choisir les questions à revoir, attribuer les récompenses.
 
 ## Ce que l'application ne fait pas
 
-- Elle ne demande aucune autorisation sur le téléphone : ni Internet, ni
-  appareil photo, ni micro, ni localisation, ni contacts, ni photos.
+- Elle ne demande qu'une autorisation, et seulement si l'on active le
+  rappel quotidien dans les réglages : afficher des notifications. Le
+  rappel est programmé sur le téléphone, sans connexion. Elle ne demande
+  ni Internet, ni appareil photo, ni micro, ni localisation, ni contacts,
+  ni photos.
 - Elle n'envoie aucune donnée, ni à nous ni à personne. Nous n'avons accès à
   aucune information sur les joueurs.
 - Elle n'affiche aucune publicité et ne propose aucun achat.
