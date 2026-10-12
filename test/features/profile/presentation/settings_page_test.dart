@@ -99,6 +99,8 @@ void main() {
       // Arrange
       await pumpSettings(tester);
       // Act
+      await tester.ensureVisible(find.text('Réinitialiser ma progression'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Réinitialiser ma progression'));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), 'awa');

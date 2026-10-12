@@ -5,7 +5,7 @@ the lot that delivers it; nothing is scaffolded ahead of time.
 
 | Feature          | Lot      | Purpose                                      |
 | ---------------- | -------- | -------------------------------------------- |
-| `profile`        | F1       | Local players and the active player          |
+| `profile`        | F1, F20  | Local players, active player, backup file    |
 | `multiplication` | F2       | The multiplication learning domain           |
 | `quiz`           | F3       | Quiz session, timer, answers, results        |
 | `mastery`        | F4       | Per-fact mastery and spaced repetition       |

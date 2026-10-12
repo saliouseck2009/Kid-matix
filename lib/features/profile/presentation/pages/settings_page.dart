@@ -14,8 +14,8 @@ import 'package:kid_matix/features/profile/presentation/widgets/nickname_confirm
 import 'package:kid_matix/features/profile/presentation/widgets/profile_error_message.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/settings_parts.dart';
 
-/// The settings of the player (mockup 13): sounds, game, and the actions
-/// on the player. The reminder and backup sections come with their lots.
+/// The settings of the player (mockup 13): sounds, game, backup and the
+/// actions on the player. The reminder section comes with its lot.
 /// Other features add rows to the game section, such as the leaderboard
 /// switch.
 class SettingsPage extends StatelessWidget {
@@ -23,6 +23,7 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({
     required this.onBack,
     this.gameRows = const <Widget>[],
+    this.backupSection,
     super.key,
   });
 
@@ -31,6 +32,9 @@ class SettingsPage extends StatelessWidget {
 
   /// Rows of other features, at the end of the game section.
   final List<Widget> gameRows;
+
+  /// The "Sauvegarde" section, or `null`.
+  final Widget? backupSection;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,7 @@ class SettingsPage extends StatelessWidget {
                   state: state,
                   onBack: onBack,
                   gameRows: gameRows,
+                  backupSection: backupSection,
                 ),
               };
             },
@@ -81,6 +86,7 @@ class _SettingsView extends StatelessWidget {
     required this.state,
     required this.onBack,
     required this.gameRows,
+    required this.backupSection,
   });
 
   static const double _gap = 20;
@@ -88,6 +94,7 @@ class _SettingsView extends StatelessWidget {
   final SettingsLoaded state;
   final VoidCallback onBack;
   final List<Widget> gameRows;
+  final Widget? backupSection;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -205,6 +212,10 @@ class _SettingsView extends StatelessWidget {
           ],
         ),
         const SizedBox(height: _gap),
+        if (backupSection case final Widget section) ...<Widget>[
+          section,
+          const SizedBox(height: _gap),
+        ],
         SettingsSection(
           title: context.l10n.settingsPlayerSection,
           rows: <Widget>[

@@ -376,6 +376,114 @@
   "@settingsReducedMotion": {
     "description": "Switch of the settings screen that replaces the animations by still screens (\"Reduced motion\")."
   },
+  "commonClose": "Fermer",
+  "@commonClose": {
+    "description": "Tooltip of the cross button that closes a full screen such as the parental gate (\"Close\"). Infinitive verb, one word."
+  },
+  "settingsBackupSection": "Sauvegarde",
+  "@settingsBackupSection": {
+    "description": "Name of the section of the settings screen holding the export and the import of a player to and from a file (\"Backup\"). Noun, short section header."
+  },
+  "backupExport": "Exporter mon profil",
+  "@backupExport": {
+    "description": "Row of the settings screen, in the \"Sauvegarde\" section, that writes the player and all their progress to a file and opens the share sheet of the phone, after the parental gate (\"Export my profile\"). One line."
+  },
+  "backupImport": "Importer un profil",
+  "@backupImport": {
+    "description": "Row of the settings screen, in the \"Sauvegarde\" section, that opens the file picker to bring a player from a backup file onto this phone, after the parental gate (\"Import a profile\"). One line."
+  },
+  "backupExportDone": "Fichier prêt ! Ouvre-le dans Kid Matix sur l'autre téléphone, avec « Importer un profil ».",
+  "@backupExportDone": {
+    "description": "Snack bar of the settings screen, shown after the backup file was shared, telling how to use it on the other phone (\"File ready! Open it in Kid Matix on the other phone, with 'Import a profile'.\"). The quoted label must match the settings row of the key backupImport. Informal \"tu\"."
+  },
+  "backupImportDone": "Profil de {nickname} importé ! Retrouve-le avec « Changer de joueur ».",
+  "@backupImportDone": {
+    "description": "Snack bar of the settings screen, shown after a backup file was imported as a new player of the phone (\"Awa's profile imported! Find it with 'Switch player'.\"). The quoted label must match the Profile tab button of the key switchPlayerButton. Informal \"tu\"; \"le\" stands for the profile.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "backupImportReplaced": "Progression de {nickname} restaurée !",
+  "@backupImportReplaced": {
+    "description": "Snack bar of the settings screen, shown after a backup file replaced the player of the phone with the same nickname (\"Awa's progress restored!\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "backupConflictTitle": "{nickname} existe déjà",
+  "@backupConflictTitle": {
+    "description": "Title of the dialog shown when the nickname of an imported backup is already used by a player of this phone (\"Awa already exists\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "backupConflictMessage": "Ce téléphone a déjà un joueur {nickname}. Le fichier contient {nickname} au niveau {level}.\n\nRemplacer efface la progression actuelle de {nickname} sur ce téléphone. Renommer garde les deux joueurs.",
+  "@backupConflictMessage": {
+    "description": "Body of the dialog shown when the nickname of an imported backup is already used on this phone: what each choice does (\"This phone already has a player Awa. The file holds Awa at level 5. Replace erases the current progress of Awa on this phone. Rename keeps both players.\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      },
+      "level": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "backupConflictReplace": "Remplacer",
+  "@backupConflictReplace": {
+    "description": "Destructive button of the nickname conflict dialog: the player of the phone is replaced by the file (\"Replace\"). Infinitive verb, one word."
+  },
+  "backupConflictRename": "Renommer",
+  "@backupConflictRename": {
+    "description": "Button of the nickname conflict dialog: the imported player gets another nickname, both players are kept (\"Rename\"). Infinitive verb, one word."
+  },
+  "backupRenameTitle": "Nouveau pseudo",
+  "@backupRenameTitle": {
+    "description": "Title of the dialog asking another nickname for the imported player (\"New nickname\")."
+  },
+  "backupRenameMessage": "Choisis un autre pseudo pour le joueur importé.",
+  "@backupRenameMessage": {
+    "description": "Text of the dialog asking another nickname for the imported player (\"Choose another nickname for the imported player.\"). Informal \"tu\"."
+  },
+  "backupRenameConfirm": "Importer",
+  "@backupRenameConfirm": {
+    "description": "Button of the rename dialog that imports the backup under the nickname typed (\"Import\"). Infinitive verb, one word."
+  },
+  "errorBackupInvalid": "Ce fichier n'est pas une sauvegarde Kid Matix, ou il est abîmé.",
+  "@errorBackupInvalid": {
+    "description": "Error snack bar of the settings screen, shown when the file picked for an import is not a Kid Matix backup or is damaged (\"This file is not a Kid Matix backup, or it is damaged.\")."
+  },
+  "errorBackupVersion": "Cette sauvegarde vient d'une version plus récente de Kid Matix. Mets l'app à jour, puis réessaie.",
+  "@errorBackupVersion": {
+    "description": "Error snack bar of the settings screen, shown when the file picked for an import was written by a newer version of the app (\"This backup comes from a newer version of Kid Matix. Update the app, then try again.\"). Informal \"tu\"."
+  },
+  "parentalGateTitle": "Demande à un adulte",
+  "@parentalGateTitle": {
+    "description": "Title of the parental gate, a full screen shown before exporting or importing a backup (\"Ask an adult\"). Informal \"tu\", addressed to the child."
+  },
+  "parentalGateMessage": "Cette action est réservée aux adultes. Écris ce nombre en chiffres :",
+  "@parentalGateMessage": {
+    "description": "Text of the parental gate, above a number written in words that the adult types in digits (\"This action is for adults. Write this number in digits:\"). The number in words is spelled by code per language, not by this key. Informal \"tu\"."
+  },
+  "parentalGateAnswerLabel": "Nombre en chiffres",
+  "@parentalGateAnswerLabel": {
+    "description": "Label of the field of the parental gate where the adult types the number in digits (\"Number in digits\")."
+  },
+  "parentalGateConfirm": "Valider",
+  "@parentalGateConfirm": {
+    "description": "Button of the parental gate that checks the number typed (\"Confirm\"). Infinitive verb, one word."
+  },
   "settingsPlayerSection": "Ce joueur",
   "@settingsPlayerSection": {
     "description": "Name of the section of the settings screen holding the actions on the player: reset and delete (\"This player\")."

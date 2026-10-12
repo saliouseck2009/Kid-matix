@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/entities/player_identity.dart';
@@ -8,6 +10,8 @@ import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/update_profile_use_case.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/backup_cubit.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/backup_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_cubit.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/player_settings_cubit.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
@@ -18,6 +22,7 @@ import 'package:kid_matix/features/profile/presentation/pages/profile_edit_page.
 import 'package:kid_matix/features/profile/presentation/pages/profile_tab_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/settings_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/who_is_playing_page.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/backup_settings_section.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/player_badge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/reduced_motion_scope.dart';
@@ -36,6 +41,8 @@ final class ProfilePages {
     required this._selectProfile,
     required this._tabUseCases,
     required this._settingsUseCases,
+    required this._backupUseCases,
+    this._gateRandom,
   });
 
   final GetProfilesUseCase _getProfiles;
@@ -45,6 +52,10 @@ final class ProfilePages {
   final SelectProfileUseCase _selectProfile;
   final ProfileTabUseCases _tabUseCases;
   final SettingsUseCases _settingsUseCases;
+  final BackupUseCases _backupUseCases;
+
+  // Draws the numbers of the parental gate; seeded in tests.
+  final Random? _gateRandom;
 
   /// "Qui joue ?".
   Widget buildWhoIsPlayingPage({
@@ -120,11 +131,23 @@ final class ProfilePages {
     required VoidCallback onBack,
     List<Widget> gameRows = const <Widget>[],
   }) {
-    return BlocProvider<SettingsCubit>(
-      create: (_) =>
-          SettingsCubit(profileId: profileId, useCases: _settingsUseCases)
-            ..load(),
-      child: SettingsPage(onBack: onBack, gameRows: gameRows),
+    return MultiBlocProvider(
+      providers: <BlocProvider<Object?>>[
+        BlocProvider<SettingsCubit>(
+          create: (_) =>
+              SettingsCubit(profileId: profileId, useCases: _settingsUseCases)
+                ..load(),
+        ),
+        BlocProvider<BackupCubit>(
+          create: (_) =>
+              BackupCubit(profileId: profileId, useCases: _backupUseCases),
+        ),
+      ],
+      child: SettingsPage(
+        onBack: onBack,
+        gameRows: gameRows,
+        backupSection: BackupSettingsSection(random: _gateRandom),
+      ),
     );
   }
 
