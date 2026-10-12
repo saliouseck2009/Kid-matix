@@ -55,6 +55,15 @@ final class ItemProgressEntity {
   /// answer.
   final DateTime? nextReviewAt;
 
+  /// Wrong answers among the [presentationCount] answers.
+  int get missCount => presentationCount - correctCount;
+
+  /// Share of right answers, from 0 to 1; 0 before any answer.
+  double get successRate {
+    if (presentationCount == 0) return 0;
+    return correctCount / presentationCount;
+  }
+
   /// Median of [lastAnswerTimes], or `null` without any answer.
   Duration? get medianAnswerTime {
     if (lastAnswerTimes.isEmpty) return null;

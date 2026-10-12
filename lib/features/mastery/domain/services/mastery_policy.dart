@@ -23,6 +23,9 @@ final class MasteryPolicy {
   /// Highest box an answer picked among choices can reach.
   static const int recognizedBoxCap = 3;
 
+  /// First box of the « Acquis » status.
+  static const int acquiredBox = 4;
+
   /// Highest box.
   static const int lastBox = 5;
 
@@ -77,7 +80,7 @@ final class MasteryPolicy {
       0 => MasteryStatus.notSeen,
       firstBox => MasteryStatus.toReview,
       lastBox when _isFast(progress) => MasteryStatus.mastered,
-      >= 4 => MasteryStatus.acquired,
+      >= acquiredBox => MasteryStatus.acquired,
       _ => MasteryStatus.inProgress,
     };
   }

@@ -5,6 +5,7 @@ import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_policy.dart';
+import 'package:kid_matix/features/mastery/domain/services/monster_hunt_selector.dart';
 import 'package:kid_matix/features/mastery/domain/services/review_item_selector.dart';
 
 /// Chooses the items of a quiz and the format of each question.
@@ -16,12 +17,17 @@ import 'package:kid_matix/features/mastery/domain/services/review_item_selector.
 /// answers to pick, the others with answers to write.
 ///
 /// A review asks instead the items [ReviewItemSelector] chooses, each
-/// once, with the same formats.
+/// once, and a monster hunt those [MonsterHuntSelector] chooses, with the
+/// same formats.
 final class QuizItemPlanner {
   /// Creates the planner.
-  const QuizItemPlanner({this._selector = const ReviewItemSelector()});
+  const QuizItemPlanner({
+    this._selector = const ReviewItemSelector(),
+    this._hunt = const MonsterHuntSelector(),
+  });
 
   final ReviewItemSelector _selector;
+  final MonsterHuntSelector _hunt;
 
   /// Draw weight of an item by box: index 0 is box 0.
   static const List<int> boxDrawWeights = <int>[4, 5, 4, 3, 2, 1];
@@ -93,18 +99,29 @@ final class QuizItemPlanner {
       now: now,
       count: count,
     );
-    return random
-        .shuffled(chosen)
-        .map(
-          (ItemProgressEntity item) => QuizItemPlan(
-            itemKey: item.itemKey,
-            questionTypeIds: questionTypesFor(
-              box: item.box.clamp(0, MasteryPolicy.lastBox),
-              questionTypeNatures: questionTypeNatures,
-            ),
-          ),
-        )
-        .toList();
+    return _planEach(random.shuffled(chosen), questionTypeNatures);
+  }
+
+  /// Plans a monster hunt of at most [count] questions among [items] at
+  /// [now]: each monster twice, never twice in a row, completed with the
+  /// items a review would pick. Items never presented are left out.
+  List<QuizItemPlan> planMonsterHunt({
+    required List<LearningItem> items,
+    required Map<String, ItemProgressEntity> progressByKey,
+    required Map<String, AnswerNature> questionTypeNatures,
+    required int count,
+    required DateTime now,
+    required RandomSource random,
+  }) {
+    final List<ItemProgressEntity> chosen = _hunt.select(
+      progress: <ItemProgressEntity>[
+        for (final LearningItem item in items) ?progressByKey[item.key],
+      ],
+      now: now,
+      count: count,
+      random: random,
+    );
+    return _planEach(chosen, questionTypeNatures);
   }
 
   /// Question types fit for an item of [box]: answers to pick up to
@@ -123,6 +140,25 @@ final class QuizItemPlanner {
         if (type.value == preferred) type.key,
     ];
     return fit.isEmpty ? questionTypeNatures.keys.toList() : fit;
+  }
+
+  /// One question per item of [chosen], in order, with the formats of
+  /// its box.
+  List<QuizItemPlan> _planEach(
+    List<ItemProgressEntity> chosen,
+    Map<String, AnswerNature> questionTypeNatures,
+  ) {
+    return chosen
+        .map(
+          (ItemProgressEntity item) => QuizItemPlan(
+            itemKey: item.itemKey,
+            questionTypeIds: questionTypesFor(
+              box: item.box.clamp(0, MasteryPolicy.lastBox),
+              questionTypeNatures: questionTypeNatures,
+            ),
+          ),
+        )
+        .toList();
   }
 
   int _boxOf(Map<String, ItemProgressEntity> progressByKey, LearningItem item) {

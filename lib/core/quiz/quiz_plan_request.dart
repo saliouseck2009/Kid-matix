@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:meta/meta.dart';
 
 /// The questions a quiz needs, before the mastery engine chooses them.
@@ -10,7 +11,7 @@ final class QuizPlanRequest {
     required List<String> itemKeys,
     required List<String> questionTypeIds,
     required this.questionCount,
-    this.isReview = false,
+    this.selection = QuizSelection.mastery,
   }) : itemKeys = List<String>.unmodifiable(itemKeys),
        questionTypeIds = List<String>.unmodifiable(questionTypeIds);
 
@@ -26,10 +27,11 @@ final class QuizPlanRequest {
   /// Question types allowed in the quiz.
   final List<String> questionTypeIds;
 
-  /// Questions to plan; a review may plan fewer.
+  /// Questions to plan; a review or a monster hunt may plan fewer.
   final int questionCount;
 
-  /// Whether to plan a review: the items to review, each once, instead
-  /// of a weighted draw.
-  final bool isReview;
+  /// How to choose the items: a weighted draw, a review or a monster
+  /// hunt. The selections that ask every item once are not planned by the
+  /// mastery engine and count as a draw.
+  final QuizSelection selection;
 }

@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
@@ -172,7 +173,7 @@ void main() {
         ],
         questionTypeIds: _reviewTypes,
         questionCount: questionCount,
-        isReview: true,
+        selection: QuizSelection.review,
       );
     }
 
