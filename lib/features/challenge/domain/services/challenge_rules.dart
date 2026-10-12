@@ -61,4 +61,13 @@ abstract final class ChallengeRules {
   /// them by box.
   static const List<String> dailyReviewQuestionTypeIds =
       trainingQuestionTypeIds;
+
+  /// Questions of a monster hunt: each monster twice, completed like a
+  /// daily review (owner's choice).
+  static const int monsterHuntQuestionCount = 10;
+
+  /// Question types of a monster hunt: the mastery engine picks among
+  /// them by box, as in the daily review.
+  static const List<String> monsterHuntQuestionTypeIds =
+      trainingQuestionTypeIds;
 }

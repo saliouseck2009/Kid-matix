@@ -11,7 +11,8 @@ import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dar
 ///
 /// The mastery engine draws the questions: low boxes come more often.
 /// For the daily review it picks them among every fact of the domain:
-/// the overdue first, then the least known.
+/// the overdue first, then the least known; for the monster hunt, the
+/// player's monsters twice each, then the same as a review.
 final class ChallengeQuizSpecs {
   /// Creates the builder.
   const ChallengeQuizSpecs();
@@ -23,7 +24,7 @@ final class ChallengeQuizSpecs {
     required ChallengeSource source,
   }) {
     final List<String>? itemKeys = _itemKeysOf(domain, switch (source) {
-      DailyReviewSource() => <String>[
+      DailyReviewSource() || MonsterHuntSource() => <String>[
         for (final LearningUnit unit in domain.units) unit.key,
       ],
       _ => source.unitKeys,
@@ -71,6 +72,15 @@ final class ChallengeQuizSpecs {
         questionTypeIds: ChallengeRules.dailyReviewQuestionTypeIds,
         selection: QuizSelection.review,
         questionCount: ChallengeRules.dailyReviewQuestionCount,
+        sourceKey: source.toKey(),
+      ),
+      MonsterHuntSource() => QuizSpec(
+        domainId: domain.id,
+        mode: QuizMode.monsterHunt,
+        itemKeys: itemKeys,
+        questionTypeIds: ChallengeRules.monsterHuntQuestionTypeIds,
+        selection: QuizSelection.monsterHunt,
+        questionCount: ChallengeRules.monsterHuntQuestionCount,
         sourceKey: source.toKey(),
       ),
     };

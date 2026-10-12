@@ -233,6 +233,28 @@ void main() {
       expect(actualRun.mode, QuizMode.dailyReview);
       expect(actualRun.scoredQuestionCount, 3);
     });
+    test('asks the mastery engine for the monsters to hunt', () async {
+      // Arrange
+      final FakeMasteryService inputMastery = FakeMasteryService();
+      // Act
+      final QuizRun actualRun = (await buildQuizUseCase(mastery: inputMastery)(
+        params: BuildQuizParams(
+          profileId: 'profile-1',
+          domainId: 'multiplication',
+          mode: QuizMode.monsterHunt,
+          itemKeys: tableKeys(5),
+          questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+          selection: QuizSelection.monsterHunt,
+          questionCount: 10,
+        ),
+      )).requireData;
+      // Assert
+      expect(
+        inputMastery.planRequests.single.selection,
+        QuizSelection.monsterHunt,
+      );
+      expect(actualRun.mode, QuizMode.monsterHunt);
+    });
     test('fails when the mastery engine has no question to ask', () async {
       // Arrange
       final _MockMasteryService mockMastery = _MockMasteryService();

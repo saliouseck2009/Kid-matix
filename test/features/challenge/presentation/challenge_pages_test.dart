@@ -281,6 +281,16 @@ void main() {
         'Révision du jour',
       );
     });
+    test('names the monster hunt and plays it', () {
+      // Arrange
+      final ChallengePages pages = buildTestChallengePages();
+      // Act & Assert
+      expect(pages.specOf('monsterHunt')?.mode, QuizMode.monsterHunt);
+      expect(
+        pages.describeSource('monsterHunt', AppLocalizationsFr()),
+        'Chasse aux monstres',
+      );
+    });
   });
 
   group('NewRecordCard', () {

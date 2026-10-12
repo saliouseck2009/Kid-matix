@@ -772,6 +772,12 @@ abstract class AppLocalizations {
   /// **'Révision du jour'**
   String get quizModeDailyReview;
 
+  /// Name of the monster hunt (10 questions on the facts the player keeps missing, drawn as little monsters), shown as the title of its card on the challenges screen and under the results title ("Monster hunt").
+  ///
+  /// In fr, this message translates to:
+  /// **'Chasse aux monstres'**
+  String get quizModeMonsterHunt;
+
   /// Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.
   ///
   /// In fr, this message translates to:

@@ -5,7 +5,8 @@ import 'package:meta/meta.dart';
 ///
 /// A free training is written `training:20:timer:mul:2+mul:5`, a time
 /// attack `timeAttack:mul:1+mul:2`, a survival game
-/// `survival:mul:1+mul:2`, the daily review `dailyReview`.
+/// `survival:mul:1+mul:2`, the daily review `dailyReview`, the monster
+/// hunt `monsterHunt`.
 @immutable
 sealed class ChallengeSource {
   /// Creates a source on [unitKeys].
@@ -27,7 +28,8 @@ sealed class ChallengeSource {
     return TrainingSource._tryParse(sourceKey) ??
         TimeAttackSource._tryParse(sourceKey) ??
         SurvivalSource._tryParse(sourceKey) ??
-        DailyReviewSource._tryParse(sourceKey);
+        DailyReviewSource._tryParse(sourceKey) ??
+        MonsterHuntSource._tryParse(sourceKey);
   }
 
   /// The source key of the quiz.
@@ -205,6 +207,29 @@ final class DailyReviewSource extends ChallengeSource {
 
   @override
   bool operator ==(Object other) => other is DailyReviewSource;
+
+  @override
+  int get hashCode => key.hashCode;
+}
+
+/// The monster hunt: the facts the player keeps missing, picked by the
+/// mastery engine among every table, so it names no unit.
+final class MonsterHuntSource extends ChallengeSource {
+  /// Creates the source.
+  MonsterHuntSource() : super(unitKeys: const <String>[]);
+
+  /// Source key of the monster hunt.
+  static const String key = 'monsterHunt';
+
+  @override
+  String toKey() => key;
+
+  static MonsterHuntSource? _tryParse(String sourceKey) {
+    return sourceKey == key ? MonsterHuntSource() : null;
+  }
+
+  @override
+  bool operator ==(Object other) => other is MonsterHuntSource;
 
   @override
   int get hashCode => key.hashCode;

@@ -509,7 +509,7 @@ Les faits les plus difficiles du joueur deviennent des petits monstres à appriv
 
 - [x] **F13-01** Règle : un fait raté au moins 2 fois et encore en boîte 1 à 3 devient un monstre ; 5 au plus sont montrés, les plus coriaces.
 - [x] **F13-02** Cas d'usage `GetMonsters`, calculé à partir de la maîtrise des items, sans nouvelle table.
-- [ ] **F13-03** Chasse aux monstres : quiz de 10 questions centré sur ces faits.
+- [x] **F13-03** Chasse aux monstres : quiz de 10 questions centré sur ces faits.
 - [ ] **F13-04** Un monstre est apprivoisé quand son fait atteint le statut « Acquis » ; il rejoint la collection.
 - [ ] **F13-05** Carte Chasse aux monstres dans Défis ; monstres apprivoisés dans la collection du Profil.
 - [ ] **F13-06** Dessins des petits monstres.

@@ -83,6 +83,17 @@ void main() {
       expect(actualSource.hashCode, DailyReviewSource().hashCode);
       expect(actualSource!.unitKeys, isEmpty);
     });
+    test('writes and reads the monster hunt', () {
+      // Act
+      final String actualKey = MonsterHuntSource().toKey();
+      final ChallengeSource? actualSource = ChallengeSource.tryParse(actualKey);
+      // Assert
+      expect(actualKey, 'monsterHunt');
+      expect(actualSource, MonsterHuntSource());
+      expect(actualSource, isNot(DailyReviewSource()));
+      expect(actualSource.hashCode, MonsterHuntSource().hashCode);
+      expect(actualSource!.unitKeys, isEmpty);
+    });
     test('ignores the keys of other features and broken keys', () {
       // Act & Assert
       for (final String? inputKey in <String?>[
@@ -95,6 +106,7 @@ void main() {
         'survival:',
         'survival:mul:1++mul:2',
         'dailyReview:mul:2',
+        'monsterHunt:mul:2',
       ]) {
         expect(ChallengeSource.tryParse(inputKey), isNull, reason: inputKey);
       }
@@ -214,6 +226,26 @@ void main() {
         ChallengeRules.trainingQuestionTypeIds,
       );
       expect(actualSpec.sourceKey, 'dailyReview');
+    });
+    test('hunts the monsters in 10 questions without timer', () {
+      // Act
+      final QuizSpec actualSpec = specs.specOf(
+        domain: domain,
+        source: MonsterHuntSource(),
+      )!;
+      // Assert
+      expect(actualSpec.mode, QuizMode.monsterHunt);
+      expect(actualSpec.selection, QuizSelection.monsterHunt);
+      expect(actualSpec.questionCount, 10);
+      expect(actualSpec.itemKeys, hasLength(120));
+      expect(actualSpec.baseTimeLimit, isNull);
+      expect(actualSpec.totalTimeLimit, isNull);
+      expect(actualSpec.lives, isNull);
+      expect(
+        actualSpec.questionTypeIds,
+        ChallengeRules.trainingQuestionTypeIds,
+      );
+      expect(actualSpec.sourceKey, 'monsterHunt');
     });
   });
 }

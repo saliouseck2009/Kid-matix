@@ -473,6 +473,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizModeDailyReview => 'Révision du jour';
 
   @override
+  String get quizModeMonsterHunt => 'Chasse aux monstres';
+
+  @override
   String quizScoreSpoken(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
