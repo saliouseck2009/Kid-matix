@@ -10,4 +10,7 @@ enum QuizMode {
 
   /// Against the clock: as many right answers as possible in a set time.
   timeAttack,
+
+  /// Daily review: the facts the mastery engine picks for the player.
+  dailyReview,
 }

@@ -101,6 +101,7 @@ GoRouter _createRouter(
         getRecords: sl(),
         getSessionRecord: sl(),
         watchRecordChanges: sl(),
+        getDailyReview: sl(),
       ),
       domains: sl(),
     ),
