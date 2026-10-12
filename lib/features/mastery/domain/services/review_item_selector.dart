@@ -63,15 +63,10 @@ final class ReviewItemSelector {
   /// Lowest success rate first, then lowest box, then key order so the
   /// choice never depends on the storage order.
   static int _compareWeakest(ItemProgressEntity a, ItemProgressEntity b) {
-    final int byRate = _successRate(a).compareTo(_successRate(b));
+    final int byRate = a.successRate.compareTo(b.successRate);
     if (byRate != 0) return byRate;
     final int byBox = a.box.compareTo(b.box);
     if (byBox != 0) return byBox;
     return a.itemKey.compareTo(b.itemKey);
-  }
-
-  static double _successRate(ItemProgressEntity item) {
-    if (item.presentationCount == 0) return 0;
-    return item.correctCount / item.presentationCount;
   }
 }

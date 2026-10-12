@@ -8,6 +8,7 @@ import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
@@ -16,8 +17,8 @@ import 'package:kid_matix/features/mastery/domain/repositories/item_progress_rep
 import 'package:kid_matix/features/mastery/domain/services/quiz_item_planner.dart';
 
 /// Chooses the items of a quiz from the player's progress, with the
-/// question types fit for each one: a weighted draw, or the items to
-/// review when the request is a review.
+/// question types fit for each one: a weighted draw, the items to review
+/// for a review, or the monsters for a monster hunt.
 ///
 /// Fails with a `ValidationException` when the domain, an item or every
 /// question type is unknown.
@@ -81,24 +82,34 @@ class PlanQuizUseCase
     required Map<String, ItemProgressEntity> progressByKey,
     required Map<String, AnswerNature> natures,
   }) {
-    if (params.isReview) {
-      return _planner.planReview(
+    return switch (params.selection) {
+      QuizSelection.review => _planner.planReview(
         items: items,
         progressByKey: progressByKey,
         questionTypeNatures: natures,
         count: params.questionCount,
         now: _clock.now(),
         random: _random,
-      );
-    }
-    return _planner.plan(
-      domain: domain,
-      items: items,
-      progressByKey: progressByKey,
-      questionTypeNatures: natures,
-      count: params.questionCount,
-      random: _random,
-    );
+      ),
+      QuizSelection.monsterHunt => _planner.planMonsterHunt(
+        items: items,
+        progressByKey: progressByKey,
+        questionTypeNatures: natures,
+        count: params.questionCount,
+        now: _clock.now(),
+        random: _random,
+      ),
+      QuizSelection.mastery ||
+      QuizSelection.inOrder ||
+      QuizSelection.shuffled => _planner.plan(
+        domain: domain,
+        items: items,
+        progressByKey: progressByKey,
+        questionTypeNatures: natures,
+        count: params.questionCount,
+        random: _random,
+      ),
+    };
   }
 
   /// The allowed question types that [domain] supports, with how each one

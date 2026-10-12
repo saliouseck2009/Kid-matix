@@ -228,7 +228,7 @@ void main() {
       )).requireData;
       // Assert
       final QuizPlanRequest actualRequest = inputMastery.planRequests.single;
-      expect(actualRequest.isReview, isTrue);
+      expect(actualRequest.selection, QuizSelection.review);
       expect(actualRequest.questionCount, 3);
       expect(actualRun.mode, QuizMode.dailyReview);
       expect(actualRun.scoredQuestionCount, 3);
