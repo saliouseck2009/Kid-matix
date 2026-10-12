@@ -20,8 +20,9 @@ middle of one). Last update: 2026-10-12.
 | F10 · Profile and settings | **Done** (closed 2026-10-10) |
 | F11 · Polish and release of 1.0 | **Done** (closed 2026-10-12), except F11-11: builds in the test channels |
 | F12 · Daily review and Survival | **Done** (closed 2026-10-12) |
-| F13 · My monsters | **Next** |
-| F14 – F21 | Not started |
+| F13 · My monsters | **Done** (closed 2026-10-12) |
+| F14 · Duel on one phone | **Next** |
+| F15 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -499,6 +500,23 @@ parcours", no pill when no fact is due, "Ici, le chrono reste actif.",
 réponses en Survie.", the survival quiz screen (hearts, score, timer bar)
 which has no mockup.
 
-## Starting F13
+## F13 closure
 
-Tasks in the F13 section of `docs/product/task-breakdown.md`.
+- `bash tool/check.sh`: every step OK; coverage thresholds met; CI green
+  on #80 to #82.
+- Checked on the Android emulator with progress seeded through the use
+  cases: 7 × 8 missed twice showed as a monster ("1 monstre à
+  apprivoiser" on the Défis card); a first hunt asked each monster twice,
+  never in a row; after a second hunt both monsters reached box 4 and
+  "Apprivoisés" showed "2 monstres". The Profile link to the screen is
+  covered by a widget test only (the emulator was overloaded).
+
+Texts and choices waiting for the owner: "Aucun monstre pour l'instant",
+the empty-screen text, "Voir mes petits monstres", the screen-reader
+texts of the monsters, the progress bar at box / 4, dark horns, no
+celebration when a monster is tamed (mastery keeps no history).
+
+## Starting F14
+
+Tasks in the F14 section of `docs/product/task-breakdown.md`; mockup
+`15-duel.png`.
