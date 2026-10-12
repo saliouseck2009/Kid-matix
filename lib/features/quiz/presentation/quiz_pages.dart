@@ -51,8 +51,9 @@ final class QuizPages {
   }
 
   /// Results of the session [sessionId]; [describeSource] names what the
-  /// session was played for, the reward slots show what it earned and
-  /// [recordCard] the record it set.
+  /// session was played for, the reward slots show what it earned,
+  /// [recordCard] the record it set, [actionOf] a last button and
+  /// [outcomeOf] a screen in place of the results.
   Widget buildResultsPage({
     required String sessionId,
     required ValueChanged<String?> onContinue,
@@ -62,6 +63,8 @@ final class QuizPages {
     Widget? xpTile,
     Widget? rewardsCard,
     Widget? recordCard,
+    SessionScoreSlot? actionOf,
+    SessionScoreSlot? outcomeOf,
   }) {
     return ResultsPage(
       sessionId: sessionId,
@@ -74,6 +77,8 @@ final class QuizPages {
       xpTile: xpTile,
       rewardsCard: rewardsCard,
       recordCard: recordCard,
+      actionOf: actionOf,
+      outcomeOf: outcomeOf,
     );
   }
 

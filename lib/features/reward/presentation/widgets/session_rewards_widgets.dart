@@ -168,3 +168,22 @@ class _WhiteCard extends StatelessWidget {
     );
   }
 }
+
+/// The XP earned by the quiz on one line, such as "+210 XP", in the
+/// primary text color; nothing until they are read.
+class SessionXpLabel extends StatelessWidget {
+  /// Creates the label.
+  const SessionXpLabel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final SessionRewardsEntity? rewards = _rewardsOf(context);
+    if (rewards == null) return const SizedBox.shrink();
+    return Text(
+      context.l10n.rewardXpEarnedInline(rewards.xpEarned),
+      style: Theme.of(
+        context,
+      ).textTheme.titleLarge?.copyWith(color: context.palette.primaryText),
+    );
+  }
+}

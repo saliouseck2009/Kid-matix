@@ -1,6 +1,7 @@
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/frozen_question_generator.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
@@ -11,6 +12,7 @@ import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
+import 'package:kid_matix/core/quiz/seeded_draw.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
@@ -26,10 +28,12 @@ import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 /// By default the mastery engine chooses the items among those given,
 /// missed facts first, and the question types fit for each one; a quiz
 /// can also ask every item once, in order or shuffled, the items to
-/// review, or the player's monsters. Fails with a `ValidationException`
-/// when the domain, an item or every question type is unknown, or when no
-/// item is given, and with a `NotFoundException` when there is no question
-/// to ask, such as a review before any item was seen.
+/// review, or the player's monsters. A quiz with a seeded draw asks the
+/// questions of its frozen generator, the same on every phone. Fails with
+/// a `ValidationException` when the domain, an item or every question
+/// type is unknown, or when no item is given, and with a
+/// `NotFoundException` when there is no question to ask, such as a review
+/// before any item was seen.
 class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   /// Creates the use case.
   const BuildQuizUseCase({
@@ -40,6 +44,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
     required this._random,
     required this._idGenerator,
     required this._clock,
+    this._frozenGenerator = const FrozenQuestionGenerator(),
   });
 
   final DomainRegistry _domains;
@@ -49,6 +54,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   final RandomSource _random;
   final IdGenerator _idGenerator;
   final Clock _clock;
+  final FrozenQuestionGenerator _frozenGenerator;
 
   @override
   Future<DataState<QuizRun>> call({required BuildQuizParams params}) async {
@@ -61,6 +67,8 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         ValidationException(message: 'Unknown domain or items.'),
       );
     }
+    final SeededDraw? draw = params.seededDraw;
+    if (draw != null) return _generateSeeded(params, domain, draw);
     final DataState<List<QuizItemPlan>> main = await _plan(params, items);
     final DataState<List<QuizItemPlan>> plans =
         main is DataSuccess<List<QuizItemPlan>>
@@ -156,6 +164,26 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         domain: domain,
         plans: plans,
         random: _random,
+      );
+      return DataSuccess<QuizRun>(_createRun(params, questions));
+    } on ArgumentError catch (error) {
+      return DataFailed<QuizRun>(ValidationException(message: '$error'));
+    }
+  }
+
+  /// The questions of [draw], drawn without the player's mastery.
+  DataState<QuizRun> _generateSeeded(
+    BuildQuizParams params,
+    LearningDomain domain,
+    SeededDraw draw,
+  ) {
+    try {
+      final List<Question> questions = _frozenGenerator.generate(
+        domain: domain,
+        itemKeys: params.itemKeys,
+        questionTypeIds: params.questionTypeIds,
+        questionCount: params.questionCount ?? params.itemKeys.length,
+        draw: draw,
       );
       return DataSuccess<QuizRun>(_createRun(params, questions));
     } on ArgumentError catch (error) {

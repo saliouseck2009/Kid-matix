@@ -68,8 +68,10 @@ void main() {
 
   Future<void> pumpResults(
     WidgetTester tester,
-    DataState<QuizResultEntity> state,
-  ) async {
+    DataState<QuizResultEntity> state, {
+    SessionScoreSlot? actionOf,
+    SessionScoreSlot? outcomeOf,
+  }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
     when(
@@ -88,12 +90,49 @@ void main() {
         onReplay: (String sourceKey) => replayedUnit = sourceKey,
         describeSource: (String? sourceKey, AppLocalizations l10n) =>
             sourceKey == null ? null : 'Entraînement',
+        actionOf: actionOf,
+        outcomeOf: outcomeOf,
       ),
     );
     await tester.pumpAndSettle();
   }
 
   group('ResultsPage', () {
+    testWidgets('adds the action slot under the buttons', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> slotCalls = <String>[];
+      // Act
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(
+          _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
+        ),
+        actionOf: (String? sourceKey, int score) {
+          slotCalls.add('$sourceKey $score');
+          return const Text('Défier un ami');
+        },
+        outcomeOf: (String? sourceKey, int score) => null,
+      );
+      // Assert
+      expect(find.text('Défier un ami'), findsOneWidget);
+      expect(find.text('9 / 10'), findsOneWidget);
+      expect(slotCalls.toSet(), <String>{'path:mul:5:training 9'});
+    });
+    testWidgets('lets the outcome slot replace the results', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(_buildResult(hasMistake: false)),
+        outcomeOf: (String? sourceKey, int score) => Text('Score $score'),
+      );
+      // Assert
+      expect(find.text('Score 10'), findsOneWidget);
+      expect(find.text('Aucune erreur, bravo !'), findsNothing);
+    });
     testWidgets('shows the score, the average time and the facts to review', (
       WidgetTester tester,
     ) async {

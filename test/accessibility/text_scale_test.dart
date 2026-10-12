@@ -15,6 +15,7 @@ import '../helpers/test_mastery_pages.dart';
 import '../helpers/test_path_pages.dart';
 import '../helpers/test_quiz_pages.dart';
 import '../helpers/test_reward_pages.dart';
+import '../helpers/test_code_challenge_pages.dart';
 import '../helpers/test_duel_pages.dart';
 import '../helpers/test_leaderboard_pages.dart';
 
@@ -49,6 +50,7 @@ void main() {
       mascotPages: mascotPages,
       challengePages: buildTestChallengePages(),
       duelPages: buildTestDuelPages(),
+      codePages: buildTestCodeChallengePages(),
       leaderboardPages: buildTestLeaderboardPages(),
       masteryPages: buildTestMasteryPages(
         repository: InMemoryItemProgressRepository(<ItemProgressEntity>[

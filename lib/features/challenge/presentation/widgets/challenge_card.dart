@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/widgets/dashed_border_painter.dart';
 
 /// A challenge of the challenges screen: its icon in a tinted circle, its
 /// name and rule, and the player's record when there is one, or a chevron
-/// when it opens a screen.
+/// when it opens a screen. A dashed card has no background, only a
+/// dashed outline.
 class ChallengeCard extends StatelessWidget {
   /// Creates the card of the challenge [title], showing [icon] or else
   /// [illustration].
@@ -19,6 +21,7 @@ class ChallengeCard extends StatelessWidget {
     this.iconColor,
     this.note,
     this.hasChevron = false,
+    this.isDashed = false,
     super.key,
   }) : assert(icon != null || illustration != null, 'an icon is needed');
 
@@ -27,6 +30,7 @@ class ChallengeCard extends StatelessWidget {
   static const double _iconCircle = 52;
   static const double _iconSize = 28;
   static const double _titleSize = 20;
+  static const double _dashWidth = 3;
   static const EdgeInsets _padding = EdgeInsets.symmetric(
     horizontal: 14,
     vertical: AppSizes.space12,
@@ -40,6 +44,10 @@ class ChallengeCard extends StatelessWidget {
 
   /// Whether a chevron says the card opens a screen.
   final bool hasChevron;
+
+  /// Whether the card is a dashed outline on the ground, for a challenge
+  /// brought from elsewhere such as « J'ai un code ».
+  final bool isDashed;
 
   /// Color of the circle behind [icon].
   final Color iconBackground;
@@ -68,10 +76,12 @@ class ChallengeCard extends StatelessWidget {
     final String? record = this.record;
     final String? note = this.note;
     final BorderRadius radius = BorderRadius.circular(_radius);
-    return Semantics(
+    final Widget card = Semantics(
       button: true,
       child: Material(
-        color: Theme.of(context).colorScheme.surface,
+        color: isDashed
+            ? Colors.transparent
+            : Theme.of(context).colorScheme.surface,
         borderRadius: radius,
         child: InkWell(
           onTap: onTap,
@@ -138,6 +148,15 @@ class ChallengeCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+    if (!isDashed) return card;
+    return CustomPaint(
+      painter: DashedBorderPainter(
+        color: context.palette.strongBorder,
+        strokeWidth: _dashWidth,
+        radius: _radius,
+      ),
+      child: card,
     );
   }
 }

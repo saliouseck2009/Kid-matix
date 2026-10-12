@@ -17,6 +17,7 @@ import '../../../helpers/test_reward_pages.dart';
 import '../../../helpers/test_mascot_pages.dart';
 import '../../../helpers/test_challenge_pages.dart';
 import '../../../helpers/test_mastery_pages.dart';
+import '../../../helpers/test_code_challenge_pages.dart';
 import '../../../helpers/test_duel_pages.dart';
 import '../../../helpers/test_leaderboard_pages.dart';
 
@@ -81,6 +82,7 @@ void main() {
           challengePages: buildTestChallengePages(),
           masteryPages: buildTestMasteryPages(),
           duelPages: buildTestDuelPages(),
+          codePages: buildTestCodeChallengePages(),
           leaderboardPages: buildTestLeaderboardPages(leaderboard: leaderboard),
         ),
       ),

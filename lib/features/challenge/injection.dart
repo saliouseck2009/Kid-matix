@@ -10,6 +10,8 @@ import 'package:kid_matix/features/challenge/data/repositories/training_choice_r
 import 'package:kid_matix/features/challenge/domain/repositories/record_repository.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/training_choice_repository.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/answer_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/build_quiz_from_code_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/encode_challenge_code_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/elapse_duel_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/finish_duel_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
@@ -73,6 +75,12 @@ void registerChallengeFeature(GetIt sl) {
     () => GetMonsterCountUseCase(mastery: sl()),
   );
   _registerDuel(sl);
+  sl.registerLazySingleton<EncodeChallengeCodeUseCase>(
+    () => EncodeChallengeCodeUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<BuildQuizFromCodeUseCase>(
+    () => BuildQuizFromCodeUseCase(domains: sl()),
+  );
   sl<SessionSavedHooks>().add(RecordSessionHook(records: sl(), clock: sl()));
   sl<ProgressResetHooks>().add(const RecordResetHook());
 }

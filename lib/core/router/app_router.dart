@@ -4,10 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
+import 'package:kid_matix/core/router/challenge_code_routes.dart';
 import 'package:kid_matix/core/router/play_routes.dart';
 import 'package:kid_matix/core/router/profile_session_redirect.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
+import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
@@ -34,6 +36,7 @@ GoRouter createAppRouter({
   required ChallengePages challengePages,
   required MasteryPages masteryPages,
   required DuelPages duelPages,
+  required CodeChallengePages codePages,
   required LeaderboardPages leaderboardPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -93,6 +96,7 @@ GoRouter createAppRouter({
         quizPages: quizPages,
         rewardPages: rewardPages,
         challengePages: challengePages,
+        codePages: codePages,
       ),
       StatefulShellRoute.indexedStack(
         builder: (
@@ -157,6 +161,7 @@ GoRouter createAppRouter({
                   onPlay: onPlay,
                   onOpenMonsters: () => context.go(AppRoutes.challengeMonsters),
                   onOpenDuel: () => context.go(AppRoutes.duel),
+                  onOpenCode: () => context.go(AppRoutes.challengeCodeEntry),
                 ),
             routes: <RouteBase>[
               _createMonstersRoute(
@@ -175,6 +180,10 @@ GoRouter createAppRouter({
                     onClose: () => context.go(AppRoutes.challenges),
                   );
                 },
+              ),
+              createChallengeCodeRoute(
+                codePages: codePages,
+                rootNavigatorKey: rootNavigatorKey,
               ),
             ],
           ),

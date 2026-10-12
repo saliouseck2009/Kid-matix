@@ -1,15 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/quiz/frozen_question_generator.dart';
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
+import 'package:kid_matix/core/quiz/seeded_draw.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 
 import 'package:mocktail/mocktail.dart';
 
@@ -33,6 +37,57 @@ void main() {
   );
 
   group('BuildQuizUseCase', () {
+    test('a seeded draw asks the frozen questions, whatever the player '
+        'or the random source', () async {
+      // Arrange
+      const SeededDraw inputDraw = SeededDraw(seed: 31, version: 1);
+      BuildQuizParams paramsOf(String profileId) => BuildQuizParams(
+        profileId: profileId,
+        domainId: MultiplicationDomain.domainId,
+        mode: QuizMode.timeAttack,
+        itemKeys: tableKeys(6),
+        questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+        questionCount: 15,
+        seededDraw: inputDraw,
+      );
+      final List<Question> expectedQuestions = const FrozenQuestionGenerator()
+          .generate(
+            domain: MultiplicationDomain(),
+            itemKeys: tableKeys(6),
+            questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+            questionCount: 15,
+            draw: inputDraw,
+          );
+      // Act
+      final QuizRun actualFirst = (await buildQuizUseCase(seed: 1)(
+        params: paramsOf('profile-1'),
+      )).requireData;
+      final QuizRun actualSecond = (await buildQuizUseCase(seed: 2)(
+        params: paramsOf('profile-2'),
+      )).requireData;
+      // Assert
+      for (final QuizRun actualRun in <QuizRun>[actualFirst, actualSecond]) {
+        expect(
+          actualRun.queue.map((QuizTurn turn) => turn.question),
+          expectedQuestions,
+        );
+      }
+    });
+    test('a seeded draw of an unknown version fails', () async {
+      // Act
+      final AppException? actualError = (await buildQuizUseCase()(
+        params: BuildQuizParams(
+          profileId: 'profile-1',
+          domainId: MultiplicationDomain.domainId,
+          mode: QuizMode.timeAttack,
+          itemKeys: tableKeys(6),
+          questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+          seededDraw: const SeededDraw(seed: 31, version: 9),
+        ),
+      )).exceptionOrNull;
+      // Assert
+      expect(actualError, isA<ValidationException>());
+    });
     test('builds one scored question per planned item, in order', () async {
       // Arrange
       final List<String> inputKeys = tableKeys(5);

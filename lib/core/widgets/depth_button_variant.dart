@@ -11,4 +11,7 @@ enum DepthButtonVariant {
 
   /// Red, to go on after a wrong answer.
   danger,
+
+  /// Yellow, for a light action on a violet card, such as copying a code.
+  accent,
 }

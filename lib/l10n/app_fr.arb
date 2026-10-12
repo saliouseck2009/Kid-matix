@@ -1246,6 +1246,16 @@
   "@rewardXpEarnedLabel": {
     "description": "Label under the XP earned on the first results tile (\"XP earned\"). XP means experience points. Short, one line in a third of the screen width."
   },
+  "rewardXpEarnedInline": "+{xp} XP",
+  "@rewardXpEarnedInline": {
+    "description": "XP earned by a quiz, written on one line with its unit, such as \"+210 XP\" at the right of the band of the challenge comparison screen. XP means experience points.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "210"
+      }
+    }
+  },
   "rewardLevel": "Niveau {level}",
   "@rewardLevel": {
     "description": "Level of the player, bold title of the level card on the results screen (\"Level 4\"). Short, one line.",
@@ -1839,6 +1849,218 @@
   "challengeDuelSubtitle": "2 joueurs, 1 téléphone",
   "@challengeDuelSubtitle": {
     "description": "Line under \"Duel\" on its card of the challenges screen (\"2 players, 1 phone\")."
+  },
+  "challengeCodeCardTitle": "J'ai un code",
+  "@challengeCodeCardTitle": {
+    "description": "Title of the dashed card at the bottom of the challenges screen, and of the screen it opens, where the child types the code a friend gave (\"I have a code\"). The child speaks in the first person. Short, one line."
+  },
+  "challengeCodeCardSubtitle": "Rejoue le défi d'un ami",
+  "@challengeCodeCardSubtitle": {
+    "description": "Line under \"J'ai un code\" on its card of the challenges screen (\"Replay a friend's challenge\"). Imperative. Talks to the child (informal tu). One line."
+  },
+  "challengeShareButton": "Défier un ami",
+  "@challengeShareButton": {
+    "description": "Button at the end of a free training or a time attack, and title of the screen it opens showing the challenge code to give to a friend (\"Challenge a friend\"). \"Défier\" is an infinitive verb. One line."
+  },
+  "challengeCodeToBeat": "à battre",
+  "@challengeCodeToBeat": {
+    "description": "Small line under the score in the yellow badge of the challenge code card: the score is the one the friend has to beat (\"to beat\"). Very short: the badge is narrow."
+  },
+  "challengeCodeYours": "Ton code de défi",
+  "@challengeCodeYours": {
+    "description": "Small line above the big challenge code on the \"Défier un ami\" screen (\"Your challenge code\"). Talks to the child (informal tu). One line."
+  },
+  "challengeCodeSemantics": "Code de défi : {characters}",
+  "@challengeCodeSemantics": {
+    "description": "Screen-reader text of the big challenge code: the characters are given one by one, separated by spaces, so they are spelled (\"Challenge code: K 7 M 2…\").",
+    "placeholders": {
+      "characters": {
+        "type": "String",
+        "example": "K 7 M 2 Q X 9 T B 4"
+      }
+    }
+  },
+  "challengeCodeCopy": "Copier le code",
+  "@challengeCodeCopy": {
+    "description": "Yellow button under the challenge code: copies it to the clipboard (\"Copy the code\"). \"Copier\" is an infinitive verb. One line."
+  },
+  "challengeCodeCopied": "Code copié !",
+  "@challengeCodeCopied": {
+    "description": "Short message shown in a snackbar at the bottom of the screen once the challenge code is copied (\"Code copied!\"). One line."
+  },
+  "challengeCodeShareHint": "Donne ce code à un ami : même mode, mêmes tables, et ton score à battre !",
+  "@challengeCodeShareHint": {
+    "description": "Line under the challenge code card: what giving the code does (\"Give this code to a friend: same mode, same tables, and your score to beat!\"). The friend's questions come from the code, so they may differ from the ones the player just had. Talks to the child (informal tu). Up to three centered lines."
+  },
+  "challengeCodeOr": "ou",
+  "@challengeCodeOr": {
+    "description": "Word in the middle of the line separating the shown code from the code entry on the \"Défier un ami\" screen (\"or\"). One short lowercase word."
+  },
+  "challengeCodeEntryTitle": "Tu as reçu un code ?",
+  "@challengeCodeEntryTitle": {
+    "description": "Title of the card where the child types a challenge code received from a friend (\"Did you get a code?\"). Talks to the child (informal tu). One line."
+  },
+  "challengeCodeEntryHint": "ÉCRIS LE CODE ICI",
+  "@challengeCodeEntryHint": {
+    "description": "Placeholder of the challenge code field (\"Type the code here\"). Written in capital letters because the field turns what the child types into capitals, as in the mockup; keep it in capitals in languages that have them. Talks to the child (informal tu). One line, about 20 characters."
+  },
+  "challengeCodePlay": "Jouer ce défi",
+  "@challengeCodePlay": {
+    "description": "Button under the challenge code field: checks the code and starts its game (\"Play this challenge\"). \"Jouer\" is an infinitive verb. One line."
+  },
+  "challengeCodeErrorMalformed": "Ce code n'existe pas. Un code a 10 lettres et chiffres.",
+  "@challengeCodeErrorMalformed": {
+    "description": "Message under the code field when what was typed is not a challenge code: wrong length or a character that codes never use (\"This code does not exist. A code has 10 letters and digits.\"). Talks to the child (informal tu). Kind, never blaming; up to two lines."
+  },
+  "challengeCodeErrorAltered": "Une lettre ou un chiffre ne va pas. Vérifie le code avec ton ami.",
+  "@challengeCodeErrorAltered": {
+    "description": "Message under the code field when the check character shows a typing mistake: a character changed or two swapped (\"A letter or a digit is wrong. Check the code with your friend.\"). Talks to the child (informal tu). Kind, never blaming; up to two lines."
+  },
+  "challengeCodeErrorVersion": "Ce défi vient d'une version plus récente de l'app. Mets l'app à jour pour le jouer.",
+  "@challengeCodeErrorVersion": {
+    "description": "Message under the code field when the code was made by a newer version of the app, whose questions this one cannot draw (\"This challenge comes from a newer version of the app. Update the app to play it.\"). Talks to the child (informal tu). Up to three lines."
+  },
+  "challengeCodeTablesAll": "toutes les tables",
+  "@challengeCodeTablesAll": {
+    "description": "Tables of a challenge when it covers the 12 tables, after the mode in the subtitle of the comparison screen (\"all the tables\"). Lowercase: it follows \"Contre-la-montre ·\". The capitalized form on its own line is challengeCodeCardTablesAll."
+  },
+  "challengeCodeTablesOne": "table de {table}",
+  "@challengeCodeTablesOne": {
+    "description": "Tables of a challenge on one table, after the mode in the subtitle of the comparison screen (\"table of 7\"). Lowercase: it follows \"Contre-la-montre ·\". The capitalized form on its own line is challengeCodeCardTablesOne.",
+    "placeholders": {
+      "table": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "challengeCodeTableItem": "de {table}",
+  "@challengeCodeTableItem": {
+    "description": "One table in the list of the tables of a challenge, such as \"de 2\" in \"tables de 2, de 5 et de 7\". Used by challengeCodeTablesMany and challengeCodeCardTablesMany; the items are joined by \", \" in code.",
+    "placeholders": {
+      "table": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "challengeCodeTablesMany": "tables {first} et {last}",
+  "@challengeCodeTablesMany": {
+    "description": "Tables of a challenge on several tables, after the mode in the subtitle of the comparison screen (\"tables de 2, de 5 et de 7\"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Lowercase: it follows \"Contre-la-montre ·\". The capitalized form on its own line is challengeCodeCardTablesMany.",
+    "placeholders": {
+      "first": {
+        "type": "String",
+        "example": "de 2, de 5"
+      },
+      "last": {
+        "type": "String",
+        "example": "de 7"
+      }
+    }
+  },
+  "challengeCodeCardTablesAll": "Toutes les tables",
+  "@challengeCodeCardTablesAll": {
+    "description": "Tables of a challenge covering the 12 tables, on their own line under the mode in the violet card of the \"Défier un ami\" screen (\"All the tables\"). Starts with a capital letter: it begins its line. One line."
+  },
+  "challengeCodeCardTablesOne": "Table de {table}",
+  "@challengeCodeCardTablesOne": {
+    "description": "Tables of a challenge on one table, on their own line under the mode in the violet card of the \"Défier un ami\" screen (\"Table of 7\"). Starts with a capital letter: it begins its line. One line.",
+    "placeholders": {
+      "table": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "challengeCodeCardTablesMany": "Tables {first} et {last}",
+  "@challengeCodeCardTablesMany": {
+    "description": "Tables of a challenge on several tables, on their own line under the mode in the violet card of the \"Défier un ami\" screen (\"Tables de 2 et de 5\"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Starts with a capital letter: it begins its line.",
+    "placeholders": {
+      "first": {
+        "type": "String",
+        "example": "de 2, de 5"
+      },
+      "last": {
+        "type": "String",
+        "example": "de 7"
+      }
+    }
+  },
+  "challengeCodeSubtitle": "{mode} · {tables}",
+  "@challengeCodeSubtitle": {
+    "description": "Line under the title of the challenge score comparison: the mode and the tables of the challenge (\"Contre-la-montre · tables de 2 et de 5\").",
+    "placeholders": {
+      "mode": {
+        "type": "String",
+        "example": "Contre-la-montre"
+      },
+      "tables": {
+        "type": "String",
+        "example": "tables de 2 et de 5"
+      }
+    }
+  },
+  "challengeOutcomeWon": "Défi gagné !",
+  "@challengeOutcomeWon": {
+    "description": "Big title of the comparison screen when the child beat the score of the code (\"Challenge won!\"). Joyful, one line."
+  },
+  "challengeOutcomeLost": "Pas cette fois !",
+  "@challengeOutcomeLost": {
+    "description": "Big title of the comparison screen when the child did not reach the score of the code; kind, never discouraging (\"Not this time!\"). One line."
+  },
+  "challengeOutcomeTie": "Égalité !",
+  "@challengeOutcomeTie": {
+    "description": "Big title of the comparison screen when the child made exactly the score of the code (\"It's a tie!\"). One line."
+  },
+  "challengeOutcomeToBeat": "Score à battre",
+  "@challengeOutcomeToBeat": {
+    "description": "Label of the white card of the comparison screen: the score the friend made, written in the code (\"Score to beat\"). Short: the card is half the screen wide."
+  },
+  "challengeOutcomeYours": "Ton score",
+  "@challengeOutcomeYours": {
+    "description": "Label of the violet card of the comparison screen: the child's score (\"Your score\"). Talks to the child (informal tu). Short: the card is half the screen wide."
+  },
+  "challengeOutcomeCorrect": "{count, plural, =0{bonne réponse} =1{bonne réponse} other{bonnes réponses}}",
+  "@challengeOutcomeCorrect": {
+    "description": "Line under the big score of each card of the comparison screen; the number itself is shown above it, so the text has no number (\"right answer(s)\"). Short: the card is half the screen wide.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "18"
+      }
+    }
+  },
+  "challengeOutcomeMore": "{count, plural, =1{1 bonne réponse de plus} other{{count} bonnes réponses de plus}}",
+  "@challengeOutcomeMore": {
+    "description": "Difference shown in the yellow band of the comparison screen when the child won (\"3 more right answers\"). One line, beside the XP earned.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "challengeOutcomeFewer": "{count, plural, =1{1 bonne réponse de moins} other{{count} bonnes réponses de moins}}",
+  "@challengeOutcomeFewer": {
+    "description": "Difference shown in the yellow band of the comparison screen when the child lost (\"2 fewer right answers\"). One line, beside the XP earned.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "challengeOutcomeSame": "Autant de bonnes réponses",
+  "@challengeOutcomeSame": {
+    "description": "Text of the yellow band of the comparison screen on a tie (\"As many right answers\"). One line, beside the XP earned."
+  },
+  "challengeOutcomeResend": "Renvoyer un défi",
+  "@challengeOutcomeResend": {
+    "description": "Main button of the comparison screen: makes a new code with the same questions and the child's score to beat (\"Send a challenge back\"). \"Renvoyer\" is an infinitive verb. One line."
+  },
+  "challengeOutcomeBack": "Retour aux défis",
+  "@challengeOutcomeBack": {
+    "description": "Second button of the comparison screen: back to the challenges tab (\"Back to the challenges\"). One line."
   },
   "duelPickIntro": "Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l'envers.",
   "@duelPickIntro": {
