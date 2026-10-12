@@ -55,6 +55,13 @@ plus être retirée de l'app.
 Pour Apple, une donnée est « collectée » quand elle est transmise hors de
 l'appareil. Le pseudo et la progression restent sur l'appareil.
 
+La sauvegarde par fichier (F20, version 1.2) ne change pas ces réponses :
+l'utilisateur exporte lui-même un profil et le partage par la feuille de
+partage du système ; rien n'est envoyé au développeur ni à un tiers. L'export
+et l'import passent par un contrôle parental (« Demande à un adulte » : écrire
+en chiffres un nombre écrit en lettres), comme la guideline 1.3 le demande
+pour une action qui fait sortir l'enfant de l'app.
+
 **Point lié à l'audit** : la base de données du jeu est aujourd'hui incluse
 dans la sauvegarde iCloud de l'appareil. Cette sauvegarde appartient à
 l'utilisateur et n'est pas une collecte au sens d'Apple, mais la politique de
