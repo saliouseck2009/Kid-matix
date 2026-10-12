@@ -548,11 +548,11 @@ Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le regi
 
 À la création du profil, un test rapide ouvre d'emblée les tables que l'enfant connaît déjà.
 
-- [ ] **F16-01** Cas d'usage `RunPlacementTest` : 12 questions, une par table.
-- [ ] **F16-02** Une table réussie est ouverte dans le parcours ; ses étoiles restent à gagner.
-- [ ] **F16-03** Proposition du test en fin de création de profil, avec un bouton « Passer ».
-- [ ] **F16-04** Écran de bilan du test : tables ouvertes. Maquette : `18-placement-test-result.png`.
-- [ ] **F16-05** Tests : ouverture des bonnes tables, test passé, test abandonné en cours.
+- [x] **F16-01** Cas d'usage `RunPlacementTest` : 12 questions, une par table.
+- [x] **F16-02** Une table réussie est ouverte dans le parcours ; ses étoiles restent à gagner.
+- [x] **F16-03** Proposition du test en fin de création de profil, avec un bouton « Passer ».
+- [x] **F16-04** Écran de bilan du test : tables ouvertes. Maquette : `18-placement-test-result.png`.
+- [x] **F16-05** Tests : ouverture des bonnes tables, test passé, test abandonné en cours.
 
 **Terminé quand :** un nouveau joueur qui réussit les questions des tables de 1, 2 et 10 démarre avec ces trois tables ouvertes.
 

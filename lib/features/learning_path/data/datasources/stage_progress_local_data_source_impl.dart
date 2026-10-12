@@ -16,6 +16,9 @@ final class StageProgressLocalDataSourceImpl
       'profile_id = ? AND domain_id = ? AND unit_key = ? AND stage = ? '
       'AND deleted_at IS NULL';
 
+  static const String _playerWhere =
+      'profile_id = ? AND domain_id = ? AND deleted_at IS NULL';
+
   final AppDatabase _database;
 
   @override
@@ -26,10 +29,59 @@ final class StageProgressLocalDataSourceImpl
     final Database database = await _database.database;
     final List<Map<String, Object?>> rows = await database.query(
       LearningPathTables.stageProgress,
-      where: 'profile_id = ? AND domain_id = ? AND deleted_at IS NULL',
-      whereArgs: <Object>[profileId, domainId],
+      where: '$_playerWhere AND stage != ?',
+      whereArgs: <Object>[
+        profileId,
+        domainId,
+        LearningPathTables.placementStage,
+      ],
     );
     return rows.map(StageProgressLocalModel.fromJson).toList();
+  }
+
+  @override
+  Future<Set<String>> getPlacedUnitKeys({
+    required String profileId,
+    required String domainId,
+  }) async {
+    final Database database = await _database.database;
+    final List<Map<String, Object?>> rows = await database.query(
+      LearningPathTables.stageProgress,
+      columns: const <String>['unit_key'],
+      where: '$_playerWhere AND stage = ?',
+      whereArgs: <Object>[
+        profileId,
+        domainId,
+        LearningPathTables.placementStage,
+      ],
+    );
+    return <String>{
+      for (final Map<String, Object?> row in rows) row['unit_key']! as String,
+    };
+  }
+
+  @override
+  Future<void> placeUnit({
+    required String profileId,
+    required String domainId,
+    required String unitKey,
+    required int placedAt,
+  }) async {
+    final Database database = await _database.database;
+    await database.insert(
+      LearningPathTables.stageProgress,
+      <String, Object?>{
+        'profile_id': profileId,
+        'domain_id': domainId,
+        'unit_key': unitKey,
+        'stage': LearningPathTables.placementStage,
+        'best_stars': 0,
+        'best_score': 1,
+        'completed_at': placedAt,
+        'updated_at': placedAt,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   @override

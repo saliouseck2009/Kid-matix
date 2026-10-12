@@ -19,6 +19,10 @@ import 'package:kid_matix/features/learning_path/presentation/pages/table_detail
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
+import 'package:kid_matix/core/services/clock.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/pages/placement_test_page.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
 
 /// Builds the pages of the learning path for the router, and turns its
 /// stages into quiz specs.
@@ -29,7 +33,9 @@ final class LearningPathPages {
   /// Creates the factory.
   const LearningPathPages({
     required this._useCases,
+    required this._placement,
     required this._domains,
+    required this._clock,
     this._specs = const StageQuizSpecs(),
   });
 
@@ -37,7 +43,9 @@ final class LearningPathPages {
   static const String domainId = LearningDomainIds.multiplication;
 
   final LearningPathUseCases _useCases;
+  final PlacementUseCases _placement;
   final DomainRegistry _domains;
+  final Clock _clock;
   final StageQuizSpecs _specs;
 
   /// The map of the path of [profileId]; a new player gets a new map.
@@ -56,6 +64,24 @@ final class LearningPathPages {
       onPlay: onPlay,
       header: header,
       mascot: mascot,
+    );
+  }
+
+  /// The placement test offered to [profileId] once created; [slots] give
+  /// the question card and the keypad of the quiz, [onDone] opens the
+  /// path.
+  Widget buildPlacementTestPage({
+    required String profileId,
+    required PlacementSlots slots,
+    required VoidCallback onDone,
+  }) {
+    return PlacementTestPage(
+      key: ValueKey<String>('placement-$profileId'),
+      params: _paramsOf(profileId),
+      useCases: _placement,
+      clock: _clock,
+      slots: slots,
+      onDone: onDone,
     );
   }
 

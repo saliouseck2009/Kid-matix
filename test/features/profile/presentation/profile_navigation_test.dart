@@ -129,6 +129,23 @@ void main() {
       expect(find.text('Qui joue ?'), findsNothing);
       expect(find.text('Jouer'), findsOneWidget);
     });
+    testWidgets('offers the placement test to a player just created', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      session = FakeProfileSessionService(hasProfiles: false);
+      await pumpApp(tester);
+      // Act
+      session.update(hasProfiles: true, activeProfileId: 'profile-1');
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Tu connais déjà des tables\u00a0?'), findsOneWidget);
+      // Act
+      await tester.tap(find.text('Passer'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Jouer'), findsOneWidget);
+    });
     testWidgets('shows the active player in the Profile tab', (
       WidgetTester tester,
     ) async {

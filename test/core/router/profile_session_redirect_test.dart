@@ -51,7 +51,8 @@ void main() {
       expect(actualSelection, isNull);
       expect(actualCreation, isNull);
     });
-    test('sends an active player from the selection to the home', () {
+    test('sends an active player from the selection to the home and a '
+        'player just created to the placement test', () {
       // Arrange
       final FakeProfileSessionService inputSession = FakeProfileSessionService(
         activeProfileId: 'p-1',
@@ -68,7 +69,7 @@ void main() {
       final String? actualTab = redirect(inputSession, AppRoutes.training);
       // Assert
       expect(actualSelection, AppRoutes.learningPath);
-      expect(actualCreation, AppRoutes.learningPath);
+      expect(actualCreation, AppRoutes.placementTest);
       expect(actualTab, isNull);
     });
   });
