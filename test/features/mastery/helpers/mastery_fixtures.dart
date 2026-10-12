@@ -1,6 +1,6 @@
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
-import 'package:kid_matix/core/quiz/question_types/version_one_question_types.dart';
+import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/app_migrations.dart';
@@ -55,7 +55,7 @@ Future<AppDatabase> openMasteryDatabase() async {
   final DomainRegistry domains = DomainRegistry()
     ..register(MultiplicationDomain());
   final QuestionTypeRegistry types = QuestionTypeRegistry();
-  versionOneQuestionTypes.forEach(types.register);
+  appQuestionTypes.forEach(types.register);
   return (domains, types);
 }
 

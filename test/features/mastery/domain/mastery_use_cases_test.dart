@@ -136,6 +136,23 @@ void main() {
       expect(actualProgress.box, 3);
       expect(actualProgress.presentationCount, 2);
     });
+    for (final String inputTypeId in <String>[
+      QuestionTypeIds.findOperation,
+      QuestionTypeIds.matchPairs,
+    ]) {
+      test('caps a $inputTypeId answer at box 3', () async {
+        // Arrange
+        await repository.saveProgress(
+          progress: buildProgress('mul:7x8', box: 3),
+        );
+        // Act
+        final ItemProgressEntity actualProgress = (await recordAnswer()(
+          params: _answer(questionTypeId: inputTypeId),
+        )).requireData;
+        // Assert
+        expect(actualProgress.box, 3);
+      });
+    }
     test('sends a wrong answer back to box 1', () async {
       // Arrange
       await repository.saveProgress(

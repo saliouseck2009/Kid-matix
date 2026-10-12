@@ -370,6 +370,51 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizHintTrueFalse => 'Ce calcul est-il juste ?';
 
   @override
+  String get quizFindOperationMultiplication => 'Quelle multiplication donne';
+
+  @override
+  String quizFindOperationSpokenMultiplication(int result) {
+    return 'Quelle multiplication donne $result ?';
+  }
+
+  @override
+  String get quizHintFindOperation => 'Touche la bonne opération';
+
+  @override
+  String get quizMatchPairsTitle => 'Relie chaque opération à son résultat';
+
+  @override
+  String quizMatchPairsProgress(int count, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count paires trouvées sur $total',
+      one: '1 paire trouvée sur $total',
+      zero: 'Aucune paire trouvée sur $total',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quizMatchPairsHintStart =>
+      'Touche une opération, puis son résultat';
+
+  @override
+  String quizMatchPairsHintResult(String operation) {
+    return 'Touche maintenant le résultat de $operation';
+  }
+
+  @override
+  String quizMatchPairsHintOperation(String result) {
+    return 'Touche maintenant l\'opération qui donne $result';
+  }
+
+  @override
+  String quizMatchPairsFound(String label) {
+    return '$label, paire trouvée';
+  }
+
+  @override
   String get quizTrue => 'Vrai';
 
   @override

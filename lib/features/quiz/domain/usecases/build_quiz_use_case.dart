@@ -5,6 +5,8 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
+import 'package:kid_matix/core/quiz/question_type.dart';
+import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
@@ -32,6 +34,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   /// Creates the use case.
   const BuildQuizUseCase({
     required this._domains,
+    required this._questionTypes,
     required this._mastery,
     required this._generator,
     required this._random,
@@ -40,6 +43,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   });
 
   final DomainRegistry _domains;
+  final QuestionTypeRegistry _questionTypes;
   final MasteryService _mastery;
   final QuestionGenerator _generator;
   final RandomSource _random;
@@ -186,6 +190,11 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       totalTimeLimit: params.totalTimeLimit,
       lives: params.lives,
       timeSchedule: schedule,
+      timeFactors: <String, int>{
+        for (final String id in params.questionTypeIds)
+          if (_questionTypes.find(id) case final QuestionType type)
+            id: type.timeFactor,
+      },
       sourceKey: params.sourceKey,
       boss: params.isBossFight ? const BossFight() : null,
       queue: questions
