@@ -211,5 +211,42 @@ void main() {
         isTrue,
       );
     });
+    test('asks the mastery engine for the facts to review', () async {
+      // Arrange
+      final FakeMasteryService inputMastery = FakeMasteryService();
+      // Act
+      final QuizRun actualRun = (await buildQuizUseCase(mastery: inputMastery)(
+        params: BuildQuizParams(
+          profileId: 'profile-1',
+          domainId: 'multiplication',
+          mode: QuizMode.dailyReview,
+          itemKeys: tableKeys(5),
+          questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+          selection: QuizSelection.review,
+          questionCount: 3,
+        ),
+      )).requireData;
+      // Assert
+      final QuizPlanRequest actualRequest = inputMastery.planRequests.single;
+      expect(actualRequest.isReview, isTrue);
+      expect(actualRequest.questionCount, 3);
+      expect(actualRun.mode, QuizMode.dailyReview);
+      expect(actualRun.scoredQuestionCount, 3);
+    });
+    test('fails when the mastery engine has no question to ask', () async {
+      // Arrange
+      final _MockMasteryService mockMastery = _MockMasteryService();
+      when(
+        () => mockMastery.planQuiz(request: any(named: 'request')),
+      ).thenAnswer(
+        (_) async => const DataSuccess<List<QuizItemPlan>>(<QuizItemPlan>[]),
+      );
+      // Act
+      final DataState<QuizRun> actualState = await buildQuizUseCase(
+        mastery: mockMastery,
+      )(params: selectionParams(QuizSelection.review));
+      // Assert
+      expect(actualState.exceptionOrNull, isA<NotFoundException>());
+    });
   });
 }

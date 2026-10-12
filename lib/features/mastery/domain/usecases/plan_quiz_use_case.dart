@@ -8,6 +8,7 @@ import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
@@ -15,7 +16,8 @@ import 'package:kid_matix/features/mastery/domain/repositories/item_progress_rep
 import 'package:kid_matix/features/mastery/domain/services/quiz_item_planner.dart';
 
 /// Chooses the items of a quiz from the player's progress, with the
-/// question types fit for each one.
+/// question types fit for each one: a weighted draw, or the items to
+/// review when the request is a review.
 ///
 /// Fails with a `ValidationException` when the domain, an item or every
 /// question type is unknown.
@@ -27,6 +29,7 @@ class PlanQuizUseCase
     required this._domains,
     required this._questionTypes,
     required this._random,
+    required this._clock,
     this._planner = const QuizItemPlanner(),
   });
 
@@ -34,6 +37,7 @@ class PlanQuizUseCase
   final DomainRegistry _domains;
   final QuestionTypeRegistry _questionTypes;
   final RandomSource _random;
+  final Clock _clock;
   final QuizItemPlanner _planner;
 
   @override
@@ -55,20 +59,46 @@ class PlanQuizUseCase
     return switch (progress) {
       DataSuccess<List<ItemProgressEntity>>(:final data) =>
         DataSuccess<List<QuizItemPlan>>(
-          _planner.plan(
+          _planItems(
+            params: params,
             domain: domain,
             items: items.whereType<LearningItem>().toList(),
             progressByKey: <String, ItemProgressEntity>{
               for (final ItemProgressEntity item in data) item.itemKey: item,
             },
-            questionTypeNatures: natures,
-            count: params.questionCount,
-            random: _random,
+            natures: natures,
           ),
         ),
       DataFailed<List<ItemProgressEntity>>(:final exception) =>
         DataFailed<List<QuizItemPlan>>(exception),
     };
+  }
+
+  List<QuizItemPlan> _planItems({
+    required QuizPlanRequest params,
+    required LearningDomain domain,
+    required List<LearningItem> items,
+    required Map<String, ItemProgressEntity> progressByKey,
+    required Map<String, AnswerNature> natures,
+  }) {
+    if (params.isReview) {
+      return _planner.planReview(
+        items: items,
+        progressByKey: progressByKey,
+        questionTypeNatures: natures,
+        count: params.questionCount,
+        now: _clock.now(),
+        random: _random,
+      );
+    }
+    return _planner.plan(
+      domain: domain,
+      items: items,
+      progressByKey: progressByKey,
+      questionTypeNatures: natures,
+      count: params.questionCount,
+      random: _random,
+    );
   }
 
   /// The allowed question types that [domain] supports, with how each one

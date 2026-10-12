@@ -22,9 +22,11 @@ import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 ///
 /// By default the mastery engine chooses the items among those given,
 /// missed facts first, and the question types fit for each one; a quiz
-/// can also ask every item once, in order or shuffled. Fails with a
-/// `ValidationException` when the domain, an item or every question type
-/// is unknown, or when no item is given.
+/// can also ask every item once, in order or shuffled, or the items to
+/// review. Fails with a `ValidationException` when the domain, an item or
+/// every question type is unknown, or when no item is given, and with a
+/// `NotFoundException` when there is no question to ask, such as a review
+/// before any item was seen.
 class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   /// Creates the use case.
   const BuildQuizUseCase({
@@ -60,6 +62,10 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         ? await _addFollowUp(params, main.data)
         : main;
     return switch (plans) {
+      DataSuccess<List<QuizItemPlan>>(:final data) when data.isEmpty =>
+        const DataFailed<QuizRun>(
+          NotFoundException(message: 'No question to ask.'),
+        ),
       DataSuccess<List<QuizItemPlan>>(:final data) => _generate(
         params,
         domain,
@@ -71,35 +77,40 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
     };
   }
 
-  /// The items to ask with their types: drawn by the mastery engine, or
-  /// every item once in the given or a random order.
+  /// The items to ask with their types: drawn or picked for a review by
+  /// the mastery engine, or every item once in the given or a random
+  /// order.
   Future<DataState<List<QuizItemPlan>>> _plan(
     BuildQuizParams params,
     List<LearningItem> items,
   ) async {
-    final List<LearningItem> ordered = switch (params.selection) {
-      QuizSelection.mastery => const <LearningItem>[],
-      QuizSelection.inOrder => items,
-      QuizSelection.shuffled => _random.shuffled(items),
-    };
-    if (params.selection != QuizSelection.mastery) {
-      return DataSuccess<List<QuizItemPlan>>(<QuizItemPlan>[
-        for (final LearningItem item in ordered)
-          QuizItemPlan(
-            itemKey: item.key,
-            questionTypeIds: params.questionTypeIds,
-          ),
-      ]);
-    }
-    return _mastery.planQuiz(
-      request: QuizPlanRequest(
-        profileId: params.profileId,
-        domainId: params.domainId,
-        itemKeys: params.itemKeys,
-        questionTypeIds: params.questionTypeIds,
-        questionCount: params.questionCount ?? items.length,
+    return switch (params.selection) {
+      QuizSelection.mastery || QuizSelection.review => await _mastery.planQuiz(
+        request: QuizPlanRequest(
+          profileId: params.profileId,
+          domainId: params.domainId,
+          itemKeys: params.itemKeys,
+          questionTypeIds: params.questionTypeIds,
+          questionCount: params.questionCount ?? items.length,
+          isReview: params.selection == QuizSelection.review,
+        ),
       ),
-    );
+      QuizSelection.inOrder => _askEach(params, items),
+      QuizSelection.shuffled => _askEach(params, _random.shuffled(items)),
+    };
+  }
+
+  DataState<List<QuizItemPlan>> _askEach(
+    BuildQuizParams params,
+    List<LearningItem> items,
+  ) {
+    return DataSuccess<List<QuizItemPlan>>(<QuizItemPlan>[
+      for (final LearningItem item in items)
+        QuizItemPlan(
+          itemKey: item.key,
+          questionTypeIds: params.questionTypeIds,
+        ),
+    ]);
   }
 
   /// [plans] followed by up to `followUpQuestionCount` of the weakest

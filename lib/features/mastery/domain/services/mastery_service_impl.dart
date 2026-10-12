@@ -2,12 +2,14 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_mastery_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_grid_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -19,11 +21,13 @@ final class MasteryServiceImpl implements MasteryService {
     required this._planQuiz,
     required this._recordAnswer,
     required this._getGrid,
+    required this._getReviewOverview,
   });
 
   final PlanQuizUseCase _planQuiz;
   final RecordAnswerUseCase _recordAnswer;
   final GetMasteryGridUseCase _getGrid;
+  final GetReviewOverviewUseCase _getReviewOverview;
 
   @override
   Future<DataState<Set<String>>> readMasteredItems({
@@ -63,5 +67,15 @@ final class MasteryServiceImpl implements MasteryService {
         exception,
       ),
     };
+  }
+
+  @override
+  Future<DataState<ReviewOverview>> readReviewOverview({
+    required String profileId,
+    required String domainId,
+  }) {
+    return _getReviewOverview(
+      params: MasteryScope(profileId: profileId, domainId: domainId),
+    );
   }
 }

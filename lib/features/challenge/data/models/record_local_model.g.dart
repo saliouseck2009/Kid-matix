@@ -34,4 +34,5 @@ const _$QuizModeEnumMap = {
   QuizMode.freeTraining: 'freeTraining',
   QuizMode.path: 'path',
   QuizMode.timeAttack: 'timeAttack',
+  QuizMode.dailyReview: 'dailyReview',
 };

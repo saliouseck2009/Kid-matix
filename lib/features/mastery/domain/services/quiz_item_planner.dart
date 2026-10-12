@@ -5,6 +5,7 @@ import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_policy.dart';
+import 'package:kid_matix/features/mastery/domain/services/review_item_selector.dart';
 
 /// Chooses the items of a quiz and the format of each question.
 ///
@@ -13,9 +14,14 @@ import 'package:kid_matix/features/mastery/domain/services/mastery_policy.dart';
 /// replacement, low boxes more often, and weighted by the domain. The
 /// order is then shuffled. Items in the first boxes are asked with
 /// answers to pick, the others with answers to write.
+///
+/// A review asks instead the items [ReviewItemSelector] chooses, each
+/// once, with the same formats.
 final class QuizItemPlanner {
   /// Creates the planner.
-  const QuizItemPlanner();
+  const QuizItemPlanner({this._selector = const ReviewItemSelector()});
+
+  final ReviewItemSelector _selector;
 
   /// Draw weight of an item by box: index 0 is box 0.
   static const List<int> boxDrawWeights = <int>[4, 5, 4, 3, 2, 1];
@@ -61,6 +67,39 @@ final class QuizItemPlanner {
             itemKey: item.key,
             questionTypeIds: questionTypesFor(
               box: _boxOf(progressByKey, item),
+              questionTypeNatures: questionTypeNatures,
+            ),
+          ),
+        )
+        .toList();
+  }
+
+  /// Plans a review of at most [count] questions among [items] at [now]:
+  /// the due items first, then the weakest, each once and in a random
+  /// order. Items never presented are left out, so the review is empty
+  /// for a player who has seen none.
+  List<QuizItemPlan> planReview({
+    required List<LearningItem> items,
+    required Map<String, ItemProgressEntity> progressByKey,
+    required Map<String, AnswerNature> questionTypeNatures,
+    required int count,
+    required DateTime now,
+    required RandomSource random,
+  }) {
+    final List<ItemProgressEntity> chosen = _selector.select(
+      progress: <ItemProgressEntity>[
+        for (final LearningItem item in items) ?progressByKey[item.key],
+      ],
+      now: now,
+      count: count,
+    );
+    return random
+        .shuffled(chosen)
+        .map(
+          (ItemProgressEntity item) => QuizItemPlan(
+            itemKey: item.itemKey,
+            questionTypeIds: questionTypesFor(
+              box: item.box.clamp(0, MasteryPolicy.lastBox),
               questionTypeNatures: questionTypeNatures,
             ),
           ),

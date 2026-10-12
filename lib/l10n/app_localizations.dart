@@ -754,6 +754,12 @@ abstract class AppLocalizations {
   /// **'Contre-la-montre'**
   String get quizModeTimeAttack;
 
+  /// Name of the daily review (10 questions on the facts the player should review), shown as the title of its card on the challenges screen and under the results title ("Daily review").
+  ///
+  /// In fr, this message translates to:
+  /// **'Révision du jour'**
+  String get quizModeDailyReview;
+
   /// Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.
   ///
   /// In fr, this message translates to:
@@ -1581,6 +1587,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'60 secondes, un maximum de réponses'**
   String get challengeTimeAttackSubtitle;
+
+  /// Line under "Révision du jour" on its card of the challenges screen ("10 questions chosen for you"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 question choisie pour toi} other{{count} questions choisies pour toi}}'**
+  String challengeDailyReviewSubtitle(int count);
+
+  /// Yellow pill at the end of the daily review card: number of facts whose review date has passed ("8 to review"). Short; hidden when no fact is due.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, other{{count} à revoir}}'**
+  String challengeDailyReviewDue(int count);
+
+  /// Line under "Révision du jour" on its greyed-out card while the player has never been asked a fact ("Play a stage of the path first"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Joue d\'abord une étape du parcours'**
+  String get challengeDailyReviewLocked;
 
   /// Title of the card on the results of a time attack that beat the player's best score ("New record!").
   ///
