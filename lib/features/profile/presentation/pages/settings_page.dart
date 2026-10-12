@@ -36,6 +36,7 @@ class SettingsPage extends StatelessWidget {
 
   /// The "Sauvegarde" section, or `null`.
   final Widget? backupSection;
+
   /// Rows of the « Rappel » section, hidden when empty.
   final List<Widget> reminderRows;
 
