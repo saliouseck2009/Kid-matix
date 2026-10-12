@@ -1726,6 +1726,158 @@
       }
     }
   },
+  "duelTitle": "Duel",
+  "@duelTitle": {
+    "description": "Name of the duel on one phone, on its card of the challenges screen and at the top of the player choice (\"Duel\")."
+  },
+  "challengeDuelSubtitle": "2 joueurs, 1 téléphone",
+  "@challengeDuelSubtitle": {
+    "description": "Line under \"Duel\" on its card of the challenges screen (\"2 players, 1 phone\")."
+  },
+  "duelPickIntro": "Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l'envers.",
+  "@duelPickIntro": {
+    "description": "Line under the title of the duel player choice: how to hold the phone (\"Lay the phone flat between you. The top player reads upside down.\"). Talks to both children (vous)."
+  },
+  "duelSideTop": "Joueur du haut",
+  "@duelSideTop": {
+    "description": "Section title in the duel player choice: the list where the player of the upside-down top half is chosen (\"Top player\"). One line."
+  },
+  "duelSideBottom": "Joueur du bas",
+  "@duelSideBottom": {
+    "description": "Section title in the duel player choice: the list where the player of the bottom half is chosen (\"Bottom player\"). One line."
+  },
+  "duelGuest": "Invité",
+  "@duelGuest": {
+    "description": "Choice for someone who has no profile on the phone; also the name shown on their half of the duel (\"Guest\"). Short."
+  },
+  "duelGuestRule": "Toutes les tables, sans XP",
+  "@duelGuestRule": {
+    "description": "Small line under \"Invité\" in the player choice: a guest plays every table and earns no XP (\"All tables, no XP\"). Short."
+  },
+  "duelPickHint": "Choisissez deux joueurs différents.",
+  "@duelPickHint": {
+    "description": "Line above the disabled start button of the duel player choice while the two players are not chosen or are the same (\"Pick two different players.\"). Talks to both children (vous)."
+  },
+  "duelStart": "C'est parti !",
+  "@duelStart": {
+    "description": "Button at the bottom of the duel player choice that starts the duel once both players are chosen (\"Let's go!\"). Short, one line."
+  },
+  "duelPlayerTaken": "Déjà choisi",
+  "@duelPlayerTaken": {
+    "description": "Screen-reader hint, in the duel player choice, of a player already chosen for the other half, who cannot be picked twice (\"Already picked\"; masculine singular past participle, may refer to a girl or a boy)."
+  },
+  "duelScore": "{score} / {target}",
+  "@duelScore": {
+    "description": "Score of a player on their half of the duel: right answers / answers that win (\"4 / 10\").",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "4"
+      },
+      "target": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "duelScoreSpoken": "{name} : {score, plural, =0{aucune bonne réponse} =1{1 bonne réponse} other{{score} bonnes réponses}} sur {target}",
+  "@duelScoreSpoken": {
+    "description": "Screen-reader text of a player's progress bar on their half of the duel: nickname (or \"Invité\"), then right answers out of the answers that win, with a plural on the score (\"Moussa: 4 right answers out of 10\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Moussa"
+      },
+      "score": {
+        "type": "int",
+        "example": "4"
+      },
+      "target": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "duelPause": "Mettre le duel en pause",
+  "@duelPause": {
+    "description": "Tooltip of the round pause button between the two halves of the duel (\"Pause the duel\")."
+  },
+  "duelPauseTitle": "Duel en pause",
+  "@duelPauseTitle": {
+    "description": "Title of the dialog opened by the pause button of the duel (\"Duel paused\")."
+  },
+  "duelPauseMessage": "Si vous arrêtez maintenant, personne ne gagne d'XP.",
+  "@duelPauseMessage": {
+    "description": "Text of the pause dialog of the duel (\"If you stop now, nobody earns XP.\"). Talks to both children (vous)."
+  },
+  "duelResume": "Reprendre",
+  "@duelResume": {
+    "description": "Button of the pause dialog that goes back to the duel (\"Resume\")."
+  },
+  "duelStop": "Arrêter le duel",
+  "@duelStop": {
+    "description": "Button of the pause dialog that stops the duel and goes back to the player choice (\"Stop the duel\")."
+  },
+  "duelBlocked": "Oups ! Attends un peu…",
+  "@duelBlocked": {
+    "description": "Line on the half of a player who just gave a wrong answer: their buttons are blocked for 2 seconds while the right answer shows (\"Oops! Wait a moment…\"). Talks to that child (informal tu). Short, one line."
+  },
+  "duelAnswerRight": "{answer}, bonne réponse",
+  "@duelAnswerRight": {
+    "description": "Screen-reader label of the answer button showing the right answer after a mistake in the duel (\"42, right answer\").",
+    "placeholders": {
+      "answer": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "duelAnswerWrong": "{answer}, mauvaise réponse",
+  "@duelAnswerWrong": {
+    "description": "Screen-reader label of the answer button the player tapped by mistake in the duel (\"36, wrong answer\").",
+    "placeholders": {
+      "answer": {
+        "type": "int",
+        "example": "36"
+      }
+    }
+  },
+  "duelWinner": "{name} gagne !",
+  "@duelWinner": {
+    "description": "Title of the end of the duel, with the winner's nickname, or \"Invité\" (\"Awa wins!\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "duelXpEarned": "+{xp} XP",
+  "@duelXpEarned": {
+    "description": "XP a player of the phone earned in the duel, on the end screen (\"+120 XP\").",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "120"
+      }
+    }
+  },
+  "duelGuestNoXp": "Pas d'XP pour un invité",
+  "@duelGuestNoXp": {
+    "description": "Line instead of the XP for a guest on the end screen of the duel (\"No XP for a guest\")."
+  },
+  "duelXpNotSaved": "Les XP n'ont pas pu être enregistrés.",
+  "@duelXpNotSaved": {
+    "description": "Line on the end screen of the duel when the phone failed to save the XP (\"The XP could not be saved.\")."
+  },
+  "duelReplay": "Rejouer",
+  "@duelReplay": {
+    "description": "Button of the end screen of the duel that starts a new duel between the same players (\"Play again\", infinitive verb). Short, one line."
+  },
+  "duelQuit": "Quitter",
+  "@duelQuit": {
+    "description": "Button of the end screen of the duel that goes back to the challenges screen (\"Leave\", infinitive verb). Short, one line."
+  },
   "monstersPageTitle": "Mes monstres",
   "@monstersPageTitle": {
     "description": "Title of the « Mes monstres » screen, which lists the facts the player keeps missing as little monsters to tame (\"My monsters\")."

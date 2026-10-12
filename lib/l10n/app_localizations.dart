@@ -1744,6 +1744,162 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{Aucun monstre pour l\'instant} =1{1 monstre à apprivoiser} other{{count} monstres à apprivoiser}}'**
   String challengeMonsterHuntSubtitle(int count);
 
+  /// Name of the duel on one phone, on its card of the challenges screen and at the top of the player choice ("Duel").
+  ///
+  /// In fr, this message translates to:
+  /// **'Duel'**
+  String get duelTitle;
+
+  /// Line under "Duel" on its card of the challenges screen ("2 players, 1 phone").
+  ///
+  /// In fr, this message translates to:
+  /// **'2 joueurs, 1 téléphone'**
+  String get challengeDuelSubtitle;
+
+  /// Line under the title of the duel player choice: how to hold the phone ("Lay the phone flat between you. The top player reads upside down."). Talks to both children (vous).
+  ///
+  /// In fr, this message translates to:
+  /// **'Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l\'envers.'**
+  String get duelPickIntro;
+
+  /// Section title in the duel player choice: the list where the player of the upside-down top half is chosen ("Top player"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Joueur du haut'**
+  String get duelSideTop;
+
+  /// Section title in the duel player choice: the list where the player of the bottom half is chosen ("Bottom player"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Joueur du bas'**
+  String get duelSideBottom;
+
+  /// Choice for someone who has no profile on the phone; also the name shown on their half of the duel ("Guest"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Invité'**
+  String get duelGuest;
+
+  /// Small line under "Invité" in the player choice: a guest plays every table and earns no XP ("All tables, no XP"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les tables, sans XP'**
+  String get duelGuestRule;
+
+  /// Line above the disabled start button of the duel player choice while the two players are not chosen or are the same ("Pick two different players."). Talks to both children (vous).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisissez deux joueurs différents.'**
+  String get duelPickHint;
+
+  /// Button at the bottom of the duel player choice that starts the duel once both players are chosen ("Let's go!"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est parti !'**
+  String get duelStart;
+
+  /// Screen-reader hint, in the duel player choice, of a player already chosen for the other half, who cannot be picked twice ("Already picked"; masculine singular past participle, may refer to a girl or a boy).
+  ///
+  /// In fr, this message translates to:
+  /// **'Déjà choisi'**
+  String get duelPlayerTaken;
+
+  /// Score of a player on their half of the duel: right answers / answers that win ("4 / 10").
+  ///
+  /// In fr, this message translates to:
+  /// **'{score} / {target}'**
+  String duelScore(int score, int target);
+
+  /// Screen-reader text of a player's progress bar on their half of the duel: nickname (or "Invité"), then right answers out of the answers that win, with a plural on the score ("Moussa: 4 right answers out of 10").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : {score, plural, =0{aucune bonne réponse} =1{1 bonne réponse} other{{score} bonnes réponses}} sur {target}'**
+  String duelScoreSpoken(String name, int score, int target);
+
+  /// Tooltip of the round pause button between the two halves of the duel ("Pause the duel").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mettre le duel en pause'**
+  String get duelPause;
+
+  /// Title of the dialog opened by the pause button of the duel ("Duel paused").
+  ///
+  /// In fr, this message translates to:
+  /// **'Duel en pause'**
+  String get duelPauseTitle;
+
+  /// Text of the pause dialog of the duel ("If you stop now, nobody earns XP."). Talks to both children (vous).
+  ///
+  /// In fr, this message translates to:
+  /// **'Si vous arrêtez maintenant, personne ne gagne d\'XP.'**
+  String get duelPauseMessage;
+
+  /// Button of the pause dialog that goes back to the duel ("Resume").
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre'**
+  String get duelResume;
+
+  /// Button of the pause dialog that stops the duel and goes back to the player choice ("Stop the duel").
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter le duel'**
+  String get duelStop;
+
+  /// Line on the half of a player who just gave a wrong answer: their buttons are blocked for 2 seconds while the right answer shows ("Oops! Wait a moment…"). Talks to that child (informal tu). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups ! Attends un peu…'**
+  String get duelBlocked;
+
+  /// Screen-reader label of the answer button showing the right answer after a mistake in the duel ("42, right answer").
+  ///
+  /// In fr, this message translates to:
+  /// **'{answer}, bonne réponse'**
+  String duelAnswerRight(int answer);
+
+  /// Screen-reader label of the answer button the player tapped by mistake in the duel ("36, wrong answer").
+  ///
+  /// In fr, this message translates to:
+  /// **'{answer}, mauvaise réponse'**
+  String duelAnswerWrong(int answer);
+
+  /// Title of the end of the duel, with the winner's nickname, or "Invité" ("Awa wins!").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} gagne !'**
+  String duelWinner(String name);
+
+  /// XP a player of the phone earned in the duel, on the end screen ("+120 XP").
+  ///
+  /// In fr, this message translates to:
+  /// **'+{xp} XP'**
+  String duelXpEarned(int xp);
+
+  /// Line instead of the XP for a guest on the end screen of the duel ("No XP for a guest").
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas d\'XP pour un invité'**
+  String get duelGuestNoXp;
+
+  /// Line on the end screen of the duel when the phone failed to save the XP ("The XP could not be saved.").
+  ///
+  /// In fr, this message translates to:
+  /// **'Les XP n\'ont pas pu être enregistrés.'**
+  String get duelXpNotSaved;
+
+  /// Button of the end screen of the duel that starts a new duel between the same players ("Play again", infinitive verb). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejouer'**
+  String get duelReplay;
+
+  /// Button of the end screen of the duel that goes back to the challenges screen ("Leave", infinitive verb). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get duelQuit;
+
   /// Title of the « Mes monstres » screen, which lists the facts the player keeps missing as little monsters to tame ("My monsters").
   ///
   /// In fr, this message translates to:

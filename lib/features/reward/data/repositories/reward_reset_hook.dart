@@ -2,8 +2,9 @@ import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/features/reward/data/datasources/reward_tables.dart';
 import 'package:sqflite/sqflite.dart';
 
-/// Erases the rewards of a player: XP, streak, badges and counters; the
-/// XP and level copied on the profile go back to the start.
+/// Erases the rewards of a player: XP of quizzes and duels, streak,
+/// badges and counters; the XP and level copied on the profile go back
+/// to the start.
 final class RewardResetHook implements ProgressResetHook {
   /// Creates the hook.
   const RewardResetHook();
@@ -17,6 +18,7 @@ final class RewardResetHook implements ProgressResetHook {
   }) async {
     for (final String table in <String>[
       RewardTables.sessionReward,
+      RewardTables.xpAward,
       RewardTables.streak,
       RewardTables.badgeUnlock,
       RewardTables.rewardStats,
@@ -35,6 +37,7 @@ final class RewardResetHook implements ProgressResetHook {
     );
     return const <String>[
       RewardTables.sessionReward,
+      RewardTables.xpAward,
       RewardTables.streak,
       RewardTables.badgeUnlock,
       RewardTables.profile,

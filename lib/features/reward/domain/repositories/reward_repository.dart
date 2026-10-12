@@ -1,11 +1,13 @@
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/streak_entity.dart';
+import 'package:kid_matix/features/reward/domain/entities/xp_award_entity.dart';
 
 /// XP earned by one quiz, with its player and end.
 typedef SessionXp = ({String profileId, int xp, DateTime earnedAt});
 
-/// XP, streak and badges of each player, written by the session hook.
+/// XP, streak and badges of each player, written by the session hook;
+/// XP earned outside a quiz are saved here.
 abstract interface class RewardRepository {
   /// Returns the streak of [profileId], empty before the first quiz.
   Future<DataState<StreakEntity>> getStreak({required String profileId});
@@ -26,6 +28,10 @@ abstract interface class RewardRepository {
   /// Returns the XP of [sessionId] with its player and end, or `null` for
   /// a quiz without reward, abandoned or unknown.
   Future<DataState<SessionXp?>> getSessionXp({required String sessionId});
+
+  /// Saves [award] and brings the XP total and level of its player up to
+  /// date.
+  Future<DataState<void>> saveXpAward({required XpAwardEntity award});
 
   /// Emits an event each time the rewards of a player change.
   Stream<void> watchChanges();

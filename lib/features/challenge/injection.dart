@@ -9,7 +9,12 @@ import 'package:kid_matix/features/challenge/data/repositories/record_session_ho
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/record_repository.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/training_choice_repository.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/answer_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/elapse_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/finish_duel_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_duel_players_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/start_duel_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_monster_count_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
@@ -67,6 +72,25 @@ void registerChallengeFeature(GetIt sl) {
   sl.registerLazySingleton<GetMonsterCountUseCase>(
     () => GetMonsterCountUseCase(mastery: sl()),
   );
+  _registerDuel(sl);
   sl<SessionSavedHooks>().add(RecordSessionHook(records: sl(), clock: sl()));
   sl<ProgressResetHooks>().add(const RecordResetHook());
+}
+
+void _registerDuel(GetIt sl) {
+  sl.registerLazySingleton<GetDuelPlayersUseCase>(
+    () => GetDuelPlayersUseCase(players: sl()),
+  );
+  sl.registerLazySingleton<StartDuelUseCase>(
+    () => StartDuelUseCase(openUnits: sl(), domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<AnswerDuelUseCase>(
+    () => AnswerDuelUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<ElapseDuelUseCase>(
+    () => ElapseDuelUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<FinishDuelUseCase>(
+    () => FinishDuelUseCase(xpAwards: sl()),
+  );
 }

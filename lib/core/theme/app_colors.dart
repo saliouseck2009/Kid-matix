@@ -75,6 +75,12 @@ abstract final class AppColors {
   /// Light green behind a right-answer message.
   static const Color greenTint = Color(0xFFDDF3E6);
 
+  /// Pale green ground of the top half of the duel.
+  static const Color greenSurface = Color(0xFFE6F4EC);
+
+  /// Border of the answer buttons on the green ground of the duel.
+  static const Color greenBorder = Color(0xFFB9DCC8);
+
   /// Wrong answer and destructive actions.
   static const Color red = Color(0xFFC8321F);
 

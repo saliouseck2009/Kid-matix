@@ -521,13 +521,13 @@ Les faits les plus difficiles du joueur deviennent des petits monstres à appriv
 
 Deux joueurs s'affrontent face à face sur un écran coupé en deux.
 
-- [ ] **F14-01** Règles : le premier à 10 bonnes réponses gagne ; une erreur bloque les boutons du joueur pendant 2 secondes.
-- [ ] **F14-02** Chaque joueur reçoit des questions de ses propres tables débloquées ; les tables proposées à un invité sans profil restent à trancher.
-- [ ] **F14-03** Le duel rapporte des XP aux profils qui jouent et ne modifie pas la maîtrise des faits.
-- [ ] **F14-04** `DuelBloc` : choix des joueurs, duel en cours, terminé avec vainqueur.
-- [ ] **F14-05** Écran Duel : deux moitiés tête-bêche, une question et 4 boutons par joueur, les deux scores. Maquette : `15-duel.png`.
-- [ ] **F14-06** Choix des deux joueurs, ou d'un invité, avant le duel.
-- [ ] **F14-07** Tests de `DuelBloc` : appuis simultanés, blocage de 2 secondes, victoire.
+- [x] **F14-01** Règles : le premier à 10 bonnes réponses gagne ; une erreur bloque les boutons du joueur pendant 2 secondes.
+- [x] **F14-02** Chaque joueur reçoit des questions de ses propres tables débloquées ; un invité sans profil joue les 12 tables.
+- [x] **F14-03** Le duel rapporte des XP aux profils qui jouent et ne modifie pas la maîtrise des faits.
+- [x] **F14-04** `DuelBloc` : choix des joueurs, duel en cours, terminé avec vainqueur.
+- [x] **F14-05** Écran Duel : deux moitiés tête-bêche, une question et 4 boutons par joueur, les deux scores. Maquette : `15-duel.png`.
+- [x] **F14-06** Choix des deux joueurs, ou d'un invité, avant le duel.
+- [x] **F14-07** Tests de `DuelBloc` : appuis simultanés, blocage de 2 secondes, victoire.
 
 **Terminé quand :** deux profils de niveaux différents jouent un duel complet et reçoivent chacun leurs XP.
 

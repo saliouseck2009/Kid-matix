@@ -14,6 +14,8 @@ import 'package:kid_matix/core/utils/app_bloc_observer.dart';
 import 'package:kid_matix/core/widgets/app_width_limit.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
+import 'package:kid_matix/features/challenge/presentation/bloc/duel_use_cases.dart';
+import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
@@ -107,6 +109,17 @@ GoRouter _createRouter(
         getMonsterCount: sl(),
       ),
       domains: sl(),
+    ),
+    duelPages: DuelPages(
+      useCases: DuelUseCases(
+        getPlayers: sl(),
+        start: sl(),
+        answer: sl(),
+        elapse: sl(),
+        finish: sl(),
+      ),
+      ticker: sl(),
+      feedback: sl(),
     ),
     profilePages: profilePages,
     pathPages: LearningPathPages(

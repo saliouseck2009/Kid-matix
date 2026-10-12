@@ -21,9 +21,10 @@ middle of one). Last update: 2026-10-12.
 | F11 · Polish and release of 1.0 | **Done** (closed 2026-10-12), except F11-11: builds in the test channels |
 | F12 · Daily review and Survival | **Done** (closed 2026-10-12) |
 | F13 · My monsters | **Done** (closed 2026-10-12) |
-| F14 · Duel on one phone | **Next** |
+| F14 · Duel on one phone | **Done** (closed 2026-10-12) |
 | F15 · New question formats | **Done** (closed 2026-10-12) |
-| F16 – F21 | Not started |
+| F16 · Placement test | **Next** |
+| F17 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -547,7 +548,40 @@ l'opération qui donne 30"; the pairs drawn in the table of the fact
 asked; the selection kept after a wrong pair; the 4 facts counted as
 missed when the time runs out.
 
-## Starting F14
+## F14 closure
 
-Tasks in the F14 section of `docs/product/task-breakdown.md`; mockup
-`15-duel.png`.
+- `bash tool/check.sh`: every step OK (815 tests); coverage thresholds
+  met (`features/challenge/domain` 97 %, `features/reward/data` 98 %).
+- Checked on the Android emulator (API 36, debug build), with the one
+  profile of the emulator against a guest: the Duel card of Défis opens
+  the player choice (active player at the bottom, guest at the top, a
+  player already chosen greyed on the other half), the two halves head to
+  tail as in mockup 15, a wrong answer showed red with a cross, the right
+  one green with a check and "Oups ! Attends un peu…" for 2 seconds, then
+  a new question; at 10 the end screen showed "Chasseur gagne !", "+120
+  XP" and "Pas d'XP pour un invité"; back on the map the player had moved
+  to level 2 and the daily goal read 120 / 20 XP, streak unchanged. Two
+  profiles of different levels each receiving their XP is covered by the
+  `DuelBloc` tests (the emulator holds one profile).
+- `DuelBloc` tests (F14-07): two taps at the same time each scored on its
+  own half, the 2-second block (19 ticks of 100 ms ignore a tap, the 20th
+  frees it), victory at 10, XP for both profiles and none for a guest,
+  restart, stop without XP; a test over the real database checks that a
+  whole duel writes only `xp_award` and the profile's XP (no
+  `item_progress`, no quiz session, no streak).
+- Schema version 10: `xp_award` (XP earned outside a quiz).
+
+Texts and choices waiting for the owner: the player choice (no mockup:
+"Joueur du haut" / "Joueur du bas", "Invité" with "Toutes les tables, sans
+XP", "Posez le téléphone à plat entre vous deux. Le joueur du haut lit à
+l'envers.", "Choisissez deux joueurs différents.", "C'est parti !"), the
+answers shown red and green during the 2-second block with "Oups ! Attends
+un peu…", the pause dialog ("Duel en pause", "Si vous arrêtez maintenant,
+personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
+(no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
+"Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
+celebrations belong to the quiz results).
+
+## Starting F16
+
+Tasks in the F16 section of `docs/product/task-breakdown.md`.
