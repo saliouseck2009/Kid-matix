@@ -56,7 +56,9 @@ final class RecordRepositoryImpl implements RecordRepository {
 
   @override
   Stream<void> watchChanges() {
-    return _changeBus.watchTable(table: ChallengeTables.record);
+    return _changeBus.watchTables(
+      tables: const <String>{ChallengeTables.record, ChallengeTables.profile},
+    );
   }
 
   DataFailed<T> _fail<T>(

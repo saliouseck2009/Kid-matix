@@ -13,6 +13,11 @@ final class TableChangeBus {
     return _controller.stream.where((String changed) => changed == table);
   }
 
+  /// Emits an event every time one of [tables] changes.
+  Stream<String> watchTables({required Set<String> tables}) {
+    return _controller.stream.where(tables.contains);
+  }
+
   /// Signals that the content of [table] changed.
   void notifyChanged({required String table}) => _controller.add(table);
 

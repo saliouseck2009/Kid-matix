@@ -8,6 +8,7 @@ import 'package:kid_matix/features/challenge/domain/repositories/record_reposito
 import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
@@ -43,6 +44,10 @@ ChallengeUseCases buildTestChallengeUseCases({
     ),
     saveTrainingChoice: SaveTrainingChoiceUseCase(repository: choices),
     getTimeAttack: GetTimeAttackUseCase(openUnits: openUnits),
+    getSurvival: GetSurvivalUseCase(
+      openUnits: openUnits,
+      settings: FixedPlayerSettings(timerMode),
+    ),
     getRecords: GetRecordsUseCase(repository: recordRepository),
     getSessionRecord: GetSessionRecordUseCase(repository: recordRepository),
     watchRecordChanges: WatchRecordChangesUseCase(

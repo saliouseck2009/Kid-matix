@@ -1550,6 +1550,14 @@
   "@challengeTimeAttackSubtitle": {
     "description": "Line under \"Contre-la-montre\" on its card of the challenges screen (\"60 seconds, as many answers as you can\")."
   },
+  "challengeSurvivalSubtitle": "3 vies, de plus en plus vite",
+  "@challengeSurvivalSubtitle": {
+    "description": "Line under \"Survie\" on its card of the challenges screen (\"3 lives, faster and faster\")."
+  },
+  "challengeSurvivalTimerNote": "Ici, le chrono reste actif.",
+  "@challengeSurvivalTimerNote": {
+    "description": "Small line on the Survie card, shown only to a player who turned the timer off in the settings: survival keeps its timer anyway (\"Here, the timer stays on.\"). Talks to the child. One line."
+  },
   "challengeDailyReviewSubtitle": "{count, plural, =1{1 question choisie pour toi} other{{count} questions choisies pour toi}}",
   "@challengeDailyReviewSubtitle": {
     "description": "Line under \"Révision du jour\" on its card of the challenges screen (\"10 questions chosen for you\"). Talks to the child (informal tu).",

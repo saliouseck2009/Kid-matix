@@ -33,5 +33,19 @@ void main() {
       // Assert
       expect(actualEvents, isEmpty);
     });
+    test('a watcher of several tables hears each of them', () async {
+      // Arrange
+      final List<String> actualEvents = <String>[];
+      bus
+          .watchTables(tables: const <String>{'record', 'profile'})
+          .listen(actualEvents.add);
+      // Act
+      bus.notifyChanged(table: 'record');
+      bus.notifyChanged(table: 'quiz_session');
+      bus.notifyChanged(table: 'profile');
+      await Future<void>.delayed(Duration.zero);
+      // Assert
+      expect(actualEvents, <String>['record', 'profile']);
+    });
   });
 }

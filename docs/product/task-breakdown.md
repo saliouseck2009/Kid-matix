@@ -495,7 +495,7 @@ Ce lot vérifie l'ensemble et prépare la mise en ligne sur les stores.
 Deux défis s'ajoutent à l'onglet Défis : une révision choisie par le moteur et un mode à 3 vies.
 
 - [x] **F12-01** Révision du jour : 10 questions sans chrono, d'abord les faits dont la date de révision est passée, puis ceux au plus faible taux de réussite.
-- [ ] **F12-02** Survie : 3 vies, une erreur en retire une ; le temps par question part de 10 secondes et raccourcit au fil de la partie.
+- [x] **F12-02** Survie : 3 vies, une erreur en retire une ; le temps par question part de 10 secondes et raccourcit au fil de la partie.
 - [ ] **F12-03** Record de Survie et badge Survivant (30 bonnes réponses).
 - [x] **F12-04** Mode Survie du `QuizBloc` : vies, temps décroissant, question remplacée au retour d'arrière-plan.
 - [ ] **F12-05** Cartes Révision du jour et Survie dans l'écran Défis ; affichage des vies pendant le quiz.

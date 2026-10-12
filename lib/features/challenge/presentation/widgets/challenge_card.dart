@@ -13,6 +13,8 @@ class ChallengeCard extends StatelessWidget {
     required this.subtitle,
     required this.onTap,
     this.record,
+    this.iconColor,
+    this.note,
     super.key,
   });
 
@@ -32,6 +34,9 @@ class ChallengeCard extends StatelessWidget {
   /// Color of the circle behind [icon].
   final Color iconBackground;
 
+  /// Color of [icon], or `null` for the text color.
+  final Color? iconColor;
+
   /// Name of the challenge.
   final String title;
 
@@ -41,6 +46,9 @@ class ChallengeCard extends StatelessWidget {
   /// "Record 18", or `null` before a first record.
   final String? record;
 
+  /// A short line under [subtitle], or `null`.
+  final String? note;
+
   /// Starts the challenge.
   final VoidCallback onTap;
 
@@ -48,6 +56,7 @@ class ChallengeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final String? record = this.record;
+    final String? note = this.note;
     final BorderRadius radius = BorderRadius.circular(_radius);
     return Semantics(
       button: true,
@@ -70,7 +79,7 @@ class ChallengeCard extends StatelessWidget {
                     color: iconBackground,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, size: _iconSize),
+                  child: Icon(icon, size: _iconSize, color: iconColor),
                 ),
                 Expanded(
                   child: Column(
@@ -88,6 +97,14 @@ class ChallengeCard extends StatelessWidget {
                           color: context.palette.mutedText,
                         ),
                       ),
+                      if (note != null)
+                        Text(
+                          note,
+                          style: textTheme.bodySmall?.copyWith(
+                            color: context.palette.mutedText,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                     ],
                   ),
                 ),

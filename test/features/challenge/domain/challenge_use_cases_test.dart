@@ -5,6 +5,8 @@ import 'package:kid_matix/features/challenge/data/datasources/training_choice_lo
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
+import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
@@ -125,6 +127,46 @@ void main() {
     });
   });
 
+  group('GetSurvivalUseCase', () {
+    test('plays on every table open to the player', () async {
+      // Act
+      final SurvivalChallengeEntity actualChallenge =
+          (await const GetSurvivalUseCase(
+            openUnits: FixedOpenUnits(<String>['mul:1', 'mul:2']),
+            settings: FixedPlayerSettings(),
+          )(params: 'p1')).requireData;
+      // Assert
+      expect(
+        actualChallenge,
+        SurvivalChallengeEntity(
+          source: SurvivalSource(unitKeys: const <String>['mul:1', 'mul:2']),
+        ),
+      );
+    });
+    test('says the timer stays when the player turned it off', () async {
+      // Act
+      final SurvivalChallengeEntity actualChallenge =
+          (await const GetSurvivalUseCase(
+            openUnits: FixedOpenUnits(),
+            settings: FixedPlayerSettings(TimerMode.off),
+          )(params: 'p1')).requireData;
+      // Assert
+      expect(actualChallenge.keepsTimerTurnedOff, isTrue);
+      expect(
+        actualChallenge.copyWith(keepsTimerTurnedOff: false).hashCode,
+        SurvivalChallengeEntity(source: actualChallenge.source).hashCode,
+      );
+    });
+    test('fails when the open tables cannot be read', () async {
+      // Act
+      final AppException? actualException = (await const GetSurvivalUseCase(
+        openUnits: FixedOpenUnits(null),
+        settings: FixedPlayerSettings(),
+      )(params: 'p1')).exceptionOrNull;
+      // Assert
+      expect(actualException, isA<CacheException>());
+    });
+  });
   group('GetDailyReviewUseCase', () {
     test('reads the review of the player from the mastery engine', () async {
       // Arrange

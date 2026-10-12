@@ -1600,6 +1600,18 @@ abstract class AppLocalizations {
   /// **'60 secondes, un maximum de réponses'**
   String get challengeTimeAttackSubtitle;
 
+  /// Line under "Survie" on its card of the challenges screen ("3 lives, faster and faster").
+  ///
+  /// In fr, this message translates to:
+  /// **'3 vies, de plus en plus vite'**
+  String get challengeSurvivalSubtitle;
+
+  /// Small line on the Survie card, shown only to a player who turned the timer off in the settings: survival keeps its timer anyway ("Here, the timer stays on."). Talks to the child. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ici, le chrono reste actif.'**
+  String get challengeSurvivalTimerNote;
+
   /// Line under "Révision du jour" on its card of the challenges screen ("10 questions chosen for you"). Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:

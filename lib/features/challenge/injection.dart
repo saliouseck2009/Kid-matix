@@ -12,6 +12,7 @@ import 'package:kid_matix/features/challenge/domain/repositories/training_choice
 import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
@@ -55,6 +56,9 @@ void registerChallengeFeature(GetIt sl) {
   );
   sl.registerLazySingleton<GetTimeAttackUseCase>(
     () => GetTimeAttackUseCase(openUnits: sl()),
+  );
+  sl.registerLazySingleton<GetSurvivalUseCase>(
+    () => GetSurvivalUseCase(openUnits: sl(), settings: sl()),
   );
   sl.registerLazySingleton<GetDailyReviewUseCase>(
     () => GetDailyReviewUseCase(mastery: sl()),

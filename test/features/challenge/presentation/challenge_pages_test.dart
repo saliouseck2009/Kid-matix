@@ -13,10 +13,15 @@ import '../../../helpers/pump_localized.dart';
 import '../../../helpers/test_challenge_pages.dart';
 import '../helpers/challenge_fakes.dart';
 
-RecordEntity _record({String sessionId = 's1', int? previousBest}) {
+RecordEntity _record({
+  String sessionId = 's1',
+  int? previousBest,
+  QuizMode mode = QuizMode.timeAttack,
+  int bestScore = 18,
+}) {
   return RecordEntity(
-    mode: QuizMode.timeAttack,
-    bestScore: 18,
+    mode: mode,
+    bestScore: bestScore,
     sessionId: sessionId,
     achievedAt: DateTime(2026, 10, 10),
     previousBest: previousBest,
@@ -117,6 +122,7 @@ void main() {
     Future<List<String>> pumpChallenges(
       WidgetTester tester, {
       List<RecordEntity> records = const <RecordEntity>[],
+      TimerMode timerMode = TimerMode.normal,
       ReviewOverview review = const ReviewOverview(dueCount: 0, seenCount: 0),
     }) async {
       final List<String> played = <String>[];
@@ -124,6 +130,7 @@ void main() {
         useCases: buildTestChallengeUseCases(
           records: InMemoryRecordRepository(records),
           openUnits: const FixedOpenUnits(<String>['mul:1', 'mul:2']),
+          timerMode: timerMode,
           mastery: FakeMasteryService()..reviewOverview = review,
         ),
       );
@@ -148,6 +155,52 @@ void main() {
       expect(find.text('Défis'), findsOneWidget);
       expect(find.textContaining('Record'), findsNothing);
       expect(played, <String>['timeAttack:mul:1+mul:2']);
+    });
+    testWidgets('shows survival and plays it on the open tables', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(tester);
+      // Act
+      await tester.tap(find.text('Survie'));
+      // Assert
+      expect(find.text('3\u00a0vies, de plus en plus vite'), findsOneWidget);
+      expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
+      expect(find.text('Ici, le chrono reste actif.'), findsNothing);
+      expect(played, <String>['survival:mul:1+mul:2']);
+    });
+    testWidgets('says survival keeps its timer when it is turned off', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpChallenges(tester, timerMode: TimerMode.off);
+      // Assert
+      expect(find.text('Ici, le chrono reste actif.'), findsOneWidget);
+    });
+    testWidgets('shows the survival record apart', (WidgetTester tester) async {
+      // Act
+      await pumpChallenges(
+        tester,
+        records: <RecordEntity>[
+          _record(),
+          _record(sessionId: 's2', mode: QuizMode.survival, bestScore: 24),
+        ],
+      );
+      // Assert
+      expect(find.text('Record 18'), findsOneWidget);
+      expect(find.text('Record 24'), findsOneWidget);
+    });
+    testWidgets('sends survival back to the challenges', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final ChallengePages inputPages = buildTestChallengePages();
+      // Act
+      final ChallengeOrigin? actualOrigin = inputPages.originOf(
+        'survival:mul:1',
+      );
+      // Assert
+      expect(actualOrigin, ChallengeOrigin.challenges);
     });
     testWidgets('shows the record of the player', (WidgetTester tester) async {
       // Act

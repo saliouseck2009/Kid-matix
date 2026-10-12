@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
+import 'package:kid_matix/features/challenge/domain/entities/survival_challenge_entity.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_cubit.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_state.dart';
@@ -48,6 +49,7 @@ class ChallengesPage extends StatelessWidget {
               ),
               ChallengesLoaded(
                 :final timeAttack,
+                :final survival,
                 :final records,
                 :final review,
               ) =>
@@ -64,12 +66,13 @@ class ChallengesPage extends StatelessWidget {
                       iconBackground: context.palette.warmTint,
                       title: context.l10n.quizModeTimeAttack,
                       subtitle: context.l10n.challengeTimeAttackSubtitle,
-                      record: switch (records[QuizMode.timeAttack]) {
-                        final RecordEntity record =>
-                          context.l10n.challengeRecord(record.bestScore),
-                        null => null,
-                      },
+                      record: _recordOf(context, records[QuizMode.timeAttack]),
                       onTap: () => onPlay(timeAttack),
+                    ),
+                    _SurvivalCard(
+                      survival: survival,
+                      record: _recordOf(context, records[QuizMode.survival]),
+                      onPlay: onPlay,
                     ),
                   ],
                 ),
@@ -77,6 +80,40 @@ class ChallengesPage extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  static String? _recordOf(BuildContext context, RecordEntity? record) {
+    return record == null
+        ? null
+        : context.l10n.challengeRecord(record.bestScore);
+  }
+}
+
+class _SurvivalCard extends StatelessWidget {
+  const _SurvivalCard({
+    required this.survival,
+    required this.record,
+    required this.onPlay,
+  });
+
+  final SurvivalChallengeEntity survival;
+  final String? record;
+  final ValueChanged<ChallengeSource> onPlay;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChallengeCard(
+      icon: Icons.favorite_rounded,
+      iconColor: context.feedbackPalette.wrong,
+      iconBackground: context.feedbackPalette.wrongTint,
+      title: context.l10n.quizModeSurvival,
+      subtitle: context.l10n.challengeSurvivalSubtitle,
+      note: survival.keepsTimerTurnedOff
+          ? context.l10n.challengeSurvivalTimerNote
+          : null,
+      record: record,
+      onTap: () => onPlay(survival.source),
     );
   }
 }
