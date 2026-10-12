@@ -24,7 +24,9 @@ middle of one). Last update: 2026-10-12.
 | F14 · Duel on one phone | **Done** (closed 2026-10-12) |
 | F15 · New question formats | **Done** (closed 2026-10-12) |
 | F16 · Placement test | **Next** |
-| F17 – F21 | Not started |
+| F17 – F18 | Not started |
+| F19 · Challenge by code | **Done** (closed 2026-10-12) |
+| F20 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -581,6 +583,48 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 (no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
+
+## F19 closure
+
+- A challenge code is 10 characters (`K7M2-QX9T-B4`, no 0, O, 1, I, L):
+  tables, mode, question count, seed, score to beat, generator version
+  and a check character (layout in `ChallengeCodeCodec` and
+  `docs/decisions.md`). No schema change.
+- `EncodeChallengeCodeUseCase` and `BuildQuizFromCodeUseCase` (challenge
+  feature); a quiz with a `SeededDraw` is built by the frozen
+  `FrozenQuestionGenerator` over `SeededRandomSource` (Mulberry32 written
+  in Dart), without the mastery. Version 1: 6 formats in a coded free
+  training, multiple choice in a coded time attack.
+- « Défier un ami » on the results of a free training and a time attack;
+  code screen (mockup 20) with copy and entry; « J'ai un code » on the
+  Défis tab; comparison screen (mockup 21) in place of the results of a
+  coded game, with « Renvoyer un défi » (same seed, new score).
+- A coded game counts like a game of its mode: XP, mastery, streak,
+  badges, time attack record.
+- "Done when" proved by tests (F19-07): encode then decode for every mode,
+  every single changed character and every swap refused, unknown version
+  refused, a code made on one phone gives the same questions on a second
+  (two separate registries and random sources), golden lists of version 1
+  for a training and a time attack code, the quiz Bloc asking the seeded
+  questions.
+- `bash tool/check.sh`: every step OK (915 tests); coverage thresholds met
+  (`features/challenge/domain` 97.2 %, `features/quiz/domain` 100 %).
+- Not checked on a device: the shared Android emulator stayed on the
+  loading indicator of the map and of the Défis tab after install (45 s
+  to the first frame), screens this lot does not change. To try on the
+  phone: a free training then « Défier un ami », copy the code, « J'ai un
+  code » on a second phone (or player), play it, the comparison, then
+  « Renvoyer un défi ».
+
+Texts and choices waiting for the owner: the hint under the code
+(« Donne ce code à un ami : même mode, mêmes tables, et ton score à
+battre ! » instead of « exactement les mêmes questions que toi »: the
+sender's own game was drawn by the mastery, the friend plays the code's
+draw; both play the same questions from the first « Renvoyer un défi »),
+« Code copié ! », the three error messages, « Pas cette fois ! » and
+« Égalité ! », « Autant de bonnes réponses », the 6 formats drawn evenly
+in a coded training (no mastery), back from the code screen to the Défis
+tab.
 
 ## Starting F16
 
