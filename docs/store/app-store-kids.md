@@ -42,7 +42,7 @@ plus être retirée de l'app.
 | Pas d'envoi de données personnelles ou d'informations sur l'appareil à des tiers | Rien n'est envoyé : aucune connexion réseau |
 | Politique de confidentialité publiée | Brouillon prêt, à héberger |
 | Respect des lois sur les données des enfants (COPPA, RGPD) | Aucune collecte ; le pseudo reste sur l'appareil |
-| Pas de demande d'autorisation sans nécessité | Aucune autorisation demandée (pas de photo, micro, localisation, suivi) |
+| Pas de demande d'autorisation sans nécessité | Seulement les notifications, demandées quand on active le rappel quotidien (désactivé par défaut, F18) ; pas de photo, micro, localisation, suivi |
 
 ## Confidentialité de l'app (« étiquette de confidentialité »)
 

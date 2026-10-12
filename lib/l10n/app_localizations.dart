@@ -490,125 +490,53 @@ abstract class AppLocalizations {
   /// **'Animations réduites'**
   String get settingsReducedMotion;
 
-  /// Tooltip of the cross button that closes a full screen such as the parental gate ("Close"). Infinitive verb, one word.
+  /// Name of the section of the settings screen holding the daily reminder ("Reminder"), mockup 13. Short section header, one line, a noun.
   ///
   /// In fr, this message translates to:
-  /// **'Fermer'**
-  String get commonClose;
+  /// **'Rappel'**
+  String get settingsReminderSection;
 
-  /// Name of the section of the settings screen holding the export and the import of a player to and from a file ("Backup"). Noun, short section header.
+  /// Switch of the settings screen that turns the daily reminder notification on or off for the whole phone ("Daily reminder"), mockup 13. Off by default; switching it on asks for the notification permission. Switch label: one line, a noun phrase, not a verb.
   ///
   /// In fr, this message translates to:
-  /// **'Sauvegarde'**
-  String get settingsBackupSection;
+  /// **'Rappel quotidien'**
+  String get settingsReminderDaily;
 
-  /// Row of the settings screen, in the "Sauvegarde" section, that writes the player and all their progress to a file and opens the share sheet of the phone, after the parental gate ("Export my profile"). One line.
+  /// Row of the settings screen showing the time of the daily reminder, such as 17:00; tapping it opens the time picker ("Reminder time"), mockup 13. Greyed while the reminder is off.
   ///
   /// In fr, this message translates to:
-  /// **'Exporter mon profil'**
-  String get backupExport;
+  /// **'Heure du rappel'**
+  String get settingsReminderTime;
 
-  /// Row of the settings screen, in the "Sauvegarde" section, that opens the file picker to bring a player from a backup file onto this phone, after the parental gate ("Import a profile"). One line.
+  /// Message shown at the bottom of the settings screen when the phone refuses the notifications after the daily reminder is switched on; the switch goes back off ("Notifications are blocked. Allow them in the phone settings to get the reminder."). Read by a child or a parent, informal "tu". Shown in a snack bar, at most 2 lines.
   ///
   /// In fr, this message translates to:
-  /// **'Importer un profil'**
-  String get backupImport;
+  /// **'Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.'**
+  String get settingsReminderPermissionDenied;
 
-  /// Snack bar of the settings screen, shown after the backup file was shared, telling how to use it on the other phone ("File ready! Open it in Kid Matix on the other phone, with 'Import a profile'."). The quoted label must match the settings row of the key backupImport. Informal "tu".
+  /// Message shown at the bottom of the settings screen when the daily reminder cannot be saved or scheduled ("Oops, the reminder could not be set."). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines.
   ///
   /// In fr, this message translates to:
-  /// **'Fichier prêt ! Ouvre-le dans Kid Matix sur l\'autre téléphone, avec « Importer un profil ».'**
-  String get backupExportDone;
+  /// **'Oups, le rappel n\'a pas pu être réglé.'**
+  String get settingsReminderError;
 
-  /// Snack bar of the settings screen, shown after a backup file was imported as a new player of the phone ("Awa's profile imported! Find it with 'Switch player'."). The quoted label must match the Profile tab button of the key switchPlayerButton. Informal "tu"; "le" stands for the profile.
+  /// Message of the daily reminder notification, under the app name; tapping it opens the app ("It's time for your tables!"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification.
   ///
   /// In fr, this message translates to:
-  /// **'Profil de {nickname} importé ! Retrouve-le avec « Changer de joueur ».'**
-  String backupImportDone(String nickname);
+  /// **'C\'est l\'heure de tes tables !'**
+  String get reminderNotificationBody;
 
-  /// Snack bar of the settings screen, shown after a backup file replaced the player of the phone with the same nickname ("Awa's progress restored!").
+  /// Name of the notification category of the daily reminder, shown by Android in the notification settings of the app ("Daily reminder"). Short, one line: Android lists it as the title of a notification category. Kept apart from settingsReminderDaily on purpose, though the French is the same.
   ///
   /// In fr, this message translates to:
-  /// **'Progression de {nickname} restaurée !'**
-  String backupImportReplaced(String nickname);
+  /// **'Rappel quotidien'**
+  String get reminderChannelName;
 
-  /// Title of the dialog shown when the nickname of an imported backup is already used by a player of this phone ("Awa already exists").
+  /// Description of the notification category of the daily reminder, shown by Android in the notification settings of the app ("Reminds you to play every day at the chosen time."). One short sentence; speaks to the child with the informal "tu", though a parent may read it in the phone settings.
   ///
   /// In fr, this message translates to:
-  /// **'{nickname} existe déjà'**
-  String backupConflictTitle(String nickname);
-
-  /// Body of the dialog shown when the nickname of an imported backup is already used on this phone: what each choice does ("This phone already has a player Awa. The file holds Awa at level 5. Replace erases the current progress of Awa on this phone. Rename keeps both players.").
-  ///
-  /// In fr, this message translates to:
-  /// **'Ce téléphone a déjà un joueur {nickname}. Le fichier contient {nickname} au niveau {level}.\n\nRemplacer efface la progression actuelle de {nickname} sur ce téléphone. Renommer garde les deux joueurs.'**
-  String backupConflictMessage(String nickname, int level);
-
-  /// Destructive button of the nickname conflict dialog: the player of the phone is replaced by the file ("Replace"). Infinitive verb, one word.
-  ///
-  /// In fr, this message translates to:
-  /// **'Remplacer'**
-  String get backupConflictReplace;
-
-  /// Button of the nickname conflict dialog: the imported player gets another nickname, both players are kept ("Rename"). Infinitive verb, one word.
-  ///
-  /// In fr, this message translates to:
-  /// **'Renommer'**
-  String get backupConflictRename;
-
-  /// Title of the dialog asking another nickname for the imported player ("New nickname").
-  ///
-  /// In fr, this message translates to:
-  /// **'Nouveau pseudo'**
-  String get backupRenameTitle;
-
-  /// Text of the dialog asking another nickname for the imported player ("Choose another nickname for the imported player."). Informal "tu".
-  ///
-  /// In fr, this message translates to:
-  /// **'Choisis un autre pseudo pour le joueur importé.'**
-  String get backupRenameMessage;
-
-  /// Button of the rename dialog that imports the backup under the nickname typed ("Import"). Infinitive verb, one word.
-  ///
-  /// In fr, this message translates to:
-  /// **'Importer'**
-  String get backupRenameConfirm;
-
-  /// Error snack bar of the settings screen, shown when the file picked for an import is not a Kid Matix backup or is damaged ("This file is not a Kid Matix backup, or it is damaged.").
-  ///
-  /// In fr, this message translates to:
-  /// **'Ce fichier n\'est pas une sauvegarde Kid Matix, ou il est abîmé.'**
-  String get errorBackupInvalid;
-
-  /// Error snack bar of the settings screen, shown when the file picked for an import was written by a newer version of the app ("This backup comes from a newer version of Kid Matix. Update the app, then try again."). Informal "tu".
-  ///
-  /// In fr, this message translates to:
-  /// **'Cette sauvegarde vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
-  String get errorBackupVersion;
-
-  /// Title of the parental gate, a full screen shown before exporting or importing a backup ("Ask an adult"). Informal "tu", addressed to the child.
-  ///
-  /// In fr, this message translates to:
-  /// **'Demande à un adulte'**
-  String get parentalGateTitle;
-
-  /// Text of the parental gate, above a number written in words that the adult types in digits ("This action is for adults. Write this number in digits:"). The number in words is spelled by code per language, not by this key. Informal "tu".
-  ///
-  /// In fr, this message translates to:
-  /// **'Cette action est réservée aux adultes. Écris ce nombre en chiffres :'**
-  String get parentalGateMessage;
-
-  /// Label of the field of the parental gate where the adult types the number in digits ("Number in digits").
-  ///
-  /// In fr, this message translates to:
-  /// **'Nombre en chiffres'**
-  String get parentalGateAnswerLabel;
-
-  /// Button of the parental gate that checks the number typed ("Confirm"). Infinitive verb, one word.
-  ///
-  /// In fr, this message translates to:
-  /// **'Valider'**
-  String get parentalGateConfirm;
+  /// **'Te rappelle de jouer chaque jour à l\'heure choisie.'**
+  String get reminderChannelDescription;
 
   /// Name of the section of the settings screen holding the actions on the player: reset and delete ("This player").
   ///

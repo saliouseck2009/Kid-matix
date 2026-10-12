@@ -15,7 +15,9 @@ extension ProfileErrorMessage on AppErrorCode {
       ),
       AppErrorCode.invalidFile => l10n.errorBackupInvalid,
       AppErrorCode.unsupportedVersion => l10n.errorBackupVersion,
-      AppErrorCode.validation || AppErrorCode.unknown => l10n.errorUnknown,
+      AppErrorCode.validation ||
+      AppErrorCode.permissionDenied ||
+      AppErrorCode.unknown => l10n.errorUnknown,
     };
   }
 }

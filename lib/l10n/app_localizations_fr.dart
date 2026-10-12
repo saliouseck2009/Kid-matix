@@ -290,77 +290,30 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsReducedMotion => 'Animations réduites';
 
   @override
-  String get commonClose => 'Fermer';
+  String get settingsReminderSection => 'Rappel';
 
   @override
-  String get settingsBackupSection => 'Sauvegarde';
+  String get settingsReminderDaily => 'Rappel quotidien';
 
   @override
-  String get backupExport => 'Exporter mon profil';
+  String get settingsReminderTime => 'Heure du rappel';
 
   @override
-  String get backupImport => 'Importer un profil';
+  String get settingsReminderPermissionDenied =>
+      'Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.';
 
   @override
-  String get backupExportDone =>
-      'Fichier prêt ! Ouvre-le dans Kid Matix sur l\'autre téléphone, avec « Importer un profil ».';
+  String get settingsReminderError => 'Oups, le rappel n\'a pas pu être réglé.';
 
   @override
-  String backupImportDone(String nickname) {
-    return 'Profil de $nickname importé ! Retrouve-le avec « Changer de joueur ».';
-  }
+  String get reminderNotificationBody => 'C\'est l\'heure de tes tables !';
 
   @override
-  String backupImportReplaced(String nickname) {
-    return 'Progression de $nickname restaurée !';
-  }
+  String get reminderChannelName => 'Rappel quotidien';
 
   @override
-  String backupConflictTitle(String nickname) {
-    return '$nickname existe déjà';
-  }
-
-  @override
-  String backupConflictMessage(String nickname, int level) {
-    return 'Ce téléphone a déjà un joueur $nickname. Le fichier contient $nickname au niveau $level.\n\nRemplacer efface la progression actuelle de $nickname sur ce téléphone. Renommer garde les deux joueurs.';
-  }
-
-  @override
-  String get backupConflictReplace => 'Remplacer';
-
-  @override
-  String get backupConflictRename => 'Renommer';
-
-  @override
-  String get backupRenameTitle => 'Nouveau pseudo';
-
-  @override
-  String get backupRenameMessage =>
-      'Choisis un autre pseudo pour le joueur importé.';
-
-  @override
-  String get backupRenameConfirm => 'Importer';
-
-  @override
-  String get errorBackupInvalid =>
-      'Ce fichier n\'est pas une sauvegarde Kid Matix, ou il est abîmé.';
-
-  @override
-  String get errorBackupVersion =>
-      'Cette sauvegarde vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
-
-  @override
-  String get parentalGateTitle => 'Demande à un adulte';
-
-  @override
-  String get parentalGateMessage =>
-      'Cette action est réservée aux adultes. Écris ce nombre en chiffres :';
-
-  @override
-  String get parentalGateAnswerLabel => 'Nombre en chiffres';
-
-  @override
-  String get parentalGateConfirm => 'Valider';
+  String get reminderChannelDescription =>
+      'Te rappelle de jouer chaque jour à l\'heure choisie.';
 
   @override
   String get settingsPlayerSection => 'Ce joueur';

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,9 @@ import 'package:kid_matix/features/reward/presentation/bloc/leaderboard_use_case
 import 'package:kid_matix/features/reward/presentation/bloc/reward_use_cases.dart';
 import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
+import 'package:kid_matix/features/setting/domain/usecases/reschedule_reminders_use_case.dart';
+import 'package:kid_matix/features/setting/presentation/bloc/reminder_use_cases.dart';
+import 'package:kid_matix/features/setting/presentation/reminder_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Entry point: wires dependencies and error reporting, then starts the app.
@@ -58,6 +62,9 @@ Future<void> main() async {
   ]);
   final ProfileSessionService session = sl<ProfileSessionService>();
   await session.restore();
+  // The daily reminder is planned again at every launch, without delaying
+  // the first frame: the days ahead stay covered, clock changes included.
+  unawaited(sl<RescheduleRemindersUseCase>()());
   final ProfilePages profilePages = _createProfilePages();
   final MascotPages mascotPages = MascotPages(
     useCases: MascotUseCases(
@@ -127,6 +134,13 @@ GoRouter _createRouter(
       ),
       ticker: sl(),
       feedback: sl(),
+    ),
+    reminderPages: ReminderPages(
+      useCases: ReminderUseCases(
+        getSettings: sl(),
+        setEnabled: sl(),
+        setTime: sl(),
+      ),
     ),
     leaderboardPages: LeaderboardPages(
       useCases: LeaderboardUseCases(

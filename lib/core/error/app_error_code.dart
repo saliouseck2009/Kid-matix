@@ -24,6 +24,10 @@ enum AppErrorCode {
   /// A file was written by a newer version of the app.
   unsupportedVersion,
 
+  /// The person refused a permission the app asked for, such as the
+  /// notifications of the daily reminder.
+  permissionDenied,
+
   /// Any failure that has no dedicated code.
   unknown,
 }

@@ -130,6 +130,7 @@ final class ProfilePages {
     required String profileId,
     required VoidCallback onBack,
     List<Widget> gameRows = const <Widget>[],
+    List<Widget> reminderRows = const <Widget>[],
   }) {
     return MultiBlocProvider(
       providers: <BlocProvider<Object?>>[
@@ -147,6 +148,7 @@ final class ProfilePages {
         onBack: onBack,
         gameRows: gameRows,
         backupSection: BackupSettingsSection(random: _gateRandom),
+        reminderRows: reminderRows,
       ),
     );
   }

@@ -14,16 +14,17 @@ import 'package:kid_matix/features/profile/presentation/widgets/nickname_confirm
 import 'package:kid_matix/features/profile/presentation/widgets/profile_error_message.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/settings_parts.dart';
 
-/// The settings of the player (mockup 13): sounds, game, backup and the
-/// actions on the player. The reminder section comes with its lot.
+/// The settings of the player (mockup 13): sounds, game, reminder,
+/// backup and the actions on the player.
 /// Other features add rows to the game section, such as the leaderboard
-/// switch.
+/// switch, and fill the reminder section.
 class SettingsPage extends StatelessWidget {
   /// Creates the page; the settings come from the enclosing Cubit.
   const SettingsPage({
     required this.onBack,
     this.gameRows = const <Widget>[],
     this.backupSection,
+    this.reminderRows = const <Widget>[],
     super.key,
   });
 
@@ -35,6 +36,8 @@ class SettingsPage extends StatelessWidget {
 
   /// The "Sauvegarde" section, or `null`.
   final Widget? backupSection;
+  /// Rows of the « Rappel » section, hidden when empty.
+  final List<Widget> reminderRows;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +63,7 @@ class SettingsPage extends StatelessWidget {
                   onBack: onBack,
                   gameRows: gameRows,
                   backupSection: backupSection,
+                  reminderRows: reminderRows,
                 ),
               };
             },
@@ -87,6 +91,7 @@ class _SettingsView extends StatelessWidget {
     required this.onBack,
     required this.gameRows,
     required this.backupSection,
+    required this.reminderRows,
   });
 
   static const double _gap = 20;
@@ -95,6 +100,7 @@ class _SettingsView extends StatelessWidget {
   final VoidCallback onBack;
   final List<Widget> gameRows;
   final Widget? backupSection;
+  final List<Widget> reminderRows;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -211,6 +217,13 @@ class _SettingsView extends StatelessWidget {
             ...gameRows,
           ],
         ),
+        if (reminderRows.isNotEmpty) ...<Widget>[
+          const SizedBox(height: _gap),
+          SettingsSection(
+            title: context.l10n.settingsReminderSection,
+            rows: reminderRows,
+          ),
+        ],
         const SizedBox(height: _gap),
         if (backupSection case final Widget section) ...<Widget>[
           section,

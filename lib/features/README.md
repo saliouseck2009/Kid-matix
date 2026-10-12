@@ -13,7 +13,7 @@ the lot that delivers it; nothing is scaffolded ahead of time.
 | `reward`         | F7       | XP, levels, streak, daily goal, badges       |
 | `mascot`         | F8       | The mascot that grows with the player        |
 | `challenge`      | F9, F12+ | Free training, time attack and other modes   |
-| `setting`        | F10      | Sound effects and vibrations of the game     |
+| `setting`        | F10, F18 | Sounds, vibrations and the daily reminder    |
 
 Layout of a feature:
 

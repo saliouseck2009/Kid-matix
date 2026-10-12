@@ -25,7 +25,7 @@ middle of one). Last update: 2026-10-12.
 | F15 · New question formats | **Done** (closed 2026-10-12) |
 | F16 · Placement test | **Done** (closed 2026-10-12) |
 | F17 · Local leaderboard | **Done** (closed 2026-10-12) |
-| F18 · Daily reminder | **Next** |
+| F18 · Daily reminder | **Done** (closed 2026-10-12), real-phone check by the owner pending |
 | F19 · Challenge by code | **Done** (closed 2026-10-12) |
 | F20 · File backup | **Done** (closed 2026-10-12) |
 | F21 | Not started |
@@ -675,6 +675,40 @@ draw; both play the same questions from the first « Renvoyer un défi »),
 « Égalité ! », « Autant de bonnes réponses », the 6 formats drawn evenly
 in a coded training (no mastery), back from the code screen to the Défis
 tab.
+
+## F18 closure
+
+- One reminder for the whole phone, off by default, 17:00 by default, in
+  the « Rappel » section of the settings (mockup 13); device preferences
+  in `shared_preferences`, no migration. The notification permission is
+  asked only when the switch goes on; a refusal puts it back off with a
+  snack bar. Rules in `docs/decisions.md`.
+- `flutter_local_notifications` (+ `timezone`) behind
+  `NotificationScheduler` (`core/services/`), implemented in the setting
+  feature. Each day is its own notification for the next 30 days, inexact
+  on Android (no exact alarm permission); planned again at every launch,
+  after every completed quiz (a `SessionSavedHook` keeps the day: no
+  reminder that day) and on every settings change. Android: desugaring,
+  boot receiver, `RECEIVE_BOOT_COMPLETED`, white `ic_notification`; iOS:
+  the notification center delegate in `AppDelegate`.
+- Tests (F18-05), with a fake notification scheduler and a fake clock:
+  scheduling, cancelling, change of time, skip today after a session (also
+  over the real wiring and after a restart), permission refused, broken
+  plugin or preferences, the settings rows and the plugin calls (mocked
+  plugin). `bash tool/check.sh all`: every step OK, Android and iOS builds
+  included.
+- "Done when" (a reminder set a few minutes ahead shows on a real Android
+  phone and an iPhone): to be checked by the owner on the phones, steps in
+  the pull request. Not run on an emulator.
+- The privacy policy and the store notes now say the app asks for one
+  permission, the notifications, only when the reminder is switched on.
+
+Texts waiting for the owner: the notification (« Kid Matix » /
+« C'est l'heure de tes tables ! »), the refusal message (« Les
+notifications sont bloquées. Autorise-les dans les réglages du téléphone
+pour recevoir le rappel. »), « Oups, le rappel n'a pas pu être réglé. »,
+and the Android channel (« Rappel quotidien », « Te rappelle de jouer
+chaque jour à l'heure choisie. »).
 
 ## F17 closure
 

@@ -61,6 +61,13 @@ final class UnsupportedVersionException extends AppException {
     : super(code: AppErrorCode.unsupportedVersion);
 }
 
+/// The person refused a permission the app asked for.
+final class PermissionDeniedException extends AppException {
+  /// Creates a refused-permission failure.
+  const PermissionDeniedException({super.message})
+    : super(code: AppErrorCode.permissionDenied);
+}
+
 /// Any failure that has no dedicated type.
 final class UnknownException extends AppException {
   /// Creates an unclassified failure.
