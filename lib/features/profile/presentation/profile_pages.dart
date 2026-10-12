@@ -128,10 +128,12 @@ final class ProfilePages {
   }
 
   /// Gives the settings of [profileId] to [child], and turns the
-  /// animations off when the player asked for it.
+  /// animations off when the player asked for it, as long as
+  /// [isPlayerActive].
   Widget buildSettingsScope({
     required String profileId,
     required Widget child,
+    bool isPlayerActive = true,
   }) {
     return BlocProvider<PlayerSettingsCubit>(
       key: ValueKey<String>('settings-$profileId'),
@@ -140,7 +142,7 @@ final class ProfilePages {
         getSettings: _settingsUseCases.getSettings,
         watchChanges: _tabUseCases.watchChanges,
       )..load(),
-      child: ReducedMotionScope(child: child),
+      child: ReducedMotionScope(isPlayerActive: isPlayerActive, child: child),
     );
   }
 }
