@@ -26,7 +26,9 @@ import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
+import 'package:kid_matix/features/reward/presentation/bloc/leaderboard_use_cases.dart';
 import 'package:kid_matix/features/reward/presentation/bloc/reward_use_cases.dart';
+import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -120,6 +122,15 @@ GoRouter _createRouter(
       ),
       ticker: sl(),
       feedback: sl(),
+    ),
+    leaderboardPages: LeaderboardPages(
+      useCases: LeaderboardUseCases(
+        getLeaderboard: sl(),
+        watchRewardChanges: sl(),
+        getVisibility: sl(),
+        setVisibility: sl(),
+        watchVisibility: sl(),
+      ),
     ),
     profilePages: profilePages,
     pathPages: LearningPathPages(

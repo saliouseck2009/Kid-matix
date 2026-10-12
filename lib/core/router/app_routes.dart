@@ -21,6 +21,9 @@ abstract final class AppRoutes {
   /// Mascot screen, opened from the [profile] tab.
   static const String mascot = '/profile/mascot';
 
+  /// Weekly leaderboard of the phone, opened from the [profile] tab.
+  static const String leaderboard = '/profile/leaderboard';
+
   /// « Mes monstres », opened from the [challenges] tab.
   static const String challengeMonsters = '/challenges/monsters';
 

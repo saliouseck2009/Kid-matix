@@ -1381,4 +1381,55 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pathMonstersOpenLittle => 'Voir mes petits monstres';
+
+  @override
+  String get leaderboardTitle => 'Classement';
+
+  @override
+  String get leaderboardWeekLabel => 'XP gagnés cette semaine';
+
+  @override
+  String get leaderboardResetHint => 'Remise à zéro lundi';
+
+  @override
+  String get leaderboardYou => 'C\'est toi';
+
+  @override
+  String leaderboardXp(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String leaderboardEntrySpoken(String nickname, int rank, int xp) {
+    return '$nickname, place $rank, $xp XP';
+  }
+
+  @override
+  String leaderboardEntryYouSpoken(String nickname, int rank, int xp) {
+    return '$nickname, c\'est toi, place $rank, $xp XP';
+  }
+
+  @override
+  String leaderboardChaseBehind(int xp, String nickname) {
+    return 'Encore $xp XP et tu rattrapes $nickname !';
+  }
+
+  @override
+  String leaderboardChaseTied(String nickname) {
+    return 'Tu es à égalité avec $nickname !';
+  }
+
+  @override
+  String get leaderboardChaseLeading => 'Tu es en tête cette semaine !';
+
+  @override
+  String get leaderboardChaseNotStarted =>
+      'Joue pour gagner tes premiers XP de la semaine !';
+
+  @override
+  String get leaderboardEntrySubtitle =>
+      'Qui a gagné le plus d\'XP cette semaine ?';
+
+  @override
+  String get settingsShowLeaderboard => 'Afficher le classement';
 }
