@@ -46,6 +46,7 @@ const _$QuizModeEnumMap = {
   QuizMode.freeTraining: 'freeTraining',
   QuizMode.path: 'path',
   QuizMode.timeAttack: 'timeAttack',
+  QuizMode.survival: 'survival',
 };
 
 const _$QuizSessionStatusEnumMap = {

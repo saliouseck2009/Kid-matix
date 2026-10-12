@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
+import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 import 'package:meta/meta.dart';
 
 /// What a quiz is made of.
@@ -20,6 +21,8 @@ final class BuildQuizParams {
     this.followUpQuestionCount = 0,
     this.isBossFight = false,
     this.totalTimeLimit,
+    this.lives,
+    this.timeSchedule,
   });
 
   /// Player of the quiz.
@@ -64,4 +67,11 @@ final class BuildQuizParams {
   /// Time to play the whole quiz, or `null` when it ends with its last
   /// question.
   final Duration? totalTimeLimit;
+
+  /// Mistakes the player may make, or `null` for a quiz without lives.
+  final int? lives;
+
+  /// How the time per question shrinks with the right answers, with the
+  /// normal timer; it is stretched to start at [timeLimit].
+  final QuizTimeSchedule? timeSchedule;
 }

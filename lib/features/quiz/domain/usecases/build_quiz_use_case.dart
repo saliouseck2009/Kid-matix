@@ -8,6 +8,7 @@ import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
+import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
@@ -156,6 +157,10 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   }
 
   QuizRun _createRun(BuildQuizParams params, List<Question> questions) {
+    final Duration? timeLimit = params.timeLimit;
+    final QuizTimeSchedule? schedule = timeLimit == null
+        ? null
+        : params.timeSchedule?.scaledTo(timeLimit);
     return QuizRun(
       sessionId: _idGenerator.generateId(),
       profileId: params.profileId,
@@ -164,8 +169,10 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       startedAt: _clock.now(),
       scoredQuestionCount: questions.length,
       questionTypeIds: params.questionTypeIds,
-      timeLimit: params.timeLimit,
+      timeLimit: timeLimit,
       totalTimeLimit: params.totalTimeLimit,
+      lives: params.lives,
+      timeSchedule: schedule,
       sourceKey: params.sourceKey,
       boss: params.isBossFight ? const BossFight() : null,
       queue: questions

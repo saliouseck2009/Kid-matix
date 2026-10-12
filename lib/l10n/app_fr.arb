@@ -620,6 +620,24 @@
   "@quizModeTimeAttack": {
     "description": "Name of the time attack challenge (as many right answers as possible in 60 seconds), shown under the results title and on the challenges screen (\"Against the clock\")."
   },
+  "quizModeSurvival": "Survie",
+  "@quizModeSurvival": {
+    "description": "Name of the survival challenge (3 lives, less and less time per question), shown under the results title and on the challenges screen (\"Survival\")."
+  },
+  "quizLivesSpoken": "{left, plural, =0{Plus de vie} =1{1 vie sur {total}} other{{left} vies sur {total}}}",
+  "@quizLivesSpoken": {
+    "description": "Screen-reader text of the hearts at the top of a survival quiz, whose visible content is only hearts, full or emptied (\"2 lives out of 3\", \"No life left\").",
+    "placeholders": {
+      "left": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
   "@quizScoreSpoken": {
     "description": "Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.",

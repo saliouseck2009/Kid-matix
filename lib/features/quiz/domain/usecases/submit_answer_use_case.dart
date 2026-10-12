@@ -28,9 +28,9 @@ import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dar
 /// never stops the game.
 /// A missed fact comes back 3 questions later, once per session, with a
 /// question drawn again; that second chance does not count in the score,
-/// except in a boss fight; a quiz against the clock gives none. In a boss
-/// fight every right answer hits the boss, and the fight ends when it
-/// falls or after its last question.
+/// except in a boss fight; a non-stop quiz gives none. In a boss fight
+/// every right answer hits the boss, and the fight ends when it falls or
+/// after its last question. A quiz with lives ends at the last life lost.
 /// Fails with a `ValidationException` when the quiz is over or its domain
 /// or question type is unknown.
 class SubmitAnswerUseCase
@@ -77,13 +77,12 @@ class SubmitAnswerUseCase
       answer,
     ];
     final BossFight? boss = run.boss?.hit(answer);
-    final bool isFightOver =
-        boss != null &&
-        (boss.isDefeated || answers.length >= BossFight.maxQuestions);
-    final List<QuizTurn> queue = isFightOver
+    final QuizRun answered = run.copyWith(answers: answers, boss: boss);
+    final bool isOver = _isOver(answered);
+    final List<QuizTurn> queue = isOver
         ? const <QuizTurn>[]
         : <QuizTurn>[...run.queue.skip(1)];
-    if (!isFightOver && _needsRetry(run, turn, answer)) {
+    if (!isOver && _needsRetry(run, turn, answer)) {
       queue.insert(
         queue.length < retryDelay ? queue.length : retryDelay,
         _buildRetry(domain, run, turn.question),
@@ -93,9 +92,19 @@ class SubmitAnswerUseCase
       QuizSubmission(
         turn: turn,
         answer: answer,
-        run: run.copyWith(queue: queue, answers: answers, boss: boss),
+        run: answered.copyWith(queue: queue),
       ),
     );
+  }
+
+  /// Whether [run] ends before its last question: its boss fell or fled,
+  /// or its last life is lost.
+  static bool _isOver(QuizRun run) {
+    final BossFight? boss = run.boss;
+    final bool isFightOver =
+        boss != null &&
+        (boss.isDefeated || run.answers.length >= BossFight.maxQuestions);
+    return isFightOver || run.livesLeft == 0;
   }
 
   QuizAnswerEntity _judge(
@@ -136,7 +145,7 @@ class SubmitAnswerUseCase
 
   bool _needsRetry(QuizRun run, QuizTurn turn, QuizAnswerEntity answer) {
     return !answer.isCorrect &&
-        !run.isAgainstTheClock &&
+        !run.isNonStop &&
         !turn.isRetry &&
         !run.hasRetry(turn.question.itemKey);
   }

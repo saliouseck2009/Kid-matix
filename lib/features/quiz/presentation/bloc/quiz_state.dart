@@ -56,7 +56,7 @@ final class QuizAsking extends QuizState {
 
   /// Fraction of the time left, from 1 to 0; `null` without a timer.
   double? get remainingFraction {
-    final Duration? limit = run.timeLimit;
+    final Duration? limit = run.currentTimeLimit;
     if (limit == null) return null;
     final double left = 1 - elapsed.inMilliseconds / limit.inMilliseconds;
     return left.clamp(0, 1);
@@ -64,7 +64,7 @@ final class QuizAsking extends QuizState {
 
   /// Whether the timer is in its last seconds.
   bool get isRunningOut {
-    final Duration? limit = run.timeLimit;
+    final Duration? limit = run.currentTimeLimit;
     return limit != null && limit - elapsed <= QuizTimeLimits.warning;
   }
 
@@ -132,7 +132,7 @@ final class QuizShowingFeedback extends QuizState {
   /// Time played since the first question, pauses excluded.
   final Duration playedTime;
 
-  /// Time the feedback has been shown, counted only against the clock,
+  /// Time the feedback has been shown, counted only in a non-stop quiz,
   /// where the next question comes by itself.
   final Duration shownFor;
 
