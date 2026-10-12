@@ -41,6 +41,12 @@ void main() {
       find.bySemanticsLabel(RegExp(r'^Sprinter, à obtenir')),
       findsOneWidget,
     );
+    expect(
+      find.bySemanticsLabel(
+        'Survivant, à obtenir : 30 bonnes réponses en Survie.',
+      ),
+      findsOneWidget,
+    );
     handle.dispose();
   });
 

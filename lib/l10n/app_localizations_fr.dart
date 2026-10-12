@@ -804,6 +804,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rewardBadgeSprinter => 'Sprinter';
 
   @override
+  String get rewardBadgeSurvivor => 'Survivant';
+
+  @override
   String get rewardBadgeRegular => 'Régulier';
 
   @override
@@ -826,6 +829,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get rewardBadgeSprinterHint =>
       '20 bonnes réponses en Contre-la-montre.';
+
+  @override
+  String get rewardBadgeSurvivorHint => '30 bonnes réponses en Survie.';
 
   @override
   String get rewardBadgeRegularHint => '7 jours de jeu d\'affilée.';

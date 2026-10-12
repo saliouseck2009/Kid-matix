@@ -496,7 +496,7 @@ Deux défis s'ajoutent à l'onglet Défis : une révision choisie par le moteur 
 
 - [ ] **F12-01** Révision du jour : 10 questions sans chrono, d'abord les faits dont la date de révision est passée, puis ceux au plus faible taux de réussite.
 - [x] **F12-02** Survie : 3 vies, une erreur en retire une ; le temps par question part de 10 secondes et raccourcit au fil de la partie.
-- [ ] **F12-03** Record de Survie et badge Survivant (30 bonnes réponses).
+- [x] **F12-03** Record de Survie et badge Survivant (30 bonnes réponses).
 - [x] **F12-04** Mode Survie du `QuizBloc` : vies, temps décroissant, question remplacée au retour d'arrière-plan.
 - [ ] **F12-05** Cartes Révision du jour et Survie dans l'écran Défis ; affichage des vies pendant le quiz.
 - [ ] **F12-06** Tests : sélection des faits à revoir avec une horloge factice, fin de partie à la troisième erreur, record.

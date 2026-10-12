@@ -1162,6 +1162,12 @@ abstract class AppLocalizations {
   /// **'Sprinter'**
   String get rewardBadgeSprinter;
 
+  /// Name of the badge for 30 right answers in one survival game ("Survivor"). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Survivant'**
+  String get rewardBadgeSurvivor;
+
   /// Name of the badge for a 7-day streak ("Steady", adjective describing the player). Short: title of the badge celebration and of the badge list of the results.
   ///
   /// In fr, this message translates to:
@@ -1203,6 +1209,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'20 bonnes réponses en Contre-la-montre.'**
   String get rewardBadgeSprinterHint;
+
+  /// Line under the Survivant badge in its celebration and on the Profile tab ("30 right answers in survival."). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'30 bonnes réponses en Survie.'**
+  String get rewardBadgeSurvivorHint;
 
   /// Line under the Régulier badge in its celebration ("7 days of play in a row."). One or two lines.
   ///

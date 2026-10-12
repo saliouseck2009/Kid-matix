@@ -75,6 +75,7 @@ final class SessionRewardCalculator {
           masteredItemCount: input.masteredItemCount,
           itemCount: input.itemCount,
           timeAttackScore: input.isTimeAttack ? input.correctCount : 0,
+          survivalScore: input.isSurvival ? input.correctCount : 0,
         ),
         unlocked: unlocked,
       ),

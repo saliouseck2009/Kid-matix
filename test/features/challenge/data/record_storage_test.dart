@@ -145,6 +145,23 @@ void main() {
       expect(actualRecord.sessionId, 's3');
       expect(actualRecord.previousBest, 15);
     });
+    test('keeps the survival record apart from the time attack', () async {
+      // Arrange
+      await save(_session(id: 's1', correctCount: 15));
+      await save(
+        _session(id: 's2', correctCount: 9, mode: QuizMode.survival),
+      );
+      // Act
+      await save(
+        _session(id: 's3', correctCount: 24, mode: QuizMode.survival),
+      );
+      // Assert
+      final Map<QuizMode, RecordEntity> actualRecords = await readRecords();
+      expect(actualRecords[QuizMode.timeAttack]!.bestScore, 15);
+      expect(actualRecords[QuizMode.survival]!.bestScore, 24);
+      expect(actualRecords[QuizMode.survival]!.previousBest, 9);
+      expect(actualRecords[QuizMode.survival]!.sessionId, 's3');
+    });
     test('ignores an abandoned quiz and a free training', () async {
       // Act
       await save(_session(id: 's1', correctCount: 15, isCompleted: false));
