@@ -560,11 +560,11 @@ Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le regi
 
 Les joueurs du téléphone sont classés par XP gagnés dans la semaine.
 
-- [ ] **F17-01** Contrat `LeaderboardRepository` avec une portée (téléphone, amis, monde) ; seule la portée téléphone est implémentée.
-- [ ] **F17-02** Cas d'usage `GetLeaderboard` : XP de la semaine calculés à partir du journal des sessions, remise à zéro chaque lundi.
-- [ ] **F17-03** `LeaderboardCubit` et écran Classement : avatar, pseudo, XP de la semaine. Maquette : `19-leaderboard.png`.
-- [ ] **F17-04** Réglage pour masquer le classement.
-- [ ] **F17-05** Tests : calcul hebdomadaire avec une horloge factice, passage du dimanche au lundi, égalités.
+- [x] **F17-01** Contrat `LeaderboardRepository` avec une portée (téléphone, amis, monde) ; seule la portée téléphone est implémentée.
+- [x] **F17-02** Cas d'usage `GetLeaderboard` : XP de la semaine calculés à partir du journal des sessions, remise à zéro chaque lundi.
+- [x] **F17-03** `LeaderboardCubit` et écran Classement : avatar, pseudo, XP de la semaine. Maquette : `19-leaderboard.png`.
+- [x] **F17-04** Réglage pour masquer le classement.
+- [x] **F17-05** Tests : calcul hebdomadaire avec une horloge factice, passage du dimanche au lundi, égalités.
 
 **Terminé quand :** deux joueurs qui ont joué dans la semaine apparaissent classés, et le classement repart de zéro le lundi.
 
