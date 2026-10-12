@@ -572,11 +572,11 @@ Les joueurs du téléphone sont classés par XP gagnés dans la semaine.
 
 Une notification locale rappelle à l'enfant de jouer, à l'heure choisie.
 
-- [ ] **F18-01** Ajout de flutter_local_notifications et configuration Android et iOS.
-- [ ] **F18-02** Demande d'autorisation au moment où le rappel est activé, jamais au premier lancement.
-- [ ] **F18-03** Réglage : rappel activé ou non (désactivé par défaut) et heure du rappel.
-- [ ] **F18-04** Programmation et annulation de la notification ; pas de rappel le jour où une session est déjà terminée.
-- [ ] **F18-05** Tests : programmation, annulation, changement d'heure, avec un service de notification factice.
+- [x] **F18-01** Ajout de flutter_local_notifications et configuration Android et iOS.
+- [x] **F18-02** Demande d'autorisation au moment où le rappel est activé, jamais au premier lancement.
+- [x] **F18-03** Réglage : rappel activé ou non (désactivé par défaut) et heure du rappel.
+- [x] **F18-04** Programmation et annulation de la notification ; pas de rappel le jour où une session est déjà terminée.
+- [x] **F18-05** Tests : programmation, annulation, changement d'heure, avec un service de notification factice.
 
 **Terminé quand :** un rappel réglé sur une heure proche s'affiche sur un vrai téléphone Android et sur un iPhone.
 

@@ -20,6 +20,7 @@ import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
+import 'package:kid_matix/features/setting/presentation/reminder_pages.dart';
 
 /// Builds the router of the app: the player selection, then a shell with
 /// one branch per tab; the learning path is the home.
@@ -38,6 +39,7 @@ GoRouter createAppRouter({
   required DuelPages duelPages,
   required CodeChallengePages codePages,
   required LeaderboardPages leaderboardPages,
+  ReminderPages? reminderPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -205,6 +207,9 @@ GoRouter createAppRouter({
             settingsGameRows: <Widget>[
               leaderboardPages.buildVisibilitySwitch(),
             ],
+            settingsReminderRows: <Widget>[
+              ?reminderPages?.buildSettingsRows(),
+            ],
             routes: <RouteBase>[
               _createMonstersRoute(
                 path: AppRoutes.profileMonsters,
@@ -244,6 +249,7 @@ StatefulShellBranch _createProfileBranch({
   required List<RouteBase> routes,
   required GlobalKey<NavigatorState> rootNavigatorKey,
   List<Widget> settingsGameRows = const <Widget>[],
+  List<Widget> settingsReminderRows = const <Widget>[],
 }) {
   return StatefulShellBranch(
     routes: <RouteBase>[
@@ -280,6 +286,7 @@ StatefulShellBranch _createProfileBranch({
                 profileId: profileId,
                 onBack: () => context.go(AppRoutes.profile),
                 gameRows: settingsGameRows,
+                reminderRows: settingsReminderRows,
               );
             },
           ),

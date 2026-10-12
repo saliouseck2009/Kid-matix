@@ -179,3 +179,26 @@ the owner's decision.
 6. **Export compliance (iOS).** Add `ITSAppUsesNonExemptEncryption` = `NO`
    to `Info.plist`, so App Store Connect does not ask the question at every
    upload.
+
+## Update for lot F18 (daily reminder)
+
+The reminder is a local notification scheduled on the phone: still no
+network call.
+
+- New direct packages: `flutter_local_notifications` 22.3.2 (schedules
+  and shows the notification through the system: `AlarmManager` on
+  Android, `UNUserNotificationCenter` on iOS) and `timezone` 0.11.2 (the
+  instant handed to the plugin). Neither talks to a server.
+- Merged Android manifest (debug build, read from
+  `build/app/intermediates/merged_manifests/`): `POST_NOTIFICATIONS` and
+  `VIBRATE`, declared by the plugin, and `RECEIVE_BOOT_COMPLETED`, declared
+  by the app so the scheduled reminders come back after a restart. No
+  `SCHEDULE_EXACT_ALARM` or `USE_EXACT_ALARM`: the reminder uses inexact
+  alarms. `INTERNET` appears only in the debug manifest, as before.
+- `POST_NOTIFICATIONS` is asked only when the reminder is switched on,
+  never at the first launch; on iOS the plugin is initialized without
+  asking. No new Info.plist key is needed.
+- Store forms: no sensitive permission, nothing collected or sent, so the
+  Data safety form and the App Store privacy label are unchanged. The
+  privacy policy and the store notes now say that one permission, the
+  notifications, is asked when the reminder is switched on.

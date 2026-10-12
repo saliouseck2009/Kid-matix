@@ -119,12 +119,17 @@ final class ProfilePages {
     required String profileId,
     required VoidCallback onBack,
     List<Widget> gameRows = const <Widget>[],
+    List<Widget> reminderRows = const <Widget>[],
   }) {
     return BlocProvider<SettingsCubit>(
       create: (_) =>
           SettingsCubit(profileId: profileId, useCases: _settingsUseCases)
             ..load(),
-      child: SettingsPage(onBack: onBack, gameRows: gameRows),
+      child: SettingsPage(
+        onBack: onBack,
+        gameRows: gameRows,
+        reminderRows: reminderRows,
+      ),
     );
   }
 

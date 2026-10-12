@@ -11,6 +11,7 @@ extension ChallengeErrorMessage on AppErrorCode {
       AppErrorCode.validation ||
       AppErrorCode.conflict ||
       AppErrorCode.limitReached ||
+      AppErrorCode.permissionDenied ||
       AppErrorCode.unknown => l10n.errorUnknown,
     };
   }

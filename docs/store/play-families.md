@@ -79,7 +79,7 @@ et doit respecter ses règles. État pour la version 1.0 :
 | Contenu adapté aux enfants | Oui : questions de multiplication, mascotte, monstres dessinés |
 | Pas de publicité, ou SDK publicitaires certifiés Familles | Aucune publicité, aucun SDK publicitaire |
 | SDK tiers conformes aux règles Familles | Aucun SDK tiers qui communique (liste des paquets dans l'audit) |
-| Pas de collecte d'identifiants de l'appareil (identifiant publicitaire, Android ID...) | Aucune collecte ; aucune autorisation demandée |
+| Pas de collecte d'identifiants de l'appareil (identifiant publicitaire, Android ID...) | Aucune collecte ; seule autorisation demandée : les notifications, quand on active le rappel quotidien (F18) |
 | Pas de localisation précise | Aucune |
 | Achats protégés par un contrôle parental | Aucun achat |
 | Liens sortants protégés | Aucun lien vers l'extérieur |
@@ -117,4 +117,4 @@ dans ce formulaire. Voir `docs/release/audit-1.0.md`, point 3.
 | Application de santé | Non |
 | Application d'actualités | Non |
 | Identifiant publicitaire utilisé | Non |
-| Autorisations sensibles (SMS, journal d'appels, localisation en arrière-plan, accès à tous les fichiers...) | Aucune |
+| Autorisations sensibles (SMS, journal d'appels, localisation en arrière-plan, accès à tous les fichiers...) | Aucune (notifications et redémarrage ne sont pas sensibles ; pas d'alarme exacte, F18) |
