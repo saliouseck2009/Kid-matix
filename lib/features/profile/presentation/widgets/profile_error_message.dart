@@ -13,7 +13,9 @@ extension ProfileErrorMessage on AppErrorCode {
       AppErrorCode.limitReached => l10n.profileLimitReached(
         ProfileLimits.maxProfiles,
       ),
-      AppErrorCode.validation || AppErrorCode.unknown => l10n.errorUnknown,
+      AppErrorCode.validation ||
+      AppErrorCode.permissionDenied ||
+      AppErrorCode.unknown => l10n.errorUnknown,
     };
   }
 }

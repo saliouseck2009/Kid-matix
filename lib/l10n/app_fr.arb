@@ -376,6 +376,38 @@
   "@settingsReducedMotion": {
     "description": "Switch of the settings screen that replaces the animations by still screens (\"Reduced motion\")."
   },
+  "settingsReminderSection": "Rappel",
+  "@settingsReminderSection": {
+    "description": "Name of the section of the settings screen holding the daily reminder (\"Reminder\"), mockup 13. Short section header, one line, a noun."
+  },
+  "settingsReminderDaily": "Rappel quotidien",
+  "@settingsReminderDaily": {
+    "description": "Switch of the settings screen that turns the daily reminder notification on or off for the whole phone (\"Daily reminder\"), mockup 13. Off by default; switching it on asks for the notification permission. Switch label: one line, a noun phrase, not a verb."
+  },
+  "settingsReminderTime": "Heure du rappel",
+  "@settingsReminderTime": {
+    "description": "Row of the settings screen showing the time of the daily reminder, such as 17:00; tapping it opens the time picker (\"Reminder time\"), mockup 13. Greyed while the reminder is off."
+  },
+  "settingsReminderPermissionDenied": "Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.",
+  "@settingsReminderPermissionDenied": {
+    "description": "Message shown at the bottom of the settings screen when the phone refuses the notifications after the daily reminder is switched on; the switch goes back off (\"Notifications are blocked. Allow them in the phone settings to get the reminder.\"). Read by a child or a parent, informal \"tu\". Shown in a snack bar, at most 2 lines."
+  },
+  "settingsReminderError": "Oups, le rappel n'a pas pu être réglé.",
+  "@settingsReminderError": {
+    "description": "Message shown at the bottom of the settings screen when the daily reminder cannot be saved or scheduled (\"Oops, the reminder could not be set.\"). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines."
+  },
+  "reminderNotificationBody": "C'est l'heure de tes tables !",
+  "@reminderNotificationBody": {
+    "description": "Message of the daily reminder notification, under the app name; tapping it opens the app (\"It's time for your tables!\"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification."
+  },
+  "reminderChannelName": "Rappel quotidien",
+  "@reminderChannelName": {
+    "description": "Name of the notification category of the daily reminder, shown by Android in the notification settings of the app (\"Daily reminder\"). Short, one line: Android lists it as the title of a notification category. Kept apart from settingsReminderDaily on purpose, though the French is the same."
+  },
+  "reminderChannelDescription": "Te rappelle de jouer chaque jour à l'heure choisie.",
+  "@reminderChannelDescription": {
+    "description": "Description of the notification category of the daily reminder, shown by Android in the notification settings of the app (\"Reminds you to play every day at the chosen time.\"). One short sentence; speaks to the child with the informal \"tu\", though a parent may read it in the phone settings."
+  },
   "settingsPlayerSection": "Ce joueur",
   "@settingsPlayerSection": {
     "description": "Name of the section of the settings screen holding the actions on the player: reset and delete (\"This player\")."

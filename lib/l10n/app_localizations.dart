@@ -490,6 +490,54 @@ abstract class AppLocalizations {
   /// **'Animations réduites'**
   String get settingsReducedMotion;
 
+  /// Name of the section of the settings screen holding the daily reminder ("Reminder"), mockup 13. Short section header, one line, a noun.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rappel'**
+  String get settingsReminderSection;
+
+  /// Switch of the settings screen that turns the daily reminder notification on or off for the whole phone ("Daily reminder"), mockup 13. Off by default; switching it on asks for the notification permission. Switch label: one line, a noun phrase, not a verb.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rappel quotidien'**
+  String get settingsReminderDaily;
+
+  /// Row of the settings screen showing the time of the daily reminder, such as 17:00; tapping it opens the time picker ("Reminder time"), mockup 13. Greyed while the reminder is off.
+  ///
+  /// In fr, this message translates to:
+  /// **'Heure du rappel'**
+  String get settingsReminderTime;
+
+  /// Message shown at the bottom of the settings screen when the phone refuses the notifications after the daily reminder is switched on; the switch goes back off ("Notifications are blocked. Allow them in the phone settings to get the reminder."). Read by a child or a parent, informal "tu". Shown in a snack bar, at most 2 lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.'**
+  String get settingsReminderPermissionDenied;
+
+  /// Message shown at the bottom of the settings screen when the daily reminder cannot be saved or scheduled ("Oops, the reminder could not be set."). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, le rappel n\'a pas pu être réglé.'**
+  String get settingsReminderError;
+
+  /// Message of the daily reminder notification, under the app name; tapping it opens the app ("It's time for your tables!"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est l\'heure de tes tables !'**
+  String get reminderNotificationBody;
+
+  /// Name of the notification category of the daily reminder, shown by Android in the notification settings of the app ("Daily reminder"). Short, one line: Android lists it as the title of a notification category. Kept apart from settingsReminderDaily on purpose, though the French is the same.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rappel quotidien'**
+  String get reminderChannelName;
+
+  /// Description of the notification category of the daily reminder, shown by Android in the notification settings of the app ("Reminds you to play every day at the chosen time."). One short sentence; speaks to the child with the informal "tu", though a parent may read it in the phone settings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Te rappelle de jouer chaque jour à l\'heure choisie.'**
+  String get reminderChannelDescription;
+
   /// Name of the section of the settings screen holding the actions on the player: reset and delete ("This player").
   ///
   /// In fr, this message translates to:

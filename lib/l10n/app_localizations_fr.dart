@@ -290,6 +290,32 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsReducedMotion => 'Animations réduites';
 
   @override
+  String get settingsReminderSection => 'Rappel';
+
+  @override
+  String get settingsReminderDaily => 'Rappel quotidien';
+
+  @override
+  String get settingsReminderTime => 'Heure du rappel';
+
+  @override
+  String get settingsReminderPermissionDenied =>
+      'Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.';
+
+  @override
+  String get settingsReminderError => 'Oups, le rappel n\'a pas pu être réglé.';
+
+  @override
+  String get reminderNotificationBody => 'C\'est l\'heure de tes tables !';
+
+  @override
+  String get reminderChannelName => 'Rappel quotidien';
+
+  @override
+  String get reminderChannelDescription =>
+      'Te rappelle de jouer chaque jour à l\'heure choisie.';
+
+  @override
   String get settingsPlayerSection => 'Ce joueur';
 
   @override
