@@ -510,6 +510,76 @@
   "@quizHintTrueFalse": {
     "description": "Hint in a dashed box under the true and false buttons, asking whether the calculation shown is right (\"Is this calculation right?\"). One or two short lines."
   },
+  "quizFindOperationMultiplication": "Quelle multiplication donne",
+  "@quizFindOperationMultiplication": {
+    "description": "Words at the top of the question card of a \"find the operation\" question in the multiplication domain (\"Which multiplication gives\"). The result follows on its own line in a big yellow box, so the sentence stays open and has no question mark: phrase it so the number can come right after it. One line."
+  },
+  "quizFindOperationSpokenMultiplication": "Quelle multiplication donne {result} ?",
+  "@quizFindOperationSpokenMultiplication": {
+    "description": "What a screen reader says for the question card of a \"find the operation\" question in the multiplication domain (\"Which multiplication gives 24?\"), in place of the words and the result shown. {result} is the product the player must reach. Never shown.",
+    "placeholders": {
+      "result": {
+        "type": "int",
+        "example": "24"
+      }
+    }
+  },
+  "quizHintFindOperation": "Touche la bonne opération",
+  "@quizHintFindOperation": {
+    "description": "Hint in a dashed box under the four operation buttons of a \"find the operation\" question (\"Tap the right operation\"). Imperative verb, speaks to a child with \"tu\"; one or two short lines."
+  },
+  "quizMatchPairsTitle": "Relie chaque opération à son résultat",
+  "@quizMatchPairsTitle": {
+    "description": "Title at the top of a \"match the pairs\" question, in place of the question card, above two columns: four operations and their four results (\"Match each operation with its result\"). Imperative verb, speaks to a child with \"tu\"; two lines at most."
+  },
+  "quizMatchPairsProgress": "{count, plural, =0{Aucune paire trouvée sur {total}} =1{1 paire trouvée sur {total}} other{{count} paires trouvées sur {total}}}",
+  "@quizMatchPairsProgress": {
+    "description": "Line under the title of a \"match the pairs\" question counting the pairs already matched (\"1 pair found out of 4\"); also read aloud by screen readers when it changes. {count} is the number of pairs found, {total} the number of pairs of the question (4). One line.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "quizMatchPairsHintStart": "Touche une opération, puis son résultat",
+  "@quizMatchPairsHintStart": {
+    "description": "Hint in a dashed box under a \"match the pairs\" question before anything is selected (\"Tap an operation, then its result\"). Speaks to a child with \"tu\"; one or two lines."
+  },
+  "quizMatchPairsHintResult": "Touche maintenant le résultat de {operation}",
+  "@quizMatchPairsHintResult": {
+    "description": "Hint in the dashed box under a \"match the pairs\" board once the player has tapped an operation (\"Now tap the result of 5 × 6\"); also read aloud by screen readers. {operation} is the operation as shown on its button, digits and the × sign. Speaks to a child with \"tu\"; one or two lines.",
+    "placeholders": {
+      "operation": {
+        "type": "String",
+        "example": "5 × 6"
+      }
+    }
+  },
+  "quizMatchPairsHintOperation": "Touche maintenant l'opération qui donne {result}",
+  "@quizMatchPairsHintOperation": {
+    "description": "Hint in the dashed box under a \"match the pairs\" board once the player has tapped a result first (\"Now tap the operation that gives 30\"); also read aloud by screen readers. {result} is the number shown on the result button. Speaks to a child with \"tu\"; one or two lines.",
+    "placeholders": {
+      "result": {
+        "type": "String",
+        "example": "30"
+      }
+    }
+  },
+  "quizMatchPairsFound": "{label}, paire trouvée",
+  "@quizMatchPairsFound": {
+    "description": "What a screen reader says for an operation or a result button already matched in a \"match the pairs\" question (\"5 times 6, pair found\"). {label} is the button as spoken words: an operation (\"5 fois 6\") or a number (\"30\"). Never shown.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "5 fois 6"
+      }
+    }
+  },
   "quizTrue": "Vrai",
   "@quizTrue": {
     "description": "Label of the button that says the statement is true (\"True\"). One word."

@@ -291,7 +291,7 @@ void main() {
     });
     test('refuses a question type it does not support', () {
       // Act
-      Question actualBuild() => build('matchPairs');
+      Question actualBuild() => build('drawOnSlate');
       // Assert
       expect(actualBuild, throwsArgumentError);
     });

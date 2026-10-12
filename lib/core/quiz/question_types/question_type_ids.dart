@@ -1,4 +1,4 @@
-/// Identifiers of the question types of version 1.0.
+/// Identifiers of the question types.
 abstract final class QuestionTypeIds {
   /// Pick the result among four numbers: `7 × 8 = ?`.
   static const String multipleChoice = 'multipleChoice';
@@ -11,4 +11,10 @@ abstract final class QuestionTypeIds {
 
   /// Say whether a statement is true: `6 × 7 = 48`.
   static const String trueFalse = 'trueFalse';
+
+  /// Pick the operation that gives a result: `? = 24`, version 1.1.
+  static const String findOperation = 'findOperation';
+
+  /// Match 4 operations with their 4 results, version 1.1.
+  static const String matchPairs = 'matchPairs';
 }

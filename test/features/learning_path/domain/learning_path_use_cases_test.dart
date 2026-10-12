@@ -69,7 +69,14 @@ void main() {
       final QuizSpec actualSpec = specOf('mul:5', StageKind.speed);
       // Assert
       expect(actualSpec.baseTimeLimit, const Duration(seconds: 10));
-      expect(actualSpec.questionTypeIds, hasLength(4));
+      expect(actualSpec.questionTypeIds, hasLength(6));
+      expect(
+        actualSpec.questionTypeIds,
+        containsAll(<String>[
+          QuestionTypeIds.findOperation,
+          QuestionTypeIds.matchPairs,
+        ]),
+      );
     });
     test('mixes 15 questions of the tables seen in a review', () {
       // Act
@@ -77,6 +84,7 @@ void main() {
       // Assert
       expect(actualSpec.questionCount, 15);
       expect(actualSpec.selection, QuizSelection.mastery);
+      expect(actualSpec.questionTypeIds, hasLength(4));
       expect(actualSpec.itemKeys, hasLength(30));
       expect(
         actualSpec.itemKeys.map((String key) => key.split('x').first).toSet(),
@@ -90,7 +98,14 @@ void main() {
       // Assert
       expect(actualFirst.isBossFight, isTrue);
       expect(actualFirst.baseTimeLimit, const Duration(seconds: 8));
-      expect(actualFirst.questionTypeIds, hasLength(4));
+      expect(actualFirst.questionTypeIds, hasLength(6));
+      expect(
+        actualFirst.questionTypeIds,
+        containsAll(<String>[
+          QuestionTypeIds.findOperation,
+          QuestionTypeIds.matchPairs,
+        ]),
+      );
       expect(actualFirst.followUpQuestionCount, 10);
       expect(actualFirst.followUpItemKeys, actualFirst.itemKeys);
       expect(actualFifth.itemKeys.first, 'mul:5x1');

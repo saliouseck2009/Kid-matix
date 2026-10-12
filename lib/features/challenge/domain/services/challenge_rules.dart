@@ -9,13 +9,21 @@ abstract final class ChallengeRules {
   /// Time per question of the free training with the normal timer.
   static const Duration trainingTimeLimit = Duration(seconds: 10);
 
-  /// Question types of the free training: the mastery engine picks among
-  /// them by box.
-  static const List<String> trainingQuestionTypeIds = <String>[
+  /// The four question types of version 1.0: the mastery engine picks
+  /// among them by box.
+  static const List<String> versionOneQuestionTypeIds = <String>[
     QuestionTypeIds.multipleChoice,
     QuestionTypeIds.trueFalse,
     QuestionTypeIds.typedAnswer,
     QuestionTypeIds.missingNumber,
+  ];
+
+  /// Question types of the free training: every format, the mastery
+  /// engine picks among them by box (lot F15).
+  static const List<String> trainingQuestionTypeIds = <String>[
+    ...versionOneQuestionTypeIds,
+    QuestionTypeIds.findOperation,
+    QuestionTypeIds.matchPairs,
   ];
 
   /// Time to play a time attack.
@@ -60,7 +68,7 @@ abstract final class ChallengeRules {
   /// Question types of the daily review: the mastery engine picks among
   /// them by box.
   static const List<String> dailyReviewQuestionTypeIds =
-      trainingQuestionTypeIds;
+      versionOneQuestionTypeIds;
 
   /// Questions of a monster hunt: each monster twice, completed like a
   /// daily review (owner's choice).
@@ -69,5 +77,5 @@ abstract final class ChallengeRules {
   /// Question types of a monster hunt: the mastery engine picks among
   /// them by box, as in the daily review.
   static const List<String> monsterHuntQuestionTypeIds =
-      trainingQuestionTypeIds;
+      versionOneQuestionTypeIds;
 }

@@ -36,6 +36,7 @@ void _registerUseCases(GetIt sl) {
   sl.registerLazySingleton<BuildQuizUseCase>(
     () => BuildQuizUseCase(
       domains: sl(),
+      questionTypes: sl(),
       mastery: sl(),
       generator: sl(),
       random: sl(),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
+import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_feedback.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_answer_button.dart';
 
-/// The four answers of a multiple choice question, two by two.
+/// The four answers of a multiple choice question, two by two: numbers,
+/// or operations for a "find the operation" question.
 class MultipleChoiceAnswers extends StatelessWidget {
   /// Creates the grid of [choices].
   const MultipleChoiceAnswers({
@@ -39,7 +42,12 @@ class MultipleChoiceAnswers extends StatelessWidget {
                   in choices.skip(start).take(_columnCount))
                 Expanded(
                   child: QuizAnswerButton(
-                    label: _describe(choice),
+                    label: describeAnswer(choice),
+                    semanticLabel: switch (choice) {
+                      OperationAnswer(:final operation) =>
+                        operation.toSpokenText(context.l10n),
+                      _ => null,
+                    },
                     feedback: feedbackOf(choice),
                     onTap: onPicked == null ? null : () => onPicked!(choice),
                   ),
@@ -50,10 +58,12 @@ class MultipleChoiceAnswers extends StatelessWidget {
     );
   }
 
-  static String _describe(Answer answer) {
+  /// Text of an answer button: `35` or `4 × 6`.
+  static String describeAnswer(Answer answer) {
     return switch (answer) {
       NumberAnswer(:final int value) => '$value',
-      BooleanAnswer() => '',
+      OperationAnswer(:final operation) => operation.toDisplayText(),
+      BooleanAnswer() || PairsAnswer() => '',
     };
   }
 }

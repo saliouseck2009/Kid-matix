@@ -22,8 +22,9 @@ middle of one). Last update: 2026-10-12.
 | F12 · Daily review and Survival | **Done** (closed 2026-10-12) |
 | F13 · My monsters | **Done** (closed 2026-10-12) |
 | F14 · Duel on one phone | **Done** (closed 2026-10-12) |
-| F15 · New question formats | **Next** (in progress on its own branch) |
-| F16 – F21 | Not started |
+| F15 · New question formats | **Done** (closed 2026-10-12) |
+| F16 · Placement test | **Next** |
+| F17 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -517,6 +518,36 @@ the empty-screen text, "Voir mes petits monstres", the screen-reader
 texts of the monsters, the progress bar at box / 4, dark horns, no
 celebration when a monster is tamed (mastery keeps no history).
 
+## F15 closure
+
+- Two question types registered in the registry, no change to `QuizBloc`:
+  "Trouver l'opération" (`findOperation`, `? = 24`, 4 operations, one
+  right) and "Relier les paires" (`matchPairs`, 4 operations and their 4
+  results). Both are recognized answers (box 3 cap). They join the speed
+  stage, the boss fight and free training.
+- The match-pairs interaction lives in its answer widget, which submits
+  one `PairsAnswer` (the facts missed) through the existing
+  `AnswerSubmitted` event. `SubmitAnswerUseCase` records each pair in the
+  mastery; `QuizRun` doubles the time of a match-pairs question through
+  the time factor of its type. Rules in `docs/decisions.md`.
+- `bash tool/check.sh`: every step OK (805 tests); coverage thresholds
+  met (`quiz/domain` 100 %, `multiplication/domain` 94.6 %).
+- Checked on the Android emulator (API 36) in free training (same quiz
+  screen as the stages; the test profile had no speed stage open): "Quelle
+  multiplication donne 5" with four operations; then a match-pairs board
+  of the table of 6, a wrong pair turned red with the operation still
+  selected, the four pairs matched green and "Presque !" named 6 × 8 = 48.
+  That both formats are drawn in the speed stage and the boss fight is
+  covered by tests; to try on the phone.
+
+Texts and choices waiting for the owner: "Quelle multiplication donne",
+"Touche la bonne opération", "Relie chaque opération à son résultat",
+"{n} paire(s) trouvée(s) sur 4", "Touche une opération, puis son
+résultat", "Touche maintenant le résultat de 5 × 6", "Touche maintenant
+l'opération qui donne 30"; the pairs drawn in the table of the fact
+asked; the selection kept after a wrong pair; the 4 facts counted as
+missed when the time runs out.
+
 ## F14 closure
 
 - `bash tool/check.sh`: every step OK (815 tests); coverage thresholds
@@ -551,8 +582,6 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Next: F15, then F16
+## Starting F16
 
-F15 (new question formats) is being built on its own branch
-(`feat/f15-question-formats`); F16 (placement test) follows. Tasks in
-`docs/product/task-breakdown.md`.
+Tasks in the F16 section of `docs/product/task-breakdown.md`.

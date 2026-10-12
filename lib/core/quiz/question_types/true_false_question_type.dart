@@ -16,6 +16,9 @@ final class TrueFalseQuestionType implements QuestionType {
   AnswerNature get answerNature => AnswerNature.recognized;
 
   @override
+  int get timeFactor => 1;
+
+  @override
   bool isCorrect({required Question question, required Answer answer}) {
     return answer == question.expectedAnswer;
   }

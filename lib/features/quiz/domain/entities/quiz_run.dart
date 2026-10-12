@@ -29,7 +29,9 @@ final class QuizRun {
     this.boss,
     this.lives,
     this.timeSchedule,
+    Map<String, int> timeFactors = const <String, int>{},
   }) : questionTypeIds = List<String>.unmodifiable(questionTypeIds),
+       timeFactors = Map<String, int>.unmodifiable(timeFactors),
        queue = List<QuizTurn>.unmodifiable(queue),
        answers = List<QuizAnswerEntity>.unmodifiable(answers);
 
@@ -66,6 +68,10 @@ final class QuizRun {
 
   /// Mistakes the player may make, or `null` for a quiz without lives.
   final int? lives;
+
+  /// How many times the time per question each question type gets, by
+  /// type identifier; a type left out gets the time once.
+  final Map<String, int> timeFactors;
 
   /// Time to play the whole quiz, or `null` when it ends with its last
   /// question.
@@ -111,8 +117,19 @@ final class QuizRun {
   }
 
   /// Time to answer the current question, or `null` without a timer.
-  Duration? get currentTimeLimit =>
-      timeSchedule?.limitAfter(correctCount) ?? timeLimit;
+  Duration? get currentTimeLimit {
+    final QuizTurn? turn = currentTurn;
+    return turn == null ? null : timeLimitOf(turn, correctCount);
+  }
+
+  /// Time to answer [turn] after [correctBefore] right answers, scaled by
+  /// the time factor of its question type; `null` without a timer.
+  Duration? timeLimitOf(QuizTurn turn, int correctBefore) {
+    final Duration? limit =
+        timeSchedule?.limitAfter(correctBefore) ?? timeLimit;
+    if (limit == null) return null;
+    return limit * (timeFactors[turn.question.questionTypeId] ?? 1);
+  }
 
   /// Answers that count in the score: every answer of a boss fight or of
   /// a non-stop quiz, second chances excluded otherwise.
@@ -184,6 +201,7 @@ final class QuizRun {
       sourceKey: sourceKey,
       lives: lives,
       timeSchedule: timeSchedule,
+      timeFactors: timeFactors,
       boss: boss ?? this.boss,
       queue: queue ?? this.queue,
       answers: answers ?? this.answers,

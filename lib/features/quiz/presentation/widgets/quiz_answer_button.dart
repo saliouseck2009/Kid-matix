@@ -17,6 +17,7 @@ class QuizAnswerButton extends StatelessWidget {
     this.feedback = AnswerFeedback.none,
     this.height = defaultHeight,
     this.semanticLabel,
+    this.isSelected = false,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class QuizAnswerButton extends StatelessWidget {
   static const double _depth = 7;
   static const double _radius = 22;
   static const double _iconSize = 30;
+  static const double _selectedBorderWidth = 4;
 
   /// Text of the button; may be empty for an icon-only key.
   final String label;
@@ -45,13 +47,20 @@ class QuizAnswerButton extends StatelessWidget {
   /// Label for screen readers when [label] alone is not enough.
   final String? semanticLabel;
 
+  /// Whether the player picked the button and the next tap completes the
+  /// choice, as the first side of a pair: tinted with a thick border.
+  final bool isSelected;
+
   @override
   Widget build(BuildContext context) {
     final _ButtonColors colors = _resolveColors(context);
     final BorderRadius radius = BorderRadius.circular(_radius);
     return Semantics(
       button: true,
+      selected: isSelected,
       label: semanticLabel,
+      // The label replaces the button's own semantics, its tap included.
+      onTap: semanticLabel == null ? null : onTap,
       excludeSemantics: semanticLabel != null,
       child: Container(
         height: height,
@@ -61,7 +70,10 @@ class QuizAnswerButton extends StatelessWidget {
           color: colors.face,
           shape: RoundedRectangleBorder(
             borderRadius: radius,
-            side: BorderSide(color: colors.edge, width: AppSizes.borderWidth),
+            side: BorderSide(
+              color: colors.edge,
+              width: isSelected ? _selectedBorderWidth : AppSizes.borderWidth,
+            ),
           ),
           child: InkWell(
             onTap: onTap,
@@ -88,6 +100,11 @@ class QuizAnswerButton extends StatelessWidget {
   _ButtonColors _resolveColors(BuildContext context) {
     final AppFeedbackPalette palette = context.feedbackPalette;
     return switch (feedback) {
+      AnswerFeedback.none when isSelected => (
+        face: context.palette.tint,
+        edge: Theme.of(context).colorScheme.primary,
+        content: Theme.of(context).colorScheme.onSurface,
+      ),
       AnswerFeedback.none => (
         face: Theme.of(context).colorScheme.surface,
         edge: context.palette.border,
