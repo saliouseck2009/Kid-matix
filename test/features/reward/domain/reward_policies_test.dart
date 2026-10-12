@@ -34,6 +34,7 @@ BadgeFacts _facts({
   Set<String> crowned = const <String>{},
   int mastered = 0,
   int timeAttackScore = 0,
+  int survivalScore = 0,
 }) {
   return BadgeFacts(
     isStageCompleted: isStageCompleted,
@@ -44,6 +45,7 @@ BadgeFacts _facts({
     masteredItemCount: mastered,
     itemCount: 120,
     timeAttackScore: timeAttackScore,
+    survivalScore: survivalScore,
   );
 }
 
@@ -267,6 +269,7 @@ void main() {
           ),
           'Éclair': (_facts(lightning: 20), BadgeKey.lightning),
           'Sprinter': (_facts(timeAttackScore: 20), BadgeKey.sprinter),
+          'Survivant': (_facts(survivalScore: 30), BadgeKey.survivor),
           'Régulier': (_facts(streak: 7), BadgeKey.regular),
           'Dompteur de la table de 7': (
             _facts(crowned: <String>{'mul:7'}),
@@ -294,6 +297,7 @@ void main() {
           streak: 6,
           mastered: 119,
           timeAttackScore: 19,
+          survivalScore: 29,
         ),
         unlocked: const <String>{},
       );

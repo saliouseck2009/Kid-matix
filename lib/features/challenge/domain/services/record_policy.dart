@@ -7,7 +7,10 @@ final class RecordPolicy {
   const RecordPolicy();
 
   /// Modes that keep a record: the score is their right answers.
-  static const Set<QuizMode> recordModes = <QuizMode>{QuizMode.timeAttack};
+  static const Set<QuizMode> recordModes = <QuizMode>{
+    QuizMode.timeAttack,
+    QuizMode.survival,
+  };
 
   /// The record set by a completed quiz of [mode] with [score] right
   /// answers, or `null` when it beats nothing: a mode without records, no

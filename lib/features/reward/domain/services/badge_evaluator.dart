@@ -2,8 +2,6 @@ import 'package:kid_matix/features/reward/domain/entities/badge_facts.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_key.dart';
 
 /// Decides which badges a completed quiz unlocks.
-///
-/// Survivant comes with lot F12.
 final class BadgeEvaluator {
   /// Creates the evaluator.
   const BadgeEvaluator();
@@ -13,6 +11,9 @@ final class BadgeEvaluator {
 
   /// Right answers in one time attack of the Sprinter badge.
   static const int timeAttackScoreForBadge = 20;
+
+  /// Right answers in one survival game of the Survivant badge.
+  static const int survivalScoreForBadge = 30;
 
   /// Streak of the Régulier badge.
   static const int streakForBadge = 7;
@@ -29,6 +30,7 @@ final class BadgeEvaluator {
       if (facts.lightningAnswerCount >= lightningAnswersForBadge)
         BadgeKey.lightning,
       if (facts.timeAttackScore >= timeAttackScoreForBadge) BadgeKey.sprinter,
+      if (facts.survivalScore >= survivalScoreForBadge) BadgeKey.survivor,
       if (facts.streak >= streakForBadge) BadgeKey.regular,
       for (final String unitKey in facts.crownedUnitKeys)
         BadgeKey.tamerOf(unitKey),
