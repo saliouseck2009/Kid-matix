@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kid_matix/core/entities/player_identity.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
@@ -16,6 +19,7 @@ import 'package:kid_matix/features/profile/presentation/pages/profile_tab_page.d
 import 'package:kid_matix/features/profile/presentation/pages/settings_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/who_is_playing_page.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/player_badge.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/reduced_motion_scope.dart';
 
 /// Builds the pages of the profile feature for the router.
@@ -61,6 +65,20 @@ final class ProfilePages {
       create: (_) =>
           ProfileTabCubit(profileId: profileId, useCases: _tabUseCases)..load(),
       child: const PlayerBadge(),
+    );
+  }
+
+  /// The avatar of [player], [size] wide; the first avatar or color
+  /// stands in for an unknown name.
+  Widget buildAvatar({required PlayerIdentity player, required double size}) {
+    return ProfileAvatarView(
+      avatar:
+          ProfileAvatar.values.asNameMap()[player.avatarKey] ??
+          ProfileAvatar.values.first,
+      color:
+          ProfileColor.values.asNameMap()[player.colorKey] ??
+          ProfileColor.values.first,
+      size: size,
     );
   }
 

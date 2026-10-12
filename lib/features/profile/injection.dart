@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/core/services/player_directory_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source.dart';
@@ -7,6 +8,7 @@ import 'package:kid_matix/features/profile/data/datasources/profile_local_data_s
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
+import 'package:kid_matix/features/profile/domain/services/player_directory_service_impl.dart';
 import 'package:kid_matix/features/profile/domain/services/player_settings_service_impl.dart';
 import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
@@ -31,6 +33,9 @@ void registerProfileFeature(GetIt sl) {
   _registerUseCases(sl);
   sl.registerLazySingleton<PlayerSettingsService>(
     () => PlayerSettingsServiceImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<PlayerDirectoryService>(
+    () => PlayerDirectoryServiceImpl(getProfiles: sl()),
   );
   sl.registerLazySingleton<ProfileSessionService>(
     () => ProfileSessionServiceImpl(getSession: sl(), watchChanges: sl()),
