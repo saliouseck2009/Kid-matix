@@ -14,4 +14,7 @@ enum QuizMode {
   /// Survival: a few lives, and less time per question as the right
   /// answers add up.
   survival,
+
+  /// Daily review: the facts the mastery engine picks for the player.
+  dailyReview,
 }

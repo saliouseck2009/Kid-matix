@@ -638,6 +638,10 @@
       }
     }
   },
+  "quizModeDailyReview": "Révision du jour",
+  "@quizModeDailyReview": {
+    "description": "Name of the daily review (10 questions on the facts the player should review), shown as the title of its card on the challenges screen and under the results title (\"Daily review\")."
+  },
   "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
   "@quizScoreSpoken": {
     "description": "Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.",
@@ -1545,6 +1549,30 @@
   "challengeTimeAttackSubtitle": "60 secondes, un maximum de réponses",
   "@challengeTimeAttackSubtitle": {
     "description": "Line under \"Contre-la-montre\" on its card of the challenges screen (\"60 seconds, as many answers as you can\")."
+  },
+  "challengeDailyReviewSubtitle": "{count, plural, =1{1 question choisie pour toi} other{{count} questions choisies pour toi}}",
+  "@challengeDailyReviewSubtitle": {
+    "description": "Line under \"Révision du jour\" on its card of the challenges screen (\"10 questions chosen for you\"). Talks to the child (informal tu).",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "challengeDailyReviewDue": "{count, plural, other{{count} à revoir}}",
+  "@challengeDailyReviewDue": {
+    "description": "Yellow pill at the end of the daily review card: number of facts whose review date has passed (\"8 to review\"). Short; hidden when no fact is due.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "challengeDailyReviewLocked": "Joue d'abord une étape du parcours",
+  "@challengeDailyReviewLocked": {
+    "description": "Line under \"Révision du jour\" on its greyed-out card while the player has never been asked a fact (\"Play a stage of the path first\"). Talks to the child (informal tu)."
   },
   "resultsNewRecord": "Nouveau record !",
   "@resultsNewRecord": {

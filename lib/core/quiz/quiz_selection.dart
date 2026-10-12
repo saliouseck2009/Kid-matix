@@ -9,4 +9,8 @@ enum QuizSelection {
 
   /// Every item once, in a random order.
   shuffled,
+
+  /// The mastery engine picks the items to review: the overdue first,
+  /// then the least known, each once, with the formats fit for its box.
+  review,
 }

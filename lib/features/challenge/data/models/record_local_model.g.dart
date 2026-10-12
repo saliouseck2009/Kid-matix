@@ -35,4 +35,5 @@ const _$QuizModeEnumMap = {
   QuizMode.path: 'path',
   QuizMode.timeAttack: 'timeAttack',
   QuizMode.survival: 'survival',
+  QuizMode.dailyReview: 'dailyReview',
 };

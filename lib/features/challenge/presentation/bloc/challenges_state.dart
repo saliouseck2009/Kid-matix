@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
 import 'package:meta/meta.dart';
@@ -19,13 +20,20 @@ final class ChallengesLoading extends ChallengesState {
 /// The challenges of the player and their records.
 final class ChallengesLoaded extends ChallengesState {
   /// Creates the state.
-  const ChallengesLoaded({required this.timeAttack, required this.records});
+  const ChallengesLoaded({
+    required this.timeAttack,
+    required this.records,
+    required this.review,
+  });
 
   /// The time attack to play.
   final TimeAttackSource timeAttack;
 
   /// Best score by mode; a mode never played has none.
   final Map<QuizMode, RecordEntity> records;
+
+  /// What the daily review holds.
+  final ReviewOverview review;
 }
 
 /// The challenges could not be read.

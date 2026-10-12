@@ -111,7 +111,7 @@ final class ChallengePages {
   ChallengeOrigin? originOf(String? sourceKey) {
     return switch (ChallengeSource.tryParse(sourceKey)) {
       TrainingSource() => ChallengeOrigin.training,
-      TimeAttackSource() => ChallengeOrigin.challenges,
+      TimeAttackSource() || DailyReviewSource() => ChallengeOrigin.challenges,
       null => null,
     };
   }
