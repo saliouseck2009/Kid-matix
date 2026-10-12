@@ -28,6 +28,14 @@ abstract final class AppRoutes {
   /// screen.
   static const String duel = '/challenges/duel';
 
+  /// « J'ai un code »: the entry of a challenge code, opened from the
+  /// [challenges] tab, full screen.
+  static const String challengeCodeEntry = '/challenges/code';
+
+  /// « Défier un ami »: the challenge code given as path parameter, then
+  /// the entry of a code, full screen.
+  static const String challengeCode = '/challenges/code/:$codeParameter';
+
   /// « Mes monstres », opened from the [profile] tab.
   static const String profileMonsters = '/profile/monsters';
 
@@ -58,6 +66,9 @@ abstract final class AppRoutes {
   /// Name of the source parameter of [play].
   static const String sourceKeyParameter = 'sourceKey';
 
+  /// Name of the code parameter of [challengeCode].
+  static const String codeParameter = 'code';
+
   /// Name of the session parameter of [quizResults].
   static const String sessionIdParameter = 'sessionId';
 
@@ -77,6 +88,11 @@ abstract final class AppRoutes {
   /// Path of the quiz played for [sourceKey].
   static String playOf(String sourceKey) {
     return '/play/${Uri.encodeComponent(sourceKey)}';
+  }
+
+  /// Path of « Défier un ami » showing the challenge [code].
+  static String challengeCodeOf(String code) {
+    return '$challengeCodeEntry/${Uri.encodeComponent(code)}';
   }
 
   /// Path of the results of [sessionId].

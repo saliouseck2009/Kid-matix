@@ -145,6 +145,7 @@ void main() {
             onPlay: played.add,
             onOpenMonsters: () => played.add('monsters'),
             onOpenDuel: () => played.add('duel'),
+            onOpenCode: () => played.add('code'),
           ),
         ),
       );
@@ -222,7 +223,7 @@ void main() {
       await tester.tap(find.text('Chasse aux monstres'));
       // Assert
       expect(find.text('3 monstres à apprivoiser'), findsOneWidget);
-      expect(find.byIcon(Icons.chevron_right_rounded), findsNWidgets(2));
+      expect(find.byIcon(Icons.chevron_right_rounded), findsNWidgets(3));
       expect(played, <String>['monsters']);
     });
     testWidgets('opens the duel from its card', (WidgetTester tester) async {
@@ -235,6 +236,19 @@ void main() {
       expect(find.text('2\u00a0joueurs, 1\u00a0téléphone'), findsOneWidget);
       expect(find.byIcon(Icons.swap_vert_rounded), findsOneWidget);
       expect(played, <String>['duel']);
+    });
+    testWidgets('opens the code entry from its dashed card', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(tester);
+      // Act
+      await tester.ensureVisible(find.text("J'ai un code"));
+      await tester.tap(find.text("J'ai un code"));
+      // Assert
+      expect(find.text("Rejoue le défi d'un ami"), findsOneWidget);
+      expect(find.byIcon(Icons.tag_rounded), findsOneWidget);
+      expect(played, <String>['code']);
     });
     testWidgets('says when no monster waits', (WidgetTester tester) async {
       // Act
@@ -307,6 +321,7 @@ void main() {
             onPlay: (_) {},
             onOpenMonsters: () {},
             onOpenDuel: () {},
+            onOpenCode: () {},
           ),
         ),
       );

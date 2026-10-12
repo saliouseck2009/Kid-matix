@@ -15,6 +15,7 @@ import '../helpers/test_mastery_pages.dart';
 import '../helpers/test_path_pages.dart';
 import '../helpers/test_quiz_pages.dart';
 import '../helpers/test_reward_pages.dart';
+import '../helpers/test_code_challenge_pages.dart';
 import '../helpers/test_duel_pages.dart';
 
 /// A small phone: 360 x 740 points.
@@ -48,6 +49,7 @@ void main() {
       mascotPages: mascotPages,
       challengePages: buildTestChallengePages(),
       duelPages: buildTestDuelPages(),
+      codePages: buildTestCodeChallengePages(),
       masteryPages: buildTestMasteryPages(
         repository: InMemoryItemProgressRepository(<ItemProgressEntity>[
           for (int multiplier = 1; multiplier <= 10; multiplier++)

@@ -13,6 +13,7 @@ class DepthButton extends StatelessWidget {
     required this.onPressed,
     this.variant = DepthButtonVariant.primary,
     this.caption,
+    this.icon,
     super.key,
   });
 
@@ -22,6 +23,9 @@ class DepthButton extends StatelessWidget {
   /// A smaller second line under [label], such as "10 questions", or
   /// `null`.
   final String? caption;
+
+  /// Icon before [label], or `null`.
+  final IconData? icon;
 
   /// Called when the player taps the button.
   final VoidCallback? onPressed;
@@ -44,6 +48,7 @@ class DepthButton extends StatelessWidget {
         child: _DepthButtonFace(
           label: label,
           caption: caption,
+          icon: icon,
           onPressed: onPressed,
           faceColor: colors.face,
           labelColor: colors.label,
@@ -82,6 +87,12 @@ class DepthButton extends StatelessWidget {
         label: feedback.onFeedback,
         outline: null,
       ),
+      DepthButtonVariant.accent => (
+        face: colorScheme.secondary,
+        depth: palette.secondaryDepth,
+        label: colorScheme.onSecondary,
+        outline: null,
+      ),
     };
   }
 }
@@ -93,6 +104,7 @@ class _DepthButtonFace extends StatelessWidget {
   const _DepthButtonFace({
     required this.label,
     required this.caption,
+    required this.icon,
     required this.onPressed,
     required this.faceColor,
     required this.labelColor,
@@ -104,6 +116,7 @@ class _DepthButtonFace extends StatelessWidget {
 
   final String label;
   final String? caption;
+  final IconData? icon;
   final VoidCallback? onPressed;
   final Color faceColor;
   final Color labelColor;
@@ -134,11 +147,7 @@ class _DepthButtonFace extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: textTheme.titleLarge?.copyWith(color: labelColor),
-              ),
+              _DepthButtonLabel(label: label, icon: icon, color: labelColor),
               if (caption != null)
                 Text(
                   caption,
@@ -152,6 +161,38 @@ class _DepthButtonFace extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The label of a [DepthButton], after its icon when it has one.
+class _DepthButtonLabel extends StatelessWidget {
+  const _DepthButtonLabel({
+    required this.label,
+    required this.icon,
+    required this.color,
+  });
+
+  final String label;
+  final IconData? icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget text = Text(
+      label,
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
+    );
+    final IconData? icon = this.icon;
+    if (icon == null) return text;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: AppSizes.space8,
+      children: <Widget>[
+        Icon(icon, color: color),
+        Flexible(child: text),
+      ],
     );
   }
 }

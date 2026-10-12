@@ -75,12 +75,14 @@ final class ChallengePages {
   }
 
   /// The challenges tab of [profileId]; [onPlay] plays a source key,
-  /// [onOpenMonsters] opens « Mes monstres » and [onOpenDuel] the duel.
+  /// [onOpenMonsters] opens « Mes monstres », [onOpenDuel] the duel and
+  /// [onOpenCode] the entry of a challenge code.
   Widget buildChallengesPage({
     required String profileId,
     required ValueChanged<String> onPlay,
     required VoidCallback onOpenMonsters,
     required VoidCallback onOpenDuel,
+    required VoidCallback onOpenCode,
   }) {
     return BlocProvider<ChallengesCubit>(
       key: ValueKey<String>('challenges-$profileId'),
@@ -90,6 +92,7 @@ final class ChallengePages {
         onPlay: (ChallengeSource source) => onPlay(source.toKey()),
         onOpenMonsters: onOpenMonsters,
         onOpenDuel: onOpenDuel,
+        onOpenCode: onOpenCode,
       ),
     );
   }
@@ -134,7 +137,8 @@ final class ChallengePages {
       TrainingSource() => ChallengeOrigin.training,
       TimeAttackSource() ||
       SurvivalSource() ||
-      DailyReviewSource() => ChallengeOrigin.challenges,
+      DailyReviewSource() ||
+      CodeChallengeSource() => ChallengeOrigin.challenges,
       MonsterHuntSource(:final bool isFromProfile) =>
         isFromProfile
             ? ChallengeOrigin.profileMonsters

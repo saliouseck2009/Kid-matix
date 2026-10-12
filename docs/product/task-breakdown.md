@@ -584,13 +584,13 @@ Une notification locale rappelle à l'enfant de jouer, à l'heure choisie.
 
 Un joueur partage un code ; un ami rejoue exactement les mêmes questions sur un autre téléphone, sans réseau.
 
-- [ ] **F19-01** Format du code, une dizaine de caractères : tables choisies, mode, graine du tirage, score à battre, version du générateur, caractère de contrôle.
-- [ ] **F19-02** Cas d'usage `EncodeChallengeCode` et `BuildQuizFromCode`.
-- [ ] **F19-03** Générateur de questions figé par version : une même graine donne les mêmes questions sur tout téléphone.
-- [ ] **F19-04** Bouton « Défier un ami » en fin d'Entraînement libre et de Contre-la-montre ; affichage et copie du code.
-- [ ] **F19-05** Saisie d'un code dans l'écran Défis, avec un message clair si le code est invalide ou d'une version inconnue.
-- [ ] **F19-06** Écran de comparaison des deux scores. Maquette : `21-challenge-score.png`.
-- [ ] **F19-07** Tests : encodage puis décodage, code altéré refusé, mêmes questions pour un même code.
+- [x] **F19-01** Format du code, une dizaine de caractères : tables choisies, mode, graine du tirage, score à battre, version du générateur, caractère de contrôle.
+- [x] **F19-02** Cas d'usage `EncodeChallengeCode` et `BuildQuizFromCode`.
+- [x] **F19-03** Générateur de questions figé par version : une même graine donne les mêmes questions sur tout téléphone.
+- [x] **F19-04** Bouton « Défier un ami » en fin d'Entraînement libre et de Contre-la-montre ; affichage et copie du code.
+- [x] **F19-05** Saisie d'un code dans l'écran Défis, avec un message clair si le code est invalide ou d'une version inconnue.
+- [x] **F19-06** Écran de comparaison des deux scores. Maquette : `21-challenge-score.png`.
+- [x] **F19-07** Tests : encodage puis décodage, code altéré refusé, mêmes questions pour un même code.
 
 **Terminé quand :** un code créé sur un téléphone donne les mêmes questions sur un second, qui affiche les deux scores.
 

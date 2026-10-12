@@ -817,6 +817,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rewardXpEarnedLabel => 'XP gagnés';
 
   @override
+  String rewardXpEarnedInline(int xp) {
+    return '+$xp XP';
+  }
+
+  @override
   String rewardLevel(int level) {
     return 'Niveau $level';
   }
@@ -1227,6 +1232,154 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get challengeDuelSubtitle => '2 joueurs, 1 téléphone';
+
+  @override
+  String get challengeCodeCardTitle => 'J\'ai un code';
+
+  @override
+  String get challengeCodeCardSubtitle => 'Rejoue le défi d\'un ami';
+
+  @override
+  String get challengeShareButton => 'Défier un ami';
+
+  @override
+  String get challengeCodeToBeat => 'à battre';
+
+  @override
+  String get challengeCodeYours => 'Ton code de défi';
+
+  @override
+  String challengeCodeSemantics(String characters) {
+    return 'Code de défi : $characters';
+  }
+
+  @override
+  String get challengeCodeCopy => 'Copier le code';
+
+  @override
+  String get challengeCodeCopied => 'Code copié !';
+
+  @override
+  String get challengeCodeShareHint =>
+      'Donne ce code à un ami : même mode, mêmes tables, et ton score à battre !';
+
+  @override
+  String get challengeCodeOr => 'ou';
+
+  @override
+  String get challengeCodeEntryTitle => 'Tu as reçu un code ?';
+
+  @override
+  String get challengeCodeEntryHint => 'ÉCRIS LE CODE ICI';
+
+  @override
+  String get challengeCodePlay => 'Jouer ce défi';
+
+  @override
+  String get challengeCodeErrorMalformed =>
+      'Ce code n\'existe pas. Un code a 10 lettres et chiffres.';
+
+  @override
+  String get challengeCodeErrorAltered =>
+      'Une lettre ou un chiffre ne va pas. Vérifie le code avec ton ami.';
+
+  @override
+  String get challengeCodeErrorVersion =>
+      'Ce défi vient d\'une version plus récente de l\'app. Mets l\'app à jour pour le jouer.';
+
+  @override
+  String get challengeCodeTablesAll => 'toutes les tables';
+
+  @override
+  String challengeCodeTablesOne(int table) {
+    return 'table de $table';
+  }
+
+  @override
+  String challengeCodeTableItem(int table) {
+    return 'de $table';
+  }
+
+  @override
+  String challengeCodeTablesMany(String first, String last) {
+    return 'tables $first et $last';
+  }
+
+  @override
+  String get challengeCodeCardTablesAll => 'Toutes les tables';
+
+  @override
+  String challengeCodeCardTablesOne(int table) {
+    return 'Table de $table';
+  }
+
+  @override
+  String challengeCodeCardTablesMany(String first, String last) {
+    return 'Tables $first et $last';
+  }
+
+  @override
+  String challengeCodeSubtitle(String mode, String tables) {
+    return '$mode · $tables';
+  }
+
+  @override
+  String get challengeOutcomeWon => 'Défi gagné !';
+
+  @override
+  String get challengeOutcomeLost => 'Pas cette fois !';
+
+  @override
+  String get challengeOutcomeTie => 'Égalité !';
+
+  @override
+  String get challengeOutcomeToBeat => 'Score à battre';
+
+  @override
+  String get challengeOutcomeYours => 'Ton score';
+
+  @override
+  String challengeOutcomeCorrect(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bonnes réponses',
+      one: 'bonne réponse',
+      zero: 'bonne réponse',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String challengeOutcomeMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bonnes réponses de plus',
+      one: '1 bonne réponse de plus',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String challengeOutcomeFewer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bonnes réponses de moins',
+      one: '1 bonne réponse de moins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get challengeOutcomeSame => 'Autant de bonnes réponses';
+
+  @override
+  String get challengeOutcomeResend => 'Renvoyer un défi';
+
+  @override
+  String get challengeOutcomeBack => 'Retour aux défis';
 
   @override
   String get duelPickIntro =>

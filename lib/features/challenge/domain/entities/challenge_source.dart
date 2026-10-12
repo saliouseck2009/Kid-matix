@@ -1,3 +1,6 @@
+import 'package:kid_matix/features/challenge/domain/entities/challenge_code.dart';
+import 'package:kid_matix/features/challenge/domain/entities/challenge_code_reading.dart';
+import 'package:kid_matix/features/challenge/domain/services/challenge_code_codec.dart';
 import 'package:meta/meta.dart';
 
 /// What a quiz of the challenge feature is played for, as the session
@@ -7,7 +10,7 @@ import 'package:meta/meta.dart';
 /// attack `timeAttack:mul:1+mul:2`, a survival game
 /// `survival:mul:1+mul:2`, the daily review `dailyReview`, the monster
 /// hunt `monsterHunt` (`monsterHunt:profile` when started from the
-/// Profile tab).
+/// Profile tab), a game replayed from a challenge code `code:K7M2QX9TB4`.
 @immutable
 sealed class ChallengeSource {
   /// Creates a source on [unitKeys].
@@ -30,7 +33,8 @@ sealed class ChallengeSource {
         TimeAttackSource._tryParse(sourceKey) ??
         SurvivalSource._tryParse(sourceKey) ??
         DailyReviewSource._tryParse(sourceKey) ??
-        MonsterHuntSource._tryParse(sourceKey);
+        MonsterHuntSource._tryParse(sourceKey) ??
+        CodeChallengeSource._tryParse(sourceKey);
   }
 
   /// The source key of the quiz.
@@ -251,4 +255,48 @@ final class MonsterHuntSource extends ChallengeSource {
 
   @override
   int get hashCode => toKey().hashCode;
+}
+
+/// A free training or a time attack replayed from a challenge code: the
+/// tables, the mode and the questions come from the code, so it names no
+/// unit of a domain.
+final class CodeChallengeSource extends ChallengeSource {
+  /// Creates the source of [code].
+  CodeChallengeSource({required this.code}) : super(unitKeys: const <String>[]);
+
+  /// Prefix of every coded source key.
+  static const String prefix = 'code';
+
+  static const ChallengeCodeCodec _codec = ChallengeCodeCodec();
+
+  /// The challenge replayed.
+  final ChallengeCode code;
+
+  /// Source key of the game of the ten characters [code].
+  static String keyOf(String code) {
+    return '$prefix${ChallengeSource.separator}$code';
+  }
+
+  @override
+  String toKey() => keyOf(_codec.encode(code));
+
+  static CodeChallengeSource? _tryParse(String sourceKey) {
+    const String start = '$prefix${ChallengeSource.separator}';
+    if (!sourceKey.startsWith(start)) return null;
+    return switch (_codec.decode(sourceKey.substring(start.length))) {
+      ChallengeCodeAccepted(:final ChallengeCode code) => CodeChallengeSource(
+        code: code,
+      ),
+      ChallengeCodeRejected() => null,
+    };
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is CodeChallengeSource && other.code == code;
+  }
+
+  @override
+  int get hashCode => code.hashCode;
 }

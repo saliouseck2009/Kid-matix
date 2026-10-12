@@ -1180,6 +1180,12 @@ abstract class AppLocalizations {
   /// **'XP gagnés'**
   String get rewardXpEarnedLabel;
 
+  /// XP earned by a quiz, written on one line with its unit, such as "+210 XP" at the right of the band of the challenge comparison screen. XP means experience points.
+  ///
+  /// In fr, this message translates to:
+  /// **'+{xp} XP'**
+  String rewardXpEarnedInline(int xp);
+
   /// Level of the player, bold title of the level card on the results screen ("Level 4"). Short, one line.
   ///
   /// In fr, this message translates to:
@@ -1755,6 +1761,216 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'2 joueurs, 1 téléphone'**
   String get challengeDuelSubtitle;
+
+  /// Title of the dashed card at the bottom of the challenges screen, and of the screen it opens, where the child types the code a friend gave ("I have a code"). The child speaks in the first person. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai un code'**
+  String get challengeCodeCardTitle;
+
+  /// Line under "J'ai un code" on its card of the challenges screen ("Replay a friend's challenge"). Imperative. Talks to the child (informal tu). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejoue le défi d\'un ami'**
+  String get challengeCodeCardSubtitle;
+
+  /// Button at the end of a free training or a time attack, and title of the screen it opens showing the challenge code to give to a friend ("Challenge a friend"). "Défier" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défier un ami'**
+  String get challengeShareButton;
+
+  /// Small line under the score in the yellow badge of the challenge code card: the score is the one the friend has to beat ("to beat"). Very short: the badge is narrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'à battre'**
+  String get challengeCodeToBeat;
+
+  /// Small line above the big challenge code on the "Défier un ami" screen ("Your challenge code"). Talks to the child (informal tu). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton code de défi'**
+  String get challengeCodeYours;
+
+  /// Screen-reader text of the big challenge code: the characters are given one by one, separated by spaces, so they are spelled ("Challenge code: K 7 M 2…").
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de défi : {characters}'**
+  String challengeCodeSemantics(String characters);
+
+  /// Yellow button under the challenge code: copies it to the clipboard ("Copy the code"). "Copier" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Copier le code'**
+  String get challengeCodeCopy;
+
+  /// Short message shown in a snackbar at the bottom of the screen once the challenge code is copied ("Code copied!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code copié !'**
+  String get challengeCodeCopied;
+
+  /// Line under the challenge code card: what giving the code does ("Give this code to a friend: same mode, same tables, and your score to beat!"). The friend's questions come from the code, so they may differ from the ones the player just had. Talks to the child (informal tu). Up to three centered lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donne ce code à un ami : même mode, mêmes tables, et ton score à battre !'**
+  String get challengeCodeShareHint;
+
+  /// Word in the middle of the line separating the shown code from the code entry on the "Défier un ami" screen ("or"). One short lowercase word.
+  ///
+  /// In fr, this message translates to:
+  /// **'ou'**
+  String get challengeCodeOr;
+
+  /// Title of the card where the child types a challenge code received from a friend ("Did you get a code?"). Talks to the child (informal tu). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu as reçu un code ?'**
+  String get challengeCodeEntryTitle;
+
+  /// Placeholder of the challenge code field ("Type the code here"). Written in capital letters because the field turns what the child types into capitals, as in the mockup; keep it in capitals in languages that have them. Talks to the child (informal tu). One line, about 20 characters.
+  ///
+  /// In fr, this message translates to:
+  /// **'ÉCRIS LE CODE ICI'**
+  String get challengeCodeEntryHint;
+
+  /// Button under the challenge code field: checks the code and starts its game ("Play this challenge"). "Jouer" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouer ce défi'**
+  String get challengeCodePlay;
+
+  /// Message under the code field when what was typed is not a challenge code: wrong length or a character that codes never use ("This code does not exist. A code has 10 letters and digits."). Talks to the child (informal tu). Kind, never blaming; up to two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce code n\'existe pas. Un code a 10 lettres et chiffres.'**
+  String get challengeCodeErrorMalformed;
+
+  /// Message under the code field when the check character shows a typing mistake: a character changed or two swapped ("A letter or a digit is wrong. Check the code with your friend."). Talks to the child (informal tu). Kind, never blaming; up to two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une lettre ou un chiffre ne va pas. Vérifie le code avec ton ami.'**
+  String get challengeCodeErrorAltered;
+
+  /// Message under the code field when the code was made by a newer version of the app, whose questions this one cannot draw ("This challenge comes from a newer version of the app. Update the app to play it."). Talks to the child (informal tu). Up to three lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce défi vient d\'une version plus récente de l\'app. Mets l\'app à jour pour le jouer.'**
+  String get challengeCodeErrorVersion;
+
+  /// Tables of a challenge when it covers the 12 tables, after the mode in the subtitle of the comparison screen ("all the tables"). Lowercase: it follows "Contre-la-montre ·". The capitalized form on its own line is challengeCodeCardTablesAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'toutes les tables'**
+  String get challengeCodeTablesAll;
+
+  /// Tables of a challenge on one table, after the mode in the subtitle of the comparison screen ("table of 7"). Lowercase: it follows "Contre-la-montre ·". The capitalized form on its own line is challengeCodeCardTablesOne.
+  ///
+  /// In fr, this message translates to:
+  /// **'table de {table}'**
+  String challengeCodeTablesOne(int table);
+
+  /// One table in the list of the tables of a challenge, such as "de 2" in "tables de 2, de 5 et de 7". Used by challengeCodeTablesMany and challengeCodeCardTablesMany; the items are joined by ", " in code.
+  ///
+  /// In fr, this message translates to:
+  /// **'de {table}'**
+  String challengeCodeTableItem(int table);
+
+  /// Tables of a challenge on several tables, after the mode in the subtitle of the comparison screen ("tables de 2, de 5 et de 7"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Lowercase: it follows "Contre-la-montre ·". The capitalized form on its own line is challengeCodeCardTablesMany.
+  ///
+  /// In fr, this message translates to:
+  /// **'tables {first} et {last}'**
+  String challengeCodeTablesMany(String first, String last);
+
+  /// Tables of a challenge covering the 12 tables, on their own line under the mode in the violet card of the "Défier un ami" screen ("All the tables"). Starts with a capital letter: it begins its line. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les tables'**
+  String get challengeCodeCardTablesAll;
+
+  /// Tables of a challenge on one table, on their own line under the mode in the violet card of the "Défier un ami" screen ("Table of 7"). Starts with a capital letter: it begins its line. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Table de {table}'**
+  String challengeCodeCardTablesOne(int table);
+
+  /// Tables of a challenge on several tables, on their own line under the mode in the violet card of the "Défier un ami" screen ("Tables de 2 et de 5"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Starts with a capital letter: it begins its line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tables {first} et {last}'**
+  String challengeCodeCardTablesMany(String first, String last);
+
+  /// Line under the title of the challenge score comparison: the mode and the tables of the challenge ("Contre-la-montre · tables de 2 et de 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'{mode} · {tables}'**
+  String challengeCodeSubtitle(String mode, String tables);
+
+  /// Big title of the comparison screen when the child beat the score of the code ("Challenge won!"). Joyful, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défi gagné !'**
+  String get challengeOutcomeWon;
+
+  /// Big title of the comparison screen when the child did not reach the score of the code; kind, never discouraging ("Not this time!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas cette fois !'**
+  String get challengeOutcomeLost;
+
+  /// Big title of the comparison screen when the child made exactly the score of the code ("It's a tie!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Égalité !'**
+  String get challengeOutcomeTie;
+
+  /// Label of the white card of the comparison screen: the score the friend made, written in the code ("Score to beat"). Short: the card is half the screen wide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Score à battre'**
+  String get challengeOutcomeToBeat;
+
+  /// Label of the violet card of the comparison screen: the child's score ("Your score"). Talks to the child (informal tu). Short: the card is half the screen wide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton score'**
+  String get challengeOutcomeYours;
+
+  /// Line under the big score of each card of the comparison screen; the number itself is shown above it, so the text has no number ("right answer(s)"). Short: the card is half the screen wide.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{bonne réponse} =1{bonne réponse} other{bonnes réponses}}'**
+  String challengeOutcomeCorrect(int count);
+
+  /// Difference shown in the yellow band of the comparison screen when the child won ("3 more right answers"). One line, beside the XP earned.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 bonne réponse de plus} other{{count} bonnes réponses de plus}}'**
+  String challengeOutcomeMore(int count);
+
+  /// Difference shown in the yellow band of the comparison screen when the child lost ("2 fewer right answers"). One line, beside the XP earned.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 bonne réponse de moins} other{{count} bonnes réponses de moins}}'**
+  String challengeOutcomeFewer(int count);
+
+  /// Text of the yellow band of the comparison screen on a tie ("As many right answers"). One line, beside the XP earned.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autant de bonnes réponses'**
+  String get challengeOutcomeSame;
+
+  /// Main button of the comparison screen: makes a new code with the same questions and the child's score to beat ("Send a challenge back"). "Renvoyer" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renvoyer un défi'**
+  String get challengeOutcomeResend;
+
+  /// Second button of the comparison screen: back to the challenges tab ("Back to the challenges"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour aux défis'**
+  String get challengeOutcomeBack;
 
   /// Line under the title of the duel player choice: how to hold the phone ("Lay the phone flat between you. The top player reads upside down."). Talks to both children (vous).
   ///
