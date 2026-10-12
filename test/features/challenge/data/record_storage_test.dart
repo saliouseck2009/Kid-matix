@@ -99,6 +99,21 @@ void main() {
     )(params: 'p1')).requireData;
   }
 
+  group('RecordRepositoryImpl.watchChanges', () {
+    test('tells the records and the settings changed', () async {
+      // Arrange
+      final List<void> actualEvents = <void>[];
+      repository.watchChanges().listen(actualEvents.add);
+      // Act
+      changeBus.notifyChanged(table: 'record');
+      changeBus.notifyChanged(table: 'profile');
+      changeBus.notifyChanged(table: 'quiz_session');
+      await Future<void>.delayed(Duration.zero);
+      // Assert
+      expect(actualEvents, hasLength(2));
+    });
+  });
+
   group('RecordSessionHook', () {
     test('stores the first time attack as the record', () async {
       // Act
