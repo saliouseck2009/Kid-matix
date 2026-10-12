@@ -20,6 +20,7 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
@@ -121,7 +122,9 @@ GoRouter _createRouter(
         getLearningPath: sl(),
         watchChanges: sl(),
       ),
+      placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
       domains: sl(),
+      clock: sl(),
     ),
     rewardPages: RewardPages(
       useCases: RewardUseCases(

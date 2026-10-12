@@ -23,7 +23,7 @@ middle of one). Last update: 2026-10-12.
 | F13 · My monsters | **Done** (closed 2026-10-12) |
 | F14 · Duel on one phone | **Done** (closed 2026-10-12) |
 | F15 · New question formats | **Done** (closed 2026-10-12) |
-| F16 · Placement test | **Next** |
+| F16 · Placement test | **Done** (closed 2026-10-12) |
 | F17 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
@@ -582,6 +582,25 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Starting F16
+## F16 closure
 
-Tasks in the F16 section of `docs/product/task-breakdown.md`.
+- Offered at the end of the profile creation (« Passer »); 12 typed
+  questions, one per table; a right answer opens its table, stars still
+  to win; mastery counts, no XP. Result screen of mockup 18. Rules in
+  `docs/decisions.md`. No migration: placed tables are `stage_progress`
+  rows with the stage `placement`.
+- Tests (F16-05): right tables opened (1, 2 and 10 → exactly those),
+  test passed, skipped and left midway (Bloc, page, router, real
+  database). `bash tool/check.sh`: every step OK (893 tests);
+  `learning_path` domain 99 %, data 100 %.
+- Short check on the Android emulator (API 36, debug): after « C'est
+  parti ! » the offer showed, then the keypad questions (1 × 7, 2 × 3).
+  The rest of the run was cut short: another session reinstalled the
+  app on the shared emulator. The result screen and the map are covered
+  by tests; to try on the phone.
+
+Texts waiting for the owner: the offer (no mockup: « Tu connais déjà des
+tables ? », its text, « Faire le test »), « Je ne sais pas », the quit
+dialog, the result with 0 table (« Tout est à découvrir ! », « Pas de
+souci, tu vas les apprendre une par une. Ton parcours commence par la
+table de 1. ») and with 1 table (« Elle est ouverte… Ses étoiles… »).

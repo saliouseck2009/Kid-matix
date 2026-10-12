@@ -11,6 +11,7 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
@@ -66,6 +67,21 @@ GoRouter createAppRouter({
         builder: (BuildContext context, GoRouterState state) {
           return profilePages.buildProfileCreationPage(
             canGoBack: session.hasProfiles,
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.placementTest,
+        builder: (BuildContext context, GoRouterState state) {
+          final String? profileId = session.activeProfileId;
+          if (profileId == null) return const SizedBox.shrink();
+          return pathPages.buildPlacementTestPage(
+            profileId: profileId,
+            slots: PlacementSlots(
+              keypad: quizPages.buildKeypad,
+              questionCard: quizPages.buildQuestionCard,
+            ),
+            onDone: () => context.go(AppRoutes.learningPath),
           );
         },
       ),

@@ -15,6 +15,8 @@ import 'package:kid_matix/features/learning_path/data/repositories/stage_progres
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/services/learning_path_service_impl.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
+import 'package:kid_matix/core/error/data_state.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
@@ -76,6 +78,7 @@ void main() {
     repository = StageProgressRepositoryImpl(
       progress: dataSource,
       changeBus: changeBus,
+      clock: _StoppedClock(),
     );
   });
 
@@ -207,6 +210,88 @@ void main() {
       )).exceptionOrNull;
       // Assert
       expect(actualException, isA<CacheException>());
+    });
+  });
+
+  group('Placement test storage', () {
+    Future<Set<String>> readPlaced() async {
+      return (await repository.getPlacedUnitKeys(
+        profileId: 'p1',
+        domainId: 'multiplication',
+      )).requireData;
+    }
+
+    test('opens a table without any star and tells the watchers', () async {
+      // Arrange
+      final List<String> actualTables = <String>[];
+      final StreamSubscription<String> subscription = changeBus
+          .watchTable(table: 'stage_progress')
+          .listen(actualTables.add);
+      // Act
+      final DataState<void> actualResult = await repository.openUnit(
+        profileId: 'p1',
+        domainId: 'multiplication',
+        unitKey: 'mul:10',
+      );
+      await repository.openUnit(
+        profileId: 'p1',
+        domainId: 'multiplication',
+        unitKey: 'mul:10',
+      );
+      await pumpEventQueue();
+      // Assert
+      expect(actualResult, isA<DataSuccess<void>>());
+      expect(await readPlaced(), <String>{'mul:10'});
+      expect(await readProgress(), isEmpty);
+      expect(actualTables, <String>['stage_progress', 'stage_progress']);
+      await subscription.cancel();
+    });
+    test('keeps the placed tables apart from the stars', () async {
+      // Arrange
+      await save(_session());
+      // Act
+      await repository.openUnit(
+        profileId: 'p1',
+        domainId: 'multiplication',
+        unitKey: 'mul:5',
+      );
+      // Assert
+      expect(await readPlaced(), <String>{'mul:5'});
+      expect((await readProgress()).single.stage, StageKind.training);
+    });
+    test('erases the placed tables with the progress', () async {
+      // Arrange
+      await repository.openUnit(
+        profileId: 'p1',
+        domainId: 'multiplication',
+        unitKey: 'mul:2',
+      );
+      // Act
+      await (await appDatabase.database).transaction(
+        (Transaction transaction) => const StageProgressResetHook().reset(
+          transaction,
+          profileId: 'p1',
+        ),
+      );
+      // Assert
+      expect(await readPlaced(), isEmpty);
+    });
+    test('fails once the database is closed', () async {
+      // Arrange
+      await (await appDatabase.database).close();
+      // Act
+      final AppException? actualRead = (await repository.getPlacedUnitKeys(
+        profileId: 'p1',
+        domainId: 'multiplication',
+      )).exceptionOrNull;
+      final AppException? actualWrite = (await repository.openUnit(
+        profileId: 'p1',
+        domainId: 'multiplication',
+        unitKey: 'mul:2',
+      )).exceptionOrNull;
+      // Assert
+      expect(actualRead, isA<CacheException>());
+      expect(actualWrite, isA<CacheException>());
     });
   });
 

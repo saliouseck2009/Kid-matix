@@ -663,6 +663,86 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pathCrownHint => 'Bats le boss pour gagner la couronne.';
 
   @override
+  String get placementOfferTitle => 'Tu connais déjà des tables ?';
+
+  @override
+  String get placementOfferMessage =>
+      'Réponds à une question par table, sans chrono. Chaque table que tu connais s\'ouvre tout de suite dans ton parcours.';
+
+  @override
+  String get placementOfferStart => 'Faire le test';
+
+  @override
+  String get placementOfferSkip => 'Passer';
+
+  @override
+  String placementQuestionProgress(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String get placementUnknownAnswer => 'Je ne sais pas';
+
+  @override
+  String get placementQuitTooltip => 'Arrêter le test';
+
+  @override
+  String get placementQuitTitle => 'Arrêter le test ?';
+
+  @override
+  String get placementQuitMessage =>
+      'Les tables déjà trouvées restent ouvertes dans ton parcours.';
+
+  @override
+  String get placementQuitCancel => 'Continuer le test';
+
+  @override
+  String get placementQuitConfirm => 'Arrêter';
+
+  @override
+  String placementResultTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu connais déjà $count tables !',
+      one: 'Tu connais déjà 1 table !',
+      zero: 'Tout est à découvrir !',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String placementResultSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.',
+      one: 'Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.',
+      zero: 'Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get placementLegendKnown => 'Déjà connue';
+
+  @override
+  String get placementLegendToDiscover => 'À découvrir';
+
+  @override
+  String placementTableKnown(String name) {
+    return '$name, déjà connue';
+  }
+
+  @override
+  String placementTableToDiscover(String name) {
+    return '$name, à découvrir';
+  }
+
+  @override
+  String get placementSeePath => 'Voir mon parcours';
+
+  @override
   String get pathTableBack => 'Retour au parcours';
 
   @override

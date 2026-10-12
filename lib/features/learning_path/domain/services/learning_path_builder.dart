@@ -11,7 +11,8 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_
 /// once the writing stage (3) has one, so a child slow with the timer is
 /// never stuck. A review follows every group of 3 tables and opens with
 /// the last table of its group; it never locks anything. "Tout
-/// débloquer" opens every table and stage. Defeating the boss of a table
+/// débloquer" opens every table and stage. A table found in the placement
+/// test is open too, its stages still to play. Defeating the boss of a table
 /// crowns it; the crown is golden once every fact of the table is
 /// mastered.
 final class LearningPathBuilder {
@@ -30,13 +31,15 @@ final class LearningPathBuilder {
   /// Key of the [number]th review.
   static String reviewKeyOf(int number) => '$reviewKeyPrefix:$number';
 
-  /// Builds the path of [units], in path order, from [progress].
+  /// Builds the path of [units], in path order, from [progress]; the units
+  /// of [placedUnitKeys] were opened by the placement test.
   LearningPathEntity build({
     required String domainId,
     required List<LearningUnit> units,
     required List<StageProgressEntity> progress,
     required bool isEverythingUnlocked,
     Set<String> masteredItemKeys = const <String>{},
+    Set<String> placedUnitKeys = const <String>{},
   }) {
     final Map<String, int> stars = <String, int>{
       for (final StageProgressEntity stage in progress)
@@ -51,6 +54,7 @@ final class LearningPathBuilder {
       final bool isUnlocked =
           isEverythingUnlocked ||
           index == 0 ||
+          placedUnitKeys.contains(unit.key) ||
           starsOf(units[index - 1].key, gateStage) > 0;
       final bool isDone = isUnlocked && starsOf(unit.key, gateStage) > 0;
       final bool isLast = index == units.length - 1;
