@@ -9,6 +9,7 @@ import 'package:kid_matix/features/challenge/data/repositories/record_session_ho
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/record_repository.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/training_choice_repository.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
@@ -58,6 +59,9 @@ void registerChallengeFeature(GetIt sl) {
   );
   sl.registerLazySingleton<GetSurvivalUseCase>(
     () => GetSurvivalUseCase(openUnits: sl(), settings: sl()),
+  );
+  sl.registerLazySingleton<GetDailyReviewUseCase>(
+    () => GetDailyReviewUseCase(mastery: sl()),
   );
   sl<SessionSavedHooks>().add(RecordSessionHook(records: sl(), clock: sl()));
   sl<ProgressResetHooks>().add(const RecordResetHook());

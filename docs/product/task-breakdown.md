@@ -473,19 +473,19 @@ Ce lot vérifie l'ensemble et prépare la mise en ligne sur les stores.
 
 **Qualité**
 
-- [ ] **F11-01** Accessibilité : zones tactiles de 48 dp au minimum et 56 dp pour les réponses, contraste AA, police du système jusqu'à 130 % sans texte coupé, libellés pour lecteurs d'écran.
-- [ ] **F11-02** Performances sur un téléphone d'entrée de gamme : démarrage en moins de 2 secondes, 60 images par seconde pendant le quiz.
-- [ ] **F11-03** Test d'intégration du trajet complet : créer un profil, jouer une étape, voir les résultats, retrouver la progression après redémarrage.
-- [ ] **F11-04** Cas limites : deux pseudos identiques à la casse près, changement de date du téléphone, suppression du joueur actif, fermeture en plein quiz.
-- [ ] **F11-05** Couverture de tests : 90 % sur le domaine et 80 % au moins sur les données.
-- [ ] **F11-06** Mise en page utilisable sur tablette.
+- [x] **F11-01** Accessibilité : zones tactiles de 48 dp au minimum et 56 dp pour les réponses, contraste AA, police du système jusqu'à 130 % sans texte coupé, libellés pour lecteurs d'écran.
+- [x] **F11-02** Performances sur un téléphone d'entrée de gamme : démarrage en moins de 2 secondes, 60 images par seconde pendant le quiz.
+- [x] **F11-03** Test d'intégration du trajet complet : créer un profil, jouer une étape, voir les résultats, retrouver la progression après redémarrage.
+- [x] **F11-04** Cas limites : deux pseudos identiques à la casse près, changement de date du téléphone, suppression du joueur actif, fermeture en plein quiz.
+- [x] **F11-05** Couverture de tests : 90 % sur le domaine et 80 % au moins sur les données.
+- [x] **F11-06** Mise en page utilisable sur tablette.
 
 **Publication**
 
-- [ ] **F11-07** Nom définitif de l'app, icône et écran de lancement.
-- [ ] **F11-08** Aucun appel réseau ni SDK tiers qui communique dans la version 1.0 ; paquet de moins de 40 Mo.
-- [ ] **F11-09** Politique de confidentialité et déclarations « public enfants » de Google Play et de l'App Store.
-- [ ] **F11-10** Fiches des stores : textes et captures d'écran.
+- [x] **F11-07** Nom définitif de l'app, icône et écran de lancement.
+- [x] **F11-08** Aucun appel réseau ni SDK tiers qui communique dans la version 1.0 ; paquet de moins de 40 Mo.
+- [x] **F11-09** Politique de confidentialité et déclarations « public enfants » de Google Play et de l'App Store.
+- [x] **F11-10** Fiches des stores : textes et captures d'écran.
 - [ ] **F11-11** Builds signés et obfusqués Android et iOS, envoyés en test interne.
 
 **Terminé quand :** les deux builds sont installés depuis les canaux de test des stores et le trajet complet passe sur un vrai téléphone.
@@ -494,7 +494,7 @@ Ce lot vérifie l'ensemble et prépare la mise en ligne sur les stores.
 
 Deux défis s'ajoutent à l'onglet Défis : une révision choisie par le moteur et un mode à 3 vies.
 
-- [ ] **F12-01** Révision du jour : 10 questions sans chrono, d'abord les faits dont la date de révision est passée, puis ceux au plus faible taux de réussite.
+- [x] **F12-01** Révision du jour : 10 questions sans chrono, d'abord les faits dont la date de révision est passée, puis ceux au plus faible taux de réussite.
 - [x] **F12-02** Survie : 3 vies, une erreur en retire une ; le temps par question part de 10 secondes et raccourcit au fil de la partie.
 - [ ] **F12-03** Record de Survie et badge Survivant (30 bonnes réponses).
 - [x] **F12-04** Mode Survie du `QuizBloc` : vies, temps décroissant, question remplacée au retour d'arrière-plan.

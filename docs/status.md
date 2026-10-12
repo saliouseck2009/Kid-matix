@@ -1,7 +1,7 @@
 # Project status
 
 Update this file at the end of every lot (and whenever work stops in the
-middle of one). Last update: 2026-10-10.
+middle of one). Last update: 2026-10-12.
 
 ## Where we are
 
@@ -18,8 +18,9 @@ middle of one). Last update: 2026-10-10.
 | F8 · Growing mascot | **Done** (closed 2026-10-10) |
 | F9 · Free training and Against the clock | **Done** (closed 2026-10-10) |
 | F10 · Profile and settings | **Done** (closed 2026-10-10) |
-| F11 · Polish and release of 1.0 | **Next** |
-| F12 – F21 | Not started |
+| F11 · Polish and release of 1.0 | **Done** (closed 2026-10-12), except F11-11: builds in the test channels |
+| F12 · Daily review and Survival | **Next** |
+| F13 – F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -448,10 +449,38 @@ Known gaps left on purpose, to handle in the lot named:
 - `RewardService.readStreak`, `PlayerSettingsService.readFeedback`,
   `ChoiceSegments` moved to `core/widgets`.
 
-## Starting F11
+## F11 closure
 
-Tasks F11-01 to F11-11 in `docs/product/task-breakdown.md`. Some are
-handed to Codex in parallel (briefs in the untracked `codex/` folder):
-F11-03 and F11-04 (tests, portrait lock), F11-05 (coverage), F11-08
-(release audit), F11-09 and F11-10 (store drafts). F11-07 needs the final
-name, icon and splash from the owner; F11-11 needs the store accounts.
+- `bash tool/check.sh`: every step OK (671 tests); coverage at least 90 %
+  on every `domain/` and 80 % on every `data/` (`tool/coverage_report.py`);
+  CI green on #61 to #73.
+- Accessibility, tablet layout, integration journey and edge cases are
+  covered by tests (#62, #68, #69). Performance measured on a Galaxy A16:
+  start in 1.8 to 2.3 s, 99 % of the quiz frames at 90 Hz
+  (`docs/release/performance-1.0.md`).
+- Release audit (`docs/release/audit-1.0.md`): no network call, no
+  communicating SDK; system backup turned off.
+- Signed and obfuscated builds: `bash tool/build_release.sh` with the
+  upload key of `android/key.properties` (`docs/release/signing.md`).
+- Privacy policy published on GitHub Pages
+  (https://saliouseck2009.github.io/Kid-matix/store/privacy-policy.html).
+- Google Play: listing, content rating, target audience and data safety
+  filled. App Store Connect: listing, iPhone and iPad screenshots, Kids
+  category 6-8, age rating 4+, "Data Not Collected", free in every country.
+
+Left open, done by the owner:
+
+- **F11-11**: the Android bundle goes to internal testing; the iOS build
+  (bundle id `sn.ckroot.kidmatix`) goes to TestFlight through Transporter.
+  The lot's "done when" (both builds installed from the test channels, the
+  journey played on a phone) is checked then.
+- App Store Connect: the phone number of the review contact, and
+  "Publish" in App Privacy.
+- A new personal Play account may need a closed test (12 testers for 14
+  days) before production.
+
+## Starting F12
+
+Tasks F12-01 to F12-06 in `docs/product/task-breakdown.md`; mockup
+`11-challenges.png` for the Défis tab. The Daily review and Survival
+screens have no mockup of their own: ask the owner.

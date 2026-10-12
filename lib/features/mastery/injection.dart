@@ -7,6 +7,7 @@ import 'package:kid_matix/features/mastery/domain/repositories/item_progress_rep
 import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_due_facts_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/watch_mastery_changes_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -38,10 +39,14 @@ void registerMasteryFeature(GetIt sl) {
       domains: sl(),
       questionTypes: sl(),
       random: sl(),
+      clock: sl(),
     ),
   );
   sl.registerLazySingleton<GetDueFactsUseCase>(
     () => GetDueFactsUseCase(repository: sl(), clock: sl()),
+  );
+  sl.registerLazySingleton<GetReviewOverviewUseCase>(
+    () => GetReviewOverviewUseCase(repository: sl(), clock: sl()),
   );
   sl.registerLazySingleton<GetMasteryGridUseCase>(
     () => GetMasteryGridUseCase(repository: sl(), domains: sl()),
@@ -54,6 +59,7 @@ void registerMasteryFeature(GetIt sl) {
       planQuiz: sl(),
       recordAnswer: sl(),
       getGrid: sl(),
+      getReviewOverview: sl(),
     ),
   );
   sl<ProgressResetHooks>().add(const MasteryResetHook());
