@@ -6,7 +6,8 @@ import 'package:meta/meta.dart';
 /// A free training is written `training:20:timer:mul:2+mul:5`, a time
 /// attack `timeAttack:mul:1+mul:2`, a survival game
 /// `survival:mul:1+mul:2`, the daily review `dailyReview`, the monster
-/// hunt `monsterHunt`.
+/// hunt `monsterHunt` (`monsterHunt:profile` when started from the
+/// Profile tab).
 @immutable
 sealed class ChallengeSource {
   /// Creates a source on [unitKeys].
@@ -213,24 +214,41 @@ final class DailyReviewSource extends ChallengeSource {
 }
 
 /// The monster hunt: the facts the player keeps missing, picked by the
-/// mastery engine among every table, so it names no unit.
+/// mastery engine among every table, so it names no unit. It remembers
+/// whether « Mes monstres » was opened from the Profile tab, so the
+/// results go back there.
 final class MonsterHuntSource extends ChallengeSource {
   /// Creates the source.
-  MonsterHuntSource() : super(unitKeys: const <String>[]);
+  MonsterHuntSource({this.isFromProfile = false})
+    : super(unitKeys: const <String>[]);
 
-  /// Source key of the monster hunt.
+  /// Source key of the monster hunt started from the challenges.
   static const String key = 'monsterHunt';
 
+  static const String _profile = 'profile';
+
+  /// Whether the hunt was started from the Profile tab.
+  final bool isFromProfile;
+
   @override
-  String toKey() => key;
+  String toKey() {
+    return isFromProfile ? '$key${ChallengeSource.separator}$_profile' : key;
+  }
 
   static MonsterHuntSource? _tryParse(String sourceKey) {
-    return sourceKey == key ? MonsterHuntSource() : null;
+    if (sourceKey == key) return MonsterHuntSource();
+    if (sourceKey == MonsterHuntSource(isFromProfile: true).toKey()) {
+      return MonsterHuntSource(isFromProfile: true);
+    }
+    return null;
   }
 
   @override
-  bool operator ==(Object other) => other is MonsterHuntSource;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is MonsterHuntSource && other.isFromProfile == isFromProfile;
+  }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => toKey().hashCode;
 }

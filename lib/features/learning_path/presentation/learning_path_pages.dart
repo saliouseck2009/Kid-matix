@@ -59,14 +59,18 @@ final class LearningPathPages {
     );
   }
 
-  /// "Mes monstres" of [profileId], for the Profile tab.
-  Widget buildMonstersCard({required String profileId}) {
+  /// "Mes monstres" of [profileId], for the Profile tab; [onOpenLittle]
+  /// opens the screen of the little monsters.
+  Widget buildMonstersCard({
+    required String profileId,
+    required VoidCallback onOpenLittle,
+  }) {
     return BlocProvider<LearningPathBloc>(
       key: ValueKey<String>('monsters-$profileId'),
       create: (_) =>
           LearningPathBloc(params: _paramsOf(profileId), useCases: _useCases)
             ..add(const LearningPathStarted()),
-      child: const MonstersCard(),
+      child: MonstersCard(onOpenLittle: onOpenLittle),
     );
   }
 

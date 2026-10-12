@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
+import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/main.dart';
 
 import '../features/profile/helpers/profile_fixtures.dart';
@@ -45,7 +46,20 @@ void main() {
       rewardPages: buildTestRewardPages(),
       mascotPages: mascotPages,
       challengePages: buildTestChallengePages(),
-      masteryPages: buildTestMasteryPages(),
+      masteryPages: buildTestMasteryPages(
+        repository: InMemoryItemProgressRepository(<ItemProgressEntity>[
+          for (int multiplier = 1; multiplier <= 10; multiplier++)
+            ItemProgressEntity(
+              profileId: 'p-1',
+              domainId: 'multiplication',
+              itemKey: 'mul:12x$multiplier',
+              presentationCount: 9,
+              correctCount: 6,
+              lastAnswerTimes: const <Duration>[Duration(seconds: 4)],
+              box: multiplier % 5 + 1,
+            ),
+        ]),
+      ),
     );
     await tester.pumpWidget(
       KidMatixApp(router: router, scope: testMascotScope(mascotPages)),
@@ -66,6 +80,7 @@ void main() {
       ('the profile', AppRoutes.profile),
       ('the settings', AppRoutes.settings),
       ('the mascot', AppRoutes.mascot),
+      ('my monsters', AppRoutes.challengeMonsters),
       ('the table detail', AppRoutes.tableDetailOf('mul:1')),
       ('the whole table', AppRoutes.tableViewOf('mul:1')),
       ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
@@ -93,6 +108,7 @@ void main() {
       ('the profile', AppRoutes.profile),
       ('the settings', AppRoutes.settings),
       ('the mascot', AppRoutes.mascot),
+      ('my monsters', AppRoutes.challengeMonsters),
       ('the table detail', AppRoutes.tableDetailOf('mul:1')),
       ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
       ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),

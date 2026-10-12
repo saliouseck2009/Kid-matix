@@ -90,6 +90,7 @@ GoRouter _createRouter(
     mascotPages: mascotPages,
     masteryPages: MasteryPages(
       getGrid: sl(),
+      getMonsters: sl(),
       watchChanges: sl(),
       domains: sl(),
     ),
@@ -103,6 +104,7 @@ GoRouter _createRouter(
         getSessionRecord: sl(),
         watchRecordChanges: sl(),
         getDailyReview: sl(),
+        getMonsterCount: sl(),
       ),
       domains: sl(),
     ),

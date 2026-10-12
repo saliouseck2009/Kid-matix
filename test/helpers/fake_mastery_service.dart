@@ -27,6 +27,9 @@ final class FakeMasteryService implements MasteryService {
     seenCount: 0,
   );
 
+  /// Monsters to tame reported for every player.
+  int monsterCount = 0;
+
   /// Requests received by [planQuiz], in order.
   final List<QuizPlanRequest> planRequests = <QuizPlanRequest>[];
 
@@ -75,5 +78,15 @@ final class FakeMasteryService implements MasteryService {
     final AppException? error = failure;
     if (error != null) return DataFailed<ReviewOverview>(error);
     return DataSuccess<ReviewOverview>(reviewOverview);
+  }
+
+  @override
+  Future<DataState<int>> readMonsterCount({
+    required String profileId,
+    required String domainId,
+  }) async {
+    final AppException? error = failure;
+    if (error != null) return DataFailed<int>(error);
+    return DataSuccess<int>(monsterCount);
   }
 }

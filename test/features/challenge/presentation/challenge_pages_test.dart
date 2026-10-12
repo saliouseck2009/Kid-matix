@@ -124,6 +124,7 @@ void main() {
       List<RecordEntity> records = const <RecordEntity>[],
       TimerMode timerMode = TimerMode.normal,
       ReviewOverview review = const ReviewOverview(dueCount: 0, seenCount: 0),
+      int monsterCount = 0,
     }) async {
       final List<String> played = <String>[];
       final ChallengePages pages = buildTestChallengePages(
@@ -131,13 +132,19 @@ void main() {
           records: InMemoryRecordRepository(records),
           openUnits: const FixedOpenUnits(<String>['mul:1', 'mul:2']),
           timerMode: timerMode,
-          mastery: FakeMasteryService()..reviewOverview = review,
+          mastery: FakeMasteryService()
+            ..reviewOverview = review
+            ..monsterCount = monsterCount,
         ),
       );
       await pumpLocalized(
         tester,
         Scaffold(
-          body: pages.buildChallengesPage(profileId: 'p1', onPlay: played.add),
+          body: pages.buildChallengesPage(
+            profileId: 'p1',
+            onPlay: played.add,
+            onOpenMonsters: () => played.add('monsters'),
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -202,6 +209,27 @@ void main() {
       // Assert
       expect(actualOrigin, ChallengeOrigin.challenges);
     });
+    testWidgets('opens the monsters with how many wait to be tamed', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(
+        tester,
+        monsterCount: 3,
+      );
+      // Act
+      await tester.tap(find.text('Chasse aux monstres'));
+      // Assert
+      expect(find.text('3 monstres à apprivoiser'), findsOneWidget);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
+      expect(played, <String>['monsters']);
+    });
+    testWidgets('says when no monster waits', (WidgetTester tester) async {
+      // Act
+      await pumpChallenges(tester);
+      // Assert
+      expect(find.text("Aucun monstre pour l'instant"), findsOneWidget);
+    });
     testWidgets('shows the record of the player', (WidgetTester tester) async {
       // Act
       await pumpChallenges(tester, records: <RecordEntity>[_record()]);
@@ -262,7 +290,11 @@ void main() {
       await pumpLocalized(
         tester,
         Scaffold(
-          body: pages.buildChallengesPage(profileId: 'p1', onPlay: (_) {}),
+          body: pages.buildChallengesPage(
+            profileId: 'p1',
+            onPlay: (_) {},
+            onOpenMonsters: () {},
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -284,7 +316,15 @@ void main() {
     test('names the monster hunt and plays it', () {
       // Arrange
       final ChallengePages pages = buildTestChallengePages();
+      final String inputFromProfile = pages.monsterHuntKeyOf(
+        isFromProfile: true,
+      );
       // Act & Assert
+      expect(pages.monsterHuntQuestionCount, 10);
+      expect(pages.monsterHuntKeyOf(isFromProfile: false), 'monsterHunt');
+      expect(pages.originOf('monsterHunt'), ChallengeOrigin.challengeMonsters);
+      expect(pages.originOf(inputFromProfile), ChallengeOrigin.profileMonsters);
+      expect(pages.specOf(inputFromProfile)?.mode, QuizMode.monsterHunt);
       expect(pages.specOf('monsterHunt')?.mode, QuizMode.monsterHunt);
       expect(
         pages.describeSource('monsterHunt', AppLocalizationsFr()),

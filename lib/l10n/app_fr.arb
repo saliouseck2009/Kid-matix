@@ -1645,5 +1645,95 @@
         "example": "18"
       }
     }
+  },
+  "challengeMonsterHuntSubtitle": "{count, plural, =0{Aucun monstre pour l'instant} =1{1 monstre à apprivoiser} other{{count} monstres à apprivoiser}}",
+  "@challengeMonsterHuntSubtitle": {
+    "description": "Line under \"Chasse aux monstres\" on its card of the challenges screen: how many little monsters (facts the player keeps missing) wait to be tamed (\"3 monsters to tame\"); a neutral line when there is none (\"No monster for now\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "monstersPageTitle": "Mes monstres",
+  "@monstersPageTitle": {
+    "description": "Title of the « Mes monstres » screen, which lists the facts the player keeps missing as little monsters to tame (\"My monsters\")."
+  },
+  "monstersIntro": "Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.",
+  "@monstersIntro": {
+    "description": "Line under the title of the « Mes monstres » screen (\"These sums still resist you. Get them right to tame their monsters.\"). Talks to the child (informal tu)."
+  },
+  "monstersEmpty": "Aucun monstre en vue, bravo ! Un calcul raté deux fois deviendra un petit monstre à apprivoiser.",
+  "@monstersEmpty": {
+    "description": "Encouraging text of the « Mes monstres » screen when no fact is a monster (\"No monster in sight, well done! A sum missed twice will become a little monster to tame.\"). Talks to the child (informal tu)."
+  },
+  "monsterToughnessVeryTough": "Très coriace",
+  "@monsterToughnessVeryTough": {
+    "description": "Label on the right of a monster whose fact was missed lately, the hardest to tame (\"Very tough\"). Short."
+  },
+  "monsterToughnessTough": "Coriace",
+  "@monsterToughnessTough": {
+    "description": "Label on the right of a monster whose fact is improving (\"Tough\"). Short."
+  },
+  "monsterToughnessAlmostTamed": "Presque apprivoisé",
+  "@monsterToughnessAlmostTamed": {
+    "description": "Label on the right of a monster whose fact is one step from being known (\"Almost tamed\"). Short."
+  },
+  "monsterWildSpoken": "Monstre {fact}, {toughness}",
+  "@monsterWildSpoken": {
+    "description": "What a screen reader says for a monster still to tame on the « Mes monstres » screen (\"Monster 7 times 8, very tough\").",
+    "placeholders": {
+      "fact": {
+        "type": "String",
+        "example": "7 fois 8"
+      },
+      "toughness": {
+        "type": "String",
+        "example": "Très coriace"
+      }
+    }
+  },
+  "monsterTamedSpoken": "Monstre {fact}, apprivoisé",
+  "@monsterTamedSpoken": {
+    "description": "What a screen reader says for a tamed monster of the « Apprivoisés » collection (\"Monster 6 times 7, tamed\").",
+    "placeholders": {
+      "fact": {
+        "type": "String",
+        "example": "6 fois 7"
+      }
+    }
+  },
+  "monstersHuntButton": "Lancer la chasse",
+  "@monstersHuntButton": {
+    "description": "Main button of the « Mes monstres » screen: starts the monster hunt quiz (\"Start the hunt\")."
+  },
+  "monstersHuntQuestions": "{count, plural, =1{1 question} other{{count} questions}}",
+  "@monstersHuntQuestions": {
+    "description": "Second line of the \"Lancer la chasse\" button: number of questions of the hunt (\"10 questions\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "monstersTamedTitle": "Apprivoisés",
+  "@monstersTamedTitle": {
+    "description": "Title of the collection of tamed monsters at the bottom of the « Mes monstres » screen (\"Tamed\")."
+  },
+  "monstersTamedCount": "{count, plural, =1{1 monstre} other{{count} monstres}}",
+  "@monstersTamedCount": {
+    "description": "Number of tamed monsters, at the right of \"Apprivoisés\" (\"4 monsters\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "pathMonstersOpenLittle": "Voir mes petits monstres",
+  "@pathMonstersOpenLittle": {
+    "description": "Link at the bottom of the \"Mes monstres\" card of the Profile tab: opens the screen of the little monsters, the facts the player keeps missing (\"See my little monsters\")."
   }
 }

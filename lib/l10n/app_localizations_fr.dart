@@ -1164,4 +1164,77 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String challengeMonsterHuntSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count monstres à apprivoiser',
+      one: '1 monstre à apprivoiser',
+      zero: 'Aucun monstre pour l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get monstersPageTitle => 'Mes monstres';
+
+  @override
+  String get monstersIntro =>
+      'Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.';
+
+  @override
+  String get monstersEmpty =>
+      'Aucun monstre en vue, bravo ! Un calcul raté deux fois deviendra un petit monstre à apprivoiser.';
+
+  @override
+  String get monsterToughnessVeryTough => 'Très coriace';
+
+  @override
+  String get monsterToughnessTough => 'Coriace';
+
+  @override
+  String get monsterToughnessAlmostTamed => 'Presque apprivoisé';
+
+  @override
+  String monsterWildSpoken(String fact, String toughness) {
+    return 'Monstre $fact, $toughness';
+  }
+
+  @override
+  String monsterTamedSpoken(String fact) {
+    return 'Monstre $fact, apprivoisé';
+  }
+
+  @override
+  String get monstersHuntButton => 'Lancer la chasse';
+
+  @override
+  String monstersHuntQuestions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions',
+      one: '1 question',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get monstersTamedTitle => 'Apprivoisés';
+
+  @override
+  String monstersTamedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count monstres',
+      one: '1 monstre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pathMonstersOpenLittle => 'Voir mes petits monstres';
 }

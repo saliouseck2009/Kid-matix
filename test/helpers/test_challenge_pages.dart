@@ -6,6 +6,7 @@ import 'package:kid_matix/features/challenge/data/datasources/training_choice_lo
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/record_repository.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_monster_count_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
@@ -54,6 +55,9 @@ ChallengeUseCases buildTestChallengeUseCases({
       repository: recordRepository,
     ),
     getDailyReview: GetDailyReviewUseCase(
+      mastery: mastery ?? FakeMasteryService(),
+    ),
+    getMonsterCount: GetMonsterCountUseCase(
       mastery: mastery ?? FakeMasteryService(),
     ),
   );

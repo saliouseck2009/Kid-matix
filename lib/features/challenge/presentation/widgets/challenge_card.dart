@@ -3,20 +3,24 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 
 /// A challenge of the challenges screen: its icon in a tinted circle, its
-/// name and rule, and the player's record when there is one.
+/// name and rule, and the player's record when there is one, or a chevron
+/// when it opens a screen.
 class ChallengeCard extends StatelessWidget {
-  /// Creates the card of the challenge [title].
+  /// Creates the card of the challenge [title], showing [icon] or else
+  /// [illustration].
   const ChallengeCard({
-    required this.icon,
     required this.iconBackground,
     required this.title,
     required this.subtitle,
     required this.onTap,
+    this.icon,
+    this.illustration,
     this.record,
     this.iconColor,
     this.note,
+    this.hasChevron = false,
     super.key,
-  });
+  }) : assert(icon != null || illustration != null, 'an icon is needed');
 
   static const double _minHeight = 80;
   static const double _radius = 22;
@@ -28,8 +32,14 @@ class ChallengeCard extends StatelessWidget {
     vertical: AppSizes.space12,
   );
 
-  /// Icon of the challenge.
-  final IconData icon;
+  /// Icon of the challenge, or `null` to show [illustration].
+  final IconData? icon;
+
+  /// Drawing shown in the circle when there is no [icon].
+  final Widget? illustration;
+
+  /// Whether a chevron says the card opens a screen.
+  final bool hasChevron;
 
   /// Color of the circle behind [icon].
   final Color iconBackground;
@@ -79,7 +89,9 @@ class ChallengeCard extends StatelessWidget {
                     color: iconBackground,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, size: _iconSize, color: iconColor),
+                  child: icon == null
+                      ? Center(child: illustration)
+                      : Icon(icon, size: _iconSize, color: iconColor),
                 ),
                 Expanded(
                   child: Column(
@@ -115,6 +127,11 @@ class ChallengeCard extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                       color: context.palette.primaryText,
                     ),
+                  ),
+                if (hasChevron)
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: context.palette.mutedText,
                   ),
               ],
             ),

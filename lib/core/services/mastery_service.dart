@@ -31,4 +31,11 @@ abstract interface class MasteryService {
     required String profileId,
     required String domainId,
   });
+
+  /// Returns how many monsters of [domainId] [profileId] has to tame: the
+  /// facts missed again and again, as « Mes monstres » shows them.
+  Future<DataState<int>> readMonsterCount({
+    required String profileId,
+    required String domainId,
+  });
 }

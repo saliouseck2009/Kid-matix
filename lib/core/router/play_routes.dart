@@ -139,6 +139,8 @@ final class _Origins {
     return switch (_challengePages.originOf(sourceKey)) {
       ChallengeOrigin.training => AppRoutes.training,
       ChallengeOrigin.challenges => AppRoutes.challenges,
+      ChallengeOrigin.challengeMonsters => AppRoutes.challengeMonsters,
+      ChallengeOrigin.profileMonsters => AppRoutes.profileMonsters,
       null => AppRoutes.learningPath,
     };
   }
