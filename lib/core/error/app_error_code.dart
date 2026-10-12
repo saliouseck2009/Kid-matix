@@ -18,6 +18,12 @@ enum AppErrorCode {
   /// A business limit is reached, such as the number of profiles.
   limitReached,
 
+  /// A file is damaged or is not what the app expects.
+  invalidFile,
+
+  /// A file was written by a newer version of the app.
+  unsupportedVersion,
+
   /// Any failure that has no dedicated code.
   unknown,
 }

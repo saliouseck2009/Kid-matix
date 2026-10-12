@@ -47,6 +47,20 @@ final class LimitReachedException extends AppException {
     : super(code: AppErrorCode.limitReached);
 }
 
+/// A file is damaged or is not what the app expects.
+final class InvalidFileException extends AppException {
+  /// Creates a damaged-file failure.
+  const InvalidFileException({super.message})
+    : super(code: AppErrorCode.invalidFile);
+}
+
+/// A file was written by a newer version of the app.
+final class UnsupportedVersionException extends AppException {
+  /// Creates a file-version failure.
+  const UnsupportedVersionException({super.message})
+    : super(code: AppErrorCode.unsupportedVersion);
+}
+
 /// Any failure that has no dedicated type.
 final class UnknownException extends AppException {
   /// Creates an unclassified failure.

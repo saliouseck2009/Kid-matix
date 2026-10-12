@@ -598,7 +598,7 @@ Un joueur partage un code ; un ami rejoue exactement les mêmes questions sur un
 
 La progression survit à un changement de téléphone grâce à un fichier exporté puis importé.
 
-- [ ] **F20-01** Format de fichier versionné contenant un profil et toutes ses données.
+- [x] **F20-01** Format de fichier versionné contenant un profil et toutes ses données.
 - [ ] **F20-02** Export d'un profil vers un fichier, partagé par la feuille de partage du système.
 - [ ] **F20-03** Import : contrôle du format, puis choix entre remplacer le profil existant ou renommer en cas de pseudo déjà pris.
 - [ ] **F20-04** Entrées « Exporter » et « Importer » dans les réglages. Maquette : `13-settings.png` (section Sauvegarde).

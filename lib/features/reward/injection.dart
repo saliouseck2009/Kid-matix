@@ -16,7 +16,9 @@ import 'package:kid_matix/features/reward/domain/usecases/get_player_level_use_c
 import 'package:kid_matix/features/reward/domain/usecases/get_session_rewards_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/watch_reward_changes_use_case.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/reward/data/repositories/reward_backup_part.dart';
 import 'package:kid_matix/features/reward/data/repositories/reward_reset_hook.dart';
 import 'package:kid_matix/features/reward/data/datasources/leaderboard_local_data_source.dart';
 import 'package:kid_matix/features/reward/data/datasources/leaderboard_local_data_source_impl.dart';
@@ -82,6 +84,7 @@ void registerRewardFeature(GetIt sl) {
     ),
   );
   sl<ProgressResetHooks>().add(const RewardResetHook());
+  sl<ProfileBackupParts>().add(const RewardBackupPart());
   _registerLeaderboard(sl);
 }
 

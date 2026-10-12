@@ -25,7 +25,9 @@ import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/watch_record_changes_use_case.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/challenge/data/repositories/challenge_backup_part.dart';
 import 'package:kid_matix/features/challenge/data/repositories/record_reset_hook.dart';
 
 /// Registers the challenge feature in [sl] and adds its session hook;
@@ -83,6 +85,9 @@ void registerChallengeFeature(GetIt sl) {
   );
   sl<SessionSavedHooks>().add(RecordSessionHook(records: sl(), clock: sl()));
   sl<ProgressResetHooks>().add(const RecordResetHook());
+  sl<ProfileBackupParts>().add(
+    ChallengeBackupPart(choicesOf: () => sl<TrainingChoiceLocalDataSource>()),
+  );
 }
 
 void _registerDuel(GetIt sl) {

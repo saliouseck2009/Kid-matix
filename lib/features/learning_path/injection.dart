@@ -16,7 +16,9 @@ import 'package:kid_matix/features/learning_path/domain/usecases/answer_placemen
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/run_placement_test_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_learning_path_changes_use_case.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_backup_part.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
 
 /// Registers the learning path feature in [sl] and adds its session hook;
@@ -67,4 +69,5 @@ void registerLearningPathFeature(GetIt sl) {
     StageProgressSessionHook(progress: sl(), clock: sl()),
   );
   sl<ProgressResetHooks>().add(const StageProgressResetHook());
+  sl<ProfileBackupParts>().add(const StageProgressBackupPart());
 }
