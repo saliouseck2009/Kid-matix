@@ -21,6 +21,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/boss_arena.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/clock_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/lives_header.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/match_pairs_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_feedback_panel.dart';
@@ -110,6 +111,15 @@ class QuizPlayView extends StatelessWidget {
                   data.run.domainId,
                 ),
               ),
+              null when data.asksPairs && data.feedback == null =>
+                MatchPairsAnswers(
+                  key: ValueKey<int>(data.run.answers.length),
+                  pairs: data.question.pairs,
+                  results: data.question.choices,
+                  onMatched: (Answer answer) => context.read<QuizBloc>().add(
+                    AnswerSubmitted(answer: answer),
+                  ),
+                ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
                 prompt: data.question.prompt,
@@ -121,8 +131,17 @@ class QuizPlayView extends StatelessWidget {
                     ? null
                     : _blankColor(context, data),
               ),
+              null when data.asksPairs => MatchPairsAnswers(
+                pairs: data.question.pairs,
+                results: data.question.choices,
+                onMatched: null,
+              ),
               null => QuestionCard(
                 label: labels.describeQuestion(
+                  data.question,
+                  data.run.domainId,
+                ),
+                resultSemanticLabel: labels.speakFindOperation(
                   data.question,
                   data.run.domainId,
                 ),
@@ -134,7 +153,8 @@ class QuizPlayView extends StatelessWidget {
               ),
             },
           ),
-          _AnswerZone(data: data, labels: labels),
+          if (!data.asksPairs || data.feedback != null)
+            _AnswerZone(data: data, labels: labels),
         ],
       ),
     );
@@ -171,7 +191,7 @@ class QuizPlayView extends StatelessWidget {
   /// Help card of a fact just missed for the second time, or `null`.
   ItemHelp? _helpOf(_PlayData data) {
     if (data.isRight != false || data.run.isNonStop) return null;
-    final String itemKey = data.question.itemKey;
+    final String itemKey = data.answeredItemKey;
     if (!data.run.needsHelp(itemKey)) return null;
     return labels.helpOf(itemKey, data.run.domainId);
   }
@@ -245,6 +265,15 @@ final class _PlayData {
 
   bool? get isRight => feedback?.submission.answer.isCorrect;
 
+  /// Whether the question asks to match pairs: its board takes the room
+  /// of the question card and of the answers.
+  bool get asksPairs => question.pairs.isNotEmpty;
+
+  /// Item the answer was judged on: the question's, or the first pair
+  /// missed when matching pairs.
+  String get answeredItemKey =>
+      feedback?.submission.answer.itemKey ?? question.itemKey;
+
   bool get isWritten =>
       question.choices.isEmpty &&
       question.questionTypeId != QuestionTypeIds.trueFalse;
@@ -286,7 +315,7 @@ class _AnswerZone extends StatelessWidget {
       children: <Widget>[
         if (question.questionTypeId == QuestionTypeIds.trueFalse)
           TrueFalseAnswers(feedbackOf: data.feedbackOf, onPicked: onPicked)
-        else if (!data.isWritten)
+        else if (!data.isWritten && !data.asksPairs)
           MultipleChoiceAnswers(
             choices: question.choices,
             feedbackOf: data.feedbackOf,
@@ -304,9 +333,12 @@ class _AnswerZone extends StatelessWidget {
           )
         else
           QuizHintBox(
-            hint: question.questionTypeId == QuestionTypeIds.trueFalse
-                ? context.l10n.quizHintTrueFalse
-                : context.l10n.quizHintMultipleChoice,
+            hint: switch (question.questionTypeId) {
+              QuestionTypeIds.trueFalse => context.l10n.quizHintTrueFalse,
+              QuestionTypeIds.findOperation =>
+                context.l10n.quizHintFindOperation,
+              _ => context.l10n.quizHintMultipleChoice,
+            },
           ),
       ],
     );
@@ -327,7 +359,7 @@ class _Feedback extends StatelessWidget {
     final bool isLightning = feedback.submission.answer.isLightning;
     final String? mirror = isRight
         ? null
-        : labels.describeMirror(data.question.itemKey, data.run.domainId);
+        : labels.describeMirror(data.answeredItemKey, data.run.domainId);
     return QuizFeedbackPanel(
       isRight: isRight,
       title: isRight
@@ -337,7 +369,7 @@ class _Feedback extends StatelessWidget {
           : context.l10n.quizFeedbackWrong,
       detail: isRight
           ? _rightDetail(context, feedback, isLightning)
-          : labels.describeItem(data.question.itemKey, data.run.domainId),
+          : labels.describeItem(data.answeredItemKey, data.run.domainId),
       reminder: mirror == null ? null : context.l10n.quizMirrorReminder(mirror),
       onContinue: data.run.isNonStop
           ? null

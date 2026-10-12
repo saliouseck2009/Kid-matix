@@ -622,6 +622,60 @@ abstract class AppLocalizations {
   /// **'Ce calcul est-il juste ?'**
   String get quizHintTrueFalse;
 
+  /// Words at the top of the question card of a "find the operation" question in the multiplication domain ("Which multiplication gives"). The result follows on its own line in a big yellow box, so the sentence stays open and has no question mark: phrase it so the number can come right after it. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle multiplication donne'**
+  String get quizFindOperationMultiplication;
+
+  /// What a screen reader says for the question card of a "find the operation" question in the multiplication domain ("Which multiplication gives 24?"), in place of the words and the result shown. {result} is the product the player must reach. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle multiplication donne {result} ?'**
+  String quizFindOperationSpokenMultiplication(int result);
+
+  /// Hint in a dashed box under the four operation buttons of a "find the operation" question ("Tap the right operation"). Imperative verb, speaks to a child with "tu"; one or two short lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche la bonne opération'**
+  String get quizHintFindOperation;
+
+  /// Title at the top of a "match the pairs" question, in place of the question card, above two columns: four operations and their four results ("Match each operation with its result"). Imperative verb, speaks to a child with "tu"; two lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relie chaque opération à son résultat'**
+  String get quizMatchPairsTitle;
+
+  /// Line under the title of a "match the pairs" question counting the pairs already matched ("1 pair found out of 4"); also read aloud by screen readers when it changes. {count} is the number of pairs found, {total} the number of pairs of the question (4). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune paire trouvée sur {total}} =1{1 paire trouvée sur {total}} other{{count} paires trouvées sur {total}}}'**
+  String quizMatchPairsProgress(int count, int total);
+
+  /// Hint in a dashed box under a "match the pairs" question before anything is selected ("Tap an operation, then its result"). Speaks to a child with "tu"; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche une opération, puis son résultat'**
+  String get quizMatchPairsHintStart;
+
+  /// Hint in the dashed box under a "match the pairs" board once the player has tapped an operation ("Now tap the result of 5 × 6"); also read aloud by screen readers. {operation} is the operation as shown on its button, digits and the × sign. Speaks to a child with "tu"; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche maintenant le résultat de {operation}'**
+  String quizMatchPairsHintResult(String operation);
+
+  /// Hint in the dashed box under a "match the pairs" board once the player has tapped a result first ("Now tap the operation that gives 30"); also read aloud by screen readers. {result} is the number shown on the result button. Speaks to a child with "tu"; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche maintenant l\'opération qui donne {result}'**
+  String quizMatchPairsHintOperation(String result);
+
+  /// What a screen reader says for an operation or a result button already matched in a "match the pairs" question ("5 times 6, pair found"). {label} is the button as spoken words: an operation ("5 fois 6") or a number ("30"). Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label}, paire trouvée'**
+  String quizMatchPairsFound(String label);
+
   /// Label of the button that says the statement is true ("True"). One word.
   ///
   /// In fr, this message translates to:
