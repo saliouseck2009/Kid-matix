@@ -34,6 +34,9 @@ abstract final class AppRoutes {
   /// « Mes monstres », opened from the [profile] tab.
   static const String profileMonsters = '/profile/monsters';
 
+  /// The placement test offered to a player just created, full screen.
+  static const String placementTest = '/placement';
+
   /// "Qui joue ?": the player selection, shown while nobody is playing.
   static const String whoIsPlaying = '/players';
 

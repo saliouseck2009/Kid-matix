@@ -20,6 +20,7 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
@@ -66,17 +67,11 @@ Future<void> main() async {
   runApp(
     KidMatixApp(
       router: _createRouter(session, mascotPages, profilePages),
-      scope: (Widget child) => ListenableBuilder(
-        listenable: session,
+      scope: (Widget child) => PlayerScope(
+        session: session,
+        profilePages: profilePages,
+        mascotPages: mascotPages,
         child: child,
-        builder: (BuildContext context, Widget? child) {
-          final String? profileId = session.activeProfileId;
-          if (profileId == null) return child!;
-          return profilePages.buildSettingsScope(
-            profileId: profileId,
-            child: mascotPages.buildScope(profileId: profileId, child: child!),
-          );
-        },
       ),
     ),
   );
@@ -138,7 +133,9 @@ GoRouter _createRouter(
         getLearningPath: sl(),
         watchChanges: sl(),
       ),
+      placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
       domains: sl(),
+      clock: sl(),
     ),
     rewardPages: RewardPages(
       useCases: RewardUseCases(
@@ -217,6 +214,85 @@ class KidMatixApp extends StatelessWidget {
         final Widget screen = child ?? const SizedBox.shrink();
         return AppWidthLimit(child: scope?.call(screen) ?? screen);
       },
+    );
+  }
+}
+
+/// Gives every screen the settings and the mascot of the active player.
+///
+/// When the player leaves, the scope keeps that player's Cubits, with the
+/// first-stage mascot and the phone's animations, until another player
+/// is chosen. The widgets above the router keep their shape, so the
+/// player's screens still find their Cubits while the router closes them;
+/// dropping the Cubits in that frame breaks the build of those screens.
+class PlayerScope extends StatefulWidget {
+  /// Creates the scope of the player of [session] around [child].
+  const PlayerScope({
+    required this.session,
+    required this.profilePages,
+    required this.mascotPages,
+    required this.child,
+    super.key,
+  });
+
+  /// Session telling who is playing.
+  final ProfileSessionService session;
+
+  /// Builds the settings scope.
+  final ProfilePages profilePages;
+
+  /// Builds the mascot scope.
+  final MascotPages mascotPages;
+
+  /// The app.
+  final Widget child;
+
+  @override
+  State<PlayerScope> createState() => _PlayerScopeState();
+}
+
+class _PlayerScopeState extends State<PlayerScope> {
+  String? _profileId;
+
+  @override
+  void initState() {
+    super.initState();
+    _profileId = widget.session.activeProfileId;
+    widget.session.addListener(_followSession);
+  }
+
+  @override
+  void didUpdateWidget(PlayerScope oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.session == widget.session) return;
+    oldWidget.session.removeListener(_followSession);
+    widget.session.addListener(_followSession);
+    _profileId = widget.session.activeProfileId ?? _profileId;
+  }
+
+  @override
+  void dispose() {
+    widget.session.removeListener(_followSession);
+    super.dispose();
+  }
+
+  void _followSession() {
+    setState(() => _profileId = widget.session.activeProfileId ?? _profileId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String? profileId = _profileId;
+    if (profileId == null) return widget.child;
+    final bool isPlayerActive = widget.session.activeProfileId != null;
+    return widget.profilePages.buildSettingsScope(
+      profileId: profileId,
+      isPlayerActive: isPlayerActive,
+      child: widget.mascotPages.buildScope(
+        profileId: profileId,
+        isPlayerActive: isPlayerActive,
+        child: widget.child,
+      ),
     );
   }
 }

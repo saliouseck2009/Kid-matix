@@ -54,12 +54,15 @@ void main() {
 
   final MascotPages mascotPages = buildTestMascotPages();
 
-  Future<void> pumpApp(WidgetTester tester) async {
+  Future<void> pumpApp(
+    WidgetTester tester, {
+    Widget Function(Widget child)? scope,
+  }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
       KidMatixApp(
-        scope: testMascotScope(mascotPages),
+        scope: scope ?? testMascotScope(mascotPages),
         router: createAppRouter(
           session: session,
           profilePages: buildProfilePages(
@@ -135,6 +138,23 @@ void main() {
       expect(find.text('Qui joue ?'), findsNothing);
       expect(find.text('Jouer'), findsOneWidget);
     });
+    testWidgets('offers the placement test to a player just created', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      session = FakeProfileSessionService(hasProfiles: false);
+      await pumpApp(tester);
+      // Act
+      session.update(hasProfiles: true, activeProfileId: 'profile-1');
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Tu connais déjà des tables\u00a0?'), findsOneWidget);
+      // Act
+      await tester.tap(find.text('Passer'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Jouer'), findsOneWidget);
+    });
     testWidgets('shows the active player in the Profile tab', (
       WidgetTester tester,
     ) async {
@@ -167,10 +187,20 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byTooltip('Changer de joueur'), findsOneWidget);
     });
-    testWidgets('lets another child play', (WidgetTester tester) async {
-      // Arrange
+    testWidgets('lets another child play under the app player scope', (
+      WidgetTester tester,
+    ) async {
+      // Arrange: the scope of main.dart, which follows the session.
       session = FakeProfileSessionService(activeProfileId: 'profile-1');
-      await pumpApp(tester);
+      await pumpApp(
+        tester,
+        scope: (Widget child) => PlayerScope(
+          session: session,
+          profilePages: buildProfilePages(),
+          mascotPages: mascotPages,
+          child: child,
+        ),
+      );
       await tester.tap(find.text('Profil'));
       await tester.pumpAndSettle();
       // Act
@@ -178,9 +208,16 @@ void main() {
       await tester.pump();
       session.update(hasProfiles: true);
       await tester.pumpAndSettle();
-      // Assert
+      // Assert: the screens of the player close without a framework error.
+      expect(tester.takeException(), isNull);
       verify(mockClearActive.call).called(1);
       expect(find.text('Qui joue\u00a0?'), findsOneWidget);
+      // Act: another child picks a player.
+      session.update(hasProfiles: true, activeProfileId: 'profile-2');
+      await tester.pumpAndSettle();
+      // Assert
+      expect(tester.takeException(), isNull);
+      expect(find.text('Jouer'), findsOneWidget);
     });
     testWidgets('opens the leaderboard, then hides it from the settings', (
       WidgetTester tester,
