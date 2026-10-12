@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
-import 'package:kid_matix/core/quiz/question_types/version_one_question_types.dart';
+import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
@@ -89,7 +89,7 @@ void _registerQuizEngine() {
   sl.registerLazySingleton<DomainRegistry>(DomainRegistry.new);
   sl.registerLazySingleton<QuestionTypeRegistry>(() {
     final QuestionTypeRegistry registry = QuestionTypeRegistry();
-    versionOneQuestionTypes.forEach(registry.register);
+    appQuestionTypes.forEach(registry.register);
     return registry;
   });
 }

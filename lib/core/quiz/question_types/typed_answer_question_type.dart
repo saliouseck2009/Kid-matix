@@ -16,6 +16,9 @@ final class TypedAnswerQuestionType implements QuestionType {
   AnswerNature get answerNature => AnswerNature.produced;
 
   @override
+  int get timeFactor => 1;
+
+  @override
   bool isCorrect({required Question question, required Answer answer}) {
     return answer == question.expectedAnswer;
   }

@@ -535,9 +535,9 @@ Deux joueurs s'affrontent face à face sur un écran coupé en deux.
 
 Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le registre des types.
 
-- [ ] **F15-01** Type « Trouver l'opération » : un résultat, 4 opérations au choix, une seule juste.
-- [ ] **F15-02** Type « Relier les paires » : 4 opérations et 4 résultats à associer.
-- [ ] **F15-03** Les deux types comptent comme réponse reconnue pour la maîtrise (plafond à la boîte 3).
+- [x] **F15-01** Type « Trouver l'opération » : un résultat, 4 opérations au choix, une seule juste.
+- [x] **F15-02** Type « Relier les paires » : 4 opérations et 4 résultats à associer.
+- [x] **F15-03** Les deux types comptent comme réponse reconnue pour la maîtrise (plafond à la boîte 3).
 - [ ] **F15-04** Widgets de réponse des deux types. Maquettes : `16-quiz-find-operation.png` et `17-quiz-match-pairs.png`.
 - [ ] **F15-05** Ajout des deux types aux étapes Vitesse et Boss, et à l'Entraînement libre.
 - [ ] **F15-06** Tests : génération sans ambiguïté (une seule opération juste, 4 résultats distincts), validation, tests de widget.

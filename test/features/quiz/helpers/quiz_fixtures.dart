@@ -2,7 +2,7 @@ import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
-import 'package:kid_matix/core/quiz/question_types/version_one_question_types.dart';
+import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
@@ -74,10 +74,10 @@ DomainRegistry buildDomainRegistry() {
   return DomainRegistry()..register(MultiplicationDomain());
 }
 
-/// Registry of the question types of version 1.0.
+/// Registry of every question type of the app.
 QuestionTypeRegistry buildQuestionTypeRegistry() {
   final QuestionTypeRegistry registry = QuestionTypeRegistry();
-  versionOneQuestionTypes.forEach(registry.register);
+  appQuestionTypes.forEach(registry.register);
   return registry;
 }
 
@@ -94,6 +94,7 @@ List<String> tableKeys(int table) {
 BuildQuizUseCase buildQuizUseCase({int seed = 5, MasteryService? mastery}) {
   return BuildQuizUseCase(
     domains: buildDomainRegistry(),
+    questionTypes: buildQuestionTypeRegistry(),
     mastery: mastery ?? FakeMasteryService(),
     generator: const QuestionGenerator(),
     random: DartRandomSource(seed: seed),

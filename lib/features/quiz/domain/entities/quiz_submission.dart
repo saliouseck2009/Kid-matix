@@ -26,6 +26,6 @@ final class QuizSubmission {
   /// answer may have shortened the time of the next ones.
   Duration? get answeredTimeLimit {
     final int correctBefore = run.correctCount - (answer.isCorrect ? 1 : 0);
-    return run.timeSchedule?.limitAfter(correctBefore) ?? run.timeLimit;
+    return run.timeLimitOf(turn, correctBefore);
   }
 }

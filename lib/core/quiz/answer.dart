@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
 /// What a player answers, or what a question expects.
@@ -43,4 +44,58 @@ final class BooleanAnswer extends Answer {
 
   @override
   String toString() => 'BooleanAnswer($value)';
+}
+
+/// An operation picked among choices, such as `4 × 6`, told by its tokens.
+final class OperationAnswer extends Answer {
+  /// Creates the answer [operation].
+  OperationAnswer(List<PromptToken> operation)
+    : operation = List<PromptToken>.unmodifiable(operation);
+
+  /// Operation picked, token by token: `4`, `×`, `6`.
+  final List<PromptToken> operation;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! OperationAnswer) return false;
+    if (other.operation.length != operation.length) return false;
+    for (int index = 0; index < operation.length; index++) {
+      if (other.operation[index] != operation[index]) return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode => Object.hashAll(operation);
+
+  @override
+  String toString() => 'OperationAnswer(${operation.join(' ')})';
+}
+
+/// Every pair of a match-pairs question matched, with the items whose
+/// operation was first paired with a wrong result.
+///
+/// The right answer is the one without any missed item.
+final class PairsAnswer extends Answer {
+  /// Creates the answer; [missedItemKeys] is empty when no pairing failed.
+  PairsAnswer({Set<String> missedItemKeys = const <String>{}})
+    : missedItemKeys = Set<String>.unmodifiable(missedItemKeys);
+
+  /// Keys of the items paired wrongly at least once, such as `mul:5x6`.
+  final Set<String> missedItemKeys;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is PairsAnswer &&
+            other.missedItemKeys.length == missedItemKeys.length &&
+            other.missedItemKeys.containsAll(missedItemKeys);
+  }
+
+  @override
+  int get hashCode => Object.hashAllUnordered(missedItemKeys);
+
+  @override
+  String toString() => 'PairsAnswer(missed: $missedItemKeys)';
 }

@@ -94,7 +94,7 @@ void main() {
           'no item': buildParams(itemKeys: <String>[]),
           'no supported type': buildParams(
             itemKeys: <String>['mul:7x8'],
-            questionTypeIds: <String>['matchPairs'],
+            questionTypeIds: <String>['drawOnSlate'],
           ),
         };
     for (final MapEntry<String, BuildQuizParams> entry

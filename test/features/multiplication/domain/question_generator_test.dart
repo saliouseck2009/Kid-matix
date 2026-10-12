@@ -115,7 +115,7 @@ void main() {
       final Set<String> actualTypes = _generate(
         items: _tableOf(2),
         questionTypeIds: const <String>[
-          'matchPairs',
+          'drawOnSlate',
           QuestionTypeIds.multipleChoice,
         ],
       ).map((Question question) => question.questionTypeId).toSet();
@@ -126,7 +126,7 @@ void main() {
       // Act
       List<Question> actualGenerate() => _generate(
         items: _tableOf(2),
-        questionTypeIds: const <String>['matchPairs'],
+        questionTypeIds: const <String>['drawOnSlate'],
       );
       // Assert
       expect(actualGenerate, throwsArgumentError);
@@ -153,7 +153,7 @@ void main() {
           itemKey: 'mul:7x9',
           questionTypeIds: const <String>[
             QuestionTypeIds.trueFalse,
-            'matchPairs',
+            'drawOnSlate',
           ],
         ),
       ];
