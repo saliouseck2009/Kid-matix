@@ -144,6 +144,7 @@ void main() {
             profileId: 'p1',
             onPlay: played.add,
             onOpenMonsters: () => played.add('monsters'),
+            onOpenDuel: () => played.add('duel'),
           ),
         ),
       );
@@ -221,8 +222,19 @@ void main() {
       await tester.tap(find.text('Chasse aux monstres'));
       // Assert
       expect(find.text('3 monstres à apprivoiser'), findsOneWidget);
-      expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsNWidgets(2));
       expect(played, <String>['monsters']);
+    });
+    testWidgets('opens the duel from its card', (WidgetTester tester) async {
+      // Arrange
+      final List<String> played = await pumpChallenges(tester);
+      // Act
+      await tester.ensureVisible(find.text('Duel'));
+      await tester.tap(find.text('Duel'));
+      // Assert
+      expect(find.text('2\u00a0joueurs, 1\u00a0téléphone'), findsOneWidget);
+      expect(find.byIcon(Icons.swap_vert_rounded), findsOneWidget);
+      expect(played, <String>['duel']);
     });
     testWidgets('says when no monster waits', (WidgetTester tester) async {
       // Act
@@ -294,6 +306,7 @@ void main() {
             profileId: 'p1',
             onPlay: (_) {},
             onOpenMonsters: () {},
+            onOpenDuel: () {},
           ),
         ),
       );

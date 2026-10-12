@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
 import 'package:kid_matix/core/router/play_routes.dart';
 import 'package:kid_matix/core/router/profile_session_redirect.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
+import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
@@ -29,6 +31,7 @@ GoRouter createAppRouter({
   required MascotPages mascotPages,
   required ChallengePages challengePages,
   required MasteryPages masteryPages,
+  required DuelPages duelPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -135,12 +138,25 @@ GoRouter createAppRouter({
                   profileId: profileId,
                   onPlay: onPlay,
                   onOpenMonsters: () => context.go(AppRoutes.challengeMonsters),
+                  onOpenDuel: () => context.go(AppRoutes.duel),
                 ),
             routes: <RouteBase>[
               _createMonstersRoute(
                 path: AppRoutes.challengeMonsters,
                 monsters: monsters,
                 rootNavigatorKey: rootNavigatorKey,
+              ),
+              GoRoute(
+                path: _lastSegment(AppRoutes.duel),
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (BuildContext context, GoRouterState state) {
+                  return duelPages.buildDuelPage(
+                    activeProfileId: session.activeProfileId,
+                    avatarOf: (PlayerIdentity player, double size) =>
+                        profilePages.buildAvatar(player: player, size: size),
+                    onClose: () => context.go(AppRoutes.challenges),
+                  );
+                },
               ),
             ],
           ),

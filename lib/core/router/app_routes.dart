@@ -24,6 +24,10 @@ abstract final class AppRoutes {
   /// « Mes monstres », opened from the [challenges] tab.
   static const String challengeMonsters = '/challenges/monsters';
 
+  /// The duel on one phone, opened from the [challenges] tab, full
+  /// screen.
+  static const String duel = '/challenges/duel';
+
   /// « Mes monstres », opened from the [profile] tab.
   static const String profileMonsters = '/profile/monsters';
 

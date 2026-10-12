@@ -16,12 +16,13 @@ import 'package:kid_matix/features/challenge/presentation/widgets/challenge_erro
 import 'package:kid_matix/features/challenge/presentation/widgets/daily_review_card.dart';
 
 /// The challenges tab: the daily review, then each challenge with the
-/// player's record, then the monster hunt.
+/// player's record, then the monster hunt and the duel.
 class ChallengesPage extends StatelessWidget {
   /// Creates the page.
   const ChallengesPage({
     required this.onPlay,
     required this.onOpenMonsters,
+    required this.onOpenDuel,
     super.key,
   });
 
@@ -32,6 +33,9 @@ class ChallengesPage extends StatelessWidget {
 
   /// Opens « Mes monstres », where the monster hunt starts.
   final VoidCallback onOpenMonsters;
+
+  /// Opens the duel on one phone.
+  final VoidCallback onOpenDuel;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +90,15 @@ class ChallengesPage extends StatelessWidget {
                     _MonsterHuntCard(
                       monsterCount: monsterCount,
                       onOpen: onOpenMonsters,
+                    ),
+                    ChallengeCard(
+                      icon: Icons.swap_vert_rounded,
+                      iconColor: context.feedbackPalette.right,
+                      iconBackground: context.feedbackPalette.rightTint,
+                      title: context.l10n.duelTitle,
+                      subtitle: context.l10n.challengeDuelSubtitle,
+                      hasChevron: true,
+                      onTap: onOpenDuel,
                     ),
                   ],
                 ),

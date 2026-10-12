@@ -1178,6 +1178,105 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get duelTitle => 'Duel';
+
+  @override
+  String get challengeDuelSubtitle => '2 joueurs, 1 téléphone';
+
+  @override
+  String get duelPickIntro =>
+      'Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l\'envers.';
+
+  @override
+  String get duelSideTop => 'Joueur du haut';
+
+  @override
+  String get duelSideBottom => 'Joueur du bas';
+
+  @override
+  String get duelGuest => 'Invité';
+
+  @override
+  String get duelGuestRule => 'Toutes les tables, sans XP';
+
+  @override
+  String get duelPickHint => 'Choisissez deux joueurs différents.';
+
+  @override
+  String get duelStart => 'C\'est parti !';
+
+  @override
+  String get duelPlayerTaken => 'Déjà choisi';
+
+  @override
+  String duelScore(int score, int target) {
+    return '$score / $target';
+  }
+
+  @override
+  String duelScoreSpoken(String name, int score, int target) {
+    String _temp0 = intl.Intl.pluralLogic(
+      score,
+      locale: localeName,
+      other: '$score bonnes réponses',
+      one: '1 bonne réponse',
+      zero: 'aucune bonne réponse',
+    );
+    return '$name : $_temp0 sur $target';
+  }
+
+  @override
+  String get duelPause => 'Mettre le duel en pause';
+
+  @override
+  String get duelPauseTitle => 'Duel en pause';
+
+  @override
+  String get duelPauseMessage =>
+      'Si vous arrêtez maintenant, personne ne gagne d\'XP.';
+
+  @override
+  String get duelResume => 'Reprendre';
+
+  @override
+  String get duelStop => 'Arrêter le duel';
+
+  @override
+  String get duelBlocked => 'Oups ! Attends un peu…';
+
+  @override
+  String duelAnswerRight(int answer) {
+    return '$answer, bonne réponse';
+  }
+
+  @override
+  String duelAnswerWrong(int answer) {
+    return '$answer, mauvaise réponse';
+  }
+
+  @override
+  String duelWinner(String name) {
+    return '$name gagne !';
+  }
+
+  @override
+  String duelXpEarned(int xp) {
+    return '+$xp XP';
+  }
+
+  @override
+  String get duelGuestNoXp => 'Pas d\'XP pour un invité';
+
+  @override
+  String get duelXpNotSaved => 'Les XP n\'ont pas pu être enregistrés.';
+
+  @override
+  String get duelReplay => 'Rejouer';
+
+  @override
+  String get duelQuit => 'Quitter';
+
+  @override
   String get monstersPageTitle => 'Mes monstres';
 
   @override
