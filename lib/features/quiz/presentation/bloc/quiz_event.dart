@@ -65,7 +65,7 @@ final class ClockRanOut extends QuizEvent {
 }
 
 /// The player tapped "Continuer" after the feedback, or its time went by
-/// in a quiz against the clock.
+/// in a non-stop quiz.
 final class NextRequested extends QuizEvent {
   /// Creates the event.
   const NextRequested();
@@ -77,7 +77,7 @@ final class QuizPaused extends QuizEvent {
   const QuizPaused();
 }
 
-/// The app came back: the timer goes on; against the clock, a new
+/// The app came back: the timer goes on; in a non-stop quiz, a new
 /// question replaces the one shown.
 final class QuizResumed extends QuizEvent {
   /// Creates the event.

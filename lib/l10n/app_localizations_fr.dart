@@ -455,6 +455,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizModeTimeAttack => 'Contre-la-montre';
 
   @override
+  String get quizModeSurvival => 'Survie';
+
+  @override
+  String quizLivesSpoken(int left, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: '$left vies sur $total',
+      one: '1 vie sur $total',
+      zero: 'Plus de vie',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get quizModeDailyReview => 'Révision du jour';
 
   @override

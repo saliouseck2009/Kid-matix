@@ -18,11 +18,11 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 ///
 /// The timer lives here, fed by the injected [Ticker]: it measures every
 /// answer, even without a visible timer, stops while the app is in the
-/// background and turns a timeout into a wrong answer. Against the clock
-/// it also counts the time of the whole quiz, during the feedback too:
-/// the next question comes by itself, a new question replaces the one
-/// shown when the app comes back, and the quiz ends when the time runs
-/// out.
+/// background and turns a timeout into a wrong answer. In a non-stop
+/// quiz (against the clock or with lives) it also counts the time of the
+/// feedback: the next question comes by itself, a new question replaces
+/// the one shown when the app comes back; against the clock the quiz
+/// ends when the time runs out.
 final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   /// Creates the Bloc.
   QuizBloc({required this._useCases, required this._ticker})
@@ -49,11 +49,11 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   /// Time between two ticks of the timer.
   static const Duration tickInterval = Duration(milliseconds: 100);
 
-  /// Against the clock, how long a right answer shows before the next
+  /// In a non-stop quiz, how long a right answer shows before the next
   /// question.
   static const Duration rightFeedbackTime = Duration(milliseconds: 600);
 
-  /// Against the clock, how long a mistake and its right answer show.
+  /// In a non-stop quiz, how long a mistake and its right answer show.
   static const Duration wrongFeedbackTime = Duration(milliseconds: 1500);
 
   final QuizUseCases _useCases;
@@ -76,6 +76,8 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         followUpQuestionCount: request.followUpQuestionCount,
         isBossFight: request.isBossFight,
         totalTimeLimit: request.totalTimeLimit,
+        lives: request.lives,
+        timeSchedule: request.timeSchedule,
         questionTypeIds: request.questionTypeIds,
         timeLimit: await _useCases.getTimeLimit(params: request),
       ),
@@ -96,10 +98,14 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
           playedTime: current.playedTime + tickInterval,
         );
         emit(next);
-        final Duration? limit = next.run.timeLimit;
+        final Duration? limit = next.run.currentTimeLimit;
         if (_isOutOfTime(next.run, next.playedTime)) {
           add(const ClockRanOut());
-        } else if (limit != null && next.elapsed >= limit) {
+        } else if (limit != null &&
+            next.elapsed >= limit &&
+            current.elapsed < limit) {
+          // Once only: in a non-stop quiz the ticks go on while the
+          // timeout is judged.
           add(const TimeExpired());
         }
       case final QuizShowingFeedback current:
@@ -109,8 +115,8 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     }
   }
 
-  /// Against the clock, the feedback counts in the time and leads to the
-  /// next question by itself.
+  /// In a non-stop quiz, the feedback counts in the time and leads to
+  /// the next question by itself.
   void _tickFeedback(QuizShowingFeedback current, Emitter<QuizState> emit) {
     final QuizShowingFeedback next = current.copyWith(
       playedTime: current.playedTime + tickInterval,
@@ -154,7 +160,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   Future<void> _submit(Answer? answer, Emitter<QuizState> emit) async {
     final QuizState current = state;
     if (current is! QuizAsking) return;
-    if (!current.run.isAgainstTheClock) _stopTicker();
+    if (!current.run.isNonStop) _stopTicker();
     final DataState<QuizSubmission> judged = await _useCases.submitAnswer(
       params: SubmitAnswerParams(
         run: current.run,
@@ -225,7 +231,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   Future<void> _onResumed(QuizResumed event, Emitter<QuizState> emit) async {
     switch (state) {
       case final QuizAsking current when current.isPaused:
-        if (!current.run.isAgainstTheClock) {
+        if (!current.run.isNonStop) {
           emit(current.copyWith(isPaused: false));
           return _startTicker();
         }
@@ -233,7 +239,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         if (next.isFinished) return _complete(next, emit);
         _ask(next, emit, current.playedTime);
       case final QuizShowingFeedback current
-          when current.submission.run.isAgainstTheClock && _ticks == null:
+          when current.submission.run.isNonStop && _ticks == null:
         _startTicker();
       default:
         return;

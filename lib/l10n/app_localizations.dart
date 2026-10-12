@@ -754,6 +754,18 @@ abstract class AppLocalizations {
   /// **'Contre-la-montre'**
   String get quizModeTimeAttack;
 
+  /// Name of the survival challenge (3 lives, less and less time per question), shown under the results title and on the challenges screen ("Survival").
+  ///
+  /// In fr, this message translates to:
+  /// **'Survie'**
+  String get quizModeSurvival;
+
+  /// Screen-reader text of the hearts at the top of a survival quiz, whose visible content is only hearts, full or emptied ("2 lives out of 3", "No life left").
+  ///
+  /// In fr, this message translates to:
+  /// **'{left, plural, =0{Plus de vie} =1{1 vie sur {total}} other{{left} vies sur {total}}}'**
+  String quizLivesSpoken(int left, int total);
+
   /// Name of the daily review (10 questions on the facts the player should review), shown as the title of its card on the challenges screen and under the results title ("Daily review").
   ///
   /// In fr, this message translates to:

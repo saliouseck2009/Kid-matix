@@ -620,6 +620,24 @@
   "@quizModeTimeAttack": {
     "description": "Name of the time attack challenge (as many right answers as possible in 60 seconds), shown under the results title and on the challenges screen (\"Against the clock\")."
   },
+  "quizModeSurvival": "Survie",
+  "@quizModeSurvival": {
+    "description": "Name of the survival challenge (3 lives, less and less time per question), shown under the results title and on the challenges screen (\"Survival\")."
+  },
+  "quizLivesSpoken": "{left, plural, =0{Plus de vie} =1{1 vie sur {total}} other{{left} vies sur {total}}}",
+  "@quizLivesSpoken": {
+    "description": "Screen-reader text of the hearts at the top of a survival quiz, whose visible content is only hearts, full or emptied (\"2 lives out of 3\", \"No life left\").",
+    "placeholders": {
+      "left": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "quizModeDailyReview": "Révision du jour",
   "@quizModeDailyReview": {
     "description": "Name of the daily review (10 questions on the facts the player should review), shown as the title of its card on the challenges screen and under the results title (\"Daily review\")."
