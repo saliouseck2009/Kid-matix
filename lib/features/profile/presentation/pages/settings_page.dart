@@ -14,8 +14,8 @@ import 'package:kid_matix/features/profile/presentation/widgets/nickname_confirm
 import 'package:kid_matix/features/profile/presentation/widgets/profile_error_message.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/settings_parts.dart';
 
-/// The settings of the player (mockup 13): sounds, game, reminder, and
-/// the actions on the player. The backup section comes with its lot.
+/// The settings of the player (mockup 13): sounds, game, reminder,
+/// backup and the actions on the player.
 /// Other features add rows to the game section, such as the leaderboard
 /// switch, and fill the reminder section.
 class SettingsPage extends StatelessWidget {
@@ -23,6 +23,7 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({
     required this.onBack,
     this.gameRows = const <Widget>[],
+    this.backupSection,
     this.reminderRows = const <Widget>[],
     super.key,
   });
@@ -32,6 +33,9 @@ class SettingsPage extends StatelessWidget {
 
   /// Rows of other features, at the end of the game section.
   final List<Widget> gameRows;
+
+  /// The "Sauvegarde" section, or `null`.
+  final Widget? backupSection;
 
   /// Rows of the « Rappel » section, hidden when empty.
   final List<Widget> reminderRows;
@@ -59,6 +63,7 @@ class SettingsPage extends StatelessWidget {
                   state: state,
                   onBack: onBack,
                   gameRows: gameRows,
+                  backupSection: backupSection,
                   reminderRows: reminderRows,
                 ),
               };
@@ -86,6 +91,7 @@ class _SettingsView extends StatelessWidget {
     required this.state,
     required this.onBack,
     required this.gameRows,
+    required this.backupSection,
     required this.reminderRows,
   });
 
@@ -94,6 +100,7 @@ class _SettingsView extends StatelessWidget {
   final SettingsLoaded state;
   final VoidCallback onBack;
   final List<Widget> gameRows;
+  final Widget? backupSection;
   final List<Widget> reminderRows;
 
   Future<void> _reset(BuildContext context) async {
@@ -219,6 +226,10 @@ class _SettingsView extends StatelessWidget {
           ),
         ],
         const SizedBox(height: _gap),
+        if (backupSection case final Widget section) ...<Widget>[
+          section,
+          const SizedBox(height: _gap),
+        ],
         SettingsSection(
           title: context.l10n.settingsPlayerSection,
           rows: <Widget>[

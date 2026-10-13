@@ -25,6 +25,7 @@ import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/backup_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
@@ -201,6 +202,11 @@ ProfilePages _createProfilePages() {
       updateSettings: sl(),
       resetProgress: sl(),
       deleteProfile: sl(),
+    ),
+    backupUseCases: BackupUseCases(
+      exportProfile: sl(),
+      pickBackup: sl(),
+      importBackup: sl(),
     ),
     tabUseCases: ProfileTabUseCases(
       getProfile: sl(),

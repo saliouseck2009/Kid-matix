@@ -101,6 +101,12 @@ Pourquoi « Non » : selon les définitions de Google, une donnée traitée
 uniquement sur l'appareil et jamais envoyée hors de celui-ci n'est ni
 « collectée » ni « partagée ». C'est le cas du pseudo et de la progression.
 
+La sauvegarde par fichier (F20, version 1.2) ne change pas ces réponses :
+l'export est lancé par l'utilisateur, derrière un contrôle parental, et le
+fichier passe par la feuille de partage du système vers l'app qu'il choisit.
+Google ne compte pas comme une collecte un transfert lancé par l'utilisateur ;
+l'application n'envoie rien elle-même.
+
 **Point lié à l'audit** : la sauvegarde automatique d'Android est active par
 défaut (`android:allowBackup` non défini). Elle copie les données du jeu
 dans le compte Google de l'utilisateur. Désactiver la sauvegarde avant la

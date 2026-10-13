@@ -27,7 +27,8 @@ middle of one). Last update: 2026-10-12.
 | F17 · Local leaderboard | **Done** (closed 2026-10-12) |
 | F18 · Daily reminder | **Done** (closed 2026-10-12), real-phone check by the owner pending |
 | F19 · Challenge by code | **Done** (closed 2026-10-12) |
-| F20 – F21 | Not started |
+| F20 · File backup | **Done** (closed 2026-10-12) |
+| F21 | Not started |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -584,6 +585,54 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 (no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
+
+## F20 closure
+
+- Settings, section « Sauvegarde » (mockup 13): « Exporter mon profil »
+  writes the active player to `KidMatix-<nickname>-<day>.kidmatix` and
+  opens the share sheet; « Importer un profil » opens the system picker.
+  Both open behind the parental gate « Demande à un adulte »
+  (`core/widgets/parental_gate.dart`: a number from 1,000 to 9,999 in
+  French words, to type in digits). Format and rules in
+  `docs/decisions.md`. No schema change, no Android or iOS setting.
+- Each feature exports and imports its own tables through a
+  `ProfileBackupPart` (`core/storage/`); the profile feature runs them in
+  one transaction, with new ids for everything but a replaced player.
+  The placement rows of `stage_progress` travel apart, the last free
+  training (a preference) travels with the challenges.
+- A nickname already on the phone asks « Remplacer » or « Renommer »;
+  a damaged file or a file of a newer version is refused with its own
+  message. New packages: `share_plus`, `file_selector`,
+  `package_info_plus`. Privacy policy updated; the Play data-safety and
+  App Store privacy answers do not change.
+- Tests (F20-05): a round trip between two databases (every table of the
+  player identical, links between rows kept, the other player left out),
+  replace keeping the id, rename twice without collision, nickname taken,
+  damaged JSON, malformed row and dangling row refused with nothing
+  written, newer version refused, unknown keys and missing sections
+  read; the codec, the use cases, the Cubit, the settings section with
+  the gate, the gate and the French number spelling.
+- `bash tool/check.sh`: every step OK (1041 tests); `bash tool/check.sh
+  build` OK (Android and iOS). Coverage: `features/profile/domain`
+  96.3 %, `features/profile/data` 91.1 %, every other folder above its
+  threshold.
+- Not checked on a device: the debug build installed on the shared
+  Android emulator, but another session was playing a quiz on it, so the
+  check stopped there. To try with two phones: on the first, Profil →
+  Réglages → « Exporter mon profil », answer the gate, send the file
+  (e-mail, messaging app, Drive); on the second, install the app, create
+  any player, then « Importer un profil » and pick the file — with the
+  same nickname, « Remplacer » brings back level, streak, stars and
+  mastery grid.
+
+Texts waiting for the owner: the gate (« Demande à un adulte », « Cette
+action est réservée aux adultes. Écris ce nombre en chiffres : »,
+« Nombre en chiffres », « Valider »), the conflict dialog (« Awa existe
+déjà », its text, « Remplacer », « Renommer »), the rename dialog
+(« Nouveau pseudo », « Choisis un autre pseudo pour le joueur
+importé. », « Importer »), the messages after an export or an import and
+the two refusals. Choices to confirm: 4-digit numbers for the gate, the
+imported player not made active, a wrong gate answer going back silently.
 
 ## F19 closure
 

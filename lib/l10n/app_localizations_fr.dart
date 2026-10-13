@@ -290,6 +290,79 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsReducedMotion => 'Animations réduites';
 
   @override
+  String get commonClose => 'Fermer';
+
+  @override
+  String get settingsBackupSection => 'Sauvegarde';
+
+  @override
+  String get backupExport => 'Exporter mon profil';
+
+  @override
+  String get backupImport => 'Importer un profil';
+
+  @override
+  String get backupExportDone =>
+      'Fichier prêt ! Ouvre-le dans Kid Matix sur l\'autre téléphone, avec « Importer un profil ».';
+
+  @override
+  String backupImportDone(String nickname) {
+    return 'Profil de $nickname importé ! Retrouve-le avec « Changer de joueur ».';
+  }
+
+  @override
+  String backupImportReplaced(String nickname) {
+    return 'Progression de $nickname restaurée !';
+  }
+
+  @override
+  String backupConflictTitle(String nickname) {
+    return '$nickname existe déjà';
+  }
+
+  @override
+  String backupConflictMessage(String nickname, int level) {
+    return 'Ce téléphone a déjà un joueur $nickname. Le fichier contient $nickname au niveau $level.\n\nRemplacer efface la progression actuelle de $nickname sur ce téléphone. Renommer garde les deux joueurs.';
+  }
+
+  @override
+  String get backupConflictReplace => 'Remplacer';
+
+  @override
+  String get backupConflictRename => 'Renommer';
+
+  @override
+  String get backupRenameTitle => 'Nouveau pseudo';
+
+  @override
+  String get backupRenameMessage =>
+      'Choisis un autre pseudo pour le joueur importé.';
+
+  @override
+  String get backupRenameConfirm => 'Importer';
+
+  @override
+  String get errorBackupInvalid =>
+      'Ce fichier n\'est pas une sauvegarde Kid Matix, ou il est abîmé.';
+
+  @override
+  String get errorBackupVersion =>
+      'Cette sauvegarde vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
+
+  @override
+  String get parentalGateTitle => 'Demande à un adulte';
+
+  @override
+  String get parentalGateMessage =>
+      'Cette action est réservée aux adultes. Écris ce nombre en chiffres :';
+
+  @override
+  String get parentalGateAnswerLabel => 'Nombre en chiffres';
+
+  @override
+  String get parentalGateConfirm => 'Valider';
+
+  @override
   String get settingsReminderSection => 'Rappel';
 
   @override

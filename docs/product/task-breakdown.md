@@ -598,11 +598,11 @@ Un joueur partage un code ; un ami rejoue exactement les mêmes questions sur un
 
 La progression survit à un changement de téléphone grâce à un fichier exporté puis importé.
 
-- [ ] **F20-01** Format de fichier versionné contenant un profil et toutes ses données.
-- [ ] **F20-02** Export d'un profil vers un fichier, partagé par la feuille de partage du système.
-- [ ] **F20-03** Import : contrôle du format, puis choix entre remplacer le profil existant ou renommer en cas de pseudo déjà pris.
-- [ ] **F20-04** Entrées « Exporter » et « Importer » dans les réglages. Maquette : `13-settings.png` (section Sauvegarde).
-- [ ] **F20-05** Tests : aller-retour export puis import sans perte, fichier corrompu refusé, conflit de pseudo.
+- [x] **F20-01** Format de fichier versionné contenant un profil et toutes ses données.
+- [x] **F20-02** Export d'un profil vers un fichier, partagé par la feuille de partage du système.
+- [x] **F20-03** Import : contrôle du format, puis choix entre remplacer le profil existant ou renommer en cas de pseudo déjà pris.
+- [x] **F20-04** Entrées « Exporter » et « Importer » dans les réglages. Maquette : `13-settings.png` (section Sauvegarde).
+- [x] **F20-05** Tests : aller-retour export puis import sans perte, fichier corrompu refusé, conflit de pseudo.
 
 **Terminé quand :** un profil exporté puis importé sur un second téléphone retrouve son niveau, sa série, ses étoiles et sa grille de maîtrise.
 
