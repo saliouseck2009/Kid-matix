@@ -33,6 +33,7 @@ void main() {
   Future<void> pumpApp(
     WidgetTester tester, {
     double textScale = _largestTextScale,
+    Locale locale = const Locale('fr'),
   }) async {
     tester.view
       ..physicalSize = _phone
@@ -68,7 +69,11 @@ void main() {
       ),
     );
     await tester.pumpWidget(
-      KidMatixApp(router: router, scope: testMascotScope(mascotPages)),
+      KidMatixApp(
+        locale: locale,
+        router: router,
+        scope: testMascotScope(mascotPages),
+      ),
     );
     await tester.pumpAndSettle();
   }
@@ -79,30 +84,34 @@ void main() {
   }
 
   group('Text at 130 % on a small phone', () {
-    for (final (String name, String location) in <(String, String)>[
-      ('the learning path', AppRoutes.learningPath),
-      ('the training', AppRoutes.training),
-      ('the challenges', AppRoutes.challenges),
-      ('the profile', AppRoutes.profile),
-      ('the settings', AppRoutes.settings),
-      ('the mascot', AppRoutes.mascot),
-      ('my monsters', AppRoutes.challengeMonsters),
-      ('the table detail', AppRoutes.tableDetailOf('mul:1')),
-      ('the whole table', AppRoutes.tableViewOf('mul:1')),
-      ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
-      ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
-      ('a quiz against the clock', AppRoutes.playOf('timeAttack:mul:1')),
-      ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
-    ]) {
-      testWidgets('cuts no text on $name', (WidgetTester tester) async {
-        // Arrange
-        await pumpApp(tester);
-        // Act
-        await visit(tester, location);
-        // Assert
-        expect(tester.takeException(), isNull);
-        expect(find.byType(Scaffold), findsWidgets);
-      });
+    for (final String language in <String>['fr', 'en', 'es']) {
+      for (final (String name, String location) in <(String, String)>[
+        ('the learning path', AppRoutes.learningPath),
+        ('the training', AppRoutes.training),
+        ('the challenges', AppRoutes.challenges),
+        ('the profile', AppRoutes.profile),
+        ('the settings', AppRoutes.settings),
+        ('the mascot', AppRoutes.mascot),
+        ('my monsters', AppRoutes.challengeMonsters),
+        ('the table detail', AppRoutes.tableDetailOf('mul:1')),
+        ('the whole table', AppRoutes.tableViewOf('mul:1')),
+        ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
+        ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
+        ('a quiz against the clock', AppRoutes.playOf('timeAttack:mul:1')),
+        ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
+      ]) {
+        testWidgets('cuts no text on $name in $language', (
+          WidgetTester tester,
+        ) async {
+          // Arrange
+          await pumpApp(tester, locale: Locale(language));
+          // Act
+          await visit(tester, location);
+          // Assert
+          expect(tester.takeException(), isNull);
+          expect(find.byType(Scaffold), findsWidgets);
+        });
+      }
     }
   });
 

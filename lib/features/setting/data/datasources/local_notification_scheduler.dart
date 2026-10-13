@@ -12,8 +12,12 @@ import 'package:timezone/timezone.dart' as tz;
 /// inexact alarm (no exact alarm permission): the reminder may come a few
 /// minutes late. Tapping it opens the app.
 final class LocalNotificationScheduler implements NotificationScheduler {
-  /// Creates the scheduler over [plugin], with the words of [texts].
-  LocalNotificationScheduler({required this._plugin, required this._texts});
+  /// Creates the scheduler over [plugin]; [readTexts] gives the words of
+  /// the notification, read again each time the reminders are scheduled.
+  LocalNotificationScheduler({
+    required this._plugin,
+    required this._readTexts,
+  });
 
   /// Android drawable of the small icon (`res/drawable/ic_notification`).
   static const String androidIcon = 'ic_notification';
@@ -25,7 +29,7 @@ final class LocalNotificationScheduler implements NotificationScheduler {
   static const int firstReminderId = 1800;
 
   final FlutterLocalNotificationsPlugin _plugin;
-  final ReminderNotificationTexts _texts;
+  final Future<ReminderNotificationTexts> Function() _readTexts;
   Future<void>? _initialization;
 
   @override
@@ -48,13 +52,14 @@ final class LocalNotificationScheduler implements NotificationScheduler {
   @override
   Future<void> scheduleReminders({required List<DateTime> times}) async {
     await cancelReminders();
+    final ReminderNotificationTexts texts = await _readTexts();
     for (int index = 0; index < times.length; index++) {
       await _plugin.zonedSchedule(
         id: firstReminderId + index,
-        title: _texts.title,
-        body: _texts.body,
+        title: texts.title,
+        body: texts.body,
         scheduledDate: tz.TZDateTime.from(times[index], tz.UTC),
-        notificationDetails: _details(),
+        notificationDetails: _details(texts),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
     }
@@ -81,12 +86,14 @@ final class LocalNotificationScheduler implements NotificationScheduler {
     );
   }
 
-  NotificationDetails _details() {
+  NotificationDetails _details(ReminderNotificationTexts texts) {
     return NotificationDetails(
       android: AndroidNotificationDetails(
         channelId,
-        _texts.channelName,
-        channelDescription: _texts.channelDescription,
+        texts.channelName,
+        channelDescription: texts.channelDescription,
+        // Renames the channel when the language of the app changes.
+        channelAction: AndroidNotificationChannelAction.update,
         icon: androidIcon,
         color: AppColors.violet,
       ),

@@ -504,6 +504,30 @@
   "@settingsReminderError": {
     "description": "Message shown at the bottom of the settings screen when the daily reminder cannot be saved or scheduled (\"Oops, the reminder could not be set.\"). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines."
   },
+  "settingsLanguageSection": "Langue",
+  "@settingsLanguageSection": {
+    "description": "Name of the section of the settings screen where the language of the app is chosen for the whole phone (\"Language\"). Short section header, one line, a noun."
+  },
+  "settingsLanguageSystem": "Langue du téléphone",
+  "@settingsLanguageSystem": {
+    "description": "First choice of the \"Langue\" section of the settings screen: the app follows the language of the phone (French when the phone speaks none of the app's languages). One line, radio button label."
+  },
+  "languageNameFrench": "Français",
+  "@languageNameFrench": {
+    "description": "Choice of the \"Langue\" section of the settings screen: the French language, always written in French whatever the language of the app. Do not translate."
+  },
+  "languageNameEnglish": "English",
+  "@languageNameEnglish": {
+    "description": "Choice of the \"Langue\" section of the settings screen: the English language, always written in English whatever the language of the app. Do not translate."
+  },
+  "languageNameSpanish": "Español",
+  "@languageNameSpanish": {
+    "description": "Choice of the \"Langue\" section of the settings screen: the Spanish language, always written in Spanish whatever the language of the app. Do not translate."
+  },
+  "settingsLanguageError": "Oups, la langue n'a pas pu être enregistrée.",
+  "@settingsLanguageError": {
+    "description": "Message shown at the bottom of the settings screen when the language chosen cannot be saved; the previous language comes back (\"Oops, the language could not be saved.\"). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines."
+  },
   "reminderNotificationBody": "C'est l'heure de tes tables !",
   "@reminderNotificationBody": {
     "description": "Message of the daily reminder notification, under the app name; tapping it opens the app (\"It's time for your tables!\"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification."

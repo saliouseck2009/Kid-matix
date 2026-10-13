@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
 import 'app_localizations_fr.dart';
 
 // ignore_for_file: type=lint
@@ -92,7 +94,11 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('fr')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('es'),
+    Locale('fr'),
+  ];
 
   /// Provisional application name, shown as the task-switcher title. Brand name: keep as is, do not translate.
   ///
@@ -639,6 +645,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Oups, le rappel n\'a pas pu être réglé.'**
   String get settingsReminderError;
+
+  /// Name of the section of the settings screen where the language of the app is chosen for the whole phone ("Language"). Short section header, one line, a noun.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get settingsLanguageSection;
+
+  /// First choice of the "Langue" section of the settings screen: the app follows the language of the phone (French when the phone speaks none of the app's languages). One line, radio button label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue du téléphone'**
+  String get settingsLanguageSystem;
+
+  /// Choice of the "Langue" section of the settings screen: the French language, always written in French whatever the language of the app. Do not translate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Français'**
+  String get languageNameFrench;
+
+  /// Choice of the "Langue" section of the settings screen: the English language, always written in English whatever the language of the app. Do not translate.
+  ///
+  /// In fr, this message translates to:
+  /// **'English'**
+  String get languageNameEnglish;
+
+  /// Choice of the "Langue" section of the settings screen: the Spanish language, always written in Spanish whatever the language of the app. Do not translate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Español'**
+  String get languageNameSpanish;
+
+  /// Message shown at the bottom of the settings screen when the language chosen cannot be saved; the previous language comes back ("Oops, the language could not be saved."). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, la langue n\'a pas pu être enregistrée.'**
+  String get settingsLanguageError;
 
   /// Message of the daily reminder notification, under the app name; tapping it opens the app ("It's time for your tables!"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification.
   ///
@@ -2560,7 +2602,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['fr'].contains(locale.languageCode);
+      <String>['en', 'es', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -2569,6 +2611,10 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
     case 'fr':
       return AppLocalizationsFr();
   }
