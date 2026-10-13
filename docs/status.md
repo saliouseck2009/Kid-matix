@@ -1,7 +1,7 @@
 # Project status
 
 Update this file at the end of every lot (and whenever work stops in the
-middle of one). Last update: 2026-10-12.
+middle of one). Last update: 2026-10-13.
 
 ## Where we are
 
@@ -28,7 +28,7 @@ middle of one). Last update: 2026-10-12.
 | F18 · Daily reminder | **Done** (closed 2026-10-12), real-phone check by the owner pending |
 | F19 · Challenge by code | **Done** (closed 2026-10-12) |
 | F20 · File backup | **Done** (closed 2026-10-12) |
-| F21 | Not started |
+| F21 · Other languages and shop | In progress (languages done) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -585,6 +585,23 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 (no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
+
+## F21 languages
+
+- F21-01 and F21-02 done: English and Spanish (`lib/l10n/app_en.arb`,
+  `app_es.arb`, every key), chosen for the whole phone in the « Langue »
+  section of the settings, the phone's language by default and French
+  when the phone speaks neither. The app switches live; the reminder
+  notification and its Android channel follow; the parental gate spells
+  its number in the language shown (`core/utils/number_words.dart`).
+- Tests: key and placeholder parity of the three ARB files
+  (`test/l10n/arb_parity_test.dart`), the language kept and applied, the
+  phone default and the French fallback, the app and the settings in
+  English and Spanish, the text-scale test in the three languages.
+- Translations to be proofread by the owner (choices listed in the pull
+  request). Every new key now needs its English and Spanish text: the
+  parity test fails otherwise. The shop half (F21-03 to F21-05) and the
+  closure of F21 (F21-06) remain.
 
 ## F20 closure
 

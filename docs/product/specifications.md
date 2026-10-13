@@ -351,7 +351,7 @@ Chaque réponse reçoit un retour clair en moins de 100 ms, et aucune informatio
 
 **Langue**
 
-L'app sort en français. Tous les textes sont externalisés pour ajouter d'autres langues sans toucher au code.
+L'app sort en français. Tous les textes sont externalisés pour ajouter d'autres langues sans toucher au code. Depuis la version 1.2 (F21), elle parle aussi anglais et espagnol : la langue se choisit dans les réglages pour tout le téléphone, et suit par défaut la langue du téléphone (français quand le téléphone parle une autre langue).
 
 ## 10. Données et stockage local
 
