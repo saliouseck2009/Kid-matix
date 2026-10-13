@@ -6,22 +6,30 @@ import 'package:kid_matix/features/reward/domain/entities/streak_summary.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_badges_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_player_level_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
+import 'package:kid_matix/features/reward/domain/usecases/get_total_xp_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/watch_reward_changes_use_case.dart';
 
 /// [RewardService] over the use cases of the reward feature.
 final class RewardServiceImpl implements RewardService {
   /// Creates the service.
   const RewardServiceImpl({
+    required this._getTotalXp,
     required this._getLevel,
     required this._getBadges,
     required this._getStreak,
     required this._watchChanges,
   });
 
+  final GetTotalXpUseCase _getTotalXp;
   final GetPlayerLevelUseCase _getLevel;
   final GetBadgesUseCase _getBadges;
   final GetStreakUseCase _getStreak;
   final WatchRewardChangesUseCase _watchChanges;
+
+  @override
+  Future<DataState<int>> readTotalXp({required String profileId}) {
+    return _getTotalXp(params: profileId);
+  }
 
   @override
   Future<DataState<int>> readLevel({required String profileId}) async {

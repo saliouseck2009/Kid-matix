@@ -9,10 +9,14 @@ import 'package:kid_matix/core/services/reward_service.dart';
 final class FixedRewardService implements RewardService {
   /// Creates the service.
   FixedRewardService({
+    this.totalXp = 0,
     this.level = 1,
     this.badges = const <String>{},
     this.streak = 0,
   });
+
+  /// Total XP returned.
+  int totalXp;
 
   /// Level returned.
   int level;
@@ -25,6 +29,12 @@ final class FixedRewardService implements RewardService {
 
   /// Failure of every call, or `null`.
   AppException? failure;
+
+  @override
+  Future<DataState<int>> readTotalXp({required String profileId}) async {
+    final AppException? error = failure;
+    return error == null ? DataSuccess<int>(totalXp) : DataFailed<int>(error);
+  }
 
   @override
   Future<DataState<int>> readLevel({required String profileId}) async {

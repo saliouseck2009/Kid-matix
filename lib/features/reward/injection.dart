@@ -15,6 +15,7 @@ import 'package:kid_matix/features/reward/domain/usecases/get_daily_goal_use_cas
 import 'package:kid_matix/features/reward/domain/usecases/get_player_level_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_session_rewards_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
+import 'package:kid_matix/features/reward/domain/usecases/get_total_xp_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/watch_reward_changes_use_case.dart';
 import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
@@ -51,6 +52,9 @@ void registerRewardFeature(GetIt sl) {
   sl.registerLazySingleton<GetPlayerLevelUseCase>(
     () => GetPlayerLevelUseCase(repository: sl()),
   );
+  sl.registerLazySingleton<GetTotalXpUseCase>(
+    () => GetTotalXpUseCase(repository: sl()),
+  );
   sl.registerLazySingleton<GetDailyGoalUseCase>(
     () => GetDailyGoalUseCase(repository: sl(), settings: sl(), clock: sl()),
   );
@@ -62,6 +66,7 @@ void registerRewardFeature(GetIt sl) {
   );
   sl.registerLazySingleton<RewardService>(
     () => RewardServiceImpl(
+      getTotalXp: sl(),
       getLevel: sl(),
       getBadges: sl(),
       getStreak: sl(),

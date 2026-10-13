@@ -15,6 +15,7 @@ import 'package:kid_matix/features/reward/domain/usecases/get_daily_goal_use_cas
 import 'package:kid_matix/features/reward/domain/usecases/get_player_level_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_session_rewards_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/get_streak_use_case.dart';
+import 'package:kid_matix/features/reward/domain/usecases/get_total_xp_use_case.dart';
 import 'package:kid_matix/features/reward/domain/usecases/watch_reward_changes_use_case.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -71,6 +72,7 @@ void main() {
 
   RewardServiceImpl buildService() {
     return RewardServiceImpl(
+      getTotalXp: GetTotalXpUseCase(repository: mockRepository),
       getLevel: GetPlayerLevelUseCase(repository: mockRepository),
       getBadges: GetBadgesUseCase(repository: mockRepository),
       getStreak: GetStreakUseCase(

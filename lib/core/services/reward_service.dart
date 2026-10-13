@@ -1,10 +1,13 @@
 import 'package:kid_matix/core/error/data_state.dart';
 
-/// The level, the streak and the badges of a player, as the mascot and
-/// the profile see them.
+/// The XP, the level, the streak and the badges of a player, as the
+/// mascot, the profile and the shop see them.
 ///
 /// Implemented by the reward feature, which owns them.
 abstract interface class RewardService {
+  /// Returns every XP [profileId] has earned, in quizzes and duels.
+  Future<DataState<int>> readTotalXp({required String profileId});
+
   /// Returns the level of [profileId].
   Future<DataState<int>> readLevel({required String profileId});
 
