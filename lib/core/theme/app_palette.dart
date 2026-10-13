@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/theme/app_colors.dart';
+import 'package:kid_matix/core/theme/app_theme_colors.dart';
 
 /// Design colors that Material's `ColorScheme` has no slot for.
 @immutable
@@ -20,6 +21,25 @@ final class AppPalette extends ThemeExtension<AppPalette> {
     required this.lockedSurface,
     required this.avatarBackgrounds,
   });
+
+  /// Builds the palette of the theme of [colors].
+  factory AppPalette.of(AppThemeColors colors) {
+    return AppPalette(
+      primaryDepth: colors.primaryDepth,
+      primaryText: colors.primaryText,
+      tint: colors.tint,
+      border: colors.border,
+      mutedText: colors.muted,
+      warmTint: colors.warmTint,
+      secondaryDepth: AppColors.yellowDepth,
+      strongBorder: colors.strongBorder,
+      softBorder: colors.softBorder,
+      lockedFace: colors.lockedFace,
+      lockedDepth: colors.lockedDepth,
+      lockedSurface: colors.lockedSurface,
+      avatarBackgrounds: light.avatarBackgrounds,
+    );
+  }
 
   /// Palette of the dark screen of the boss fight.
   static const AppPalette boss = AppPalette(
