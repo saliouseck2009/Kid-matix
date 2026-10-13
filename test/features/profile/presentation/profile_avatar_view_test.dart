@@ -5,6 +5,7 @@ import 'package:kid_matix/core/theme/app_palette.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/premium_avatar_painter.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_painter.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 
@@ -45,7 +46,7 @@ void main() {
       WidgetTester tester,
     ) async {
       for (final ProfileColor inputColor in ProfileColor.values) {
-        for (final ProfileAvatar inputAvatar in ProfileAvatar.values) {
+        for (final ProfileAvatar inputAvatar in ProfileAvatar.free) {
           // Act
           final ProfileAvatarPainter actualPainter = await _pumpAvatar(
             tester,
@@ -60,6 +61,39 @@ void main() {
           );
           expect(tester.takeException(), isNull);
         }
+      }
+    });
+    testWidgets('draws the avatars of the shop in their own colors', (
+      WidgetTester tester,
+    ) async {
+      for (final ProfileAvatar inputAvatar in ProfileAvatar.values.where(
+        (ProfileAvatar avatar) => !avatar.isFree,
+      )) {
+        // Act
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.night,
+            home: Center(
+              child: ProfileAvatarView(
+                avatar: inputAvatar,
+                color: ProfileColor.blue,
+                size: 64,
+              ),
+            ),
+          ),
+        );
+        final CustomPaint actualPaint = tester.widget<CustomPaint>(
+          find.descendant(
+            of: find.byType(ProfileAvatarView),
+            matching: find.byType(CustomPaint),
+          ),
+        );
+        // Assert
+        expect(
+          (actualPaint.painter! as PremiumAvatarPainter).avatar,
+          inputAvatar,
+        );
+        expect(tester.takeException(), isNull);
       }
     });
     testWidgets('draws a dark face on the yellow background', (
@@ -104,6 +138,40 @@ void main() {
         findsOneWidget,
       );
       handle.dispose();
+    });
+  });
+
+  group('ProfileAvatar', () {
+    test('keeps 12 free avatars and 8 from the shop', () {
+      // Act and assert
+      expect(ProfileAvatar.free, hasLength(12));
+      expect(ProfileAvatar.free.every((ProfileAvatar a) => a.isFree), isTrue);
+      expect(
+        ProfileAvatar.values.where((ProfileAvatar a) => !a.isFree),
+        hasLength(8),
+      );
+    });
+  });
+
+  group('PremiumAvatarPainter', () {
+    test('repaints only for another avatar', () {
+      // Arrange
+      const PremiumAvatarPainter inputPainter = PremiumAvatarPainter(
+        avatar: ProfileAvatar.fox,
+      );
+      // Act and assert
+      expect(
+        inputPainter.shouldRepaint(
+          const PremiumAvatarPainter(avatar: ProfileAvatar.fox),
+        ),
+        isFalse,
+      );
+      expect(
+        inputPainter.shouldRepaint(
+          const PremiumAvatarPainter(avatar: ProfileAvatar.king),
+        ),
+        isTrue,
+      );
     });
   });
 
