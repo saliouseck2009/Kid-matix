@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
@@ -49,6 +50,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         KidMatixApp(
+          locale: const Locale('fr'),
           router: _createPlayingRouter(),
           scope: testMascotScope(mascotPages),
         ),
@@ -65,6 +67,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         KidMatixApp(
+          locale: const Locale('fr'),
           router: _createPlayingRouter(),
           scope: testMascotScope(mascotPages),
         ),
@@ -81,6 +84,7 @@ void main() {
       const String inputTab = 'Défis';
       await tester.pumpWidget(
         KidMatixApp(
+          locale: const Locale('fr'),
           router: _createPlayingRouter(),
           scope: testMascotScope(mascotPages),
         ),
@@ -92,6 +96,52 @@ void main() {
       // Assert
       expect(find.text(inputTab), findsNWidgets(2));
       expect(find.text('Contre-la-montre'), findsOneWidget);
+    });
+  });
+  group('App languages', () {
+    Future<void> pumpApp(WidgetTester tester, {Locale? locale}) async {
+      await tester.pumpWidget(
+        KidMatixApp(
+          locale: locale,
+          router: _createPlayingRouter(),
+          scope: testMascotScope(mascotPages),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    void expectTabs(List<String> expectedTabs) {
+      for (final String expectedTab in expectedTabs) {
+        expect(find.text(expectedTab), findsWidgets);
+      }
+    }
+
+    testWidgets('shows the app in English', (WidgetTester tester) async {
+      // Act
+      await pumpApp(tester, locale: const Locale('en'));
+      // Assert
+      expectTabs(<String>['Path', 'Practice', 'Challenges', 'Profile']);
+    });
+
+    testWidgets('shows the app in Spanish', (WidgetTester tester) async {
+      // Act
+      await pumpApp(tester, locale: const Locale('es'));
+      // Assert
+      expectTabs(<String>['Camino', 'Practicar', 'Retos', 'Perfil']);
+    });
+
+    testWidgets('follows the phone, French when it is not spoken', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      tester.platformDispatcher.localesTestValue = const <Locale>[
+        Locale('it', 'IT'),
+      ];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+      // Act
+      await pumpApp(tester);
+      // Assert
+      expectTabs(<String>['Parcours', "S'entraîner", 'Défis', 'Profil']);
     });
   });
 }

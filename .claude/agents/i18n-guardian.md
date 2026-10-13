@@ -13,9 +13,12 @@ user-facing texts are French.
 ## Project facts
 
 - Template ARB: `lib/l10n/app_fr.arb` (`l10n.yaml`: `output-class:
-  AppLocalizations`, `nullable-getter: false`). French is the only language
-  in 1.0; more languages arrive in lot F21, so everything you do must make
-  adding `app_en.arb` a translation job only, with no code change.
+  AppLocalizations`, `nullable-getter: false`). Since F21 the app also
+  speaks English (`app_en.arb`) and Spanish (`app_es.arb`): these files
+  hold the texts only (no `@key` metadata), and every key of the template
+  must exist in both with the same placeholders —
+  `test/l10n/arb_parity_test.dart` fails otherwise. A new language must
+  stay a translation job only, with no code change.
 - Generated files `lib/l10n/app_localizations*.dart` are produced by
   `flutter gen-l10n`; never edit them by hand.
 - Widgets read texts with `context.l10n.someKey`
@@ -122,19 +125,23 @@ widget that displays it.
    - One whole sentence per key, with placeholders. Never split a sentence
      into pieces glued together in code: word order changes between
      languages.
-3. Replace the literal with `context.l10n.key` (or `key(value)` for a
+3. Add the same key to `app_en.arb` and `app_es.arb`, at the same place,
+   with a natural translation for a child (informal "you" / "tú"), the
+   same placeholders and the same `plural` / `select` variables. List
+   these translations in the report for the owner to proofread.
+4. Replace the literal with `context.l10n.key` (or `key(value)` for a
    placeholder). `const` constructors that held the literal lose `const`
    only where they must.
-4. Errors: `domain/`/`data/` throw or return an `AppErrorCode`; add a
+5. Errors: `domain/`/`data/` throw or return an `AppErrorCode`; add a
    presentation-side mapping (an extension or a switch on the code in
    `presentation/`) that returns `context.l10n.xxx`. Bloc states expose the
    code or an enum, and the widget resolves the text. An `AppErrorCode` is
    a violation only once a screen can show it without a localized text;
    codes no screen shows yet are a note in the report, not a fix.
-5. Accessibility texts (`tooltip`, `semanticLabel`, `Semantics.label`) are
+6. Accessibility texts (`tooltip`, `semanticLabel`, `Semantics.label`) are
    localized too: every icon button has a localized tooltip.
-6. Delete ARB keys that no Dart file uses any more (search
-   `l10n\.keyName\b` before deleting).
+7. Delete ARB keys that no Dart file uses any more (search
+   `l10n\.keyName\b` before deleting), in the three files.
 
 French typography in ARB values (owner's decision, `docs/decisions.md`):
 
@@ -143,6 +150,11 @@ French typography in ARB values (owner's decision, `docs/decisions.md`):
   write it as the real character in the ARB, never as a plain space;
 - the straight apostrophe `'`, as in the mockups, never `’`;
 - fix any value that breaks these two rules, and say so in the report.
+
+English and Spanish typography: no space before `! ? : ;`, no no-break
+space; Spanish opens with `¡` and `¿` where natural. Language-specific
+logic never lives in Dart (ordinals, plurals, number words go through the
+ARB or a per-language helper such as `core/utils/number_words.dart`).
 
 ## 4. ARB quality check
 
@@ -155,6 +167,8 @@ Even without code violations, verify on the whole `app_fr.arb`:
   used.
 - No duplicate values that mean the same thing under two keys.
 - Every key is used somewhere in `lib/` (outside `lib/l10n/`).
+- `app_en.arb` and `app_es.arb` have exactly the keys of `app_fr.arb`,
+  with the same placeholders (`flutter test test/l10n`).
 
 ## 5. Verify
 

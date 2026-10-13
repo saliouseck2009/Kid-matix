@@ -46,7 +46,13 @@ class BossHeader extends StatelessWidget {
             Expanded(
               child: Semantics(
                 header: true,
-                child: Text(title, style: textTheme.titleLarge),
+                // One line in every language: a longer title shrinks
+                // instead of pushing the arena off a small screen.
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(title, maxLines: 1, style: textTheme.titleLarge),
+                ),
               ),
             ),
           ],

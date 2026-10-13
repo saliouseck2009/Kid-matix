@@ -379,6 +379,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsReminderError => 'Oups, le rappel n\'a pas pu être réglé.';
 
   @override
+  String get settingsLanguageSection => 'Langue';
+
+  @override
+  String get settingsLanguageSystem => 'Langue du téléphone';
+
+  @override
+  String get languageNameFrench => 'Français';
+
+  @override
+  String get languageNameEnglish => 'English';
+
+  @override
+  String get languageNameSpanish => 'Español';
+
+  @override
+  String get settingsLanguageError =>
+      'Oups, la langue n\'a pas pu être enregistrée.';
+
+  @override
   String get reminderNotificationBody => 'C\'est l\'heure de tes tables !';
 
   @override

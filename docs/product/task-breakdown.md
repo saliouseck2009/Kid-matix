@@ -610,8 +610,8 @@ La progression survit à un changement de téléphone grâce à un fichier expor
 
 L'app s'ouvre à d'autres langues, et des pièces gagnées en jouant servent à débloquer des avatars et des thèmes.
 
-- [ ] **F21-01** Fichiers de traduction supplémentaires ; la liste des langues reste à définir.
-- [ ] **F21-02** Choix de la langue dans les réglages, langue du téléphone par défaut.
+- [x] **F21-01** Fichiers de traduction supplémentaires : anglais et espagnol.
+- [x] **F21-02** Choix de la langue dans les réglages, langue du téléphone par défaut.
 - [ ] **F21-03** Pièces gagnées en jouant : règles de gain à définir, solde par profil, migration.
 - [ ] **F21-04** Catalogue d'avatars et de thèmes à débloquer avec des pièces ; aucun achat en argent réel.
 - [ ] **F21-05** Écran Boutique : catalogue, solde, achat, élément actif. Maquette : `22-shop.png`.

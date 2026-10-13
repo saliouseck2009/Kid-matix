@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kid_matix/core/services/game_feedback_service.dart';
@@ -11,7 +10,13 @@ import 'package:kid_matix/features/setting/data/datasources/haptic_vibrator.dart
 import 'package:kid_matix/features/setting/data/datasources/local_notification_scheduler.dart';
 import 'package:kid_matix/features/setting/data/datasources/reminder_local_data_source.dart';
 import 'package:kid_matix/features/setting/data/datasources/reminder_local_data_source_impl.dart';
-import 'package:kid_matix/features/setting/data/datasources/reminder_notification_texts.dart';
+import 'package:kid_matix/features/setting/data/datasources/language_local_data_source.dart';
+import 'package:kid_matix/features/setting/data/datasources/language_local_data_source_impl.dart';
+import 'package:kid_matix/features/setting/data/datasources/reminder_notification_texts_reader.dart';
+import 'package:kid_matix/features/setting/data/repositories/language_repository_impl.dart';
+import 'package:kid_matix/features/setting/domain/repositories/language_repository.dart';
+import 'package:kid_matix/features/setting/domain/usecases/get_app_language_use_case.dart';
+import 'package:kid_matix/features/setting/domain/usecases/set_app_language_use_case.dart';
 import 'package:kid_matix/features/setting/data/repositories/reminder_repository_impl.dart';
 import 'package:kid_matix/features/setting/data/repositories/reminder_session_hook.dart';
 import 'package:kid_matix/features/setting/domain/repositories/reminder_repository.dart';
@@ -24,12 +29,12 @@ import 'package:kid_matix/features/setting/domain/usecases/record_finished_sessi
 import 'package:kid_matix/features/setting/domain/usecases/reschedule_reminders_use_case.dart';
 import 'package:kid_matix/features/setting/domain/usecases/set_reminder_enabled_use_case.dart';
 import 'package:kid_matix/features/setting/domain/usecases/set_reminder_time_use_case.dart';
-import 'package:kid_matix/l10n/app_localizations.dart';
 
-/// Registers the sounds and vibrations of the game and the daily reminder
-/// in [sl].
+/// Registers the sounds and vibrations of the game, the language of the
+/// interface and the daily reminder in [sl].
 void registerSettingFeature(GetIt sl) {
   _registerGameFeedback(sl);
+  _registerLanguage(sl);
   _registerReminder(sl);
 }
 
@@ -46,11 +51,29 @@ void _registerGameFeedback(GetIt sl) {
   );
 }
 
+void _registerLanguage(GetIt sl) {
+  sl.registerLazySingleton<LanguageLocalDataSource>(
+    () => LanguageLocalDataSourceImpl(storage: sl()),
+  );
+  sl.registerLazySingleton<LanguageRepository>(
+    () => LanguageRepositoryImpl(local: sl()),
+  );
+  sl.registerLazySingleton<GetAppLanguageUseCase>(
+    () => GetAppLanguageUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<SetAppLanguageUseCase>(
+    () => SetAppLanguageUseCase(repository: sl(), scheduler: sl()),
+  );
+}
+
 void _registerReminder(GetIt sl) {
   sl.registerLazySingleton<NotificationScheduler>(
     () => LocalNotificationScheduler(
       plugin: FlutterLocalNotificationsPlugin(),
-      texts: _reminderTexts(),
+      readTexts: ReminderNotificationTextsReader(
+        language: sl(),
+        phoneLanguageCodes: _readPhoneLanguageCodes,
+      ).read,
     ),
   );
   sl.registerLazySingleton<ReminderLocalDataSource>(
@@ -84,19 +107,10 @@ void _registerReminder(GetIt sl) {
   );
 }
 
-/// The words of the notification, in the phone's language among those
-/// of the app; read again at every launch, when the app schedules again.
-ReminderNotificationTexts _reminderTexts() {
-  final AppLocalizations l10n = lookupAppLocalizations(
-    basicLocaleListResolution(
-      PlatformDispatcher.instance.locales,
-      AppLocalizations.supportedLocales,
-    ),
-  );
-  return ReminderNotificationTexts(
-    title: l10n.appTitle,
-    body: l10n.reminderNotificationBody,
-    channelName: l10n.reminderChannelName,
-    channelDescription: l10n.reminderChannelDescription,
-  );
+/// The phone's languages, in its order of preference.
+List<String> _readPhoneLanguageCodes() {
+  return <String>[
+    for (final Locale locale in PlatformDispatcher.instance.locales)
+      locale.languageCode,
+  ];
 }
