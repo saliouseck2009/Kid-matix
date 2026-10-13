@@ -636,6 +636,22 @@ prices (Océan 150, Forêt 150, Coucher de soleil 200, Nuit 250),
 « Il te manque 60 pièces. Joue encore pour les gagner ! »), the hint
 under the grid and the card subtitle « Avatars et thèmes à débloquer ».
 
+### Languages (F21-01, F21-02)
+
+- F21-01 and F21-02 done: English and Spanish (`lib/l10n/app_en.arb`,
+  `app_es.arb`, every key), chosen for the whole phone in the « Langue »
+  section of the settings, the phone's language by default and French
+  when the phone speaks neither. The app switches live; the reminder
+  notification and its Android channel follow; the parental gate spells
+  its number in the language shown (`core/utils/number_words.dart`).
+- Tests: key and placeholder parity of the three ARB files
+  (`test/l10n/arb_parity_test.dart`), the language kept and applied, the
+  phone default and the French fallback, the app and the settings in
+  English and Spanish, the text-scale test in the three languages.
+- Translations to be proofread by the owner (choices listed in #92).
+  Every new key needs its English and Spanish text: the parity test
+  fails otherwise.
+
 ## F20 closure
 
 - Settings, section « Sauvegarde » (mockup 13): « Exporter mon profil »

@@ -63,6 +63,7 @@ void main() {
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
       KidMatixApp(
+        locale: const Locale('fr'),
         scope: scope ?? testMascotScope(mascotPages),
         router: createAppRouter(
           session: session,

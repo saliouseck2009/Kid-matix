@@ -62,6 +62,39 @@ void main() {
       expect(find.textContaining('3472'), findsNothing);
     });
 
+    testWidgets('writes the number in the language of the interface', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpLocalized(
+        tester,
+        const ParentalGate(number: 3472),
+        locale: const Locale('en'),
+      );
+      // Assert
+      expect(find.text('Ask a grown-up'), findsOneWidget);
+      expect(
+        find.text('three thousand four hundred seventy-two'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('writes it in Spanish for a Spanish interface', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpLocalized(
+        tester,
+        const ParentalGate(number: 3472),
+        locale: const Locale('es'),
+      );
+      // Assert
+      expect(
+        find.text('tres mil cuatrocientos setenta y dos'),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('sends back a wrong answer', (WidgetTester tester) async {
       // Arrange
       await openGate(tester, seed: 3);

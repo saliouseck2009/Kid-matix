@@ -34,7 +34,10 @@ void main() {
 
   setUp(() {
     mockPlugin = _MockPlugin();
-    scheduler = LocalNotificationScheduler(plugin: mockPlugin, texts: _texts);
+    scheduler = LocalNotificationScheduler(
+      plugin: mockPlugin,
+      readTexts: () async => _texts,
+    );
     when(
       () => mockPlugin.initialize(settings: any(named: 'settings')),
     ).thenAnswer((_) async => true);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/core/utils/french_number_words.dart';
+import 'package:kid_matix/core/utils/number_words.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 
@@ -151,7 +151,10 @@ class _NumberInWords extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
       ),
       child: Text(
-        FrenchNumberWords.spell(number),
+        NumberWords.spell(
+          number,
+          languageCode: Localizations.localeOf(context).languageCode,
+        ),
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleLarge,
       ),

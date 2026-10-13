@@ -35,7 +35,10 @@ import 'package:kid_matix/features/reward/presentation/bloc/leaderboard_use_case
 import 'package:kid_matix/features/reward/presentation/bloc/reward_use_cases.dart';
 import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
+import 'package:kid_matix/features/setting/domain/entities/app_language.dart';
 import 'package:kid_matix/features/setting/domain/usecases/reschedule_reminders_use_case.dart';
+import 'package:kid_matix/features/setting/presentation/bloc/language_use_cases.dart';
+import 'package:kid_matix/features/setting/presentation/language_pages.dart';
 import 'package:kid_matix/features/setting/presentation/bloc/reminder_use_cases.dart';
 import 'package:kid_matix/features/setting/presentation/reminder_pages.dart';
 import 'package:kid_matix/features/shop/presentation/bloc/shop_use_cases.dart';
@@ -77,15 +80,30 @@ Future<void> main() async {
     ),
     feedback: sl(),
   );
+  final LanguagePages languagePages = LanguagePages(
+    useCases: LanguageUseCases(getLanguage: sl(), setLanguage: sl()),
+  );
+  final AppLanguage language = await languagePages.readLanguage();
+  final GoRouter router = _createRouter(
+    session,
+    mascotPages,
+    profilePages,
+    shopPages,
+    languagePages,
+  );
   runApp(
-    KidMatixApp(
-      router: _createRouter(session, mascotPages, profilePages, shopPages),
-      scope: (Widget child) => PlayerScope(
-        session: session,
-        profilePages: profilePages,
-        mascotPages: mascotPages,
-        shopPages: shopPages,
-        child: child,
+    languagePages.buildAppScope(
+      initial: language,
+      builder: (Locale? locale) => KidMatixApp(
+        router: router,
+        locale: locale,
+        scope: (Widget child) => PlayerScope(
+          session: session,
+          profilePages: profilePages,
+          mascotPages: mascotPages,
+          shopPages: shopPages,
+          child: child,
+        ),
       ),
     ),
   );
@@ -98,6 +116,7 @@ GoRouter _createRouter(
   MascotPages mascotPages,
   ProfilePages profilePages,
   ShopPages shopPages,
+  LanguagePages languagePages,
 ) {
   return createAppRouter(
     session: session,
@@ -148,6 +167,7 @@ GoRouter _createRouter(
         setTime: sl(),
       ),
     ),
+    languagePages: languagePages,
     leaderboardPages: LeaderboardPages(
       useCases: LeaderboardUseCases(
         getLeaderboard: sl(),
@@ -241,10 +261,18 @@ ProfilePages _createProfilePages() {
 /// Root widget: router, theme and localization of the app.
 class KidMatixApp extends StatelessWidget {
   /// Creates the app around [router].
-  const KidMatixApp({required this.router, this.scope, super.key});
+  const KidMatixApp({
+    required this.router,
+    this.scope,
+    this.locale,
+    super.key,
+  });
 
   /// Router built at the composition root.
   final GoRouter router;
+
+  /// Language chosen in the settings, or `null` to follow the phone.
+  final Locale? locale;
 
   /// Wraps every screen, to give them the active player's mascot, or
   /// `null`.
@@ -257,6 +285,8 @@ class KidMatixApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       onGenerateTitle: (BuildContext context) => context.l10n.appTitle,
+      locale: locale,
+      localeListResolutionCallback: LanguagePages.resolveLocale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (BuildContext context, Widget? child) {
