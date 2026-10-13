@@ -1773,4 +1773,167 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsShowLeaderboard => 'Show the leaderboard';
+
+  @override
+  String get shopTitle => 'Shop';
+
+  @override
+  String get shopEntrySubtitle => 'Avatars and themes to unlock';
+
+  @override
+  String shopCoinBalance(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count coins',
+      one: '1 coin',
+      zero: '0 coins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shopTabAvatars => 'Avatars';
+
+  @override
+  String get shopTabThemes => 'Themes';
+
+  @override
+  String get shopWorn => 'Worn';
+
+  @override
+  String get shopActive => 'Active';
+
+  @override
+  String get shopChoose => 'Choose';
+
+  @override
+  String shopWornLabel(String name) {
+    return '$name, worn';
+  }
+
+  @override
+  String shopActiveLabel(String name) {
+    return '$name, active';
+  }
+
+  @override
+  String shopChooseLabel(String name) {
+    return 'Choose $name';
+  }
+
+  @override
+  String shopBuyLabel(String name, int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: 'Buy $name for $price coins',
+      one: 'Buy $name for 1 coin',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopTooExpensiveLabel(String name, int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: '$name, $price coins: you need more coins',
+      one: '$name, 1 coin: you need more coins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopNotEnoughCoins(int missing) {
+    String _temp0 = intl.Intl.pluralLogic(
+      missing,
+      locale: localeName,
+      other: 'You need $missing more coins. Keep playing to earn them!',
+      one: 'You need 1 more coin. Keep playing to earn it!',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopBuyTitle(String name) {
+    return 'Buy $name?';
+  }
+
+  @override
+  String shopBuyMessage(int price, int left) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: '$price coins',
+      one: '1 coin',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: 'You\'ll have $left left.',
+      one: 'You\'ll have 1 left.',
+      zero: 'You\'ll have none left.',
+    );
+    return 'It costs $_temp0. $_temp1';
+  }
+
+  @override
+  String get shopBuyConfirm => 'Buy';
+
+  @override
+  String shopPurchased(String name) {
+    return 'Great, $name is yours! Tap \"Choose\" to use it.';
+  }
+
+  @override
+  String shopEarnHint(int xpPerCoin, int coinsPerCrown, int coinsPerBadge) {
+    return 'Earn coins by playing: 1 coin every $xpPerCoin XP, $coinsPerCrown per crown and $coinsPerBadge per badge.';
+  }
+
+  @override
+  String get shopErrorNotEnoughCoins =>
+      'You don\'t have enough coins for that.';
+
+  @override
+  String get shopErrorAlreadyOwned => 'You already have it!';
+
+  @override
+  String get shopAvatarFox => 'Fox';
+
+  @override
+  String get shopAvatarPanda => 'Panda';
+
+  @override
+  String get shopAvatarRobot => 'Robot';
+
+  @override
+  String get shopAvatarAlien => 'Alien';
+
+  @override
+  String get shopAvatarUnicorn => 'Unicorn';
+
+  @override
+  String get shopAvatarDragon => 'Dragon';
+
+  @override
+  String get shopAvatarNinja => 'Ninja';
+
+  @override
+  String get shopAvatarKing => 'King';
+
+  @override
+  String get shopThemeLavender => 'Lavender';
+
+  @override
+  String get shopThemeOcean => 'Ocean';
+
+  @override
+  String get shopThemeForest => 'Forest';
+
+  @override
+  String get shopThemeSunset => 'Sunset';
+
+  @override
+  String get shopThemeNight => 'Night';
 }
