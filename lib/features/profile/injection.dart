@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/core/services/player_avatar_service.dart';
+import 'package:kid_matix/features/profile/domain/services/player_avatar_service_impl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:kid_matix/core/services/player_directory_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
@@ -45,6 +47,9 @@ void registerProfileFeature(GetIt sl) {
   _registerBackup(sl);
   sl.registerLazySingleton<PlayerSettingsService>(
     () => PlayerSettingsServiceImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<PlayerAvatarService>(
+    () => PlayerAvatarServiceImpl(repository: sl()),
   );
   sl.registerLazySingleton<PlayerDirectoryService>(
     () => PlayerDirectoryServiceImpl(getProfiles: sl()),

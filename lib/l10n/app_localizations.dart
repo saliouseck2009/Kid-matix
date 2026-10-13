@@ -2589,6 +2589,210 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Afficher le classement'**
   String get settingsShowLeaderboard;
+
+  /// Title of the shop screen (mockup 22) and of its card on the Profile tab, where a player spends the coins earned by playing on avatars and color themes ("Shop"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Boutique'**
+  String get shopTitle;
+
+  /// Line under "Boutique" on the card of the Profile tab that opens the shop ("Avatars and themes to unlock"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avatars et thèmes à débloquer'**
+  String get shopEntrySubtitle;
+
+  /// Screen-reader label of the coin pill: how many coins the player can spend in the shop ("240 coins"). Only the number is displayed, next to a yellow coin.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{0 pièce} =1{1 pièce} other{{count} pièces}}'**
+  String shopCoinBalance(int count);
+
+  /// Tab of the shop that lists the avatars ("Avatars"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avatars'**
+  String get shopTabAvatars;
+
+  /// Tab of the shop that lists the color themes of the app ("Themes"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thèmes'**
+  String get shopTabThemes;
+
+  /// Label of the button under the avatar the player wears now, in the shop ("Worn"). One short word, masculine (un avatar).
+  ///
+  /// In fr, this message translates to:
+  /// **'Porté'**
+  String get shopWorn;
+
+  /// Label of the button under the color theme the player applied, in the shop ("Active"). One short word, masculine (un thème).
+  ///
+  /// In fr, this message translates to:
+  /// **'Actif'**
+  String get shopActive;
+
+  /// Button under an avatar or a theme the player owns but does not use: wears the avatar or applies the theme ("Choose"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir'**
+  String get shopChoose;
+
+  /// Screen-reader label of the button under the avatar the player wears ("Fox, worn"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, porté'**
+  String shopWornLabel(String name);
+
+  /// Screen-reader label of the button under the theme the player applied ("Ocean, active"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, actif'**
+  String shopActiveLabel(String name);
+
+  /// Screen-reader label of the "Choisir" button under an avatar or a theme the player owns ("Choose Fox"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir {name}'**
+  String shopChooseLabel(String name);
+
+  /// Screen-reader label of the price button under an item the player can afford; it opens the purchase confirmation ("Buy Fox for 80 coins"). Never displayed. Prices go from 80 to 300 coins; the plural follows the price.
+  ///
+  /// In fr, this message translates to:
+  /// **'{price, plural, =1{Acheter {name} pour 1 pièce} other{Acheter {name} pour {price} pièces}}'**
+  String shopBuyLabel(String name, int price);
+
+  /// Screen-reader label of the greyed price button under an item the player cannot afford yet ("King, 300 coins: you need more coins"). Never displayed. Informal "tu"; the plural follows the price.
+  ///
+  /// In fr, this message translates to:
+  /// **'{price, plural, =1{{name}, 1 pièce : il te manque des pièces} other{{name}, {price} pièces : il te manque des pièces}}'**
+  String shopTooExpensiveLabel(String name, int price);
+
+  /// Message shown at the bottom of the shop when the player taps the greyed price of an item they cannot afford ("You need 60 more coins. Keep playing to earn them!"). Encouraging tone, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'{missing, plural, =1{Il te manque 1 pièce. Joue encore pour la gagner !} other{Il te manque {missing} pièces. Joue encore pour les gagner !}}'**
+  String shopNotEnoughCoins(int missing);
+
+  /// Title of the dialog that confirms a purchase in the shop ("Buy Fox?"). The item is drawn under it.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acheter {name} ?'**
+  String shopBuyTitle(String name);
+
+  /// Text of the purchase confirmation dialog: the price and the coins left after it ("It costs 80 coins. You will have 160 left."; with 0 left: "You will have none left."). Informal "tu"; each plural follows its own number.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ça coûte {price, plural, =1{1 pièce} other{{price} pièces}}. {left, plural, =0{Il ne t\'en restera aucune.} =1{Il t\'en restera 1.} other{Il t\'en restera {left}.}}'**
+  String shopBuyMessage(int price, int left);
+
+  /// Button of the purchase confirmation dialog that spends the coins ("Buy"). Infinitive verb, one word. Coins only: no real money.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acheter'**
+  String get shopBuyConfirm;
+
+  /// Message shown at the bottom of the shop after a purchase ("Well done, Fox is yours! Tap Choose to use it."). Cheerful tone, informal "tu"; "Choisir" is the button of the item.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bravo, {name} est à toi ! Touche « Choisir » pour l\'utiliser.'**
+  String shopPurchased(String name);
+
+  /// Hint at the bottom of the shop grid that tells how coins are earned ("Earn coins by playing: 1 coin every 10 XP, 20 per crown and 10 per badge"). A crown is won by beating the boss of a table, a badge by an achievement. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Gagne des pièces en jouant : 1 pièce tous les {xpPerCoin} XP, {coinsPerCrown} par couronne et {coinsPerBadge} par badge.'**
+  String shopEarnHint(int xpPerCoin, int coinsPerCrown, int coinsPerBadge);
+
+  /// Message shown at the bottom of the shop when a purchase is refused because the player lacks coins ("You do not have enough coins for that"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu n\'as pas assez de pièces pour ça.'**
+  String get shopErrorNotEnoughCoins;
+
+  /// Message shown at the bottom of the shop when a purchase is refused because the player already owns the item ("You already have it!"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu l\'as déjà !'**
+  String get shopErrorAlreadyOwned;
+
+  /// Name of an avatar of the shop, an orange fox ("Fox"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renard'**
+  String get shopAvatarFox;
+
+  /// Name of an avatar of the shop, a panda ("Panda"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Panda'**
+  String get shopAvatarPanda;
+
+  /// Name of an avatar of the shop, a robot ("Robot"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Robot'**
+  String get shopAvatarRobot;
+
+  /// Name of an avatar of the shop, a green alien ("Alien"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Extraterrestre'**
+  String get shopAvatarAlien;
+
+  /// Name of an avatar of the shop, a unicorn ("Unicorn"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Licorne'**
+  String get shopAvatarUnicorn;
+
+  /// Name of an avatar of the shop, a dragon ("Dragon"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dragon'**
+  String get shopAvatarDragon;
+
+  /// Name of an avatar of the shop, a ninja ("Ninja"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ninja'**
+  String get shopAvatarNinja;
+
+  /// Name of an avatar of the shop, a king with a crown ("King"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Roi'**
+  String get shopAvatarKing;
+
+  /// Name of the default color theme of the app, lavender and violet ("Lavender"), shown under its picture in the shop. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lavande'**
+  String get shopThemeLavender;
+
+  /// Name of a color theme of the shop, in blues ("Ocean"), shown under its picture. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Océan'**
+  String get shopThemeOcean;
+
+  /// Name of a color theme of the shop, in greens ("Forest"), shown under its picture. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forêt'**
+  String get shopThemeForest;
+
+  /// Name of a color theme of the shop, in oranges ("Sunset"), shown under its picture in a half-width card. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coucher de soleil'**
+  String get shopThemeSunset;
+
+  /// Name of the dark color theme of the shop: light text on a deep blue ground ("Night"), shown under its picture. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nuit'**
+  String get shopThemeNight;
 }
 
 class _AppLocalizationsDelegate

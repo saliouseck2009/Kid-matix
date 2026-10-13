@@ -68,7 +68,7 @@ void main() {
       // Act and assert
       expect(
         () => codec.decode(
-          _text(<String, Object?>{'version': 2, 'sections': 7}),
+          _text(<String, Object?>{'version': 3, 'sections': 7}),
         ),
         throwsA(isA<UnsupportedVersionException>()),
       );

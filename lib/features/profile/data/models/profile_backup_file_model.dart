@@ -27,7 +27,7 @@ final class ProfileBackupFileModel {
   static const String formatName = 'kidmatix-profile';
 
   /// Version of the format this app writes, and the newest it reads.
-  static const int currentVersion = 1;
+  static const int currentVersion = 2;
 
   /// Kind of file, [formatName].
   final String format;

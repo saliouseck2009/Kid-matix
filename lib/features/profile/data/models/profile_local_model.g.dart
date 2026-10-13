@@ -51,6 +51,14 @@ const _$ProfileAvatarEnumMap = {
   ProfileAvatar.avatar10: 'avatar10',
   ProfileAvatar.avatar11: 'avatar11',
   ProfileAvatar.avatar12: 'avatar12',
+  ProfileAvatar.fox: 'fox',
+  ProfileAvatar.panda: 'panda',
+  ProfileAvatar.robot: 'robot',
+  ProfileAvatar.alien: 'alien',
+  ProfileAvatar.unicorn: 'unicorn',
+  ProfileAvatar.dragon: 'dragon',
+  ProfileAvatar.ninja: 'ninja',
+  ProfileAvatar.king: 'king',
 };
 
 const _$ProfileColorEnumMap = {

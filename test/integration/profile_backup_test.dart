@@ -32,6 +32,7 @@ import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart
 import 'package:kid_matix/features/profile/domain/usecases/pick_backup_use_case.dart';
 import 'package:kid_matix/features/quiz/data/repositories/quiz_backup_part.dart';
 import 'package:kid_matix/features/reward/data/repositories/reward_backup_part.dart';
+import 'package:kid_matix/features/shop/data/repositories/shop_backup_part.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../helpers/data_state_test_extension.dart';
@@ -75,7 +76,8 @@ final class _Phone {
           choicesOf: () => TrainingChoiceLocalDataSourceImpl(storage: storage),
         ),
       )
-      ..add(const QuizBackupPart());
+      ..add(const QuizBackupPart())
+      ..add(const ShopBackupPart());
     final ProfileRepositoryImpl profiles = ProfileRepositoryImpl(
       profiles: ProfileLocalDataSourceImpl(database: appDatabase),
       activeProfile: ActiveProfileLocalDataSourceImpl(storage: storage),
@@ -178,6 +180,8 @@ const Map<String, String> _playerTables = <String, String>{
   'reward_stats': 'SELECT * FROM reward_stats WHERE profile_id = ?',
   'mascot': 'SELECT * FROM mascot WHERE profile_id = ?',
   'record': 'SELECT * FROM record WHERE profile_id = ?',
+  'shop_purchase': 'SELECT * FROM shop_purchase WHERE profile_id = ?',
+  'shop_choice': 'SELECT * FROM shop_choice WHERE profile_id = ?',
 };
 
 /// Identifier columns, given new values on import.
@@ -370,6 +374,28 @@ Future<void> _seedProgress(
     key: '${TrainingChoiceLocalDataSourceImpl.keyPrefix}$profileId',
     value: 'training:mul:2,5:20',
   );
+  await _seedShop(database, profileId: profileId);
+}
+
+Future<void> _seedShop(Database database, {required String profileId}) async {
+  for (final (String item, int price) purchase in <(String, int)>[
+    ('avatar:fox', 80),
+    ('theme:ocean', 150),
+  ]) {
+    await database.insert('shop_purchase', <String, Object?>{
+      'id': '${purchase.$1}-$profileId',
+      'profile_id': profileId,
+      'item_id': purchase.$1,
+      'price': purchase.$2,
+      'purchased_at': 7500,
+      'updated_at': 7500,
+    });
+  }
+  await database.insert('shop_choice', <String, Object?>{
+    'profile_id': profileId,
+    'theme_id': 'ocean',
+    'updated_at': 7600,
+  });
 }
 
 Future<void> _seedRewards(
@@ -471,7 +497,7 @@ void main() {
       // Assert
       expect(phoneA.files.sharedName, 'KidMatix-Awa-2026-10-12.kidmatix');
       expect(actualJson['format'], 'kidmatix-profile');
-      expect(actualJson['version'], 1);
+      expect(actualJson['version'], 2);
       expect(actualJson['appVersion'], '1.2.0');
       expect(actualJson['exportedAt'], isA<String>());
       expect(
@@ -484,6 +510,7 @@ void main() {
           'reward',
           'mascot',
           'challenge',
+          'shop',
         ]),
       );
       expect(file, isNot(contains('Bob')));
@@ -545,6 +572,41 @@ void main() {
         whereArgs: <Object>[id],
       );
       expect(mascot.single['name'], 'Pico');
+      final List<Map<String, Object?>> purchases = await databaseB.query(
+        'shop_purchase',
+        where: 'profile_id = ?',
+        whereArgs: <Object>[id],
+        orderBy: 'item_id',
+      );
+      expect(
+        purchases.map((Map<String, Object?> row) => row['item_id']),
+        <String>['avatar:fox', 'theme:ocean'],
+      );
+      final List<Map<String, Object?>> choice = await databaseB.query(
+        'shop_choice',
+        where: 'profile_id = ?',
+        whereArgs: <Object>[id],
+      );
+      expect(choice.single['theme_id'], 'ocean');
+    });
+
+    test('reads a version 1 file, written before the shop', () async {
+      // Arrange
+      final String older = _edit(file, (Map<String, Object?> json) {
+        json['version'] = 1;
+        (json['sections']! as Map<String, Object?>).remove('shop');
+      });
+      // Act
+      final DataState<String> actualImport = await phoneB.importFile(older);
+      // Assert
+      expect(actualImport.requireData, 'Awa');
+      final Database databaseB = await phoneB.database;
+      final Map<String, List<String>> actualSnapshot = await _snapshot(
+        databaseB,
+        await phoneB.idOf('Awa'),
+      );
+      expect(actualSnapshot['shop_purchase'], isEmpty);
+      expect(actualSnapshot['streak'], expectedSnapshot['streak']);
     });
 
     test(
@@ -683,7 +745,7 @@ void main() {
     test('refuses a file of a newer version', () async {
       // Arrange
       final String newer = _edit(file, (Map<String, Object?> json) {
-        json['version'] = 2;
+        json['version'] = 3;
         json['sections'] = 'a layout this app does not know';
       });
       // Act

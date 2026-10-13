@@ -2551,5 +2551,227 @@
   "settingsShowLeaderboard": "Afficher le classement",
   "@settingsShowLeaderboard": {
     "description": "Switch of the settings screen, in the \"Jeu\" section, that shows or hides the weekly leaderboard for every player of the phone; when off, its card disappears from the Profile tab (\"Show the leaderboard\"). Infinitive verb, one line."
+  },
+  "shopTitle": "Boutique",
+  "@shopTitle": {
+    "description": "Title of the shop screen (mockup 22) and of its card on the Profile tab, where a player spends the coins earned by playing on avatars and color themes (\"Shop\"). One word."
+  },
+  "shopEntrySubtitle": "Avatars et thèmes à débloquer",
+  "@shopEntrySubtitle": {
+    "description": "Line under \"Boutique\" on the card of the Profile tab that opens the shop (\"Avatars and themes to unlock\"). One short line."
+  },
+  "shopCoinBalance": "{count, plural, =0{0 pièce} =1{1 pièce} other{{count} pièces}}",
+  "@shopCoinBalance": {
+    "description": "Screen-reader label of the coin pill: how many coins the player can spend in the shop (\"240 coins\"). Only the number is displayed, next to a yellow coin.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "240"
+      }
+    }
+  },
+  "shopTabAvatars": "Avatars",
+  "@shopTabAvatars": {
+    "description": "Tab of the shop that lists the avatars (\"Avatars\"). One word."
+  },
+  "shopTabThemes": "Thèmes",
+  "@shopTabThemes": {
+    "description": "Tab of the shop that lists the color themes of the app (\"Themes\"). One word."
+  },
+  "shopWorn": "Porté",
+  "@shopWorn": {
+    "description": "Label of the button under the avatar the player wears now, in the shop (\"Worn\"). One short word, masculine (un avatar)."
+  },
+  "shopActive": "Actif",
+  "@shopActive": {
+    "description": "Label of the button under the color theme the player applied, in the shop (\"Active\"). One short word, masculine (un thème)."
+  },
+  "shopChoose": "Choisir",
+  "@shopChoose": {
+    "description": "Button under an avatar or a theme the player owns but does not use: wears the avatar or applies the theme (\"Choose\"). Infinitive verb, one word."
+  },
+  "shopWornLabel": "{name}, porté",
+  "@shopWornLabel": {
+    "description": "Screen-reader label of the button under the avatar the player wears (\"Fox, worn\"). Never displayed.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopActiveLabel": "{name}, actif",
+  "@shopActiveLabel": {
+    "description": "Screen-reader label of the button under the theme the player applied (\"Ocean, active\"). Never displayed.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Océan"
+      }
+    }
+  },
+  "shopChooseLabel": "Choisir {name}",
+  "@shopChooseLabel": {
+    "description": "Screen-reader label of the \"Choisir\" button under an avatar or a theme the player owns (\"Choose Fox\"). Never displayed.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopBuyLabel": "{price, plural, =1{Acheter {name} pour 1 pièce} other{Acheter {name} pour {price} pièces}}",
+  "@shopBuyLabel": {
+    "description": "Screen-reader label of the price button under an item the player can afford; it opens the purchase confirmation (\"Buy Fox for 80 coins\"). Never displayed. Prices go from 80 to 300 coins; the plural follows the price.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      },
+      "price": {
+        "type": "int",
+        "example": "80"
+      }
+    }
+  },
+  "shopTooExpensiveLabel": "{price, plural, =1{{name}, 1 pièce : il te manque des pièces} other{{name}, {price} pièces : il te manque des pièces}}",
+  "@shopTooExpensiveLabel": {
+    "description": "Screen-reader label of the greyed price button under an item the player cannot afford yet (\"King, 300 coins: you need more coins\"). Never displayed. Informal \"tu\"; the plural follows the price.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Roi"
+      },
+      "price": {
+        "type": "int",
+        "example": "300"
+      }
+    }
+  },
+  "shopNotEnoughCoins": "{missing, plural, =1{Il te manque 1 pièce. Joue encore pour la gagner !} other{Il te manque {missing} pièces. Joue encore pour les gagner !}}",
+  "@shopNotEnoughCoins": {
+    "description": "Message shown at the bottom of the shop when the player taps the greyed price of an item they cannot afford (\"You need 60 more coins. Keep playing to earn them!\"). Encouraging tone, informal \"tu\".",
+    "placeholders": {
+      "missing": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "shopBuyTitle": "Acheter {name} ?",
+  "@shopBuyTitle": {
+    "description": "Title of the dialog that confirms a purchase in the shop (\"Buy Fox?\"). The item is drawn under it.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopBuyMessage": "Ça coûte {price, plural, =1{1 pièce} other{{price} pièces}}. {left, plural, =0{Il ne t'en restera aucune.} =1{Il t'en restera 1.} other{Il t'en restera {left}.}}",
+  "@shopBuyMessage": {
+    "description": "Text of the purchase confirmation dialog: the price and the coins left after it (\"It costs 80 coins. You will have 160 left.\"; with 0 left: \"You will have none left.\"). Informal \"tu\"; each plural follows its own number.",
+    "placeholders": {
+      "price": {
+        "type": "int",
+        "example": "80"
+      },
+      "left": {
+        "type": "int",
+        "example": "160"
+      }
+    }
+  },
+  "shopBuyConfirm": "Acheter",
+  "@shopBuyConfirm": {
+    "description": "Button of the purchase confirmation dialog that spends the coins (\"Buy\"). Infinitive verb, one word. Coins only: no real money."
+  },
+  "shopPurchased": "Bravo, {name} est à toi ! Touche « Choisir » pour l'utiliser.",
+  "@shopPurchased": {
+    "description": "Message shown at the bottom of the shop after a purchase (\"Well done, Fox is yours! Tap Choose to use it.\"). Cheerful tone, informal \"tu\"; \"Choisir\" is the button of the item.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopEarnHint": "Gagne des pièces en jouant : 1 pièce tous les {xpPerCoin} XP, {coinsPerCrown} par couronne et {coinsPerBadge} par badge.",
+  "@shopEarnHint": {
+    "description": "Hint at the bottom of the shop grid that tells how coins are earned (\"Earn coins by playing: 1 coin every 10 XP, 20 per crown and 10 per badge\"). A crown is won by beating the boss of a table, a badge by an achievement. Informal \"tu\".",
+    "placeholders": {
+      "xpPerCoin": {
+        "type": "int",
+        "example": "10"
+      },
+      "coinsPerCrown": {
+        "type": "int",
+        "example": "20"
+      },
+      "coinsPerBadge": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "shopErrorNotEnoughCoins": "Tu n'as pas assez de pièces pour ça.",
+  "@shopErrorNotEnoughCoins": {
+    "description": "Message shown at the bottom of the shop when a purchase is refused because the player lacks coins (\"You do not have enough coins for that\"). Informal \"tu\"."
+  },
+  "shopErrorAlreadyOwned": "Tu l'as déjà !",
+  "@shopErrorAlreadyOwned": {
+    "description": "Message shown at the bottom of the shop when a purchase is refused because the player already owns the item (\"You already have it!\"). Informal \"tu\"."
+  },
+  "shopAvatarFox": "Renard",
+  "@shopAvatarFox": {
+    "description": "Name of an avatar of the shop, an orange fox (\"Fox\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarPanda": "Panda",
+  "@shopAvatarPanda": {
+    "description": "Name of an avatar of the shop, a panda (\"Panda\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarRobot": "Robot",
+  "@shopAvatarRobot": {
+    "description": "Name of an avatar of the shop, a robot (\"Robot\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarAlien": "Extraterrestre",
+  "@shopAvatarAlien": {
+    "description": "Name of an avatar of the shop, a green alien (\"Alien\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarUnicorn": "Licorne",
+  "@shopAvatarUnicorn": {
+    "description": "Name of an avatar of the shop, a unicorn (\"Unicorn\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarDragon": "Dragon",
+  "@shopAvatarDragon": {
+    "description": "Name of an avatar of the shop, a dragon (\"Dragon\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarNinja": "Ninja",
+  "@shopAvatarNinja": {
+    "description": "Name of an avatar of the shop, a ninja (\"Ninja\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarKing": "Roi",
+  "@shopAvatarKing": {
+    "description": "Name of an avatar of the shop, a king with a crown (\"King\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopThemeLavender": "Lavande",
+  "@shopThemeLavender": {
+    "description": "Name of the default color theme of the app, lavender and violet (\"Lavender\"), shown under its picture in the shop. One word."
+  },
+  "shopThemeOcean": "Océan",
+  "@shopThemeOcean": {
+    "description": "Name of a color theme of the shop, in blues (\"Ocean\"), shown under its picture. One word."
+  },
+  "shopThemeForest": "Forêt",
+  "@shopThemeForest": {
+    "description": "Name of a color theme of the shop, in greens (\"Forest\"), shown under its picture. One word."
+  },
+  "shopThemeSunset": "Coucher de soleil",
+  "@shopThemeSunset": {
+    "description": "Name of a color theme of the shop, in oranges (\"Sunset\"), shown under its picture in a half-width card. Short."
+  },
+  "shopThemeNight": "Nuit",
+  "@shopThemeNight": {
+    "description": "Name of the dark color theme of the shop: light text on a deep blue ground (\"Night\"), shown under its picture. One word."
   }
 }

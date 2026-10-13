@@ -28,7 +28,7 @@ middle of one). Last update: 2026-10-13.
 | F18 · Daily reminder | **Done** (closed 2026-10-12), real-phone check by the owner pending |
 | F19 · Challenge by code | **Done** (closed 2026-10-12) |
 | F20 · File backup | **Done** (closed 2026-10-12) |
-| F21 · Other languages and shop | In progress (languages done) |
+| F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -586,7 +586,57 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## F21 languages
+## F21 closure
+
+All lots, F0 to F21, are done. Left for the owner: the builds in the
+test channels (F11-11), the check of the daily reminder on a real phone
+(F18), the device check of the shop below, and the texts, prices and
+translations to confirm.
+
+- Languages (F21-01, F21-02): English and Spanish, chosen in the
+  settings, delivered by their own pull request (`feat/f21-languages`).
+- Coins (F21-03): 1 coin every 10 XP (quizzes and duels), 20 per crown,
+  10 per badge, computed from the totals, minus the prices paid; no real
+  money. Schema version 11: `shop_purchase` and `shop_choice` (new
+  feature `shop`). Rules in `docs/decisions.md`.
+- Catalog (F21-04): the 12 free avatars; 8 avatars to buy, 80 to 300
+  coins, drawn in their own colors (`PremiumAvatarPainter`); 4 color
+  themes, 150 to 250 coins (Océan, Forêt, Coucher de soleil, Nuit),
+  Lavande free. A theme recolors the app for its player only
+  (`AppTheme.of`, `ActiveThemeCubit` in `PlayerScope`).
+- Shop screen (F21-05, mockup 22), opened from the « Boutique » card of
+  the Profile tab: coins, tabs « Avatars » / « Thèmes », « Porté » /
+  « Actif », « Choisir », price, greyed price; purchase confirmed in a
+  dialog.
+- The progress reset takes the purchases, the theme and the coins back
+  and leaves the avatar worn; the backup carries the shop (`shop`
+  section, format version 2, version 1 files still read).
+- Tests (F21-06): coin rules (XP rest, crown, badge), the balance with a
+  duel and a stage over the real wiring, purchase, insufficient coins,
+  item owned, wearing and applying, reset, backup round trip of the shop
+  rows and a version 1 file, migration 11, the screen and its Cubit, the
+  theme scope, AA contrast of the five themes and the text contrast of
+  every screen in each theme. The language tests come with the languages.
+- `bash tool/check.sh`: every step OK (1204 tests). Coverage:
+  `features/shop/domain` 97.7 %, `features/shop/data` 100 %, every other
+  folder above its threshold.
+- Not checked on a device: no Android emulator was running. To try:
+  play a few quizzes (or a duel), Profil → « Boutique », buy the fox,
+  « Choisir », then « Thèmes » → buy and apply « Nuit » and look at every
+  tab; « Changer de joueur » goes back to lavender. Profil → Réglages →
+  « Réinitialiser ma progression »: coins back to 0, the fox stays worn.
+
+Texts and choices waiting for the owner: the 8 avatar names (Renard,
+Panda, Robot, Extraterrestre, Licorne, Dragon, Ninja, Roi) and their
+prices (80, 80, 120, 150, 180, 220, 250, 300), the theme names and
+prices (Océan 150, Forêt 150, Coucher de soleil 200, Nuit 250),
+« Actif » for the theme applied, the purchase dialog (« Acheter Renard ? »,
+« Ça coûte 80 pièces. Il t'en restera 160. », « Acheter »), the messages
+(« Bravo, Renard est à toi ! Touche « Choisir » pour l'utiliser. »,
+« Il te manque 60 pièces. Joue encore pour les gagner ! »), the hint
+under the grid and the card subtitle « Avatars et thèmes à débloquer ».
+
+### Languages (F21-01, F21-02)
 
 - F21-01 and F21-02 done: English and Spanish (`lib/l10n/app_en.arb`,
   `app_es.arb`, every key), chosen for the whole phone in the « Langue »
@@ -598,10 +648,9 @@ celebrations belong to the quiz results).
   (`test/l10n/arb_parity_test.dart`), the language kept and applied, the
   phone default and the French fallback, the app and the settings in
   English and Spanish, the text-scale test in the three languages.
-- Translations to be proofread by the owner (choices listed in the pull
-  request). Every new key now needs its English and Spanish text: the
-  parity test fails otherwise. The shop half (F21-03 to F21-05) and the
-  closure of F21 (F21-06) remain.
+- Translations to be proofread by the owner (choices listed in #92).
+  Every new key needs its English and Spanish text: the parity test
+  fails otherwise.
 
 ## F20 closure
 

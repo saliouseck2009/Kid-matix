@@ -142,7 +142,7 @@ class _Cell extends StatelessWidget {
       child: Container(
         height: _height,
         decoration: BoxDecoration(
-          color: cell.status.color,
+          color: cell.status.colorIn(context.palette),
           borderRadius: BorderRadius.circular(_radius),
         ),
       ),
@@ -175,7 +175,7 @@ class _Legend extends StatelessWidget {
                   width: _swatch,
                   height: _swatch,
                   decoration: BoxDecoration(
-                    color: status.color,
+                    color: status.colorIn(context.palette),
                     borderRadius: BorderRadius.circular(_swatchRadius),
                   ),
                 ),
