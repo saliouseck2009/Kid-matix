@@ -21,6 +21,7 @@ import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 import 'package:kid_matix/features/setting/presentation/reminder_pages.dart';
+import 'package:kid_matix/features/shop/presentation/shop_pages.dart';
 
 /// Builds the router of the app: the player selection, then a shell with
 /// one branch per tab; the learning path is the home.
@@ -40,6 +41,7 @@ GoRouter createAppRouter({
   required CodeChallengePages codePages,
   required LeaderboardPages leaderboardPages,
   ReminderPages? reminderPages,
+  ShopPages? shopPages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -194,6 +196,10 @@ GoRouter createAppRouter({
             profilePages: profilePages,
             mascotPages: mascotPages,
             sectionsOf: (BuildContext context, String profileId) => <Widget>[
+              ?shopPages?.buildEntryCard(
+                profileId: profileId,
+                onOpen: () => context.go(AppRoutes.shop),
+              ),
               masteryPages.buildGridCard(profileId: profileId),
               rewardPages.buildBadgesCard(profileId: profileId),
               pathPages.buildMonstersCard(
@@ -230,6 +236,21 @@ GoRouter createAppRouter({
                   );
                 },
               ),
+              if (shopPages != null)
+                GoRoute(
+                  path: _lastSegment(AppRoutes.shop),
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (BuildContext context, GoRouterState state) {
+                    final String? profileId = session.activeProfileId;
+                    if (profileId == null) return const SizedBox.shrink();
+                    return shopPages.buildShopPage(
+                      profileId: profileId,
+                      avatarOf: (PlayerIdentity player, double size) =>
+                          profilePages.buildAvatar(player: player, size: size),
+                      onBack: () => context.go(AppRoutes.profile),
+                    );
+                  },
+                ),
             ],
             rootNavigatorKey: rootNavigatorKey,
           ),

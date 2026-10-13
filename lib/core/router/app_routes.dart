@@ -24,6 +24,9 @@ abstract final class AppRoutes {
   /// Weekly leaderboard of the phone, opened from the [profile] tab.
   static const String leaderboard = '/profile/leaderboard';
 
+  /// The shop of avatars and themes, opened from the [profile] tab.
+  static const String shop = '/profile/shop';
+
   /// « Mes monstres », opened from the [challenges] tab.
   static const String challengeMonsters = '/challenges/monsters';
 

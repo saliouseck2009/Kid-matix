@@ -38,6 +38,8 @@ import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 import 'package:kid_matix/features/setting/domain/usecases/reschedule_reminders_use_case.dart';
 import 'package:kid_matix/features/setting/presentation/bloc/reminder_use_cases.dart';
 import 'package:kid_matix/features/setting/presentation/reminder_pages.dart';
+import 'package:kid_matix/features/shop/presentation/bloc/shop_use_cases.dart';
+import 'package:kid_matix/features/shop/presentation/shop_pages.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Entry point: wires dependencies and error reporting, then starts the app.
@@ -66,6 +68,7 @@ Future<void> main() async {
   // the first frame: the days ahead stay covered, clock changes included.
   unawaited(sl<RescheduleRemindersUseCase>()());
   final ProfilePages profilePages = _createProfilePages();
+  final ShopPages shopPages = _createShopPages();
   final MascotPages mascotPages = MascotPages(
     useCases: MascotUseCases(
       getMascot: sl(),
@@ -76,11 +79,12 @@ Future<void> main() async {
   );
   runApp(
     KidMatixApp(
-      router: _createRouter(session, mascotPages, profilePages),
+      router: _createRouter(session, mascotPages, profilePages, shopPages),
       scope: (Widget child) => PlayerScope(
         session: session,
         profilePages: profilePages,
         mascotPages: mascotPages,
+        shopPages: shopPages,
         child: child,
       ),
     ),
@@ -93,9 +97,11 @@ GoRouter _createRouter(
   ProfileSessionService session,
   MascotPages mascotPages,
   ProfilePages profilePages,
+  ShopPages shopPages,
 ) {
   return createAppRouter(
     session: session,
+    shopPages: shopPages,
     mascotPages: mascotPages,
     masteryPages: MasteryPages(
       getGrid: sl(),
@@ -188,6 +194,20 @@ GoRouter _createRouter(
   );
 }
 
+/// The pages of the shop, with their use cases.
+ShopPages _createShopPages() {
+  return ShopPages(
+    useCases: ShopUseCases(
+      getShop: sl(),
+      buy: sl(),
+      use: sl(),
+      watchChanges: sl(),
+      getActiveTheme: sl(),
+      watchThemeChanges: sl(),
+    ),
+  );
+}
+
 /// The pages of the profile feature, with their use cases.
 ProfilePages _createProfilePages() {
   return ProfilePages(
@@ -247,7 +267,8 @@ class KidMatixApp extends StatelessWidget {
   }
 }
 
-/// Gives every screen the settings and the mascot of the active player.
+/// Gives every screen the settings, the mascot and the theme of the
+/// active player.
 ///
 /// When the player leaves, the scope keeps that player's Cubits, with the
 /// first-stage mascot and the phone's animations, until another player
@@ -261,6 +282,7 @@ class PlayerScope extends StatefulWidget {
     required this.profilePages,
     required this.mascotPages,
     required this.child,
+    this.shopPages,
     super.key,
   });
 
@@ -272,6 +294,9 @@ class PlayerScope extends StatefulWidget {
 
   /// Builds the mascot scope.
   final MascotPages mascotPages;
+
+  /// Builds the theme scope, or `null` to keep the lavender theme.
+  final ShopPages? shopPages;
 
   /// The app.
   final Widget child;
@@ -314,7 +339,7 @@ class _PlayerScopeState extends State<PlayerScope> {
     final String? profileId = _profileId;
     if (profileId == null) return widget.child;
     final bool isPlayerActive = widget.session.activeProfileId != null;
-    return widget.profilePages.buildSettingsScope(
+    final Widget scoped = widget.profilePages.buildSettingsScope(
       profileId: profileId,
       isPlayerActive: isPlayerActive,
       child: widget.mascotPages.buildScope(
@@ -323,5 +348,11 @@ class _PlayerScopeState extends State<PlayerScope> {
         child: widget.child,
       ),
     );
+    return widget.shopPages?.buildThemeScope(
+          profileId: profileId,
+          isPlayerActive: isPlayerActive,
+          child: scoped,
+        ) ??
+        scoped;
   }
 }

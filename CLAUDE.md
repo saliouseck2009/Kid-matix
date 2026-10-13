@@ -83,7 +83,7 @@ lib/
 ```
 
 Feature names: `profile`, `multiplication`, `quiz`, `mastery`,
-`learning_path`, `reward`, `mascot`, `challenge`, `setting`
+`learning_path`, `reward`, `mascot`, `challenge`, `setting`, `shop`
 (see `lib/features/README.md`). A feature folder is created by the lot that
 delivers it, never ahead of time.
 
