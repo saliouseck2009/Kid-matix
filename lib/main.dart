@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:games_services/games_services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/di/injection_container.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
@@ -107,6 +108,19 @@ Future<void> main() async {
       ),
     ),
   );
+  unawaited(_signInToGameServices());
+}
+
+/// Signs in to Google Play Games Services in the background, after the
+/// first frame so the sign-in's few seconds never delay startup. The app
+/// stays fully playable offline, so a missing Play Services, a signed-out
+/// Google account or any other failure here is ignored.
+Future<void> _signInToGameServices() async {
+  try {
+    await GamesServices.signIn();
+  } catch (_) {
+    // Ignored: see the function comment above.
+  }
 }
 
 /// Builds the router with the pages of each feature, their dependencies
