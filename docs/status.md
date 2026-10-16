@@ -470,8 +470,11 @@ Known gaps left on purpose, to handle in the lot named:
   communicating SDK; system backup turned off.
 - Signed and obfuscated builds: `bash tool/build_release.sh` with the
   upload key of `android/key.properties` (`docs/release/signing.md`).
-- Privacy policy published on GitHub Pages
-  (https://saliouseck2009.github.io/Kid-matix/store/privacy-policy.html).
+- Privacy policy published on GitHub Pages in the three languages of the
+  app (https://saliouseck2009.github.io/Kid-matix/store/privacy-policy.html,
+  and the same address suffixed `-en.html` and `-es.html`), reached from
+  the landing page of the site
+  (https://saliouseck2009.github.io/Kid-matix/).
 - Google Play: listing, content rating, target audience and data safety
   filled. App Store Connect: listing, iPhone and iPad screenshots, Kids
   category 6-8, age rating 4+, "Data Not Collected", free in every country.
