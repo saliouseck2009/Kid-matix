@@ -11,8 +11,15 @@ lang: fr
 
 exclude:
   - decisions.md
-  - status.md
+  - git-workflow.md
   - implementation.html
+  - status.md
+  - design/
   - product/specifications.md
   - product/task-breakdown.md
+  - release/
   - rules/
+  - store/app-store-kids.md
+  - store/listing.md
+  - store/play-families.md
+  - store/store-update.md
