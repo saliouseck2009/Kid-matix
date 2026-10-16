@@ -1,5 +1,7 @@
 # Politique de confidentialité — Kid Matix
 
+**Français** · [English](privacy-policy-en.html) · [Español](privacy-policy-es.html)
+
 Dernière mise à jour : 11 octobre 2026
 
 Kid Matix est une application qui aide les enfants à apprendre les tables de

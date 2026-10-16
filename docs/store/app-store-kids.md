@@ -16,7 +16,7 @@
 | Catégorie secondaire | Jeux (sous-catégories : Éducatif, Famille) |
 | Prix | Gratuit |
 | Achats intégrés | Aucun |
-| URL de la politique de confidentialité | [adresse publique de `docs/store/privacy-policy.md`, à héberger] |
+| URL de la politique de confidentialité | https://saliouseck2009.github.io/Kid-matix/store/privacy-policy.html (anglais : https://saliouseck2009.github.io/Kid-matix/store/privacy-policy-en.html ; espagnol : https://saliouseck2009.github.io/Kid-matix/store/privacy-policy-es.html) |
 
 ## Catégorie Enfants
 

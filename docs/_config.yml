@@ -1,0 +1,25 @@
+# GitHub Pages serves this folder from main /docs, so every file here is
+# public. The internal documents are excluded from the build: the site
+# keeps the landing page and the privacy policy the store listings link
+# to.
+
+title: Kid Matix
+description: >-
+  Kid Matix aide les enfants à apprendre les tables de multiplication en
+  jouant, hors ligne et sans compte.
+lang: fr
+
+exclude:
+  - decisions.md
+  - git-workflow.md
+  - implementation.html
+  - status.md
+  - design/
+  - product/specifications.md
+  - product/task-breakdown.md
+  - release/
+  - rules/
+  - store/app-store-kids.md
+  - store/listing.md
+  - store/play-families.md
+  - store/store-update.md
