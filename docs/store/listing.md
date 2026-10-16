@@ -99,9 +99,28 @@ Formats à fournir :
 - Google Play : 2 à 8 captures de téléphone, en portrait (16:9 ou plus
   allongé, côté court d'au moins 1 080 px conseillé), plus une image de
   présentation de 1 024 × 500 px et l'icône de 512 × 512 px (avec F11-07).
-- App Store : captures pour l'iPhone 6,9 pouces (1 320 × 2 868 px) ; celles
-  des autres tailles d'iPhone sont réduites automatiquement. Captures d'iPad
-  à prévoir seulement si l'app est publiée pour iPad (F11-06).
+- App Store : App Store Connect n'accepte que des tailles exactes. Pour
+  la classe « iPhone with Dynamic Island (medium display) » :
+  1 179 × 2 556 px ou 1 206 × 2 622 px, en portrait. Les autres tailles
+  d'iPhone sont réduites automatiquement. Captures d'iPad à prévoir
+  seulement si l'app est publiée pour iPad (F11-06).
+
+Les captures de `assets/screenshots/` font 1 068 × 2 388 px, ce que
+l'App Store refuse. `assets/screenshots/app-store/` en tient la version
+1 179 × 2 556 px, obtenue sans déformation : un seul facteur d'échelle
+(×1,07), puis 18 px de marge de chaque côté, remplis en étirant la colonne
+de bord de l'image, donc invisibles même sur l'écran de boss qui est sombre.
+Pour régénérer après de nouvelles captures :
+
+```sh
+cd docs/store/assets/screenshots
+mkdir -p app-store
+filter='[0:v]scale=1143:2556:flags=lanczos,split=3[m1][m2][m3];[m2]crop=1:2556:0:0,scale=18:2556[l];[m3]crop=1:2556:1142:0,scale=18:2556[r];[l][m1][r]hstack=inputs=3[out]'
+for f in 0*.png; do
+  ffmpeg -y -i "$f" -filter_complex "$filter" -map "[out]" \
+    -pix_fmt rgb24 "app-store/$f"
+done
+```
 
 Une légende courte peut être ajoutée sur chaque capture (à décider) :
 
@@ -111,3 +130,30 @@ Une légende courte peut être ajoutée sur chaque capture (à décider) :
 4. Des étoiles et des XP à chaque partie
 5. Entraîne-toi sur tes tables
 6. Ta mascotte grandit avec toi
+
+## Asset du header (App Store)
+
+Depuis iOS 27, la fiche App Store demande un « header asset » : l'image de
+bandeau affichée en haut de la page produit, au-dessus de l'icône et du nom.
+C'est un visuel paysage, pas une capture d'écran.
+
+- Fichier : `assets/app-store-header.png`, 5 244 × 2 950 px (16:9), PNG sans
+  canal alpha. Cette taille universelle sert aussi, si on le veut, à
+  l'emplacement « Search Results », qui reste vide pour l'instant.
+- La taille dédiée au seul header est 3 840 × 1 646 px (21:9).
+- Apple recadre l'image différemment selon l'emplacement : le sujet reste
+  centré horizontalement et un peu au-dessus du centre vertical, dans une
+  zone sûre d'environ 1 400 × 960 px. Le reste n'est que décor.
+- Pas de texte traduisible : seulement des chiffres et des opérateurs, pour
+  que le même fichier serve à toutes les langues.
+
+Régénération, quand la mascotte ou les couleurs changent :
+
+```sh
+flutter test tool/store/render_header_test.dart
+cd docs/store/assets
+ffmpeg -y -i app-store-header.png -pix_fmt rgb24 rgb.png
+mv rgb.png app-store-header.png
+```
+
+Le second appel retire le canal alpha, qu'App Store Connect refuse.
