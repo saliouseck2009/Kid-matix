@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,7 +116,15 @@ Future<void> main() async {
 /// first frame so the sign-in's few seconds never delay startup. The app
 /// stays fully playable offline, so a missing Play Services, a signed-out
 /// Google account or any other failure here is ignored.
+///
+/// Android only: `games_services` also covers Game Center, but no iOS
+/// feature uses it, the capability is not enabled for the app and the app
+/// is submitted to the Kids Category, where nothing may reach a service
+/// behind the child's back. So the call never runs on iOS.
 Future<void> _signInToGameServices() async {
+  if (defaultTargetPlatform != TargetPlatform.android) {
+    return;
+  }
   try {
     await GamesServices.signIn();
   } catch (_) {
