@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kid Matix — Implémentation</title>
+<style>
+  :root {
+    --bg: #f6f4fb;
+    --surface: #ffffff;
+    --surface-2: #efebf8;
+    --text: #231d36;
+    --muted: #625a7a;
+    --border: #e1dbef;
+    --accent: #6c4ee0;
+    --accent-soft: #ebe5ff;
+    --ok: #1f8a52;
+    --ok-soft: #e1f5ea;
+    --warn: #a35a00;
+    --warn-soft: #fff1dc;
+    --info: #2463b8;
+    --info-soft: #e3eeff;
+    --code-bg: #f1eef9;
+    --shadow: 0 1px 2px rgba(35, 29, 54, .06), 0 4px 16px rgba(35, 29, 54, .05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15121f;
+      --surface: #1f1b2d;
+      --surface-2: #2a2540;
+      --text: #ece8f8;
+      --muted: #aaa2c4;
+      --border: #3a3354;
+      --accent: #a892ff;
+      --accent-soft: #312a55;
+      --ok: #5fd39a;
+      --ok-soft: #1c3a2b;
+      --warn: #ffb65c;
+      --warn-soft: #3d2c14;
+      --info: #7fb0ff;
+      --info-soft: #1d2c47;
+      --code-bg: #2a2540;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15121f;
+    --surface: #1f1b2d;
+    --surface-2: #2a2540;
+    --text: #ece8f8;
+    --muted: #aaa2c4;
+    --border: #3a3354;
+    --accent: #a892ff;
+    --accent-soft: #312a55;
+    --ok: #5fd39a;
+    --ok-soft: #1c3a2b;
+    --warn: #ffb65c;
+    --warn-soft: #3d2c14;
+    --info: #7fb0ff;
+    --info-soft: #1d2c47;
+    --code-bg: #2a2540;
+    --shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  code {
+    font: 0.86em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 5px;
+    overflow-wrap: anywhere;
+  }
+  a { color: var(--accent); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    max-width: 1240px;
+    margin: 0 auto;
+    gap: 32px;
+    padding: 0 24px;
+  }
+  nav.toc {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 32px 0;
+    font-size: 14px;
+  }
+  nav.toc strong { display: block; margin-bottom: 10px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  nav.toc a { display: block; padding: 5px 10px; border-radius: 8px; color: var(--text); text-decoration: none; }
+  nav.toc a:hover { background: var(--surface-2); }
+  main { padding: 32px 0 80px; min-width: 0; }
+
+  header.hero {
+    background: linear-gradient(135deg, var(--accent) 0%, #9a7bff 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 32px; line-height: 1.2; }
+  header.hero p { margin: 0; opacity: .92; max-width: 70ch; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .hero-meta span { background: rgba(255,255,255,.18); padding: 4px 12px; border-radius: 999px; font-size: 13px; }
+
+  section { margin-bottom: 48px; scroll-margin-top: 16px; }
+  h2 { font-size: 24px; margin: 0 0 6px; }
+  h2 + .lead { color: var(--muted); margin: 0 0 20px; }
+  h3 { font-size: 18px; margin: 24px 0 10px; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); }
+  .stat b { display: block; font-size: 28px; line-height: 1.1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 13px; color: var(--muted); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .card h3 { margin-top: 0; }
+  .card ul { margin: 0; padding-left: 20px; }
+  .card li { margin: 4px 0; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--surface-2); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+
+  .badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+  .b-ok { background: var(--ok-soft); color: var(--ok); }
+  .b-warn { background: var(--warn-soft); color: var(--warn); }
+  .b-info { background: var(--info-soft); color: var(--info); }
+  .b-accent { background: var(--accent-soft); color: var(--accent); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .filters button {
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    padding: 6px 14px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .lots { display: grid; gap: 14px; }
+  details.lot { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+  details.lot > summary {
+    list-style: none; cursor: pointer; padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  details.lot > summary::-webkit-details-marker { display: none; }
+  details.lot > summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--muted); }
+  details.lot[open] > summary::after { content: "−"; }
+  .lot-id { font-weight: 700; color: var(--accent); min-width: 38px; font-variant-numeric: tabular-nums; }
+  .lot-title { font-weight: 600; }
+  .lot-body { padding: 0 20px 20px; display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 20px; }
+  .lot-body.no-shot { grid-template-columns: minmax(0, 1fr); }
+  .lot-body p { margin: 0 0 10px; }
+  .lot-body ul { margin: 0 0 10px; padding-left: 20px; }
+  .lot-body li { margin: 3px 0; }
+  .done-when { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; font-size: 14px; margin-top: 8px; }
+  .done-when b { color: var(--accent); }
+  .shots { display: flex; flex-direction: column; gap: 8px; }
+  .shots a { display: block; }
+  .shots img { width: 100%; border-radius: 12px; border: 1px solid var(--border); display: block; background: var(--surface-2); }
+  .shots small { color: var(--muted); font-size: 12px; display: block; text-align: center; }
+
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+  .gallery figure { margin: 0; }
+  .gallery img { width: 100%; border-radius: 12px; border: 1px solid var(--border); display: block; background: var(--surface-2); }
+  .gallery figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+  .diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; overflow-x: auto; }
+  .diagram svg { display: block; width: 100%; min-width: 640px; height: auto; }
+  .diagram text { font-family: inherit; fill: var(--text); }
+  .diagram .muted { fill: var(--muted); }
+  .diagram .box { fill: var(--surface-2); stroke: var(--border); }
+  .diagram .box-accent { fill: var(--accent-soft); stroke: var(--accent); }
+  .diagram .line { stroke: var(--muted); fill: none; }
+
+  .note { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 12px 12px 0; margin: 16px 0; }
+  .todo li { margin: 8px 0; }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); padding-top: 16px; }
+
+  .theme-toggle {
+    position: fixed; right: 16px; bottom: 16px; z-index: 5;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 13px; cursor: pointer; box-shadow: var(--shadow);
+  }
+
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: minmax(0, 1fr); padding: 0 16px; }
+    nav.toc { display: none; }
+    .grid-3 { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .grid-2 { grid-template-columns: minmax(0, 1fr); }
+    .lot-body { grid-template-columns: minmax(0, 1fr); }
+    .shots { flex-direction: row; }
+    .shots a, .shots > div { flex: 1; max-width: 140px; }
+    header.hero { padding: 24px 20px; }
+    header.hero h1 { font-size: 26px; }
+  }
+  @media print {
+    nav.toc, .theme-toggle, .filters { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    details.lot { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<button class="theme-toggle" type="button" id="themeToggle">Thème clair / sombre</button>
+<div class="layout">
+  <nav class="toc" aria-label="Sommaire">
+    <strong>Sommaire</strong>
+    <a href="#apercu">Aperçu</a>
+    <a href="#produit">Le produit</a>
+    <a href="#navigation">Écrans et navigation</a>
+    <a href="#lots">Les 22 lots</a>
+    <a href="#regles">Règles de jeu</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#donnees">Données</a>
+    <a href="#qualite">Qualité et outillage</a>
+    <a href="#publication">Publication</a>
+    <a href="#reste">Reste à faire</a>
+    <a href="#maquettes">Maquettes</a>
+  </nav>
+
+  <main>
+    <header class="hero" id="apercu">
+      <h1>Kid Matix — tout ce qui a été implémenté</h1>
+      <p>Application Flutter ludique, inspirée de Duolingo, pour maîtriser les tables de multiplication de 1 à 12. Hors ligne, plusieurs enfants sur un même téléphone. Ce document récapitule les lots F0 à F21.</p>
+      <div class="hero-meta">
+        <span>Mis à jour le 14 octobre 2026</span>
+        <span>Version 1.0.0+1</span>
+        <span>Flutter 3.47.6 · Dart 3.13.5</span>
+        <span>Lots F0 → F21 terminés</span>
+      </div>
+    </header>
+
+    <section>
+      <div class="stats">
+        <div class="stat"><b>22</b><span>lots livrés (F0 à F21)</span></div>
+        <div class="stat"><b>10</b><span>features métier</span></div>
+        <div class="stat"><b>≈ 47 400</b><span>lignes de Dart dans <code>lib/</code> (hors code généré)</span></div>
+        <div class="stat"><b>1 204</b><span>tests automatisés au dernier <code>check.sh</code></span></div>
+        <div class="stat"><b>11</b><span>migrations de base de données</span></div>
+        <div class="stat"><b>22</b><span>maquettes d'écran implémentées</span></div>
+        <div class="stat"><b>3</b><span>langues : français, anglais, espagnol</span></div>
+        <div class="stat"><b>449</b><span>textes traduits (clés ARB)</span></div>
+      </div>
+    </section>
+
+    <section id="produit">
+      <h2>Le produit</h2>
+      <p class="lead">Ce que l'app fait, pour qui, et les grands principes retenus.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Pour qui</h3>
+          <ul>
+            <li>Enfants de 6 à 11 ans, tables de 1 à 12 jusqu'à ×10 (120 faits).</li>
+            <li>Jusqu'à 10 joueurs par téléphone, chacun avec un pseudo et un avatar.</li>
+            <li>Ni mot de passe, ni e-mail, ni espace parent.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Hors ligne</h3>
+          <ul>
+            <li>Aucun backend, aucun appel réseau, aucun SDK qui communique.</li>
+            <li>Sauvegarde système désactivée ; rien ne quitte le téléphone sauf l'export volontaire d'un profil.</li>
+            <li>Le modèle de données est déjà prêt pour un futur mode en ligne (UUID, <code>updated_at</code>, <code>deleted_at</code>).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Jalons</h3>
+          <ul>
+            <li><span class="badge b-accent">1.0</span> F0–F11 : profils, parcours, quiz, maîtrise, boss, récompenses, mascotte, entraînement, profil, publication.</li>
+            <li><span class="badge b-info">1.1</span> F12–F18 : révision, survie, monstres, duel, formats, test de départ, classement, rappel.</li>
+            <li><span class="badge b-ok">1.2</span> F19–F21 : défi par code, sauvegarde, langues et boutique.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="navigation">
+      <h2>Écrans et navigation</h2>
+      <p class="lead">Quatre onglets, gardés par le joueur actif. Sans joueur actif, le routeur renvoie vers « Qui joue ? ».</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Zone</th><th>Route</th><th>Écran</th><th>Lot</th></tr></thead>
+          <tbody>
+            <tr><td>Entrée</td><td><code>/players</code></td><td>Qui joue ? (choix du joueur)</td><td>F1</td></tr>
+            <tr><td>Entrée</td><td><code>/players/new</code></td><td>Création d'un joueur</td><td>F1</td></tr>
+            <tr><td>Entrée</td><td><code>/placement</code></td><td>Test de départ (après la création)</td><td>F16</td></tr>
+            <tr><td>Onglet Parcours</td><td><code>/</code></td><td>Carte du parcours (bandeau joueur, série, couronnes, objectif du jour, mascotte)</td><td>F5, F7, F8</td></tr>
+            <tr><td>Parcours</td><td><code>/table/:unitKey</code></td><td>Détail d'une table (5 étapes)</td><td>F5</td></tr>
+            <tr><td>Parcours</td><td><code>/table/:unitKey/view</code>, <code>/discovery</code></td><td>Table complète, étape Découverte avec l'astuce</td><td>F5</td></tr>
+            <tr><td>Jeu</td><td><code>/play/:sourceKey</code></td><td>Quiz (tous les modes, y compris le combat de boss)</td><td>F3, F6</td></tr>
+            <tr><td>Jeu</td><td><code>/results/:sessionId</code></td><td>Résultats (XP, niveau, étoiles, record, comparaison de défi)</td><td>F3, F7, F19</td></tr>
+            <tr><td>Onglet S'entraîner</td><td><code>/training</code></td><td>Entraînement libre</td><td>F9</td></tr>
+            <tr><td>Onglet Défis</td><td><code>/challenges</code></td><td>Contre-la-montre, Survie, Révision du jour, Monstres, Duel, Code</td><td>F9, F12–F14, F19</td></tr>
+            <tr><td>Défis</td><td><code>/challenges/monsters</code></td><td>Mes monstres</td><td>F13</td></tr>
+            <tr><td>Défis</td><td><code>/challenges/duel</code></td><td>Duel sur le même téléphone</td><td>F14</td></tr>
+            <tr><td>Défis</td><td><code>/challenges/code</code>, <code>/challenges/code/:code</code></td><td>Saisie et affichage d'un code de défi</td><td>F19</td></tr>
+            <tr><td>Onglet Profil</td><td><code>/profile</code></td><td>Profil : stats, mascotte, boutique, grille de maîtrise, badges, monstres, classement</td><td>F10</td></tr>
+            <tr><td>Profil</td><td><code>/profile/edit</code></td><td>Modifier pseudo et avatar</td><td>F1</td></tr>
+            <tr><td>Profil</td><td><code>/profile/settings</code></td><td>Réglages (jeu, rappel, sauvegarde, langue, réinitialisation, suppression)</td><td>F10, F17, F18, F20, F21</td></tr>
+            <tr><td>Profil</td><td><code>/profile/mascot</code></td><td>Mascotte : nom et accessoires</td><td>F8</td></tr>
+            <tr><td>Profil</td><td><code>/profile/leaderboard</code></td><td>Classement de la semaine</td><td>F17</td></tr>
+            <tr><td>Profil</td><td><code>/profile/shop</code></td><td>Boutique (avatars et thèmes)</td><td>F21</td></tr>
+            <tr><td>Profil</td><td><code>/profile/monsters</code></td><td>Monstres vaincus et apprivoisés</td><td>F6, F13</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="lots">
+      <h2>Les 22 lots</h2>
+      <p class="lead">Ce que chaque lot a livré, son critère « Terminé quand » et l'état de la vérification sur appareil. Cliquez sur un lot pour le déplier.</p>
+      <div class="filters" role="group" aria-label="Filtrer par version">
+        <button type="button" data-filter="all" aria-pressed="true">Tous</button>
+        <button type="button" data-filter="1.0" aria-pressed="false">Version 1.0</button>
+        <button type="button" data-filter="1.1" aria-pressed="false">Version 1.1</button>
+        <button type="button" data-filter="1.2" aria-pressed="false">Version 1.2</button>
+        <button type="button" data-filter="pending" aria-pressed="false">Vérif. en attente</button>
+        <button type="button" id="toggleAll" aria-pressed="false">Tout déplier</button>
+      </div>
+
+      <div class="lots" id="lotList">
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F0</span><span class="lot-title">Socle du projet</span><span class="badge b-ok">Terminé · 09/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Erreurs typées : <code>DataState</code>, <code>AppException</code>, <code>AppErrorCode</code> ; <code>UseCase</code> / <code>NoParamUseCase</code>.</li>
+                <li>Services injectables : <code>Clock</code>, <code>RandomSource</code>, <code>Ticker</code>, <code>IdGenerator</code>, <code>CrashReporter</code>.</li>
+                <li>Stockage : <code>AppDatabase</code> (sqflite), <code>MigrationRunner</code>, <code>TableChangeBus</code>, <code>LocalStorage</code> (shared_preferences).</li>
+                <li>GetIt, go_router (coquille à 4 onglets), thème (couleurs, polices Fredoka et Nunito embarquées), widgets de base (<code>DepthButton</code>, <code>AppCard</code>, <code>AppProgressBar</code>, <code>AppPill</code>, <code>AppTabBar</code>…).</li>
+                <li>Test d'architecture, <code>tool/setup.sh</code>, <code>tool/check.sh</code>, hooks git.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> l'app démarre sur une coquille vide à 4 onglets, aux couleurs et polices du design, et le test d'architecture passe. Vérifié sur émulateur.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F1</span><span class="lot-title">Profils (Qui joue ?)</span><span class="badge b-ok">Terminé · 09/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Feature <code>profile</code> : création, choix, modification, changement et suppression d'un joueur (confirmée en retapant le pseudo).</li>
+                <li>12 avatars dessinés en Flutter, règles du pseudo, 10 joueurs au maximum.</li>
+                <li>Le routeur protège l'app avec le joueur actif (<code>ProfileSessionService</code>) ; le dernier joueur est retrouvé au relancement.</li>
+                <li>Migration 1 : tables <code>profile</code> et <code>profile_settings</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> on crée trois joueurs, on en choisit un, on ferme l'app et on retrouve la liste et le dernier joueur. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/01-who-is-playing.png" target="_blank"><img src="design/screens/01-who-is-playing.png" alt="Maquette Qui joue ?" loading="lazy"></a>
+              <a href="design/screens/02-profile-creation.png" target="_blank"><img src="design/screens/02-profile-creation.png" alt="Maquette création de profil" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F2</span><span class="lot-title">Moteur de quiz et domaine multiplication</span><span class="badge b-ok">Terminé · 09/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Moteur générique en Dart pur (<code>core/quiz/</code>) : <code>LearningDomain</code>, <code>LearningUnit</code>, <code>LearningItem</code>, <code>QuestionType</code>, registres, <code>QuestionGenerator</code>.</li>
+                <li>Une question est une suite de jetons (nombre, opérateur, égal, trou) : aucun mot de langue dans le domaine.</li>
+                <li>4 formats : QCM, vrai ou faux, clavier, nombre manquant.</li>
+                <li>Feature <code>multiplication</code> : faits (<code>mul:7x8</code>), tables (<code>mul:7</code>), astuces, générateur de distracteurs.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> tous les tests passent et le lot n'importe aucun paquet Flutter.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F3</span><span class="lot-title">Session de quiz et résultats</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Feature <code>quiz</code> : <code>QuizBloc</code> piloté par le <code>Ticker</code>, chrono par question, clavier, confirmation de sortie.</li>
+                <li>Réponse « éclair » sous 3 s ; un fait raté revient 3 questions plus tard, sans compter dans le score.</li>
+                <li>Journal <code>quiz_session</code> / <code>quiz_answer</code> (migration 2) ; un quiz quitté après une réponse est enregistré « abandonné ».</li>
+                <li>Écran de résultats : score, temps moyen, faits à revoir.</li>
+                <li>Accessibilité : la question est lue comme une phrase (« 5 fois 7 égale combien »).</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un joueur répond à 10 questions de la table de 5 dans les 4 formats, avec chrono, et voit ses résultats. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/06-quiz-multiple-choice.png" target="_blank"><img src="design/screens/06-quiz-multiple-choice.png" alt="Maquette quiz QCM" loading="lazy"></a>
+              <a href="design/screens/09-results.png" target="_blank"><img src="design/screens/09-results.png" alt="Maquette résultats" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F4</span><span class="lot-title">Maîtrise et répétition espacée</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Feature <code>mastery</code> : système de Leitner à 5 boîtes, révisions à 1, 2, 4, 7 et 15 jours.</li>
+                <li>Tirage pondéré (faits ratés d'abord), format choisi selon la boîte : réponses à choisir jusqu'à la boîte 2, à écrire à partir de la 3.</li>
+                <li>Rappel du fait miroir (« Retiens aussi : 8 × 7 = 56 ») et fiche d'aide dès la 2ᵉ erreur sur un fait.</li>
+                <li>Migration 3 : table <code>item_progress</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> rejouer une table fait évoluer les boîtes de ses faits, et les faits ratés reviennent en priorité à la session suivante. Vérifié sur émulateur.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F5</span><span class="lot-title">Parcours</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Feature <code>learning_path</code> : carte des 12 tables, chacune en 5 étapes — Découverte, Entraînement, Écriture, Vitesse, Boss.</li>
+                <li>Une table s'ouvre quand l'étape 3 de la précédente a une étoile ; nœud de révision facultatif tous les 3 tables ; option « Tout débloquer ».</li>
+                <li>Étoiles : 60 / 80 / 100 % de bonnes réponses. Les 12 astuces de tables.</li>
+                <li>Hooks de fin de session (<code>SessionSavedHook</code>) exécutés dans la transaction qui enregistre la session. Migrations 4 et 5.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un nouveau joueur enchaîne les étapes 1 à 3 de la table de 1 et voit la table de 2 s'ouvrir. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/03-learning-path.png" target="_blank"><img src="design/screens/03-learning-path.png" alt="Maquette carte du parcours" loading="lazy"></a>
+              <a href="design/screens/04-table-detail.png" target="_blank"><img src="design/screens/04-table-detail.png" alt="Maquette détail de table" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F6</span><span class="lot-title">Combat de boss</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Le boss a 12 points de vie : bonne réponse −1, réponse éclair −2 (coup critique) ; il s'enfuit après 20 questions.</li>
+                <li>Les 10 faits de la table puis jusqu'à 10 faits tirés par la maîtrise ; 8 s par question ; tous les formats.</li>
+                <li>Écran sombre (<code>AppTheme.boss</code>), animations de coup, riposte, défaite et fuite.</li>
+                <li>Boss vaincu : au moins 1 étoile et la couronne sur la carte ; 12 monstres provisoires. Migration 6.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> battre le boss de la table de 1 pose sa couronne sur la carte et ajoute le monstre à la collection. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/08-boss-fight.png" target="_blank"><img src="design/screens/08-boss-fight.png" alt="Maquette combat de boss" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F7</span><span class="lot-title">Récompenses</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Feature <code>reward</code> : XP, niveaux, série de jours avec un joker par semaine, objectif du jour, badges.</li>
+                <li>Combo affiché dès 2 bonnes réponses d'affilée ; célébrations plein écran pour un niveau ou un badge.</li>
+                <li>Bandeau de la carte (joueur, série, couronnes, objectif) et série sur les cartes de « Qui joue ? ».</li>
+                <li>Migration 7 : <code>session_reward</code>, <code>streak</code>, <code>badge_unlock</code>, <code>reward_stats</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> une étape terminée affiche les XP, fait avancer le niveau, l'objectif du jour et la série, et débloque le badge Premier pas. Vérifié sur émulateur.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F8</span><span class="lot-title">Mascotte qui grandit</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Feature <code>mascot</code> : « Lim », renommable (12 caractères), 5 stades aux niveaux 1, 5, 10, 20 et 30, 3 humeurs.</li>
+                <li>15 accessoires : un par couronne, trois gagnés avec des badges ; un porté par emplacement (tête, yeux, cou, dos).</li>
+                <li>Dessin vectoriel Flutter, sans Rive ni Lottie ; elle réagit aux réponses du quiz et rappelle l'objectif du jour sur la carte.</li>
+                <li>Migration 8 : table <code>mascot</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un joueur qui atteint le niveau 5 voit sa mascotte changer de stade et peut lui mettre un accessoire gagné avec une couronne. Vérifié sur émulateur.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F9</span><span class="lot-title">Entraînement libre et Contre-la-montre</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Feature <code>challenge</code> : entraînement sur les tables choisies, 10, 20 ou 30 questions, chrono de 10 s facultatif ; le dernier choix est retenu.</li>
+                <li>Contre-la-montre : 60 s en QCM sur les tables ouvertes, enchaînement automatique, record par joueur.</li>
+                <li>Badge Sprinter. Migration 9 : table <code>record</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un joueur lance un entraînement sur les tables de 2 et de 5, puis bat son record en Contre-la-montre. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/10-training.png" target="_blank"><img src="design/screens/10-training.png" alt="Maquette entraînement" loading="lazy"></a>
+              <a href="design/screens/11-challenges.png" target="_blank"><img src="design/screens/11-challenges.png" alt="Maquette défis" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0">
+          <summary><span class="lot-id">F10</span><span class="lot-title">Profil et réglages</span><span class="badge b-ok">Terminé · 10/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Onglet Profil : série, couronnes, badges, carte de la mascotte, grille de maîtrise « Mes tables », « Mes badges », « Mes monstres ».</li>
+                <li>Réglages : sons, vibrations, chrono (normal, détendu, sans), objectif du jour (20, 50, 100 XP), « Tout débloquer », animations réduites.</li>
+                <li>« Réinitialiser ma progression » en une transaction (un hook par feature) ; le pseudo, l'avatar et les réglages restent.</li>
+                <li>Feature <code>setting</code> : sons synthétisés (<code>audioplayers</code>) et vibrations.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> le Profil reflète une session qui vient d'être jouée, et couper les sons ou passer en « sans chrono » s'applique au quiz suivant. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/12-profile.png" target="_blank"><img src="design/screens/12-profile.png" alt="Maquette profil" loading="lazy"></a>
+              <a href="design/screens/13-settings.png" target="_blank"><img src="design/screens/13-settings.png" alt="Maquette réglages" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.0" data-pending="1">
+          <summary><span class="lot-id">F11</span><span class="lot-title">Finition et publication de la 1.0</span><span class="badge b-ok">Terminé · 12/10</span><span class="badge b-warn">F11-11 en attente</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Accessibilité, mise en page tablette (largeur 600 pt centrée), parcours d'intégration, cas limites.</li>
+                <li>Performance mesurée sur Galaxy A16 : démarrage en 1,8 à 2,3 s, 99 % des images du quiz à 90 Hz.</li>
+                <li>Audit de publication : aucun appel réseau, sauvegarde système coupée. Builds signés et obfusqués (<code>tool/build_release.sh</code>).</li>
+                <li>Politique de confidentialité sur GitHub Pages ; fiches Google Play et App Store Connect remplies (catégorie Enfants 6-8, 4+, « Data Not Collected »).</li>
+                <li>Couverture : au moins 90 % sur chaque <code>domain/</code>, 80 % sur chaque <code>data/</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> les deux builds sont installés depuis les canaux de test et le trajet complet passe sur un vrai téléphone. <span class="badge b-warn">À faire par le propriétaire</span> (F11-11 : test interne Android, TestFlight iOS).</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1">
+          <summary><span class="lot-id">F12</span><span class="lot-title">Révision du jour et Survie</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Révision du jour : 10 questions sans chrono — les faits en retard d'abord, puis ceux au plus faible taux de réussite ; jouable à volonté.</li>
+                <li>Survie : 3 vies, QCM sur les tables ouvertes ; 10 s par question, 0,5 s de moins toutes les 5 bonnes réponses (minimum 4 s).</li>
+                <li>Record de survie et badge Survivant à 30 bonnes réponses ; le moteur reste générique (<code>QuizSpec.lives</code>, <code>QuizTimeSchedule</code>).</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> la Révision du jour propose les faits ratés la veille, et une partie de Survie s'arrête à la troisième erreur. Survie vérifiée sur émulateur ; la révision par les tests.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1">
+          <summary><span class="lot-id">F13</span><span class="lot-title">Mes monstres</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Un « petit monstre » est un fait raté au moins deux fois et encore en boîte 1 à 3 ; 5 affichés au plus, les plus coriaces d'abord.</li>
+                <li>Chasse : 10 questions, chaque monstre deux fois et jamais à la suite ; apprivoisé à partir de la boîte 4.</li>
+                <li>Calculé depuis la maîtrise, sans nouvelle table.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un fait raté deux fois apparaît comme monstre, puis rejoint la collection une fois acquis. Vérifié sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/14-my-monsters.png" target="_blank"><img src="design/screens/14-my-monsters.png" alt="Maquette Mes monstres" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1">
+          <summary><span class="lot-id">F14</span><span class="lot-title">Duel sur le même téléphone</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Deux moitiés d'écran tête-bêche, chacun sa question QCM ; le premier à 10 bonnes réponses gagne.</li>
+                <li>Une erreur bloque les boutons du joueur 2 s ; un invité sans profil peut jouer (toutes les tables, sans XP).</li>
+                <li>10 XP par bonne réponse + 20 au gagnant ; le duel ne touche ni la maîtrise ni la série. Migration 10 : <code>xp_award</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> deux profils de niveaux différents jouent un duel complet et reçoivent chacun leurs XP. Vérifié sur émulateur et par les tests du <code>DuelBloc</code>.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/15-duel.png" target="_blank"><img src="design/screens/15-duel.png" alt="Maquette duel" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1">
+          <summary><span class="lot-id">F15</span><span class="lot-title">Nouveaux formats de questions</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>« Trouver l'opération » : <code>? = 24</code>, 4 opérations proposées, une seule juste.</li>
+                <li>« Relier les paires » : 4 opérations et leurs 4 résultats ; chaque paire compte pour son fait dans la maîtrise ; temps doublé.</li>
+                <li>Ajoutés par le registre, sans toucher au <code>QuizBloc</code> ; présents dans l'étape Vitesse, le boss et l'entraînement libre.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> les deux formats apparaissent dans un quiz de l'étape Vitesse, sans changement dans le code du <code>QuizBloc</code>. Vérifié sur émulateur (entraînement) et par les tests.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/16-quiz-find-operation.png" target="_blank"><img src="design/screens/16-quiz-find-operation.png" alt="Maquette trouver l'opération" loading="lazy"></a>
+              <a href="design/screens/17-quiz-match-pairs.png" target="_blank"><img src="design/screens/17-quiz-match-pairs.png" alt="Maquette relier les paires" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1">
+          <summary><span class="lot-id">F16</span><span class="lot-title">Test de départ</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Proposé à la fin de la création du profil (« Passer » possible) : 12 questions au clavier, une par table, sans chrono.</li>
+                <li>Une bonne réponse ouvre sa table aussitôt (sans étoile) ; les réponses comptent dans la maîtrise, sans XP.</li>
+                <li>Pas de migration : lignes <code>stage_progress</code> à l'étape <code>placement</code>.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un nouveau joueur qui réussit les tables de 1, 2 et 10 démarre avec ces trois tables ouvertes. Vérifié par les tests ; vérification courte sur émulateur.</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/18-placement-test-result.png" target="_blank"><img src="design/screens/18-placement-test-result.png" alt="Maquette résultat du test de départ" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1">
+          <summary><span class="lot-id">F17</span><span class="lot-title">Classement local</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Classement des joueurs du téléphone par XP de la semaine (lundi 00:00 au lundi suivant), podium et mascotte qui encourage.</li>
+                <li>Calculé à la lecture depuis <code>session_reward</code> et <code>xp_award</code> : pas de migration.</li>
+                <li>Interrupteur « Afficher le classement » dans les réglages ; dépôt prêt pour des portées « amis » et « monde » en ligne.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> deux joueurs qui ont joué dans la semaine apparaissent classés, et le classement repart de zéro le lundi. Vérifié sur émulateur et par les tests (horloge simulée).</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/19-leaderboard.png" target="_blank"><img src="design/screens/19-leaderboard.png" alt="Maquette classement" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.1" data-pending="1">
+          <summary><span class="lot-id">F18</span><span class="lot-title">Rappel quotidien</span><span class="badge b-ok">Terminé · 12/10</span><span class="badge b-warn">Test téléphone en attente</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>Un rappel pour tout le téléphone, désactivé par défaut, à 17:00 par défaut ; la permission n'est demandée qu'à l'activation.</li>
+                <li>Une notification par jour pour les 30 prochains jours ; aucun rappel le jour où une session a été terminée.</li>
+                <li><code>flutter_local_notifications</code> derrière l'interface <code>NotificationScheduler</code> ; alarme inexacte sur Android, sans permission d'alarme exacte.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un rappel réglé sur une heure proche s'affiche sur un vrai Android et sur un iPhone. <span class="badge b-warn">À vérifier par le propriétaire</span></div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.2">
+          <summary><span class="lot-id">F19</span><span class="lot-title">Défi par code</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Code de 10 caractères (<code>K7M2-QX9T-B4</code>) : tables, mode, nombre de questions, graine, score à battre, version et caractère de contrôle.</li>
+                <li>Générateur figé (<code>FrozenQuestionGenerator</code>) et aléatoire à graine écrit en Dart (Mulberry32) : mêmes questions sur tous les téléphones.</li>
+                <li>« Défier un ami » sous les résultats, « J'ai un code » dans Défis, écran de comparaison et « Renvoyer un défi ».</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un code créé sur un téléphone donne les mêmes questions sur un second, qui affiche les deux scores. Prouvé par les tests (listes de référence de la version 1).</div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/20-challenge-code.png" target="_blank"><img src="design/screens/20-challenge-code.png" alt="Maquette code de défi" loading="lazy"></a>
+              <a href="design/screens/21-challenge-score.png" target="_blank"><img src="design/screens/21-challenge-score.png" alt="Maquette comparaison des scores" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.2">
+          <summary><span class="lot-id">F20</span><span class="lot-title">Sauvegarde par fichier</span><span class="badge b-ok">Terminé · 12/10</span></summary>
+          <div class="lot-body no-shot">
+            <div>
+              <ul>
+                <li>« Exporter mon profil » écrit <code>KidMatix-&lt;pseudo&gt;-&lt;jour&gt;.kidmatix</code> (JSON) et ouvre le partage ; « Importer un profil » ouvre le sélecteur de fichiers.</li>
+                <li>Les deux passent par un contrôle parental : un nombre de 1 000 à 9 999 écrit en lettres, à taper en chiffres.</li>
+                <li>Chaque feature exporte ses tables (<code>ProfileBackupPart</code>) ; import en une transaction, nouveaux identifiants, pseudo déjà pris → « Remplacer » ou « Renommer ».</li>
+                <li>Fichier abîmé ou d'une version plus récente refusé avec son propre message.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> un profil exporté puis importé sur un second téléphone retrouve niveau, série, étoiles et grille. Prouvé par un aller-retour entre deux bases dans les tests.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="lot" data-release="1.2" data-pending="1">
+          <summary><span class="lot-id">F21</span><span class="lot-title">Autres langues et boutique</span><span class="badge b-ok">Terminé · 13/10</span><span class="badge b-warn">Test appareil en attente</span></summary>
+          <div class="lot-body">
+            <div>
+              <ul>
+                <li>Anglais et espagnol, chaque clé traduite ; choix dans les réglages, langue du téléphone par défaut, français sinon ; bascule en direct.</li>
+                <li>Pièces : 1 pièce par 10 XP, 20 par couronne, 10 par badge ; calculées depuis les totaux, jamais stockées. Pas d'argent réel.</li>
+                <li>Boutique : 8 avatars de 80 à 300 pièces, 4 thèmes de couleur de 150 à 250 pièces (Océan, Forêt, Coucher de soleil, Nuit) ; contraste AA vérifié.</li>
+                <li>Feature <code>shop</code>, migration 11 (<code>shop_purchase</code>, <code>shop_choice</code>) ; sauvegarde au format 2.</li>
+              </ul>
+              <div class="done-when"><b>Terminé quand :</b> l'app s'affiche dans une seconde langue, et un joueur achète un avatar avec ses pièces. <span class="badge b-warn">Test sur appareil à faire par le propriétaire</span></div>
+            </div>
+            <div class="shots">
+              <a href="design/screens/22-shop.png" target="_blank"><img src="design/screens/22-shop.png" alt="Maquette boutique" loading="lazy"></a>
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <section id="regles">
+      <h2>Règles de jeu</h2>
+      <p class="lead">Les valeurs codées dans le domaine de chaque feature.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Maîtrise (Leitner)</h3>
+          <ul>
+            <li>Boîtes 0 à 5 ; révision à J+1, 2, 4, 7, 15.</li>
+            <li>Nouveau fait juste → boîte 2 ; fait raté → boîte 1, reposé en premier.</li>
+            <li>Réponse à choisir plafonnée à la boîte 3 ; au-delà, il faut écrire.</li>
+            <li>« Maîtrisé » : boîte 5 et médiane de 5 temps sous 3 s ; sinon « Acquis ».</li>
+            <li>Poids de tirage par boîte : 4, 5, 4, 3, 2, 1 ; ×1 et ×10 pèsent moitié.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>XP, niveaux, pièces</h3>
+          <ul>
+            <li>+10 XP par bonne réponse, +5 par réponse éclair (&lt; 3 s).</li>
+            <li>+20 XP par quiz terminé, +50 pour un sans-faute ; quiz abandonné : 0.</li>
+            <li>Niveau N → N+1 : 100 × N XP (niveau 2 à 100, 3 à 300, 5 à 1 000).</li>
+            <li>Duel : 10 XP par bonne réponse, +20 au gagnant.</li>
+            <li>Pièces : 1 / 10 XP, 20 / couronne, 10 / badge.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Parcours et étoiles</h3>
+          <ul>
+            <li>5 étapes par table : Découverte, Entraînement, Écriture, Vitesse, Boss.</li>
+            <li>Étoiles à 60, 80 et 100 % de bonnes réponses.</li>
+            <li>Boss : 12 PV, 20 questions max, 8 s par question ; vaincu = au moins 1 étoile et la couronne.</li>
+            <li>Nœud de révision (15 questions) tous les 3 tables, facultatif.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Série, objectif, badges</h3>
+          <ul>
+            <li>Série en jours (horloge du téléphone), 1 joker par semaine.</li>
+            <li>Objectif du jour : 20, 50 ou 100 XP (20 par défaut).</li>
+            <li>Badges : Premier pas, Sans-faute, Éclair, Régulier, Les 120, Dompteur de table, Sprinter, Survivant.</li>
+            <li>Mascotte : stades aux niveaux 1, 5, 10, 20, 30 ; 15 accessoires.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Modes de jeu</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mode</th><th>Questions</th><th>Chrono</th><th>Formats</th><th>Particularité</th></tr></thead>
+          <tbody>
+            <tr><td>Étape du parcours</td><td>10 (révision : 15)</td><td>Selon le réglage, étape Vitesse</td><td>Selon l'étape</td><td>Étoiles, déblocage</td></tr>
+            <tr><td>Combat de boss</td><td>Jusqu'à 20</td><td>8 s</td><td>Tous les 6</td><td>Points de vie, coup critique, fuite</td></tr>
+            <tr><td>Entraînement libre</td><td>10, 20 ou 30</td><td>10 s (15 s détendu), facultatif</td><td>Selon la boîte + formats F15</td><td>Tables au choix</td></tr>
+            <tr><td>Contre-la-montre</td><td>Illimité</td><td>60 s au total</td><td>QCM</td><td>Record personnel</td></tr>
+            <tr><td>Survie</td><td>Jusqu'à 3 erreurs</td><td>10 s → 4 s</td><td>QCM</td><td>3 vies, record, badge Survivant</td></tr>
+            <tr><td>Révision du jour</td><td>10</td><td>Aucun</td><td>Selon la boîte</td><td>Faits en retard d'abord</td></tr>
+            <tr><td>Chasse aux monstres</td><td>10</td><td>Aucun</td><td>Selon la boîte</td><td>Chaque monstre deux fois</td></tr>
+            <tr><td>Duel</td><td>Premier à 10</td><td>Aucun</td><td>QCM</td><td>Deux joueurs, blocage de 2 s</td></tr>
+            <tr><td>Défi par code</td><td>Selon le code</td><td>Selon le code</td><td>6 formats / QCM</td><td>Mêmes questions partout</td></tr>
+            <tr><td>Test de départ</td><td>12</td><td>Aucun</td><td>Clavier</td><td>Ouvre les tables réussies, sans XP</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <h2>Architecture</h2>
+      <p class="lead">Clean Architecture par feature, BLoC, GetIt, go_router. Les features ne s'importent jamais entre elles.</p>
+
+      <div class="diagram" role="img" aria-label="Schéma des couches : présentation, domaine, données, et core partagé">
+        <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor" class="muted"/>
+            </marker>
+          </defs>
+          <text x="20" y="28" font-size="15" font-weight="700">Une feature (ex. reward)</text>
+          <rect x="20" y="44" width="250" height="70" rx="12" class="box-accent"/>
+          <text x="40" y="72" font-size="15" font-weight="600">presentation/</text>
+          <text x="40" y="96" font-size="13" class="muted">Bloc / Cubit, pages, widgets</text>
+          <rect x="20" y="144" width="250" height="70" rx="12" class="box-accent"/>
+          <text x="40" y="172" font-size="15" font-weight="600">domain/</text>
+          <text x="40" y="196" font-size="13" class="muted">Entités, use cases, règles — Dart pur</text>
+          <rect x="20" y="244" width="250" height="70" rx="12" class="box-accent"/>
+          <text x="40" y="272" font-size="15" font-weight="600">data/</text>
+          <text x="40" y="296" font-size="13" class="muted">Modèles, sources sqflite, dépôts</text>
+          <line x1="145" y1="114" x2="145" y2="140" class="line" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="145" y1="244" x2="145" y2="218" class="line" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="155" y="132" font-size="12" class="muted">appelle</text>
+          <text x="155" y="236" font-size="12" class="muted">implémente</text>
+
+          <text x="360" y="28" font-size="15" font-weight="700">core/ (partagé)</text>
+          <rect x="360" y="44" width="250" height="56" rx="12" class="box"/>
+          <text x="378" y="68" font-size="14" font-weight="600">quiz/</text>
+          <text x="378" y="88" font-size="12" class="muted">moteur générique, 6 types de questions</text>
+          <rect x="360" y="110" width="250" height="56" rx="12" class="box"/>
+          <text x="378" y="134" font-size="14" font-weight="600">services/</text>
+          <text x="378" y="154" font-size="12" class="muted">interfaces entre features</text>
+          <rect x="360" y="176" width="250" height="56" rx="12" class="box"/>
+          <text x="378" y="200" font-size="14" font-weight="600">storage/</text>
+          <text x="378" y="220" font-size="12" class="muted">base, migrations, hooks, sauvegarde</text>
+          <rect x="360" y="242" width="250" height="56" rx="12" class="box"/>
+          <text x="378" y="266" font-size="14" font-weight="600">router/ · di/ · theme/ · widgets/</text>
+          <text x="378" y="286" font-size="12" class="muted">seuls router et di connaissent les features</text>
+          <line x1="270" y1="179" x2="356" y2="138" class="line" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="270" y1="279" x2="356" y2="204" class="line" stroke-width="2" marker-end="url(#arr)"/>
+
+          <text x="680" y="28" font-size="15" font-weight="700">Règles vérifiées par test</text>
+          <rect x="680" y="44" width="200" height="254" rx="12" class="box"/>
+          <text x="696" y="72" font-size="13">• domain/ : Dart pur</text>
+          <text x="696" y="100" font-size="13">• pas d'import</text>
+          <text x="708" y="118" font-size="13">entre features</text>
+          <text x="696" y="146" font-size="13">• presentation/ n'importe</text>
+          <text x="708" y="164" font-size="13">jamais data/</text>
+          <text x="696" y="192" font-size="13">• core/ n'importe les</text>
+          <text x="708" y="210" font-size="13">features que depuis</text>
+          <text x="708" y="228" font-size="13">di/ et router/</text>
+          <text x="696" y="262" font-size="12" class="muted">test/architecture/</text>
+          <text x="696" y="280" font-size="12" class="muted">architecture_test.dart</text>
+          <text x="20" y="346" font-size="12" class="muted">Les écrans d'une feature affichent les widgets d'une autre par des « slots » remplis par le routeur.</text>
+        </svg>
+      </div>
+
+      <h3>Les features</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>Fichiers</th><th>Rôle</th><th>Lot</th></tr></thead>
+          <tbody>
+            <tr><td><code>profile</code></td><td>109</td><td>Joueurs, session active, réglages, réinitialisation, sauvegarde, avatars</td><td>F1, F10, F20</td></tr>
+            <tr><td><code>multiplication</code></td><td>8</td><td>Domaine : faits, tables, astuces, distracteurs, aides</td><td>F2</td></tr>
+            <tr><td><code>quiz</code></td><td>61</td><td>Session de quiz, combat de boss, résultats</td><td>F3, F6</td></tr>
+            <tr><td><code>mastery</code></td><td>40</td><td>Boîtes, répétition espacée, grille, monstres</td><td>F4, F13</td></tr>
+            <tr><td><code>learning_path</code></td><td>62</td><td>Carte, étapes, étoiles, couronnes, test de départ</td><td>F5, F6, F16</td></tr>
+            <tr><td><code>reward</code></td><td>85</td><td>XP, niveaux, série, badges, objectif, classement</td><td>F7, F17</td></tr>
+            <tr><td><code>mascot</code></td><td>27</td><td>Mascotte, stades, accessoires</td><td>F8</td></tr>
+            <tr><td><code>challenge</code></td><td>97</td><td>Entraînement, contre-la-montre, survie, révision, duel, codes</td><td>F9, F12–F14, F19</td></tr>
+            <tr><td><code>setting</code></td><td>40</td><td>Sons, vibrations, rappel quotidien, langue</td><td>F10, F18, F21</td></tr>
+            <tr><td><code>shop</code></td><td>42</td><td>Pièces, achats, thèmes</td><td>F21</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Communication entre features</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Interfaces de <code>core/services/</code></h3>
+          <ul>
+            <li><code>ProfileSessionService</code>, <code>PlayerSettingsService</code>, <code>PlayerDirectoryService</code>, <code>PlayerAvatarService</code> — profile</li>
+            <li><code>MasteryService</code> — mastery</li>
+            <li><code>LearningPathService</code>, <code>CrownService</code>, <code>OpenUnitsService</code> — learning_path</li>
+            <li><code>RewardService</code>, <code>XpAwardService</code> — reward</li>
+            <li><code>GameFeedbackService</code>, <code>NotificationScheduler</code> — setting</li>
+            <li><code>ProgressResetService</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Hooks de <code>core/storage/</code></h3>
+          <ul>
+            <li><code>SessionSavedHook</code> : chaque feature écrit sa part dans la transaction qui enregistre un quiz (étoiles, XP, record, rappel).</li>
+            <li><code>ProgressResetHook</code> : chaque feature efface sa progression, en une transaction.</li>
+            <li><code>ProfileBackupPart</code> : chaque feature exporte et importe ses tables.</li>
+            <li><code>TableChangeBus</code> : les Blocs se rechargent quand une table change.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Paquets utilisés</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Paquet</th><th>Usage</th><th>Depuis</th></tr></thead>
+          <tbody>
+            <tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>go_router</code></td><td>État, injection, navigation</td><td>F0</td></tr>
+            <tr><td><code>sqflite</code>, <code>shared_preferences</code>, <code>path</code></td><td>Base locale et préférences</td><td>F0</td></tr>
+            <tr><td><code>uuid</code>, <code>meta</code>, <code>intl</code>, <code>json_annotation</code></td><td>Identifiants, annotations, traductions, sérialisation</td><td>F0–F1</td></tr>
+            <tr><td><code>audioplayers</code></td><td>Sons de jeu</td><td>F10</td></tr>
+            <tr><td><code>flutter_local_notifications</code>, <code>timezone</code></td><td>Rappel quotidien</td><td>F18</td></tr>
+            <tr><td><code>share_plus</code>, <code>file_selector</code>, <code>package_info_plus</code></td><td>Export, import, version de l'app</td><td>F20</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Aucun de ces paquets ne communique sur le réseau. Pas d'<code>equatable</code>, pas de <code>google_fonts</code> : les polices sont embarquées.</p>
+    </section>
+
+    <section id="donnees">
+      <h2>Données</h2>
+      <p class="lead">Base sqflite à la version 11. Chaque migration a son fichier et son test.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Version</th><th>Migration</th><th>Contenu</th><th>Lot</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><code>create_profile_tables</code></td><td><code>profile</code>, <code>profile_settings</code></td><td>F1</td></tr>
+            <tr><td>2</td><td><code>create_quiz_session_tables</code></td><td><code>quiz_session</code>, <code>quiz_answer</code> (journal en ajout seul)</td><td>F3</td></tr>
+            <tr><td>3</td><td><code>create_item_progress_table</code></td><td><code>item_progress</code> (boîte, statistiques, prochaine révision)</td><td>F4</td></tr>
+            <tr><td>4</td><td><code>add_quiz_session_source</code></td><td><code>quiz_session.source_key</code></td><td>F5</td></tr>
+            <tr><td>5</td><td><code>create_stage_progress_table</code></td><td><code>stage_progress</code> (étoiles par étape)</td><td>F5</td></tr>
+            <tr><td>6</td><td><code>add_quiz_session_boss_outcome</code></td><td><code>quiz_session.boss_outcome</code></td><td>F6</td></tr>
+            <tr><td>7</td><td><code>create_reward_tables</code></td><td><code>session_reward</code>, <code>streak</code>, <code>badge_unlock</code>, <code>reward_stats</code></td><td>F7</td></tr>
+            <tr><td>8</td><td><code>create_mascot_table</code></td><td><code>mascot</code></td><td>F8</td></tr>
+            <tr><td>9</td><td><code>create_record_table</code></td><td><code>record</code> (contre-la-montre, survie)</td><td>F9</td></tr>
+            <tr><td>10</td><td><code>create_xp_award_table</code></td><td><code>xp_award</code> (XP hors quiz : duels)</td><td>F14</td></tr>
+            <tr><td>11</td><td><code>create_shop_tables</code></td><td><code>shop_purchase</code>, <code>shop_choice</code></td><td>F21</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card">
+          <h3>Préférences du téléphone</h3>
+          <ul>
+            <li>Joueur actif, dernier entraînement libre</li>
+            <li><code>leaderboard_shown</code> (classement affiché)</li>
+            <li><code>reminder_enabled</code>, <code>reminder_time</code>, <code>reminder_last_session_day</code></li>
+            <li><code>app_language</code> : <code>system</code>, <code>fr</code>, <code>en</code> ou <code>es</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Fichier de sauvegarde <code>.kidmatix</code></h3>
+          <ul>
+            <li>JSON UTF-8, un joueur par fichier, format <code>kidmatix-profile</code>, version 2.</li>
+            <li>Sections : profile, quiz, mastery, learningPath, reward, mascot, challenge, shop.</li>
+            <li>Version plus récente refusée ; clés inconnues ignorées ; version 1 encore lue.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="qualite">
+      <h2>Qualité et outillage</h2>
+      <p class="lead">Une seule commande, la même en local et en CI.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3><code>tool/check.sh</code></h3>
+          <ul>
+            <li><code>pub get</code>, <code>gen-l10n</code>, <code>build_runner</code></li>
+            <li>Formatage, <code>flutter analyze</code>, tous les tests</li>
+            <li><code>check.sh build</code> : builds Android et iOS</li>
+            <li>Journal dans <code>tool/logs/check.log</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>CI GitHub Actions</h3>
+          <ul>
+            <li>4 jobs : analyze, test (avec couverture), build android, build ios</li>
+            <li>Flutter 3.47.6 épinglé</li>
+            <li>Échec si code non formaté ou fichiers générés périmés</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Git</h3>
+          <ul>
+            <li>Une branche par tâche, Conventional Commits</li>
+            <li>Hooks <code>.githooks/</code> : refus de commit et de push sur <code>main</code></li>
+            <li>Pull request fusionnée en merge commit</li>
+          </ul>
+        </div>
+      </div>
+      <h3>Tests</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Ce qui est couvert</th></tr></thead>
+          <tbody>
+            <tr><td>Architecture</td><td>Règles d'import entre couches et features</td></tr>
+            <tr><td>Unitaires</td><td>Règles de domaine (maîtrise, XP, série, étoiles, boss, pièces, codes), use cases, dépôts</td></tr>
+            <tr><td>Blocs</td><td><code>bloc_test</code> + <code>mocktail</code>, horloge et ticker simulés</td></tr>
+            <tr><td>Base de données</td><td>Migrations et hooks sur base en mémoire (<code>sqflite_common_ffi</code>)</td></tr>
+            <tr><td>Widgets</td><td>Écrans, slots du routeur, accessibilité, grand texte dans les 3 langues, contraste AA des 5 thèmes</td></tr>
+            <tr><td>Traductions</td><td>Mêmes clés et paramètres dans les 3 fichiers ARB</td></tr>
+            <tr><td>Références figées</td><td>Listes de questions de la version 1 des codes de défi</td></tr>
+            <tr><td>Intégration</td><td>Parcours complet, performance du quiz (<code>integration_test/</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Couverture exigée : au moins 90 % sur chaque <code>domain/</code> et 80 % sur chaque <code>data/</code> (<code>tool/coverage_report.py</code>). Exemples au dernier lot : <code>shop/domain</code> 97,7 %, <code>shop/data</code> 100 %.</p>
+    </section>
+
+    <section id="publication">
+      <h2>Publication</h2>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th>Nom</th><td>Kid Matix — titre de la fiche : « Kid Matix : tables de 1 à 12 »</td></tr>
+            <tr><th>Android</th><td><code>sn.ckroot.kid_matix.kid_matix</code> · public 6-8 et 9-12 ans</td></tr>
+            <tr><th>iOS</th><td><code>sn.ckroot.kidmatix</code> · « Made for Kids » 6-8 ans, classé 4+</td></tr>
+            <tr><th>Confidentialité</th><td>« Data Not Collected » ; politique publiée sur GitHub Pages (<code>docs/store/privacy-policy.md</code>)</td></tr>
+            <tr><th>Permission</th><td>Notifications uniquement, demandée à l'activation du rappel</td></tr>
+            <tr><th>Documents</th><td><code>docs/release/</code> (audit, performance, signature), <code>docs/store/</code> (fiches, familles, enfants)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="reste">
+      <h2>Reste à faire</h2>
+      <p class="lead">Tout le code des lots F0 à F21 est livré. Il reste des actions du propriétaire et des points à confirmer.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Vérifications sur appareil</h3>
+          <ul class="todo">
+            <li><span class="badge b-warn">F11-11</span> Envoyer le bundle Android en test interne et l'iOS sur TestFlight, puis jouer le trajet complet sur un vrai téléphone.</li>
+            <li><span class="badge b-warn">F18</span> Régler un rappel quelques minutes plus tard et le voir s'afficher sur Android et sur iPhone.</li>
+            <li><span class="badge b-warn">F21</span> Acheter le renard, appliquer le thème Nuit, puis réinitialiser la progression.</li>
+            <li><span class="badge b-info">F12 · F16 · F19 · F20</span> Parties couvertes par les tests mais pas encore jouées sur téléphone (révision du jour, résultat du test de départ, code entre deux téléphones, export / import).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>À confirmer</h3>
+          <ul class="todo">
+            <li>Textes sans maquette proposés lot par lot (listés dans <code>docs/status.md</code>).</li>
+            <li>Traductions anglaises et espagnoles à relire.</li>
+            <li>Prix et noms des avatars et thèmes de la boutique.</li>
+            <li>App Store Connect : téléphone du contact de revue, « Publish » dans App Privacy.</li>
+            <li>Play Console : test fermé possible (12 testeurs, 14 jours) pour un nouveau compte personnel.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Illustrations provisoires</h3>
+          <ul>
+            <li>Mascotte (5 stades, 15 accessoires), 12 monstres, avatars : dessins Flutter à remplacer, sans changer le code appelant.</li>
+            <li>Sons synthétisés par <code>tool/generate_sounds.py</code>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Après la 1.2</h3>
+          <ul>
+            <li>Mode en ligne : choix du backend, consentement parental, classement amis / monde, anti-triche.</li>
+            <li>Nouveaux domaines (division d'abord) : se branchent sur le moteur générique.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="maquettes">
+      <h2>Maquettes implémentées</h2>
+      <p class="lead">Les maquettes 01 à 22 de <code>docs/design/screens/</code> (24 images avec les variantes du quiz). Cliquez pour agrandir.</p>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <footer>
+      Généré à partir de <code>docs/status.md</code>, <code>docs/decisions.md</code>, <code>docs/product/task-breakdown.md</code> et du code de <code>lib/</code>, le 14 octobre 2026. Les images sont des maquettes de design, pas des captures de l'app.
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var toggle = document.getElementById('themeToggle');
+    try {
+      var saved = localStorage.getItem('kidmatix-doc-theme');
+      if (saved) root.setAttribute('data-theme', saved);
+    } catch (e) {}
+    toggle.addEventListener('click', function () {
+      var current = root.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('kidmatix-doc-theme', next); } catch (e) {}
+    });
+
+    var lots = Array.prototype.slice.call(document.querySelectorAll('details.lot'));
+    var buttons = document.querySelectorAll('.filters button[data-filter]');
+    Array.prototype.forEach.call(buttons, function (button) {
+      button.addEventListener('click', function () {
+        var filter = button.getAttribute('data-filter');
+        Array.prototype.forEach.call(buttons, function (b) { b.setAttribute('aria-pressed', String(b === button)); });
+        lots.forEach(function (lot) {
+          var visible = filter === 'all' ||
+            (filter === 'pending' ? lot.hasAttribute('data-pending') : lot.getAttribute('data-release') === filter);
+          lot.style.display = visible ? '' : 'none';
+        });
+      });
+    });
+    var toggleAll = document.getElementById('toggleAll');
+    toggleAll.addEventListener('click', function () {
+      var open = toggleAll.getAttribute('aria-pressed') !== 'true';
+      toggleAll.setAttribute('aria-pressed', String(open));
+      toggleAll.textContent = open ? 'Tout replier' : 'Tout déplier';
+      lots.forEach(function (lot) { lot.open = open; });
+    });
+
+    var screens = [
+      ['01-who-is-playing', 'Qui joue ?'], ['02-profile-creation', 'Création'],
+      ['03-learning-path', 'Parcours'], ['04-table-detail', 'Détail de table'],
+      ['05-discovery-stage', 'Découverte'], ['06-quiz-multiple-choice', 'Quiz QCM'],
+      ['06b-quiz-correct-answer', 'Bonne réponse'], ['06c-quiz-wrong-answer', 'Mauvaise réponse'],
+      ['07-quiz-true-false', 'Vrai ou faux'], ['08-boss-fight', 'Combat de boss'],
+      ['09-results', 'Résultats'], ['10-training', 'Entraînement'],
+      ['11-challenges', 'Défis'], ['12-profile', 'Profil'],
+      ['13-settings', 'Réglages'], ['14-my-monsters', 'Mes monstres'],
+      ['15-duel', 'Duel'], ['16-quiz-find-operation', 'Trouver l\'opération'],
+      ['17-quiz-match-pairs', 'Relier les paires'], ['18-placement-test-result', 'Test de départ'],
+      ['19-leaderboard', 'Classement'], ['20-challenge-code', 'Code de défi'],
+      ['21-challenge-score', 'Comparaison'], ['22-shop', 'Boutique']
+    ];
+    var gallery = document.getElementById('gallery');
+    screens.forEach(function (s) {
+      var src = 'design/screens/' + s[0] + '.png';
+      var fig = document.createElement('figure');
+      fig.innerHTML = '<a href="' + src + '" target="_blank"><img loading="lazy" src="' + src + '" alt="Maquette ' + s[1] + '"></a><figcaption>' + s[1] + '</figcaption>';
+      gallery.appendChild(fig);
+    });
+  })();
+</script>
+</body>
+</html>
