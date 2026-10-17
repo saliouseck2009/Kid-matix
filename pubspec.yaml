@@ -1,8 +1,8 @@
 name: kid_matix
 description: "Kid Matix: a gamified app that helps children master maths facts."
-publish_to: 'none'
+publish_to: "none"
 
-version: 1.0.0+2
+version: 1.0.1+4
 
 environment:
   sdk: ^3.13.5
