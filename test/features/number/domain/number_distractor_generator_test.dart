@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
-import 'package:kid_matix/features/numbers/domain/services/number_distractor_generator.dart';
+import 'package:kid_matix/features/number/domain/services/number_distractor_generator.dart';
 
 void main() {
   const NumberDistractorGenerator generator = NumberDistractorGenerator();

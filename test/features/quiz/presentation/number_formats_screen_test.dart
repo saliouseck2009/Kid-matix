@@ -6,7 +6,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';

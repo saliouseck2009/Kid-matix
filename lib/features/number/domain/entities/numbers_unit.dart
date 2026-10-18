@@ -1,6 +1,6 @@
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
-import 'package:kid_matix/features/numbers/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/entities/number_item.dart';
 import 'package:meta/meta.dart';
 
 /// One unit of the numbers up to 100, such as "Compter jusqu'à 10": a

@@ -5,7 +5,7 @@ import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 void main() {
   const QuestionGenerator generator = QuestionGenerator();

@@ -12,7 +12,7 @@ import 'package:kid_matix/features/learning_path/domain/services/learning_path_b
 import 'package:kid_matix/features/learning_path/domain/services/stage_quiz_specs.dart';
 import 'package:kid_matix/features/learning_path/domain/services/unit_domain_resolver.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 StageProgressEntity _stars(String unitKey, StageKind stage, int stars) {
   return StageProgressEntity(

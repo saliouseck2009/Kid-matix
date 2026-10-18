@@ -13,9 +13,9 @@ import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/numbers/domain/entities/number_item.dart';
-import 'package:kid_matix/features/numbers/domain/services/number_distractor_generator.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/services/number_distractor_generator.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 /// Every key of the numbers domain as released: a change here loses the
 /// progress of the children.

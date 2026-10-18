@@ -15,7 +15,7 @@ import 'package:kid_matix/features/learning_path/domain/usecases/watch_domain_ch
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_cubit.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/in_memory_local_storage.dart';

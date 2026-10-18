@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_help_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
