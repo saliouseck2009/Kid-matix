@@ -125,6 +125,9 @@ final class ChallengePages {
   /// the challenges.
   QuizSpec? specOf(String sourceKey) {
     final ChallengeSource? source = ChallengeSource.tryParse(sourceKey);
+    if (source is DailyReviewSource) {
+      return _specs.dailyReviewOf(_domains.domains);
+    }
     final LearningDomain? domain = _domains.find(domainId);
     if (source == null || domain == null) return null;
     return _specs.specOf(domain: domain, source: source);

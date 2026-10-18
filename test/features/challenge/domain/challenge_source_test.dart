@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
@@ -9,6 +10,8 @@ import 'package:kid_matix/features/challenge/domain/entities/challenge_source.da
 import 'package:kid_matix/features/challenge/domain/services/challenge_quiz_specs.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+
+import '../../quiz/helpers/quiz_fixtures.dart';
 
 void main() {
   final LearningDomain domain = MultiplicationDomain();
@@ -222,6 +225,7 @@ void main() {
       )!;
       // Assert
       expect(actualSpec.mode, QuizMode.dailyReview);
+      expect(actualSpec.domainId, LearningDomainIds.mixed);
       expect(actualSpec.selection, QuizSelection.review);
       expect(actualSpec.questionCount, 10);
       expect(actualSpec.itemKeys, hasLength(120));
@@ -230,9 +234,33 @@ void main() {
       expect(actualSpec.keepsTimer, isFalse);
       expect(
         actualSpec.questionTypeIds,
-        ChallengeRules.versionOneQuestionTypeIds,
+        containsAll(ChallengeRules.versionOneQuestionTypeIds),
       );
       expect(actualSpec.sourceKey, 'dailyReview');
+    });
+    test('mixes the items of every domain in the daily review', () {
+      // Arrange
+      final List<LearningDomain> inputDomains = buildDomainRegistry().domains;
+      // Act
+      final QuizSpec actualSpec = specs.dailyReviewOf(inputDomains)!;
+      // Assert
+      expect(actualSpec.domainId, LearningDomainIds.mixed);
+      expect(
+        actualSpec.itemKeys,
+        containsAll(<String>[
+          'mul:7x8',
+          'num:count:7',
+          'num:compare:34:43',
+          'add:7+8',
+          'sub:15-7',
+        ]),
+      );
+      expect(
+        actualSpec.itemKeys.map((String key) => key.split(':').first).toSet(),
+        <String>{'mul', 'num', 'add', 'sub'},
+      );
+      expect(actualSpec.sourceKey, 'dailyReview');
+      expect(specs.dailyReviewOf(const <LearningDomain>[]), isNull);
     });
     test('hunts the monsters in 10 questions without timer', () {
       // Act

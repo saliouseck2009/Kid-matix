@@ -5,6 +5,7 @@ import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/app_migrations.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
+import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/repositories/item_progress_repository.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
@@ -50,10 +51,12 @@ Future<AppDatabase> openMasteryDatabase() async {
   return database;
 }
 
-/// Registries with the question types of version 1.0 and multiplication.
+/// Registries with the question types of version 1.0, the multiplication
+/// and the additions.
 (DomainRegistry, QuestionTypeRegistry) buildMasteryRegistries() {
   final DomainRegistry domains = DomainRegistry()
-    ..register(MultiplicationDomain());
+    ..register(MultiplicationDomain())
+    ..register(AdditionDomain());
   final QuestionTypeRegistry types = QuestionTypeRegistry();
   appQuestionTypes.forEach(types.register);
   return (domains, types);

@@ -224,6 +224,45 @@ void main() {
       );
       expect(actualAll, hasLength(3));
     });
+    test('brings back an addition missed the day before', () async {
+      // Arrange
+      Future<void> answerAddition(String itemKey, {required bool ok}) async {
+        await RecordAnswerUseCase(
+          repository: repository,
+          questionTypes: types,
+          clock: clock,
+        )(
+          params: ItemAnswer(
+            profileId: 'p1',
+            domainId: 'addition',
+            itemKey: itemKey,
+            questionTypeId: QuestionTypeIds.typedAnswer,
+            isCorrect: ok,
+            answerTime: const Duration(seconds: 2),
+          ),
+        );
+      }
+
+      await answerAddition('add:6+7', ok: true);
+      await answerAddition('add:7+8', ok: false);
+      clock.current = DateTime(2026, 10, 11, 9);
+      // Act
+      final List<QuizItemPlan> actualFirst = (await planQuiz()(
+        params: QuizPlanRequest(
+          profileId: 'p1',
+          domainId: 'addition',
+          itemKeys: <String>['add:6+7', 'add:7+8', 'sub:15-7'],
+          questionTypeIds: _reviewTypes,
+          questionCount: 1,
+          selection: QuizSelection.review,
+        ),
+      )).requireData;
+      // Assert
+      expect(
+        actualFirst.map((QuizItemPlan plan) => plan.itemKey),
+        <String>['add:7+8'],
+      );
+    });
     test('asks written answers for a fact of box 3', () async {
       // Arrange
       await repository.saveProgress(

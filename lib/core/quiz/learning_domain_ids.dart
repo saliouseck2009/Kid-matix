@@ -7,4 +7,13 @@ abstract final class LearningDomainIds {
   /// The numbers up to 100: counting, tens and ones, comparing and
   /// ordering (version 2.0).
   static const String numbers = 'numbers';
+
+  /// Additions and subtractions, from the facts up to 10 to the numbers up
+  /// to 100 with carrying (version 2.0).
+  static const String addition = 'addition';
+
+  /// Not a domain to learn: the id of a quiz that mixes the items of every
+  /// domain, such as the daily review. It names no unit and no item
+  /// progress; each item belongs to its own domain.
+  static const String mixed = 'mixed';
 }
