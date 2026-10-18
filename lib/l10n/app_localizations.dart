@@ -160,10 +160,10 @@ abstract class AppLocalizations {
   /// **'Nombres'**
   String get numbersDomainName;
 
-  /// Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards ("Sums"). One word, a segment label.
+  /// Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards ("+ and −"). One word, a segment label.
   ///
   /// In fr, this message translates to:
-  /// **'Calculs'**
+  /// **'+ et −'**
   String get additionDomainName;
 
   /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
@@ -376,10 +376,10 @@ abstract class AppLocalizations {
   /// **'Mes nombres'**
   String get masteryGridTitleNumbers;
 
-  /// Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it ("My sums"): one row per unit, one cell per fact colored by how well it is known. Short title.
+  /// Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it ("My + and −"): one row per unit, one cell per fact colored by how well it is known. Short title.
   ///
   /// In fr, this message translates to:
-  /// **'Mes calculs'**
+  /// **'Mes + et −'**
   String get masteryGridTitleAddition;
 
   /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).

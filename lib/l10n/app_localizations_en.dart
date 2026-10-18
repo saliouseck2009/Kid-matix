@@ -40,7 +40,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numbersDomainName => 'Numbers';
 
   @override
-  String get additionDomainName => 'Sums';
+  String get additionDomainName => '+ and −';
 
   @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
@@ -217,7 +217,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get masteryGridTitleNumbers => 'My numbers';
 
   @override
-  String get masteryGridTitleAddition => 'My sums';
+  String get masteryGridTitleAddition => 'My + and −';
 
   @override
   String get masteryStatusNotSeen => 'New';

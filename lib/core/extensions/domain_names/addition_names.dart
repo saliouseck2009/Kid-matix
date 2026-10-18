@@ -13,10 +13,10 @@ final class AdditionNames implements DomainNames {
     'add20': '+20',
     'sub10': '−10',
     'sub20': '−20',
-    'add100': '+50',
-    'sub100': '−50',
-    'carry': '+99',
-    'borrow': '−99',
+    'add100': '+100',
+    'sub100': '−100',
+    'carry': '+100',
+    'borrow': '−100',
   };
 
   @override

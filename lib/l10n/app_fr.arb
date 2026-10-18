@@ -40,9 +40,9 @@
   "@numbersDomainName": {
     "description": "Name of the numbers domain (counting, tens and ones, comparing and ordering numbers up to 100) in the switch of the domains above the map and above the Profile progress cards (\"Numbers\"). One word, a segment label."
   },
-  "additionDomainName": "Calculs",
+  "additionDomainName": "+ et −",
   "@additionDomainName": {
-    "description": "Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards (\"Sums\"). One word, a segment label."
+    "description": "Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards (\"+ and −\"). One word, a segment label."
   },
   "errorStorage": "Oups, on n'a pas pu lire ou enregistrer tes données.",
   "@errorStorage": {
@@ -248,9 +248,9 @@
   "@masteryGridTitleNumbers": {
     "description": "Title of the mastery grid card of the Profile tab when the numbers domain is chosen above it (\"My numbers\"): one row per unit, one cell per item colored by how well it is known. Short title."
   },
-  "masteryGridTitleAddition": "Mes calculs",
+  "masteryGridTitleAddition": "Mes + et −",
   "@masteryGridTitleAddition": {
-    "description": "Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it (\"My sums\"): one row per unit, one cell per fact colored by how well it is known. Short title."
+    "description": "Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it (\"My + and −\"): one row per unit, one cell per fact colored by how well it is known. Short title."
   },
   "masteryStatusNotSeen": "Nouveau",
   "@masteryStatusNotSeen": {

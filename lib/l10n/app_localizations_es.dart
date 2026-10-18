@@ -40,7 +40,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numbersDomainName => 'Números';
 
   @override
-  String get additionDomainName => 'Cuentas';
+  String get additionDomainName => '+ y −';
 
   @override
   String get errorStorage => 'Uy, no pudimos leer o guardar tus datos.';
@@ -217,7 +217,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get masteryGridTitleNumbers => 'Mis números';
 
   @override
-  String get masteryGridTitleAddition => 'Mis cuentas';
+  String get masteryGridTitleAddition => 'Mis + y −';
 
   @override
   String get masteryStatusNotSeen => 'Nuevo';
