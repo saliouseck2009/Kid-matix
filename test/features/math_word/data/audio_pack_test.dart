@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -267,10 +266,10 @@ void main() {
               isTrue,
               reason: file,
             );
-            expect(
-              file,
-              '${language}_$key${kind == WordAudioKind.example ? '_exemple' : ''}.m4a',
-            );
+            final String suffix = kind == WordAudioKind.example
+                ? '_exemple'
+                : '';
+            expect(file, '${language}_$key$suffix.m4a');
           }
         }
       });
