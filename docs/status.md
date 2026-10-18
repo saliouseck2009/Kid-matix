@@ -30,8 +30,8 @@ middle of one). Last update: 2026-10-18.
 | F20 · File backup | **Done** (closed 2026-10-12) |
 | F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
 | F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
-| F23 · Read aloud | **Merged** (wave 1, #104 and #108); closes after the owner's device check (F23-01) |
-| F24 · Numbers up to 100 | **Merged** (wave 1, #103, #105 and #107); closes after the owner's device check and the validation of its screens (F24-09) |
+| F23 · Read aloud | **Done** (closed 2026-10-18, wave 1) |
+| F24 · Numbers up to 100 | **Done** (closed 2026-10-18, wave 1) |
 | F28 · Math words | F28-01 **done** (#102) and the guide part of F28-02; the owner fills the Wolof and records; the rest in wave 2 |
 | F25 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
@@ -594,7 +594,7 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Version 2.0, wave 1 (merged, device checks pending)
+## Version 2.0, wave 1: F23 and F24 closure
 
 Run on 2026-10-18 as planned in `docs/parallel-plan.md`: `lot-implementer`
 (Sonnet) for F23, `lot-implementer` (Opus) for F24, `content-writer`
@@ -656,32 +656,23 @@ line in `DomainNaming`, its ARB keys (domain name, unit names and tips by
 slug), a `MonsterFamily` value and its provisional drawing, its keys
 pinned by a test. The guard tests fail until each piece is there.
 
-To check on a device (owner), short:
+Checked on the phones by the owner (2026-10-18), both "done when"
+criteria OK:
 
-- F23 "done when": airplane mode, low-end Android phone, a question read
-  in French and the timer waiting for the end; on the iPhone, voice and
-  sound effects together and the silent switch. The French voice data must
-  have been downloaded once on the phone.
-- F24 "done when": Accueil → « Nombres » → « Compter jusqu'à 10 », stages 1
-  to 3, then « Compter jusqu'à 20 »; back to « Multiplication », unchanged.
+- F23: in airplane mode on a low-end Android phone and on an iPhone, a
+  question is read in French by the offline voice and the timer waits for
+  the end of the reading.
+- F24: Accueil → « Nombres » → « Compter jusqu'à 10 », its stars won, then
+  « Compter jusqu'à 20 »; back on « Multiplication », progress unchanged.
+
+The owner closed both lots after the check: the screens built without a
+mockup (F24-09) and the new texts of F23 and F24 are kept as built.
 
 Waiting for the owner:
 
 - The Wolof columns and glossary of `math-words.md`, then the 80
   recordings (`wo_<key>.m4a` and `wo_<key>_exemple.m4a`, guide in
   `docs/product/audio-recording.md`); the F28 keys, meanings and statements.
-- Screens without a mockup (F24-09 stays open until then): the listen
-  buttons and their places, the read-aloud offer at profile creation, the
-  domain switch on the home and in the Profile (the badges card moved
-  below the monsters), the numbers path and its marks (`10`, `20`, `100`,
-  `34`, `<>`, `123`, `±1`), the four numbers formats, the provisional
-  monsters with antennae.
-- New texts: F23 (« Lire les questions à voix haute », « Une voix lit
-  chaque question. Tu pourras changer ça dans les réglages. », « Écouter »,
-  « Arrêter la lecture », « … Vrai ou faux ? ») and F24 (unit names and
-  tips, « Combien de mangues ? », « Quel nombre manque ? », « Plus petit,
-  égal ou plus grand ? », « Mes nombres », « Boss · {unit} », « Dompteur
-  de « {unit} » »…), with their English and Spanish translations.
 - Time limits of the speed and boss stages for counting up to 20 objects.
 
 Known gaps: the placement test and the duel have no listen button (F27-04
@@ -691,9 +682,8 @@ daily review per domain); `flutter_tts` applies the Kotlin Gradle plugin
 (warning to revisit at the next Flutter bump); the privacy policy does not
 mention the system voice yet.
 
-Next: the two device checks above; then F23 and F24 close here (F23-01
-ticked, F24-09 once the screens are validated) and wave 2 starts (F25, F26,
-the rest of F28 with migration 013).
+Next: wave 2 (F25, F26, the rest of F28 with migration 013), as planned
+in `docs/parallel-plan.md`.
 
 ## F21 closure
 
