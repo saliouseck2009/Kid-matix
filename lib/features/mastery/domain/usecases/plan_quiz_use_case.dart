@@ -84,6 +84,7 @@ class PlanQuizUseCase
   }) {
     return switch (params.selection) {
       QuizSelection.review => _planner.planReview(
+        domain: domain,
         items: items,
         progressByKey: progressByKey,
         questionTypeNatures: natures,
@@ -92,6 +93,7 @@ class PlanQuizUseCase
         random: _random,
       ),
       QuizSelection.monsterHunt => _planner.planMonsterHunt(
+        domain: domain,
         items: items,
         progressByKey: progressByKey,
         questionTypeNatures: natures,

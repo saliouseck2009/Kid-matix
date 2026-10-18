@@ -40,22 +40,17 @@ void main() {
       QuestionTypeIds.numberLine,
     ]);
   });
-  test('asks an item none of the allowed types fits with its own', () {
-    // Act
-    final List<Question> actual = generator.generate(
-      domain: domain,
-      items: mixedItems,
-      questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
-      random: DartRandomSource(seed: 3),
-    );
+  test('refuses an item that none of the allowed types fits', () {
     // Assert
-    expect(actual.map((Question question) => question.questionTypeId), <String>[
-      QuestionTypeIds.typedAnswer,
-      QuestionTypeIds.typedAnswer,
-      QuestionTypeIds.compare,
-      QuestionTypeIds.typedAnswer,
-      QuestionTypeIds.typedAnswer,
-    ]);
+    expect(
+      () => generator.generate(
+        domain: domain,
+        items: mixedItems,
+        questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+        random: DartRandomSource(seed: 3),
+      ),
+      throwsArgumentError,
+    );
   });
   test('asks a planned item with the planned types that fit it', () {
     // Act
@@ -65,8 +60,8 @@ void main() {
         QuizItemPlan(
           itemKey: 'num:compare:9:6',
           questionTypeIds: const <String>[
-            QuestionTypeIds.countObjects,
             QuestionTypeIds.numberLine,
+            QuestionTypeIds.compare,
           ],
         ),
         QuizItemPlan(
