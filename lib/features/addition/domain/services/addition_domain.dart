@@ -199,13 +199,13 @@ final class AdditionDomain implements LearningDomain {
     );
   }
 
-  /// `7 + 8 = 15` or a plausible mistake such as `7 + 8 = 5`, true one
+  /// `7 + 8 = 15` or a plausible mistake such as `7 + 8 = 17`, true one
   /// time out of two.
   Question _buildTrueFalse(ArithmeticFact fact, RandomSource random) {
     final bool isTrue = random.nextInt(2) == 0;
     final int shown = isTrue
         ? fact.result
-        : _distractors.generate(fact: fact, random: random, count: 1).single;
+        : _distractors.wrongStatementResult(fact: fact, random: random);
     return Question(
       itemKey: fact.key,
       unitKey: _unitsByFactKey[fact.key]!.key,

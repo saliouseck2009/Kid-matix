@@ -352,6 +352,24 @@ void main() {
       }
       expect(answers, <bool>{true, false});
     });
+    test('varies the wrong result and never shows 0', () {
+      final Set<int> wrong = <int>{};
+      for (int seed = 0; seed < 40; seed++) {
+        for (final String key in <String>['add:7+8', 'add:7+3']) {
+          // Act
+          final Question actual = domain.buildQuestion(
+            item: domain.findItem(key)!,
+            questionTypeId: QuestionTypeIds.trueFalse,
+            random: DartRandomSource(seed: seed),
+          );
+          final int shown = (actual.prompt.last as NumberToken).value;
+          // Assert
+          expect(shown, isNot(0));
+          if (key == 'add:7+8' && shown != 15) wrong.add(shown);
+        }
+      }
+      expect(wrong.length, greaterThan(2));
+    });
     test('refuses an unknown format or a foreign item', () {
       // Assert
       expect(

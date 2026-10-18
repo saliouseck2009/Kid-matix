@@ -123,83 +123,53 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   }
 
   /// A quiz that mixes the items of several domains, such as the daily
-  /// review: each domain plans its own items, the plans take turns, and
-  /// every question is built by the domain of its item. It has no follow-up
-  /// questions and no seeded draw.
+  /// review: the mastery engine plans them across every domain at once and
+  /// every question is built by the domain of its item. It has no
+  /// follow-up questions and no seeded draw.
   Future<DataState<QuizRun>> _buildMixed(BuildQuizParams params) async {
-    final Map<LearningDomain, List<LearningItem>>? groups = _groupByDomain(
-      params.itemKeys,
-    );
-    if (groups == null || groups.isEmpty || params.seededDraw != null) {
+    final bool isKnown =
+        params.itemKeys.isNotEmpty &&
+        params.itemKeys.every(
+          (String key) => _domains.findByItemKey(key) != null,
+        );
+    if (!isKnown || params.seededDraw != null) {
       return const DataFailed<QuizRun>(
         ValidationException(message: 'Unknown items for a mixed quiz.'),
       );
     }
-    final List<List<QuizItemPlan>> planned = <List<QuizItemPlan>>[];
-    for (final MapEntry<LearningDomain, List<LearningItem>> group
-        in groups.entries) {
-      final DataState<List<QuizItemPlan>> plans = await _plan(
-        params,
-        group.key.id,
-        group.value,
-      );
-      if (plans is DataFailed<List<QuizItemPlan>>) {
-        return DataFailed<QuizRun>(plans.exception);
-      }
-      planned.add((plans as DataSuccess<List<QuizItemPlan>>).data);
-    }
-    final List<QuizItemPlan> turns = _takeTurns(planned, params.questionCount);
-    if (turns.isEmpty) {
-      return const DataFailed<QuizRun>(
-        NotFoundException(message: 'No question to ask.'),
-      );
-    }
-    try {
-      final List<Question> questions = <Question>[
-        for (final QuizItemPlan plan in _random.shuffled(turns))
-          ..._generator.generatePlanned(
-            domain: _domains.findByItemKey(plan.itemKey)!,
-            plans: <QuizItemPlan>[plan],
-            random: _random,
-          ),
-      ];
-      return DataSuccess<QuizRun>(_createRun(params, questions));
-    } on ArgumentError catch (error) {
-      return DataFailed<QuizRun>(ValidationException(message: '$error'));
-    }
-  }
-
-  /// The items of [keys] grouped by the domain that teaches them, in order
-  /// of appearance; `null` when a key belongs to no domain.
-  Map<LearningDomain, List<LearningItem>>? _groupByDomain(List<String> keys) {
-    final Map<LearningDomain, List<LearningItem>> groups =
-        <LearningDomain, List<LearningItem>>{};
-    for (final String key in keys) {
-      final LearningDomain? domain = _domains.findByItemKey(key);
-      final LearningItem? item = domain?.findItem(key);
-      if (domain == null || item == null) return null;
-      (groups[domain] ??= <LearningItem>[]).add(item);
-    }
-    return groups;
-  }
-
-  /// One plan of each list in turn, the first of each first, up to
-  /// [limit] plans (all when `null`).
-  List<QuizItemPlan> _takeTurns(List<List<QuizItemPlan>> lists, int? limit) {
-    final List<QuizItemPlan> turns = <QuizItemPlan>[];
-    final int longest = lists.fold(
-      0,
-      (int most, List<QuizItemPlan> list) =>
-          list.length > most ? list.length : most,
+    final DataState<List<QuizItemPlan>> plans = await _mastery.planQuiz(
+      request: QuizPlanRequest(
+        profileId: params.profileId,
+        domainId: params.domainId,
+        itemKeys: params.itemKeys,
+        questionTypeIds: params.questionTypeIds,
+        questionCount: params.questionCount ?? params.itemKeys.length,
+        selection: params.selection,
+      ),
     );
-    for (int index = 0; index < longest; index++) {
-      for (final List<QuizItemPlan> list in lists) {
-        if (index < list.length) turns.add(list[index]);
-      }
+    switch (plans) {
+      case DataFailed<List<QuizItemPlan>>(:final exception):
+        return DataFailed<QuizRun>(exception);
+      case DataSuccess<List<QuizItemPlan>>(:final data) when data.isEmpty:
+        return const DataFailed<QuizRun>(
+          NotFoundException(message: 'No question to ask.'),
+        );
+      case DataSuccess<List<QuizItemPlan>>(:final data):
+        try {
+          return DataSuccess<QuizRun>(
+            _createRun(params, <Question>[
+              for (final QuizItemPlan plan in data)
+                ..._generator.generatePlanned(
+                  domain: _domains.findByItemKey(plan.itemKey)!,
+                  plans: <QuizItemPlan>[plan],
+                  random: _random,
+                ),
+            ]),
+          );
+        } on ArgumentError catch (error) {
+          return DataFailed<QuizRun>(ValidationException(message: '$error'));
+        }
     }
-    return limit == null || turns.length <= limit
-        ? turns
-        : turns.sublist(0, limit);
   }
 
   DataState<List<QuizItemPlan>> _askEach(

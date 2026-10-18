@@ -55,7 +55,7 @@ void main() {
 
   group('BuildQuizUseCase for a mixed quiz', () {
     test(
-      'asks each domain for its own plan and builds its questions',
+      'plans every domain at once and builds each question by its domain',
       () async {
         // Arrange
         final FakeMasteryService inputMastery = FakeMasteryService();
@@ -66,10 +66,9 @@ void main() {
             )).requireData;
         // Assert
         expect(actualRun.domainId, LearningDomainIds.mixed);
-        expect(
-          inputMastery.planRequests.map((request) => request.domainId).toSet(),
-          <String>{'multiplication', 'numbers', 'addition'},
-        );
+        expect(inputMastery.planRequests, hasLength(1));
+        expect(inputMastery.planRequests.single.domainId, 'mixed');
+        expect(inputMastery.planRequests.single.itemKeys, itemKeys);
         final Set<String> askedKeys = actualRun.queue
             .map((turn) => turn.question.itemKey)
             .toSet();
@@ -80,19 +79,13 @@ void main() {
         }
       },
     );
-    test('takes turns between the domains up to the question count', () async {
+    test('builds as many questions as the plan holds', () async {
       // Act
       final QuizRun actualRun = (await buildQuizUseCase()(
         params: paramsOf(questionCount: 3),
       )).requireData;
       // Assert
       expect(actualRun.queue, hasLength(3));
-      expect(
-        actualRun.queue
-            .map((turn) => turn.question.itemKey.split(':').first)
-            .toSet(),
-        hasLength(3),
-      );
     });
     test('fails for an item no domain teaches', () async {
       // Act

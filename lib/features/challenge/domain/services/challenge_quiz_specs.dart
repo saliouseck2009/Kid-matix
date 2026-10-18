@@ -79,7 +79,7 @@ final class ChallengeQuizSpecs {
         lives: ChallengeRules.survivalLives,
         sourceKey: source.toKey(),
       ),
-      DailyReviewSource() => _dailyReviewSpec(itemKeys, source.toKey()),
+      DailyReviewSource() => dailyReviewOf(<LearningDomain>[domain])!,
       MonsterHuntSource() => QuizSpec(
         domainId: domain.id,
         mode: QuizMode.monsterHunt,

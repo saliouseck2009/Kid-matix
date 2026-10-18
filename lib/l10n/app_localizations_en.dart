@@ -1176,7 +1176,7 @@ class AppLocalizationsEn extends AppLocalizations {
         'sub20': 'For 15 − 7, first take away 5 to reach 10, then 2 more: 15 − 5 = 10, then 10 − 2 = 8.',
         'add100': 'Add the ones, then the tens. For 23 + 14: 3 + 4 = 7 and 20 + 10 = 30, so 37.',
         'sub100': 'Subtract the ones, then the tens. For 47 − 23: 7 − 3 = 4 and 40 − 20 = 20, so 24.',
-        'carry': 'When the ones make 10 or more, you carry one ten. For 27 + 15: 7 + 5 = 12, write 2 and carry 1 ten. 20 + 10 + 10 = 40, so 42.',
+        'carry': 'When the ones make 10 or more, you carry one ten. For 27 + 15: 7 + 5 = 12, write 2 and carry 1 ten. 20 + 10 + 10 = 40, and 40 + 2 = 42.',
         'borrow': 'If you cannot take away the ones, break a ten. For 42 − 17: 42 becomes 30 and 12. 12 − 7 = 5 and 30 − 10 = 20, so 25.',
         'other': '',
       },

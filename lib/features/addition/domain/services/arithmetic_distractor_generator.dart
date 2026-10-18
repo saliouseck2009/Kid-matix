@@ -43,6 +43,21 @@ final class ArithmeticDistractorGenerator {
     return chosen.take(count).toList();
   }
 
+  /// A wrong result to show in a true or false statement, drawn among the
+  /// plausible mistakes of [fact] (not always the typical one); never 0,
+  /// which would read as an obvious joke.
+  int wrongStatementResult({
+    required ArithmeticFact fact,
+    required RandomSource random,
+  }) {
+    final List<int> candidates = <int>[];
+    for (final int mistake in mistakesOf(fact)) {
+      if (mistake >= 1) _addIfValid(candidates, mistake, fact.result);
+    }
+    if (candidates.isEmpty) return fact.result + 1;
+    return random.shuffled(candidates).first;
+  }
+
   /// The mistake of [fact] a child makes most often, or `null`: the carry
   /// or the borrow forgotten when the fact needs one.
   int? typicalMistake(ArithmeticFact fact) {

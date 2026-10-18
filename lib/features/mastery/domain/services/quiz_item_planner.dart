@@ -156,18 +156,34 @@ final class QuizItemPlanner {
     List<ItemProgressEntity> chosen,
     Map<String, AnswerNature> questionTypeNatures,
   ) {
-    return chosen.map((ItemProgressEntity progress) {
-      final LearningItem? item = domain.findItem(progress.itemKey);
-      return QuizItemPlan(
-        itemKey: progress.itemKey,
-        questionTypeIds: questionTypesFor(
-          box: progress.box.clamp(0, MasteryPolicy.lastBox),
-          questionTypeNatures: item == null
-              ? questionTypeNatures
-              : _fitFor(domain, item, questionTypeNatures),
-        ),
-      );
-    }).toList();
+    return chosen
+        .map(
+          (ItemProgressEntity progress) => planItem(
+            domain: domain,
+            progress: progress,
+            questionTypeNatures: questionTypeNatures,
+          ),
+        )
+        .toList();
+  }
+
+  /// The question of the item of [progress] in [domain], with the formats
+  /// of its box among those of [questionTypeNatures] that fit the item.
+  QuizItemPlan planItem({
+    required LearningDomain domain,
+    required ItemProgressEntity progress,
+    required Map<String, AnswerNature> questionTypeNatures,
+  }) {
+    final LearningItem? item = domain.findItem(progress.itemKey);
+    return QuizItemPlan(
+      itemKey: progress.itemKey,
+      questionTypeIds: questionTypesFor(
+        box: progress.box.clamp(0, MasteryPolicy.lastBox),
+        questionTypeNatures: item == null
+            ? questionTypeNatures
+            : _fitFor(domain, item, questionTypeNatures),
+      ),
+    );
   }
 
   /// The types of [questionTypeNatures] fit for [item] in [domain].
