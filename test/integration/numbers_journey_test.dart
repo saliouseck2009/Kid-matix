@@ -5,6 +5,7 @@ import 'package:kid_matix/core/di/injection_container.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/services/crown_service.dart';
+import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/domain_choice_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
@@ -19,6 +20,8 @@ import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
+
+import 'package:sqflite/sqflite.dart';
 
 import '../helpers/in_memory_local_storage.dart';
 import 'helpers/test_app.dart';
@@ -73,6 +76,19 @@ void main() {
     return <String, MasteryStatus>{
       for (final List<ItemMasteryEntity> row in grid.rows.values)
         for (final ItemMasteryEntity cell in row) cell.itemKey: cell.status,
+    };
+  }
+
+  /// The domain stored with each row of [table], by its [keyColumn].
+  Future<Map<String, String>> domainsOf(String table, String keyColumn) async {
+    final Database database = await sl<AppDatabase>().database;
+    final List<Map<String, Object?>> rows = await database.query(
+      table,
+      columns: <String>[keyColumn, 'domain_id'],
+    );
+    return <String, String>{
+      for (final Map<String, Object?> row in rows)
+        row[keyColumn]! as String: row['domain_id']! as String,
     };
   }
 
@@ -142,6 +158,25 @@ void main() {
       await gridOf(inputPlayer.id, LearningDomainIds.multiplication),
       expectedMultiplicationGrid,
     );
+    expect(await domainsOf('quiz_session', 'source_key'), <String, String>{
+      'path:mul:1:discovery': LearningDomainIds.multiplication,
+      'path:num:count10:discovery': LearningDomainIds.numbers,
+      'path:num:count10:training': LearningDomainIds.numbers,
+      'path:num:count10:writing': LearningDomainIds.numbers,
+      'path:num:count20:discovery': LearningDomainIds.numbers,
+    });
+    final Map<String, String> actualItems = await domainsOf(
+      'item_progress',
+      'item_key',
+    );
+    expect(actualItems['mul:1x7'], LearningDomainIds.multiplication);
+    expect(actualItems['num:count:14'], LearningDomainIds.numbers);
+    final Map<String, String> actualStages = await domainsOf(
+      'stage_progress',
+      'unit_key',
+    );
+    expect(actualStages['mul:1'], LearningDomainIds.multiplication);
+    expect(actualStages['num:count20'], LearningDomainIds.numbers);
   });
   test('crowns a unit of the numbers once its boss is defeated', () async {
     // Arrange
