@@ -20,15 +20,29 @@ import 'package:kid_matix/l10n/app_localizations_fr.dart';
 /// Every key of the addition domain as released: a change here loses the
 /// progress of the children.
 const Map<String, List<String>> _releasedKeys = <String, List<String>>{
-  'addsub:add10': <String>[
+  'addsub:add5': <String>[
+    'add:1+1',
     'add:1+2',
     'add:2+1',
+    'add:1+3',
+    'add:3+1',
+    'add:2+2',
     'add:2+3',
     'add:3+2',
+    'add:1+4',
+    'add:4+1',
+  ],
+  'addsub:add10': <String>[
+    'add:3+3',
     'add:2+4',
     'add:4+2',
+    'add:1+5',
+    'add:5+1',
     'add:3+4',
     'add:4+3',
+    'add:2+5',
+    'add:5+2',
+    'add:4+4',
     'add:3+5',
     'add:5+3',
     'add:4+5',
@@ -45,53 +59,117 @@ const Map<String, List<String>> _releasedKeys = <String, List<String>>{
     'add:8+2',
     'add:9+1',
   ],
-  'addsub:add20': <String>[
-    'add:4+7',
-    'add:7+4',
-    'add:5+7',
-    'add:7+5',
-    'add:6+7',
-    'add:7+6',
-    'add:6+8',
-    'add:8+6',
-    'add:7+8',
-    'add:8+7',
-    'add:7+9',
-    'add:9+7',
-    'add:8+9',
-    'add:9+8',
-  ],
-  'addsub:sub10': <String>[
+  'addsub:sub5': <String>[
+    'sub:2-1',
     'sub:3-1',
     'sub:3-2',
+    'sub:4-1',
+    'sub:4-3',
+    'sub:4-2',
     'sub:5-2',
     'sub:5-3',
+    'sub:5-1',
+    'sub:5-4',
+  ],
+  'addsub:sub10': <String>[
+    'sub:6-3',
     'sub:6-2',
     'sub:6-4',
+    'sub:6-1',
+    'sub:6-5',
     'sub:7-3',
     'sub:7-4',
+    'sub:7-2',
+    'sub:7-5',
+    'sub:8-4',
     'sub:8-3',
     'sub:8-5',
     'sub:9-4',
     'sub:9-5',
-    'sub:10-3',
-    'sub:10-7',
   ],
-  'addsub:sub20': <String>[
+  'addsub:add12': <String>[
+    'add:2+9',
+    'add:9+2',
+    'add:3+8',
+    'add:8+3',
+    'add:4+7',
+    'add:7+4',
+    'add:5+6',
+    'add:6+5',
+    'add:3+9',
+    'add:9+3',
+    'add:4+8',
+    'add:8+4',
+    'add:5+7',
+    'add:7+5',
+    'add:6+6',
+  ],
+  'addsub:add14': <String>[
+    'add:4+9',
+    'add:9+4',
+    'add:5+8',
+    'add:8+5',
+    'add:6+7',
+    'add:7+6',
+    'add:5+9',
+    'add:9+5',
+    'add:6+8',
+    'add:8+6',
+    'add:7+7',
+  ],
+  'addsub:add20': <String>[
+    'add:6+9',
+    'add:9+6',
+    'add:7+8',
+    'add:8+7',
+    'add:7+9',
+    'add:9+7',
+    'add:8+8',
+    'add:8+9',
+    'add:9+8',
+    'add:9+9',
+  ],
+  'addsub:sub12': <String>[
+    'sub:11-2',
+    'sub:11-9',
+    'sub:11-3',
+    'sub:11-8',
     'sub:11-4',
     'sub:11-7',
+    'sub:11-5',
+    'sub:11-6',
+    'sub:12-3',
+    'sub:12-9',
+    'sub:12-4',
+    'sub:12-8',
     'sub:12-5',
     'sub:12-7',
+    'sub:12-6',
+  ],
+  'addsub:sub14': <String>[
+    'sub:13-4',
+    'sub:13-9',
+    'sub:13-5',
+    'sub:13-8',
     'sub:13-6',
     'sub:13-7',
+    'sub:14-5',
+    'sub:14-9',
     'sub:14-6',
     'sub:14-8',
+    'sub:14-7',
+  ],
+  'addsub:sub20': <String>[
+    'sub:15-6',
+    'sub:15-9',
     'sub:15-7',
     'sub:15-8',
     'sub:16-7',
     'sub:16-9',
+    'sub:16-8',
     'sub:17-8',
     'sub:17-9',
+    'sub:18-9',
   ],
   'addsub:add100': <String>[
     'add:23+14',
@@ -168,10 +246,16 @@ void main() {
     test('keeps every released unit and fact key', () {
       // Assert
       expect(domain.units.map((LearningUnit unit) => unit.key), <String>[
+        'addsub:add5',
         'addsub:add10',
         'addsub:toten',
-        'addsub:add20',
+        'addsub:sub5',
         'addsub:sub10',
+        'addsub:add12',
+        'addsub:add14',
+        'addsub:add20',
+        'addsub:sub12',
+        'addsub:sub14',
         'addsub:sub20',
         'addsub:add100',
         'addsub:sub100',
@@ -197,7 +281,7 @@ void main() {
         hasLength(allFacts.length),
       );
       expect(domain.units.map((LearningUnit unit) => unit.number), <int>[
-        for (int number = 1; number <= 9; number++) number,
+        for (int number = 1; number <= 15; number++) number,
       ]);
       expect(domain.path, domain.units);
     });
@@ -206,7 +290,7 @@ void main() {
       expect(const ArithmeticFact.add(7, 8).key, 'add:7+8');
       expect(const ArithmeticFact.subtract(15, 7).key, 'sub:15-7');
       expect(domain.findItem('add:7+8'), const ArithmeticFact.add(7, 8));
-      expect(domain.findItem('add:1+1'), isNull);
+      expect(domain.findItem('add:1+8'), isNull);
       expect(domain.findUnit('addsub:nope'), isNull);
     });
     test('teaches only subtractions that stay positive', () {
@@ -433,28 +517,84 @@ void main() {
       expect(domain.mirrorOf(domain.findItem('sub:47-23')!), isNull);
     });
     test('gives every fact up to 20 a family inside its own unit', () {
-      for (final String slug in <String>['add10', 'add20', 'sub10', 'sub20']) {
+      for (final String slug in <String>[
+        'add5',
+        'add10',
+        'sub5',
+        'sub10',
+        'add12',
+        'add14',
+        'add20',
+        'sub12',
+        'sub14',
+        'sub20',
+      ]) {
         final ArithmeticUnit unit = domain.findUnit('addsub:$slug')!;
         for (final ArithmeticFact fact in unit.facts) {
           // Assert
           final ArithmeticFact? mirror = domain.mirrorOf(fact);
+          if (fact.family.length == 2) {
+            expect(mirror, isNull, reason: fact.key);
+            continue;
+          }
           expect(mirror, isNotNull, reason: fact.key);
           expect(unit.facts, contains(mirror), reason: fact.key);
         }
       }
     });
-    test('teaches the subtractions of the additions up to 20', () {
-      final Set<String> sub20 = domain
-          .findUnit('addsub:sub20')!
-          .items
-          .map((LearningItem item) => item.key)
-          .toSet();
-      for (final ArithmeticFact fact
-          in domain.findUnit('addsub:add20')!.items.cast<ArithmeticFact>()) {
-        // Assert
-        for (final ArithmeticFact member in fact.family) {
-          if (!member.isAddition) expect(sub20, contains(member.key));
+    test('teaches the subtractions of the additions of the same size', () {
+      for (final (String add, String sub) in <(String, String)>[
+        ('add5', 'sub5'),
+        ('add10', 'sub10'),
+        ('add12', 'sub12'),
+        ('add14', 'sub14'),
+        ('add20', 'sub20'),
+      ]) {
+        final Set<String> subtractions = domain
+            .findUnit('addsub:$sub')!
+            .items
+            .map((LearningItem item) => item.key)
+            .toSet();
+        for (final ArithmeticFact fact
+            in domain.findUnit('addsub:$add')!.items.cast<ArithmeticFact>()) {
+          // Assert
+          for (final ArithmeticFact member in fact.family) {
+            if (!member.isAddition) {
+              expect(subtractions, contains(member.key), reason: add);
+            }
+          }
         }
+      }
+    });
+    test('holds every crossing of the ten and the doubles up to 9 + 9', () {
+      final Set<String> keys = <String>{
+        for (final String slug in <String>['add12', 'add14', 'add20'])
+          ...domain
+              .findUnit('addsub:$slug')!
+              .items
+              .map(
+                (LearningItem item) => item.key,
+              ),
+      };
+      for (int left = 2; left <= 9; left++) {
+        for (int right = 2; right <= 9; right++) {
+          // Assert
+          final String key = 'add:$left+$right';
+          expect(
+            keys.contains(key),
+            left + right >= 11,
+            reason: key,
+          );
+        }
+      }
+      for (int double = 1; double <= 4; double++) {
+        expect(domain.findItem('add:$double+$double'), isNotNull);
+      }
+    });
+    test('keeps every unit to about 14 facts', () {
+      for (final LearningUnit unit in domain.units) {
+        // Assert
+        expect(unit.items.length, inInclusiveRange(9, 15), reason: unit.key);
       }
     });
   });
@@ -464,9 +604,9 @@ void main() {
       // Act
       final ItemHelp actual = domain.helpOf(domain.findItem('add:7+8')!);
       // Assert
-      expect(actual.unitFacts, hasLength(14));
-      expect(actual.itemIndex, 8);
-      expect(actual.unitFacts[8].toDisplayText(), '7 + 8 = 15');
+      expect(actual.unitFacts, hasLength(10));
+      expect(actual.itemIndex, 2);
+      expect(actual.unitFacts[2].toDisplayText(), '7 + 8 = 15');
     });
     test('draws a line through the ten when the addition crosses it', () {
       // Act

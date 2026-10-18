@@ -8,10 +8,16 @@ final class AdditionNames implements DomainNames {
 
   /// Marks of the units: signs and digits, the same in every language.
   static const Map<String, String> _marks = <String, String>{
+    'add5': '+5',
     'add10': '+10',
     'toten': '10',
-    'add20': '+20',
+    'sub5': '−5',
     'sub10': '−10',
+    'add12': '+12',
+    'add14': '+14',
+    'add20': '+20',
+    'sub12': '−12',
+    'sub14': '−14',
     'sub20': '−20',
     'add100': '+100',
     'sub100': '−100',

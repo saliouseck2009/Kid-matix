@@ -36,23 +36,29 @@ void main() {
   const StageQuizSpecs specs = StageQuizSpecs();
 
   group('the path of the additions and subtractions', () {
-    test('has 9 units and a review after every group of 3', () {
+    test('has 15 units and a review after every group of 3', () {
       // Act
       final LearningPathEntity actual = const LearningPathBuilder().build(
         domainId: 'addition',
         units: addition.path,
         progress: <StageProgressEntity>[
-          _stars('addsub:add10', StageKind.writing, 2),
+          _stars('addsub:add5', StageKind.writing, 2),
         ],
         isEverythingUnlocked: false,
       );
       // Assert
-      expect(actual.tables, hasLength(9));
+      expect(actual.tables, hasLength(15));
       expect(
         actual.nodes.whereType<ReviewPathNode>().map(
           (ReviewPathNode review) => review.unitKey,
         ),
-        <String>['review:addition:1', 'review:addition:2', 'review:addition:3'],
+        <String>[
+          'review:addition:1',
+          'review:addition:2',
+          'review:addition:3',
+          'review:addition:4',
+          'review:addition:5',
+        ],
       );
       expect(actual.tables[0].status, TableStatus.done);
       expect(actual.tables[1].status, TableStatus.current);
@@ -80,17 +86,17 @@ void main() {
       final QuizSpec actual = specs.specOf(
         domain: addition,
         source: const StageSource(
-          unitKey: 'addsub:add20',
+          unitKey: 'addsub:add12',
           stage: StageKind.discovery,
         ),
       )!;
       // Assert
       expect(actual.domainId, 'addition');
       expect(actual.selection, QuizSelection.inOrder);
-      expect(actual.itemKeys.first, 'add:4+7');
-      expect(actual.itemKeys, hasLength(14));
+      expect(actual.itemKeys.first, 'add:2+9');
+      expect(actual.itemKeys, hasLength(15));
       expect(actual.questionTypeIds, contains(QuestionTypeIds.multipleChoice));
-      expect(actual.sourceKey, 'path:addsub:add20:discovery');
+      expect(actual.sourceKey, 'path:addsub:add12:discovery');
     });
     test('writes the answers at stage 3 and times the speed stage', () {
       // Act
@@ -125,7 +131,7 @@ void main() {
         ),
       )!;
       // Assert
-      expect(actual.itemKeys, hasLength(12 + 9 + 14));
+      expect(actual.itemKeys, hasLength(10 + 14 + 9));
       expect(
         actual.itemKeys.every((String key) => key.startsWith('add:')),
         isTrue,
@@ -136,14 +142,14 @@ void main() {
       final QuizSpec actualFirst = specs.specOf(
         domain: addition,
         source: const StageSource(
-          unitKey: 'addsub:add10',
+          unitKey: 'addsub:add5',
           stage: StageKind.boss,
         ),
       )!;
       final QuizSpec actualFourth = specs.specOf(
         domain: addition,
         source: const StageSource(
-          unitKey: 'addsub:sub10',
+          unitKey: 'addsub:sub5',
           stage: StageKind.boss,
         ),
       )!;
@@ -151,8 +157,8 @@ void main() {
       expect(actualFirst.isBossFight, isTrue);
       expect(actualFirst.baseTimeLimit, const Duration(seconds: 8));
       expect(actualFirst.followUpItemKeys, actualFirst.itemKeys);
-      expect(actualFourth.followUpItemKeys.first, 'add:1+2');
-      expect(actualFourth.followUpItemKeys, hasLength(12 + 9 + 14));
+      expect(actualFourth.followUpItemKeys.first, 'add:1+1');
+      expect(actualFourth.followUpItemKeys, hasLength(10 + 14 + 9));
     });
   });
 }
