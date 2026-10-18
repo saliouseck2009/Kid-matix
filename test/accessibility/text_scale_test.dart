@@ -109,7 +109,7 @@ void main() {
         ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
         ('a quiz against the clock', AppRoutes.playOf('timeAttack:mul:1')),
         ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
-        ...numbersScreens,
+        ..._numbersScreens,
         ('a numbers boss fight', AppRoutes.playOf('path:num:count10:boss')),
       ]) {
         testWidgets('cuts no text on $name in $language', (
@@ -185,12 +185,12 @@ final List<(String, String)> _guidelineScreens = <(String, String)>[
   ('the whole table', AppRoutes.tableViewOf('mul:1')),
   ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
   ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
-  ...numbersScreens,
+  ..._numbersScreens,
 ];
 
 /// Screens of the numbers domain: a unit, a drawing to read, the signs of
 /// a comparison.
-final List<(String, String)> numbersScreens = <(String, String)>[
+final List<(String, String)> _numbersScreens = <(String, String)>[
   ('a unit of the numbers', AppRoutes.tableDetailOf('num:count10')),
   ('a numbers quiz', AppRoutes.playOf('path:num:tensones:discovery')),
   ('a comparison quiz', AppRoutes.playOf('path:num:compare:writing')),

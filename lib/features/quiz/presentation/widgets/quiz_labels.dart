@@ -117,27 +117,20 @@ final class QuizLabels {
     return domains.find(domainId)?.findUnit(question.unitKey)?.number;
   }
 
-  /// Title of the boss fight of the unit [number].
-  String describeBoss(int number, String domainId) {
+  /// Title of the boss fight of the unit of [question], such as "Boss de
+  /// la table de 5" or "Boss · Comparer".
+  String describeBoss(Question question, String domainId) {
     return switch (domainId) {
       LearningDomainIds.multiplication => l10n.quizBossTitleMultiplication(
-        number,
+        unitNumberOf(question, domainId) ?? 0,
       ),
-      _ => l10n.quizBossTitleUnit(_unitNameNumbered(number, domainId)),
+      _ => l10n.quizBossTitleUnit(l10n.unitName(domainId, question.unitKey)),
     };
   }
 
   /// Name of [unit], such as "Table de 5" or "Comparer".
   String describeUnit(LearningUnit unit, String domainId) {
     return l10n.unitName(domainId, unit.key);
-  }
-
-  String _unitNameNumbered(int number, String domainId) {
-    for (final LearningUnit unit
-        in domains.find(domainId)?.units ?? const <LearningUnit>[]) {
-      if (unit.number == number) return describeUnit(unit, domainId);
-    }
-    return '';
   }
 
   /// The unit shared by every item of [itemKeys], or `null` when they

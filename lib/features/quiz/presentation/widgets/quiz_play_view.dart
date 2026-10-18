@@ -89,10 +89,7 @@ class QuizPlayView extends StatelessWidget {
             )
           else
             BossHeader(
-              title: labels.describeBoss(
-                _monsterNumberOf(data),
-                data.run.domainId,
-              ),
+              title: labels.describeBoss(data.question, data.run.domainId),
               boss: boss,
               onQuit: onQuit,
             ),

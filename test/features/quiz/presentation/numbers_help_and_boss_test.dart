@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/quiz/question.dart';
+import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
@@ -12,6 +16,16 @@ import 'package:kid_matix/l10n/app_localizations_fr.dart';
 
 import '../../../helpers/pump_localized.dart';
 import '../helpers/quiz_fixtures.dart';
+
+Question _questionOf(String itemKey, String unitKey) {
+  return Question(
+    itemKey: itemKey,
+    unitKey: unitKey,
+    questionTypeId: QuestionTypeIds.typedAnswer,
+    prompt: const <PromptToken>[BlankToken()],
+    expectedAnswer: const NumberAnswer(1),
+  );
+}
 
 void main() {
   final NumbersDomain domain = NumbersDomain();
@@ -52,8 +66,17 @@ void main() {
   });
   test('names the boss of a unit and draws it with antennae', () {
     // Assert
-    expect(labels.describeBoss(5, NumbersDomain.domainId), 'Boss · Comparer');
-    expect(labels.describeBoss(5, 'multiplication'), 'Boss de la table de 5');
+    expect(
+      labels.describeBoss(
+        _questionOf('num:compare:3:8', 'num:compare'),
+        NumbersDomain.domainId,
+      ),
+      'Boss · Comparer',
+    );
+    expect(
+      labels.describeBoss(_questionOf('mul:5x3', 'mul:5'), 'multiplication'),
+      'Boss de la table de 5',
+    );
     expect(
       MonsterIllustration.familyOf(NumbersDomain.domainId),
       MonsterFamily.antennae,
