@@ -106,7 +106,7 @@ final class FlutterTtsEngine implements TextToSpeechEngine {
     _tts.setCancelHandler(_finishStarted);
     _tts.setErrorHandler((Object? message) {
       log('The voice reported an error: $message', name: _logName);
-      _finish(_reading);
+      _finishStarted();
     });
   }
 
@@ -124,12 +124,23 @@ final class FlutterTtsEngine implements TextToSpeechEngine {
     if (chosen != null) return chosen;
     final OfflineVoice? found = _platform == TargetPlatform.android
         ? OfflineVoices.pick(
-            voices: await _tts.getVoices,
+            voices: await _androidVoices(),
             languageCode: languageCode,
           )
         : await _findAppleVoice(languageCode);
     if (found != null) _voices[languageCode] = found;
     return found;
+  }
+
+  /// The voices of the Android engine. The plugin answers `null` while the
+  /// speech service is disconnected, which says nothing about the voices:
+  /// throwing keeps that answer from being taken for "no voice".
+  Future<Object?> _androidVoices() async {
+    final Object? voices = await _tts.getVoices;
+    if (voices == null) {
+      throw StateError('The speech service did not list its voices');
+    }
+    return voices;
   }
 
   Future<OfflineVoice?> _findAppleVoice(String languageCode) async {

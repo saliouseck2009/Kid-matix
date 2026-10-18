@@ -14,6 +14,11 @@ abstract interface class SpeechService {
   /// The screens hide their listen button when it is `false`.
   Future<bool> isAvailable({required String languageCode});
 
+  /// Forgets that a language had no voice, so the next [isAvailable] asks
+  /// the phone again: a parent who installs the voice in the settings and
+  /// comes back to the app needs no restart.
+  void forgetMissingVoices();
+
   /// Reads [text] aloud in [languageCode].
   ///
   /// A reading in progress is stopped first. The future completes when the

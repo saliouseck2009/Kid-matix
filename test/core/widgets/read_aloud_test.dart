@@ -22,6 +22,9 @@ final class _RecordingSpeech implements SpeechService {
   Future<bool> isAvailable({required String languageCode}) async => true;
 
   @override
+  void forgetMissingVoices() {}
+
+  @override
   SpeechReading speak({required String text, required String languageCode}) {
     final SpeechReading reading = SpeechReading(Completer<void>().future);
     readings.add(reading);

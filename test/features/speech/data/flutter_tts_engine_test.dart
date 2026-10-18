@@ -38,6 +38,10 @@ final class _FakeTtsPlugin {
   Object speakResult = 1;
   Object setVoiceResult = 1;
 
+  /// Whether `getVoices` answers `null`, as the plugin does while the
+  /// speech service of the phone is disconnected.
+  bool voicesAreUnknown = false;
+
   List<String> methods() {
     return <String>[for (final MethodCall call in calls) call.method];
   }
@@ -67,7 +71,7 @@ final class _FakeTtsPlugin {
   Future<Object?> _handle(MethodCall call) async {
     calls.add(call);
     return switch (call.method) {
-      'getVoices' => voices,
+      'getVoices' => voicesAreUnknown ? null : voices,
       'isLanguageAvailable' => availableLocales.contains(call.arguments),
       'setVoice' => setVoiceResult,
       'speak' => speakResult,
@@ -161,6 +165,32 @@ void main() {
       );
       // Assert
       expect(actualResult, isFalse);
+    });
+  });
+
+  group('FlutterTtsEngine.hasVoice while the service is disconnected', () {
+    test('throws instead of saying there is no voice', () async {
+      // Arrange
+      plugin.voicesAreUnknown = true;
+      // Act & Assert
+      await expectLater(
+        androidEngine().hasVoice(languageCode: 'fr'),
+        throwsStateError,
+      );
+    });
+    test('finds the voice once the service answers', () async {
+      // Arrange
+      final FlutterTtsEngine inputEngine = androidEngine();
+      plugin.voicesAreUnknown = true;
+      await expectLater(
+        inputEngine.hasVoice(languageCode: 'fr'),
+        throwsStateError,
+      );
+      plugin.voicesAreUnknown = false;
+      // Act
+      final bool actualResult = await inputEngine.hasVoice(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isTrue);
     });
   });
 
@@ -287,11 +317,32 @@ void main() {
         languageCode: 'fr',
       );
       await pumpEventQueue();
+      await plugin.emit('speak.onStart');
       // Act
       await plugin.emit('speak.onError', 'Error from TextToSpeech');
       // Assert
       await expectLater(actualReading, completes);
     });
+    test(
+      'ignores an error that arrives before the utterance started',
+      () async {
+        // Arrange
+        bool isDone = false;
+        final Future<void> actualReading = androidEngine()
+            .speak(text: '5 fois 7', languageCode: 'fr')
+            .then((_) => isDone = true);
+        await pumpEventQueue();
+        // Act: the error of the utterance before this one, late.
+        await plugin.emit('speak.onError', 'Error of the old utterance');
+        await pumpEventQueue();
+        // Assert
+        expect(isDone, isFalse);
+        await plugin.emit('speak.onStart');
+        await plugin.emit('speak.onComplete');
+        await actualReading;
+        expect(isDone, isTrue);
+      },
+    );
     test('ends when the reading is stopped', () async {
       // Arrange
       final FlutterTtsEngine inputEngine = androidEngine();
@@ -369,11 +420,13 @@ void main() {
       await plugin.emit('speak.onComplete');
       await expectLater(actualSecond, completes);
     });
-    test('does not let the end of the old utterance end the new one', () async {
+    testWidgets('does not let the end of the old utterance end the new one', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       final FlutterTtsEngine inputEngine = androidEngine();
       unawaited(inputEngine.speak(text: 'première', languageCode: 'fr'));
-      await pumpEventQueue();
+      await tester.pump();
       await plugin.emit('speak.onStart');
       bool isSecondDone = false;
       final Future<void> actualSecond = inputEngine
@@ -381,13 +434,13 @@ void main() {
           .then((_) => isSecondDone = true);
       // The old voice is slow to report that it stopped: the wait for it
       // runs out and the new utterance goes on.
-      await Future<void>.delayed(
+      await tester.pump(
         FlutterTtsEngine.stopWaitTime + const Duration(milliseconds: 100),
       );
       expect(plugin.spokenTexts().last, 'seconde');
       // Act: the old utterance reports its cancel, late.
       await plugin.emit('speak.onCancel');
-      await pumpEventQueue();
+      await tester.pump();
       // Assert
       expect(isSecondDone, isFalse);
       await plugin.emit('speak.onStart');

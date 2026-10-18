@@ -115,6 +115,22 @@ void main() {
       // Assert
       expect(engine.spoken, isEmpty);
     });
+    test('stops the reading in progress for a blank text', () async {
+      // Arrange
+      engine.keepsSpeaking = true;
+      service.speak(text: 'première', languageCode: 'fr');
+      await pumpEventQueue();
+      // Act
+      final SpeechReading actualReading = service.speak(
+        text: ' ',
+        languageCode: 'fr',
+      );
+      await pumpEventQueue();
+      // Assert
+      expect(engine.stopCount, 1);
+      expect(engine.spoken, <String>['première']);
+      await expectLater(actualReading.done, completes);
+    });
     test('does not throw when the engine breaks', () async {
       // Arrange
       engine.fails = true;
@@ -293,6 +309,17 @@ void main() {
       // Assert
       expect(actualResult, isFalse);
       expect(engine.voiceChecks, 1);
+    });
+    test('asks again once the missing voices are forgotten', () async {
+      // Arrange
+      engine.hasInstalledVoice = false;
+      await service.isAvailable(languageCode: 'fr');
+      engine.hasInstalledVoice = true;
+      // Act
+      service.forgetMissingVoices();
+      final bool actualResult = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isTrue);
     });
     test('asks again for another language', () async {
       // Arrange

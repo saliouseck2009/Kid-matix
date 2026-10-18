@@ -71,6 +71,9 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
   ]);
+  // A voice installed in the settings of the phone counts as soon as the
+  // parent comes back, with no restart.
+  AppLifecycleListener(onResume: sl<SpeechService>().forgetMissingVoices);
   final ProfileSessionService session = sl<ProfileSessionService>();
   await session.restore();
   // The daily reminder is planned again at every launch, without delaying

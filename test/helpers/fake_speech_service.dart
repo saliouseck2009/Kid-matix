@@ -50,6 +50,9 @@ final class FakeSpeechService implements SpeechService {
   Future<bool> isAvailable({required String languageCode}) async => hasVoice;
 
   @override
+  void forgetMissingVoices() {}
+
+  @override
   SpeechReading speak({required String text, required String languageCode}) {
     if (!hasVoice) return SpeechReading.none;
     finishReading();

@@ -55,6 +55,9 @@ final class _BrokenSpeech implements SpeechService {
   Future<bool> isAvailable({required String languageCode}) async => true;
 
   @override
+  void forgetMissingVoices() {}
+
+  @override
   SpeechReading speak({
     required String text,
     required String languageCode,

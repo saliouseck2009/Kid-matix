@@ -69,6 +69,9 @@ final class SpeechServiceImpl implements SpeechService {
   }
 
   @override
+  void forgetMissingVoices() => _hasNoVoice.clear();
+
+  @override
   SpeechReading speak({required String text, required String languageCode}) {
     final int id = ++_latestId;
     if (text.trim().isEmpty) {
