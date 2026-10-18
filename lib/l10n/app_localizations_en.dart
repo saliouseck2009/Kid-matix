@@ -493,7 +493,98 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get quizCountLabel => 'How many mangoes?';
+
+  @override
+  String get quizBundlesLabel => 'What number is it?';
+
+  @override
+  String get quizNumberLineLabel => 'Which number is missing?';
+
+  @override
+  String get quizCompareLabel => 'Less, equal or greater?';
+
+  @override
+  String quizCompareSpoken(int first, int second) {
+    return 'Is $first less than, equal to or greater than $second?';
+  }
+
+  @override
+  String quizBundlesSpoken(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens bundles of ten',
+      one: '1 bundle of ten',
+      zero: 'No bundle of ten',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones sticks',
+      one: '1 stick',
+      zero: 'no stick',
+    );
+    return '$_temp0 and $_temp1: what number is it?';
+  }
+
+  @override
+  String quizNumberLineSpoken(String numbers) {
+    return 'Number line: $numbers. Which number is missing?';
+  }
+
+  @override
+  String get quizObjectsPictureLabel => 'Mangoes to count';
+
+  @override
+  String quizObjectsPictureCounted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mangoes',
+      one: '1 mango',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBundlesPictureLabel(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens bundles of ten',
+      one: '1 bundle of ten',
+      zero: 'No bundle of ten',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones sticks',
+      one: '1 stick',
+      zero: 'no stick',
+    );
+    return '$_temp0 and $_temp1';
+  }
+
+  @override
+  String quizNumberLinePictureLabel(String numbers) {
+    return 'Number line: $numbers';
+  }
+
+  @override
   String get quizHintFindOperation => 'Tap the right operation';
+
+  @override
+  String get quizHintCompare => 'Tap the right sign';
+
+  @override
+  String get quizCompareLess => 'less';
+
+  @override
+  String get quizCompareEqual => 'equal';
+
+  @override
+  String get quizCompareGreater => 'greater';
 
   @override
   String get quizMatchPairsTitle => 'Match each operation with its answer';
@@ -603,6 +694,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizSpokenBlank => 'what';
+
+  @override
+  String get quizSpokenPlus => 'plus';
+
+  @override
+  String get quizSpokenLessThan => 'is less than';
+
+  @override
+  String get quizSpokenGreaterThan => 'is greater than';
+
+  @override
+  String get quizSpokenHiddenNumber => 'hidden number';
 
   @override
   String get quizModePath => 'Path';

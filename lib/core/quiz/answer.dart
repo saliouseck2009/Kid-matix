@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/quiz/comparison.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
@@ -44,6 +45,33 @@ final class BooleanAnswer extends Answer {
 
   @override
   String toString() => 'BooleanAnswer($value)';
+}
+
+/// The sign picked between two numbers: smaller, equal or greater.
+final class ComparisonAnswer extends Answer {
+  /// Creates the answer [comparison].
+  const ComparisonAnswer(this.comparison);
+
+  /// Every answer of a comparison, in the order of its buttons.
+  static const List<ComparisonAnswer> all = <ComparisonAnswer>[
+    ComparisonAnswer(Comparison.less),
+    ComparisonAnswer(Comparison.equal),
+    ComparisonAnswer(Comparison.greater),
+  ];
+
+  /// How the first number compares with the second.
+  final Comparison comparison;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ComparisonAnswer && other.comparison == comparison;
+
+  @override
+  int get hashCode => comparison.hashCode;
+
+  @override
+  String toString() => 'ComparisonAnswer(${comparison.name})';
 }
 
 /// An operation picked among choices, such as `4 × 6`, told by its tokens.

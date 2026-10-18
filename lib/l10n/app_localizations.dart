@@ -844,11 +844,101 @@ abstract class AppLocalizations {
   /// **'Quelle multiplication donne {result} ?'**
   String quizFindOperationSpokenMultiplication(int result);
 
+  /// Label in a pill above the drawing of a question of the numbers domain that shows mangoes to count ("How many mangoes?"). Also what the screen reader and the read-aloud button say for the question. One short line, speaks to a child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Combien de mangues ?'**
+  String get quizCountLabel;
+
+  /// Label in a pill above the drawing of bundles of ten sticks and loose sticks, in a question of the numbers domain ("What number is it?"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quel nombre ?'**
+  String get quizBundlesLabel;
+
+  /// Label in a pill above a number line with one hidden number, in a question of the numbers domain ("Which number is missing?"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quel nombre manque ?'**
+  String get quizNumberLineLabel;
+
+  /// Label in a pill above two numbers to compare, such as "34 ? 43", in a question of the numbers domain ("Less, equal or greater?"): is the first number smaller than, equal to or greater than the second. One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus petit, égal ou plus grand ?'**
+  String get quizCompareLabel;
+
+  /// What a screen reader and the read-aloud button say for a comparison question of the numbers domain ("Is 34 less than, equal to or greater than 43?"). {first} is the number on the left, {second} the one on the right. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{first} est-il plus petit, égal ou plus grand que {second} ?'**
+  String quizCompareSpoken(int first, int second);
+
+  /// What a screen reader and the read-aloud button say for a question showing bundles of ten sticks and loose sticks ("3 bundles of ten and 4 sticks: what number is it?"). {tens} counts the bundles, {ones} the loose sticks. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{tens, plural, =0{Aucun paquet de dix} =1{1 paquet de dix} other{{tens} paquets de dix}} et {ones, plural, =0{aucun bâtonnet} =1{1 bâtonnet} other{{ones} bâtonnets}} : quel nombre ?'**
+  String quizBundlesSpoken(int tens, int ones);
+
+  /// What a screen reader and the read-aloud button say for a number line question ("Number line: 2, 4, 6, hidden number, 10. Which number is missing?"). {numbers} lists the numbers of the line from left to right, separated by commas, with quizSpokenHiddenNumber for the one to find. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Droite des nombres : {numbers}. Quel nombre manque ?'**
+  String quizNumberLineSpoken(String numbers);
+
+  /// What a screen reader says for the drawing of mangoes in a counting question ("Mangoes to count"); it does not tell how many, since that is the answer. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des mangues à compter'**
+  String get quizObjectsPictureLabel;
+
+  /// What a screen reader says for the drawing of mangoes on a help card, where the number is given ("7 mangoes"). Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 mangue} other{{count} mangues}}'**
+  String quizObjectsPictureCounted(int count);
+
+  /// What a screen reader says for a drawing of bundles of ten sticks and loose sticks ("3 bundles of ten and 4 sticks"). {tens} counts the bundles, {ones} the loose sticks. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{tens, plural, =0{Aucun paquet de dix} =1{1 paquet de dix} other{{tens} paquets de dix}} et {ones, plural, =0{aucun bâtonnet} =1{1 bâtonnet} other{{ones} bâtonnets}}'**
+  String quizBundlesPictureLabel(int tens, int ones);
+
+  /// What a screen reader says for a drawn number line ("Number line: 2, 4, 6, 8, 10"). {numbers} lists its numbers from left to right, separated by commas, with quizSpokenHiddenNumber for a number to find. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Droite des nombres : {numbers}'**
+  String quizNumberLinePictureLabel(String numbers);
+
   /// Hint in a dashed box under the four operation buttons of a "find the operation" question ("Tap the right operation"). Imperative verb, speaks to a child with "tu"; one or two short lines.
   ///
   /// In fr, this message translates to:
   /// **'Touche la bonne opération'**
   String get quizHintFindOperation;
+
+  /// Hint in a dashed box under the three sign buttons (<, =, >) of a comparison question of the numbers domain ("Tap the right sign"). Imperative verb, speaks to a child with "tu"; one short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche le bon signe'**
+  String get quizHintCompare;
+
+  /// Caption under the button < of a comparison question, also what a screen reader says for it ("less"): the first number is smaller than the second. Two short words at most, lowercase.
+  ///
+  /// In fr, this message translates to:
+  /// **'plus petit'**
+  String get quizCompareLess;
+
+  /// Caption under the button = of a comparison question, also what a screen reader says for it ("equal"): both numbers are the same. One short word, lowercase.
+  ///
+  /// In fr, this message translates to:
+  /// **'égal'**
+  String get quizCompareEqual;
+
+  /// Caption under the button > of a comparison question, also what a screen reader says for it ("greater"): the first number is greater than the second. Two short words at most, lowercase.
+  ///
+  /// In fr, this message translates to:
+  /// **'plus grand'**
+  String get quizCompareGreater;
 
   /// Title at the top of a "match the pairs" question, in place of the question card, above two columns: four operations and their four results ("Match each operation with its result"). Imperative verb, speaks to a child with "tu"; two lines at most.
   ///
@@ -999,6 +1089,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'combien'**
   String get quizSpokenBlank;
+
+  /// Word read by the screen reader for the plus sign of a number written as its tens and ones ("plus"), as in "30 plus 4 égale 34". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'plus'**
+  String get quizSpokenPlus;
+
+  /// Words read by the screen reader for the sign < between two numbers ("is less than"), as in "34 est plus petit que 43". Joined with the numbers around it. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'est plus petit que'**
+  String get quizSpokenLessThan;
+
+  /// Words read by the screen reader for the sign > between two numbers ("is greater than"), as in "58 est plus grand que 49". Joined with the numbers around it. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'est plus grand que'**
+  String get quizSpokenGreaterThan;
+
+  /// Words read by the screen reader for the tick of a number line whose number the player must find ("hidden number"), inside the list of the numbers of the line, such as "2, 4, 6, nombre caché, 10". Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'nombre caché'**
+  String get quizSpokenHiddenNumber;
 
   /// Name of the game mode shown under the results title after a stage of the learning path ("Learning path"), after the table name and a middle dot.
   ///

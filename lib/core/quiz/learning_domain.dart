@@ -22,6 +22,12 @@ abstract interface class LearningDomain {
   /// Identifiers of the question types the domain can build.
   List<String> get questionTypeIds;
 
+  /// Identifiers of the question types fit for [item], in the order of
+  /// [questionTypeIds]: every one for a multiplication fact, only those
+  /// that make sense for the item in other domains (objects to count are
+  /// not compared). Never empty.
+  List<String> questionTypeIdsOf(LearningItem item);
+
   /// Returns the item of [key], or `null` when the domain has none.
   LearningItem? findItem(String key);
 

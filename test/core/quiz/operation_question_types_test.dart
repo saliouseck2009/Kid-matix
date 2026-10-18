@@ -53,10 +53,9 @@ void main() {
           .map((QuestionType type) => type.id)
           .toList();
       // Assert
-      expect(actualIds, hasLength(6));
-      expect(actualIds.toSet(), hasLength(6));
+      expect(actualIds.toSet(), hasLength(actualIds.length));
       expect(
-        actualIds.sublist(4),
+        actualIds.sublist(4, 6),
         <String>[QuestionTypeIds.findOperation, QuestionTypeIds.matchPairs],
       );
     });

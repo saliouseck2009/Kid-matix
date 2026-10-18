@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_monster.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 
 /// Middle of the boss fight: the monster with its bubble, then the
-/// operation with the answer box.
+/// drawing of the question if it has one, then the operation with the
+/// answer box.
 class BossArena extends StatelessWidget {
   /// Creates the arena.
   const BossArena({
@@ -19,10 +22,13 @@ class BossArena extends StatelessWidget {
     this.outcome,
     this.blankText,
     this.blankColor,
+    this.picture,
+    this.spokenText,
     super.key,
   });
 
   static const double _promptFontSize = 52;
+  static const double _pictureRadius = 20;
 
   /// Number of the monster, the number of the table.
   final int monsterNumber;
@@ -44,6 +50,13 @@ class BossArena extends StatelessWidget {
 
   /// Color of the typed digits.
   final Color? blankColor;
+
+  /// Drawing of the question, such as objects to count, or `null`.
+  final MathPicture? picture;
+
+  /// The whole question as one sentence for a screen reader, or `null` to
+  /// read [prompt] token by token.
+  final String? spokenText;
 
   @override
   Widget build(BuildContext context) {
@@ -71,19 +84,37 @@ class BossArena extends StatelessWidget {
             ],
           ),
         ),
-        Semantics(
-          label: prompt.toSpokenText(context.l10n),
-          excludeSemantics: true,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: _BossPrompt(
-              prompt: prompt,
-              blankText: blankText,
-              blankColor: blankColor,
-              fontSize: _promptFontSize,
+        if (picture case final MathPicture shown)
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(AppSizes.space12),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(_pictureRadius),
+              ),
+              child: MathPictureView(
+                picture: shown,
+                blankText: prompt.isEmpty ? blankText : null,
+                blankColor: blankColor,
+              ),
             ),
           ),
-        ),
+        if (prompt.isNotEmpty)
+          Semantics(
+            label: spokenText ?? prompt.toSpokenText(context.l10n),
+            excludeSemantics: true,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: _BossPrompt(
+                prompt: prompt,
+                blankText: blankText,
+                blankColor: blankColor,
+                fontSize: _promptFontSize,
+              ),
+            ),
+          ),
       ],
     );
   }

@@ -495,7 +495,98 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get quizCountLabel => '¿Cuántos mangos hay?';
+
+  @override
+  String get quizBundlesLabel => '¿Qué número es?';
+
+  @override
+  String get quizNumberLineLabel => '¿Qué número falta?';
+
+  @override
+  String get quizCompareLabel => '¿Menor, igual o mayor?';
+
+  @override
+  String quizCompareSpoken(int first, int second) {
+    return '¿$first es menor, igual o mayor que $second?';
+  }
+
+  @override
+  String quizBundlesSpoken(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens paquetes de diez',
+      one: '1 paquete de diez',
+      zero: 'Ningún paquete de diez',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones palitos',
+      one: '1 palito',
+      zero: 'ningún palito',
+    );
+    return '$_temp0 y $_temp1: ¿qué número es?';
+  }
+
+  @override
+  String quizNumberLineSpoken(String numbers) {
+    return 'Recta numérica: $numbers. ¿Qué número falta?';
+  }
+
+  @override
+  String get quizObjectsPictureLabel => 'Mangos para contar';
+
+  @override
+  String quizObjectsPictureCounted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mangos',
+      one: '1 mango',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBundlesPictureLabel(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens paquetes de diez',
+      one: '1 paquete de diez',
+      zero: 'Ningún paquete de diez',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones palitos',
+      one: '1 palito',
+      zero: 'ningún palito',
+    );
+    return '$_temp0 y $_temp1';
+  }
+
+  @override
+  String quizNumberLinePictureLabel(String numbers) {
+    return 'Recta numérica: $numbers';
+  }
+
+  @override
   String get quizHintFindOperation => 'Toca la operación correcta';
+
+  @override
+  String get quizHintCompare => 'Toca el signo correcto';
+
+  @override
+  String get quizCompareLess => 'menor';
+
+  @override
+  String get quizCompareEqual => 'igual';
+
+  @override
+  String get quizCompareGreater => 'mayor';
 
   @override
   String get quizMatchPairsTitle => 'Une cada operación con su resultado';
@@ -606,6 +697,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizSpokenBlank => 'cuánto';
+
+  @override
+  String get quizSpokenPlus => 'más';
+
+  @override
+  String get quizSpokenLessThan => 'es menor que';
+
+  @override
+  String get quizSpokenGreaterThan => 'es mayor que';
+
+  @override
+  String get quizSpokenHiddenNumber => 'número escondido';
 
   @override
   String get quizModePath => 'Camino';
