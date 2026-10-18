@@ -70,7 +70,7 @@ void main() {
         AnswerNature.recognized,
       );
     });
-    test('give twice the time to match pairs only', () {
+    test('give twice the time to match pairs and counting objects only', () {
       // Assert
       expect(const FindOperationQuestionType().timeFactor, 1);
       expect(const MatchPairsQuestionType().timeFactor, 2);
@@ -78,7 +78,7 @@ void main() {
         appQuestionTypes
             .where((QuestionType type) => type.timeFactor != 1)
             .map((QuestionType type) => type.id),
-        <String>[QuestionTypeIds.matchPairs],
+        <String>[QuestionTypeIds.matchPairs, QuestionTypeIds.countObjects],
       );
     });
   });
