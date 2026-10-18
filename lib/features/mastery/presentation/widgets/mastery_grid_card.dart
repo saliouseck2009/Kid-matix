@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_mastery_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_grid_entity.dart';
@@ -43,16 +45,23 @@ class MasteryGridCard extends StatelessWidget {
         children: <Widget>[
           Semantics(
             header: true,
-            child: Text(
-              context.l10n.masteryGridTitle,
-              style: textTheme.titleMedium,
-            ),
+            child: Text(_titleOf(context), style: textTheme.titleMedium),
           ),
           _Grid(grid: grid, domain: domain),
           const _Legend(),
         ],
       ),
     );
+  }
+
+  /// "Mes tables" for the multiplication, "Mes nombres" for the numbers,
+  /// the name of another domain.
+  String _titleOf(BuildContext context) {
+    return switch (domain.id) {
+      LearningDomainIds.multiplication => context.l10n.masteryGridTitle,
+      LearningDomainIds.numbers => context.l10n.masteryGridTitleNumbers,
+      _ => context.l10n.domainName(domain.id),
+    };
   }
 }
 
@@ -65,6 +74,20 @@ class _Grid extends StatelessWidget {
   final MasteryGridEntity grid;
   final LearningDomain domain;
 
+  /// Mark of the row of [unitKey]: the number of a table, the short mark
+  /// of a unit of another domain, such as "<>".
+  String _rowLabel(
+    BuildContext context,
+    String unitKey,
+    bool isMultiplication,
+  ) {
+    final int? number = domain.findUnit(unitKey)?.number;
+    if (number == null) return '';
+    return isMultiplication
+        ? '$number'
+        : context.l10n.unitMark(domain.id, number);
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextStyle? labelStyle = Theme.of(context).textTheme.labelMedium
@@ -74,24 +97,26 @@ class _Grid extends StatelessWidget {
       (int most, List<ItemMasteryEntity> row) =>
           row.length > most ? row.length : most,
     );
+    final bool isMultiplication = domain.id == LearningDomainIds.multiplication;
     return Column(
       spacing: _gap,
       children: <Widget>[
-        ExcludeSemantics(
-          child: Row(
-            spacing: _gap,
-            children: <Widget>[
-              const SizedBox(width: _labelWidth),
-              for (int column = 1; column <= columns; column++)
-                Expanded(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text('×$column', style: labelStyle),
+        if (isMultiplication)
+          ExcludeSemantics(
+            child: Row(
+              spacing: _gap,
+              children: <Widget>[
+                const SizedBox(width: _labelWidth),
+                for (int column = 1; column <= columns; column++)
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('×$column', style: labelStyle),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
         for (final MapEntry<String, List<ItemMasteryEntity>> row
             in grid.rows.entries)
           Row(
@@ -100,9 +125,13 @@ class _Grid extends StatelessWidget {
               SizedBox(
                 width: _labelWidth,
                 child: ExcludeSemantics(
-                  child: Text(
-                    '${domain.findUnit(row.key)?.number ?? ''}',
-                    style: labelStyle,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _rowLabel(context, row.key, isMultiplication),
+                      style: labelStyle,
+                    ),
                   ),
                 ),
               ),

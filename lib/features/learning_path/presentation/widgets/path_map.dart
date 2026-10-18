@@ -11,7 +11,8 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/table_node
 
 /// The scrolling map of the learning path: the tables zigzag down, joined
 /// by dots, with a review after every group of 3 and a call card next to
-/// the current table. The header, when given, stays above the map.
+/// the current table. The header and the switch of the domains, when
+/// given, stay above the map.
 class PathMap extends StatefulWidget {
   /// Creates the map of [path].
   const PathMap({
@@ -20,6 +21,7 @@ class PathMap extends StatefulWidget {
     required this.onOpenTable,
     required this.onPlay,
     this.header,
+    this.domainSwitch,
     this.mascot,
     super.key,
   });
@@ -38,6 +40,9 @@ class PathMap extends StatefulWidget {
 
   /// Widgets of other features at the top of the map, or `null`.
   final PathHeaderSlots? header;
+
+  /// The switch of the learning domains, under the header, or `null`.
+  final Widget? domainSwitch;
 
   /// The mascot, shown under the current table, or `null`.
   final Widget? mascot;
@@ -99,7 +104,8 @@ class _PathMapState extends State<PathMap> {
       ),
     );
     final PathHeaderSlots? slots = widget.header;
-    if (slots == null) return map;
+    final Widget? domainSwitch = widget.domainSwitch;
+    if (slots == null && domainSwitch == null) return map;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -110,11 +116,21 @@ class _PathMapState extends State<PathMap> {
             AppSizes.space24,
             0,
           ),
-          child: PathHeader(
-            slots: slots,
-            crowns: widget.path.tables
-                .where((TablePathNode table) => table.crown != TableCrown.none)
-                .length,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: AppSizes.space16,
+            children: <Widget>[
+              if (slots != null)
+                PathHeader(
+                  slots: slots,
+                  crowns: widget.path.tables
+                      .where(
+                        (TablePathNode table) => table.crown != TableCrown.none,
+                      )
+                      .length,
+                ),
+              ?domainSwitch,
+            ],
           ),
         ),
         Expanded(child: map),

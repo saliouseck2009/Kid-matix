@@ -6,6 +6,7 @@ import 'package:kid_matix/features/learning_path/domain/services/crown_service_i
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_learning_path_changes_use_case.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
@@ -13,14 +14,21 @@ import '../../../helpers/test_path_pages.dart';
 import '../../../helpers/test_quiz_pages.dart';
 
 void main() {
-  test('counts the crowned tables of a player', () async {
+  test('counts the crowned units of a player in every domain', () async {
     // Arrange
+    final DomainRegistry inputDomains = DomainRegistry()
+      ..register(MultiplicationDomain())
+      ..register(NumbersDomain());
     final InMemoryStageProgressRepository inputRepository =
         InMemoryStageProgressRepository(<StageProgressEntity>[
-          for (final String unitKey in <String>['mul:1', 'mul:2'])
+          for (final (String domainId, String unitKey) in <(String, String)>[
+            ('multiplication', 'mul:1'),
+            ('multiplication', 'mul:2'),
+            ('numbers', 'num:count10'),
+          ])
             StageProgressEntity(
               profileId: 'p1',
-              domainId: 'multiplication',
+              domainId: domainId,
               unitKey: unitKey,
               stage: StageKind.boss,
               bestStars: 1,
@@ -31,21 +39,21 @@ void main() {
     final CrownServiceImpl service = CrownServiceImpl(
       getPath: GetLearningPathUseCase(
         repository: inputRepository,
-        domains: DomainRegistry()..register(MultiplicationDomain()),
+        domains: inputDomains,
         settings: const FixedPlayerSettings(),
         mastery: FakeMasteryService(),
       ),
       watchChanges: WatchLearningPathChangesUseCase(
         repository: inputRepository,
       ),
-      domainId: 'multiplication',
+      domains: inputDomains,
     );
     // Act
     final int actualCrowns = (await service.readCrownCount(
       profileId: 'p1',
     )).requireData;
     // Assert
-    expect(actualCrowns, 2);
+    expect(actualCrowns, 3);
     expect(service.watchChanges(), isA<Stream<void>>());
   });
 }

@@ -202,12 +202,23 @@ GoRouter createAppRouter({
                 profileId: profileId,
                 onOpen: () => context.go(AppRoutes.shop),
               ),
-              masteryPages.buildGridCard(profileId: profileId),
-              rewardPages.buildBadgesCard(profileId: profileId),
-              pathPages.buildMonstersCard(
+              pathPages.buildDomainSection(
                 profileId: profileId,
-                onOpenLittle: () => context.go(AppRoutes.profileMonsters),
+                builder: (String domainId) => <Widget>[
+                  masteryPages.buildGridCard(
+                    profileId: profileId,
+                    gridDomainId: domainId,
+                  ),
+                  pathPages.buildMonstersCard(
+                    profileId: profileId,
+                    domainId: domainId,
+                    onOpenLittle: domainId == MasteryPages.domainId
+                        ? () => context.go(AppRoutes.profileMonsters)
+                        : null,
+                  ),
+                ],
               ),
+              rewardPages.buildBadgesCard(profileId: profileId),
               leaderboardPages.buildEntryCard(
                 onOpen: () => context.go(AppRoutes.leaderboard),
               ),

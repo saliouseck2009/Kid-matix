@@ -34,6 +34,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonBack => 'Volver';
 
   @override
+  String commonDomainName(String domain) {
+    String _temp0 = intl.Intl.selectLogic(
+      domain,
+      {
+        'multiplication': 'Multiplicación',
+        'numbers': 'Números',
+        'other': 'Matemáticas',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get errorStorage => 'Uy, no pudimos leer o guardar tus datos.';
 
   @override
@@ -201,6 +214,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get masteryGridTitle => 'Mis tablas';
 
   @override
+  String get masteryGridTitleNumbers => 'Mis números';
+
+  @override
   String get masteryStatusNotSeen => 'Nuevo';
 
   @override
@@ -249,6 +265,16 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String pathMonsterHiddenSpoken(int number) {
     return 'Monstruo de la tabla del $number, todavía sin vencer';
+  }
+
+  @override
+  String pathUnitMonsterDefeatedSpoken(String unit) {
+    return 'Monstruo de «$unit», vencido';
+  }
+
+  @override
+  String pathUnitMonsterHiddenSpoken(String unit) {
+    return 'Monstruo de «$unit», todavía sin vencer';
   }
 
   @override
@@ -708,6 +734,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizSpokenGreaterThan => 'es mayor que';
 
   @override
+  String get quizSpokenEqualTo => 'es igual a';
+
+  @override
   String get quizSpokenHiddenNumber => 'número escondido';
 
   @override
@@ -852,6 +881,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pathStageReviewHint => '15 preguntas de las tablas ya vistas';
 
   @override
+  String get pathUnitStageDiscoveryHint => 'La lección y su truco';
+
+  @override
+  String get pathUnitStageBossHint => 'Vence al monstruo de la lección';
+
+  @override
+  String get pathUnitStageReviewHint =>
+      '15 preguntas de las lecciones ya vistas';
+
+  @override
   String pathStageNumbered(int number, String name) {
     return '$number · $name';
   }
@@ -866,6 +905,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get pathShowTable => 'Ver la tabla';
+
+  @override
+  String get pathShowUnit => 'Ver la lección';
 
   @override
   String pathTableStars(int stars, int total) {
@@ -1050,6 +1092,40 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String numbersUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Contar hasta 10',
+        '2': 'Contar hasta 20',
+        '3': 'Contar hasta 100',
+        '4': 'Decenas y unidades',
+        '5': 'Comparar',
+        '6': 'Ordenar',
+        'other': 'Antes y después',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String numbersUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Toca cada mango con el dedo mientras cuentas: uno, dos, tres… El último número dice cuántos hay.',
+        '2': 'Cuenta primero la fila de 10 y luego sigue: 11, 12, 13…',
+        '3': 'Un paquete son 10 palitos. Cuenta los paquetes de 10 en 10: 10, 20, 30…',
+        '4': 'La cifra de las decenas cuenta los paquetes, la de las unidades los palitos sueltos: 3 paquetes y 4 palitos son 34.',
+        '5': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
+        '6': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
+        'other': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsStageTitle => '¡Etapa terminada!';
 
   @override
@@ -1067,6 +1143,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String quizBossTitleMultiplication(int number) {
     return 'Jefe de la tabla del $number';
+  }
+
+  @override
+  String quizBossTitleUnit(String unit) {
+    return 'Jefe · $unit';
   }
 
   @override
@@ -1167,6 +1248,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String rewardBadgeTamerMultiplication(int number) {
     return 'Domador de la tabla del $number';
+  }
+
+  @override
+  String rewardBadgeTamerUnit(String unit) {
+    return 'Domador de «$unit»';
   }
 
   @override

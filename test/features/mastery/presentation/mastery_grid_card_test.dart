@@ -5,10 +5,15 @@ import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.
 import '../../../helpers/pump_localized.dart';
 import '../../../helpers/test_mastery_pages.dart';
 
-ItemProgressEntity _progress(String itemKey, int box, {Duration? time}) {
+ItemProgressEntity _progress(
+  String itemKey,
+  int box, {
+  Duration? time,
+  String domainId = 'multiplication',
+}) {
   return ItemProgressEntity(
     profileId: 'p1',
-    domainId: 'multiplication',
+    domainId: domainId,
     itemKey: itemKey,
     presentationCount: 6,
     correctCount: 5,
@@ -24,14 +29,17 @@ void main() {
   group('MasteryGridCard', () {
     late InMemoryItemProgressRepository repository;
 
-    Future<void> pumpGrid(WidgetTester tester) async {
+    Future<void> pumpGrid(
+      WidgetTester tester, {
+      String domainId = 'multiplication',
+    }) async {
       await pumpLocalized(
         tester,
         Scaffold(
           body: SingleChildScrollView(
             child: buildTestMasteryPages(
               repository: repository,
-            ).buildGridCard(profileId: 'p1'),
+            ).buildGridCard(profileId: 'p1', gridDomainId: domainId),
           ),
         ),
       );
@@ -65,6 +73,25 @@ void main() {
       ]) {
         expect(find.text(status), findsOneWidget);
       }
+    });
+    testWidgets('shows the 7 units of the numbers with their marks', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      repository = InMemoryItemProgressRepository(<ItemProgressEntity>[
+        _progress('num:compare:34-43', 1, domainId: 'numbers'),
+      ]);
+      // Act
+      await pumpGrid(tester, domainId: 'numbers');
+      // Assert
+      expect(find.text('Mes nombres'), findsOneWidget);
+      expect(find.text('×10'), findsNothing);
+      expect(find.text('<>'), findsOneWidget);
+      expect(find.text('±1'), findsOneWidget);
+      expect(
+        find.bySemanticsLabel('34 est plus petit que 43, À revoir'),
+        findsOneWidget,
+      );
     });
     testWidgets('reads each fact with its status', (
       WidgetTester tester,

@@ -14,6 +14,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
@@ -83,14 +84,15 @@ abstract final class TestApp {
     return profile;
   }
 
-  /// The learning path of [profileId] in the multiplication domain.
-  static Future<LearningPathEntity> pathOf(String profileId) async {
+  /// The learning path of [profileId] in [domainId], the multiplication
+  /// by default.
+  static Future<LearningPathEntity> pathOf(
+    String profileId, {
+    String domainId = LearningDomainIds.multiplication,
+  }) async {
     final DataState<LearningPathEntity> path =
         await sl<GetLearningPathUseCase>()(
-          params: LearningPathParams(
-            profileId: profileId,
-            domainId: LearningDomainIds.multiplication,
-          ),
+          params: LearningPathParams(profileId: profileId, domainId: domainId),
         );
     return (path as DataSuccess<LearningPathEntity>).data;
   }
@@ -105,6 +107,11 @@ abstract final class TestApp {
     final LearningPathPages pages = LearningPathPages(
       useCases: LearningPathUseCases(getLearningPath: sl(), watchChanges: sl()),
       placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
+      domainChoice: DomainChoiceUseCases(
+        getChoice: sl(),
+        selectDomain: sl(),
+        watchChoice: sl(),
+      ),
       domains: sl(),
       clock: sl(),
     );

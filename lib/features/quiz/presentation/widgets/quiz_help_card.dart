@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 
 /// Help card shown in place of the question after two mistakes on the
-/// same fact: the whole unit with the fact highlighted, and its dots.
+/// same fact: the whole unit with the fact highlighted, and its dots or
+/// its drawing with the answer.
 class QuizHelpCard extends StatelessWidget {
   /// Creates the card of [help], for the unit named [unitName].
   const QuizHelpCard({required this.help, required this.unitName, super.key});
 
   static const double _radius = 28;
+  static const double _pictureMaxWidth = 300;
 
   /// Facts and dots to show.
   final ItemHelp help;
@@ -50,6 +54,13 @@ class QuizHelpCard extends StatelessWidget {
               children: <Widget>[
                 _UnitFacts(help: help),
                 if (dotGrid != null) _DotGridView(grid: dotGrid),
+                if (help.picture case final MathPicture picture)
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: _pictureMaxWidth,
+                    ),
+                    child: MathPictureView(picture: picture, isSolved: true),
+                  ),
               ],
             ),
           ],

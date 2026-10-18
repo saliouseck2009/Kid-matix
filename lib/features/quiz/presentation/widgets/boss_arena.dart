@@ -4,6 +4,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_monster.dart';
@@ -17,6 +18,7 @@ class BossArena extends StatelessWidget {
   const BossArena({
     required this.monsterNumber,
     required this.prompt,
+    this.monsterFamily = MonsterPainter.hornedFamily,
     required this.blowCount,
     this.blow,
     this.outcome,
@@ -32,6 +34,9 @@ class BossArena extends StatelessWidget {
 
   /// Number of the monster, the number of the table.
   final int monsterNumber;
+
+  /// Family of the monster, one per learning domain.
+  final int monsterFamily;
 
   /// Operation asked.
   final List<PromptToken> prompt;
@@ -71,6 +76,7 @@ class BossArena extends StatelessWidget {
                 child: BossMonster(
                   key: ValueKey<int>(blowCount),
                   number: monsterNumber,
+                  family: monsterFamily,
                   blow: blow,
                   outcome: outcome,
                 ),

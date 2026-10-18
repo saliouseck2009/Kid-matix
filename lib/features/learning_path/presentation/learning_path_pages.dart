@@ -1,32 +1,38 @@
 import 'package:flutter/widgets.dart';
-import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
-import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
-import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/domain/services/stage_quiz_specs.dart';
+import 'package:kid_matix/features/learning_path/domain/services/unit_domain_resolver.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/discovery_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/learning_path_page.dart';
+import 'package:kid_matix/features/learning_path/presentation/pages/placement_test_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/table_detail_page.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/domain_section.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
-import 'package:kid_matix/l10n/app_localizations.dart';
-import 'package:kid_matix/core/services/clock.dart';
-import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
-import 'package:kid_matix/features/learning_path/presentation/pages/placement_test_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
+import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Builds the pages of the learning path for the router, and turns its
 /// stages into quiz specs.
 ///
+/// The map shows the domain the player chose; a unit, a stage or a review
+/// finds its own domain from its key, so every other page follows it.
 /// Created at the composition root with the dependencies resolved there,
 /// so no widget ever reads the service locator.
 final class LearningPathPages {
@@ -34,21 +40,26 @@ final class LearningPathPages {
   const LearningPathPages({
     required this._useCases,
     required this._placement,
+    required this._domainChoice,
     required this._domains,
     required this._clock,
     this._specs = const StageQuizSpecs(),
+    this._resolver = const UnitDomainResolver(),
   });
 
-  /// Domain of the learning path of version 1.0.
-  static const String domainId = LearningDomainIds.multiplication;
+  /// Domain of the placement test of version 1.0.
+  static const String placementDomainId = LearningDomainIds.multiplication;
 
   final LearningPathUseCases _useCases;
   final PlacementUseCases _placement;
+  final DomainChoiceUseCases _domainChoice;
   final DomainRegistry _domains;
   final Clock _clock;
   final StageQuizSpecs _specs;
+  final UnitDomainResolver _resolver;
 
-  /// The map of the path of [profileId]; a new player gets a new map.
+  /// The map of the path of [profileId], in the domain they chose; a new
+  /// player gets a new map.
   Widget buildLearningPathPage({
     required String profileId,
     required ValueChanged<String> onOpenTable,
@@ -58,8 +69,9 @@ final class LearningPathPages {
   }) {
     return LearningPathPage(
       key: ValueKey<String>(profileId),
-      params: _paramsOf(profileId),
+      profileId: profileId,
       useCases: _useCases,
+      domainChoice: _domainChoice,
       onOpenTable: onOpenTable,
       onPlay: onPlay,
       header: header,
@@ -77,7 +89,10 @@ final class LearningPathPages {
   }) {
     return PlacementTestPage(
       key: ValueKey<String>('placement-$profileId'),
-      params: _paramsOf(profileId),
+      params: LearningPathParams(
+        profileId: profileId,
+        domainId: placementDomainId,
+      ),
       useCases: _placement,
       clock: _clock,
       slots: slots,
@@ -85,22 +100,44 @@ final class LearningPathPages {
     );
   }
 
-  /// "Mes monstres" of [profileId], for the Profile tab; [onOpenLittle]
-  /// opens the screen of the little monsters.
-  Widget buildMonstersCard({
+  /// The cards of [profileId] that follow one domain, for the Profile tab:
+  /// the switch of the domains, then the cards [builder] gives for the
+  /// domain chosen, the same as on the map.
+  Widget buildDomainSection({
     required String profileId,
-    required VoidCallback onOpenLittle,
+    required List<Widget> Function(String domainId) builder,
   }) {
-    return BlocProvider<LearningPathBloc>(
-      key: ValueKey<String>('monsters-$profileId'),
+    return BlocProvider<DomainChoiceCubit>(
+      key: ValueKey<String>('domain-section-$profileId'),
       create: (_) =>
-          LearningPathBloc(params: _paramsOf(profileId), useCases: _useCases)
-            ..add(const LearningPathStarted()),
-      child: MonstersCard(onOpenLittle: onOpenLittle),
+          DomainChoiceCubit(profileId: profileId, useCases: _domainChoice)
+            ..load(),
+      child: DomainSection(builder: builder),
     );
   }
 
-  /// The detail of the table [unitKey].
+  /// "Mes monstres" of [profileId] in [domainId], for the Profile tab;
+  /// [onOpenLittle] opens the screen of the little monsters, or is `null`
+  /// to leave its link out.
+  Widget buildMonstersCard({
+    required String profileId,
+    required String domainId,
+    VoidCallback? onOpenLittle,
+  }) {
+    final LearningPathParams params = LearningPathParams(
+      profileId: profileId,
+      domainId: domainId,
+    );
+    return BlocProvider<LearningPathBloc>(
+      key: ValueKey<String>('monsters-$profileId-$domainId'),
+      create: (_) =>
+          LearningPathBloc(params: params, useCases: _useCases)
+            ..add(const LearningPathStarted()),
+      child: MonstersCard(domainId: domainId, onOpenLittle: onOpenLittle),
+    );
+  }
+
+  /// The detail of the unit [unitKey].
   Widget buildTableDetailPage({
     required String profileId,
     required String unitKey,
@@ -108,8 +145,10 @@ final class LearningPathPages {
     required ValueChanged<StageSource> onPlay,
     required VoidCallback onShowTable,
   }) {
+    final LearningDomain? domain = _domainOf(unitKey);
+    if (domain == null) return const SizedBox.shrink();
     return TableDetailPage(
-      params: _paramsOf(profileId),
+      params: LearningPathParams(profileId: profileId, domainId: domain.id),
       unitKey: unitKey,
       useCases: _useCases,
       onBack: onBack,
@@ -118,14 +157,14 @@ final class LearningPathPages {
     );
   }
 
-  /// The whole table [unitKey] and its tip; [onPlay] starts the Discovery
-  /// questions, or is `null` to only show the table.
+  /// Every item of the unit [unitKey] and its tip; [onPlay] starts the
+  /// Discovery questions, or is `null` to only show the unit.
   Widget buildDiscoveryPage({
     required String unitKey,
     required VoidCallback onClose,
     VoidCallback? onPlay,
   }) {
-    final LearningDomain? domain = _domains.find(domainId);
+    final LearningDomain? domain = _domainOf(unitKey);
     final LearningUnit? unit = domain?.findUnit(unitKey);
     if (domain == null || unit == null) return const SizedBox.shrink();
     return DiscoveryPage(
@@ -144,8 +183,9 @@ final class LearningPathPages {
   /// The quiz of the stage [sourceKey], or `null` when it is not one.
   QuizSpec? specOf(String sourceKey) {
     final StageSource? source = StageSource.tryParse(sourceKey);
-    final LearningDomain? domain = _domains.find(domainId);
-    if (source == null || domain == null) return null;
+    if (source == null) return null;
+    final LearningDomain? domain = _domainOf(source.unitKey);
+    if (domain == null) return null;
     return _specs.specOf(domain: domain, source: source);
   }
 
@@ -162,10 +202,12 @@ final class LearningPathPages {
   String? describeSource(String? sourceKey, AppLocalizations l10n) {
     final StageSource? source = StageSource.tryParse(sourceKey);
     if (source == null) return null;
+    final String domainId =
+        _domainOf(source.unitKey)?.id ?? LearningDomainIds.multiplication;
     return PathLabels(domainId: domainId, l10n: l10n).stageName(source.stage);
   }
 
-  LearningPathParams _paramsOf(String profileId) {
-    return LearningPathParams(profileId: profileId, domainId: domainId);
+  LearningDomain? _domainOf(String unitKey) {
+    return _resolver.domainOf(domains: _domains, unitKey: unitKey);
   }
 }

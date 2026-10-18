@@ -148,6 +148,12 @@ abstract class AppLocalizations {
   /// **'Retour'**
   String get commonBack;
 
+  /// Name of a learning domain (a subject of the app) in the switch above the map and above the Profile progress cards, such as "Multiplication" or "Nombres" ("Numbers": counting, tens and ones, comparing up to 100). One or two short words, a segment label. {domain} is the domain identifier, never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{domain, select, multiplication{Multiplication} numbers{Nombres} other{Maths}}'**
+  String commonDomainName(String domain);
+
   /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
   /// In fr, this message translates to:
@@ -346,6 +352,12 @@ abstract class AppLocalizations {
   /// **'Mes tables'**
   String get masteryGridTitle;
 
+  /// Title of the mastery grid card of the Profile tab when the numbers domain is chosen above it ("My numbers"): one row per unit, one cell per item colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes nombres'**
+  String get masteryGridTitleNumbers;
+
   /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).
   ///
   /// In fr, this message translates to:
@@ -423,6 +435,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Monstre de la table de {number}, pas encore vaincu'**
   String pathMonsterHiddenSpoken(int number);
+
+  /// What a screen reader says for the monster of a unit of a domain other than the multiplication in « Mes monstres » once its boss is defeated ("Monster of 'Count to 10', defeated"). {unit} is the unit name of numbersUnitName. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre de « {unit} », vaincu'**
+  String pathUnitMonsterDefeatedSpoken(String unit);
+
+  /// What a screen reader says for the gray shadow of the monster of a unit of a domain other than the multiplication in « Mes monstres » before its boss is defeated ("Monster of 'Count to 10', not defeated yet"). {unit} is the unit name of numbersUnitName. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre de « {unit} », pas encore vaincu'**
+  String pathUnitMonsterHiddenSpoken(String unit);
 
   /// Title of the settings screen of a player ("Settings"); also the tooltip of the settings button of the Profile tab.
   ///
@@ -1108,6 +1132,12 @@ abstract class AppLocalizations {
   /// **'est plus grand que'**
   String get quizSpokenGreaterThan;
 
+  /// Words read by the screen reader for the sign = between two numbers compared ("is equal to"), as in "15 est égal à 15". Joined with the numbers around it. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'est égal à'**
+  String get quizSpokenEqualTo;
+
   /// Words read by the screen reader for the tick of a number line whose number the player must find ("hidden number"), inside the list of the numbers of the line, such as "2, 4, 6, nombre caché, 10". Never displayed.
   ///
   /// In fr, this message translates to:
@@ -1300,6 +1330,24 @@ abstract class AppLocalizations {
   /// **'15 questions sur les tables déjà vues'**
   String get pathStageReviewHint;
 
+  /// One-line description of the Discovery stage of a unit of a domain other than the multiplication, such as the numbers ("The lesson and its tip"), on the stage card of the unit detail. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'La leçon et son astuce'**
+  String get pathUnitStageDiscoveryHint;
+
+  /// One-line description of the boss stage of a unit of a domain other than the multiplication ("Beat the lesson's monster"), on the stage card of the unit detail. Imperative, speaks to a child with "tu"; one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bats le monstre de la leçon'**
+  String get pathUnitStageBossHint;
+
+  /// One-line description of a review stage of a domain other than the multiplication ("15 questions on the lessons you've seen"), on the review node. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'15 questions sur les leçons déjà vues'**
+  String get pathUnitStageReviewHint;
+
   /// Title of a stage card with its number, such as "1 · Découverte". Keep the middle dot.
   ///
   /// In fr, this message translates to:
@@ -1323,6 +1371,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Voir la table'**
   String get pathShowTable;
+
+  /// Button at the bottom of the detail of a unit of a domain other than the multiplication, such as "Compter jusqu'à 10": it shows all the items of the unit and its tip again ("See the lesson"). Infinitive verb, a few words.
+  ///
+  /// In fr, this message translates to:
+  /// **'Revoir la leçon'**
+  String get pathShowUnit;
 
   /// Stars of a table on its detail screen, out of the stars it can earn ("3 stars out of 15").
   ///
@@ -1522,6 +1576,18 @@ abstract class AppLocalizations {
   /// **'{table, select, 1{Multiplier par 1 ne change rien : 1 × 7 = 7.} 2{Multiplier par 2, c\'est ajouter le nombre à lui-même : 2 × 6 = 6 + 6.} 3{Les résultats avancent de 3 en 3 : 3, 6, 9, 12…} 4{Multiplier par 4, c\'est doubler deux fois : 4 × 6, c\'est le double de 12.} 5{Les résultats de la table de 5 finissent toujours par 0 ou par 5.} 6{6 fois un nombre pair finit par le même chiffre : 6 × 4 = 24.} 7{Pour 7 × 8, pense à 5, 6, 7, 8 : 56 = 7 × 8.} 8{Multiplier par 8, c\'est doubler trois fois : 8 × 3 = 24.} 9{Les deux chiffres du résultat font toujours 9 : 9 × 4 = 36 et 3 + 6 = 9.} 10{Multiplier par 10, c\'est ajouter un 0 à droite : 10 × 7 = 70.} 11{Jusqu\'à 11 × 9, on écrit le chiffre deux fois : 11 × 4 = 44.} other{12 fois un nombre, c\'est 10 fois plus 2 fois : 12 × 3 = 30 + 6.}}'**
   String pathMultiplicationTip(String table);
 
+  /// Name of a unit of the numbers domain (numbers up to 100), shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Count to 10", "Tens and ones", "Compare", "Put in order", "Before and after"). Short title, a few words; infinitive verbs for 1, 2, 3, 5 and 6. {unit} is the position of the unit on the path, from 1 to 7.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, 1{Compter jusqu\'à 10} 2{Compter jusqu\'à 20} 3{Compter jusqu\'à 100} 4{Dizaines et unités} 5{Comparer} 6{Ranger} other{Avant et après}}'**
+  String numbersUnitName(String unit);
+
+  /// Tip of a unit of the numbers domain, shown on its Discovery page under all its items ("Touch each mango as you count…"). One or two short sentences for a child of 5 to 7, informal "tu". {unit} is the position of the unit on the path, from 1 to 7: count to 10, count to 20, count to 100 in tens, tens and ones, compare, put in order on a number line, before and after.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, 1{Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.} 2{Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…} 3{Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…} 4{Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.} 5{Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.} 6{Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.} other{Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !}}'**
+  String numbersUnitTip(String unit);
+
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///
   /// In fr, this message translates to:
@@ -1539,6 +1605,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Boss de la table de {number}'**
   String quizBossTitleMultiplication(int number);
+
+  /// Title above the health bar of the boss fight of a unit of a domain other than the multiplication ("Boss · Count to 10"). {unit} is the unit name of numbersUnitName. One line; it shrinks when too long.
+  ///
+  /// In fr, this message translates to:
+  /// **'Boss · {unit}'**
+  String quizBossTitleUnit(String unit);
 
   /// Label above the life bar of the boss ("Boss life").
   ///
@@ -1683,6 +1755,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Dompteur de la table de {number}'**
   String rewardBadgeTamerMultiplication(int number);
+
+  /// Name of the badge won by defeating the boss of a unit of a domain other than the multiplication ("Tamer of 'Count to 10'"), in the badges card and its celebration. {unit} is the unit name of numbersUnitName. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dompteur de « {unit} »'**
+  String rewardBadgeTamerUnit(String unit);
 
   /// Name of the badge for mastering the 120 multiplication facts ("The 120"). Short: title of the badge celebration and of the badge list of the results.
   ///

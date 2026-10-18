@@ -6,16 +6,27 @@ import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_state.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 
-/// "Mes monstres" on the Profile tab: the monster of every table, in
-/// color once its boss is defeated, as a gray shadow before, and a link
-/// to the little monsters of the facts the player keeps missing.
+/// "Mes monstres" on the Profile tab: the monster of every unit of a
+/// domain, in color once its boss is defeated, as a gray shadow before,
+/// and a link to the little monsters of the facts the player keeps
+/// missing.
 class MonstersCard extends StatelessWidget {
-  /// Creates the card; the path comes from the enclosing Bloc.
-  const MonstersCard({required this.onOpenLittle, super.key});
+  /// Creates the card of [domainId]; the path comes from the enclosing
+  /// Bloc.
+  const MonstersCard({
+    required this.domainId,
+    this.onOpenLittle,
+    super.key,
+  });
 
-  /// Opens the screen of the little monsters.
-  final VoidCallback onOpenLittle;
+  /// Learning domain of the monsters.
+  final String domainId;
+
+  /// Opens the screen of the little monsters, or `null` to leave its link
+  /// out.
+  final VoidCallback? onOpenLittle;
 
   static const int _columns = 4;
   static const double _gap = 10;
@@ -37,6 +48,11 @@ class MonstersCard extends StatelessWidget {
     final List<TablePathNode> tables = path.tables;
     final int defeated = path.defeatedBosses.length;
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final PathLabels labels = PathLabels(
+      domainId: domainId,
+      l10n: context.l10n,
+    );
+    final VoidCallback? openLittle = onOpenLittle;
     return Container(
       padding: _padding,
       decoration: BoxDecoration(
@@ -77,6 +93,11 @@ class MonstersCard extends StatelessWidget {
                   for (final TablePathNode table in tables)
                     _Monster(
                       number: table.number,
+                      family: MonsterIllustration.familyOf(domainId),
+                      label: labels.describeMonster(
+                        table.number,
+                        isDefeated: table.crown != TableCrown.none,
+                      ),
                       width: width,
                       isDefeated: table.crown != TableCrown.none,
                     ),
@@ -84,7 +105,7 @@ class MonstersCard extends StatelessWidget {
               );
             },
           ),
-          _LittleMonstersLink(onOpen: onOpenLittle),
+          if (openLittle != null) _LittleMonstersLink(onOpen: openLittle),
         ],
       ),
     );
@@ -133,6 +154,8 @@ class _LittleMonstersLink extends StatelessWidget {
 class _Monster extends StatelessWidget {
   const _Monster({
     required this.number,
+    required this.family,
+    required this.label,
     required this.width,
     required this.isDefeated,
   });
@@ -140,6 +163,8 @@ class _Monster extends StatelessWidget {
   static const double _drawingShare = 0.8;
 
   final int number;
+  final int family;
+  final String label;
   final double width;
   final bool isDefeated;
 
@@ -147,12 +172,11 @@ class _Monster extends StatelessWidget {
   Widget build(BuildContext context) {
     final Widget drawing = MonsterIllustration(
       number: number,
+      family: family,
       width: width * _drawingShare,
     );
     return Semantics(
-      label: isDefeated
-          ? context.l10n.pathMonsterDefeatedSpoken(number)
-          : context.l10n.pathMonsterHiddenSpoken(number),
+      label: label,
       child: SizedBox(
         width: width,
         child: Center(

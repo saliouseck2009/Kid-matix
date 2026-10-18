@@ -123,6 +123,7 @@ class QuizPlayView extends StatelessWidget {
                 ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
+                monsterFamily: labels.monsterFamilyOf(data.run.domainId),
                 prompt: data.question.prompt,
                 picture: data.question.picture,
                 spokenText: labels.speakQuestion(data.question),

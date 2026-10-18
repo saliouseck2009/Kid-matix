@@ -34,6 +34,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonBack => 'Back';
 
   @override
+  String commonDomainName(String domain) {
+    String _temp0 = intl.Intl.selectLogic(
+      domain,
+      {
+        'multiplication': 'Multiplication',
+        'numbers': 'Numbers',
+        'other': 'Maths',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
 
   @override
@@ -201,6 +214,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get masteryGridTitle => 'My tables';
 
   @override
+  String get masteryGridTitleNumbers => 'My numbers';
+
+  @override
   String get masteryStatusNotSeen => 'New';
 
   @override
@@ -249,6 +265,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String pathMonsterHiddenSpoken(int number) {
     return 'Monster of the $number times table, not defeated yet';
+  }
+
+  @override
+  String pathUnitMonsterDefeatedSpoken(String unit) {
+    return 'Monster of “$unit”, defeated';
+  }
+
+  @override
+  String pathUnitMonsterHiddenSpoken(String unit) {
+    return 'Monster of “$unit”, not defeated yet';
   }
 
   @override
@@ -705,6 +731,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizSpokenGreaterThan => 'is greater than';
 
   @override
+  String get quizSpokenEqualTo => 'is equal to';
+
+  @override
   String get quizSpokenHiddenNumber => 'hidden number';
 
   @override
@@ -849,6 +878,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pathStageReviewHint => '15 questions on the tables you\'ve seen';
 
   @override
+  String get pathUnitStageDiscoveryHint => 'The lesson and its tip';
+
+  @override
+  String get pathUnitStageBossHint => 'Beat the lesson\'s monster';
+
+  @override
+  String get pathUnitStageReviewHint =>
+      '15 questions on the lessons you\'ve seen';
+
+  @override
   String pathStageNumbered(int number, String name) {
     return '$number · $name';
   }
@@ -863,6 +902,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pathShowTable => 'See the table';
+
+  @override
+  String get pathShowUnit => 'See the lesson';
 
   @override
   String pathTableStars(int stars, int total) {
@@ -1046,6 +1088,40 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String numbersUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Count to 10',
+        '2': 'Count to 20',
+        '3': 'Count to 100',
+        '4': 'Tens and ones',
+        '5': 'Compare',
+        '6': 'Put in order',
+        'other': 'Before and after',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String numbersUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Touch each mango as you count: one, two, three… The last number tells how many there are.',
+        '2': 'First count the row of 10, then keep going: 11, 12, 13…',
+        '3': 'A bundle is 10 sticks. Count the bundles in tens: 10, 20, 30…',
+        '4': 'The tens digit counts the bundles, the ones digit the loose sticks: 3 bundles and 4 sticks make 34.',
+        '5': 'Look at the tens first: the number with more tens is greater. If the tens are the same, look at the ones.',
+        '6': 'On the line, numbers go from smallest to greatest. Find how much they go up each time.',
+        'other': 'The number after is 1 more; the number before is 1 less. After 39 comes 40!',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsStageTitle => 'Stage complete!';
 
   @override
@@ -1063,6 +1139,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String quizBossTitleMultiplication(int number) {
     return 'Boss of the $number times table';
+  }
+
+  @override
+  String quizBossTitleUnit(String unit) {
+    return 'Boss · $unit';
   }
 
   @override
@@ -1163,6 +1244,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String rewardBadgeTamerMultiplication(int number) {
     return 'Tamer of the $number times table';
+  }
+
+  @override
+  String rewardBadgeTamerUnit(String unit) {
+    return 'Tamer of “$unit”';
   }
 
   @override

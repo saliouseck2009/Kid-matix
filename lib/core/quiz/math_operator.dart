@@ -12,4 +12,9 @@ enum MathOperator {
 
   /// "Is greater than", shown as ">" (version 2.0).
   greaterThan,
+
+  /// "Is equal to", shown as "=" between two numbers compared, such as
+  /// `15 = 15`; an operation's result follows the equals token instead
+  /// (version 2.0).
+  equalTo,
 }
