@@ -62,7 +62,7 @@ final class _BrokenSpeech implements SpeechService {
   }
 
   @override
-  Future<void> stop() async {}
+  Future<void> stop({Future<void>? reading}) async {}
 }
 
 QuizRequest _request({Duration? baseTimeLimit}) {
@@ -748,6 +748,28 @@ void main() {
         speech.finishReading();
       },
     );
+  });
+
+  group('QuizBloc and the readings of other screens', () {
+    test('does not cut a reading that replaced its own', () async {
+      // Arrange
+      buildBloc();
+      await start();
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      // Another owner of the voice starts its own reading.
+      unawaited(speech.speak(text: 'un astuce', languageCode: 'fr'));
+      await pumpEventQueue();
+      // Act
+      bloc.add(
+        AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+      );
+      await pumpEventQueue();
+      // Assert
+      expect(bloc.state, isA<QuizShowingFeedback>());
+      expect(speech.isSpeaking, isTrue);
+      speech.finishReading();
+    });
   });
 
   group('QuizBloc when a reading starts while an answer is judged', () {

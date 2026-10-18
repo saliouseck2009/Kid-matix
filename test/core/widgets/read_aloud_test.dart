@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/core/widgets/read_aloud_button.dart';
 import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
@@ -7,6 +10,26 @@ import 'package:kid_matix/core/widgets/speech_bubble.dart';
 
 import '../../helpers/fake_speech_service.dart';
 import '../../helpers/pump_localized.dart';
+
+/// A voice that keeps the readings it was given and the readings it was
+/// asked to stop.
+final class _RecordingSpeech implements SpeechService {
+  final List<Future<void>> readings = <Future<void>>[];
+  final List<Future<void>?> stopped = <Future<void>?>[];
+
+  @override
+  Future<bool> isAvailable({required String languageCode}) async => true;
+
+  @override
+  Future<void> speak({required String text, required String languageCode}) {
+    final Future<void> reading = Completer<void>().future;
+    readings.add(reading);
+    return reading;
+  }
+
+  @override
+  Future<void> stop({Future<void>? reading}) async => stopped.add(reading);
+}
 
 void main() {
   late FakeSpeechService speech;
@@ -125,6 +148,62 @@ void main() {
       await tester.pumpWidget(const SizedBox.shrink());
       // Assert
       expect(speech.isSpeaking, isFalse);
+    });
+  });
+
+  group('ReadAloudButton among several readings', () {
+    testWidgets('stops its own reading, and no other, when tapped again', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final _RecordingSpeech recording = _RecordingSpeech();
+      await pumpLocalized(
+        tester,
+        Scaffold(
+          body: ReadAloudScope(
+            speech: recording,
+            child: const ReadAloudButton(text: 'Compte.'),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.tap(find.byTooltip('Écouter'));
+      await tester.pump();
+      // Act
+      await tester.tap(find.byTooltip('Arrêter la lecture'));
+      await tester.pump();
+      // Assert
+      expect(recording.stopped, hasLength(1));
+      expect(
+        identical(recording.stopped.single, recording.readings.single),
+        isTrue,
+      );
+    });
+    testWidgets('stops only its own reading when its screen goes away', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final _RecordingSpeech recording = _RecordingSpeech();
+      await pumpLocalized(
+        tester,
+        Scaffold(
+          body: ReadAloudScope(
+            speech: recording,
+            child: const ReadAloudButton(text: 'Compte.'),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.tap(find.byTooltip('Écouter'));
+      await tester.pump();
+      // Act
+      await tester.pumpWidget(const SizedBox.shrink());
+      // Assert: the service can tell this reading from a newer one.
+      expect(recording.stopped, hasLength(1));
+      expect(
+        identical(recording.stopped.single, recording.readings.single),
+        isTrue,
+      );
     });
   });
 

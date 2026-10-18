@@ -11,12 +11,14 @@ final class _FakeEngine implements TextToSpeechEngine {
   bool keepsSpeaking = false;
   bool neverAnswersVoiceCheck = false;
   bool neverStops = false;
+  int voiceChecks = 0;
   final List<String> spoken = <String>[];
   final List<String> languages = <String>[];
   int stopCount = 0;
 
   @override
   Future<bool> hasVoice({required String languageCode}) async {
+    voiceChecks++;
     if (fails) throw Exception('engine down');
     if (neverAnswersVoiceCheck) await Completer<void>().future;
     return hasInstalledVoice;
@@ -191,6 +193,129 @@ void main() {
       expect(engine.stopCount, 1);
       // The stop left behind gives up on its own.
       await tester.pump(SpeechServiceImpl.stopTimeout);
+    });
+  });
+
+  group('SpeechServiceImpl with several readings', () {
+    testWidgets('does not let an older timeout stop a newer reading', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      engine.keepsSpeaking = true;
+      const String inputFirst = '5 fois 7 égale combien';
+      const String inputSecond = '6 fois 8 égale combien';
+      bool isFirstDone = false;
+      bool isSecondDone = false;
+      unawaited(
+        service
+            .speak(text: inputFirst, languageCode: 'fr')
+            .then((_) => isFirstDone = true),
+      );
+      await tester.pump(const Duration(seconds: 1));
+      unawaited(
+        service
+            .speak(text: inputSecond, languageCode: 'fr')
+            .then((_) => isSecondDone = true),
+      );
+      await tester.pump();
+      // Act: the time of the first runs out while the second speaks.
+      await tester.pump(
+        SpeechServiceImpl.readingTimeOf(inputFirst) -
+            const Duration(seconds: 1),
+      );
+      // Assert
+      expect(isFirstDone, isTrue);
+      expect(isSecondDone, isFalse);
+      expect(engine.stopCount, 0);
+      // Act: then the time of the second runs out.
+      await tester.pump(SpeechServiceImpl.readingTimeOf(inputSecond));
+      // Assert
+      expect(isSecondDone, isTrue);
+      expect(engine.stopCount, 1);
+    });
+    test('leaves alone a reading that a newer one replaced', () async {
+      // Arrange
+      engine.keepsSpeaking = true;
+      final Future<void> inputOlder = service.speak(
+        text: 'première',
+        languageCode: 'fr',
+      );
+      final Future<void> inputNewer = service.speak(
+        text: 'seconde',
+        languageCode: 'fr',
+      );
+      // Act
+      await service.stop(reading: inputOlder);
+      // Assert
+      expect(engine.stopCount, 0);
+      await service.stop(reading: inputNewer);
+      expect(engine.stopCount, 1);
+    });
+    test('stops the newest reading when no reading is given', () async {
+      // Arrange
+      engine.keepsSpeaking = true;
+      unawaited(service.speak(text: 'première', languageCode: 'fr'));
+      // Act
+      await service.stop();
+      // Assert
+      expect(engine.stopCount, 1);
+    });
+    test('leaves alone a reading that another service made', () async {
+      // Arrange
+      engine.keepsSpeaking = true;
+      final SpeechServiceImpl other = SpeechServiceImpl(engine: engine);
+      final Future<void> inputForeign = other.speak(
+        text: 'étrangère',
+        languageCode: 'fr',
+      );
+      unawaited(service.speak(text: 'la mienne', languageCode: 'fr'));
+      // Act
+      await service.stop(reading: inputForeign);
+      // Assert
+      expect(engine.stopCount, 0);
+    });
+  });
+
+  group('SpeechServiceImpl.isAvailable asked again', () {
+    test('keeps the answer "no voice" for the session', () async {
+      // Arrange
+      engine.hasInstalledVoice = false;
+      await service.isAvailable(languageCode: 'fr');
+      engine.hasInstalledVoice = true;
+      // Act
+      final bool actualResult = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isFalse);
+      expect(engine.voiceChecks, 1);
+    });
+    test('asks again for another language', () async {
+      // Arrange
+      engine.hasInstalledVoice = false;
+      await service.isAvailable(languageCode: 'fr');
+      engine.hasInstalledVoice = true;
+      // Act
+      final bool actualResult = await service.isAvailable(languageCode: 'en');
+      // Assert
+      expect(actualResult, isTrue);
+    });
+    test('asks again after an engine that failed', () async {
+      // Arrange
+      engine.fails = true;
+      await service.isAvailable(languageCode: 'fr');
+      engine.fails = false;
+      // Act
+      final bool actualResult = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isTrue);
+    });
+    test('does not keep a yes: a voice can be removed', () async {
+      // Arrange
+      await service.isAvailable(languageCode: 'fr');
+      engine.hasInstalledVoice = false;
+      // Act
+      final bool actualResult = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isFalse);
     });
   });
 

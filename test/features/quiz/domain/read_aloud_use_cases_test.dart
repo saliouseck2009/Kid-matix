@@ -93,20 +93,45 @@ void main() {
       );
       bool isDone = false;
       // Act
-      final Future<void> actualReading = inputRead(
+      final Future<void> voice = inputRead(
         params: const ReadAloudParams(
           text: '5 fois 7 égale combien',
           languageCode: 'fr',
         ),
-      ).then((_) => isDone = true);
+      );
+      final Future<void> actualReading = voice.then((_) => isDone = true);
       await pumpEventQueue();
       // Assert
       expect(speech.spoken, <String>['5 fois 7 égale combien']);
       expect(speech.languages, <String>['fr']);
       expect(isDone, isFalse);
-      await inputStop();
+      await inputStop(params: voice);
       await actualReading;
       expect(isDone, isTrue);
+    });
+    test('leave alone a reading that a newer one replaced', () async {
+      // Arrange
+      final ReadAloudUseCase inputRead = ReadAloudUseCase(speech: speech);
+      final StopReadAloudUseCase inputStop = StopReadAloudUseCase(
+        speech: speech,
+      );
+      const ReadAloudParams inputFirst = ReadAloudParams(
+        text: 'première',
+        languageCode: 'fr',
+      );
+      const ReadAloudParams inputSecond = ReadAloudParams(
+        text: 'seconde',
+        languageCode: 'fr',
+      );
+      final Future<void> older = inputRead(params: inputFirst);
+      final Future<void> newer = inputRead(params: inputSecond);
+      await pumpEventQueue();
+      // Act
+      await inputStop(params: older);
+      // Assert
+      expect(speech.isSpeaking, isTrue);
+      await inputStop(params: newer);
+      expect(speech.isSpeaking, isFalse);
     });
   });
 }

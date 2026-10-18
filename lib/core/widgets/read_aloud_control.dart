@@ -48,6 +48,10 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
   bool _hasVoice = false;
   bool _isSpeaking = false;
 
+  // The reading of this control, to stop it and no other: another screen
+  // may have started its own since.
+  Future<void>? _reading;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -61,7 +65,7 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
 
   @override
   void dispose() {
-    if (_isSpeaking) unawaited(_speech?.stop());
+    if (_isSpeaking) unawaited(_speech?.stop(reading: _reading));
     super.dispose();
   }
 
@@ -76,9 +80,14 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
     final SpeechService? speech = _speech;
     final String? languageCode = _languageCode;
     if (speech == null || languageCode == null) return;
-    if (_isSpeaking) return speech.stop();
+    if (_isSpeaking) return speech.stop(reading: _reading);
+    final Future<void> reading = speech.speak(
+      text: widget.text,
+      languageCode: languageCode,
+    );
+    _reading = reading;
     setState(() => _isSpeaking = true);
-    await speech.speak(text: widget.text, languageCode: languageCode);
+    await reading;
     if (mounted) setState(() => _isSpeaking = false);
   }
 

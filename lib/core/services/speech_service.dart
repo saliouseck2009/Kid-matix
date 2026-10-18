@@ -17,9 +17,14 @@ abstract interface class SpeechService {
   /// A reading in progress is stopped first. The future completes when the
   /// reading ends, is stopped, or could not start; it never throws, so a
   /// caller can wait for it to hold something back until the voice is
-  /// done, such as a timer.
+  /// done, such as a timer. The future identifies the reading: give it to
+  /// [stop] to stop this reading and no other.
   Future<void> speak({required String text, required String languageCode});
 
   /// Stops the reading in progress, if any.
-  Future<void> stop();
+  ///
+  /// With the future [speak] returned for a reading, stops only if that
+  /// reading is still the newest: a screen that goes away, or a reading
+  /// that outlived its question, cannot cut the reading that replaced it.
+  Future<void> stop({Future<void>? reading});
 }

@@ -30,6 +30,9 @@ final class QuizReading {
   // replaced, must not touch the state of the question that follows.
   int _readingId = 0;
 
+  // The reading of this quiz in progress, to stop it and no other.
+  Future<void>? _voice;
+
   /// Whether a voice can read the questions, which shows the listen
   /// buttons.
   bool get canRead => _mode != ReadAloudMode.unavailable;
@@ -85,10 +88,12 @@ final class QuizReading {
     emit(
       asking.copyWith(isReading: true, isReadingInstruction: isInstruction),
     );
+    final Future<void> voice = setup.useCases.read(
+      params: ReadAloudParams(text: text, languageCode: setup.languageCode),
+    );
+    _voice = voice;
     try {
-      await setup.useCases.read(
-        params: ReadAloudParams(text: text, languageCode: setup.languageCode),
-      );
+      await voice;
     } finally {
       // Whatever happened to the voice, the time of the question starts.
       final QuizState latest = _readState();
@@ -106,7 +111,7 @@ final class QuizReading {
     if (latest is QuizAsking && latest.isReading) {
       emit(latest.afterReading());
     }
-    unawaited(_setup?.useCases.stop());
+    _stopVoice();
   }
 
   /// Stops the voice without waiting for it, for a question that is
@@ -114,6 +119,11 @@ final class QuizReading {
   /// exists.
   void silence() {
     _readingId++;
-    if (canRead) unawaited(_setup?.useCases.stop());
+    if (canRead) _stopVoice();
+  }
+
+  void _stopVoice() {
+    final Future<void>? voice = _voice;
+    if (voice != null) unawaited(_setup?.useCases.stop(params: voice));
   }
 }

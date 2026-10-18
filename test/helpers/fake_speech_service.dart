@@ -40,6 +40,7 @@ final class FakeSpeechService implements SpeechService {
   int stopCount = 0;
 
   Completer<void>? _reading;
+  Future<void>? _latest;
 
   /// Whether a reading is in progress.
   bool get isSpeaking => _reading != null && !_reading!.isCompleted;
@@ -48,14 +49,17 @@ final class FakeSpeechService implements SpeechService {
   Future<bool> isAvailable({required String languageCode}) async => hasVoice;
 
   @override
-  Future<void> speak({
-    required String text,
-    required String languageCode,
-  }) async {
-    if (!hasVoice) return;
+  Future<void> speak({required String text, required String languageCode}) {
+    if (!hasVoice) return Future<void>.value();
     finishReading();
     spoken.add(text);
     languages.add(languageCode);
+    final Future<void> reading = _run();
+    _latest = reading;
+    return reading;
+  }
+
+  Future<void> _run() async {
     if (isInstant) return;
     final Completer<void> reading = Completer<void>();
     _reading = reading;
@@ -63,7 +67,8 @@ final class FakeSpeechService implements SpeechService {
   }
 
   @override
-  Future<void> stop() async {
+  Future<void> stop({Future<void>? reading}) async {
+    if (reading != null && !identical(reading, _latest)) return;
     stopCount++;
     if (hangsOnStop) await Completer<void>().future;
     if (!ignoresStop) finishReading();
