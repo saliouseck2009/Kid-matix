@@ -23,6 +23,7 @@ class ProfileFormView extends StatelessWidget {
     required this.title,
     required this.submitLabel,
     this.onBack,
+    this.offersReadAloud = false,
     super.key,
   });
 
@@ -37,6 +38,10 @@ class ProfileFormView extends StatelessWidget {
 
   /// Called by the back arrow; the arrow is hidden when `null`.
   final VoidCallback? onBack;
+
+  /// Whether the form offers to have every question read aloud; only the
+  /// creation does, the settings screen holds the switch afterwards.
+  final bool offersReadAloud;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +85,14 @@ class ProfileFormView extends StatelessWidget {
                   ),
                   const SizedBox(height: _sectionGap),
                   ColorPicker(selected: state.color, onPicked: cubit.pickColor),
+                  if (offersReadAloud) ...<Widget>[
+                    const SizedBox(height: _sectionGap),
+                    _ReadAloudOffer(
+                      isOn: state.isReadAloudEnabled,
+                      onChanged: (bool isOn) =>
+                          cubit.changeReadAloud(isEnabled: isOn),
+                    ),
+                  ],
                   const SizedBox(height: AppSizes.space24),
                   _FormFooter(
                     state: state,
@@ -104,6 +117,30 @@ class ProfileFormView extends StatelessWidget {
     }
     if (!state.showsNicknameError) return null;
     return state.nicknameError?.toMessage(context.l10n);
+  }
+}
+
+/// The offer to have every question read aloud, a switch that is off.
+class _ReadAloudOffer extends StatelessWidget {
+  const _ReadAloudOffer({required this.isOn, required this.onChanged});
+
+  final bool isOn;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return MergeSemantics(
+      child: SwitchListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Text(
+          context.l10n.settingsReadAloud,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Text(context.l10n.profileCreationReadAloudHint),
+        value: isOn,
+        onChanged: onChanged,
+      ),
+    );
   }
 }
 

@@ -182,6 +182,10 @@
   "@profileColorPink": {
     "description": "Screen-reader name of the pink color swatch of the player creation. Color adjective, one word. Never displayed."
   },
+  "profileCreationReadAloudHint": "Une voix lit chaque question. Tu pourras changer ça dans les réglages.",
+  "@profileCreationReadAloudHint": {
+    "description": "Small text under the switch \"Read questions aloud\" offered in the player creation, between the color swatches and the main button. Explains the switch in one or two lines and says it can be changed later. Informal \"tu\"."
+  },
   "createProfileButton": "C'est parti !",
   "@createProfileButton": {
     "description": "Main button of the player creation that creates the player and starts the game (\"Let's go!\"). One line on a full-width button."
@@ -375,6 +379,10 @@
   "settingsReducedMotion": "Animations réduites",
   "@settingsReducedMotion": {
     "description": "Switch of the settings screen that replaces the animations by still screens (\"Reduced motion\")."
+  },
+  "settingsReadAloud": "Lire les questions à voix haute",
+  "@settingsReadAloud": {
+    "description": "Switch that makes a voice read every new question of a quiz by itself (\"Read questions aloud\"), in the game section of the settings screen and as the offer at the end of the player creation. The child can always ask for a reading with the listen button, whatever the switch."
   },
   "commonClose": "Fermer",
   "@commonClose": {

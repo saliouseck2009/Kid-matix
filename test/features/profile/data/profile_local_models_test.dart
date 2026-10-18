@@ -60,6 +60,7 @@ void main() {
       // Assert
       expect(actualRow['is_sound_enabled'], 1);
       expect(actualRow['is_everything_unlocked'], 0);
+      expect(actualRow['is_read_aloud_enabled'], 0);
       expect(actualRow['daily_goal_xp'], 20);
       expect(actualRow['timer_mode'], 'normal');
     });
@@ -70,6 +71,7 @@ void main() {
             timerMode: TimerMode.relaxed,
             dailyGoal: DailyGoal.intense,
             isVibrationEnabled: false,
+            isReadAloudEnabled: true,
           );
       // Act
       final ProfileSettingsEntity actualSettings =
@@ -81,6 +83,21 @@ void main() {
           ).toEntity();
       // Assert
       expect(actualSettings, expectedSettings);
+    });
+    test('reads a backup made before the reading aloud as off', () {
+      // Arrange
+      final Map<String, Object?> inputRow =
+          ProfileSettingsLocalModel.fromEntity(
+            settings: const ProfileSettingsEntity.defaults(
+              profileId: 'p-1',
+            ).copyWith(isReadAloudEnabled: true),
+            updatedAt: inputUpdatedAt,
+          ).toJson()..remove('is_read_aloud_enabled');
+      // Act
+      final ProfileSettingsEntity actualSettings =
+          ProfileSettingsLocalModel.fromJson(inputRow).toEntity();
+      // Assert
+      expect(actualSettings.isReadAloudEnabled, isFalse);
     });
     test('falls back to the default goal for an unknown XP value', () {
       // Arrange

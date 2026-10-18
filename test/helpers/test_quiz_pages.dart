@@ -21,6 +21,7 @@ final class FixedPlayerSettings implements PlayerSettingsService {
   const FixedPlayerSettings([
     this.mode = TimerMode.normal,
     this.isEverythingUnlocked = false,
+    this.isReadAloudEnabled = false,
   ]);
 
   /// Timer mode returned.
@@ -28,6 +29,14 @@ final class FixedPlayerSettings implements PlayerSettingsService {
 
   /// "Tout débloquer" returned.
   final bool isEverythingUnlocked;
+
+  /// "Lire les questions à voix haute" returned.
+  final bool isReadAloudEnabled;
+
+  @override
+  Future<DataState<bool>> readReadAloudEnabled({
+    required String profileId,
+  }) async => DataSuccess<bool>(isReadAloudEnabled);
 
   @override
   Future<DataState<bool>> readEverythingUnlocked({

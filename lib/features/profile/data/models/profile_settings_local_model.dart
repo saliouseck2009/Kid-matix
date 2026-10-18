@@ -20,6 +20,7 @@ final class ProfileSettingsLocalModel {
     required this.isReducedMotionEnabled,
     required this.isEverythingUnlocked,
     required this.updatedAt,
+    this.isReadAloudEnabled = false,
     this.deletedAt,
   });
 
@@ -36,6 +37,7 @@ final class ProfileSettingsLocalModel {
       isVibrationEnabled: settings.isVibrationEnabled,
       isReducedMotionEnabled: settings.isReducedMotionEnabled,
       isEverythingUnlocked: settings.isEverythingUnlocked,
+      isReadAloudEnabled: settings.isReadAloudEnabled,
       updatedAt: updatedAt.millisecondsSinceEpoch,
     );
   }
@@ -65,6 +67,11 @@ final class ProfileSettingsLocalModel {
   /// Whether the whole learning path is open.
   final bool isEverythingUnlocked;
 
+  /// Whether every new question is read aloud. A backup made before
+  /// schema version 12 has no such column and reads as off.
+  @JsonKey(defaultValue: false)
+  final bool isReadAloudEnabled;
+
   /// Last change of the row, in milliseconds since epoch.
   final int updatedAt;
 
@@ -89,6 +96,7 @@ final class ProfileSettingsLocalModel {
       isVibrationEnabled: isVibrationEnabled,
       isReducedMotionEnabled: isReducedMotionEnabled,
       isEverythingUnlocked: isEverythingUnlocked,
+      isReadAloudEnabled: isReadAloudEnabled,
     );
   }
 }

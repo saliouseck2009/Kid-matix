@@ -25,6 +25,11 @@ ProfileSettingsLocalModel _$ProfileSettingsLocalModelFromJson(
     (json['is_everything_unlocked'] as num).toInt(),
   ),
   updatedAt: (json['updated_at'] as num).toInt(),
+  isReadAloudEnabled: json['is_read_aloud_enabled'] == null
+      ? false
+      : const SqliteBoolConverter().fromJson(
+          (json['is_read_aloud_enabled'] as num).toInt(),
+        ),
   deletedAt: (json['deleted_at'] as num?)?.toInt(),
 );
 
@@ -45,6 +50,9 @@ Map<String, dynamic> _$ProfileSettingsLocalModelToJson(
   ),
   'is_everything_unlocked': const SqliteBoolConverter().toJson(
     instance.isEverythingUnlocked,
+  ),
+  'is_read_aloud_enabled': const SqliteBoolConverter().toJson(
+    instance.isReadAloudEnabled,
   ),
   'updated_at': instance.updatedAt,
   'deleted_at': instance.deletedAt,

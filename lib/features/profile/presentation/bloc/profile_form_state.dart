@@ -17,6 +17,7 @@ final class ProfileFormState {
     required this.status,
     required this.showsNicknameError,
     this.failureCode,
+    this.isReadAloudEnabled = false,
   });
 
   /// Form filled with an existing player's [nickname], [avatar] and [color].
@@ -26,7 +27,8 @@ final class ProfileFormState {
     required this.color,
   }) : status = ProfileFormStatus.editing,
        showsNicknameError = false,
-       failureCode = null;
+       failureCode = null,
+       isReadAloudEnabled = false;
 
   /// Empty form with the first avatar and the violet color.
   const ProfileFormState.initial()
@@ -35,7 +37,8 @@ final class ProfileFormState {
       color = ProfileColor.violet,
       status = ProfileFormStatus.editing,
       showsNicknameError = false,
-      failureCode = null;
+      failureCode = null,
+      isReadAloudEnabled = false;
 
   /// Nickname as typed.
   final String nickname;
@@ -55,6 +58,10 @@ final class ProfileFormState {
   /// Why saving failed, when [status] is [ProfileFormStatus.failed].
   final AppErrorCode? failureCode;
 
+  /// Whether the player accepted the offer to have every question read
+  /// aloud; only the creation form offers it.
+  final bool isReadAloudEnabled;
+
   /// Why the typed nickname breaks the rules, or `null`.
   NicknameError? get nicknameError => NicknameRules.validate(nickname);
 
@@ -72,6 +79,7 @@ final class ProfileFormState {
     ProfileFormStatus? status,
     bool? showsNicknameError,
     AppErrorCode? failureCode,
+    bool? isReadAloudEnabled,
   }) {
     return ProfileFormState(
       nickname: nickname ?? this.nickname,
@@ -80,6 +88,7 @@ final class ProfileFormState {
       status: status ?? this.status,
       showsNicknameError: showsNicknameError ?? this.showsNicknameError,
       failureCode: failureCode,
+      isReadAloudEnabled: isReadAloudEnabled ?? this.isReadAloudEnabled,
     );
   }
 
@@ -92,7 +101,8 @@ final class ProfileFormState {
             other.color == color &&
             other.status == status &&
             other.showsNicknameError == showsNicknameError &&
-            other.failureCode == failureCode;
+            other.failureCode == failureCode &&
+            other.isReadAloudEnabled == isReadAloudEnabled;
   }
 
   @override
@@ -103,5 +113,6 @@ final class ProfileFormState {
     status,
     showsNicknameError,
     failureCode,
+    isReadAloudEnabled,
   );
 }

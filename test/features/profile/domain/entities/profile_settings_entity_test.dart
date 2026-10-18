@@ -18,6 +18,7 @@ void main() {
       expect(actualSettings.isVibrationEnabled, isTrue);
       expect(actualSettings.isReducedMotionEnabled, isFalse);
       expect(actualSettings.isEverythingUnlocked, isFalse);
+      expect(actualSettings.isReadAloudEnabled, isFalse);
     });
     test('copyWith replaces only the given fields', () {
       // Arrange
@@ -33,6 +34,22 @@ void main() {
       expect(actualSettings.dailyGoal, DailyGoal.intense);
       expect(actualSettings.profileId, inputSettings.profileId);
       expect(actualSettings.isSoundEnabled, inputSettings.isSoundEnabled);
+    });
+    test('turns the reading aloud on without touching the rest', () {
+      // Arrange
+      const ProfileSettingsEntity inputSettings =
+          ProfileSettingsEntity.defaults(profileId: 'profile-1');
+      // Act
+      final ProfileSettingsEntity actualSettings = inputSettings.copyWith(
+        isReadAloudEnabled: true,
+      );
+      // Assert
+      expect(actualSettings.isReadAloudEnabled, isTrue);
+      expect(actualSettings, isNot(inputSettings));
+      expect(
+        actualSettings.copyWith(isReadAloudEnabled: false),
+        inputSettings,
+      );
     });
     test('is equal to settings with the same fields', () {
       // Arrange

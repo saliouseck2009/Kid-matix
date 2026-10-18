@@ -51,7 +51,9 @@ void main() {
     appDatabase = AppDatabase(
       databaseFactory: databaseFactoryFfi,
       resolvePath: () async => inMemoryDatabasePath,
-      migrationRunner: MigrationRunner(migrations: appMigrations),
+      migrationRunner: MigrationRunner(
+        migrations: appMigrations.take(1).toList(),
+      ),
     );
     database = await appDatabase.database;
   });

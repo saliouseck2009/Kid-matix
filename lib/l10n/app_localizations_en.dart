@@ -156,6 +156,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileColorPink => 'Pink';
 
   @override
+  String get profileCreationReadAloudHint =>
+      'A voice reads every question. You can change this later in the settings.';
+
+  @override
   String get createProfileButton => 'Let\'s go!';
 
   @override
@@ -286,6 +290,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsReducedMotion => 'Reduced motion';
+
+  @override
+  String get settingsReadAloud => 'Read questions aloud';
 
   @override
   String get commonClose => 'Close';

@@ -7,6 +7,7 @@ import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_limits.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_params.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart';
@@ -28,7 +29,12 @@ void main() {
     color: ProfileColor.green,
   );
 
-  setUpAll(() => registerFallbackValue(buildProfile()));
+  setUpAll(() {
+    registerFallbackValue(buildProfile());
+    registerFallbackValue(
+      const ProfileSettingsEntity.defaults(profileId: 'fallback'),
+    );
+  });
 
   setUp(() {
     mockRepository = MockProfileRepository();
@@ -80,6 +86,83 @@ void main() {
         () => mockRepository.createProfile(profile: expectedProfile),
       ).called(1);
     });
+    test('keeps the default settings unless the reading is accepted', () async {
+      // Act
+      await useCase(params: inputParams);
+      // Assert
+      verifyNever(
+        () => mockRepository.updateProfileSettings(
+          settings: any(named: 'settings'),
+        ),
+      );
+    });
+    test('turns the reading aloud on when the offer is accepted', () async {
+      // Arrange
+      const CreateProfileParams inputReadAloud = CreateProfileParams(
+        nickname: 'Awa',
+        avatar: ProfileAvatar.avatar3,
+        color: ProfileColor.green,
+        isReadAloudEnabled: true,
+      );
+      when(
+        () => mockRepository.updateProfileSettings(
+          settings: any(named: 'settings'),
+        ),
+      ).thenAnswer((_) async => const DataSuccess<void>(null));
+      // Act
+      final DataState<ProfileEntity> actualState = await useCase(
+        params: inputReadAloud,
+      );
+      // Assert
+      expect(actualState, isA<DataSuccess<ProfileEntity>>());
+      verify(
+        () => mockRepository.updateProfileSettings(
+          settings: const ProfileSettingsEntity.defaults(
+            profileId: 'new-id',
+          ).copyWith(isReadAloudEnabled: true),
+        ),
+      ).called(1);
+    });
+    test('still creates the player when the offer cannot be saved', () async {
+      // Arrange
+      const CreateProfileParams inputReadAloud = CreateProfileParams(
+        nickname: 'Awa',
+        avatar: ProfileAvatar.avatar3,
+        color: ProfileColor.green,
+        isReadAloudEnabled: true,
+      );
+      when(
+        () => mockRepository.updateProfileSettings(
+          settings: any(named: 'settings'),
+        ),
+      ).thenAnswer((_) async => const DataFailed<void>(CacheException()));
+      // Act
+      final DataState<ProfileEntity> actualState = await useCase(
+        params: inputReadAloud,
+      );
+      // Assert
+      expect(actualState, isA<DataSuccess<ProfileEntity>>());
+    });
+    test(
+      'does not turn the reading on for a player that was refused',
+      () async {
+        // Arrange
+        const CreateProfileParams inputReadAloud = CreateProfileParams(
+          nickname: 'A!',
+          avatar: ProfileAvatar.avatar3,
+          color: ProfileColor.green,
+          isReadAloudEnabled: true,
+        );
+        // Act
+        await useCase(params: inputReadAloud);
+        // Assert
+        verifyNever(
+          () => mockRepository.updateProfileSettings(
+            settings: any(named: 'settings'),
+          ),
+        );
+      },
+    );
     test('refuses an eleventh profile', () async {
       // Arrange
       when(mockRepository.countProfiles).thenAnswer(

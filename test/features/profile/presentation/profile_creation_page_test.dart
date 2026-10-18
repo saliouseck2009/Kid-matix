@@ -80,6 +80,52 @@ void main() {
       expect(actualParams.avatar, ProfileAvatar.avatar3);
       expect(actualParams.color, ProfileColor.green);
     });
+    testWidgets('offers the reading aloud, off, and asks for it when on', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpPage(tester);
+      await tester.enterText(find.byType(TextField), 'Awa');
+      expect(find.text('Lire les questions à voix haute'), findsOneWidget);
+      expect(
+        find.text(
+          'Une voix lit chaque question. Tu pourras changer ça dans '
+          'les réglages.',
+        ),
+        findsOneWidget,
+      );
+      // Act
+      await tester.tap(find.text('Lire les questions à voix haute'));
+      await tester.pump();
+      await tapSubmit(tester);
+      // Assert
+      final CreateProfileParams actualParams =
+          verify(
+                () => mockCreateProfile.call(
+                  params: captureAny(named: 'params'),
+                ),
+              ).captured.single
+              as CreateProfileParams;
+      expect(actualParams.isReadAloudEnabled, isTrue);
+    });
+    testWidgets('leaves the reading aloud off unless the offer is taken', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpPage(tester);
+      await tester.enterText(find.byType(TextField), 'Awa');
+      // Act
+      await tapSubmit(tester);
+      // Assert
+      final CreateProfileParams actualParams =
+          verify(
+                () => mockCreateProfile.call(
+                  params: captureAny(named: 'params'),
+                ),
+              ).captured.single
+              as CreateProfileParams;
+      expect(actualParams.isReadAloudEnabled, isFalse);
+    });
     testWidgets('explains a nickname that is too short', (
       WidgetTester tester,
     ) async {

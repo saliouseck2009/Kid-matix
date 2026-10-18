@@ -39,6 +39,7 @@ class ProfileCreationPage extends StatelessWidget {
         title: context.l10n.profileCreationTitle,
         submitLabel: context.l10n.createProfileButton,
         onBack: canGoBack ? () => context.go(AppRoutes.whoIsPlaying) : null,
+        offersReadAloud: true,
       ),
     );
   }

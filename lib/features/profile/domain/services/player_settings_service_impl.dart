@@ -48,6 +48,14 @@ final class PlayerSettingsServiceImpl implements PlayerSettingsService {
     );
   }
 
+  @override
+  Future<DataState<bool>> readReadAloudEnabled({required String profileId}) {
+    return _read(
+      profileId,
+      (ProfileSettingsEntity settings) => settings.isReadAloudEnabled,
+    );
+  }
+
   Future<DataState<T>> _read<T>(
     String profileId,
     T Function(ProfileSettingsEntity settings) pick,

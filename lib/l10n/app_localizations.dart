@@ -304,6 +304,12 @@ abstract class AppLocalizations {
   /// **'Rose'**
   String get profileColorPink;
 
+  /// Small text under the switch "Read questions aloud" offered in the player creation, between the color swatches and the main button. Explains the switch in one or two lines and says it can be changed later. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Une voix lit chaque question. Tu pourras changer ça dans les réglages.'**
+  String get profileCreationReadAloudHint;
+
   /// Main button of the player creation that creates the player and starts the game ("Let's go!"). One line on a full-width button.
   ///
   /// In fr, this message translates to:
@@ -495,6 +501,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Animations réduites'**
   String get settingsReducedMotion;
+
+  /// Switch that makes a voice read every new question of a quiz by itself ("Read questions aloud"), in the game section of the settings screen and as the offer at the end of the player creation. The child can always ask for a reading with the listen button, whatever the switch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lire les questions à voix haute'**
+  String get settingsReadAloud;
 
   /// Tooltip of the cross button that closes a full screen such as the parental gate ("Close"). Infinitive verb, one word.
   ///

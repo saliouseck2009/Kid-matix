@@ -20,4 +20,9 @@ abstract interface class PlayerSettingsService {
   Future<DataState<({bool isSoundOn, bool isVibrationOn})>> readFeedback({
     required String profileId,
   });
+
+  /// Returns whether the player [profileId] asked for every new question
+  /// to be read aloud by itself ("Lire les questions à voix haute"). Off by
+  /// default; a reading can always be asked for with the listen button.
+  Future<DataState<bool>> readReadAloudEnabled({required String profileId});
 }

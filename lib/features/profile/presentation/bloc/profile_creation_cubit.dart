@@ -31,6 +31,7 @@ final class ProfileCreationCubit extends ProfileFormCubit {
         nickname: state.nickname,
         avatar: state.avatar,
         color: state.color,
+        isReadAloudEnabled: state.isReadAloudEnabled,
       ),
     );
     final DataState<ProfileEntity> selected = switch (created) {

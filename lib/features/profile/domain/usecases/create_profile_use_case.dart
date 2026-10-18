@@ -6,6 +6,7 @@ import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/profile/domain/entities/nickname_rules.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_limits.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_params.dart';
 import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart';
@@ -45,7 +46,24 @@ class CreateProfileUseCase
       color: params.color,
       createdAt: _clock.now(),
     );
-    return _repository.createProfile(profile: profile);
+    final DataState<ProfileEntity> created = await _repository.createProfile(
+      profile: profile,
+    );
+    if (created is DataSuccess<ProfileEntity> && params.isReadAloudEnabled) {
+      await _turnReadAloudOn(profile.id);
+    }
+    return created;
+  }
+
+  /// Applies the offer accepted in the creation form. The player exists
+  /// by now, so a failure here is not worth failing the creation: the
+  /// setting stays off and the settings screen can turn it on.
+  Future<void> _turnReadAloudOn(String profileId) {
+    return _repository.updateProfileSettings(
+      settings: ProfileSettingsEntity.defaults(
+        profileId: profileId,
+      ).copyWith(isReadAloudEnabled: true),
+    );
   }
 
   Future<AppException?> _findLimitProblem() async {
