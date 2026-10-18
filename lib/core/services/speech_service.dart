@@ -1,3 +1,5 @@
+import 'package:kid_matix/core/services/speech_reading.dart';
+
 /// Reads texts aloud with a voice installed on the phone.
 ///
 /// Implemented by the speech feature over the system's speech synthesis,
@@ -17,14 +19,15 @@ abstract interface class SpeechService {
   /// A reading in progress is stopped first. The future completes when the
   /// reading ends, is stopped, or could not start; it never throws, so a
   /// caller can wait for it to hold something back until the voice is
-  /// done, such as a timer. The future identifies the reading: give it to
-  /// [stop] to stop this reading and no other.
-  Future<void> speak({required String text, required String languageCode});
+  /// done, such as a timer. The returned [SpeechReading] completes with the
+  /// reading and identifies it: give it to [stop] to stop this reading and
+  /// no other. A blank text stops the reading in progress and says nothing.
+  SpeechReading speak({required String text, required String languageCode});
 
   /// Stops the reading in progress, if any.
   ///
-  /// With the future [speak] returned for a reading, stops only if that
-  /// reading is still the newest: a screen that goes away, or a reading
+  /// With the [SpeechReading] [speak] returned for a reading, stops only if
+  /// that reading is still the newest: a screen that goes away, or a reading
   /// that outlived its question, cannot cut the reading that replaced it.
-  Future<void> stop({Future<void>? reading});
+  Future<void> stop({SpeechReading? reading});
 }

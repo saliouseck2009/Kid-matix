@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/features/speech/domain/services/text_to_speech_engine.dart';
 
@@ -68,10 +69,16 @@ final class SpeechServiceImpl implements SpeechService {
   }
 
   @override
-  Future<void> speak({required String text, required String languageCode}) {
-    if (text.trim().isEmpty) return Future<void>.value();
+  SpeechReading speak({required String text, required String languageCode}) {
     final int id = ++_latestId;
-    final Future<void> reading = _read(id, text, languageCode);
+    if (text.trim().isEmpty) {
+      // Nothing to say, but the reading in progress is replaced all the same.
+      unawaited(_stopEngine());
+      return SpeechReading.none;
+    }
+    final SpeechReading reading = SpeechReading(
+      _read(id, text, languageCode),
+    );
     _ids[reading] = id;
     return reading;
   }
@@ -84,15 +91,19 @@ final class SpeechServiceImpl implements SpeechService {
     } on TimeoutException {
       // The voice is cut without waiting for the engine to say so, unless
       // a newer reading has taken its place by now.
-      if (id == _latestId) unawaited(stop());
+      if (id == _latestId) unawaited(_stopEngine());
     } on Exception catch (error, stackTrace) {
       _logFailure('Reading failed', error, stackTrace);
     }
   }
 
   @override
-  Future<void> stop({Future<void>? reading}) async {
+  Future<void> stop({SpeechReading? reading}) async {
     if (reading != null && _ids[reading] != _latestId) return;
+    await _stopEngine();
+  }
+
+  Future<void> _stopEngine() async {
     try {
       await _engine.stop().timeout(stopTimeout, onTimeout: () {});
     } on Exception catch (error, stackTrace) {

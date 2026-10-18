@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 
 /// [SpeechService] that makes no sound and keeps what it was asked.
@@ -40,7 +41,7 @@ final class FakeSpeechService implements SpeechService {
   int stopCount = 0;
 
   Completer<void>? _reading;
-  Future<void>? _latest;
+  SpeechReading? _latest;
 
   /// Whether a reading is in progress.
   bool get isSpeaking => _reading != null && !_reading!.isCompleted;
@@ -49,12 +50,12 @@ final class FakeSpeechService implements SpeechService {
   Future<bool> isAvailable({required String languageCode}) async => hasVoice;
 
   @override
-  Future<void> speak({required String text, required String languageCode}) {
-    if (!hasVoice) return Future<void>.value();
+  SpeechReading speak({required String text, required String languageCode}) {
+    if (!hasVoice) return SpeechReading.none;
     finishReading();
     spoken.add(text);
     languages.add(languageCode);
-    final Future<void> reading = _run();
+    final SpeechReading reading = SpeechReading(_run());
     _latest = reading;
     return reading;
   }
@@ -67,7 +68,7 @@ final class FakeSpeechService implements SpeechService {
   }
 
   @override
-  Future<void> stop({Future<void>? reading}) async {
+  Future<void> stop({SpeechReading? reading}) async {
     if (reading != null && !identical(reading, _latest)) return;
     stopCount++;
     if (hangsOnStop) await Completer<void>().future;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/features/speech/domain/services/speech_service_impl.dart';
 import 'package:kid_matix/features/speech/domain/services/text_to_speech_engine.dart';
 
@@ -101,14 +102,16 @@ void main() {
   group('SpeechServiceImpl.speak', () {
     test('reads the text in the language asked', () async {
       // Act
-      await service.speak(text: '5 fois 7 égale combien', languageCode: 'fr');
+      await service
+          .speak(text: '5 fois 7 égale combien', languageCode: 'fr')
+          .done;
       // Assert
       expect(engine.spoken, <String>['5 fois 7 égale combien']);
       expect(engine.languages, <String>['fr']);
     });
     test('reads nothing for a blank text', () async {
       // Act
-      await service.speak(text: '  ', languageCode: 'fr');
+      await service.speak(text: '  ', languageCode: 'fr').done;
       // Assert
       expect(engine.spoken, isEmpty);
     });
@@ -116,10 +119,9 @@ void main() {
       // Arrange
       engine.fails = true;
       // Act
-      final Future<void> actualReading = service.speak(
-        text: '5 fois 7',
-        languageCode: 'fr',
-      );
+      final Future<void> actualReading = service
+          .speak(text: '5 fois 7', languageCode: 'fr')
+          .done;
       // Assert
       await expectLater(actualReading, completes);
     });
@@ -133,6 +135,7 @@ void main() {
       unawaited(
         service
             .speak(text: inputText, languageCode: 'fr')
+            .done
             .then((_) => isDone = true),
       );
       await tester.pump();
@@ -183,6 +186,7 @@ void main() {
       unawaited(
         service
             .speak(text: inputText, languageCode: 'fr')
+            .done
             .then((_) => isDone = true),
       );
       await tester.pump();
@@ -209,12 +213,14 @@ void main() {
       unawaited(
         service
             .speak(text: inputFirst, languageCode: 'fr')
+            .done
             .then((_) => isFirstDone = true),
       );
       await tester.pump(const Duration(seconds: 1));
       unawaited(
         service
             .speak(text: inputSecond, languageCode: 'fr')
+            .done
             .then((_) => isSecondDone = true),
       );
       await tester.pump();
@@ -236,11 +242,11 @@ void main() {
     test('leaves alone a reading that a newer one replaced', () async {
       // Arrange
       engine.keepsSpeaking = true;
-      final Future<void> inputOlder = service.speak(
+      final SpeechReading inputOlder = service.speak(
         text: 'première',
         languageCode: 'fr',
       );
-      final Future<void> inputNewer = service.speak(
+      final SpeechReading inputNewer = service.speak(
         text: 'seconde',
         languageCode: 'fr',
       );
@@ -254,7 +260,7 @@ void main() {
     test('stops the newest reading when no reading is given', () async {
       // Arrange
       engine.keepsSpeaking = true;
-      unawaited(service.speak(text: 'première', languageCode: 'fr'));
+      service.speak(text: 'première', languageCode: 'fr');
       // Act
       await service.stop();
       // Assert
@@ -264,11 +270,11 @@ void main() {
       // Arrange
       engine.keepsSpeaking = true;
       final SpeechServiceImpl other = SpeechServiceImpl(engine: engine);
-      final Future<void> inputForeign = other.speak(
+      final SpeechReading inputForeign = other.speak(
         text: 'étrangère',
         languageCode: 'fr',
       );
-      unawaited(service.speak(text: 'la mienne', languageCode: 'fr'));
+      service.speak(text: 'la mienne', languageCode: 'fr');
       // Act
       await service.stop(reading: inputForeign);
       // Assert

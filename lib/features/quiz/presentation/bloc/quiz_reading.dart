@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/quiz/question.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/read_aloud_mode.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_mode_params.dart';
@@ -31,7 +32,7 @@ final class QuizReading {
   int _readingId = 0;
 
   // The reading of this quiz in progress, to stop it and no other.
-  Future<void>? _voice;
+  SpeechReading? _voice;
 
   /// Whether a voice can read the questions, which shows the listen
   /// buttons.
@@ -88,12 +89,12 @@ final class QuizReading {
     emit(
       asking.copyWith(isReading: true, isReadingInstruction: isInstruction),
     );
-    final Future<void> voice = setup.useCases.read(
+    final SpeechReading voice = setup.useCases.read(
       params: ReadAloudParams(text: text, languageCode: setup.languageCode),
     );
     _voice = voice;
     try {
-      await voice;
+      await voice.done;
     } finally {
       // Whatever happened to the voice, the time of the question starts.
       final QuizState latest = _readState();
@@ -123,7 +124,7 @@ final class QuizReading {
   }
 
   void _stopVoice() {
-    final Future<void>? voice = _voice;
+    final SpeechReading? voice = _voice;
     if (voice != null) unawaited(_setup?.useCases.stop(params: voice));
   }
 }

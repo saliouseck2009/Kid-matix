@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/core/widgets/read_aloud_button.dart';
@@ -14,21 +15,21 @@ import '../../helpers/pump_localized.dart';
 /// A voice that keeps the readings it was given and the readings it was
 /// asked to stop.
 final class _RecordingSpeech implements SpeechService {
-  final List<Future<void>> readings = <Future<void>>[];
-  final List<Future<void>?> stopped = <Future<void>?>[];
+  final List<SpeechReading> readings = <SpeechReading>[];
+  final List<SpeechReading?> stopped = <SpeechReading?>[];
 
   @override
   Future<bool> isAvailable({required String languageCode}) async => true;
 
   @override
-  Future<void> speak({required String text, required String languageCode}) {
-    final Future<void> reading = Completer<void>().future;
+  SpeechReading speak({required String text, required String languageCode}) {
+    final SpeechReading reading = SpeechReading(Completer<void>().future);
     readings.add(reading);
     return reading;
   }
 
   @override
-  Future<void> stop({Future<void>? reading}) async => stopped.add(reading);
+  Future<void> stop({SpeechReading? reading}) async => stopped.add(reading);
 }
 
 void main() {

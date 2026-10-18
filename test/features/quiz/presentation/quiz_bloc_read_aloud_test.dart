@@ -8,6 +8,7 @@ import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
@@ -54,15 +55,15 @@ final class _BrokenSpeech implements SpeechService {
   Future<bool> isAvailable({required String languageCode}) async => true;
 
   @override
-  Future<void> speak({
+  SpeechReading speak({
     required String text,
     required String languageCode,
-  }) async {
-    throw StateError('the voice broke');
+  }) {
+    return SpeechReading(Future<void>.error(StateError('the voice broke')));
   }
 
   @override
-  Future<void> stop({Future<void>? reading}) async {}
+  Future<void> stop({SpeechReading? reading}) async {}
 }
 
 QuizRequest _request({Duration? baseTimeLimit}) {
@@ -758,7 +759,7 @@ void main() {
       bloc.add(const ReadAloudToggled());
       await pumpEventQueue();
       // Another owner of the voice starts its own reading.
-      unawaited(speech.speak(text: 'un astuce', languageCode: 'fr'));
+      speech.speak(text: 'un astuce', languageCode: 'fr');
       await pumpEventQueue();
       // Act
       bloc.add(
