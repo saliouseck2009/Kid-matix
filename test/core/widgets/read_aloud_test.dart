@@ -151,6 +151,46 @@ void main() {
     });
   });
 
+  group('ReadAloudButton when the app goes to the background', () {
+    testWidgets('stops the voice of a tip', (WidgetTester tester) async {
+      // Arrange
+      await pumpScoped(tester, const ReadAloudButton(text: 'Compte.'));
+      await tester.tap(find.byTooltip('Écouter'));
+      await tester.pump();
+      expect(speech.isSpeaking, isTrue);
+      // Act
+      tester.binding
+        ..handleAppLifecycleStateChanged(AppLifecycleState.inactive)
+        ..handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      await tester.pump();
+      // Assert
+      expect(speech.isSpeaking, isFalse);
+      expect(find.byIcon(Icons.volume_up_rounded), findsOneWidget);
+      tester.binding
+        ..handleAppLifecycleStateChanged(AppLifecycleState.inactive)
+        ..handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    });
+    testWidgets('stops the voice of a mascot message', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpScoped(tester, const SpeechBubble(text: 'Bravo !'));
+      await tester.tap(find.text('Bravo !'));
+      await tester.pump();
+      expect(speech.isSpeaking, isTrue);
+      // Act
+      tester.binding
+        ..handleAppLifecycleStateChanged(AppLifecycleState.inactive)
+        ..handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      await tester.pump();
+      // Assert
+      expect(speech.isSpeaking, isFalse);
+      tester.binding
+        ..handleAppLifecycleStateChanged(AppLifecycleState.inactive)
+        ..handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    });
+  });
+
   group('ReadAloudButton among several readings', () {
     testWidgets('stops its own reading, and no other, when tapped again', (
       WidgetTester tester,

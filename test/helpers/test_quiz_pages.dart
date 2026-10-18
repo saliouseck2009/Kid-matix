@@ -23,11 +23,11 @@ import 'recording_game_feedback.dart';
 /// [PlayerSettingsService] that always answers [mode].
 final class FixedPlayerSettings implements PlayerSettingsService {
   /// Creates the service.
-  const FixedPlayerSettings([
+  const FixedPlayerSettings({
     this.mode = TimerMode.normal,
     this.isEverythingUnlocked = false,
     this.isReadAloudEnabled = false,
-  ]);
+  });
 
   /// Timer mode returned.
   final TimerMode mode;
@@ -103,7 +103,7 @@ QuizReadAloudUseCases buildReadAloudUseCases({
   return QuizReadAloudUseCases(
     getMode: GetReadAloudModeUseCase(
       speech: speech,
-      settings: FixedPlayerSettings(TimerMode.normal, false, readsByItself),
+      settings: FixedPlayerSettings(isReadAloudEnabled: readsByItself),
     ),
     read: ReadAloudUseCase(speech: speech),
     stop: StopReadAloudUseCase(speech: speech),

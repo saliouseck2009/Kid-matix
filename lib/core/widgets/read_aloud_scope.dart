@@ -5,6 +5,12 @@ import 'package:kid_matix/core/services/speech_service.dart';
 /// message of the mascot can offer a [ReadAloudButton] without any wiring
 /// of its own.
 ///
+/// Rule of the exception: a widget may reach `SpeechService` through this
+/// scope only for a reading that holds no timer (a tip, a message of the
+/// mascot), where nothing waits for the end of the voice. A reading that
+/// must be timed, such as a question of a quiz, goes through the Bloc and
+/// its use cases like any other capability.
+///
 /// Placed once above the router. Without it (in a test, or before a voice
 /// is wired) the buttons simply do not show.
 class ReadAloudScope extends InheritedWidget {

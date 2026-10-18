@@ -2,18 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
+import 'package:kid_matix/core/widgets/read_aloud_builder.dart';
 import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
-
-/// What the player can do about the reading of a text: whether the voice
-/// is reading it now, and the action that starts or stops the reading.
-typedef ReadAloudAction = ({bool isSpeaking, VoidCallback toggle});
-
-/// Draws a widget around the reading of a text; [action] is `null` while
-/// no voice can read it.
-typedef ReadAloudBuilder = Widget Function(
-  BuildContext context,
-  ReadAloudAction? action,
-);
 
 /// Gives [builder] the means to read [text] aloud, for a screen whose
 /// reading does not hold any timer (a tip, a message of the mascot).
@@ -22,7 +12,8 @@ typedef ReadAloudBuilder = Widget Function(
 /// interface. Without a scope or without an installed voice, [builder]
 /// gets no action: the widget it draws then offers nothing, and shows no
 /// message. The action starts the reading, or stops it while the voice
-/// speaks; leaving the screen stops it too.
+/// speaks; leaving the screen, or the app going to the background, stops it
+/// too.
 class ReadAloudControl extends StatefulWidget {
   /// Creates the control that reads [text] and draws itself with
   /// [builder].
@@ -51,6 +42,13 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
   // The reading of this control, to stop it and no other: another screen
   // may have started its own since.
   Future<void>? _reading;
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(onHide: _stopOwnReading);
+  }
 
   @override
   void didChangeDependencies() {
@@ -65,8 +63,13 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
 
   @override
   void dispose() {
-    if (_isSpeaking) unawaited(_speech?.stop(reading: _reading));
+    _lifecycle.dispose();
+    _stopOwnReading();
     super.dispose();
+  }
+
+  void _stopOwnReading() {
+    if (_isSpeaking) unawaited(_speech?.stop(reading: _reading));
   }
 
   Future<void> _findVoice(SpeechService? speech, String languageCode) async {

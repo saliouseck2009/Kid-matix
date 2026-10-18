@@ -41,13 +41,13 @@ ChallengeUseCases buildTestChallengeUseCases({
     getTrainingChoice: GetTrainingChoiceUseCase(
       repository: choices,
       openUnits: openUnits,
-      settings: FixedPlayerSettings(timerMode),
+      settings: FixedPlayerSettings(mode: timerMode),
     ),
     saveTrainingChoice: SaveTrainingChoiceUseCase(repository: choices),
     getTimeAttack: GetTimeAttackUseCase(openUnits: openUnits),
     getSurvival: GetSurvivalUseCase(
       openUnits: openUnits,
-      settings: FixedPlayerSettings(timerMode),
+      settings: FixedPlayerSettings(mode: timerMode),
     ),
     getRecords: GetRecordsUseCase(repository: recordRepository),
     getSessionRecord: GetSessionRecordUseCase(repository: recordRepository),

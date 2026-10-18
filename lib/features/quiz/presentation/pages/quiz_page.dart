@@ -112,7 +112,7 @@ class QuizPage extends StatelessWidget {
     final QuizLabels labels = QuizLabels(domains: domains, l10n: context.l10n);
     return QuizReadAloud(
       useCases: cases,
-      languageCode: context.l10n.localeName,
+      languageCode: Localizations.localeOf(context).languageCode,
       speakQuestion: (Question question) =>
           labels.speakQuestion(question, request.domainId),
       speakInstruction: labels.describeHint,

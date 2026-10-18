@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
+import 'package:kid_matix/core/widgets/read_aloud_action.dart';
 import 'package:kid_matix/core/widgets/read_aloud_control.dart';
 
 /// A [ListenButton] that reads [text] aloud, for a screen whose reading
