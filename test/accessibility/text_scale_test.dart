@@ -11,6 +11,7 @@ import 'package:kid_matix/main.dart';
 
 import '../features/profile/helpers/profile_fixtures.dart';
 import '../helpers/fake_profile_session_service.dart';
+import '../helpers/fake_speech_service.dart';
 import '../helpers/test_challenge_pages.dart';
 import '../helpers/test_mascot_pages.dart';
 import '../helpers/test_mastery_pages.dart';
@@ -49,7 +50,8 @@ void main() {
     router = createAppRouter(
       session: FakeProfileSessionService(activeProfileId: 'p-1'),
       profilePages: buildProfilePages(),
-      quizPages: buildTestQuizPages(),
+      // A voice is installed: the listen button must fit at every size.
+      quizPages: buildTestQuizPages(speech: FakeSpeechService()),
       pathPages: buildTestPathPages(),
       rewardPages: buildTestRewardPages(),
       mascotPages: mascotPages,

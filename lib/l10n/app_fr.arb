@@ -388,6 +388,14 @@
   "@commonClose": {
     "description": "Tooltip of the cross button that closes a full screen such as the parental gate (\"Close\"). Infinitive verb, one word."
   },
+  "commonListen": "Écouter",
+  "@commonListen": {
+    "description": "Tooltip and screen-reader label of the round speaker button that reads a question, an instruction or a tip aloud (\"Listen\"). Infinitive verb, one word. Hidden when the phone has no voice."
+  },
+  "commonListenStop": "Arrêter la lecture",
+  "@commonListenStop": {
+    "description": "Tooltip and screen-reader label of the same button while the voice is reading, which then stops it (\"Stop reading\"). Short phrase."
+  },
   "settingsBackupSection": "Sauvegarde",
   "@settingsBackupSection": {
     "description": "Name of the section of the settings screen holding the export and the import of a player to and from a file (\"Backup\"). Noun, short section header."
@@ -849,6 +857,16 @@
   "quizSpokenBlank": "combien",
   "@quizSpokenBlank": {
     "description": "Word read by the screen reader for the missing number at the end of a question (\"how much\"), as in \"5 fois 7 égale combien\". Joined with the other words in the order of the operation. Never displayed."
+  },
+  "quizSpokenTrueFalse": "{statement}. Vrai ou faux ?",
+  "@quizSpokenTrueFalse": {
+    "description": "Sentence read aloud for a true or false question: the statement as spoken words, then the question (\"6 fois 7 égale 48. Vrai ou faux ?\"). Spoken only, never displayed.",
+    "placeholders": {
+      "statement": {
+        "type": "String",
+        "example": "6 fois 7 égale 48"
+      }
+    }
   },
   "quizModePath": "Parcours",
   "@quizModePath": {

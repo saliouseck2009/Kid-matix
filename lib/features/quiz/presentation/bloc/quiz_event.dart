@@ -84,6 +84,13 @@ final class QuizResumed extends QuizEvent {
   const QuizResumed();
 }
 
+/// The player tapped the listen button: the question is read aloud, or
+/// the reading in progress stops.
+final class ReadAloudToggled extends QuizEvent {
+  /// Creates the event.
+  const ReadAloudToggled();
+}
+
 /// The player confirmed leaving the quiz.
 final class QuizAbandoned extends QuizEvent {
   /// Creates the event.

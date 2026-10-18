@@ -35,6 +35,19 @@ final class QuizLabels {
     };
   }
 
+  /// The instruction under the answers of [question], such as "Touche la
+  /// bonne réponse"; `null` when it shows none (a written answer, whose
+  /// keypad needs no words, and the pairs board, which has its own hints).
+  String? describeHint(Question question) {
+    if (question.pairs.isNotEmpty) return null;
+    return switch (question.questionTypeId) {
+      QuestionTypeIds.trueFalse => l10n.quizHintTrueFalse,
+      QuestionTypeIds.findOperation => l10n.quizHintFindOperation,
+      _ when question.choices.isNotEmpty => l10n.quizHintMultipleChoice,
+      _ => null,
+    };
+  }
+
   /// What a screen reader says for a question that asks for the
   /// operation, such as "Quelle multiplication donne 24 ?"; `null` for
   /// another question.

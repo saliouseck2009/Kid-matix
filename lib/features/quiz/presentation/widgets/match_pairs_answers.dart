@@ -25,6 +25,7 @@ class MatchPairsAnswers extends StatefulWidget {
     required this.pairs,
     required this.results,
     required this.onMatched,
+    this.listenButton,
     super.key,
   });
 
@@ -37,6 +38,10 @@ class MatchPairsAnswers extends StatefulWidget {
   /// Called once every pair is found; `null` once the answer is judged,
   /// which shows every pair found.
   final ValueChanged<Answer>? onMatched;
+
+  /// The listen button, at the right of the title, or `null` when no
+  /// voice can read the question.
+  final Widget? listenButton;
 
   @override
   State<MatchPairsAnswers> createState() => _MatchPairsAnswersState();
@@ -133,7 +138,11 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: AppSizes.space16,
       children: <Widget>[
-        _Title(foundCount: foundCount, total: widget.pairs.length),
+        _Title(
+          foundCount: foundCount,
+          total: widget.pairs.length,
+          listenButton: widget.listenButton,
+        ),
         Expanded(
           child: _PairGrid(
             rowCount: widget.pairs.length,
@@ -194,31 +203,44 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
 }
 
 class _Title extends StatelessWidget {
-  const _Title({required this.foundCount, required this.total});
+  const _Title({
+    required this.foundCount,
+    required this.total,
+    required this.listenButton,
+  });
 
   final int foundCount;
   final int total;
+  final Widget? listenButton;
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: AppSizes.space4,
+    return Row(
+      spacing: AppSizes.space8,
       children: <Widget>[
-        Text(
-          context.l10n.quizMatchPairsTitle,
-          style: textTheme.headlineSmall,
-        ),
-        Semantics(
-          liveRegion: true,
-          child: Text(
-            context.l10n.quizMatchPairsProgress(foundCount, total),
-            style: textTheme.labelLarge?.copyWith(
-              color: context.palette.mutedText,
-            ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: AppSizes.space4,
+            children: <Widget>[
+              Text(
+                context.l10n.quizMatchPairsTitle,
+                style: textTheme.headlineSmall,
+              ),
+              Semantics(
+                liveRegion: true,
+                child: Text(
+                  context.l10n.quizMatchPairsProgress(foundCount, total),
+                  style: textTheme.labelLarge?.copyWith(
+                    color: context.palette.mutedText,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
+        ?listenButton,
       ],
     );
   }

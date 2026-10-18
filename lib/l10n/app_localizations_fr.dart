@@ -300,6 +300,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonClose => 'Fermer';
 
   @override
+  String get commonListen => 'Écouter';
+
+  @override
+  String get commonListenStop => 'Arrêter la lecture';
+
+  @override
   String get settingsBackupSection => 'Sauvegarde';
 
   @override
@@ -614,6 +620,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizSpokenBlank => 'combien';
+
+  @override
+  String quizSpokenTrueFalse(String statement) {
+    return '$statement. Vrai ou faux ?';
+  }
 
   @override
   String get quizModePath => 'Parcours';

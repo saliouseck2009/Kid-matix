@@ -28,6 +28,8 @@ final class QuizAsking extends QuizState {
     this.isPaused = false,
     this.typedDigits = '',
     this.playedTime = Duration.zero,
+    this.canReadAloud = false,
+    this.isReading = false,
   });
 
   /// Most digits the keypad accepts; every answer of version 1.0 fits.
@@ -47,6 +49,12 @@ final class QuizAsking extends QuizState {
 
   /// Time played since the first question, pauses excluded.
   final Duration playedTime;
+
+  /// Whether a voice can read the question, which shows the listen button.
+  final bool canReadAloud;
+
+  /// Whether a voice is reading the question.
+  final bool isReading;
 
   /// Question shown.
   QuizTurn get turn => run.currentTurn!;
@@ -90,6 +98,7 @@ final class QuizAsking extends QuizState {
     bool? isPaused,
     String? typedDigits,
     Duration? playedTime,
+    bool? isReading,
   }) {
     return QuizAsking(
       run: run,
@@ -97,6 +106,8 @@ final class QuizAsking extends QuizState {
       isPaused: isPaused ?? this.isPaused,
       typedDigits: typedDigits ?? this.typedDigits,
       playedTime: playedTime ?? this.playedTime,
+      canReadAloud: canReadAloud,
+      isReading: isReading ?? this.isReading,
     );
   }
 }

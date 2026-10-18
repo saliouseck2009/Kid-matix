@@ -22,6 +22,7 @@ class QuestionCard extends StatelessWidget {
     this.mascotMood = MascotMood.neutral,
     this.mascotMessage,
     this.resultSemanticLabel,
+    this.listenButton,
     super.key,
   });
 
@@ -52,6 +53,10 @@ class QuestionCard extends StatelessWidget {
   /// result side of [prompt], after the equals sign, is shown.
   final String? resultSemanticLabel;
 
+  /// The listen button, in the top right corner, or `null` when no voice
+  /// can read the question.
+  final Widget? listenButton;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,6 +71,12 @@ class QuestionCard extends StatelessWidget {
             bottom: 0,
             child: MascotIllustration(size: _mascotSize, mood: mascotMood),
           ),
+          if (listenButton case final Widget button)
+            Positioned(
+              top: AppSizes.space8,
+              right: AppSizes.space8,
+              child: button,
+            ),
           if (mascotMessage case final String message)
             Positioned(
               left: AppSizes.space12,
@@ -78,7 +89,16 @@ class QuestionCard extends StatelessWidget {
             ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(AppSizes.space16),
+              // The listen button takes the top corner: the label and the
+              // operation start under it, so a large text never meets it.
+              padding: EdgeInsets.fromLTRB(
+                AppSizes.space16,
+                listenButton == null
+                    ? AppSizes.space16
+                    : AppSizes.minTouchTarget + AppSizes.space8,
+                AppSizes.space16,
+                AppSizes.space16,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: switch (resultSemanticLabel) {

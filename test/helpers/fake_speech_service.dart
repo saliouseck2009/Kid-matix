@@ -6,16 +6,24 @@ import 'package:kid_matix/core/services/speech_service.dart';
 ///
 /// A reading lasts until the test calls [finishReading] or [stop], so a
 /// test can look at what waits for the voice while it "speaks"; with
-/// [isInstant] set a reading ends at once.
+/// [isInstant] set a reading ends at once, and with [ignoresStop] set a
+/// stop leaves the reading going until the next one replaces it.
 final class FakeSpeechService implements SpeechService {
   /// Creates the service; [hasVoice] is what [isAvailable] answers.
-  FakeSpeechService({this.hasVoice = true, this.isInstant = false});
+  FakeSpeechService({
+    this.hasVoice = true,
+    this.isInstant = false,
+    this.ignoresStop = false,
+  });
 
   /// Whether [isAvailable] answers `true`.
   bool hasVoice;
 
   /// Whether a reading ends as soon as it starts.
   bool isInstant;
+
+  /// Whether [stop] is counted but does not end the reading in progress.
+  bool ignoresStop;
 
   /// Texts read so far, in order.
   final List<String> spoken = <String>[];
@@ -52,7 +60,7 @@ final class FakeSpeechService implements SpeechService {
   @override
   Future<void> stop() async {
     stopCount++;
-    finishReading();
+    if (!ignoresStop) finishReading();
   }
 
   /// Ends the reading in progress, as the voice does when it is done.

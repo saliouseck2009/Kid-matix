@@ -9,6 +9,7 @@ final class _FakeEngine implements TextToSpeechEngine {
   bool hasInstalledVoice = true;
   bool fails = false;
   bool keepsSpeaking = false;
+  bool neverAnswersVoiceCheck = false;
   final List<String> spoken = <String>[];
   final List<String> languages = <String>[];
   int stopCount = 0;
@@ -16,6 +17,7 @@ final class _FakeEngine implements TextToSpeechEngine {
   @override
   Future<bool> hasVoice({required String languageCode}) async {
     if (fails) throw Exception('engine down');
+    if (neverAnswersVoiceCheck) await Completer<void>().future;
     return hasInstalledVoice;
   }
 
@@ -66,6 +68,27 @@ void main() {
       engine.fails = true;
       // Act
       final bool actualResult = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isFalse);
+    });
+  });
+
+  group('SpeechServiceImpl.isAvailable when the engine hangs', () {
+    testWidgets('answers no after the time given to the engine', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      engine.neverAnswersVoiceCheck = true;
+      bool? actualResult;
+      unawaited(
+        service
+            .isAvailable(languageCode: 'fr')
+            .then((bool result) => actualResult = result),
+      );
+      await tester.pump();
+      expect(actualResult, isNull);
+      // Act
+      await tester.pump(SpeechServiceImpl.availabilityTimeout);
       // Assert
       expect(actualResult, isFalse);
     });

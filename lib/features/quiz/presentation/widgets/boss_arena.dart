@@ -19,6 +19,7 @@ class BossArena extends StatelessWidget {
     this.outcome,
     this.blankText,
     this.blankColor,
+    this.listenButton,
     super.key,
   });
 
@@ -45,6 +46,10 @@ class BossArena extends StatelessWidget {
   /// Color of the typed digits.
   final Color? blankColor;
 
+  /// The listen button, in the top right corner, or `null` when no voice
+  /// can read the question.
+  final Widget? listenButton;
+
   @override
   Widget build(BuildContext context) {
     final String? bubble = _bubbleText(context);
@@ -68,6 +73,8 @@ class BossArena extends StatelessWidget {
                   top: AppSizes.space16,
                   child: _Bubble(text: bubble),
                 ),
+              if (listenButton case final Widget button)
+                Positioned(top: 0, right: 0, child: button),
             ],
           ),
         ),

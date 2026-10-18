@@ -514,6 +514,18 @@ abstract class AppLocalizations {
   /// **'Fermer'**
   String get commonClose;
 
+  /// Tooltip and screen-reader label of the round speaker button that reads a question, an instruction or a tip aloud ("Listen"). Infinitive verb, one word. Hidden when the phone has no voice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écouter'**
+  String get commonListen;
+
+  /// Tooltip and screen-reader label of the same button while the voice is reading, which then stops it ("Stop reading"). Short phrase.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter la lecture'**
+  String get commonListenStop;
+
   /// Name of the section of the settings screen holding the export and the import of a player to and from a file ("Backup"). Noun, short section header.
   ///
   /// In fr, this message translates to:
@@ -1011,6 +1023,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'combien'**
   String get quizSpokenBlank;
+
+  /// Sentence read aloud for a true or false question: the statement as spoken words, then the question ("6 fois 7 égale 48. Vrai ou faux ?"). Spoken only, never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{statement}. Vrai ou faux ?'**
+  String quizSpokenTrueFalse(String statement);
 
   /// Name of the game mode shown under the results title after a stage of the learning path ("Learning path"), after the table name and a middle dot.
   ///

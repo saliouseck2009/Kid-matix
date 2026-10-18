@@ -2,12 +2,17 @@ import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
+import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_repository.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/get_read_aloud_mode_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/stop_read_aloud_use_case.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 
@@ -89,6 +94,22 @@ QuizUseCases buildTestQuizUseCases({
   );
 }
 
+/// The use cases that read a quiz aloud over [speech], for a player whose
+/// setting "Lire les questions à voix haute" is [readsByItself].
+QuizReadAloudUseCases buildReadAloudUseCases({
+  required SpeechService speech,
+  bool readsByItself = false,
+}) {
+  return QuizReadAloudUseCases(
+    getMode: GetReadAloudModeUseCase(
+      speech: speech,
+      settings: FixedPlayerSettings(TimerMode.normal, false, readsByItself),
+    ),
+    read: ReadAloudUseCase(speech: speech),
+    stop: StopReadAloudUseCase(speech: speech),
+  );
+}
+
 /// Quiz pages over the real multiplication domain, a seeded draw and
 /// [repository] (a mock by default).
 QuizPages buildTestQuizPages({
@@ -96,6 +117,7 @@ QuizPages buildTestQuizPages({
   Ticker ticker = const SilentTicker(),
   PlayerSettingsService settings = const FixedPlayerSettings(),
   GameFeedbackService? feedback,
+  SpeechService? speech,
 }) {
   final QuizSessionRepository sessions =
       repository ?? MockQuizSessionRepository();
@@ -108,5 +130,6 @@ QuizPages buildTestQuizPages({
     ticker: ticker,
     domains: buildDomainRegistry(),
     feedback: feedback ?? RecordingGameFeedback(),
+    readAloud: speech == null ? null : buildReadAloudUseCases(speech: speech),
   );
 }

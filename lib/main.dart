@@ -31,6 +31,7 @@ import 'package:kid_matix/features/profile/presentation/bloc/backup_use_cases.da
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 import 'package:kid_matix/features/reward/presentation/bloc/leaderboard_use_cases.dart';
@@ -233,6 +234,11 @@ GoRouter _createRouter(
       ticker: sl(),
       domains: sl(),
       feedback: sl(),
+      readAloud: QuizReadAloudUseCases(
+        getMode: sl(),
+        read: sl(),
+        stop: sl(),
+      ),
     ),
   );
 }

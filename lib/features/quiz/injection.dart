@@ -8,6 +8,9 @@ import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/get_read_aloud_mode_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_use_case.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/stop_read_aloud_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.dart';
 import 'package:kid_matix/core/storage/profile_backup_part.dart';
@@ -63,6 +66,15 @@ void _registerUseCases(GetIt sl) {
   );
   sl.registerLazySingleton<GetQuizResultUseCase>(
     () => GetQuizResultUseCase(repository: sl(), learningPath: sl()),
+  );
+  sl.registerLazySingleton<GetReadAloudModeUseCase>(
+    () => GetReadAloudModeUseCase(speech: sl(), settings: sl()),
+  );
+  sl.registerLazySingleton<ReadAloudUseCase>(
+    () => ReadAloudUseCase(speech: sl()),
+  );
+  sl.registerLazySingleton<StopReadAloudUseCase>(
+    () => StopReadAloudUseCase(speech: sl()),
   );
   sl<ProgressResetHooks>().add(const QuizResetHook());
   sl<ProfileBackupParts>().add(const QuizBackupPart());
