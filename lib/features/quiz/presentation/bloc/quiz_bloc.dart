@@ -3,19 +3,16 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
-import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
-import 'package:kid_matix/features/quiz/domain/entities/read_aloud_mode.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
-import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_mode_params.dart';
-import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_params.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_reading.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 
@@ -36,8 +33,9 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   QuizBloc({
     required this._useCases,
     required this._ticker,
-    this._readAloud,
+    QuizReadAloud? readAloud,
   }) : super(const QuizPreparing()) {
+    _reading = QuizReading(setup: readAloud, readState: () => state);
     on<QuizStarted>(_onStarted);
     on<TimerTicked>(_onTicked);
     on<AnswerSubmitted>(
@@ -71,17 +69,14 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   final QuizUseCases _useCases;
   final Ticker _ticker;
-  final QuizReadAloud? _readAloud;
+  late final QuizReading _reading;
   StreamSubscription<int>? _ticks;
-  ReadAloudMode _readAloudMode = ReadAloudMode.unavailable;
-
-  // Identifies the newest reading: the end of an older one, stopped or
-  // replaced, must not touch the state of the question that follows.
-  int _readingId = 0;
 
   Future<void> _onStarted(QuizStarted event, Emitter<QuizState> emit) async {
     emit(const QuizPreparing());
     final QuizRequest request = event.request;
+    // The voice check runs while the questions are built.
+    final Future<void> foundVoice = _reading.findMode(request);
     final DataState<QuizRun> built = await _useCases.buildQuiz(
       params: BuildQuizParams(
         profileId: request.profileId,
@@ -104,7 +99,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     );
     switch (built) {
       case DataSuccess<QuizRun>(:final data):
-        _readAloudMode = await _findReadAloudMode(request);
+        await foundVoice;
         _ask(data, emit);
       case DataFailed<QuizRun>(:final exception):
         emit(QuizFailure(errorCode: exception.code));
@@ -185,7 +180,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     final QuizState current = state;
     if (current is! QuizAsking) return;
     if (!current.run.isNonStop) _stopTicker();
-    if (current.isReading) _silence();
+    if (current.isReading) _reading.silence();
     final DataState<QuizSubmission> judged = await _useCases.submitAnswer(
       params: SubmitAnswerParams(
         run: current.run,
@@ -245,7 +240,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     switch (state) {
       case final QuizAsking current when !current.isPaused:
         _stopTicker();
-        if (current.isReading) _silence();
+        if (current.isReading) _reading.silence();
         emit(current.copyWith(isPaused: true, isReading: false));
       case QuizShowingFeedback():
         _stopTicker();
@@ -277,7 +272,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     Emitter<QuizState> emit,
   ) async {
     _stopTicker();
-    _silence();
+    _reading.silence();
     final QuizRun? run = _runOf(state);
     if (run != null) await _useCases.abandonSession(params: run);
     emit(const QuizLeft());
@@ -286,7 +281,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   @override
   Future<void> close() async {
     _stopTicker();
-    _silence();
+    _reading.silence();
     return super.close();
   }
 
@@ -303,105 +298,30 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     Emitter<QuizState> emit, [
     Duration playedTime = Duration.zero,
   ]) {
-    final bool readsByItself = _readAloudMode == ReadAloudMode.automatic;
     emit(
       QuizAsking(
         run: run,
         playedTime: playedTime,
-        canReadAloud: _readAloudMode != ReadAloudMode.unavailable,
-        isReading: readsByItself,
+        canReadAloud: _reading.canRead,
+        isReading: _reading.readsByItself,
       ),
     );
     _startTicker();
-    if (readsByItself && !isClosed) add(const AutoReadStarted());
+    if (_reading.readsByItself && !isClosed) add(const AutoReadStarted());
   }
 
-  Future<ReadAloudMode> _findReadAloudMode(QuizRequest request) async {
-    final QuizReadAloud? reading = _readAloud;
-    if (reading == null) return ReadAloudMode.unavailable;
-    return reading.useCases.getMode(
-      params: ReadAloudModeParams(
-        profileId: request.profileId,
-        languageCode: reading.languageCode,
-      ),
-    );
-  }
-
-  /// A listen button: reads what it stands for, or stops its reading. A
-  /// tap on the other button replaces the reading in progress.
   Future<void> _onReadAloudToggled(
     ReadAloudToggled event,
     Emitter<QuizState> emit,
-  ) async {
-    final QuizState current = state;
-    if (current is! QuizAsking || !current.canReadAloud) return;
-    final bool isThisOneReading =
-        current.isReading &&
-        current.isReadingInstruction == event.isInstruction;
-    if (isThisOneReading) return _stopReading(emit);
-    await _read(emit, current, isInstruction: event.isInstruction);
+  ) {
+    return _reading.toggle(emit, isInstruction: event.isInstruction);
   }
 
-  /// A question asked to a player who has them read by themselves.
   Future<void> _onAutoReadStarted(
     AutoReadStarted event,
     Emitter<QuizState> emit,
-  ) async {
-    final QuizState current = state;
-    if (current is QuizAsking) await _read(emit, current);
-  }
-
-  /// Says the question of [asking], or its instruction, and waits for the
-  /// end of the voice.
-  Future<void> _read(
-    Emitter<QuizState> emit,
-    QuizAsking asking, {
-    bool isInstruction = false,
-  }) async {
-    final QuizReadAloud? reading = _readAloud;
-    final Question question = asking.turn.question;
-    final String? text = isInstruction
-        ? reading?.speakInstruction(question)
-        : reading?.speakQuestion(question);
-    if (reading == null || text == null) {
-      // Nothing to say: a question asked as "being read" starts its time.
-      if (asking.isReading) emit(asking.copyWith(isReading: false));
-      return;
-    }
-    final int readingId = ++_readingId;
-    emit(
-      asking.copyWith(isReading: true, isReadingInstruction: isInstruction),
-    );
-    try {
-      await reading.useCases.read(
-        params: ReadAloudParams(
-          text: text,
-          languageCode: reading.languageCode,
-        ),
-      );
-    } finally {
-      // Whatever happened to the voice, the time of the question starts.
-      final QuizState latest = state;
-      if (readingId == _readingId && latest is QuizAsking) {
-        emit(latest.copyWith(isReading: false));
-      }
-    }
-  }
-
-  Future<void> _stopReading(Emitter<QuizState> emit) async {
-    _readingId++;
-    await _readAloud?.useCases.stop();
-    final QuizState latest = state;
-    if (latest is QuizAsking && latest.isReading) {
-      emit(latest.copyWith(isReading: false));
-    }
-  }
-
-  /// Stops the voice without waiting for it, for a question that is
-  /// answered, left or hidden.
-  void _silence() {
-    _readingId++;
-    unawaited(_readAloud?.useCases.stop());
+  ) {
+    return _reading.read(emit);
   }
 
   void _startTicker() {
