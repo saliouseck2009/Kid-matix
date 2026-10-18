@@ -493,6 +493,44 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get quizObjectsPictureLabel => 'Mangoes to count';
+
+  @override
+  String quizObjectsPictureCounted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mangoes',
+      one: '1 mango',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBundlesPictureLabel(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens bundles of ten',
+      one: '1 bundle of ten',
+      zero: 'No bundle of ten',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones sticks',
+      one: '1 stick',
+      zero: 'no stick',
+    );
+    return '$_temp0 and $_temp1';
+  }
+
+  @override
+  String quizNumberLinePictureLabel(String numbers) {
+    return 'Number line: $numbers';
+  }
+
+  @override
   String get quizHintFindOperation => 'Tap the right operation';
 
   @override
@@ -612,6 +650,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizSpokenGreaterThan => 'is greater than';
+
+  @override
+  String get quizSpokenHiddenNumber => 'hidden number';
 
   @override
   String get quizModePath => 'Path';

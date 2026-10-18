@@ -844,6 +844,30 @@ abstract class AppLocalizations {
   /// **'Quelle multiplication donne {result} ?'**
   String quizFindOperationSpokenMultiplication(int result);
 
+  /// What a screen reader says for the drawing of mangoes in a counting question ("Mangoes to count"); it does not tell how many, since that is the answer. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des mangues à compter'**
+  String get quizObjectsPictureLabel;
+
+  /// What a screen reader says for the drawing of mangoes on a help card, where the number is given ("7 mangoes"). Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 mangue} other{{count} mangues}}'**
+  String quizObjectsPictureCounted(int count);
+
+  /// What a screen reader says for a drawing of bundles of ten sticks and loose sticks ("3 bundles of ten and 4 sticks"). {tens} counts the bundles, {ones} the loose sticks. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{tens, plural, =0{Aucun paquet de dix} =1{1 paquet de dix} other{{tens} paquets de dix}} et {ones, plural, =0{aucun bâtonnet} =1{1 bâtonnet} other{{ones} bâtonnets}}'**
+  String quizBundlesPictureLabel(int tens, int ones);
+
+  /// What a screen reader says for a drawn number line ("Number line: 2, 4, 6, 8, 10"). {numbers} lists its numbers from left to right, separated by commas, with quizSpokenHiddenNumber for a number to find. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Droite des nombres : {numbers}'**
+  String quizNumberLinePictureLabel(String numbers);
+
   /// Hint in a dashed box under the four operation buttons of a "find the operation" question ("Tap the right operation"). Imperative verb, speaks to a child with "tu"; one or two short lines.
   ///
   /// In fr, this message translates to:
@@ -1017,6 +1041,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'est plus grand que'**
   String get quizSpokenGreaterThan;
+
+  /// Words read by the screen reader for the tick of a number line whose number the player must find ("hidden number"), inside the list of the numbers of the line, such as "2, 4, 6, nombre caché, 10". Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'nombre caché'**
+  String get quizSpokenHiddenNumber;
 
   /// Name of the game mode shown under the results title after a stage of the learning path ("Learning path"), after the table name and a middle dot.
   ///

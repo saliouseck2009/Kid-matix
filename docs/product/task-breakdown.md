@@ -669,7 +669,7 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 
 - [x] **F24-01** Fonctionnalité `numbers` qui implémente `LearningDomain` : unités « compter jusqu'à 10 », « jusqu'à 20 », « jusqu'à 100 », « dizaines et unités », « comparer », « ranger », « avant et après » ; clés stables (`num:…`).
 - [ ] **F24-02** Nouveaux types de questions, enregistrés dans `QuestionTypeRegistry` : compter des objets, dizaines et unités (paquets de dix et bâtonnets), comparer (plus petit, égal, plus grand : 3 boutons), droite numérique.
-- [ ] **F24-03** Widgets visuels : groupes d'objets, paquets de dix, droite numérique ; chaque dessin a un libellé pour les lecteurs d'écran.
+- [x] **F24-03** Widgets visuels : groupes d'objets, paquets de dix, droite numérique ; chaque dessin a un libellé pour les lecteurs d'écran.
 - [ ] **F24-04** Parcours du domaine : étapes, étoiles et déblocage réutilisés de `learning_path`. Vérifier que `domainId` est bien pris en compte partout (`item_progress`, `stage_progress`, `quiz_session`, records), car il valait toujours « multiplication ».
 - [ ] **F24-05** Accueil : sélecteur de domaine dès que deux domaines existent, dernier domaine mémorisé par joueur. XP, niveau, série et mascotte restent globaux ; étoiles, couronnes, maîtrise et records sont tenus par domaine (spécifications, section 12).
 - [ ] **F24-06** Profil : grille de maîtrise et monstres par domaine, avec un choix du domaine.
