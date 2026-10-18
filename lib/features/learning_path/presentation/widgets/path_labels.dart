@@ -1,6 +1,7 @@
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
+import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
@@ -19,21 +20,21 @@ final class PathLabels {
 
   bool get _isMultiplication => domainId == LearningDomainIds.multiplication;
 
-  /// Name of the unit [number], such as "Table de 5" or "Comparer".
-  String unitName(int number) => l10n.unitName(domainId, number);
+  /// Name of the unit [unitKey], such as "Table de 5" or "Comparer".
+  String unitName(String unitKey) => l10n.unitName(domainId, unitKey);
 
-  /// Short mark of the unit [number] on its badge, such as "×5".
-  String unitMark(int number) => l10n.unitMark(domainId, number);
+  /// Short mark of the unit [unitKey] on its badge, such as "×5".
+  String unitMark(String unitKey) => l10n.unitMark(domainId, unitKey);
 
-  /// Tip of the unit [number], shown at its Discovery stage.
-  String unitTip(int number) => l10n.unitTip(domainId, number);
+  /// Tip of the unit [unitKey], shown at its Discovery stage.
+  String unitTip(String unitKey) => l10n.unitTip(domainId, unitKey);
 
-  /// Title of the Discovery page of the unit [number], such as "Voici la
-  /// table de 5" or the name of a lesson.
-  String discoveryTitle(int number) {
+  /// Title of the Discovery page of [unit], such as "Voici la table de 5"
+  /// or the name of a lesson.
+  String discoveryTitle(LearningUnit unit) {
     return _isMultiplication
-        ? l10n.pathDiscoveryTitle(number)
-        : unitName(number);
+        ? l10n.pathDiscoveryTitle(unit.number)
+        : unitName(unit.key);
   }
 
   /// Button of a unit's detail that shows its Discovery page again.
@@ -70,7 +71,7 @@ final class PathLabels {
 
   /// What a screen reader says of [table] on the map.
   String describeTable(TablePathNode table) {
-    final String name = unitName(table.number);
+    final String name = unitName(table.unitKey);
     final String label = switch (table.status) {
       TableStatus.done => l10n.pathTableNodeDone(name, table.averageStars),
       TableStatus.current => l10n.pathTableNodeCurrent(name),
@@ -86,17 +87,19 @@ final class PathLabels {
     };
   }
 
-  /// What a screen reader says of the monster of the unit [number] in
-  /// « Mes monstres ».
-  String describeMonster(int number, {required bool isDefeated}) {
+  /// What a screen reader says of the monster of [table] in « Mes
+  /// monstres », defeated once the table is crowned.
+  String describeMonster(TablePathNode table) {
+    final bool isDefeated = table.crown != TableCrown.none;
     if (_isMultiplication) {
       return isDefeated
-          ? l10n.pathMonsterDefeatedSpoken(number)
-          : l10n.pathMonsterHiddenSpoken(number);
+          ? l10n.pathMonsterDefeatedSpoken(table.number)
+          : l10n.pathMonsterHiddenSpoken(table.number);
     }
+    final String name = unitName(table.unitKey);
     return isDefeated
-        ? l10n.pathUnitMonsterDefeatedSpoken(unitName(number))
-        : l10n.pathUnitMonsterHiddenSpoken(unitName(number));
+        ? l10n.pathUnitMonsterDefeatedSpoken(name)
+        : l10n.pathUnitMonsterHiddenSpoken(name);
   }
 
   /// Message of a path that cannot be read.

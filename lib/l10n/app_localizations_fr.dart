@@ -34,17 +34,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonBack => 'Retour';
 
   @override
-  String commonDomainName(String domain) {
-    String _temp0 = intl.Intl.selectLogic(
-      domain,
-      {
-        'multiplication': 'Multiplication',
-        'numbers': 'Nombres',
-        'other': 'Maths',
-      },
-    );
-    return '$_temp0';
-  }
+  String get multiplicationDomainName => 'Multiplication';
+
+  @override
+  String get numbersDomainName => 'Nombres';
 
   @override
   String get errorStorage =>
@@ -1097,13 +1090,14 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Compter jusqu\'à 10',
-        '2': 'Compter jusqu\'à 20',
-        '3': 'Compter jusqu\'à 100',
-        '4': 'Dizaines et unités',
-        '5': 'Comparer',
-        '6': 'Ranger',
-        'other': 'Avant et après',
+        'count10': 'Compter jusqu\'à 10',
+        'count20': 'Compter jusqu\'à 20',
+        'count100': 'Compter jusqu\'à 100',
+        'tensones': 'Dizaines et unités',
+        'compare': 'Comparer',
+        'order': 'Ranger',
+        'beforeafter': 'Avant et après',
+        'other': '',
       },
     );
     return '$_temp0';
@@ -1114,13 +1108,15 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.',
-        '2': 'Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…',
-        '3': 'Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…',
-        '4': 'Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.',
-        '5': 'Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.',
-        '6': 'Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.',
-        'other': 'Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !',
+        'count10': 'Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.',
+        'count20':
+            'Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…',
+        'count100': 'Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…',
+        'tensones': 'Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.',
+        'compare': 'Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.',
+        'order': 'Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.',
+        'beforeafter': 'Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !',
+        'other': '',
       },
     );
     return '$_temp0';

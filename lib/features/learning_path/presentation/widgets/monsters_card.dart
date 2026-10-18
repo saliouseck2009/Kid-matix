@@ -94,10 +94,7 @@ class MonstersCard extends StatelessWidget {
                     _Monster(
                       number: table.number,
                       family: MonsterIllustration.familyOf(domainId),
-                      label: labels.describeMonster(
-                        table.number,
-                        isDefeated: table.crown != TableCrown.none,
-                      ),
+                      label: labels.describeMonster(table),
                       width: width,
                       isDefeated: table.crown != TableCrown.none,
                     ),

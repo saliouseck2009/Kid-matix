@@ -65,14 +65,14 @@ class DiscoveryPage extends StatelessWidget {
                         Semantics(
                           header: true,
                           child: Text(
-                            labels.discoveryTitle(unit.number),
+                            labels.discoveryTitle(unit),
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                         UnitFactsGrid(
                           facts: unit.items.map(_describe).toList(),
                         ),
-                        TipCard(tip: labels.unitTip(unit.number)),
+                        TipCard(tip: labels.unitTip(unit.key)),
                       ],
                     ),
                   ),

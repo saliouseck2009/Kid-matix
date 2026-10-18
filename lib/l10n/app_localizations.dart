@@ -148,11 +148,17 @@ abstract class AppLocalizations {
   /// **'Retour'**
   String get commonBack;
 
-  /// Name of a learning domain (a subject of the app) in the switch above the map and above the Profile progress cards, such as "Multiplication" or "Nombres" ("Numbers": counting, tens and ones, comparing up to 100). One or two short words, a segment label. {domain} is the domain identifier, never shown.
+  /// Name of the multiplication domain in the switch of the domains above the map and above the Profile progress cards ("Multiplication"). One word, a segment label.
   ///
   /// In fr, this message translates to:
-  /// **'{domain, select, multiplication{Multiplication} numbers{Nombres} other{Maths}}'**
-  String commonDomainName(String domain);
+  /// **'Multiplication'**
+  String get multiplicationDomainName;
+
+  /// Name of the numbers domain (counting, tens and ones, comparing and ordering numbers up to 100) in the switch of the domains above the map and above the Profile progress cards ("Numbers"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombres'**
+  String get numbersDomainName;
 
   /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
@@ -1576,16 +1582,16 @@ abstract class AppLocalizations {
   /// **'{table, select, 1{Multiplier par 1 ne change rien : 1 × 7 = 7.} 2{Multiplier par 2, c\'est ajouter le nombre à lui-même : 2 × 6 = 6 + 6.} 3{Les résultats avancent de 3 en 3 : 3, 6, 9, 12…} 4{Multiplier par 4, c\'est doubler deux fois : 4 × 6, c\'est le double de 12.} 5{Les résultats de la table de 5 finissent toujours par 0 ou par 5.} 6{6 fois un nombre pair finit par le même chiffre : 6 × 4 = 24.} 7{Pour 7 × 8, pense à 5, 6, 7, 8 : 56 = 7 × 8.} 8{Multiplier par 8, c\'est doubler trois fois : 8 × 3 = 24.} 9{Les deux chiffres du résultat font toujours 9 : 9 × 4 = 36 et 3 + 6 = 9.} 10{Multiplier par 10, c\'est ajouter un 0 à droite : 10 × 7 = 70.} 11{Jusqu\'à 11 × 9, on écrit le chiffre deux fois : 11 × 4 = 44.} other{12 fois un nombre, c\'est 10 fois plus 2 fois : 12 × 3 = 30 + 6.}}'**
   String pathMultiplicationTip(String table);
 
-  /// Name of a unit of the numbers domain (numbers up to 100), shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Count to 10", "Tens and ones", "Compare", "Put in order", "Before and after"). Short title, a few words; infinitive verbs for 1, 2, 3, 5 and 6. {unit} is the position of the unit on the path, from 1 to 7.
+  /// Name of a unit of the numbers domain (numbers up to 100), shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Count to 10", "Tens and ones", "Compare", "Put in order", "Before and after"). Short title, a few words; infinitive verbs for 1, 2, 3, 5 and 6. {unit} is the slug of the unit (the end of its key), never shown: count10, count20, count100, tensones, compare, order, beforeafter.
   ///
   /// In fr, this message translates to:
-  /// **'{unit, select, 1{Compter jusqu\'à 10} 2{Compter jusqu\'à 20} 3{Compter jusqu\'à 100} 4{Dizaines et unités} 5{Comparer} 6{Ranger} other{Avant et après}}'**
+  /// **'{unit, select, count10{Compter jusqu\'à 10} count20{Compter jusqu\'à 20} count100{Compter jusqu\'à 100} tensones{Dizaines et unités} compare{Comparer} order{Ranger} beforeafter{Avant et après} other{}}'**
   String numbersUnitName(String unit);
 
-  /// Tip of a unit of the numbers domain, shown on its Discovery page under all its items ("Touch each mango as you count…"). One or two short sentences for a child of 5 to 7, informal "tu". {unit} is the position of the unit on the path, from 1 to 7: count to 10, count to 20, count to 100 in tens, tens and ones, compare, put in order on a number line, before and after.
+  /// Tip of a unit of the numbers domain, shown on its Discovery page under all its items ("Touch each mango as you count…"). One or two short sentences for a child of 5 to 7, informal "tu". {unit} is the slug of the unit (the end of its key), never shown: count10 (count to 10), count20, count100 (in tens), tensones (tens and ones), compare, order (on a number line), beforeafter.
   ///
   /// In fr, this message translates to:
-  /// **'{unit, select, 1{Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.} 2{Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…} 3{Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…} 4{Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.} 5{Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.} 6{Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.} other{Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !}}'**
+  /// **'{unit, select, count10{Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.} count20{Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…} count100{Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…} tensones{Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.} compare{Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.} order{Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.} beforeafter{Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !} other{}}'**
   String numbersUnitTip(String unit);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").

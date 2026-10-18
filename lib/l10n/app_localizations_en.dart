@@ -34,17 +34,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonBack => 'Back';
 
   @override
-  String commonDomainName(String domain) {
-    String _temp0 = intl.Intl.selectLogic(
-      domain,
-      {
-        'multiplication': 'Multiplication',
-        'numbers': 'Numbers',
-        'other': 'Maths',
-      },
-    );
-    return '$_temp0';
-  }
+  String get multiplicationDomainName => 'Multiplication';
+
+  @override
+  String get numbersDomainName => 'Numbers';
 
   @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
@@ -1092,13 +1085,14 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Count to 10',
-        '2': 'Count to 20',
-        '3': 'Count to 100',
-        '4': 'Tens and ones',
-        '5': 'Compare',
-        '6': 'Put in order',
-        'other': 'Before and after',
+        'count10': 'Count to 10',
+        'count20': 'Count to 20',
+        'count100': 'Count to 100',
+        'tensones': 'Tens and ones',
+        'compare': 'Compare',
+        'order': 'Put in order',
+        'beforeafter': 'Before and after',
+        'other': '',
       },
     );
     return '$_temp0';
@@ -1109,13 +1103,15 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Touch each mango as you count: one, two, three… The last number tells how many there are.',
-        '2': 'First count the row of 10, then keep going: 11, 12, 13…',
-        '3': 'A bundle is 10 sticks. Count the bundles in tens: 10, 20, 30…',
-        '4': 'The tens digit counts the bundles, the ones digit the loose sticks: 3 bundles and 4 sticks make 34.',
-        '5': 'Look at the tens first: the number with more tens is greater. If the tens are the same, look at the ones.',
-        '6': 'On the line, numbers go from smallest to greatest. Find how much they go up each time.',
-        'other': 'The number after is 1 more; the number before is 1 less. After 39 comes 40!',
+        'count10': 'Touch each mango as you count: one, two, three… The last number tells how many there are.',
+        'count20': 'First count the row of 10, then keep going: 11, 12, 13…',
+        'count100':
+            'A bundle is 10 sticks. Count the bundles in tens: 10, 20, 30…',
+        'tensones': 'The tens digit counts the bundles, the ones digit the loose sticks: 3 bundles and 4 sticks make 34.',
+        'compare': 'Look at the tens first: the number with more tens is greater. If the tens are the same, look at the ones.',
+        'order': 'On the line, numbers go from smallest to greatest. Find how much they go up each time.',
+        'beforeafter': 'The number after is 1 more; the number before is 1 less. After 39 comes 40!',
+        'other': '',
       },
     );
     return '$_temp0';

@@ -137,7 +137,7 @@ class _TableDetailView extends StatelessWidget {
                 child: Semantics(
                   header: true,
                   child: Text(
-                    labels.unitName(table.number),
+                    labels.unitName(table.unitKey),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),

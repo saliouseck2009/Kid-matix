@@ -122,7 +122,7 @@ final class QuizLabels {
       LearningDomainIds.multiplication => l10n.quizBossTitleMultiplication(
         number,
       ),
-      _ => l10n.quizBossTitleUnit(l10n.unitName(domainId, number)),
+      _ => l10n.quizBossTitleUnit(_unitNameNumbered(number, domainId)),
     };
   }
 
@@ -133,7 +133,15 @@ final class QuizLabels {
 
   /// Name of [unit], such as "Table de 5" or "Comparer".
   String describeUnit(LearningUnit unit, String domainId) {
-    return l10n.unitName(domainId, unit.number);
+    return l10n.unitName(domainId, unit.key);
+  }
+
+  String _unitNameNumbered(int number, String domainId) {
+    for (final LearningUnit unit
+        in domains.find(domainId)?.units ?? const <LearningUnit>[]) {
+      if (unit.number == number) return describeUnit(unit, domainId);
+    }
+    return '';
   }
 
   /// The unit shared by every item of [itemKeys], or `null` when they
