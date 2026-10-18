@@ -27,6 +27,7 @@ import 'package:kid_matix/features/challenge/injection.dart';
 import 'package:kid_matix/features/learning_path/injection.dart';
 import 'package:kid_matix/features/mascot/injection.dart';
 import 'package:kid_matix/features/mastery/injection.dart';
+import 'package:kid_matix/features/math_word/injection.dart';
 import 'package:kid_matix/features/multiplication/injection.dart';
 import 'package:kid_matix/features/number/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
@@ -54,6 +55,7 @@ Future<void> configureDependencies() async {
   registerProfileFeature(sl);
   registerMultiplicationFeature(sl);
   registerNumbersFeature(sl);
+  await registerMathWordFeature(sl);
   registerMasteryFeature(sl);
   registerLearningPathFeature(sl);
   registerRewardFeature(sl);

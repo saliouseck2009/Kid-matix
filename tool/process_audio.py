@@ -7,6 +7,7 @@ of the recorder, never renamed) and writes the language pack of the app:
   assets/audio/<language>/wo_<key>.m4a            the explanation of a word
   assets/audio/<language>/wo_<key>_exemple.m4a    its example
   assets/audio/<language>/manifest.json           what the pack holds
+  assets/audio/packs.json                         the list of languages
 
 For each file it trims the silence at the start and at the end, keeping a
 short margin, evens the volume out, and converts to mono AAC (32 kHz,
@@ -37,6 +38,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WORDS = ROOT / "assets" / "math_words" / "math_words.json"
 PACKS = ROOT / "assets" / "audio"
+INDEX = PACKS / "packs.json"
+PUBSPEC = ROOT / "pubspec.yaml"
 
 INPUT_EXTENSIONS = {
     ".m4a", ".mp3", ".wav", ".aac", ".ogg", ".opus", ".flac", ".amr",
@@ -152,6 +155,21 @@ def convert(source, target):
     return float(probe.stdout.strip() or 0)
 
 
+def register_language(language, output):
+    """Lists the language in packs.json; warns when pubspec lacks its folder."""
+    languages = []
+    if INDEX.exists():
+        languages = json.loads(INDEX.read_text(encoding="utf-8"))["languages"]
+    if language not in languages:
+        languages.append(language)
+        INDEX.write_text(
+            json.dumps({"languages": languages}, indent=2) + "\n", encoding="utf-8"
+        )
+    declared = f"- assets/audio/{output.name}/"
+    if declared not in PUBSPEC.read_text(encoding="utf-8"):
+        print(f"add '{declared}' to the assets of pubspec.yaml")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("input_dir", type=Path)
@@ -180,6 +198,7 @@ def main():
         (output / "manifest.json").write_text(
             json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
         )
+        register_language(args.language, output)
     gaps = missing(found, keys)
     for key, kind in gaps:
         print(f"missing: {file_name(args.language, key, kind)}")
