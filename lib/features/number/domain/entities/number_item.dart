@@ -30,6 +30,15 @@ sealed class NumberItem implements LearningItem {
   /// Drawing of the item with its answer, for the help card, or `null`.
   MathPicture? get solvedPicture;
 
+  /// Two items are the same when they have the same key: the progress
+  /// stored under a key belongs to one item only.
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is NumberItem && other.key == key;
+
+  @override
+  int get hashCode => key.hashCode;
+
   @override
   String toString() => key;
 }
@@ -89,13 +98,6 @@ final class CountItem extends PictureNumberItem {
 
   @override
   List<PromptToken> describe() => <PromptToken>[NumberToken(count)];
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is CountItem && other.count == count;
-
-  @override
-  int get hashCode => Object.hash(CountItem, count);
 }
 
 /// Read a number of tens and its ones from bundles of ten and loose
@@ -162,20 +164,10 @@ final class TensOnesItem extends PictureNumberItem {
       NumberToken(value),
     ];
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TensOnesItem &&
-          other.value == value &&
-          other.isWholeTens == isWholeTens;
-
-  @override
-  int get hashCode => Object.hash(TensOnesItem, value, isWholeTens);
 }
 
 /// Find the number missing on a number line: ticks [step] apart, such as
-/// `2 4 6 ? 10` for `num:order:8:2`.
+/// `2 4 6 ? 10` for `num:line:8:2`.
 final class NumberLineItem extends PictureNumberItem {
   /// Creates the line of [tickCount] ticks [step] apart whose tick
   /// [blankIndex] holds [missing].
@@ -208,7 +200,7 @@ final class NumberLineItem extends PictureNumberItem {
   ];
 
   @override
-  String get key => '${NumberItem.keyPrefix}:order:$missing:$step';
+  String get key => '${NumberItem.keyPrefix}:line:$missing:$step';
 
   @override
   int get answer => missing;
@@ -242,19 +234,6 @@ final class NumberLineItem extends PictureNumberItem {
 
   @override
   List<PromptToken> describe() => values.map(NumberToken.new).toList();
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is NumberLineItem &&
-          other.missing == missing &&
-          other.step == step &&
-          other.blankIndex == blankIndex &&
-          other.tickCount == tickCount;
-
-  @override
-  int get hashCode =>
-      Object.hash(NumberLineItem, missing, step, blankIndex, tickCount);
 }
 
 /// Find the number just before or just after [reference]: `num:after:39`
@@ -317,19 +296,9 @@ final class NeighborItem extends PictureNumberItem {
 
   @override
   List<PromptToken> describe() => _values.map(NumberToken.new).toList();
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is NeighborItem &&
-          other.reference == reference &&
-          other.isAfter == isAfter;
-
-  @override
-  int get hashCode => Object.hash(NeighborItem, reference, isAfter);
 }
 
-/// Compare [first] with [second]: `num:compare:34-43`.
+/// Compare [first] with [second]: `num:compare:34:43`.
 final class CompareItem extends NumberItem {
   /// Creates the comparison of [first] with [second].
   const CompareItem(this.first, this.second);
@@ -344,7 +313,7 @@ final class CompareItem extends NumberItem {
   Comparison get comparison => Comparison.of(first, second);
 
   @override
-  String get key => '${NumberItem.keyPrefix}:compare:$first-$second';
+  String get key => '${NumberItem.keyPrefix}:compare:$first:$second';
 
   @override
   List<String> get questionTypeIds => const <String>[QuestionTypeIds.compare];
@@ -373,12 +342,4 @@ final class CompareItem extends NumberItem {
       NumberToken(second),
     ];
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CompareItem && other.first == first && other.second == second;
-
-  @override
-  int get hashCode => Object.hash(CompareItem, first, second);
 }

@@ -58,7 +58,7 @@ void main() {
     test('judge a comparison by its sign', () {
       // Arrange
       final Question inputQuestion = Question(
-        itemKey: 'num:compare:34-43',
+        itemKey: 'num:compare:34:43',
         unitKey: 'num:compare',
         questionTypeId: QuestionTypeIds.compare,
         prompt: const <PromptToken>[

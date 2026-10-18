@@ -140,7 +140,7 @@ void main() {
     // Arrange
     await pumpQuiz(
       tester,
-      itemKey: 'num:compare:34-43',
+      itemKey: 'num:compare:34:43',
       questionTypeId: QuestionTypeIds.compare,
     );
     // Assert
@@ -170,7 +170,7 @@ void main() {
     // Arrange
     await pumpQuiz(
       tester,
-      itemKey: 'num:compare:58-49',
+      itemKey: 'num:compare:58:49',
       questionTypeId: QuestionTypeIds.compare,
     );
     // Act
@@ -186,7 +186,7 @@ void main() {
     // Arrange
     await pumpQuiz(
       tester,
-      itemKey: 'num:order:8:2',
+      itemKey: 'num:line:8:2',
       questionTypeId: QuestionTypeIds.numberLine,
     );
     // Assert

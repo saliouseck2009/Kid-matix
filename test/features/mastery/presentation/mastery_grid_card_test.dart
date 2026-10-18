@@ -79,7 +79,7 @@ void main() {
     ) async {
       // Arrange
       repository = InMemoryItemProgressRepository(<ItemProgressEntity>[
-        _progress('num:compare:34-43', 1, domainId: 'numbers'),
+        _progress('num:compare:34:43', 1, domainId: 'numbers'),
       ]);
       // Act
       await pumpGrid(tester, domainId: 'numbers');

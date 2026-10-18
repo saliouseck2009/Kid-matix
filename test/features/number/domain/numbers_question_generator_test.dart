@@ -13,8 +13,8 @@ void main() {
   final List<LearningItem> mixedItems = <LearningItem>[
     domain.findItem('num:count:7')!,
     domain.findItem('num:place:34')!,
-    domain.findItem('num:compare:34-43')!,
-    domain.findItem('num:order:8:2')!,
+    domain.findItem('num:compare:34:43')!,
+    domain.findItem('num:line:8:2')!,
     domain.findItem('num:after:39')!,
   ];
 
@@ -63,7 +63,7 @@ void main() {
       domain: domain,
       plans: <QuizItemPlan>[
         QuizItemPlan(
-          itemKey: 'num:compare:9-6',
+          itemKey: 'num:compare:9:6',
           questionTypeIds: const <String>[
             QuestionTypeIds.countObjects,
             QuestionTypeIds.numberLine,
