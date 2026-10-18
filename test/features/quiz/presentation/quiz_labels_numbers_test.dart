@@ -102,7 +102,10 @@ void main() {
       labels.describeQuestion(inputOperation, 'numbers'),
       'Avant et après',
     );
-    expect(labels.speakQuestion(inputOperation, 'numbers'), isNull);
+    expect(
+      labels.speakQuestion(inputOperation, 'numbers'),
+      '39 plus 1 égale combien',
+    );
     expect(labels.describeQuestion(inputPicked, 'numbers'), 'Avant et après');
   });
 }

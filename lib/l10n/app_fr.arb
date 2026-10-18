@@ -190,6 +190,10 @@
   "@profileColorPink": {
     "description": "Screen-reader name of the pink color swatch of the player creation. Color adjective, one word. Never displayed."
   },
+  "profileCreationReadAloudHint": "Une voix lit chaque question. Tu pourras changer ça dans les réglages.",
+  "@profileCreationReadAloudHint": {
+    "description": "Small text under the switch \"Read questions aloud\" offered in the player creation, between the color swatches and the main button. Explains the switch in one or two lines and says it can be changed later. Informal \"tu\"."
+  },
   "createProfileButton": "C'est parti !",
   "@createProfileButton": {
     "description": "Main button of the player creation that creates the player and starts the game (\"Let's go!\"). One line on a full-width button."
@@ -408,9 +412,21 @@
   "@settingsReducedMotion": {
     "description": "Switch of the settings screen that replaces the animations by still screens (\"Reduced motion\")."
   },
+  "settingsReadAloud": "Lire les questions à voix haute",
+  "@settingsReadAloud": {
+    "description": "Switch that makes a voice read every new question of a quiz by itself (\"Read questions aloud\"), in the game section of the settings screen and as the offer at the end of the player creation. The child can always ask for a reading with the listen button, whatever the switch."
+  },
   "commonClose": "Fermer",
   "@commonClose": {
     "description": "Tooltip of the cross button that closes a full screen such as the parental gate (\"Close\"). Infinitive verb, one word."
+  },
+  "commonListen": "Écouter",
+  "@commonListen": {
+    "description": "Tooltip and screen-reader label of the round speaker button that reads a question, an instruction or a tip aloud (\"Listen\"). Infinitive verb, one word. Hidden when the phone has no voice."
+  },
+  "commonListenStop": "Arrêter la lecture",
+  "@commonListenStop": {
+    "description": "Tooltip and screen-reader label of the same button while the voice is reading, which then stops it (\"Stop reading\"). Short phrase."
   },
   "settingsBackupSection": "Sauvegarde",
   "@settingsBackupSection": {
@@ -981,6 +997,16 @@
   "quizSpokenBlank": "combien",
   "@quizSpokenBlank": {
     "description": "Word read by the screen reader for the missing number at the end of a question (\"how much\"), as in \"5 fois 7 égale combien\". Joined with the other words in the order of the operation. Never displayed."
+  },
+  "quizSpokenTrueFalse": "{statement}. Vrai ou faux ?",
+  "@quizSpokenTrueFalse": {
+    "description": "Sentence read aloud for a true or false question: the statement as spoken words, then the question (\"6 fois 7 égale 48. Vrai ou faux ?\"). Spoken only, never displayed.",
+    "placeholders": {
+      "statement": {
+        "type": "String",
+        "example": "6 fois 7 égale 48"
+      }
+    }
   },
   "quizSpokenPlus": "plus",
   "@quizSpokenPlus": {

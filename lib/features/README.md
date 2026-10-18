@@ -15,6 +15,7 @@ the lot that delivers it; nothing is scaffolded ahead of time.
 | `challenge`      | F9, F12+ | Free training, time attack and other modes   |
 | `setting`        | F10, F18 | Sounds, vibrations and the daily reminder    |
 | `shop`           | F21      | Coins, avatars and color themes to unlock    |
+| `speech`         | F23      | Reads texts aloud with the phone's voice     |
 | `number`         | F24      | The numbers up to 100 learning domain        |
 
 Layout of a feature:

@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
+import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 
+import '../../../helpers/fake_speech_service.dart';
 import '../../../helpers/in_memory_local_storage.dart';
 import '../../../helpers/pump_localized.dart';
 import '../../../helpers/test_path_pages.dart';
@@ -142,6 +145,32 @@ void main() {
         find.textContaining('3 paquets et 4 bâtonnets font 34'),
         findsOneWidget,
       );
+    });
+    testWidgets('reads the tip of a numbers unit aloud like a table tip', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final FakeSpeechService speech = FakeSpeechService();
+      await pumpPage(
+        tester,
+        ReadAloudScope(
+          speech: speech,
+          child: pages.buildDiscoveryPage(
+            unitKey: 'num:tensones',
+            onClose: () {},
+          ),
+        ),
+      );
+      // Act
+      await tester.tap(find.byType(ListenButton));
+      await tester.pump();
+      // Assert
+      expect(speech.spoken, hasLength(1));
+      expect(
+        speech.spoken.single,
+        contains('3 paquets et 4 bâtonnets font 34'),
+      );
+      expect(speech.languages, <String>['fr']);
     });
     test('plays its stages and its reviews', () {
       // Act

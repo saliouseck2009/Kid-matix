@@ -653,13 +653,13 @@ Règles propres à la version 2.0, en plus des règles communes :
 Les enfants qui lisent mal entendent chaque question et chaque consigne en français (ou dans la langue de l'app).
 
 - [ ] **F23-01** Choix technique, noté dans `docs/decisions.md` : synthèse vocale du système pour les textes générés (les questions changent à chaque partie). Vérifier qu'une voix française fonctionne hors ligne sur Android d'entrée de gamme et sur iOS ; prévoir le cas où aucune voix n'est installée.
-- [ ] **F23-02** Interface `SpeechService` dans `core/services/` (parler, arrêter, disponibilité, langue) et son implémentation dans une fonctionnalité dédiée ; service factice pour les tests.
-- [ ] **F23-03** Bouton « Écouter » (haut-parleur, avec `tooltip`) sur la carte de question de tous les formats ; il lit l'énoncé comme une phrase, en réutilisant `PromptReading` (« 5 fois 7 égale combien »).
-- [ ] **F23-04** Réglage par joueur « Lire les questions à voix haute » : lecture automatique de chaque nouvelle question. Désactivé par défaut, proposé à la création du profil.
-- [ ] **F23-05** Lecture des consignes principales (« Touche la bonne réponse »), des astuces de l'étape Découverte et des messages de la mascotte.
-- [ ] **F23-06** Le chrono ne démarre qu'à la fin de la lecture ; il se met en pause pendant une lecture demandée par l'enfant.
-- [ ] **F23-07** Le bouton est masqué, sans message d'erreur, quand aucune voix n'est disponible.
-- [ ] **F23-08** Tests : service factice, chrono en attente de la lecture, bouton masqué sans voix, réglage par joueur.
+- [x] **F23-02** Interface `SpeechService` dans `core/services/` (parler, arrêter, disponibilité, langue) et son implémentation dans une fonctionnalité dédiée ; service factice pour les tests.
+- [x] **F23-03** Bouton « Écouter » (haut-parleur, avec `tooltip`) sur la carte de question de tous les formats ; il lit l'énoncé comme une phrase, en réutilisant `PromptReading` (« 5 fois 7 égale combien »).
+- [x] **F23-04** Réglage par joueur « Lire les questions à voix haute » : lecture automatique de chaque nouvelle question. Désactivé par défaut, proposé à la création du profil.
+- [x] **F23-05** Lecture des consignes principales (« Touche la bonne réponse »), des astuces de l'étape Découverte et des messages de la mascotte.
+- [x] **F23-06** Le chrono ne démarre qu'à la fin de la lecture ; il se met en pause pendant une lecture demandée par l'enfant.
+- [x] **F23-07** Le bouton est masqué, sans message d'erreur, quand aucune voix n'est disponible.
+- [x] **F23-08** Tests : service factice, chrono en attente de la lecture, bouton masqué sans voix, réglage par joueur.
 
 **Terminé quand :** en mode avion, sur un téléphone d'entrée de gamme, une question est lue en français et le chrono attend la fin de la lecture.
 
@@ -720,7 +720,7 @@ Le test de départ (F16) devient un vrai positionnement : l'enfant est placé se
 Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énoncé. Ce lot leur apprend les mots et expressions des problèmes, avec une explication audio en wolof enregistrée par le propriétaire.
 
 - [x] **F28-01** Tableau de contenu `docs/product/math-words.md` : environ 40 mots et expressions en six familles (ajouter, enlever, comparer, grouper, partager, questions). Pour chacun : clé stable, mot en français, sens simple, idée d'image, phrase d'exemple, et des colonnes vides pour le propriétaire (explication en wolof, exemple en wolof, nom du fichier audio). Un glossaire de cohérence note le mot wolof retenu pour chaque notion.
-- [ ] **F28-02** Guide d'enregistrement `docs/product/audio-recording.md` (pièce calme, un fichier par mot, nommage `wo_<clé>.m4a`, ton lent, 2 s de silence avant et après) et un script dans `tool/` qui coupe les silences, égalise le volume, convertit en un format mono compressé et vérifie que chaque clé a son fichier.
+- [ ] **F28-02** Guide d'enregistrement `docs/product/audio-recording.md` (pièce calme, deux fichiers par mot, `wo_<clé>.m4a` pour l'explication et `wo_<clé>_exemple.m4a` pour l'exemple, ton lent, 2 s de silence avant et après) et un script dans `tool/` qui coupe les silences, égalise le volume, convertit en un format mono compressé et vérifie que chaque clé a ses deux fichiers.
 - [ ] **F28-03** Packs audio : `assets/audio/<langue>/` avec un manifeste ; le pack wolof est intégré à l'app ; un fichier manquant masque simplement le bouton. Le code ne dépend d'aucune langue en particulier.
 - [ ] **F28-04** Fonctionnalité `math_words` qui implémente `LearningDomain` : chaque mot est un item (`word:il_reste`) suivi par la répétition espacée.
 - [ ] **F28-05** Une illustration vectorielle simple par mot (provisoire, remplaçable sans changer le code).

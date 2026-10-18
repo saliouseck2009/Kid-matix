@@ -22,6 +22,11 @@ abstract class ProfileFormCubit extends Cubit<ProfileFormState> {
   /// Records the chosen [color].
   void pickColor(ProfileColor color) => emit(state.copyWith(color: color));
 
+  /// Records whether the player accepts to have every question read aloud.
+  void changeReadAloud({required bool isEnabled}) {
+    emit(state.copyWith(isReadAloudEnabled: isEnabled));
+  }
+
   /// Saves the player.
   Future<void> submit();
 

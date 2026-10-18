@@ -222,6 +222,14 @@ class _SettingsView extends StatelessWidget {
                     old.copyWith(isReducedMotionEnabled: isOn),
               ),
             ),
+            SettingsSwitchRow(
+              label: context.l10n.settingsReadAloud,
+              value: settings.isReadAloudEnabled,
+              onChanged: (bool isOn) => cubit.update(
+                (ProfileSettingsEntity old) =>
+                    old.copyWith(isReadAloudEnabled: isOn),
+              ),
+            ),
             ...gameRows,
           ],
         ),

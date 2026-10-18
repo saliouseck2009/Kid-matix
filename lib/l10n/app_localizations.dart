@@ -316,6 +316,12 @@ abstract class AppLocalizations {
   /// **'Rose'**
   String get profileColorPink;
 
+  /// Small text under the switch "Read questions aloud" offered in the player creation, between the color swatches and the main button. Explains the switch in one or two lines and says it can be changed later. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Une voix lit chaque question. Tu pourras changer ça dans les réglages.'**
+  String get profileCreationReadAloudHint;
+
   /// Main button of the player creation that creates the player and starts the game ("Let's go!"). One line on a full-width button.
   ///
   /// In fr, this message translates to:
@@ -526,11 +532,29 @@ abstract class AppLocalizations {
   /// **'Animations réduites'**
   String get settingsReducedMotion;
 
+  /// Switch that makes a voice read every new question of a quiz by itself ("Read questions aloud"), in the game section of the settings screen and as the offer at the end of the player creation. The child can always ask for a reading with the listen button, whatever the switch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lire les questions à voix haute'**
+  String get settingsReadAloud;
+
   /// Tooltip of the cross button that closes a full screen such as the parental gate ("Close"). Infinitive verb, one word.
   ///
   /// In fr, this message translates to:
   /// **'Fermer'**
   String get commonClose;
+
+  /// Tooltip and screen-reader label of the round speaker button that reads a question, an instruction or a tip aloud ("Listen"). Infinitive verb, one word. Hidden when the phone has no voice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écouter'**
+  String get commonListen;
+
+  /// Tooltip and screen-reader label of the same button while the voice is reading, which then stops it ("Stop reading"). Short phrase.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter la lecture'**
+  String get commonListenStop;
 
   /// Name of the section of the settings screen holding the export and the import of a player to and from a file ("Backup"). Noun, short section header.
   ///
@@ -1119,6 +1143,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'combien'**
   String get quizSpokenBlank;
+
+  /// Sentence read aloud for a true or false question: the statement as spoken words, then the question ("6 fois 7 égale 48. Vrai ou faux ?"). Spoken only, never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{statement}. Vrai ou faux ?'**
+  String quizSpokenTrueFalse(String statement);
 
   /// Word read by the screen reader for the plus sign of a number written as its tens and ones ("plus"), as in "30 plus 4 égale 34". Joined with the other words in the order of the operation. Never displayed.
   ///

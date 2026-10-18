@@ -17,6 +17,7 @@ final class ProfileSettingsEntity {
     required this.isVibrationEnabled,
     required this.isReducedMotionEnabled,
     required this.isEverythingUnlocked,
+    this.isReadAloudEnabled = false,
   });
 
   /// Creates the settings of a new player.
@@ -26,7 +27,8 @@ final class ProfileSettingsEntity {
       isSoundEnabled = true,
       isVibrationEnabled = true,
       isReducedMotionEnabled = false,
-      isEverythingUnlocked = false;
+      isEverythingUnlocked = false,
+      isReadAloudEnabled = false;
 
   /// Identifier of the profile these settings belong to.
   final String profileId;
@@ -49,6 +51,10 @@ final class ProfileSettingsEntity {
   /// Whether every table and stage of the learning path is open.
   final bool isEverythingUnlocked;
 
+  /// Whether every new question is read aloud by itself ("Lire les
+  /// questions à voix haute"); the player can always ask for a reading.
+  final bool isReadAloudEnabled;
+
   /// Returns a copy with the given fields replaced.
   ProfileSettingsEntity copyWith({
     String? profileId,
@@ -58,6 +64,7 @@ final class ProfileSettingsEntity {
     bool? isVibrationEnabled,
     bool? isReducedMotionEnabled,
     bool? isEverythingUnlocked,
+    bool? isReadAloudEnabled,
   }) {
     return ProfileSettingsEntity(
       profileId: profileId ?? this.profileId,
@@ -68,6 +75,7 @@ final class ProfileSettingsEntity {
       isReducedMotionEnabled:
           isReducedMotionEnabled ?? this.isReducedMotionEnabled,
       isEverythingUnlocked: isEverythingUnlocked ?? this.isEverythingUnlocked,
+      isReadAloudEnabled: isReadAloudEnabled ?? this.isReadAloudEnabled,
     );
   }
 
@@ -81,7 +89,8 @@ final class ProfileSettingsEntity {
             other.isSoundEnabled == isSoundEnabled &&
             other.isVibrationEnabled == isVibrationEnabled &&
             other.isReducedMotionEnabled == isReducedMotionEnabled &&
-            other.isEverythingUnlocked == isEverythingUnlocked;
+            other.isEverythingUnlocked == isEverythingUnlocked &&
+            other.isReadAloudEnabled == isReadAloudEnabled;
   }
 
   @override
@@ -93,5 +102,6 @@ final class ProfileSettingsEntity {
     isVibrationEnabled,
     isReducedMotionEnabled,
     isEverythingUnlocked,
+    isReadAloudEnabled,
   );
 }

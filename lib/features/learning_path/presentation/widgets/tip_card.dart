@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
+import 'package:kid_matix/core/widgets/read_aloud_button.dart';
 
 /// Yellow card of the Discovery stage: the mascot gives the tip of the
-/// table.
+/// table, and a listen button reads it aloud when a voice is installed.
 class TipCard extends StatelessWidget {
   /// Creates the card of [tip].
   const TipCard({required this.tip, super.key});
@@ -44,6 +45,7 @@ class TipCard extends StatelessWidget {
               ],
             ),
           ),
+          ReadAloudButton(text: tip),
         ],
       ),
     );

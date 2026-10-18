@@ -82,6 +82,44 @@ void main() {
       // Assert
       expect(actualGoal, 100);
     });
+    test('reads whether the questions are read aloud', () async {
+      // Arrange
+      when(
+        () => mockRepository.getProfileSettings(
+          profileId: any(named: 'profileId'),
+        ),
+      ).thenAnswer(
+        (_) async => DataSuccess<ProfileSettingsEntity>(
+          const ProfileSettingsEntity.defaults(
+            profileId: 'p-1',
+          ).copyWith(isReadAloudEnabled: true),
+        ),
+      );
+      // Act
+      final bool actualReadAloud = (await service.readReadAloudEnabled(
+        profileId: 'p-1',
+      )).requireData;
+      // Assert
+      expect(actualReadAloud, isTrue);
+    });
+    test('reads the reading aloud as off by default', () async {
+      // Arrange
+      when(
+        () => mockRepository.getProfileSettings(
+          profileId: any(named: 'profileId'),
+        ),
+      ).thenAnswer(
+        (_) async => const DataSuccess<ProfileSettingsEntity>(
+          ProfileSettingsEntity.defaults(profileId: 'p-1'),
+        ),
+      );
+      // Act
+      final bool actualReadAloud = (await service.readReadAloudEnabled(
+        profileId: 'p-1',
+      )).requireData;
+      // Assert
+      expect(actualReadAloud, isFalse);
+    });
     test('forwards a failure to read the settings', () async {
       // Arrange
       when(

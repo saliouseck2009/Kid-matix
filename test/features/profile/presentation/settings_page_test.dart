@@ -27,7 +27,7 @@ void main() {
   });
 
   Future<void> pumpSettings(WidgetTester tester) async {
-    tester.view.physicalSize = const Size(1080, 2600);
+    tester.view.physicalSize = const Size(1080, 3000);
     addTearDown(tester.view.resetPhysicalSize);
     final ProfilePages pages = buildProfilePages(
       settingsUseCases: buildSettingsUseCases(
@@ -63,6 +63,7 @@ void main() {
         '50 XP',
         'Tout débloquer',
         'Animations réduites',
+        'Lire les questions à voix haute',
         'Réinitialiser ma progression',
         'Supprimer ce joueur',
       ]) {
@@ -92,6 +93,31 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(lastSaved().isSoundEnabled, isFalse);
+    });
+    testWidgets('has the reading aloud off, then turns it on', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpSettings(tester);
+      expect(
+        tester
+            .widget<Switch>(
+              find.descendant(
+                of: find.widgetWithText(
+                  SwitchListTile,
+                  'Lire les questions à voix haute',
+                ),
+                matching: find.byType(Switch),
+              ),
+            )
+            .value,
+        isFalse,
+      );
+      // Act
+      await tester.tap(find.text('Lire les questions à voix haute'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(lastSaved().isReadAloudEnabled, isTrue);
     });
     testWidgets('resets the progress once the nickname is typed', (
       WidgetTester tester,

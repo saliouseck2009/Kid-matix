@@ -6,6 +6,7 @@ import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/profile/domain/entities/nickname_rules.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_limits.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_params.dart';
 import 'package:kid_matix/features/profile/domain/usecases/nickname_checker.dart';
@@ -45,7 +46,17 @@ class CreateProfileUseCase
       color: params.color,
       createdAt: _clock.now(),
     );
-    return _repository.createProfile(profile: profile);
+    // The offer accepted in the creation form goes in with the player, in
+    // the same write; a player who declined keeps the default settings.
+    if (!params.isReadAloudEnabled) {
+      return _repository.createProfile(profile: profile);
+    }
+    return _repository.createProfile(
+      profile: profile,
+      settings: ProfileSettingsEntity.defaults(
+        profileId: profile.id,
+      ).copyWith(isReadAloudEnabled: true),
+    );
   }
 
   Future<AppException?> _findLimitProblem() async {

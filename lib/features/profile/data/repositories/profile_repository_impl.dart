@@ -97,13 +97,15 @@ final class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<DataState<ProfileEntity>> createProfile({
     required ProfileEntity profile,
+    ProfileSettingsEntity? settings,
   }) {
     return _guard(() async {
       final DateTime now = _clock.now();
       await _profiles.insertProfile(
         profile: ProfileLocalModel.fromEntity(profile: profile, updatedAt: now),
         settings: ProfileSettingsLocalModel.fromEntity(
-          settings: ProfileSettingsEntity.defaults(profileId: profile.id),
+          settings:
+              settings ?? ProfileSettingsEntity.defaults(profileId: profile.id),
           updatedAt: now,
         ),
       );

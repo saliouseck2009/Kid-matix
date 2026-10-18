@@ -84,6 +84,25 @@ final class QuizResumed extends QuizEvent {
   const QuizResumed();
 }
 
+/// The player tapped a listen button: the question (or, with
+/// [isInstruction], the instruction under the answers) is read aloud, or
+/// the reading in progress stops.
+final class ReadAloudToggled extends QuizEvent {
+  /// Creates the event.
+  const ReadAloudToggled({this.isInstruction = false});
+
+  /// Whether the button is the one of the instruction, such as "Touche la
+  /// bonne réponse", rather than the one of the question.
+  final bool isInstruction;
+}
+
+/// A new question was asked to a player who has the questions read by
+/// themselves: the voice reads it.
+final class AutoReadStarted extends QuizEvent {
+  /// Creates the event.
+  const AutoReadStarted();
+}
+
 /// The player confirmed leaving the quiz.
 final class QuizAbandoned extends QuizEvent {
   /// Creates the event.

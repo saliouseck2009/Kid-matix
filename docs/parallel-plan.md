@@ -46,19 +46,27 @@ every agent.
 A wave starts when the previous one is merged. Within a wave, lots run in
 parallel.
 
+The reserved numbers below were shifted down by one after wave 1, since
+F24 needed no migration (rule of the shared resources above).
+Wave 2 starts once F23 (#104) and the F24 follow-up
+(`refactor/f24-domain-pattern`: final numbers keys, `number/` folder,
+unit names by slug) are merged, so that F25, F26 and F28 copy the final
+pattern. F25 and F26 both edit the domain list, the naming switches and
+`math_operator.dart`: merge them one after the other.
+
 | Wave | Lot | Agent | Reserved migration | Notes |
 | --- | --- | --- | --- | --- |
 | 1 | F23 · Read aloud | `lot-implementer` (Sonnet) | 012 (per-player read-aloud setting) | |
-| 1 | F24 · Numbers up to 100 | `lot-implementer` (Opus) | 013 (only if the last domain per player goes in the database) | Sets the multi-domain pattern (domain selector, `domainId` everywhere) for F25, F26, F28 |
+| 1 | F24 · Numbers up to 100 | `lot-implementer` (Opus) | none (013 was not used: the last domain is a preference) | Sets the multi-domain pattern (domain selector, `domainId` everywhere) for F25, F26, F28 |
 | 1 | F28-01 and the guide of F28-02 | `content-writer` (Haiku) | none | The owner then fills the Wolof columns and records the audio |
 | 2 | F25 · Addition and subtraction | `lot-implementer` (Sonnet) | none expected | Follows the pattern of F24 |
 | 2 | F26 · Division | Codex | none expected | Isolated: a new feature folder |
-| 2 | F28 · Math words, the rest (script of F28-02, F28-03 to F28-13) | `lot-implementer` (Sonnet) | 014 (per-player audio help setting) | Needs the content table filled by the owner for the end-to-end check |
-| 3 | F27 · Placement by skill | `lot-implementer` (Sonnet) | 015 (dated placement results) | |
-| 3 | F29 · Class mode | `lot-implementer` (Opus) | 016 (classes, students, assignments) | Starts only after the owner answers F29-01 (shared tablets or families' phones, class size) |
-| 4 | F30 · Word problems | `lot-implementer` (Sonnet) | 017 (only if needed) | The content table `problems.md` (F30-01) can go to `content-writer` first |
-| 4 | F31 · Progress measurement | Codex | 018 | |
-| 5 | F32 · Other help languages | To decide with the partners | 019 | F32-03 needs the owner's decision first |
+| 2 | F28 · Math words, the rest (script of F28-02, F28-03 to F28-13) | `lot-implementer` (Sonnet) | 013 (per-player audio help setting) | Needs the content table filled by the owner for the end-to-end check |
+| 3 | F27 · Placement by skill | `lot-implementer` (Sonnet) | 014 (dated placement results) | |
+| 3 | F29 · Class mode | `lot-implementer` (Opus) | 015 (classes, students, assignments) | Starts only after the owner answers F29-01 (shared tablets or families' phones, class size) |
+| 4 | F30 · Word problems | `lot-implementer` (Sonnet) | 016 (only if needed) | The content table `problems.md` (F30-01) can go to `content-writer` first |
+| 4 | F31 · Progress measurement | Codex | 017 | |
+| 5 | F32 · Other help languages | To decide with the partners | 018 | F32-03 needs the owner's decision first |
 
 ## How to launch
 

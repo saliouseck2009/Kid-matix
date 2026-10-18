@@ -47,8 +47,8 @@ void main() {
       Scaffold(
         body: QuizHelpCard(
           help: inputHelp,
-          unitName: labels.describeUnit(
-            domain.findUnit('num:tensones')!,
+          unitName: labels.describeUnitOf(
+            _questionOf('num:place:34', 'num:tensones'),
             NumbersDomain.domainId,
           ),
         ),
