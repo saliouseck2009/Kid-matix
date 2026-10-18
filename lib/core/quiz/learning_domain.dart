@@ -51,6 +51,16 @@ abstract interface class LearningDomain {
   /// in the results among the facts to review.
   List<PromptToken> describeItem(LearningItem item);
 
+  /// The name of the recordings of [item] in the audio packs, such as
+  /// `il_reste` for the word `word:il_reste`; `null` when the domain has
+  /// none, which is the case of every domain but the math words.
+  String? recordingKeyOf(LearningItem item);
+
+  /// The language the questions of the domain are written in, such as
+  /// `fr` for the math words, which the voice must speak whatever the
+  /// language of the interface; `null` to follow the interface.
+  String? get contentLanguageCode;
+
   /// Builds a question of type [questionTypeId] about [item], drawing
   /// choices and positions from [random].
   ///

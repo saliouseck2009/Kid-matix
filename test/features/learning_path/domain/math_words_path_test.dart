@@ -108,6 +108,26 @@ void main() {
     expect(actual.sourceKey, 'path:word:remove:discovery');
   });
 
+  test('keeps the sentence to touch for Discovery, never in later stages', () {
+    for (final StageSource source in <StageSource>[
+      const StageSource(unitKey: 'word:remove', stage: StageKind.training),
+      const StageSource(unitKey: 'word:remove', stage: StageKind.writing),
+      const StageSource(
+        unitKey: 'review:math_words:1',
+        stage: StageKind.review,
+      ),
+    ]) {
+      // Act
+      final QuizSpec actual = specs.specOf(domain: words, source: source)!;
+      // Assert
+      expect(
+        actual.questionTypeIds,
+        isNot(contains(QuestionTypeIds.touchToUnderstand)),
+        reason: source.toKey(),
+      );
+    }
+  });
+
   test('keeps the sentence and the statement out of the timed stages', () {
     for (final StageKind stage in <StageKind>[
       StageKind.speed,

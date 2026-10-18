@@ -668,7 +668,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String quizWordMatchHintPicture(String word) {
-    return 'Toca el dibujo de « $word »';
+    return 'Toca el dibujo de «$word»';
   }
 
   @override
@@ -1235,12 +1235,12 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        'add': 'Cuando añadimos, tenemos más que antes. Escucha « en plus », « en tout », « ensemble »: dicen que juntamos.',
-        'remove': 'Cuando quitamos, queda menos. Las palabras « il reste », « vendre », « perdre » dicen que la cantidad baja.',
+        'add': 'Cuando añadimos, tenemos más que antes. Escucha «en plus», «en tout», «ensemble»: dicen que juntamos.',
+        'remove': 'Cuando quitamos, queda menos. Las palabras «il reste», «vendre», «perdre» dicen que la cantidad baja.',
         'compare': 'Para comparar, mira dos cantidades: una es más grande, la otra más pequeña, o son iguales.',
-        'group': 'Los paquetes del mismo tamaño son grupos iguales. Las palabras « dans chaque » y « par paquets de » los anuncian.',
+        'group': 'Los paquetes del mismo tamaño son grupos iguales. Las palabras «dans chaque» y «par paquets de» los anuncian.',
         'share': 'Repartir es hacer partes iguales: cada uno recibe tanto como los demás.',
-        'ask': 'Estas palabras dicen qué buscamos (« combien », « le total ») o cuándo pasa (« au départ », « à la fin »).',
+        'ask': 'Estas palabras dicen qué buscamos («combien», «le total») o cuándo pasa («au départ», «à la fin»).',
         'other': '',
       },
     );

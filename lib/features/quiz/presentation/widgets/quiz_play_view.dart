@@ -5,6 +5,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/widgets/help_audio_button.dart';
@@ -47,6 +48,8 @@ class QuizPlayView extends StatelessWidget {
     required this.onQuit,
     super.key,
   });
+
+  static const double _hearingIconSize = 40;
 
   /// State shown.
   final QuizState state;
@@ -131,21 +134,15 @@ class QuizPlayView extends StatelessWidget {
                   ),
                   listenButton: listenButton,
                 ),
-              null when data.asksTouch => TouchWordsBoard(
-                sentence: data.question.sentence,
-                targetKey: (data.question.expectedAnswer as WordAnswer).wordKey,
-                targetAnswer: data.question.expectedAnswer,
-                onUnderstood: data.feedback == null
-                    ? (Answer answer) => context.read<QuizBloc>().add(
-                        AnswerSubmitted(answer: answer),
-                      )
-                    : null,
-                listenButton: listenButton,
+              null when data.asksTouch => _touchBoard(
+                context,
+                data,
+                listenButton,
               ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
                 monsterFamily: MonsterIllustration.familyOf(data.run.domainId),
-                prompt: data.question.prompt,
+                prompt: data.visiblePrompt,
                 picture: data.question.picture,
                 spokenText: labels.speakQuestion(
                   data.question,
@@ -173,7 +170,7 @@ class QuizPlayView extends StatelessWidget {
                 asksOperation:
                     data.question.questionTypeId ==
                     QuestionTypeIds.findOperation,
-                prompt: data.question.prompt,
+                prompt: data.visiblePrompt,
                 picture: data.question.picture,
                 spokenText: labels.speakQuestion(
                   data.question,
@@ -192,7 +189,19 @@ class QuizPlayView extends StatelessWidget {
                     questionTypeId: QuestionTypeIds.listenAndTouch,
                     expectedAnswer: WordAnswer(:final String wordKey),
                   ) =>
-                    HelpAudioButton(wordKey: wordKey),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: AppSizes.space4,
+                      children: <Widget>[
+                        if (data.hidesWord)
+                          Icon(
+                            Icons.hearing_rounded,
+                            size: _hearingIconSize,
+                            color: context.palette.mutedText,
+                          ),
+                        HelpAudioButton(wordKey: wordKey),
+                      ],
+                    ),
                   _ => null,
                 },
               ),
@@ -202,6 +211,29 @@ class QuizPlayView extends StatelessWidget {
             _AnswerZone(data: data, labels: labels),
         ],
       ),
+    );
+  }
+
+  /// The board of a "Tap to understand" question.
+  Widget _touchBoard(
+    BuildContext context,
+    _PlayData data,
+    Widget? listenButton,
+  ) {
+    final Answer expected = data.question.expectedAnswer;
+    if (expected is! WordAnswer) return const SizedBox.shrink();
+    return TouchWordsBoard(
+      sentence: data.question.sentence,
+      targetKey: expected.wordKey,
+      targetAnswer: expected,
+      languageCode:
+          labels.contentLanguageOf(data.run.domainId) ??
+          Localizations.localeOf(context).languageCode,
+      onUnderstood: data.feedback == null
+          ? (Answer answer) =>
+                context.read<QuizBloc>().add(AnswerSubmitted(answer: answer))
+          : null,
+      listenButton: listenButton,
     );
   }
 
@@ -336,6 +368,16 @@ final class _PlayData {
 
   /// Whether a board of its own replaces the card and the answers.
   bool get hasBoard => asksPairs || asksTouch;
+
+  /// Whether the word of a "Listen and tap" question is only said, not
+  /// written: while it waits for its answer and a voice can say it. Without
+  /// a voice the word stays written, and it shows once answered.
+  bool get hidesWord =>
+      question.questionTypeId == QuestionTypeIds.listenAndTouch && canReadAloud;
+
+  /// The prompt to show: empty when the word is only said.
+  List<PromptToken> get visiblePrompt =>
+      hidesWord ? const <PromptToken>[] : question.prompt;
 
   /// Item the answer was judged on: the question's, or the first pair
   /// missed when matching pairs.

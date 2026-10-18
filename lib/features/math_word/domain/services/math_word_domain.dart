@@ -8,6 +8,7 @@ import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_pair.dart';
+import 'package:kid_matix/core/quiz/recognition_cap.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/math_word/domain/entities/math_word.dart';
@@ -22,7 +23,7 @@ import 'package:kid_matix/features/math_word/domain/entities/operation_statement
 /// A word is asked in four ways: hear it and touch its drawing, tie four
 /// words to their drawings, touch it in a sentence, and, when a statement
 /// uses it, pick the operation of that statement.
-final class MathWordDomain implements LearningDomain {
+final class MathWordDomain implements LearningDomain, RecognitionCap {
   /// Creates the domain of [catalog].
   MathWordDomain({required this.catalog});
 
@@ -100,6 +101,19 @@ final class MathWordDomain implements LearningDomain {
     _requireWord(item);
     return null;
   }
+
+  /// The words are learned by recognizing a drawing or an operation: a
+  /// recognized answer has no cap, the word still needs right answers on
+  /// spaced days to climb.
+  @override
+  int? get recognizedBoxCap => null;
+
+  @override
+  String? recordingKeyOf(LearningItem item) => _requireWord(item).wordKey;
+
+  /// The words are French, whatever the language of the interface.
+  @override
+  String get contentLanguageCode => 'fr';
 
   @override
   ItemHelp helpOf(LearningItem item) {

@@ -114,14 +114,14 @@ final class StageDefinition {
     QuestionTypeIds.compare,
   ];
 
-  /// The formats of the math words (lot F28): hear a word and touch its
-  /// drawing, tie words to drawings, touch the words of a sentence, pick
-  /// the operation of a statement. Each word is asked with the ones that
-  /// fit it (a statement uses only some words).
+  /// The formats of the math words that test a word (lot F28): hear a word
+  /// and touch its drawing, tie words to drawings, pick the operation of a
+  /// statement. Each word is asked with the ones that fit it (a statement
+  /// uses only some words). Touching the words of a sentence is discovery
+  /// only and belongs to the Discovery stage alone.
   static const List<String> _wordTypes = <String>[
     QuestionTypeIds.listenAndTouch,
     QuestionTypeIds.wordAndImage,
-    QuestionTypeIds.touchToUnderstand,
     QuestionTypeIds.whichOperation,
   ];
 

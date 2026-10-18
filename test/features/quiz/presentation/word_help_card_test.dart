@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/widgets/word_audio_scope.dart';
 import 'package:kid_matix/core/widgets/word_picture/word_picture_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_help_card.dart';
@@ -31,7 +30,7 @@ void main() {
         body: WordAudioScope(
           audio: audio,
           child: HelpAudioLanguageScope(
-            language: HelpAudio.defaultLanguage,
+            language: 'wo',
             child: QuizHelpCard(help: help, unitName: 'Enlever'),
           ),
         ),

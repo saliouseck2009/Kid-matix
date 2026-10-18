@@ -68,25 +68,6 @@ void main() {
     expect(missed.nextReviewAt, DateTime(2026, 10, 19));
   });
 
-  test('keeps a word picked among drawings below the acquired boxes', () {
-    // Arrange
-    ItemProgressEntity progress = notSeen(domain.catalog.wordOf('total')!);
-    // Act
-    for (int index = 0; index < 8; index++) {
-      progress = answer(
-        progress,
-        isCorrect: true,
-        nature: AnswerNature.recognized,
-      );
-    }
-    // Assert
-    expect(progress.box, MasteryPolicy.recognizedBoxCap);
-    expect(
-      domain.questionTypeIdsOf(domain.catalog.wordOf('total')!),
-      isNot(contains(QuestionTypeIds.whichOperation)),
-    );
-  });
-
   test('lets the operation of a statement take a word to the last box', () {
     // Arrange
     ItemProgressEntity progress = notSeen(domain.catalog.wordOf('il_reste')!);

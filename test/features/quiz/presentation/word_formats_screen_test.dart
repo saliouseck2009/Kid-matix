@@ -9,6 +9,7 @@ import 'package:kid_matix/core/quiz/question_pair.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
+import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
 import 'package:kid_matix/core/widgets/word_audio_scope.dart';
 import 'package:kid_matix/core/widgets/word_picture/word_picture_view.dart';
@@ -55,11 +56,17 @@ void main() {
     WidgetTester tester, {
     required String itemKey,
     required String questionTypeId,
-    String helpLanguage = HelpAudio.defaultLanguage,
+    String? helpLanguage = 'wo',
     bool isBossFight = false,
+    bool readsAloud = false,
+    Locale locale = const Locale('fr'),
+    Size size = const Size(1170, 2532),
+    double textScale = 1,
   }) async {
-    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.physicalSize = size;
+    tester.platformDispatcher.textScaleFactorTestValue = textScale;
     addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     await pumpLocalized(
       tester,
       ReadAloudScope(
@@ -82,12 +89,16 @@ void main() {
               ticker: const SilentTicker(),
               domains: buildDomainRegistry(),
               feedback: RecordingGameFeedback(),
+              readAloud: readsAloud
+                  ? buildReadAloudUseCases(speech: speech)
+                  : null,
               onCompleted: (_) {},
               onLeft: () {},
             ),
           ),
         ),
       ),
+      locale: locale,
     );
     await tester.pumpAndSettle();
   }
@@ -127,6 +138,72 @@ void main() {
       expect(find.textContaining('Bravo'), findsOneWidget);
     });
 
+    testWidgets('only says the word when a voice can, in French', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(
+        tester,
+        itemKey: 'word:il_reste',
+        questionTypeId: QuestionTypeIds.listenAndTouch,
+        readsAloud: true,
+      );
+      final Question question = currentQuestion(tester);
+      // Assert
+      expect(find.text('il reste'), findsNothing);
+      expect(find.byIcon(Icons.hearing_rounded), findsOneWidget);
+      // Act
+      await tester.tap(find.byType(ListenButton).first);
+      await tester.pump();
+      // Assert
+      expect(speech.spoken.last, 'il reste');
+      expect(speech.languages.last, 'fr');
+      // Act
+      await tester.tap(
+        find
+            .byType(WordPictureView)
+            .at(question.choices.indexOf(question.expectedAnswer)),
+      );
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('il reste'), findsOneWidget);
+    });
+
+    testWidgets('writes the word when no voice can say it', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      speech.hasVoice = false;
+      // Act
+      await pumpQuiz(
+        tester,
+        itemKey: 'word:il_reste',
+        questionTypeId: QuestionTypeIds.listenAndTouch,
+        readsAloud: true,
+      );
+      // Assert
+      expect(find.text('il reste'), findsOneWidget);
+      expect(find.byIcon(Icons.hearing_rounded), findsNothing);
+    });
+
+    testWidgets('speaks the words in French whatever the interface', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(
+        tester,
+        itemKey: 'word:il_reste',
+        questionTypeId: QuestionTypeIds.listenAndTouch,
+        readsAloud: true,
+        locale: const Locale('en'),
+      );
+      // Act
+      await tester.tap(find.byType(ListenButton).first);
+      await tester.pump();
+      // Assert
+      expect(speech.languages.last, 'fr');
+    });
+
     testWidgets('judges a wrong drawing', (WidgetTester tester) async {
       // Arrange
       await pumpQuiz(
@@ -162,6 +239,20 @@ void main() {
       await tester.pump();
       // Assert
       expect(audio.played, <String>['wo:il_reste:explanation']);
+    });
+
+    testWidgets('offers the first pack to a player who never chose', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpQuiz(
+        tester,
+        itemKey: 'word:il_reste',
+        questionTypeId: QuestionTypeIds.listenAndTouch,
+        helpLanguage: null,
+      );
+      // Assert
+      expect(find.text('Écouter en wolof'), findsOneWidget);
     });
 
     testWidgets('hides the recorded help of a word with no file', (
@@ -413,6 +504,29 @@ void main() {
       expect(find.textContaining('Bravo'), findsOneWidget);
     });
 
+    testWidgets('offers the Wolof of the word touched', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      audio = FakeWordAudioService(recorded: <String>{'il_reste'});
+      await pumpQuiz(
+        tester,
+        itemKey: 'word:il_reste',
+        questionTypeId: QuestionTypeIds.wordAndImage,
+      );
+      expect(find.text('Écouter en wolof'), findsNothing);
+      // Act
+      await tester.tap(find.text('il reste'));
+      await tester.pump();
+      // Assert
+      expect(find.text('Écouter en wolof'), findsOneWidget);
+      // Act
+      await tester.tap(find.text('Écouter en wolof'));
+      await tester.pump();
+      // Assert
+      expect(audio.played, <String>['wo:il_reste:explanation']);
+    });
+
     testWidgets('counts a wrong pairing as a mistake of the word', (
       WidgetTester tester,
     ) async {
@@ -436,6 +550,33 @@ void main() {
       expect(find.textContaining('Bravo'), findsNothing);
       expect(find.byType(WordPictureView), findsNWidgets(4));
     });
+  });
+
+  group('at 130 % on a small phone', () {
+    for (final String typeId in <String>[
+      QuestionTypeIds.listenAndTouch,
+      QuestionTypeIds.wordAndImage,
+      QuestionTypeIds.touchToUnderstand,
+      QuestionTypeIds.whichOperation,
+    ]) {
+      for (final String itemKey in <String>['word:il_reste', 'word:en_plus']) {
+        testWidgets('cuts nothing of $typeId for $itemKey', (
+          WidgetTester tester,
+        ) async {
+          // Act
+          await pumpQuiz(
+            tester,
+            itemKey: itemKey,
+            questionTypeId: typeId,
+            readsAloud: true,
+            size: const Size(1080, 2220),
+            textScale: 1.3,
+          );
+          // Assert
+          expect(tester.takeException(), isNull);
+        });
+      }
+    }
   });
 }
 

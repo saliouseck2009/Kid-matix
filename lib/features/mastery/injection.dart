@@ -34,6 +34,7 @@ void registerMasteryFeature(GetIt sl) {
       repository: sl(),
       questionTypes: sl(),
       clock: sl(),
+      domains: sl(),
     ),
   );
   sl.registerLazySingleton<PlanQuizUseCase>(

@@ -137,6 +137,12 @@ final class MultiplicationDomain implements LearningDomain {
   }
 
   @override
+  String? recordingKeyOf(LearningItem item) => null;
+
+  @override
+  String? get contentLanguageCode => null;
+
+  @override
   ItemHelp helpOf(LearningItem item) {
     final MultiplicationFact fact = _requireFact(item);
     return ItemHelp(

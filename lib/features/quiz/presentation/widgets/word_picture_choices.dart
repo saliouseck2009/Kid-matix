@@ -19,6 +19,10 @@ class WordPictureChoices extends StatelessWidget {
   static const int _columnCount = 2;
   static const double _gap = AppSizes.space12;
 
+  /// A drawing needs more room than a number: a quarter more than an
+  /// answer button.
+  static const double _drawingHeight = QuizAnswerButton.defaultHeight * 1.25;
+
   /// Words to pick from, in display order.
   final List<Answer> choices;
 
@@ -43,7 +47,7 @@ class WordPictureChoices extends StatelessWidget {
                   child: QuizAnswerButton(
                     label: '',
                     semanticLabel: choice is WordAnswer ? choice.text : null,
-                    height: QuizAnswerButton.defaultHeight * 1.5,
+                    height: _drawingHeight,
                     feedback: feedbackOf(choice),
                     onTap: onPicked == null ? null : () => onPicked!(choice),
                     child: choice is WordAnswer

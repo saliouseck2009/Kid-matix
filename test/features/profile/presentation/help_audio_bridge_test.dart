@@ -6,22 +6,37 @@ import 'package:kid_matix/core/widgets/word_audio_scope.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../helpers/fake_word_audio_service.dart';
 import '../../../helpers/pump_localized.dart';
 import '../helpers/profile_fixtures.dart';
 
-/// The settings scope tells the screens the "Aide audio" of the player.
+/// The settings scope tells the screens the "Aide audio" of the player; a
+/// player who never chose gets the first pack.
 void main() {
+  final FakeWordAudioService audio = FakeWordAudioService(language: 'xx');
+
   Future<String> pumpScope(
     WidgetTester tester, {
-    required String language,
+    required String? language,
     bool isPlayerActive = true,
   }) async {
     final MockGetSettingsUseCase mockGetSettings = MockGetSettingsUseCase();
     when(() => mockGetSettings.call(params: any(named: 'params'))).thenAnswer(
       (_) async => DataSuccess<ProfileSettingsEntity>(
-        const ProfileSettingsEntity.defaults(
+        ProfileSettingsEntity(
           profileId: 'p1',
-        ).copyWith(helpAudioLanguage: language),
+          timerMode: const ProfileSettingsEntity.defaults(
+            profileId: 'p1',
+          ).timerMode,
+          dailyGoal: const ProfileSettingsEntity.defaults(
+            profileId: 'p1',
+          ).dailyGoal,
+          isSoundEnabled: true,
+          isVibrationEnabled: true,
+          isReducedMotionEnabled: false,
+          isEverythingUnlocked: false,
+          helpAudioLanguage: language,
+        ),
       ),
     );
     String actual = 'unset';
@@ -34,7 +49,7 @@ void main() {
         isPlayerActive: isPlayerActive,
         child: Builder(
           builder: (BuildContext context) {
-            actual = HelpAudioLanguageScope.of(context);
+            actual = HelpAudioLanguageScope.resolve(context, audio);
             return const SizedBox.shrink();
           },
         ),
@@ -48,7 +63,13 @@ void main() {
     WidgetTester tester,
   ) async {
     // Act & Assert
-    expect(await pumpScope(tester, language: 'wo'), 'wo');
+    expect(await pumpScope(tester, language: 'yy'), 'yy');
+  });
+  testWidgets('gives the first pack to a player who never chose', (
+    WidgetTester tester,
+  ) async {
+    // Act & Assert
+    expect(await pumpScope(tester, language: null), 'xx');
   });
   testWidgets('gives none to a player who turned the help off', (
     WidgetTester tester,
@@ -59,29 +80,41 @@ void main() {
   testWidgets('gives none once the player left', (WidgetTester tester) async {
     // Act & Assert
     expect(
-      await pumpScope(tester, language: 'wo', isPlayerActive: false),
+      await pumpScope(tester, language: 'xx', isPlayerActive: false),
       HelpAudio.none,
     );
   });
-  testWidgets('gives none until the settings are read', (
+  testWidgets('gives none without a scope or without any pack', (
     WidgetTester tester,
   ) async {
     // Arrange
-    String actual = 'unset';
+    String withoutScope = 'unset';
+    String withoutPack = 'unset';
     // Act
     await pumpLocalized(
       tester,
-      HelpAudioLanguageScope(
-        language: HelpAudio.none,
-        child: Builder(
-          builder: (BuildContext context) {
-            actual = HelpAudioLanguageScope.of(context);
-            return const SizedBox.shrink();
-          },
-        ),
+      Column(
+        children: <Widget>[
+          Builder(
+            builder: (BuildContext context) {
+              withoutScope = HelpAudioLanguageScope.resolve(context, audio);
+              return const SizedBox.shrink();
+            },
+          ),
+          HelpAudioLanguageScope(
+            language: null,
+            child: Builder(
+              builder: (BuildContext context) {
+                withoutPack = HelpAudioLanguageScope.resolve(context, null);
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        ],
       ),
     );
     // Assert
-    expect(actual, HelpAudio.none);
+    expect(withoutScope, HelpAudio.none);
+    expect(withoutPack, HelpAudio.none);
   });
 }

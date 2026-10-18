@@ -72,10 +72,16 @@ class DiscoveryPage extends StatelessWidget {
                         ),
                         UnitFactsGrid(
                           facts: unit.items.map(_describe).toList(),
-                          trailingOf: (int index) => HelpAudioButton(
-                            wordKey: _recordingKeyOf(unit.items[index]),
-                            isCompact: true,
-                          ),
+                          trailingOf: (int index) =>
+                              switch (domain.recordingKeyOf(
+                                unit.items[index],
+                              )) {
+                                final String key => HelpAudioButton(
+                                  wordKey: key,
+                                  isCompact: true,
+                                ),
+                                null => null,
+                              },
                         ),
                         TipCard(tip: labels.unitTip(unit.key)),
                       ],
@@ -96,12 +102,6 @@ class DiscoveryPage extends StatelessWidget {
   }
 
   List<PromptToken> _describe(LearningItem item) => domain.describeItem(item);
-
-  /// Name of the recordings of an item: the end of its key (`il_reste` for
-  /// `word:il_reste`). An item with no recording shows no button.
-  String _recordingKeyOf(LearningItem item) {
-    return item.key.substring(item.key.indexOf(':') + 1);
-  }
 }
 
 /// Close cross and empty progress bar while playing; back arrow alone

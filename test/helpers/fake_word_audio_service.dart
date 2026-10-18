@@ -39,6 +39,9 @@ final class FakeWordAudioService implements WordAudioService {
   List<String> get languages => <String>[language];
 
   @override
+  String? get defaultLanguage => language;
+
+  @override
   bool hasAudio({
     required String languageCode,
     required String wordKey,

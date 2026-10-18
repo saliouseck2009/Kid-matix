@@ -10,7 +10,9 @@ import 'package:kid_matix/features/profile/presentation/bloc/player_settings_cub
 /// without reading the profile feature.
 ///
 /// Like the reduced motion, the choice applies only while the player is
-/// still the one playing; until the settings are read, no help plays.
+/// still the one playing; until the settings are read, no help plays. A
+/// player who never chose has no language (`null`): the screens then use
+/// the first pack.
 class HelpAudioBridge extends StatelessWidget {
   /// Creates the bridge around [child].
   const HelpAudioBridge({
@@ -31,8 +33,8 @@ class HelpAudioBridge extends StatelessWidget {
         .watch<PlayerSettingsCubit>()
         .state;
     return HelpAudioLanguageScope(
-      language: isPlayerActive
-          ? settings?.helpAudioLanguage ?? HelpAudio.none
+      language: isPlayerActive && settings != null
+          ? settings.helpAudioLanguage
           : HelpAudio.none,
       child: child,
     );

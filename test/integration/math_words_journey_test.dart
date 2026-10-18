@@ -106,6 +106,7 @@ void main() {
         for (final ItemMasteryEntity cell in row) cell.itemKey: cell.status,
     };
     expect(actualStatuses['word:ajouter'], isNot(MasteryStatus.notSeen));
-    expect(sl<WordAudioService>().languages, <String>['wo']);
+    expect(sl<WordAudioService>().defaultLanguage, 'wo');
+    expect(sl<WordAudioService>().languages, isEmpty);
   });
 }

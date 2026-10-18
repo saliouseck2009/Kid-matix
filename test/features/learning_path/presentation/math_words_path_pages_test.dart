@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/word_audio_scope.dart';
@@ -84,7 +83,7 @@ void main() {
       WordAudioScope(
         audio: audio,
         child: HelpAudioLanguageScope(
-          language: HelpAudio.defaultLanguage,
+          language: 'wo',
           child: pages.buildDiscoveryPage(
             unitKey: 'word:remove',
             onClose: () {},

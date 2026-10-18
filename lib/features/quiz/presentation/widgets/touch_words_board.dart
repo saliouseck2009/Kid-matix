@@ -31,9 +31,13 @@ class TouchWordsBoard extends StatefulWidget {
     required this.targetKey,
     required this.targetAnswer,
     required this.onUnderstood,
+    required this.languageCode,
     this.listenButton,
     super.key,
   });
+
+  /// Language of the words, such as `fr`, which the voice speaks.
+  final String languageCode;
 
   /// The sentence, piece by piece.
   final List<SentencePart> sentence;
@@ -57,7 +61,6 @@ class TouchWordsBoard extends StatefulWidget {
 }
 
 class _TouchWordsBoardState extends State<TouchWordsBoard> {
-  static const String _frenchCode = 'fr';
   static const double _radius = 28;
   static const double _pictureWidth = 220;
 
@@ -65,7 +68,7 @@ class _TouchWordsBoardState extends State<TouchWordsBoard> {
   SentencePart? _shown;
   SpeechService? _speech;
   WordAudioService? _audio;
-  bool _hasFrenchVoice = false;
+  bool _hasVoice = false;
   SpeechReading? _speechReading;
   SpeechReading? _audioReading;
   // Identifies the newest touch: an older one stops where it is.
@@ -93,8 +96,9 @@ class _TouchWordsBoardState extends State<TouchWordsBoard> {
 
   Future<void> _findVoice(SpeechService? speech) async {
     final bool hasVoice =
-        speech != null && await speech.isAvailable(languageCode: _frenchCode);
-    if (mounted && speech == _speech) _hasFrenchVoice = hasVoice;
+        speech != null &&
+        await speech.isAvailable(languageCode: widget.languageCode);
+    if (mounted && speech == _speech) _hasVoice = hasVoice;
   }
 
   Future<void> _touch(SentencePart part, String helpLanguage) async {
@@ -109,10 +113,10 @@ class _TouchWordsBoardState extends State<TouchWordsBoard> {
     final WordAudioService? audio = _audio;
     await speech?.stop(reading: _speechReading);
     await audio?.stop(reading: _audioReading);
-    if (speech != null && _hasFrenchVoice) {
+    if (speech != null && _hasVoice) {
       final SpeechReading reading = speech.speak(
         text: part.text,
-        languageCode: _frenchCode,
+        languageCode: widget.languageCode,
       );
       _speechReading = reading;
       await reading.done;
@@ -132,7 +136,10 @@ class _TouchWordsBoardState extends State<TouchWordsBoard> {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final String helpLanguage = HelpAudioLanguageScope.of(context);
+    final String helpLanguage = HelpAudioLanguageScope.resolve(
+      context,
+      _audio,
+    );
     final SentencePart? shown = _shown;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

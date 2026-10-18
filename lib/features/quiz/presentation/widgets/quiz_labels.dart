@@ -140,6 +140,12 @@ final class QuizLabels {
     };
   }
 
+  /// Language the questions of [domainId] are written in, or `null` to
+  /// follow the interface.
+  String? contentLanguageOf(String domainId) {
+    return domains.find(domainId)?.contentLanguageCode;
+  }
+
   /// Name of the unit of [question], such as "Table de 5" or "Comparer";
   /// empty when its domain lacks it.
   String describeUnitOf(Question question, String domainId) {

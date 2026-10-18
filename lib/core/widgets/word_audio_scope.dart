@@ -28,8 +28,9 @@ class WordAudioScope extends InheritedWidget {
 }
 
 /// Tells the screens below it the help language of the player who is
-/// playing (the "Aide audio" setting): the code of an audio pack, or
-/// [HelpAudio.none].
+/// playing (the "Aide audio" setting): the code of an audio pack,
+/// [HelpAudio.none], or `null` for a player who never chose, which means
+/// the first pack of the index.
 class HelpAudioLanguageScope extends InheritedWidget {
   /// Creates the scope around [child].
   const HelpAudioLanguageScope({
@@ -38,16 +39,19 @@ class HelpAudioLanguageScope extends InheritedWidget {
     super.key,
   });
 
-  /// Code of the help language, or [HelpAudio.none].
-  final String language;
+  /// Code of the help language, [HelpAudio.none], or `null` for the first
+  /// pack.
+  final String? language;
 
-  /// The help language of the closest scope; [HelpAudio.none] without one,
-  /// so nothing plays unless a player asked for it.
-  static String of(BuildContext context) {
-    return context
-            .dependOnInheritedWidgetOfExactType<HelpAudioLanguageScope>()
-            ?.language ??
-        HelpAudio.none;
+  /// The help language of the player: the one chosen, the first pack of
+  /// [audio] when they never chose, and [HelpAudio.none] when they turned
+  /// it off, when no scope tells who plays, or when the app ships no pack,
+  /// so nothing plays unless a player can hear it.
+  static String resolve(BuildContext context, WordAudioService? audio) {
+    final HelpAudioLanguageScope? scope = context
+        .dependOnInheritedWidgetOfExactType<HelpAudioLanguageScope>();
+    if (scope == null) return HelpAudio.none;
+    return scope.language ?? audio?.defaultLanguage ?? HelpAudio.none;
   }
 
   @override

@@ -91,7 +91,7 @@ class _HelpAudioButtonState extends State<HelpAudioButton> {
   @override
   Widget build(BuildContext context) {
     final WordAudioService? audio = _audio;
-    final String language = HelpAudioLanguageScope.of(context);
+    final String language = HelpAudioLanguageScope.resolve(context, audio);
     if (audio == null ||
         language == HelpAudio.none ||
         !audio.hasAudio(

@@ -11,13 +11,21 @@ final class QuizReadAloud {
     required this.languageCode,
     required this.speakQuestion,
     required this.speakInstruction,
+    this.contentLanguageCode,
   });
 
   /// The use cases that speak and stop.
   final QuizReadAloudUseCases useCases;
 
-  /// Language of the voice, such as `fr`.
+  /// Language of the voice for the instructions, such as `fr`.
   final String languageCode;
+
+  /// Language the questions of the domain are written in, or `null` to
+  /// follow the interface.
+  final String? contentLanguageCode;
+
+  /// Language of the voice that reads a question.
+  String get questionLanguageCode => contentLanguageCode ?? languageCode;
 
   /// The sentence of a question; the words come from the localized texts,
   /// which only the presentation layer reads (`QuizLabels.speakQuestion`).
