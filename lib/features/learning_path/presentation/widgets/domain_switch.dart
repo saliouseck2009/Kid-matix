@@ -22,6 +22,7 @@ class DomainSwitch extends StatelessWidget {
       choices: choice.domainIds,
       selected: choice.selectedId,
       labelOf: context.l10n.domainName,
+      semanticLabelOf: context.l10n.domainSpokenName,
       onSelected: context.read<DomainChoiceCubit>().select,
     );
   }

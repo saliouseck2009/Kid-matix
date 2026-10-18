@@ -43,6 +43,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get additionDomainName => '+ et −';
 
   @override
+  String get additionDomainSpokenName => 'Additions et soustractions';
+
+  @override
   String get errorStorage =>
       'Oups, on n\'a pas pu lire ou enregistrer tes données.';
 
@@ -220,6 +223,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get masteryGridTitleAddition => 'Mes + et −';
+
+  @override
+  String get masteryGridTitleAdditionSpoken => 'Mes additions et soustractions';
 
   @override
   String get masteryStatusNotSeen => 'Nouveau';
@@ -1155,10 +1161,13 @@ class AppLocalizationsFr extends AppLocalizations {
       unit,
       {
         'add5': 'Additions jusqu\'à 5',
-        'add10': 'Additions jusqu\'à 10',
-        'toten': 'Compléter jusqu\'à 10',
         'sub5': 'Soustractions jusqu\'à 5',
-        'sub10': 'Soustractions jusqu\'à 10',
+        'add7': 'Additions jusqu\'à 7',
+        'add9': 'Additions jusqu\'à 9',
+        'toten': 'Compléter jusqu\'à 10',
+        'sub7': 'Soustractions jusqu\'à 7',
+        'sub9': 'Soustractions jusqu\'à 9',
+        'subten': 'Soustractions à partir de 10',
         'add12': 'Additions jusqu\'à 12',
         'add14': 'Additions jusqu\'à 14',
         'add20': 'Additions jusqu\'à 20',
@@ -1181,10 +1190,14 @@ class AppLocalizationsFr extends AppLocalizations {
       unit,
       {
         'add5': 'Pour ajouter, avance sur la droite : 2 + 3 ? Pars de 2 et avance de 3 : 3, 4, 5 !',
-        'add10': 'Pour ajouter, pars du plus grand nombre et avance du plus petit. 2 + 5 ? Pars de 5 et avance de 2 : 6, 7 !',
-        'toten': 'Cherche ce qui manque pour arriver à 10. Il manque 3 à 7, car 7 + 3 = 10. Compte sur tes doigts si tu veux !',
         'sub5': 'Soustraire, c\'est enlever. 5 − 2 ? Pars de 5 et recule de 2 : 4, 3 !',
-        'sub10': 'Soustraire, c\'est enlever. 7 − 3 ? Pars de 7 et recule de 3 : 6, 5, 4. Ou cherche : 3 + combien font 7 ?',
+        'add7': 'Pour ajouter, pars du plus grand nombre et avance du plus petit. 2 + 5 ? Pars de 5 et avance de 2 : 6, 7 !',
+        'add9': 'Pense aux doubles : 4 + 4 = 8, donc 4 + 5 = 9.',
+        'toten': 'Cherche ce qui manque pour arriver à 10. Il manque 3 à 7, car 7 + 3 = 10. Compte sur tes doigts si tu veux !',
+        'sub7': 'Soustraire, c\'est enlever. 7 − 3 ? Pars de 7 et recule de 3 : 6, 5, 4. Ou cherche : 3 + combien font 7 ?',
+        'sub9': 'Pour 9 − 4, cherche ce qu\'il faut ajouter à 4 pour faire 9 : 4 + 5 = 9, donc 9 − 4 = 5.',
+        'subten':
+            'Pour 10 − 3, pense au complément : 3 + 7 = 10, donc 10 − 3 = 7.',
         'add12': 'Pour 9 + 2, va d\'abord jusqu\'à 10 : 9 + 1 = 10. Il reste 1 à ajouter : 10 + 1 = 11.',
         'add14': 'Pour 8 + 5, va d\'abord jusqu\'à 10 : 8 + 2 = 10. Il reste 3 à ajouter : 10 + 3 = 13.',
         'add20': 'Pour 7 + 8, va d\'abord jusqu\'à 10 : 7 + 3 = 10. Il reste 5 à ajouter : 10 + 5 = 15.',
@@ -1193,7 +1206,7 @@ class AppLocalizationsFr extends AppLocalizations {
         'sub20': 'Pour 15 − 7, enlève d\'abord 5 pour arriver à 10, puis encore 2 : 15 − 5 = 10, puis 10 − 2 = 8.',
         'add100': 'Additionne les unités, puis les dizaines. Pour 23 + 14 : 3 + 4 = 7 et 20 + 10 = 30, donc 37.',
         'sub100': 'Soustrais les unités, puis les dizaines. Pour 47 − 23 : 7 − 3 = 4 et 40 − 20 = 20, donc 24.',
-        'carry': 'Quand les unités font 10 ou plus, tu retiens une dizaine. Pour 27 + 15 : 7 + 5 = 12 : tu écris 2 et tu retiens 1 dizaine. 20 + 10 + 10 = 40, et 40 + 2 = 42.',
+        'carry': 'Quand les unités font 10 ou plus, tu retiens une dizaine. Pour 27 + 15, 7 + 5 = 12 : tu écris 2 et tu retiens 1 dizaine. 20 + 10 + 10 = 40, et 40 + 2 = 42.',
         'borrow': 'Si tu ne peux pas enlever les unités, casse une dizaine. Pour 42 − 17 : 42 devient 30 et 12. 12 − 7 = 5 et 30 − 10 = 20, donc 25.',
         'other': '',
       },

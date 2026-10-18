@@ -36,7 +36,7 @@ void main() {
   const StageQuizSpecs specs = StageQuizSpecs();
 
   group('the path of the additions and subtractions', () {
-    test('has 15 units and a review after every group of 3', () {
+    test('has 18 units and a review after every group of 3', () {
       // Act
       final LearningPathEntity actual = const LearningPathBuilder().build(
         domainId: 'addition',
@@ -47,7 +47,7 @@ void main() {
         isEverythingUnlocked: false,
       );
       // Assert
-      expect(actual.tables, hasLength(15));
+      expect(actual.tables, hasLength(18));
       expect(
         actual.nodes.whereType<ReviewPathNode>().map(
           (ReviewPathNode review) => review.unitKey,
@@ -58,6 +58,7 @@ void main() {
           'review:addition:3',
           'review:addition:4',
           'review:addition:5',
+          'review:addition:6',
         ],
       );
       expect(actual.tables[0].status, TableStatus.done);
@@ -131,11 +132,7 @@ void main() {
         ),
       )!;
       // Assert
-      expect(actual.itemKeys, hasLength(10 + 14 + 9));
-      expect(
-        actual.itemKeys.every((String key) => key.startsWith('add:')),
-        isTrue,
-      );
+      expect(actual.itemKeys, hasLength(10 + 10 + 11));
     });
     test('fights a boss per unit, then on the units seen before', () {
       // Act
@@ -149,7 +146,7 @@ void main() {
       final QuizSpec actualFourth = specs.specOf(
         domain: addition,
         source: const StageSource(
-          unitKey: 'addsub:sub5',
+          unitKey: 'addsub:add9',
           stage: StageKind.boss,
         ),
       )!;
@@ -158,7 +155,7 @@ void main() {
       expect(actualFirst.baseTimeLimit, const Duration(seconds: 8));
       expect(actualFirst.followUpItemKeys, actualFirst.itemKeys);
       expect(actualFourth.followUpItemKeys.first, 'add:1+1');
-      expect(actualFourth.followUpItemKeys, hasLength(10 + 14 + 9));
+      expect(actualFourth.followUpItemKeys, hasLength(10 + 10 + 11));
     });
   });
 }

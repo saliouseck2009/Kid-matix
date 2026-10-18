@@ -27,6 +27,23 @@ extension DomainNaming on AppLocalizations {
     return _names[domainId]?.domainName(this) ?? '';
   }
 
+  /// What a screen reader says for the name of [domainId]: the written
+  /// name, except when it is made of signs ("+ et −").
+  String domainSpokenName(String domainId) {
+    return switch (domainId) {
+      LearningDomainIds.addition => additionDomainSpokenName,
+      _ => domainName(domainId),
+    };
+  }
+
+  /// What a screen reader says for the grid title of [domainId].
+  String gridSpokenTitle(String domainId) {
+    return switch (domainId) {
+      LearningDomainIds.addition => masteryGridTitleAdditionSpoken,
+      _ => gridTitle(domainId),
+    };
+  }
+
   /// Name of the unit [unitKey] of [domainId], such as "Table de 5" or
   /// "Compter jusqu'à 10".
   String unitName(String domainId, String unitKey) {

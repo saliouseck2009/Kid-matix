@@ -10,6 +10,7 @@ class ChoiceSegments<T> extends StatelessWidget {
     required this.selected,
     required this.labelOf,
     required this.onSelected,
+    this.semanticLabelOf,
     this.labelStyle,
     this.backgroundColor,
     super.key,
@@ -26,6 +27,10 @@ class ChoiceSegments<T> extends StatelessWidget {
 
   /// Text of a value.
   final String Function(T value) labelOf;
+
+  /// What a screen reader says for a value, when it differs from its
+  /// text (a name made of signs).
+  final String Function(T value)? semanticLabelOf;
 
   /// Called with the value tapped.
   final ValueChanged<T> onSelected;
@@ -54,6 +59,7 @@ class ChoiceSegments<T> extends StatelessWidget {
             Expanded(
               child: _Segment(
                 label: labelOf(value),
+                semanticLabel: semanticLabelOf?.call(value),
                 isSelected: value == selected,
                 style: style,
                 onTap: () => onSelected(value),
@@ -69,6 +75,7 @@ class ChoiceSegments<T> extends StatelessWidget {
 class _Segment extends StatelessWidget {
   const _Segment({
     required this.label,
+    required this.semanticLabel,
     required this.isSelected,
     required this.style,
     required this.onTap,
@@ -76,6 +83,7 @@ class _Segment extends StatelessWidget {
   });
 
   final String label;
+  final String? semanticLabel;
   final bool isSelected;
   final TextStyle? style;
   final VoidCallback onTap;
@@ -88,6 +96,7 @@ class _Segment extends StatelessWidget {
     return Semantics(
       button: true,
       selected: isSelected,
+      label: semanticLabel,
       child: Material(
         color: isSelected ? scheme.primary : Colors.transparent,
         borderRadius: shape,
@@ -100,11 +109,14 @@ class _Segment extends StatelessWidget {
             ),
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.space8),
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: style?.copyWith(
-                color: isSelected ? scheme.onPrimary : null,
+            child: ExcludeSemantics(
+              excluding: semanticLabel != null,
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: style?.copyWith(
+                  color: isSelected ? scheme.onPrimary : null,
+                ),
               ),
             ),
           ),

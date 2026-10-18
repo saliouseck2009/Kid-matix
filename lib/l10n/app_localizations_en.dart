@@ -43,6 +43,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get additionDomainName => '+ and −';
 
   @override
+  String get additionDomainSpokenName => 'Additions and subtractions';
+
+  @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
 
   @override
@@ -218,6 +221,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get masteryGridTitleAddition => 'My + and −';
+
+  @override
+  String get masteryGridTitleAdditionSpoken => 'My additions and subtractions';
 
   @override
   String get masteryStatusNotSeen => 'New';
@@ -1150,10 +1156,13 @@ class AppLocalizationsEn extends AppLocalizations {
       unit,
       {
         'add5': 'Additions up to 5',
-        'add10': 'Additions up to 10',
-        'toten': 'Complete to 10',
         'sub5': 'Subtractions up to 5',
-        'sub10': 'Subtractions up to 10',
+        'add7': 'Additions up to 7',
+        'add9': 'Additions up to 9',
+        'toten': 'Complete to 10',
+        'sub7': 'Subtractions up to 7',
+        'sub9': 'Subtractions up to 9',
+        'subten': 'Subtractions from 10',
         'add12': 'Additions up to 12',
         'add14': 'Additions up to 14',
         'add20': 'Additions up to 20',
@@ -1176,10 +1185,14 @@ class AppLocalizationsEn extends AppLocalizations {
       unit,
       {
         'add5': 'To add, move along the line: 2 + 3? Start at 2 and go up 3: 3, 4, 5!',
-        'add10': 'To add, start from the bigger number and count up the smaller one. 2 + 5? Start at 5 and go up 2: 6, 7!',
-        'toten': 'Find what is missing to reach 10. 7 needs 3, because 7 + 3 = 10. Count on your fingers if you like!',
         'sub5': 'To subtract is to take away. 5 − 2? Start at 5 and go back 2: 4, 3!',
-        'sub10': 'To subtract is to take away. 7 − 3? Start at 7 and go back 3: 6, 5, 4. Or ask: 3 plus what makes 7?',
+        'add7': 'To add, start from the bigger number and count up the smaller one. 2 + 5? Start at 5 and go up 2: 6, 7!',
+        'add9': 'Think of doubles: 4 + 4 = 8, so 4 + 5 = 9.',
+        'toten': 'Find what is missing to reach 10. 7 needs 3, because 7 + 3 = 10. Count on your fingers if you like!',
+        'sub7': 'To subtract is to take away. 7 − 3? Start at 7 and go back 3: 6, 5, 4. Or ask: 3 plus what makes 7?',
+        'sub9': 'For 9 − 4, find what to add to 4 to make 9: 4 + 5 = 9, so 9 − 4 = 5.',
+        'subten':
+            'For 10 − 3, think of the complement: 3 + 7 = 10, so 10 − 3 = 7.',
         'add12': 'For 9 + 2, first go up to 10: 9 + 1 = 10. There is 1 left to add: 10 + 1 = 11.',
         'add14': 'For 8 + 5, first go up to 10: 8 + 2 = 10. There are 3 left to add: 10 + 3 = 13.',
         'add20': 'For 7 + 8, first go up to 10: 7 + 3 = 10. There are 5 left to add: 10 + 5 = 15.',
@@ -1188,7 +1201,7 @@ class AppLocalizationsEn extends AppLocalizations {
         'sub20': 'For 15 − 7, first take away 5 to reach 10, then 2 more: 15 − 5 = 10, then 10 − 2 = 8.',
         'add100': 'Add the ones, then the tens. For 23 + 14: 3 + 4 = 7 and 20 + 10 = 30, so 37.',
         'sub100': 'Subtract the ones, then the tens. For 47 − 23: 7 − 3 = 4 and 40 − 20 = 20, so 24.',
-        'carry': 'When the ones make 10 or more, you carry one ten. For 27 + 15: 7 + 5 = 12, write 2 and carry 1 ten. 20 + 10 + 10 = 40, and 40 + 2 = 42.',
+        'carry': 'When the ones make 10 or more, you carry one ten. For 27 + 15, 7 + 5 = 12: write 2 and carry 1 ten. 20 + 10 + 10 = 40, and 40 + 2 = 42.',
         'borrow': 'If you cannot take away the ones, break a ten. For 42 − 17: 42 becomes 30 and 12. 12 − 7 = 5 and 30 − 10 = 20, so 25.',
         'other': '',
       },

@@ -220,16 +220,21 @@ final class AdditionDomain implements LearningDomain {
   /// A line goes from one number to the other through the ten when the
   /// operation crosses it (7, 10, 15) and highlights the result; bundles
   /// of ten show the result of a big number; the complement to 10 is the
-  /// gap from the number to 10.
+  /// gap from the number to 10 (from 10 down to the result for a
+  /// subtraction).
   MathPicture _pictureOf(ArithmeticFact fact, ArithmeticAid aid) {
     return switch (aid) {
       ArithmeticAid.tenBundles => TenBundlesPicture(
         tens: fact.result ~/ ten,
         ones: fact.result % ten,
       ),
-      ArithmeticAid.completeToTen => NumberLinePicture(
+      ArithmeticAid.completeToTen when fact.isAddition => NumberLinePicture(
         values: <int>[fact.left, ten],
         highlightIndex: 1,
+      ),
+      ArithmeticAid.completeToTen => NumberLinePicture(
+        values: <int>[fact.result, ten],
+        highlightIndex: 0,
       ),
       ArithmeticAid.numberLine => _lineOf(fact),
     };
