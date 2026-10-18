@@ -26,7 +26,7 @@ commit messages and technical docs stay in English.
 | File | Content |
 | --- | --- |
 | `docs/status.md` | Current state, pending checks, what the next lot must wire |
-| `docs/product/task-breakdown.md` | Lots F0 to F21, every task with a checkbox, "done when" per lot (French) |
+| `docs/product/task-breakdown.md` | Lots F0 to F32, every task with a checkbox, "done when" per lot (French) |
 | `docs/product/specifications.md` | Product rules: profiles, learning path, question formats, mastery engine, gamification, data, online roadmap (French) |
 | `docs/design/README.md` | Design tokens, components, index of mockups by lot |
 | `docs/design/screens/*.png` | One capture per screen |
@@ -34,6 +34,8 @@ commit messages and technical docs stay in English.
 | `docs/decisions.md` | Decisions already taken and open points |
 | `docs/rules/*.md` | The owner's coding rules |
 | `docs/git-workflow.md` | Branch, commit and pull request rules, enforced by `.githooks/` |
+| `docs/parallel-plan.md` | Version 2.0 waves: which agent does which lot, with which model, reserved migration numbers, rules for shared files |
+| `AGENTS.md` | Entry point for Codex and other terminal agents; points back to this file |
 
 Priority when documents disagree: `docs/rules/` > this file and
 `docs/decisions.md` > task breakdown > specifications.
@@ -137,6 +139,13 @@ Inside a lot: domain, then data, then presentation, then tests.
 - When a product rule is missing or ambiguous, or a screen has no mockup, ask
   the owner instead of guessing; record the answer in `docs/decisions.md`.
 - Commit at the end of each coherent step (see "Git" below).
+- Parallel work (version 2.0): follow `docs/parallel-plan.md`. The agents
+  are `lot-implementer` (Sonnet, one lot in its own worktree),
+  `content-writer` (Haiku, content and docs only) and `code-reviewer`
+  (Opus, read-only review) in `.claude/agents/`; Codex reads `AGENTS.md`.
+  Only the orchestrating session edits `docs/status.md` and
+  `docs/decisions.md`, and each lot uses only its reserved migration
+  number.
 
 ## Git
 
