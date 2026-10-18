@@ -53,7 +53,7 @@ void main() {
       'Quel nombre manque ?',
     );
     expect(
-      labels.speakQuestion(inputLine),
+      labels.speakQuestion(inputLine, 'numbers'),
       'Droite des nombres : 38, 39, nombre caché. '
       'Quel nombre manque ?',
     );
@@ -75,7 +75,7 @@ void main() {
       'Quel nombre ?',
     );
     expect(
-      labels.speakQuestion(inputWritten),
+      labels.speakQuestion(inputWritten, 'numbers'),
       '3 paquets de dix et 4 bâtonnets : quel nombre ?',
     );
   });
@@ -102,7 +102,7 @@ void main() {
       labels.describeQuestion(inputOperation, 'numbers'),
       'Avant et après',
     );
-    expect(labels.speakQuestion(inputOperation), isNull);
+    expect(labels.speakQuestion(inputOperation, 'numbers'), isNull);
     expect(labels.describeQuestion(inputPicked, 'numbers'), 'Avant et après');
   });
 }

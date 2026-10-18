@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
@@ -15,7 +16,7 @@ class BossMonster extends StatelessWidget {
   /// Creates the monster [number].
   const BossMonster({
     required this.number,
-    this.family = MonsterPainter.hornedFamily,
+    this.family = MonsterFamily.horned,
     this.blow,
     this.outcome,
     super.key,
@@ -29,7 +30,7 @@ class BossMonster extends StatelessWidget {
   final int number;
 
   /// Family of the monster, one per learning domain.
-  final int family;
+  final MonsterFamily family;
 
   /// What the last answer did, or `null`.
   final BossBlow? blow;

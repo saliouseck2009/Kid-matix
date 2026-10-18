@@ -10,7 +10,6 @@ import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
-import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_labels.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -65,9 +64,13 @@ final class QuizLabels {
   /// The whole of [question] as one sentence, for a screen reader and the
   /// read-aloud button, when its prompt alone does not say it: "Combien
   /// de mangues ?", "3 paquets de dix et 4 bâtonnets : quel nombre ?",
-  /// "34 est-il plus petit, égal ou plus grand que 43 ?"; `null` when the
-  /// prompt reads as it is, such as "5 fois 7 égale combien".
-  String? speakQuestion(Question question) {
+  /// "34 est-il plus petit, égal ou plus grand que 43 ?", "Quelle
+  /// multiplication donne 24 ?"; `null` when the prompt reads as it is,
+  /// such as "5 fois 7 égale combien".
+  String? speakQuestion(Question question, String domainId) {
+    if (question.questionTypeId == QuestionTypeIds.findOperation) {
+      return _speakFindOperation(question, domainId);
+    }
     if (question.questionTypeId == QuestionTypeIds.compare) {
       final List<NumberToken> numbers = question.prompt
           .whereType<NumberToken>()
@@ -86,11 +89,9 @@ final class QuizLabels {
     };
   }
 
-  /// What a screen reader says for a question that asks for the
-  /// operation, such as "Quelle multiplication donne 24 ?"; `null` for
-  /// another question.
-  String? speakFindOperation(Question question, String domainId) {
-    if (question.questionTypeId != QuestionTypeIds.findOperation) return null;
+  /// "Quelle multiplication donne 24 ?" for a question that asks for the
+  /// operation.
+  String? _speakFindOperation(Question question, String domainId) {
     final Iterable<NumberToken> numbers = question.prompt
         .whereType<NumberToken>();
     if (numbers.isEmpty) return null;
@@ -124,11 +125,6 @@ final class QuizLabels {
       ),
       _ => l10n.quizBossTitleUnit(_unitNameNumbered(number, domainId)),
     };
-  }
-
-  /// Family of the monsters of the boss fights of [domainId].
-  int monsterFamilyOf(String domainId) {
-    return MonsterIllustration.familyOf(domainId);
   }
 
   /// Name of [unit], such as "Table de 5" or "Comparer".

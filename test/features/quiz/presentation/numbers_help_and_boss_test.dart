@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
+import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
@@ -54,12 +55,12 @@ void main() {
     expect(labels.describeBoss(5, NumbersDomain.domainId), 'Boss · Comparer');
     expect(labels.describeBoss(5, 'multiplication'), 'Boss de la table de 5');
     expect(
-      labels.monsterFamilyOf(NumbersDomain.domainId),
-      MonsterPainter.antennaFamily,
+      MonsterIllustration.familyOf(NumbersDomain.domainId),
+      MonsterFamily.antennae,
     );
     expect(
-      labels.monsterFamilyOf('multiplication'),
-      MonsterPainter.hornedFamily,
+      MonsterIllustration.familyOf('multiplication'),
+      MonsterFamily.horned,
     );
   });
   test('names the tamer badge of a unit of the numbers', () {

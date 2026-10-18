@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
+import 'package:kid_matix/core/widgets/monster_family.dart';
 
 /// Draws one of the monsters, provisional variants of the one-eyed boss
 /// of the design: the body color, the horns and the eyes change with
@@ -9,14 +10,7 @@ import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 /// callers.
 class MonsterPainter extends CustomPainter {
   /// Creates the painter of the monster [number], from 1, of [family].
-  MonsterPainter({required this.number, this.family = hornedFamily});
-
-  /// Family of the multiplication tables: horns.
-  static const int hornedFamily = 0;
-
-  /// Family of the other domains, such as the numbers: antennae and
-  /// spots.
-  static const int antennaFamily = 1;
+  MonsterPainter({required this.number, this.family = MonsterFamily.horned});
 
   /// Width of the drawing in design units; its height is [_height].
   static const double _width = 200;
@@ -41,9 +35,9 @@ class MonsterPainter extends CustomPainter {
   final int number;
 
   /// Family of the monster, one per learning domain.
-  final int family;
+  final MonsterFamily family;
 
-  bool get _hasAntennae => family == antennaFamily;
+  bool get _hasAntennae => family == MonsterFamily.antennae;
 
   Color get _body => _bodies[(number - 1) % _bodies.length];
 
@@ -196,22 +190,22 @@ class MonsterIllustration extends StatelessWidget {
   const MonsterIllustration({
     required this.number,
     required this.width,
-    this.family = MonsterPainter.hornedFamily,
+    this.family = MonsterFamily.horned,
     super.key,
   });
 
   /// Family of the monsters of the units of [domainId].
-  static int familyOf(String domainId) {
+  static MonsterFamily familyOf(String domainId) {
     return domainId == LearningDomainIds.multiplication
-        ? MonsterPainter.hornedFamily
-        : MonsterPainter.antennaFamily;
+        ? MonsterFamily.horned
+        : MonsterFamily.antennae;
   }
 
   /// Number of the monster, from 1; one per table.
   final int number;
 
   /// Family of the monster, one per learning domain.
-  final int family;
+  final MonsterFamily family;
 
   /// Width of the drawing.
   final double width;

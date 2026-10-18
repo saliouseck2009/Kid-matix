@@ -7,6 +7,7 @@ import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_combo.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -123,10 +124,13 @@ class QuizPlayView extends StatelessWidget {
                 ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
-                monsterFamily: labels.monsterFamilyOf(data.run.domainId),
+                monsterFamily: MonsterIllustration.familyOf(data.run.domainId),
                 prompt: data.question.prompt,
                 picture: data.question.picture,
-                spokenText: labels.speakQuestion(data.question),
+                spokenText: labels.speakQuestion(
+                  data.question,
+                  data.run.domainId,
+                ),
                 blowCount: data.run.answers.length,
                 blow: data.feedback?.bossBlow,
                 outcome: data.run.bossOutcome,
@@ -145,13 +149,17 @@ class QuizPlayView extends StatelessWidget {
                   data.question,
                   data.run.domainId,
                 ),
-                resultSemanticLabel: labels.speakFindOperation(
+                resultSemanticLabel:
+                    data.question.questionTypeId ==
+                        QuestionTypeIds.findOperation
+                    ? labels.speakQuestion(data.question, data.run.domainId)
+                    : null,
+                prompt: data.question.prompt,
+                picture: data.question.picture,
+                spokenText: labels.speakQuestion(
                   data.question,
                   data.run.domainId,
                 ),
-                prompt: data.question.prompt,
-                picture: data.question.picture,
-                spokenText: labels.speakQuestion(data.question),
                 blankText: data.typedDigits,
                 blankColor: _blankColor(context, data),
                 mascotMood: _moodOf(data),

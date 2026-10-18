@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_entity.dart';
@@ -205,7 +206,7 @@ void main() {
           .map((CustomPaint paint) => paint.painter)
           .whereType<MonsterPainter>()
           .first;
-      expect(actualPainter.family, MonsterPainter.antennaFamily);
+      expect(actualPainter.family, MonsterFamily.antennae);
     });
   });
 }
