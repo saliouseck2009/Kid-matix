@@ -1474,7 +1474,7 @@
   },
   "numbersUnitName": "{unit, select, count10{Compter jusqu'à 10} count20{Compter jusqu'à 20} count100{Compter jusqu'à 100} tensones{Dizaines et unités} compare{Comparer} order{Ranger} beforeafter{Avant et après} other{}}",
   "@numbersUnitName": {
-    "description": "Name of a unit of the numbers domain (numbers up to 100), shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile (\"Count to 10\", \"Tens and ones\", \"Compare\", \"Put in order\", \"Before and after\"). Short title, a few words; infinitive verbs for 1, 2, 3, 5 and 6. {unit} is the slug of the unit (the end of its key), never shown: count10, count20, count100, tensones, compare, order, beforeafter.",
+    "description": "Name of a unit of the numbers domain (numbers up to 100), shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile (\"Count to 10\", \"Tens and ones\", \"Compare\", \"Put in order\", \"Before and after\"). Short title, a few words; infinitive verbs for count10, count20, count100, compare and order. {unit} is the slug of the unit (the end of its key), never shown: count10, count20, count100, tensones, compare, order, beforeafter.",
     "placeholders": {
       "unit": {
         "type": "String",

@@ -17,7 +17,8 @@ final class NumbersUnit implements LearningUnit {
   /// Short stable name of the unit inside its key, such as `count10`.
   final String slug;
 
-  /// Position of the unit on the path, from 1; names its texts.
+  /// Position of the unit on the path, from 1; its texts are chosen by
+  /// [slug], never by this position.
   @override
   final int number;
 

@@ -4,9 +4,9 @@ import 'package:kid_matix/core/widgets/monster_family.dart';
 
 /// Draws one of the monsters, provisional variants of the one-eyed boss
 /// of the design: the body color, the horns and the eyes change with
-/// [number], one monster per unit; each learning domain has its own
-/// [family], the multiplication with horns, the numbers with antennae and
-/// spots. Final illustrations replace this painter without touching the
+/// [number], one monster per unit; the [family] tells the domain, the
+/// multiplication with horns, every other domain with antennae and spots.
+/// Final illustrations replace this painter without touching the
 /// callers.
 class MonsterPainter extends CustomPainter {
   /// Creates the painter of the monster [number], from 1, of [family].
