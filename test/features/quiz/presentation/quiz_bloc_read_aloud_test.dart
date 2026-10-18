@@ -23,6 +23,7 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
 
+import '../../../helpers/fake_mastery_service.dart';
 import '../../../helpers/fake_speech_service.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../helpers/quiz_fixtures.dart';
@@ -79,6 +80,7 @@ void main() {
   late _FakeTicker ticker;
   late FakeSpeechService speech;
   late MockQuizSessionRepository mockRepository;
+  late FakeMasteryService mastery;
   late QuizBloc bloc;
 
   setUpAll(registerQuizFallbacks);
@@ -87,6 +89,7 @@ void main() {
     ticker = _FakeTicker();
     speech = FakeSpeechService();
     mockRepository = MockQuizSessionRepository();
+    mastery = FakeMasteryService();
     when(
       () => mockRepository.saveSession(
         session: any(named: 'session'),
@@ -114,7 +117,7 @@ void main() {
       useCases: QuizUseCases(
         getTimeLimit: GetTimeLimitUseCase(settings: settings),
         buildQuiz: buildQuizUseCase(),
-        submitAnswer: buildSubmitAnswerUseCase(),
+        submitAnswer: buildSubmitAnswerUseCase(mastery: mastery),
         completeSession: CompleteSessionUseCase(
           repository: mockRepository,
           clock: clock,
@@ -445,10 +448,56 @@ void main() {
         const Duration(seconds: 2),
       );
     });
-    test('answering during the reading judges the time spent so far', () async {
+    test(
+      'counts an answer given at once during the reading as no time',
+      () async {
+        // Arrange
+        buildBloc(readsByItself: true);
+        await start();
+        // Act
+        bloc.add(
+          AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+        );
+        await pumpEventQueue();
+        // Assert
+        final QuizShowingFeedback actualState =
+            bloc.state as QuizShowingFeedback;
+        expect(actualState.submission.answer.isCorrect, isTrue);
+        expect(actualState.submission.answer.answerTime, Duration.zero);
+        expect(speech.isSpeaking, isFalse);
+      },
+    );
+    test(
+      'counts an answer given during the reading from the question',
+      () async {
+        // Arrange
+        buildBloc(readsByItself: true);
+        await start();
+        await tick(20);
+        // Act
+        bloc.add(
+          AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+        );
+        await pumpEventQueue();
+        // Assert: 2 seconds since the question appeared, reading included.
+        final QuizShowingFeedback actualState =
+            bloc.state as QuizShowingFeedback;
+        expect(
+          actualState.submission.answer.answerTime,
+          const Duration(seconds: 2),
+        );
+        expect(actualState.submission.answer.isLightning, isTrue);
+        expect(
+          mastery.recordedAnswers.last.answerTime,
+          const Duration(seconds: 2),
+        );
+      },
+    );
+    test('gives no lightning to an answer given late in the reading', () async {
       // Arrange
       buildBloc(readsByItself: true);
       await start();
+      await tick(40);
       // Act
       bloc.add(
         AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
@@ -456,9 +505,114 @@ void main() {
       await pumpEventQueue();
       // Assert
       final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
-      expect(actualState.submission.answer.isCorrect, isTrue);
-      expect(actualState.submission.answer.answerTime, Duration.zero);
-      expect(speech.isSpeaking, isFalse);
+      expect(
+        actualState.submission.answer.answerTime,
+        const Duration(seconds: 4),
+      );
+      expect(actualState.submission.answer.isLightning, isFalse);
+      expect(
+        mastery.recordedAnswers.last.answerTime,
+        const Duration(seconds: 4),
+      );
+    });
+    test('adds the time before the listen button to the answer time', () async {
+      // Arrange
+      buildBloc();
+      await start();
+      await tick(10);
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      await tick(15);
+      // Act
+      bloc.add(
+        AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+      );
+      await pumpEventQueue();
+      // Assert: 1 second before the button, 1.5 seconds of reading.
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(
+        actualState.submission.answer.answerTime,
+        const Duration(milliseconds: 2500),
+      );
+    });
+    test(
+      'counts from the end of the reading when the answer comes after',
+      () async {
+        // Arrange
+        buildBloc(readsByItself: true);
+        await start();
+        await tick(30);
+        bloc.add(const ReadAloudToggled());
+        await pumpEventQueue();
+        expect(asking().isReading, isFalse);
+        await tick(10);
+        // Act
+        bloc.add(
+          AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+        );
+        await pumpEventQueue();
+        // Assert: the reading, stopped by the player, is not counted.
+        final QuizShowingFeedback actualState =
+            bloc.state as QuizShowingFeedback;
+        expect(
+          actualState.submission.answer.answerTime,
+          const Duration(seconds: 1),
+        );
+      },
+    );
+    test(
+      'charges the reading the player did not wait for to the clock',
+      () async {
+        // Arrange
+        buildBloc(readsByItself: true);
+        await start(
+          request: QuizRequest(
+            profileId: 'profile-1',
+            domainId: MultiplicationDomain.domainId,
+            mode: QuizMode.timeAttack,
+            itemKeys: tableKeys(5),
+            questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+            totalTimeLimit: const Duration(seconds: 60),
+          ),
+        );
+        await tick(20);
+        expect(asking().playedTime, Duration.zero);
+        // Act
+        bloc.add(
+          AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+        );
+        await pumpEventQueue();
+        // Assert: 2 seconds of the reading went by before the answer.
+        final QuizShowingFeedback actualState =
+            bloc.state as QuizShowingFeedback;
+        expect(actualState.playedTime, const Duration(seconds: 2));
+      },
+    );
+    test('does not charge a finished reading to the clock', () async {
+      // Arrange
+      buildBloc(readsByItself: true);
+      await start(
+        request: QuizRequest(
+          profileId: 'profile-1',
+          domainId: MultiplicationDomain.domainId,
+          mode: QuizMode.timeAttack,
+          itemKeys: tableKeys(5),
+          questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+          totalTimeLimit: const Duration(seconds: 60),
+        ),
+      );
+      await tick(30);
+      speech.finishReading();
+      await pumpEventQueue();
+      await tick(10);
+      // Act
+      bloc.add(
+        AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+      );
+      await pumpEventQueue();
+      // Assert: only the second after the reading.
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(actualState.playedTime, const Duration(seconds: 1));
     });
     test(
       'keeps counting the total time of a quiz without the readings',

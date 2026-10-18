@@ -31,6 +31,7 @@ final class QuizAsking extends QuizState {
     this.canReadAloud = false,
     this.isReading = false,
     this.isReadingInstruction = false,
+    this.readingTime = Duration.zero,
   });
 
   /// Most digits the keypad accepts; every answer of version 1.0 fits.
@@ -60,6 +61,25 @@ final class QuizAsking extends QuizState {
   /// Whether what the voice reads is the instruction under the answers;
   /// only meaningful while [isReading].
   final bool isReadingInstruction;
+
+  /// Time the voice has been reading so far, which neither [elapsed] nor
+  /// [playedTime] count; zero when no reading is in progress.
+  final Duration readingTime;
+
+  /// Time to count as spent on the question if it is answered now: an
+  /// answer given while the voice reads counts from the moment the
+  /// question appeared, an answer given after the reading from its end.
+  Duration get answerTime => isReading ? elapsed + readingTime : elapsed;
+
+  /// Time of the reading to charge to the total clock if the question is
+  /// answered now: the part of the reading the player did not wait for.
+  Duration get unwaitedReadingTime => isReading ? readingTime : Duration.zero;
+
+  /// Returns the state once the voice has stopped: the time of the
+  /// question runs again.
+  QuizAsking afterReading() {
+    return copyWith(isReading: false, readingTime: Duration.zero);
+  }
 
   /// Question shown.
   QuizTurn get turn => run.currentTurn!;
@@ -105,6 +125,7 @@ final class QuizAsking extends QuizState {
     Duration? playedTime,
     bool? isReading,
     bool? isReadingInstruction,
+    Duration? readingTime,
   }) {
     return QuizAsking(
       run: run,
@@ -115,6 +136,7 @@ final class QuizAsking extends QuizState {
       canReadAloud: canReadAloud,
       isReading: isReading ?? this.isReading,
       isReadingInstruction: isReadingInstruction ?? this.isReadingInstruction,
+      readingTime: readingTime ?? this.readingTime,
     );
   }
 }

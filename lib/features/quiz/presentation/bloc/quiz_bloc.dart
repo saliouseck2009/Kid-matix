@@ -108,6 +108,12 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   void _onTicked(TimerTicked event, Emitter<QuizState> emit) {
     switch (state) {
+      // While the voice reads, the time of the question is held: only the
+      // reading is timed, in case the player answers before its end.
+      case final QuizAsking current when !current.isPaused && current.isReading:
+        emit(
+          current.copyWith(readingTime: current.readingTime + tickInterval),
+        );
       // The time of a question starts when the voice has finished reading
       // it, and stops while the player listens to it again.
       case final QuizAsking current
@@ -185,7 +191,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
       params: SubmitAnswerParams(
         run: current.run,
         answer: answer,
-        answerTime: current.elapsed,
+        answerTime: current.answerTime,
       ),
     );
     // Against the clock the time may have run out meanwhile.
@@ -195,7 +201,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
       DataSuccess<QuizSubmission>(:final data) => QuizShowingFeedback(
         submission: data,
         givenAnswer: answer,
-        playedTime: latest.playedTime,
+        playedTime: latest.playedTime + current.unwaitedReadingTime,
       ),
       DataFailed<QuizSubmission>(:final exception) => QuizFailure(
         errorCode: exception.code,
@@ -244,7 +250,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
       case final QuizAsking current when !current.isPaused:
         _stopTicker();
         if (current.isReading) _reading.silence();
-        emit(current.copyWith(isPaused: true, isReading: false));
+        emit(current.afterReading().copyWith(isPaused: true));
       case QuizShowingFeedback():
         _stopTicker();
       default:

@@ -78,7 +78,7 @@ final class QuizReading {
         : setup.speakQuestion(question);
     if (text == null) {
       // Nothing to say: a question asked as "being read" starts its time.
-      if (asking.isReading) emit(asking.copyWith(isReading: false));
+      if (asking.isReading) emit(asking.afterReading());
       return;
     }
     final int readingId = ++_readingId;
@@ -93,7 +93,7 @@ final class QuizReading {
       // Whatever happened to the voice, the time of the question starts.
       final QuizState latest = _readState();
       if (readingId == _readingId && latest is QuizAsking) {
-        emit(latest.copyWith(isReading: false));
+        emit(latest.afterReading());
       }
     }
   }
@@ -104,7 +104,7 @@ final class QuizReading {
     _readingId++;
     final QuizState latest = _readState();
     if (latest is QuizAsking && latest.isReading) {
-      emit(latest.copyWith(isReading: false));
+      emit(latest.afterReading());
     }
     unawaited(_setup?.useCases.stop());
   }
