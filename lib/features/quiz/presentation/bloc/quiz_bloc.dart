@@ -313,7 +313,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
       ),
     );
     _startTicker();
-    if (readsByItself) add(const AutoReadStarted());
+    if (readsByItself && !isClosed) add(const AutoReadStarted());
   }
 
   Future<ReadAloudMode> _findReadAloudMode(QuizRequest request) async {
@@ -363,17 +363,28 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     final String? text = isInstruction
         ? reading?.text.ofInstruction(question)
         : reading?.text.ofQuestion(question);
-    if (reading == null || text == null) return;
+    if (reading == null || text == null) {
+      // Nothing to say: a question asked as "being read" starts its time.
+      if (asking.isReading) emit(asking.copyWith(isReading: false));
+      return;
+    }
     final int readingId = ++_readingId;
     emit(
       asking.copyWith(isReading: true, isReadingInstruction: isInstruction),
     );
-    await reading.useCases.read(
-      params: ReadAloudParams(text: text, languageCode: reading.languageCode),
-    );
-    final QuizState latest = state;
-    if (readingId == _readingId && latest is QuizAsking) {
-      emit(latest.copyWith(isReading: false));
+    try {
+      await reading.useCases.read(
+        params: ReadAloudParams(
+          text: text,
+          languageCode: reading.languageCode,
+        ),
+      );
+    } finally {
+      // Whatever happened to the voice, the time of the question starts.
+      final QuizState latest = state;
+      if (readingId == _readingId && latest is QuizAsking) {
+        emit(latest.copyWith(isReading: false));
+      }
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
+import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
@@ -43,10 +44,30 @@ final class _KeyedSpokenText implements QuizSpokenText {
   String ofQuestion(Question question) => 'question ${question.itemKey}';
 
   @override
-  String? ofInstruction(Question question) => 'instruction ${question.itemKey}';
+  String? ofInstruction(Question question) {
+    if (question.questionTypeId == QuestionTypeIds.typedAnswer) return null;
+    return 'instruction ${question.itemKey}';
+  }
 }
 
 final class _MockSettings extends Mock implements PlayerSettingsService {}
+
+/// A voice that is installed but fails when it has to speak.
+final class _BrokenSpeech implements SpeechService {
+  @override
+  Future<bool> isAvailable({required String languageCode}) async => true;
+
+  @override
+  Future<void> speak({
+    required String text,
+    required String languageCode,
+  }) async {
+    throw StateError('the voice broke');
+  }
+
+  @override
+  Future<void> stop() async {}
+}
 
 QuizRequest _request({Duration? baseTimeLimit}) {
   return QuizRequest(
@@ -85,6 +106,7 @@ void main() {
   });
 
   QuizBloc buildBloc({
+    SpeechService? speechOverride,
     bool readsByItself = false,
     bool hasReadAloud = true,
   }) {
@@ -111,7 +133,7 @@ void main() {
       readAloud: hasReadAloud
           ? QuizReadAloud(
               useCases: buildReadAloudUseCases(
-                speech: speech,
+                speech: speechOverride ?? speech,
                 readsByItself: readsByItself,
               ),
               languageCode: 'fr',
@@ -535,6 +557,41 @@ void main() {
       ]);
       expect(asking().isReading, isTrue);
       expect(asking().isReadingInstruction, isFalse);
+    });
+  });
+
+  group('QuizBloc when the voice cannot be used', () {
+    test(
+      'starts the time of the question when there is nothing to say',
+      () async {
+        // Arrange: a written answer has no instruction to read.
+        buildBloc();
+        await start();
+        // Act
+        bloc.add(const ReadAloudToggled(isInstruction: true));
+        await pumpEventQueue();
+        await tick(10);
+        // Assert
+        expect(speech.spoken, isEmpty);
+        expect(asking().isReading, isFalse);
+        expect(asking().elapsed, const Duration(seconds: 1));
+      },
+    );
+    test('starts the time of the question when the voice breaks', () async {
+      // Arrange
+      final List<Object> errors = <Object>[];
+      await runZonedGuarded(() async {
+        buildBloc(speechOverride: _BrokenSpeech());
+        await start();
+        // Act
+        bloc.add(const ReadAloudToggled());
+        await pumpEventQueue();
+        await tick(10);
+        // Assert
+        expect(asking().isReading, isFalse);
+        expect(asking().elapsed, const Duration(seconds: 1));
+      }, (Object error, StackTrace stackTrace) => errors.add(error));
+      expect(errors, isNotEmpty);
     });
   });
 }
