@@ -7,4 +7,7 @@ abstract final class LearningDomainIds {
   /// The numbers up to 100: counting, tens and ones, comparing and
   /// ordering (version 2.0).
   static const String numbers = 'numbers';
+
+  /// The divisions of the multiplication tables (version 2.0).
+  static const String division = 'division';
 }

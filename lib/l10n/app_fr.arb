@@ -40,6 +40,10 @@
   "@numbersDomainName": {
     "description": "Name of the numbers domain (counting, tens and ones, comparing and ordering numbers up to 100) in the switch of the domains above the map and above the Profile progress cards (\"Numbers\"). One word, a segment label."
   },
+  "divisionDomainName": "Division",
+  "@divisionDomainName": {
+    "description": "Name of the division domain (the divisions of the multiplication tables) in the switch of the domains above the map and above the Profile progress cards (\"Division\"). One word, a segment label."
+  },
   "errorStorage": "Oups, on n'a pas pu lire ou enregistrer tes données.",
   "@errorStorage": {
     "description": "Error shown to a child on the \"Qui joue ?\" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal \"tu\", no technical words."
@@ -243,6 +247,10 @@
   "masteryGridTitleNumbers": "Mes nombres",
   "@masteryGridTitleNumbers": {
     "description": "Title of the mastery grid card of the Profile tab when the numbers domain is chosen above it (\"My numbers\"): one row per unit, one cell per item colored by how well it is known. Short title."
+  },
+  "masteryGridTitleDivision": "Mes divisions",
+  "@masteryGridTitleDivision": {
+    "description": "Title of the mastery grid card of the Profile tab when the division domain is chosen above it (\"My divisions\"): one row per unit, one cell per division colored by how well it is known. Short title."
   },
   "masteryStatusNotSeen": "Nouveau",
   "@masteryStatusNotSeen": {
@@ -1012,6 +1020,10 @@
   "@quizSpokenPlus": {
     "description": "Word read by the screen reader for the plus sign of a number written as its tens and ones (\"plus\"), as in \"30 plus 4 égale 34\". Joined with the other words in the order of the operation. Never displayed."
   },
+  "quizSpokenDividedBy": "divisé par",
+  "@quizSpokenDividedBy": {
+    "description": "Words read by the screen reader for the division sign of a question (\"divided by\"), as in \"56 divisé par 7 égale combien\". Joined with the other words in the order of the operation. Never displayed."
+  },
   "quizSpokenLessThan": "est plus petit que",
   "@quizSpokenLessThan": {
     "description": "Words read by the screen reader for the sign < between two numbers (\"is less than\"), as in \"34 est plus petit que 43\". Joined with the numbers around it. Never displayed."
@@ -1515,6 +1527,26 @@
       "unit": {
         "type": "String",
         "example": "tensones"
+      }
+    }
+  },
+  "divisionUnitName": "Diviser par {number}",
+  "@divisionUnitName": {
+    "description": "Name of a unit of the division domain, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile (\"Divide by 7\"). Short title. {number} is the divisor, from 1 to 12, the number of the multiplication table the unit reverses.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "divisionUnitTip": "{unit, select, 1{Diviser par 1 ne change rien : 7 ÷ 1 = 7.} 2{Diviser par 2, c'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.} 3{Diviser par 3, c'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.} 4{Diviser par 4, c'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.} 5{Dans la table de 5, les nombres finissent par 0 ou par 5 : 35 ÷ 5 = 7, car 5 × 7 = 35.} 6{Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.} 7{Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.} 8{Diviser par 8, c'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.} 9{Les chiffres des nombres de la table de 9 font 9 : 36, c'est 3 + 6 = 9, et 36 ÷ 9 = 4.} 10{Diviser par 10, c'est enlever le 0 à droite : 70 ÷ 10 = 7.} 11{Un nombre comme 44 ou 77 a deux chiffres pareils : 77 ÷ 11 = 7.} 12{Diviser par 12, c'est penser à 10 fois plus 2 fois : 36 ÷ 12 = 3, car 12 × 3 = 36.} other{}}",
+  "@divisionUnitTip": {
+    "description": "Tip of a unit of the division domain, shown on its Discovery page under all its divisions (\"For 56 ÷ 7, think of 7 × 8 = 56\"). One or two short sentences for a child of 6 to 11, with an example. {unit} is the slug of the unit (the end of its key), the divisor as text, never shown: 1 to 12.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "7"
       }
     }
   },

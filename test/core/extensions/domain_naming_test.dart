@@ -66,7 +66,7 @@ void main() {
     expect(l10n.unitMark('numbers', 'num:unknown'), isEmpty);
     expect(l10n.unitTip('numbers', 'num:unknown'), isEmpty);
     expect(l10n.unitName('multiplication', 'mul:x'), isEmpty);
-    expect(l10n.domainName('division'), isEmpty);
-    expect(DomainNaming.namesOf('division'), isNull);
+    expect(l10n.domainName('unknown'), isEmpty);
+    expect(DomainNaming.namesOf('unknown'), isNull);
   });
 }

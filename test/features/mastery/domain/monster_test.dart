@@ -421,7 +421,7 @@ void main() {
       )).requireData;
       final AppException? actualFailure = (await service.readMonsterCount(
         profileId: 'p1',
-        domainId: 'division',
+        domainId: 'unknown',
       )).exceptionOrNull;
       // Assert
       expect(actualCount, 1);
@@ -430,7 +430,7 @@ void main() {
     test('fails on an unknown domain', () async {
       // Act
       final AppException? actualException = (await getMonsters()(
-        params: const MasteryScope(profileId: 'p1', domainId: 'division'),
+        params: const MasteryScope(profileId: 'p1', domainId: 'unknown'),
       )).exceptionOrNull;
       // Assert
       expect(actualException, isA<ValidationException>());

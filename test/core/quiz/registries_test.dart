@@ -88,7 +88,7 @@ void main() {
       registry.register(expectedDomain);
       // Assert
       expect(registry.find('multiplication'), expectedDomain);
-      expect(registry.find('division'), isNull);
+      expect(registry.find('unknown'), isNull);
       expect(registry.domains, <LearningDomain>[expectedDomain]);
     });
     test('refuses the same identifier twice', () {

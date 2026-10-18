@@ -12,7 +12,10 @@ enum MonsterFamily {
   horned(LearningDomainIds.multiplication),
 
   /// Antennae and spots: the monsters of the numbers.
-  antennae(LearningDomainIds.numbers);
+  antennae(LearningDomainIds.numbers),
+
+  /// Round ears and a belly split in two: the monsters of the division.
+  eared(LearningDomainIds.division);
 
   const MonsterFamily(this.domainId);
 

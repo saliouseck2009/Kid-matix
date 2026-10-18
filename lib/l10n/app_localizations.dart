@@ -160,6 +160,12 @@ abstract class AppLocalizations {
   /// **'Nombres'**
   String get numbersDomainName;
 
+  /// Name of the division domain (the divisions of the multiplication tables) in the switch of the domains above the map and above the Profile progress cards ("Division"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Division'**
+  String get divisionDomainName;
+
   /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
   /// In fr, this message translates to:
@@ -369,6 +375,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mes nombres'**
   String get masteryGridTitleNumbers;
+
+  /// Title of the mastery grid card of the Profile tab when the division domain is chosen above it ("My divisions"): one row per unit, one cell per division colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes divisions'**
+  String get masteryGridTitleDivision;
 
   /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).
   ///
@@ -1156,6 +1168,12 @@ abstract class AppLocalizations {
   /// **'plus'**
   String get quizSpokenPlus;
 
+  /// Words read by the screen reader for the division sign of a question ("divided by"), as in "56 divisé par 7 égale combien". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'divisé par'**
+  String get quizSpokenDividedBy;
+
   /// Words read by the screen reader for the sign < between two numbers ("is less than"), as in "34 est plus petit que 43". Joined with the numbers around it. Never displayed.
   ///
   /// In fr, this message translates to:
@@ -1623,6 +1641,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{unit, select, count10{Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.} count20{Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…} count100{Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…} tensones{Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.} compare{Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.} order{Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.} beforeafter{Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !} other{}}'**
   String numbersUnitTip(String unit);
+
+  /// Name of a unit of the division domain, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Divide by 7"). Short title. {number} is the divisor, from 1 to 12, the number of the multiplication table the unit reverses.
+  ///
+  /// In fr, this message translates to:
+  /// **'Diviser par {number}'**
+  String divisionUnitName(int number);
+
+  /// Tip of a unit of the division domain, shown on its Discovery page under all its divisions ("For 56 ÷ 7, think of 7 × 8 = 56"). One or two short sentences for a child of 6 to 11, with an example. {unit} is the slug of the unit (the end of its key), the divisor as text, never shown: 1 to 12.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, 1{Diviser par 1 ne change rien : 7 ÷ 1 = 7.} 2{Diviser par 2, c\'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.} 3{Diviser par 3, c\'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.} 4{Diviser par 4, c\'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.} 5{Dans la table de 5, les nombres finissent par 0 ou par 5 : 35 ÷ 5 = 7, car 5 × 7 = 35.} 6{Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.} 7{Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.} 8{Diviser par 8, c\'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.} 9{Les chiffres des nombres de la table de 9 font 9 : 36, c\'est 3 + 6 = 9, et 36 ÷ 9 = 4.} 10{Diviser par 10, c\'est enlever le 0 à droite : 70 ÷ 10 = 7.} 11{Un nombre comme 44 ou 77 a deux chiffres pareils : 77 ÷ 11 = 7.} 12{Diviser par 12, c\'est penser à 10 fois plus 2 fois : 36 ÷ 12 = 3, car 12 × 3 = 36.} other{}}'**
+  String divisionUnitTip(String unit);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///

@@ -40,6 +40,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numbersDomainName => 'Numbers';
 
   @override
+  String get divisionDomainName => 'Division';
+
+  @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
 
   @override
@@ -212,6 +215,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'My numbers';
+
+  @override
+  String get masteryGridTitleDivision => 'My divisions';
 
   @override
   String get masteryStatusNotSeen => 'New';
@@ -736,6 +742,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizSpokenPlus => 'plus';
 
   @override
+  String get quizSpokenDividedBy => 'divided by';
+
+  @override
   String get quizSpokenLessThan => 'is less than';
 
   @override
@@ -1129,6 +1138,35 @@ class AppLocalizationsEn extends AppLocalizations {
         'compare': 'Look at the tens first: the number with more tens is greater. If the tens are the same, look at the ones.',
         'order': 'On the line, numbers go from smallest to greatest. Find how much they go up each time.',
         'beforeafter': 'The number after is 1 more; the number before is 1 less. After 39 comes 40!',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String divisionUnitName(int number) {
+    return 'Divide by $number';
+  }
+
+  @override
+  String divisionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Dividing by 1 changes nothing: 7 ÷ 1 = 7.',
+        '2': 'Dividing by 2 means sharing into two equal parts: 12 ÷ 2 = 6, half of 12.',
+        '3': 'Dividing by 3 means making 3 equal parts: 12 ÷ 3 = 4, because 3 × 4 = 12.',
+        '4': 'Dividing by 4 means halving twice: 20 ÷ 4 = 5, because half of 20 is 10 and half of 10 is 5.',
+        '5': 'In the 5 times table, the numbers end in 0 or 5: 35 ÷ 5 = 7, because 5 × 7 = 35.',
+        '6':
+            'For 42 ÷ 6, look in the 6 times table: 6 × 7 = 42, so 42 ÷ 6 = 7.',
+        '7': 'For 56 ÷ 7, think of 7 × 8 = 56: so 56 ÷ 7 = 8.',
+        '8': 'Dividing by 8 means halving three times: for 48 ÷ 8, 48 → 24 → 12 → 6.',
+        '9': 'The digits of the numbers in the 9 times table add up to 9: 36 is 3 + 6 = 9, and 36 ÷ 9 = 4.',
+        '10': 'Dividing by 10 means removing the 0 on the right: 70 ÷ 10 = 7.',
+        '11': 'A number like 44 or 77 has two identical digits: 77 ÷ 11 = 7.',
+        '12': 'Dividing by 12 means thinking 10 times plus 2 times: 36 ÷ 12 = 3, because 12 × 3 = 36.',
         'other': '',
       },
     );

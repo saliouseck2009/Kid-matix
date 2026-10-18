@@ -40,6 +40,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get numbersDomainName => 'Nombres';
 
   @override
+  String get divisionDomainName => 'Division';
+
+  @override
   String get errorStorage =>
       'Oups, on n\'a pas pu lire ou enregistrer tes données.';
 
@@ -214,6 +217,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'Mes nombres';
+
+  @override
+  String get masteryGridTitleDivision => 'Mes divisions';
 
   @override
   String get masteryStatusNotSeen => 'Nouveau';
@@ -740,6 +746,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizSpokenPlus => 'plus';
 
   @override
+  String get quizSpokenDividedBy => 'divisé par';
+
+  @override
   String get quizSpokenLessThan => 'est plus petit que';
 
   @override
@@ -1134,6 +1143,34 @@ class AppLocalizationsFr extends AppLocalizations {
         'compare': 'Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.',
         'order': 'Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.',
         'beforeafter': 'Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String divisionUnitName(int number) {
+    return 'Diviser par $number';
+  }
+
+  @override
+  String divisionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Diviser par 1 ne change rien : 7 ÷ 1 = 7.',
+        '2': 'Diviser par 2, c\'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.',
+        '3': 'Diviser par 3, c\'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.',
+        '4': 'Diviser par 4, c\'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.',
+        '5': 'Dans la table de 5, les nombres finissent par 0 ou par 5 : 35 ÷ 5 = 7, car 5 × 7 = 35.',
+        '6': 'Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.',
+        '7': 'Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.',
+        '8': 'Diviser par 8, c\'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.',
+        '9': 'Les chiffres des nombres de la table de 9 font 9 : 36, c\'est 3 + 6 = 9, et 36 ÷ 9 = 4.',
+        '10': 'Diviser par 10, c\'est enlever le 0 à droite : 70 ÷ 10 = 7.',
+        '11': 'Un nombre comme 44 ou 77 a deux chiffres pareils : 77 ÷ 11 = 7.',
+        '12': 'Diviser par 12, c\'est penser à 10 fois plus 2 fois : 36 ÷ 12 = 3, car 12 × 3 = 36.',
         'other': '',
       },
     );

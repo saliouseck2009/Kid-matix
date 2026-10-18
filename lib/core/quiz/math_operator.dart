@@ -17,4 +17,7 @@ enum MathOperator {
   /// `15 = 15`; an operation's result follows the equals token instead
   /// (version 2.0).
   equalTo,
+
+  /// Division, shown as "÷": `56 ÷ 7 = 8` (version 2.0).
+  divide,
 }

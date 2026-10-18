@@ -5,8 +5,8 @@ import 'package:kid_matix/core/widgets/monster_family.dart';
 /// of the design: the body color, the horns and the eyes change with
 /// [number], one monster per unit; the [family] tells the domain, one
 /// look per domain (horns for the multiplication, antennae and spots for
-/// the numbers). Final illustrations replace this painter without
-/// touching the callers.
+/// the numbers, round ears for the division). Final illustrations replace
+/// this painter without touching the callers.
 class MonsterPainter extends CustomPainter {
   /// Creates the painter of the monster [number], from 1, of [family].
   MonsterPainter({required this.number, this.family = MonsterFamily.horned});
@@ -51,6 +51,8 @@ class MonsterPainter extends CustomPainter {
         _paintHorns(canvas);
       case MonsterFamily.antennae:
         _paintAntennae(canvas);
+      case MonsterFamily.eared:
+        _paintEars(canvas);
     }
     _paintArms(canvas);
     canvas.drawRRect(
@@ -61,6 +63,7 @@ class MonsterPainter extends CustomPainter {
       Paint()..color = _body,
     );
     if (family == MonsterFamily.antennae) _paintSpots(canvas);
+    if (family == MonsterFamily.eared) _paintBellySplit(canvas);
     _paintEyes(canvas);
     _paintMouth(canvas);
     canvas.restore();
@@ -102,6 +105,27 @@ class MonsterPainter extends CustomPainter {
     final Paint ball = Paint()..color = _horn;
     canvas.drawCircle(const Offset(54, 10), 9, ball);
     canvas.drawCircle(const Offset(146, 10), 9, ball);
+  }
+
+  void _paintEars(Canvas canvas) {
+    final Paint ear = Paint()..color = _body;
+    final Paint inner = Paint()..color = _horn;
+    for (final double x in <double>[48, 152]) {
+      canvas.drawCircle(Offset(x, 32), 20, ear);
+      canvas.drawCircle(Offset(x, 32), 10, inner);
+    }
+  }
+
+  /// A vertical line on the belly, the body shared in two equal halves.
+  void _paintBellySplit(Canvas canvas) {
+    canvas.drawLine(
+      const Offset(100, 148),
+      const Offset(100, 158),
+      Paint()
+        ..color = _white.withValues(alpha: 0.5)
+        ..strokeWidth = 4
+        ..strokeCap = StrokeCap.round,
+    );
   }
 
   void _paintSpots(Canvas canvas) {
