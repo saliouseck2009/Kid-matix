@@ -115,6 +115,8 @@ void main() {
         ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
         ..._numbersScreens,
         ('a numbers boss fight', AppRoutes.playOf('path:num:count10:boss')),
+        ..._wordScreens,
+        ('a words boss fight', AppRoutes.playOf('path:word:add:boss')),
       ]) {
         testWidgets('cuts no text on $name in $language', (
           WidgetTester tester,
@@ -190,6 +192,16 @@ final List<(String, String)> _guidelineScreens = <(String, String)>[
   ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
   ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
   ..._numbersScreens,
+  ..._wordScreens,
+];
+
+/// Screens of the math words domain: a family, a sentence to touch or a
+/// word to hear, and the formats of the writing stage.
+final List<(String, String)> _wordScreens = <(String, String)>[
+  ('a family of words', AppRoutes.tableDetailOf('word:remove')),
+  ('a words quiz', AppRoutes.playOf('path:word:remove:discovery')),
+  ('a words training quiz', AppRoutes.playOf('path:word:ask:training')),
+  ('a words writing quiz', AppRoutes.playOf('path:word:ask:writing')),
 ];
 
 /// Screens of the numbers domain: a unit, a drawing to read, the signs of
