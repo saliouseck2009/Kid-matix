@@ -129,6 +129,13 @@ void main() {
 
   QuizAsking asking() => bloc.state as QuizAsking;
 
+  Future<void> tick(int count) async {
+    for (int index = 0; index < count; index++) {
+      ticker.controller.add(index);
+    }
+    await pumpEventQueue();
+  }
+
   group('QuizBloc with a voice', () {
     test('offers the listen button when a voice is installed', () async {
       // Arrange
@@ -296,5 +303,171 @@ void main() {
       // Assert
       expect(speech.isSpeaking, isFalse);
     });
+  });
+
+  group('QuizBloc timer and reading', () {
+    test('holds the timer until the voice has read the question', () async {
+      // Arrange
+      buildBloc(readsByItself: true);
+      await start();
+      // Act
+      await tick(50);
+      // Assert: the reading goes on, the time of the question did not start.
+      expect(asking().isReading, isTrue);
+      expect(asking().elapsed, Duration.zero);
+      expect(asking().remainingFraction, 1);
+      // Act: the voice is done, the timer starts.
+      speech.finishReading();
+      await pumpEventQueue();
+      await tick(25);
+      // Assert
+      expect(asking().isReading, isFalse);
+      expect(asking().elapsed, const Duration(milliseconds: 2500));
+    });
+    test('reads each new question by itself when the setting is on', () async {
+      // Arrange
+      buildBloc(readsByItself: true);
+      await start();
+      expect(speech.spoken, <String>['question mul:5x1']);
+      speech.finishReading();
+      await pumpEventQueue();
+      // Act
+      bloc.add(
+        AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+      );
+      await pumpEventQueue();
+      bloc.add(const NextRequested());
+      await pumpEventQueue();
+      // Assert
+      expect(speech.spoken, hasLength(2));
+      expect(speech.spoken.last, startsWith('question mul:5x'));
+      expect(speech.spoken.last, isNot('question mul:5x1'));
+      expect(asking().isReading, isTrue);
+    });
+    test('does not read by itself when the setting is off', () async {
+      // Arrange
+      buildBloc();
+      // Act
+      await start();
+      // Assert
+      expect(speech.spoken, isEmpty);
+      expect(asking().isReading, isFalse);
+    });
+    test('starts the timer at once when no voice is installed', () async {
+      // Arrange: the setting is on, the voice is missing.
+      speech.hasVoice = false;
+      buildBloc(readsByItself: true);
+      await start();
+      // Act
+      await tick(25);
+      // Assert
+      expect(speech.spoken, isEmpty);
+      expect(asking().isReading, isFalse);
+      expect(asking().elapsed, const Duration(milliseconds: 2500));
+    });
+    test('pauses the timer while the player listens again', () async {
+      // Arrange
+      buildBloc();
+      await start();
+      await tick(10);
+      expect(asking().elapsed, const Duration(seconds: 1));
+      // Act
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      await tick(50);
+      // Assert
+      expect(asking().elapsed, const Duration(seconds: 1));
+      // Act
+      speech.finishReading();
+      await pumpEventQueue();
+      await tick(5);
+      // Assert
+      expect(asking().elapsed, const Duration(milliseconds: 1500));
+    });
+    test('resumes the timer when the player stops the reading', () async {
+      // Arrange
+      buildBloc();
+      await start();
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      // Act
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      await tick(10);
+      // Assert
+      expect(asking().elapsed, const Duration(seconds: 1));
+    });
+    test('does not run out of time while the voice reads', () async {
+      // Arrange: 10 seconds per question, a reading longer than that.
+      buildBloc(readsByItself: true);
+      await start();
+      // Act
+      await tick(150);
+      // Assert
+      expect(bloc.state, isA<QuizAsking>());
+      expect(asking().elapsed, Duration.zero);
+    });
+    test('measures the answer time without the reading', () async {
+      // Arrange
+      buildBloc(readsByItself: true);
+      await start();
+      await tick(80);
+      speech.finishReading();
+      await pumpEventQueue();
+      await tick(20);
+      // Act
+      bloc.add(
+        AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+      );
+      await pumpEventQueue();
+      // Assert
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(
+        actualState.submission.answer.answerTime,
+        const Duration(seconds: 2),
+      );
+    });
+    test('answering during the reading judges the time spent so far', () async {
+      // Arrange
+      buildBloc(readsByItself: true);
+      await start();
+      // Act
+      bloc.add(
+        AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+      );
+      await pumpEventQueue();
+      // Assert
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(actualState.submission.answer.isCorrect, isTrue);
+      expect(actualState.submission.answer.answerTime, Duration.zero);
+      expect(speech.isSpeaking, isFalse);
+    });
+    test(
+      'keeps counting the total time of a quiz without the readings',
+      () async {
+        // Arrange
+        buildBloc(readsByItself: true);
+        await start(
+          request: QuizRequest(
+            profileId: 'profile-1',
+            domainId: MultiplicationDomain.domainId,
+            mode: QuizMode.timeAttack,
+            itemKeys: tableKeys(5),
+            questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+            totalTimeLimit: const Duration(seconds: 60),
+          ),
+        );
+        // Act
+        await tick(100);
+        // Assert: 10 seconds of ticks went by during the reading.
+        expect(asking().playedTime, Duration.zero);
+        // Act
+        speech.finishReading();
+        await pumpEventQueue();
+        await tick(10);
+        // Assert
+        expect(asking().playedTime, const Duration(seconds: 1));
+      },
+    );
   });
 }

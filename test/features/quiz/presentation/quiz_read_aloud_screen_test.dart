@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mocktail/mocktail.dart' hide Answer;
 
 import '../../../helpers/fake_speech_service.dart';
 import '../../../helpers/pump_localized.dart';
@@ -94,6 +98,7 @@ void main() {
     WidgetTester tester, {
     String questionTypeId = QuestionTypeIds.multipleChoice,
     bool isBossFight = false,
+    bool readsByItself = false,
   }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -115,7 +120,10 @@ void main() {
         feedback: RecordingGameFeedback(),
         onCompleted: (_) {},
         onLeft: () {},
-        readAloud: buildReadAloudUseCases(speech: speech),
+        readAloud: buildReadAloudUseCases(
+          speech: speech,
+          readsByItself: readsByItself,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -276,6 +284,48 @@ void main() {
         anyOf('4 times 6 equals what', '6 times 4 equals what'),
       );
       expect(speech.languages.single, 'en');
+    });
+  });
+
+  group('A quiz of a player who has the questions read by themselves', () {
+    testWidgets('reads the first question as soon as it shows', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpQuiz(tester, readsByItself: true);
+      // Assert
+      expect(speech.spoken.single, matches(_operation));
+      expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
+    });
+    testWidgets('reads nothing by itself when no voice is installed', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      speech.hasVoice = false;
+      // Act
+      await pumpQuiz(tester, readsByItself: true);
+      // Assert
+      expect(speech.spoken, isEmpty);
+      expect(find.byType(ListenButton), findsNothing);
+    });
+    testWidgets('reads the next question once the first one is answered', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      speech.isInstant = true;
+      await pumpQuiz(tester, readsByItself: true);
+      final QuizAsking inputAsking =
+          BlocProvider.of<QuizBloc>(tester.element(find.byType(Scaffold))).state
+              as QuizAsking;
+      final int inputResult =
+          (inputAsking.turn.question.expectedAnswer as NumberAnswer).value;
+      // Act
+      await tester.tap(find.text('$inputResult'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Continuer'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(speech.spoken, hasLength(2));
     });
   });
 }

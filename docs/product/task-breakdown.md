@@ -655,9 +655,9 @@ Les enfants qui lisent mal entendent chaque question et chaque consigne en fran�
 - [ ] **F23-01** Choix technique, noté dans `docs/decisions.md` : synthèse vocale du système pour les textes générés (les questions changent à chaque partie). Vérifier qu'une voix française fonctionne hors ligne sur Android d'entrée de gamme et sur iOS ; prévoir le cas où aucune voix n'est installée.
 - [x] **F23-02** Interface `SpeechService` dans `core/services/` (parler, arrêter, disponibilité, langue) et son implémentation dans une fonctionnalité dédiée ; service factice pour les tests.
 - [x] **F23-03** Bouton « Écouter » (haut-parleur, avec `tooltip`) sur la carte de question de tous les formats ; il lit l'énoncé comme une phrase, en réutilisant `PromptReading` (« 5 fois 7 égale combien »).
-- [ ] **F23-04** Réglage par joueur « Lire les questions à voix haute » : lecture automatique de chaque nouvelle question. Désactivé par défaut, proposé à la création du profil.
+- [x] **F23-04** Réglage par joueur « Lire les questions à voix haute » : lecture automatique de chaque nouvelle question. Désactivé par défaut, proposé à la création du profil.
 - [ ] **F23-05** Lecture des consignes principales (« Touche la bonne réponse »), des astuces de l'étape Découverte et des messages de la mascotte.
-- [ ] **F23-06** Le chrono ne démarre qu'à la fin de la lecture ; il se met en pause pendant une lecture demandée par l'enfant.
+- [x] **F23-06** Le chrono ne démarre qu'à la fin de la lecture ; il se met en pause pendant une lecture demandée par l'enfant.
 - [x] **F23-07** Le bouton est masqué, sans message d'erreur, quand aucune voix n'est disponible.
 - [ ] **F23-08** Tests : service factice, chrono en attente de la lecture, bouton masqué sans voix, réglage par joueur.
 

@@ -91,6 +91,13 @@ final class ReadAloudToggled extends QuizEvent {
   const ReadAloudToggled();
 }
 
+/// A new question was asked to a player who has the questions read by
+/// themselves: the voice reads it.
+final class AutoReadStarted extends QuizEvent {
+  /// Creates the event.
+  const AutoReadStarted();
+}
+
 /// The player confirmed leaving the quiz.
 final class QuizAbandoned extends QuizEvent {
   /// Creates the event.

@@ -54,6 +54,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<QuizPaused>(_onPaused);
     on<QuizResumed>(_onResumed);
     on<ReadAloudToggled>(_onReadAloudToggled);
+    on<AutoReadStarted>(_onAutoReadStarted);
     on<QuizAbandoned>(_onAbandoned);
   }
 
@@ -111,7 +112,10 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   void _onTicked(TimerTicked event, Emitter<QuizState> emit) {
     switch (state) {
-      case final QuizAsking current when !current.isPaused:
+      // The time of a question starts when the voice has finished reading
+      // it, and stops while the player listens to it again.
+      case final QuizAsking current
+          when !current.isPaused && !current.isReading:
         final QuizAsking next = current.copyWith(
           elapsed: current.elapsed + tickInterval,
           playedTime: current.playedTime + tickInterval,
@@ -298,14 +302,17 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     Emitter<QuizState> emit, [
     Duration playedTime = Duration.zero,
   ]) {
+    final bool readsByItself = _readAloudMode == ReadAloudMode.automatic;
     emit(
       QuizAsking(
         run: run,
         playedTime: playedTime,
         canReadAloud: _readAloudMode != ReadAloudMode.unavailable,
+        isReading: readsByItself,
       ),
     );
     _startTicker();
+    if (readsByItself) add(const AutoReadStarted());
   }
 
   Future<ReadAloudMode> _findReadAloudMode(QuizRequest request) async {
@@ -327,25 +334,27 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     final QuizState current = state;
     if (current is! QuizAsking || !current.canReadAloud) return;
     if (current.isReading) return _stopReading(emit);
-    await _read(
-      emit,
-      (QuizReadAloud reading) => reading.text.ofQuestion(current.turn.question),
-    );
+    await _read(emit, current);
   }
 
-  /// Says the text [textOf] picks and waits for the end of the voice.
-  Future<void> _read(
+  /// A question asked to a player who has them read by themselves.
+  Future<void> _onAutoReadStarted(
+    AutoReadStarted event,
     Emitter<QuizState> emit,
-    String Function(QuizReadAloud reading) textOf,
   ) async {
-    final QuizReadAloud? reading = _readAloud;
     final QuizState current = state;
-    if (reading == null || current is! QuizAsking) return;
+    if (current is QuizAsking) await _read(emit, current);
+  }
+
+  /// Says the question of [asking] and waits for the end of the voice.
+  Future<void> _read(Emitter<QuizState> emit, QuizAsking asking) async {
+    final QuizReadAloud? reading = _readAloud;
+    if (reading == null) return;
     final int readingId = ++_readingId;
-    emit(current.copyWith(isReading: true));
+    emit(asking.copyWith(isReading: true));
     await reading.useCases.read(
       params: ReadAloudParams(
-        text: textOf(reading),
+        text: reading.text.ofQuestion(asking.turn.question),
         languageCode: reading.languageCode,
       ),
     );
