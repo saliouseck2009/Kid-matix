@@ -61,13 +61,13 @@ void main() {
     test('doubles the time of a count-objects question', () async {
       // Arrange
       final QuizRun inputRun = (await buildQuizUseCase()(
-        params: BuildQuizParams(
+        params: const BuildQuizParams(
           profileId: 'profile-1',
           domainId: 'numbers',
           mode: QuizMode.freeTraining,
           itemKeys: <String>['num:count:14'],
           questionTypeIds: <String>[QuestionTypeIds.countObjects],
-          timeLimit: const Duration(seconds: 10),
+          timeLimit: Duration(seconds: 10),
         ),
       )).requireData;
       // Assert
