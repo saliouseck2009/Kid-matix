@@ -21,6 +21,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/answer_keypad.dart'
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_arena.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/clock_header.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/compare_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/lives_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/match_pairs_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_answers.dart';
@@ -131,7 +132,10 @@ class QuizPlayView extends StatelessWidget {
                 ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
+                monsterFamily: labels.monsterFamilyOf(data.run.domainId),
                 prompt: data.question.prompt,
+                picture: data.question.picture,
+                spokenText: labels.speakQuestion(data.question),
                 blowCount: data.run.answers.length,
                 blow: data.feedback?.bossBlow,
                 outcome: data.run.bossOutcome,
@@ -156,6 +160,8 @@ class QuizPlayView extends StatelessWidget {
                   data.run.domainId,
                 ),
                 prompt: data.question.prompt,
+                picture: data.question.picture,
+                spokenText: labels.speakQuestion(data.question),
                 blankText: data.typedDigits,
                 blankColor: _blankColor(context, data),
                 mascotMood: _moodOf(data),
@@ -305,10 +311,12 @@ final class _PlayData {
       question.choices.isEmpty &&
       question.questionTypeId != QuestionTypeIds.trueFalse;
 
+  /// What fills the blank once answered: the digits written, or the
+  /// sign picked between two numbers.
   static String? _typedOf(Answer? given, Question question) {
-    if (question.choices.isNotEmpty) return null;
     return switch (given) {
-      NumberAnswer(:final int value) => '$value',
+      ComparisonAnswer(:final comparison) => CompareAnswers.signOf(comparison),
+      NumberAnswer(:final int value) when question.choices.isEmpty => '$value',
       _ => null,
     };
   }
@@ -342,6 +350,8 @@ class _AnswerZone extends StatelessWidget {
       children: <Widget>[
         if (question.questionTypeId == QuestionTypeIds.trueFalse)
           TrueFalseAnswers(feedbackOf: data.feedbackOf, onPicked: onPicked)
+        else if (question.questionTypeId == QuestionTypeIds.compare)
+          CompareAnswers(feedbackOf: data.feedbackOf, onPicked: onPicked)
         else if (!data.isWritten && !data.asksPairs)
           MultipleChoiceAnswers(
             choices: question.choices,

@@ -40,6 +40,11 @@ void main() {
       source: StageSource(unitKey: unitKey, stage: stage),
     )!;
 
+    /// The formats a multiplication fact is asked with: those of the stage
+    /// that the multiplication builds, unchanged since version 1.1.
+    List<String> multiplicationTypesOf(QuizSpec spec) =>
+        spec.questionTypeIds.where(domain.questionTypeIds.contains).toList();
+
     test('asks the 10 facts in order with answers to pick to discover', () {
       // Act
       final QuizSpec actualSpec = specOf('mul:5', StageKind.discovery);
@@ -48,7 +53,7 @@ void main() {
       expect(actualSpec.itemKeys.first, 'mul:5x1');
       expect(actualSpec.itemKeys, hasLength(10));
       expect(actualSpec.selection, QuizSelection.inOrder);
-      expect(actualSpec.questionTypeIds, <String>[
+      expect(multiplicationTypesOf(actualSpec), <String>[
         QuestionTypeIds.multipleChoice,
       ]);
       expect(actualSpec.baseTimeLimit, isNull);
@@ -59,7 +64,7 @@ void main() {
       final QuizSpec actualSpec = specOf('mul:5', StageKind.writing);
       // Assert
       expect(actualSpec.selection, QuizSelection.shuffled);
-      expect(actualSpec.questionTypeIds, <String>[
+      expect(multiplicationTypesOf(actualSpec), <String>[
         QuestionTypeIds.typedAnswer,
         QuestionTypeIds.missingNumber,
       ]);
@@ -69,7 +74,7 @@ void main() {
       final QuizSpec actualSpec = specOf('mul:5', StageKind.speed);
       // Assert
       expect(actualSpec.baseTimeLimit, const Duration(seconds: 10));
-      expect(actualSpec.questionTypeIds, hasLength(6));
+      expect(multiplicationTypesOf(actualSpec), hasLength(6));
       expect(
         actualSpec.questionTypeIds,
         containsAll(<String>[
@@ -84,7 +89,7 @@ void main() {
       // Assert
       expect(actualSpec.questionCount, 15);
       expect(actualSpec.selection, QuizSelection.mastery);
-      expect(actualSpec.questionTypeIds, hasLength(4));
+      expect(multiplicationTypesOf(actualSpec), hasLength(4));
       expect(actualSpec.itemKeys, hasLength(30));
       expect(
         actualSpec.itemKeys.map((String key) => key.split('x').first).toSet(),
@@ -98,7 +103,7 @@ void main() {
       // Assert
       expect(actualFirst.isBossFight, isTrue);
       expect(actualFirst.baseTimeLimit, const Duration(seconds: 8));
-      expect(actualFirst.questionTypeIds, hasLength(6));
+      expect(multiplicationTypesOf(actualFirst), hasLength(6));
       expect(
         actualFirst.questionTypeIds,
         containsAll(<String>[

@@ -34,6 +34,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonBack => 'Back';
 
   @override
+  String commonDomainName(String domain) {
+    String _temp0 = intl.Intl.selectLogic(
+      domain,
+      {
+        'multiplication': 'Multiplication',
+        'numbers': 'Numbers',
+        'other': 'Maths',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
 
   @override
@@ -205,6 +218,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get masteryGridTitle => 'My tables';
 
   @override
+  String get masteryGridTitleNumbers => 'My numbers';
+
+  @override
   String get masteryStatusNotSeen => 'New';
 
   @override
@@ -253,6 +269,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String pathMonsterHiddenSpoken(int number) {
     return 'Monster of the $number times table, not defeated yet';
+  }
+
+  @override
+  String pathUnitMonsterDefeatedSpoken(String unit) {
+    return 'Monster of “$unit”, defeated';
+  }
+
+  @override
+  String pathUnitMonsterHiddenSpoken(String unit) {
+    return 'Monster of “$unit”, not defeated yet';
   }
 
   @override
@@ -506,7 +532,98 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get quizCountLabel => 'How many mangoes?';
+
+  @override
+  String get quizBundlesLabel => 'What number is it?';
+
+  @override
+  String get quizNumberLineLabel => 'Which number is missing?';
+
+  @override
+  String get quizCompareLabel => 'Less, equal or greater?';
+
+  @override
+  String quizCompareSpoken(int first, int second) {
+    return 'Is $first less than, equal to or greater than $second?';
+  }
+
+  @override
+  String quizBundlesSpoken(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens bundles of ten',
+      one: '1 bundle of ten',
+      zero: 'No bundle of ten',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones sticks',
+      one: '1 stick',
+      zero: 'no stick',
+    );
+    return '$_temp0 and $_temp1: what number is it?';
+  }
+
+  @override
+  String quizNumberLineSpoken(String numbers) {
+    return 'Number line: $numbers. Which number is missing?';
+  }
+
+  @override
+  String get quizObjectsPictureLabel => 'Mangoes to count';
+
+  @override
+  String quizObjectsPictureCounted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mangoes',
+      one: '1 mango',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBundlesPictureLabel(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens bundles of ten',
+      one: '1 bundle of ten',
+      zero: 'No bundle of ten',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones sticks',
+      one: '1 stick',
+      zero: 'no stick',
+    );
+    return '$_temp0 and $_temp1';
+  }
+
+  @override
+  String quizNumberLinePictureLabel(String numbers) {
+    return 'Number line: $numbers';
+  }
+
+  @override
   String get quizHintFindOperation => 'Tap the right operation';
+
+  @override
+  String get quizHintCompare => 'Tap the right sign';
+
+  @override
+  String get quizCompareLess => 'less';
+
+  @override
+  String get quizCompareEqual => 'equal';
+
+  @override
+  String get quizCompareGreater => 'greater';
 
   @override
   String get quizMatchPairsTitle => 'Match each operation with its answer';
@@ -621,6 +738,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String quizSpokenTrueFalse(String statement) {
     return '$statement. True or false?';
   }
+
+  @override
+  String get quizSpokenPlus => 'plus';
+
+  @override
+  String get quizSpokenLessThan => 'is less than';
+
+  @override
+  String get quizSpokenGreaterThan => 'is greater than';
+
+  @override
+  String get quizSpokenEqualTo => 'is equal to';
+
+  @override
+  String get quizSpokenHiddenNumber => 'hidden number';
 
   @override
   String get quizModePath => 'Path';
@@ -764,6 +896,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pathStageReviewHint => '15 questions on the tables you\'ve seen';
 
   @override
+  String get pathUnitStageDiscoveryHint => 'The lesson and its tip';
+
+  @override
+  String get pathUnitStageBossHint => 'Beat the lesson\'s monster';
+
+  @override
+  String get pathUnitStageReviewHint =>
+      '15 questions on the lessons you\'ve seen';
+
+  @override
   String pathStageNumbered(int number, String name) {
     return '$number · $name';
   }
@@ -778,6 +920,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pathShowTable => 'See the table';
+
+  @override
+  String get pathShowUnit => 'See the lesson';
 
   @override
   String pathTableStars(int stars, int total) {
@@ -961,6 +1106,40 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String numbersUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Count to 10',
+        '2': 'Count to 20',
+        '3': 'Count to 100',
+        '4': 'Tens and ones',
+        '5': 'Compare',
+        '6': 'Put in order',
+        'other': 'Before and after',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String numbersUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Touch each mango as you count: one, two, three… The last number tells how many there are.',
+        '2': 'First count the row of 10, then keep going: 11, 12, 13…',
+        '3': 'A bundle is 10 sticks. Count the bundles in tens: 10, 20, 30…',
+        '4': 'The tens digit counts the bundles, the ones digit the loose sticks: 3 bundles and 4 sticks make 34.',
+        '5': 'Look at the tens first: the number with more tens is greater. If the tens are the same, look at the ones.',
+        '6': 'On the line, numbers go from smallest to greatest. Find how much they go up each time.',
+        'other': 'The number after is 1 more; the number before is 1 less. After 39 comes 40!',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsStageTitle => 'Stage complete!';
 
   @override
@@ -978,6 +1157,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String quizBossTitleMultiplication(int number) {
     return 'Boss of the $number times table';
+  }
+
+  @override
+  String quizBossTitleUnit(String unit) {
+    return 'Boss · $unit';
   }
 
   @override
@@ -1078,6 +1262,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String rewardBadgeTamerMultiplication(int number) {
     return 'Tamer of the $number times table';
+  }
+
+  @override
+  String rewardBadgeTamerUnit(String unit) {
+    return 'Tamer of “$unit”';
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/services/clock.dart';
@@ -161,7 +162,10 @@ final class RewardSessionHook implements SessionSavedHook {
     };
   }
 
+  /// Items of [domainId] for "Les 120", the badge of the multiplication
+  /// tables; 0, so never earned, in another domain.
   int _itemCount(String domainId) {
+    if (domainId != LearningDomainIds.multiplication) return 0;
     final LearningDomain? domain = _domains.find(domainId);
     if (domain == null) return 0;
     return domain.units.fold(

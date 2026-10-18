@@ -65,7 +65,7 @@ class DiscoveryPage extends StatelessWidget {
                         Semantics(
                           header: true,
                           child: Text(
-                            context.l10n.pathDiscoveryTitle(unit.number),
+                            labels.discoveryTitle(unit.number),
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),

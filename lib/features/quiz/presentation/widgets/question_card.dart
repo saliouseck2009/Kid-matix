@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/core/widgets/speech_bubble.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 
 /// White card of the question: a label, the operation and the mascot.
 ///
 /// A question that asks for the operation shows its label as words that
 /// lead to the result, such as "Quelle multiplication donne", and the
-/// result in a big yellow box.
+/// result in a big yellow box. A question with a drawing, such as objects
+/// to count, shows it between its label and its prompt.
 class QuestionCard extends StatelessWidget {
   /// Creates the card of [prompt] under [label].
   const QuestionCard({
@@ -22,6 +25,8 @@ class QuestionCard extends StatelessWidget {
     this.mascotMood = MascotMood.neutral,
     this.mascotMessage,
     this.resultSemanticLabel,
+    this.picture,
+    this.spokenText,
     this.listenButton,
     super.key,
   });
@@ -29,6 +34,7 @@ class QuestionCard extends StatelessWidget {
   static const double _radius = 28;
   static const double _mascotSize = 72;
   static const double _promptFontSize = 68;
+  static const double _picturePromptFontSize = 52;
 
   /// Short label above the operation: the table, or "Vrai ou faux ?".
   final String label;
@@ -53,6 +59,15 @@ class QuestionCard extends StatelessWidget {
   /// result side of [prompt], after the equals sign, is shown.
   final String? resultSemanticLabel;
 
+  /// Drawing shown between [label] and [prompt], or `null`.
+  final MathPicture? picture;
+
+  /// The whole question as one sentence, said by a screen reader in place
+  /// of [label], [picture] and [prompt] when the prompt alone does not
+  /// say it, such as "Combien de mangues ?"; `null` to read the prompt
+  /// token by token. The read-aloud button says it too.
+  final String? spokenText;
+
   /// The listen button, in the top right corner, or `null` when no voice
   /// can read the question.
   final Widget? listenButton;
@@ -71,12 +86,6 @@ class QuestionCard extends StatelessWidget {
             bottom: 0,
             child: MascotIllustration(size: _mascotSize, mood: mascotMood),
           ),
-          if (listenButton case final Widget button)
-            Positioned(
-              top: AppSizes.space8,
-              right: AppSizes.space8,
-              child: button,
-            ),
           if (mascotMessage case final String message)
             Positioned(
               left: AppSizes.space12,
@@ -97,19 +106,28 @@ class QuestionCard extends StatelessWidget {
                     ? AppSizes.space16
                     : AppSizes.minTouchTarget + AppSizes.space8,
                 AppSizes.space16,
-                AppSizes.space16,
+                picture == null
+                    ? AppSizes.space16
+                    : AppSizes.space16 + _mascotSize / 2,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: switch (resultSemanticLabel) {
-                  final String semanticLabel => <Widget>[
-                    _ResultPrompt(
-                      label: label,
-                      prompt: prompt,
-                      semanticLabel: semanticLabel,
-                    ),
-                  ],
-                  null => <Widget>[
+              child: switch ((resultSemanticLabel, picture)) {
+                (final String semanticLabel, _) => _ResultPrompt(
+                  label: label,
+                  prompt: prompt,
+                  semanticLabel: semanticLabel,
+                ),
+                (null, final MathPicture shown) => _PictureQuestion(
+                  label: label,
+                  picture: shown,
+                  prompt: prompt,
+                  blankText: blankText,
+                  blankColor: blankColor,
+                  spokenText: spokenText,
+                  fontSize: _picturePromptFontSize,
+                ),
+                (null, null) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
                     _QuestionLabel(label: label),
                     const SizedBox(height: AppSizes.space8),
                     _PromptText(
@@ -117,12 +135,19 @@ class QuestionCard extends StatelessWidget {
                       blankText: blankText,
                       blankColor: blankColor,
                       fontSize: _promptFontSize,
+                      semanticLabel: spokenText,
                     ),
                   ],
-                },
-              ),
+                ),
+              },
             ),
           ),
+          if (listenButton case final Widget button)
+            Positioned(
+              top: AppSizes.space8,
+              right: AppSizes.space8,
+              child: button,
+            ),
         ],
       ),
     );
@@ -157,18 +182,72 @@ class _QuestionLabel extends StatelessWidget {
   }
 }
 
+/// A question with a drawing: the label, the drawing, then the prompt
+/// when it has one; a number line holds its own blank.
+class _PictureQuestion extends StatelessWidget {
+  const _PictureQuestion({
+    required this.label,
+    required this.picture,
+    required this.prompt,
+    required this.blankText,
+    required this.blankColor,
+    required this.spokenText,
+    required this.fontSize,
+  });
+
+  final String label;
+  final MathPicture picture;
+  final List<PromptToken> prompt;
+  final String? blankText;
+  final Color? blankColor;
+  final String? spokenText;
+  final double fontSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        _QuestionLabel(label: label),
+        const SizedBox(height: AppSizes.space12),
+        Flexible(
+          child: MathPictureView(
+            picture: picture,
+            blankText: prompt.isEmpty ? blankText : null,
+            blankColor: blankColor,
+          ),
+        ),
+        if (prompt.isNotEmpty) ...<Widget>[
+          const SizedBox(height: AppSizes.space8),
+          _PromptText(
+            prompt: prompt,
+            blankText: blankText,
+            blankColor: blankColor,
+            fontSize: fontSize,
+          ),
+        ],
+      ],
+    );
+    final String? sentence = spokenText;
+    if (sentence == null) return content;
+    return Semantics(label: sentence, excludeSemantics: true, child: content);
+  }
+}
+
 class _PromptText extends StatelessWidget {
   const _PromptText({
     required this.prompt,
     required this.blankText,
     required this.blankColor,
     required this.fontSize,
+    this.semanticLabel,
   });
 
   final List<PromptToken> prompt;
   final String? blankText;
   final Color? blankColor;
   final double fontSize;
+  final String? semanticLabel;
 
   List<InlineSpan> _buildSpans() {
     final List<String> parts = prompt.toDisplayParts(blankText: blankText);
@@ -189,7 +268,7 @@ class _PromptText extends StatelessWidget {
       context,
     ).textTheme.displaySmall?.copyWith(fontSize: fontSize);
     return Semantics(
-      label: prompt.toSpokenText(context.l10n),
+      label: semanticLabel ?? prompt.toSpokenText(context.l10n),
       excludeSemantics: true,
       child: FittedBox(
         fit: BoxFit.scaleDown,

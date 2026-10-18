@@ -47,11 +47,12 @@ SavedQuizSession _session({
   required int correctCount,
   QuizMode mode = QuizMode.timeAttack,
   bool isCompleted = true,
+  String domainId = 'multiplication',
 }) {
   return SavedQuizSession(
     id: id,
     profileId: 'p1',
-    domainId: 'multiplication',
+    domainId: domainId,
     mode: mode,
     isCompleted: isCompleted,
     questionCount: correctCount + 2,
@@ -168,6 +169,12 @@ void main() {
       await save(
         _session(id: 's2', correctCount: 15, mode: QuizMode.freeTraining),
       );
+      // Assert
+      expect(await readRecords(), isEmpty);
+    });
+    test('keeps records for the multiplication only', () async {
+      // Act
+      await save(_session(id: 's1', correctCount: 15, domainId: 'numbers'));
       // Assert
       expect(await readRecords(), isEmpty);
     });

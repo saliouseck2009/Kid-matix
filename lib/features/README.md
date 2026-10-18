@@ -16,6 +16,7 @@ the lot that delivers it; nothing is scaffolded ahead of time.
 | `setting`        | F10, F18 | Sounds, vibrations and the daily reminder    |
 | `shop`           | F21      | Coins, avatars and color themes to unlock    |
 | `speech`         | F23      | Reads texts aloud with the phone's voice     |
+| `numbers`        | F24      | The numbers up to 100 learning domain        |
 
 Layout of a feature:
 

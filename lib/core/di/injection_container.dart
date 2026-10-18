@@ -28,6 +28,7 @@ import 'package:kid_matix/features/learning_path/injection.dart';
 import 'package:kid_matix/features/mascot/injection.dart';
 import 'package:kid_matix/features/mastery/injection.dart';
 import 'package:kid_matix/features/multiplication/injection.dart';
+import 'package:kid_matix/features/numbers/injection.dart';
 import 'package:kid_matix/features/profile/injection.dart';
 import 'package:kid_matix/features/quiz/injection.dart';
 import 'package:kid_matix/features/reward/injection.dart';
@@ -52,6 +53,7 @@ Future<void> configureDependencies() async {
   _registerQuizEngine();
   registerProfileFeature(sl);
   registerMultiplicationFeature(sl);
+  registerNumbersFeature(sl);
   registerMasteryFeature(sl);
   registerLearningPathFeature(sl);
   registerRewardFeature(sl);

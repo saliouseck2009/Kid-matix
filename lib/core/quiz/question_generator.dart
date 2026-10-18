@@ -8,8 +8,11 @@ import 'package:kid_matix/core/services/random_source.dart';
 ///
 /// One question per item, in the given order, except that the same item
 /// never comes twice in a row: a repeated item is moved after the next
-/// different one. Each question gets a type drawn among the allowed ones,
-/// so the same [RandomSource] seed always gives the same questions.
+/// different one. Each question gets a type drawn among the allowed ones
+/// that fit its item ([LearningDomain.questionTypeIdsOf]); an item that
+/// none of them fits, such as a comparison in a quiz of numbers to pick,
+/// is asked with its own types. The same [RandomSource] seed always gives
+/// the same questions.
 final class QuestionGenerator {
   /// Creates the generator.
   const QuestionGenerator();
@@ -86,11 +89,26 @@ final class QuestionGenerator {
     List<String> allowedTypeIds,
     RandomSource random,
   ) {
+    final List<String> fitTypeIds = _fitTypeIds(domain, item, allowedTypeIds);
     return domain.buildQuestion(
       item: item,
-      questionTypeId: allowedTypeIds[random.nextInt(allowedTypeIds.length)],
+      questionTypeId: fitTypeIds[random.nextInt(fitTypeIds.length)],
       random: random,
     );
+  }
+
+  /// The types of [allowedTypeIds] fit for [item], in their order; the
+  /// item's own types when none is.
+  List<String> _fitTypeIds(
+    LearningDomain domain,
+    LearningItem item,
+    List<String> allowedTypeIds,
+  ) {
+    final List<String> itemTypeIds = domain.questionTypeIdsOf(item);
+    final List<String> fitTypeIds = allowedTypeIds
+        .where(itemTypeIds.contains)
+        .toList();
+    return fitTypeIds.isEmpty ? itemTypeIds : fitTypeIds;
   }
 
   /// Keeps the order of [values] but never puts the same key twice in a

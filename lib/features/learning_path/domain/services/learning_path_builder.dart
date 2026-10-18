@@ -1,6 +1,7 @@
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/review_key.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_definition.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_entity.dart';
@@ -24,12 +25,6 @@ final class LearningPathBuilder {
 
   /// Stage that opens the next table.
   static const StageKind gateStage = StageKind.writing;
-
-  /// Prefix of the review keys, `review:1` to `review:4`.
-  static const String reviewKeyPrefix = 'review';
-
-  /// Key of the [number]th review.
-  static String reviewKeyOf(int number) => '$reviewKeyPrefix:$number';
 
   /// Builds the path of [units], in path order, from [progress]; the units
   /// of [placedUnitKeys] were opened by the placement test.
@@ -76,7 +71,9 @@ final class LearningPathBuilder {
         ),
       );
       if ((index + 1) % groupSize == 0) {
-        nodes.add(_reviewOf(units, index, isEverythingUnlocked, starsOf));
+        nodes.add(
+          _reviewOf(domainId, units, index, isEverythingUnlocked, starsOf),
+        );
       }
     }
     return LearningPathEntity(domainId: domainId, nodes: nodes);
@@ -124,13 +121,14 @@ final class LearningPathBuilder {
   }
 
   ReviewPathNode _reviewOf(
+    String domainId,
     List<LearningUnit> units,
     int lastIndex,
     bool isEverythingUnlocked,
     int Function(String, StageKind) starsOf,
   ) {
     final int number = (lastIndex + 1) ~/ groupSize;
-    final String key = reviewKeyOf(number);
+    final String key = ReviewKey(domainId: domainId, number: number).toKey();
     return ReviewPathNode(
       unitKey: key,
       number: number,

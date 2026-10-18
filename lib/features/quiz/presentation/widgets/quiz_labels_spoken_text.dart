@@ -23,6 +23,8 @@ final class QuizLabelsSpokenText implements QuizSpokenText {
 
   @override
   String ofQuestion(Question question) {
+    final String? drawn = labels.speakQuestion(question);
+    if (drawn != null) return drawn;
     final String operation = question.prompt.toSpokenText(labels.l10n);
     return switch (question.questionTypeId) {
       QuestionTypeIds.findOperation =>

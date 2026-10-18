@@ -4,6 +4,7 @@ import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/review_key.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_definition.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
@@ -61,18 +62,16 @@ final class StageQuizSpecs {
     ];
   }
 
-  /// The tables of [source]: its own, or every table up to a review.
+  /// The tables of [source]: its own, or every table of its domain up to
+  /// a review.
   List<LearningUnit>? _unitsOf(LearningDomain domain, StageSource source) {
     if (source.stage != StageKind.review) {
       final LearningUnit? unit = domain.findUnit(source.unitKey);
       return unit == null ? null : <LearningUnit>[unit];
     }
-    final List<String> parts = source.unitKey.split(':');
-    final int? number =
-        parts.length == 2 && parts.first == LearningPathBuilder.reviewKeyPrefix
-        ? int.tryParse(parts.last)
-        : null;
-    final int tableCount = (number ?? 0) * LearningPathBuilder.groupSize;
+    final ReviewKey? review = ReviewKey.tryParse(source.unitKey);
+    if (review == null || review.domainId != domain.id) return null;
+    final int tableCount = review.number * LearningPathBuilder.groupSize;
     if (tableCount <= 0 || tableCount > domain.path.length) return null;
     return domain.path.take(tableCount).toList();
   }

@@ -35,7 +35,10 @@ final class StageDefinition {
   static const List<StageDefinition> tableStages = <StageDefinition>[
     StageDefinition(
       kind: StageKind.discovery,
-      questionTypeIds: <String>[QuestionTypeIds.multipleChoice],
+      questionTypeIds: <String>[
+        QuestionTypeIds.multipleChoice,
+        ..._numberTypes,
+      ],
       selection: QuizSelection.inOrder,
     ),
     StageDefinition(
@@ -43,6 +46,7 @@ final class StageDefinition {
       questionTypeIds: <String>[
         QuestionTypeIds.multipleChoice,
         QuestionTypeIds.trueFalse,
+        ..._numberTypes,
       ],
       selection: QuizSelection.shuffled,
     ),
@@ -51,6 +55,7 @@ final class StageDefinition {
       questionTypeIds: <String>[
         QuestionTypeIds.typedAnswer,
         QuestionTypeIds.missingNumber,
+        QuestionTypeIds.compare,
       ],
       selection: QuizSelection.shuffled,
     ),
@@ -71,7 +76,7 @@ final class StageDefinition {
   /// The review stage after every group of 3 tables.
   static const StageDefinition review = StageDefinition(
     kind: StageKind.review,
-    questionTypeIds: _versionOneTypes,
+    questionTypeIds: <String>[..._versionOneTypes, ..._numberTypes],
     selection: QuizSelection.mastery,
     questionCount: reviewQuestionCount,
   );
@@ -84,11 +89,28 @@ final class StageDefinition {
     QuestionTypeIds.trueFalse,
   ];
 
-  /// Every format, for the speed stage and the boss fight (lot F15).
+  /// The formats of the numbers (lot F24) other than the keypad: three
+  /// to pick a number, and the comparison, the only format of its unit,
+  /// so every stage of that unit asks it.
+  ///
+  /// A stage lists every format it may ask, whatever the domain: each
+  /// item is asked with the formats of the list that fit it (see
+  /// `LearningDomain.questionTypeIdsOf`), so a multiplication fact still
+  /// gets exactly the formats of versions 1.0 and 1.1.
+  static const List<String> _numberTypes = <String>[
+    QuestionTypeIds.countObjects,
+    QuestionTypeIds.tensAndOnes,
+    QuestionTypeIds.numberLine,
+    QuestionTypeIds.compare,
+  ];
+
+  /// Every format, for the speed stage and the boss fight (lots F15 and
+  /// F24).
   static const List<String> _timedTypes = <String>[
     ..._versionOneTypes,
     QuestionTypeIds.findOperation,
     QuestionTypeIds.matchPairs,
+    ..._numberTypes,
   ];
 
   /// Which stage it is.

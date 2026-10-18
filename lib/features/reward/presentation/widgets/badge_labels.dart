@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
@@ -54,7 +55,7 @@ final class BadgeLabels {
         LearningDomainIds.multiplication => l10n.rewardBadgeTamerMultiplication(
           unit.number,
         ),
-        _ => '',
+        _ => l10n.rewardBadgeTamerUnit(l10n.unitName(domain.id, unit.number)),
       };
     }
     return '';

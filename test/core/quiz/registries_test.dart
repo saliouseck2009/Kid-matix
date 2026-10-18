@@ -28,6 +28,9 @@ final class _FakeDomain implements LearningDomain {
   List<String> get questionTypeIds => const <String>[];
 
   @override
+  List<String> questionTypeIdsOf(LearningItem item) => questionTypeIds;
+
+  @override
   LearningItem? findItem(String key) => null;
 
   @override

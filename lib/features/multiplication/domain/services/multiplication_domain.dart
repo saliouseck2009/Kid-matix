@@ -105,6 +105,9 @@ final class MultiplicationDomain implements LearningDomain {
   ];
 
   @override
+  List<String> questionTypeIdsOf(LearningItem item) => questionTypeIds;
+
+  @override
   MultiplicationFact? findItem(String key) => _factsByKey[key];
 
   @override

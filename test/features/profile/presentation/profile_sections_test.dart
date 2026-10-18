@@ -77,6 +77,7 @@ void main() {
               repository: inputProgress,
             ).buildMonstersCard(
               profileId: 'p1',
+              domainId: 'multiplication',
               onOpenLittle: () => opened.add('little'),
             ),
       ),
