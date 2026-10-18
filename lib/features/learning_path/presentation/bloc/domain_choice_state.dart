@@ -21,6 +21,16 @@ final class DomainChoiceLoaded extends DomainChoiceState {
 
   /// Domains and the one chosen.
   final DomainChoiceEntity choice;
+
+  /// Equal to another state of the same [choice], so reading it again
+  /// after a save rebuilds neither the map nor the Profile.
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DomainChoiceLoaded && other.choice == choice;
+
+  @override
+  int get hashCode => choice.hashCode;
 }
 
 /// The domains could not be read.

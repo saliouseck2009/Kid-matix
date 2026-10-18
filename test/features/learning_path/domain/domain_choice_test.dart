@@ -212,6 +212,23 @@ void main() {
       expect(await storage.readString(key: 'path_domain.p1'), 'numbers');
       await cubit.close();
     });
+    test('emits a choice once, even read again after its save', () async {
+      // Arrange
+      final DomainChoiceCubit cubit = buildCubit();
+      await cubit.load();
+      final List<DomainChoiceState> actualStates = <DomainChoiceState>[];
+      final StreamSubscription<DomainChoiceState> subscription = cubit.stream
+          .listen(actualStates.add);
+      // Act
+      await cubit.select('numbers');
+      await Future<void>.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
+      // Assert
+      expect(actualStates, hasLength(1));
+      expect(selectedOf(cubit), 'numbers');
+      await subscription.cancel();
+      await cubit.close();
+    });
     test('ignores a domain the app does not have', () async {
       // Arrange
       final DomainChoiceCubit cubit = buildCubit();
