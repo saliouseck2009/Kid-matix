@@ -361,8 +361,8 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     final QuizReadAloud? reading = _readAloud;
     final Question question = asking.turn.question;
     final String? text = isInstruction
-        ? reading?.text.ofInstruction(question)
-        : reading?.text.ofQuestion(question);
+        ? reading?.speakInstruction(question)
+        : reading?.speakQuestion(question);
     if (reading == null || text == null) {
       // Nothing to say: a question asked as "being read" starts its time.
       if (asking.isReading) emit(asking.copyWith(isReading: false));

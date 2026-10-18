@@ -1,5 +1,5 @@
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
-import 'package:kid_matix/features/quiz/presentation/bloc/quiz_spoken_text.dart';
 
 /// What `QuizBloc` needs to read the questions of a quiz aloud.
 ///
@@ -9,7 +9,8 @@ final class QuizReadAloud {
   const QuizReadAloud({
     required this.useCases,
     required this.languageCode,
-    required this.text,
+    required this.speakQuestion,
+    required this.speakInstruction,
   });
 
   /// The use cases that speak and stop.
@@ -18,6 +19,11 @@ final class QuizReadAloud {
   /// Language of the voice, such as `fr`.
   final String languageCode;
 
-  /// The sentences to say.
-  final QuizSpokenText text;
+  /// The sentence of a question; the words come from the localized texts,
+  /// which only the presentation layer reads (`QuizLabels.speakQuestion`).
+  final String Function(Question question) speakQuestion;
+
+  /// What the player has to do ("Touche la bonne réponse"), or `null` when
+  /// the question shows no instruction (`QuizLabels.describeHint`).
+  final String? Function(Question question) speakInstruction;
 }

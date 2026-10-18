@@ -7,11 +7,13 @@ import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/boss_arena.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
 
 import '../../../helpers/fake_speech_service.dart';
@@ -99,6 +101,8 @@ void main() {
     String questionTypeId = QuestionTypeIds.multipleChoice,
     bool isBossFight = false,
     bool readsByItself = false,
+    String domainId = MultiplicationDomain.domainId,
+    List<String> itemKeys = const <String>['mul:4x6', 'mul:5x8'],
   }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -107,9 +111,9 @@ void main() {
       QuizPage(
         request: QuizRequest(
           profileId: 'profile-1',
-          domainId: MultiplicationDomain.domainId,
+          domainId: domainId,
           mode: isBossFight ? QuizMode.path : QuizMode.freeTraining,
-          itemKeys: const <String>['mul:4x6', 'mul:5x8'],
+          itemKeys: itemKeys,
           questionTypeIds: <String>[questionTypeId],
           baseTimeLimit: QuizTimeLimits.freeTraining,
           isBossFight: isBossFight,
@@ -285,6 +289,157 @@ void main() {
         anyOf('4 times 6 equals what', '6 times 4 equals what'),
       );
       expect(speech.languages.single, 'en');
+    });
+  });
+
+  group('The listen button of the formats of the numbers', () {
+    for (final (
+          String name,
+          String itemKey,
+          String typeId,
+          String sentence,
+          String hint,
+        )
+        in <(String, String, String, String, String)>[
+          (
+            'count the objects',
+            'num:count:7',
+            QuestionTypeIds.countObjects,
+            'Combien de mangues\u00a0?',
+            'Touche la bonne réponse',
+          ),
+          (
+            'tens and ones',
+            'num:place:34',
+            QuestionTypeIds.tensAndOnes,
+            '3 paquets de dix et 4 bâtonnets\u00a0: quel nombre\u00a0?',
+            '',
+          ),
+          (
+            'compare',
+            'num:compare:34-43',
+            QuestionTypeIds.compare,
+            '34 est-il plus petit, égal ou plus grand que '
+                '43\u00a0?',
+            'Touche le bon signe',
+          ),
+          (
+            'number line',
+            'num:order:8:2',
+            QuestionTypeIds.numberLine,
+            'Droite des nombres\u00a0: 2, 4, 6, nombre caché, 10. '
+                'Quel nombre manque\u00a0?',
+            'Touche la bonne réponse',
+          ),
+        ]) {
+      testWidgets('reads the $name question with its sentence', (
+        WidgetTester tester,
+      ) async {
+        // Arrange
+        await pumpQuiz(
+          tester,
+          domainId: NumbersDomain.domainId,
+          itemKeys: <String>[itemKey],
+          questionTypeId: typeId,
+        );
+        // Act
+        await tester.tap(find.byTooltip('Écouter').first);
+        await tester.pump();
+        // Assert: the voice and the screen reader say the same sentence.
+        expect(speech.spoken, <String>[sentence]);
+        expect(find.bySemanticsLabel(sentence), findsOneWidget);
+        if (hint.isNotEmpty) {
+          expect(find.text(hint), findsOneWidget);
+          await tester.tap(find.byTooltip('Écouter').last);
+          await tester.pump();
+          expect(speech.spoken.last, hint);
+        }
+      });
+    }
+    testWidgets('has no instruction button on the keypad format', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpQuiz(
+        tester,
+        domainId: NumbersDomain.domainId,
+        itemKeys: const <String>['num:place:34'],
+        questionTypeId: QuestionTypeIds.typedAnswer,
+      );
+      // Assert
+      expect(find.byType(ListenButton), findsOneWidget);
+    });
+    testWidgets('reads a numbers question by itself when the setting is on', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpQuiz(
+        tester,
+        domainId: NumbersDomain.domainId,
+        itemKeys: const <String>['num:compare:34-43'],
+        questionTypeId: QuestionTypeIds.compare,
+        readsByItself: true,
+      );
+      // Assert
+      expect(speech.spoken, <String>[
+        '34 est-il plus petit, égal ou plus grand que 43\u00a0?',
+      ]);
+      expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
+    });
+    testWidgets('reads a drawn question by itself when the setting is on', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpQuiz(
+        tester,
+        domainId: NumbersDomain.domainId,
+        itemKeys: const <String>['num:count:7'],
+        questionTypeId: QuestionTypeIds.countObjects,
+        readsByItself: true,
+      );
+      // Assert
+      expect(speech.spoken, <String>['Combien de mangues\u00a0?']);
+    });
+    testWidgets('gives the boss fight of a numbers unit its listen button', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(
+        tester,
+        domainId: NumbersDomain.domainId,
+        itemKeys: const <String>['num:tens:30'],
+        questionTypeId: QuestionTypeIds.tensAndOnes,
+        isBossFight: true,
+      );
+      expect(find.byType(BossArena), findsOneWidget);
+      // Act
+      await tester.tap(find.byTooltip('Écouter').first);
+      await tester.pump();
+      // Assert
+      expect(speech.spoken, <String>[
+        '3 paquets de dix et aucun bâtonnet\u00a0: quel nombre\u00a0?',
+      ]);
+    });
+    testWidgets('gives the boss fight of a number line its listen button', (
+      WidgetTester tester,
+    ) async {
+      // Arrange: the prompt of a number line is empty.
+      await pumpQuiz(
+        tester,
+        domainId: NumbersDomain.domainId,
+        itemKeys: const <String>['num:after:39'],
+        questionTypeId: QuestionTypeIds.typedAnswer,
+        isBossFight: true,
+      );
+      // Act
+      await tester.tap(find.byTooltip('Écouter').first);
+      await tester.pump();
+      // Assert
+      expect(speech.spoken.single, startsWith('Droite des nombres'));
+      expect(
+        find.bySemanticsLabel(RegExp('^Droite des nombres')),
+        findsOneWidget,
+      );
     });
   });
 

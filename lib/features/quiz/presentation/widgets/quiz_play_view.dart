@@ -135,7 +135,10 @@ class QuizPlayView extends StatelessWidget {
                 monsterFamily: labels.monsterFamilyOf(data.run.domainId),
                 prompt: data.question.prompt,
                 picture: data.question.picture,
-                spokenText: labels.speakQuestion(data.question),
+                spokenText: labels.speakQuestion(
+                  data.question,
+                  data.run.domainId,
+                ),
                 blowCount: data.run.answers.length,
                 blow: data.feedback?.bossBlow,
                 outcome: data.run.bossOutcome,
@@ -155,13 +158,15 @@ class QuizPlayView extends StatelessWidget {
                   data.question,
                   data.run.domainId,
                 ),
-                resultSemanticLabel: labels.speakFindOperation(
+                asksOperation:
+                    data.question.questionTypeId ==
+                    QuestionTypeIds.findOperation,
+                prompt: data.question.prompt,
+                picture: data.question.picture,
+                spokenText: labels.speakQuestion(
                   data.question,
                   data.run.domainId,
                 ),
-                prompt: data.question.prompt,
-                picture: data.question.picture,
-                spokenText: labels.speakQuestion(data.question),
                 blankText: data.typedDigits,
                 blankColor: _blankColor(context, data),
                 mascotMood: _moodOf(data),

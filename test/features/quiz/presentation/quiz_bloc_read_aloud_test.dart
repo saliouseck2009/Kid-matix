@@ -18,7 +18,6 @@ import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud.dart';
-import 'package:kid_matix/features/quiz/presentation/bloc/quiz_spoken_text.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
@@ -35,19 +34,14 @@ final class _FakeTicker implements Ticker {
   Stream<int> tick({required Duration interval}) => controller.stream;
 }
 
-/// [QuizSpokenText] that says the key of the item, so a test sees which
-/// question was read.
-final class _KeyedSpokenText implements QuizSpokenText {
-  const _KeyedSpokenText();
+/// The sentence the quiz says for [question]: the key of its item, so a
+/// test sees which question was read.
+String _sayQuestion(Question question) => 'question ${question.itemKey}';
 
-  @override
-  String ofQuestion(Question question) => 'question ${question.itemKey}';
-
-  @override
-  String? ofInstruction(Question question) {
-    if (question.questionTypeId == QuestionTypeIds.typedAnswer) return null;
-    return 'instruction ${question.itemKey}';
-  }
+/// The instruction of [question]; none for a written answer.
+String? _sayInstruction(Question question) {
+  if (question.questionTypeId == QuestionTypeIds.typedAnswer) return null;
+  return 'instruction ${question.itemKey}';
 }
 
 final class _MockSettings extends Mock implements PlayerSettingsService {}
@@ -137,7 +131,8 @@ void main() {
                 readsByItself: readsByItself,
               ),
               languageCode: 'fr',
-              text: const _KeyedSpokenText(),
+              speakQuestion: _sayQuestion,
+              speakInstruction: _sayInstruction,
             )
           : null,
     );

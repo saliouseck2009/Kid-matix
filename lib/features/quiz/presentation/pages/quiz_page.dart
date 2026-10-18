@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
@@ -19,7 +20,6 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quit_quiz_dialog.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
-import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels_spoken_text.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_play_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_session_error_message.dart';
 
@@ -109,13 +109,13 @@ class QuizPage extends StatelessWidget {
   QuizReadAloud? _readAloudOf(BuildContext context) {
     final QuizReadAloudUseCases? cases = readAloud;
     if (cases == null) return null;
+    final QuizLabels labels = QuizLabels(domains: domains, l10n: context.l10n);
     return QuizReadAloud(
       useCases: cases,
       languageCode: context.l10n.localeName,
-      text: QuizLabelsSpokenText(
-        labels: QuizLabels(domains: domains, l10n: context.l10n),
-        domainId: request.domainId,
-      ),
+      speakQuestion: (Question question) =>
+          labels.speakQuestion(question, request.domainId),
+      speakInstruction: labels.describeHint,
     );
   }
 }
