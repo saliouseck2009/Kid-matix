@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
@@ -60,7 +61,21 @@ void main() {
       // Assert
       expect(ReviewKey.tryParse('num:count10'), isNull);
       expect(ReviewKey.tryParse('review:x'), isNull);
+      expect(ReviewKey.tryParse('review:0'), isNull);
       expect(ReviewKey.tryParse('review:a:b:1'), isNull);
+      expect(ReviewKey.tryParse('review:multiplication:2'), isNull);
+      expect(ReviewKey.tryParse('review:3:2'), isNull);
+      expect(ReviewKey.tryParse('review::2'), isNull);
+    });
+    test('accepts the id of every domain of the app', () {
+      // Assert
+      for (final LearningDomain domain in domains.domains) {
+        expect(ReviewKey.isValidDomainId(domain.id), isTrue);
+        final String key = ReviewKey(domainId: domain.id, number: 1).toKey();
+        expect(ReviewKey.tryParse(key)?.domainId, domain.id);
+      }
+      expect(ReviewKey.isValidDomainId('add:sub'), isFalse);
+      expect(ReviewKey.isValidDomainId('12'), isFalse);
     });
   });
 

@@ -8,8 +8,18 @@ import 'package:meta/meta.dart';
 /// so a review key always tells its domain.
 @immutable
 final class ReviewKey {
-  /// Creates the key of the [number]th review of [domainId].
-  const ReviewKey({required this.domainId, required this.number});
+  /// Creates the key of the [number]th review of [domainId], a domain id
+  /// without `:` that is not a number, so the key reads back one way.
+  const ReviewKey({required this.domainId, required this.number})
+    : assert(number > 0, 'reviews count from 1');
+
+  /// Whether [domainId] can name a review: not empty, without the
+  /// separator, and not a number, which a key would read as the review.
+  static bool isValidDomainId(String domainId) {
+    return domainId.isNotEmpty &&
+        !domainId.contains(_separator) &&
+        int.tryParse(domainId) == null;
+  }
 
   /// First part of every review key.
   static const String prefix = 'review';
@@ -27,19 +37,30 @@ final class ReviewKey {
     final List<String> parts = key.split(_separator);
     if (parts.first != prefix) return null;
     final int? number = int.tryParse(parts.last);
-    if (number == null) return null;
+    if (number == null || number <= 0) return null;
     return switch (parts.length) {
       2 => ReviewKey(
         domainId: LearningDomainIds.multiplication,
         number: number,
       ),
-      3 => ReviewKey(domainId: parts[1], number: number),
+      3 when _namesAnotherDomain(parts[1]) => ReviewKey(
+        domainId: parts[1],
+        number: number,
+      ),
       _ => null,
     };
   }
 
+  /// Whether [domainId], read from a key of three parts, is a domain after
+  /// the multiplication: `review:multiplication:2` is never written.
+  static bool _namesAnotherDomain(String domainId) {
+    return isValidDomainId(domainId) &&
+        domainId != LearningDomainIds.multiplication;
+  }
+
   /// The key, such as `review:2` or `review:numbers:2`.
   String toKey() {
+    assert(isValidDomainId(domainId), 'domain id $domainId cannot be keyed');
     if (domainId == LearningDomainIds.multiplication) {
       return '$prefix$_separator$number';
     }
