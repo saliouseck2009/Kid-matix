@@ -33,7 +33,8 @@ middle of one). Last update: 2026-10-18.
 | F23 · Read aloud | **Done** (closed 2026-10-18, wave 1) |
 | F24 · Numbers up to 100 | **Done** (closed 2026-10-18, wave 1) |
 | F28 · Math words | F28-01 **done** (#102) and the guide part of F28-02; the owner fills the Wolof and records; the rest in wave 2 |
-| F25 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
+| F25, F26, rest of F28 · Wave 2 | **Next**: questions answered (decisions of 2026-10-18), plan in `docs/parallel-plan.md` |
+| F27, F29 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
