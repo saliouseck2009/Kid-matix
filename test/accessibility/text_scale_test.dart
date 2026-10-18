@@ -109,6 +109,8 @@ void main() {
         ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
         ('a quiz against the clock', AppRoutes.playOf('timeAttack:mul:1')),
         ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
+        ...numbersScreens,
+        ('a numbers boss fight', AppRoutes.playOf('path:num:count10:boss')),
       ]) {
         testWidgets('cuts no text on $name in $language', (
           WidgetTester tester,
@@ -140,7 +142,7 @@ void main() {
         await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
         await expectLater(tester, meetsGuideline(textContrastGuideline));
         handle.dispose();
-      });
+      }, timeout: _guidelineTimeout);
     }
   });
 
@@ -162,7 +164,7 @@ void main() {
           );
           await expectLater(tester, meetsGuideline(textContrastGuideline));
           handle.dispose();
-        });
+        }, timeout: _guidelineTimeout);
       }
     }
   });
@@ -183,4 +185,18 @@ final List<(String, String)> _guidelineScreens = <(String, String)>[
   ('the whole table', AppRoutes.tableViewOf('mul:1')),
   ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
   ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
+  ...numbersScreens,
 ];
+
+/// Screens of the numbers domain: a unit, a drawing to read, the signs of
+/// a comparison.
+final List<(String, String)> numbersScreens = <(String, String)>[
+  ('a unit of the numbers', AppRoutes.tableDetailOf('num:count10')),
+  ('a numbers quiz', AppRoutes.playOf('path:num:tensones:discovery')),
+  ('a comparison quiz', AppRoutes.playOf('path:num:compare:writing')),
+];
+
+/// Longest a guideline test may take: the contrast check takes a picture
+/// of the screen, which once hung on a loaded machine; failing beats
+/// waiting forever.
+const Timeout _guidelineTimeout = Timeout(Duration(minutes: 2));

@@ -67,7 +67,9 @@ class BossArena extends StatelessWidget {
   Widget build(BuildContext context) {
     final String? bubble = _bubbleText(context);
     return Column(
-      spacing: AppSizes.space12,
+      // A drawing takes a third row: tighter gaps keep room for the
+      // answer box on a small phone with large text.
+      spacing: picture == null ? AppSizes.space12 : AppSizes.space4,
       children: <Widget>[
         Expanded(
           child: Stack(
