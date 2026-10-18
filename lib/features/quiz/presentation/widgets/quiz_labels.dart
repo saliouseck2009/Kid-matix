@@ -8,7 +8,9 @@ import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
+import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_labels.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -104,18 +106,18 @@ final class QuizLabels {
       LearningDomainIds.multiplication => l10n.quizBossTitleMultiplication(
         number,
       ),
-      _ => '',
+      _ => l10n.quizBossTitleUnit(l10n.unitName(domainId, number)),
     };
   }
 
-  /// Name of [unit], such as "Table de 5".
+  /// Family of the monsters of the boss fights of [domainId].
+  int monsterFamilyOf(String domainId) {
+    return MonsterIllustration.familyOf(domainId);
+  }
+
+  /// Name of [unit], such as "Table de 5" or "Comparer".
   String describeUnit(LearningUnit unit, String domainId) {
-    return switch (domainId) {
-      LearningDomainIds.multiplication => l10n.quizMultiplicationUnit(
-        unit.number,
-      ),
-      _ => '',
-    };
+    return l10n.unitName(domainId, unit.number);
   }
 
   /// The unit shared by every item of [itemKeys], or `null` when they

@@ -1,4 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/quiz/learning_item.dart';
+import 'package:kid_matix/core/quiz/learning_unit.dart';
+import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
@@ -57,11 +60,12 @@ QuizSessionEntity _session(
   String? sourceKey = 'path:mul:1:discovery',
   DateTime? startedAt,
   BossOutcome? bossOutcome,
+  String domainId = 'multiplication',
 }) {
   return QuizSessionEntity(
     id: id,
     profileId: 'p1',
-    domainId: 'multiplication',
+    domainId: domainId,
     mode: QuizMode.path,
     status: status,
     startedAt: startedAt ?? _start,
@@ -255,6 +259,30 @@ void main() {
         repository: rewards,
       )(params: 'p1')).requireData;
       expect(actualBadges.single.badgeKey, BadgeKey.allFacts);
+    });
+    test('keeps Les 120 for the multiplication tables', () async {
+      // Arrange
+      mastery.masteredItems.addAll(<String>{
+        for (final LearningUnit unit in NumbersDomain().units)
+          for (final LearningItem item in unit.items) item.key,
+      });
+      // Act
+      await save(
+        _session(
+          's1',
+          sourceKey: 'path:num:count10:discovery',
+          domainId: 'numbers',
+        ),
+      );
+      // Assert
+      final List<String> actualBadges =
+          (await GetBadgesUseCase(
+                repository: rewards,
+              )(params: 'p1')).requireData
+              .map((BadgeUnlockEntity badge) => badge.badgeKey)
+              .toList();
+      expect(actualBadges, isNot(contains(BadgeKey.allFacts)));
+      expect(actualBadges, contains(BadgeKey.firstStep));
     });
   });
 

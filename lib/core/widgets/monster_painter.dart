@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 
-/// Draws one of the 12 monsters, provisional variants of the one-eyed
-/// boss of the design: the body color, the horns and the eyes change with
-/// [number]. Final illustrations replace this painter without touching
-/// the callers.
+/// Draws one of the monsters, provisional variants of the one-eyed boss
+/// of the design: the body color, the horns and the eyes change with
+/// [number], one monster per unit; each learning domain has its own
+/// [family], the multiplication with horns, the numbers with antennae and
+/// spots. Final illustrations replace this painter without touching the
+/// callers.
 class MonsterPainter extends CustomPainter {
-  /// Creates the painter of the monster [number], from 1.
-  MonsterPainter({required this.number});
+  /// Creates the painter of the monster [number], from 1, of [family].
+  MonsterPainter({required this.number, this.family = hornedFamily});
+
+  /// Family of the multiplication tables: horns.
+  static const int hornedFamily = 0;
+
+  /// Family of the other domains, such as the numbers: antennae and
+  /// spots.
+  static const int antennaFamily = 1;
 
   /// Width of the drawing in design units; its height is [_height].
   static const double _width = 200;
@@ -30,6 +40,11 @@ class MonsterPainter extends CustomPainter {
   /// Number of the monster, from 1; one per table.
   final int number;
 
+  /// Family of the monster, one per learning domain.
+  final int family;
+
+  bool get _hasAntennae => family == antennaFamily;
+
   Color get _body => _bodies[(number - 1) % _bodies.length];
 
   bool get _hasTwoEyes => number > _bodies.length;
@@ -40,7 +55,11 @@ class MonsterPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.save();
     canvas.scale(size.width / _width, size.height / _height);
-    _paintHorns(canvas);
+    if (_hasAntennae) {
+      _paintAntennae(canvas);
+    } else {
+      _paintHorns(canvas);
+    }
     _paintArms(canvas);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -49,6 +68,7 @@ class MonsterPainter extends CustomPainter {
       ),
       Paint()..color = _body,
     );
+    if (_hasAntennae) _paintSpots(canvas);
     _paintEyes(canvas);
     _paintMouth(canvas);
     canvas.restore();
@@ -77,6 +97,26 @@ class MonsterPainter extends CustomPainter {
     }
     canvas.drawCircle(const Offset(52, 30), 16, paint);
     canvas.drawCircle(const Offset(148, 30), 16, paint);
+  }
+
+  void _paintAntennae(Canvas canvas) {
+    final Paint stem = Paint()
+      ..color = _horn
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 6
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(const Offset(70, 36), const Offset(54, 10), stem);
+    canvas.drawLine(const Offset(130, 36), const Offset(146, 10), stem);
+    final Paint ball = Paint()..color = _horn;
+    canvas.drawCircle(const Offset(54, 10), 9, ball);
+    canvas.drawCircle(const Offset(146, 10), 9, ball);
+  }
+
+  void _paintSpots(Canvas canvas) {
+    final Paint spot = Paint()..color = _white.withValues(alpha: 0.35);
+    canvas.drawCircle(const Offset(46, 116), 7, spot);
+    canvas.drawCircle(const Offset(154, 116), 7, spot);
+    canvas.drawCircle(const Offset(156, 72), 5, spot);
   }
 
   void _paintArms(Canvas canvas) {
@@ -146,21 +186,32 @@ class MonsterPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(MonsterPainter oldDelegate) {
-    return oldDelegate.number != number;
+    return oldDelegate.number != number || oldDelegate.family != family;
   }
 }
 
-/// The monster [number], [width] wide; decorative.
+/// The monster [number] of [family], [width] wide; decorative.
 class MonsterIllustration extends StatelessWidget {
   /// Creates the illustration.
   const MonsterIllustration({
     required this.number,
     required this.width,
+    this.family = MonsterPainter.hornedFamily,
     super.key,
   });
 
+  /// Family of the monsters of the units of [domainId].
+  static int familyOf(String domainId) {
+    return domainId == LearningDomainIds.multiplication
+        ? MonsterPainter.hornedFamily
+        : MonsterPainter.antennaFamily;
+  }
+
   /// Number of the monster, from 1; one per table.
   final int number;
+
+  /// Family of the monster, one per learning domain.
+  final int family;
 
   /// Width of the drawing.
   final double width;
@@ -170,7 +221,7 @@ class MonsterIllustration extends StatelessWidget {
     return ExcludeSemantics(
       child: CustomPaint(
         size: Size(width, width / MonsterPainter.aspectRatio),
-        painter: MonsterPainter(number: number),
+        painter: MonsterPainter(number: number, family: family),
       ),
     );
   }

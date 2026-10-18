@@ -23,6 +23,7 @@ extension PromptReading on List<PromptToken> {
         OperatorToken(operator: MathOperator.add) => '+',
         OperatorToken(operator: MathOperator.lessThan) => '<',
         OperatorToken(operator: MathOperator.greaterThan) => '>',
+        OperatorToken(operator: MathOperator.equalTo) => '=',
         EqualsToken() => '=',
         BlankToken() => blankText ?? '?',
       };
@@ -40,6 +41,7 @@ extension PromptReading on List<PromptToken> {
           l10n.quizSpokenLessThan,
         OperatorToken(operator: MathOperator.greaterThan) =>
           l10n.quizSpokenGreaterThan,
+        OperatorToken(operator: MathOperator.equalTo) => l10n.quizSpokenEqualTo,
         EqualsToken() => l10n.quizSpokenEquals,
         BlankToken() => l10n.quizSpokenBlank,
       };

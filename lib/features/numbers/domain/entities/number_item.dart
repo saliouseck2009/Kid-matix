@@ -367,7 +367,7 @@ final class CompareItem extends NumberItem {
       NumberToken(first),
       switch (comparison) {
         Comparison.less => const OperatorToken(MathOperator.lessThan),
-        Comparison.equal => const EqualsToken(),
+        Comparison.equal => const OperatorToken(MathOperator.equalTo),
         Comparison.greater => const OperatorToken(MathOperator.greaterThan),
       },
       NumberToken(second),

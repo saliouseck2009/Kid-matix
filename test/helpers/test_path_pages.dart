@@ -46,9 +46,10 @@ final class InMemoryStageProgressRepository implements StageProgressRepository {
     required String profileId,
     required String domainId,
   }) async {
-    return DataSuccess<List<StageProgressEntity>>(
-      List<StageProgressEntity>.of(progress),
-    );
+    return DataSuccess<List<StageProgressEntity>>(<StageProgressEntity>[
+      for (final StageProgressEntity stage in progress)
+        if (stage.domainId == domainId) stage,
+    ]);
   }
 
   @override
@@ -113,7 +114,7 @@ PlacementUseCases buildTestPlacementUseCases({
   );
 }
 
-/// Learning path pages over the real multiplication domain.
+/// Learning path pages over the real domains of the app.
 LearningPathPages buildTestPathPages({
   StageProgressRepository? repository,
   PlayerSettingsService settings = const FixedPlayerSettings(),

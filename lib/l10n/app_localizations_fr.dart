@@ -34,6 +34,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonBack => 'Retour';
 
   @override
+  String commonDomainName(String domain) {
+    String _temp0 = intl.Intl.selectLogic(
+      domain,
+      {
+        'multiplication': 'Multiplication',
+        'numbers': 'Nombres',
+        'other': 'Maths',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get errorStorage =>
       'Oups, on n\'a pas pu lire ou enregistrer tes données.';
 
@@ -251,6 +264,16 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String pathMonsterHiddenSpoken(int number) {
     return 'Monstre de la table de $number, pas encore vaincu';
+  }
+
+  @override
+  String pathUnitMonsterDefeatedSpoken(String unit) {
+    return 'Monstre de « $unit », vaincu';
+  }
+
+  @override
+  String pathUnitMonsterHiddenSpoken(String unit) {
+    return 'Monstre de « $unit », pas encore vaincu';
   }
 
   @override
@@ -709,6 +732,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizSpokenGreaterThan => 'est plus grand que';
 
   @override
+  String get quizSpokenEqualTo => 'est égal à';
+
+  @override
   String get quizSpokenHiddenNumber => 'nombre caché';
 
   @override
@@ -853,6 +879,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pathStageReviewHint => '15 questions sur les tables déjà vues';
 
   @override
+  String get pathUnitStageDiscoveryHint => 'La leçon et son astuce';
+
+  @override
+  String get pathUnitStageBossHint => 'Bats le monstre de la leçon';
+
+  @override
+  String get pathUnitStageReviewHint => '15 questions sur les leçons déjà vues';
+
+  @override
   String pathStageNumbered(int number, String name) {
     return '$number · $name';
   }
@@ -867,6 +902,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pathShowTable => 'Voir la table';
+
+  @override
+  String get pathShowUnit => 'Revoir la leçon';
 
   @override
   String pathTableStars(int stars, int total) {
@@ -1052,6 +1090,40 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String numbersUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Compter jusqu\'à 10',
+        '2': 'Compter jusqu\'à 20',
+        '3': 'Compter jusqu\'à 100',
+        '4': 'Dizaines et unités',
+        '5': 'Comparer',
+        '6': 'Ranger',
+        'other': 'Avant et après',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String numbersUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.',
+        '2': 'Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…',
+        '3': 'Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…',
+        '4': 'Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.',
+        '5': 'Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.',
+        '6': 'Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.',
+        'other': 'Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsStageTitle => 'Étape terminée !';
 
   @override
@@ -1069,6 +1141,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String quizBossTitleMultiplication(int number) {
     return 'Boss de la table de $number';
+  }
+
+  @override
+  String quizBossTitleUnit(String unit) {
+    return 'Boss · $unit';
   }
 
   @override
@@ -1169,6 +1246,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String rewardBadgeTamerMultiplication(int number) {
     return 'Dompteur de la table de $number';
+  }
+
+  @override
+  String rewardBadgeTamerUnit(String unit) {
+    return 'Dompteur de « $unit »';
   }
 
   @override

@@ -166,7 +166,7 @@ class _TableDetailView extends StatelessWidget {
             ),
           ),
           DepthButton(
-            label: context.l10n.pathShowTable,
+            label: labels.showUnit,
             variant: DepthButtonVariant.secondary,
             onPressed: onShowTable,
           ),

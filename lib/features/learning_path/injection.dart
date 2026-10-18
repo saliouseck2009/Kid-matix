@@ -53,11 +53,7 @@ void registerLearningPathFeature(GetIt sl) {
   );
   sl.registerLazySingleton<LearningPathService>(LearningPathServiceImpl.new);
   sl.registerLazySingleton<CrownService>(
-    () => CrownServiceImpl(
-      getPath: sl(),
-      watchChanges: sl(),
-      domainId: LearningDomainIds.multiplication,
-    ),
+    () => CrownServiceImpl(getPath: sl(), watchChanges: sl(), domains: sl()),
   );
   sl.registerLazySingleton<OpenUnitsService>(
     () => OpenUnitsServiceImpl(

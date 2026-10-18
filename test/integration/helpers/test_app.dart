@@ -83,14 +83,15 @@ abstract final class TestApp {
     return profile;
   }
 
-  /// The learning path of [profileId] in the multiplication domain.
-  static Future<LearningPathEntity> pathOf(String profileId) async {
+  /// The learning path of [profileId] in [domainId], the multiplication
+  /// by default.
+  static Future<LearningPathEntity> pathOf(
+    String profileId, {
+    String domainId = LearningDomainIds.multiplication,
+  }) async {
     final DataState<LearningPathEntity> path =
         await sl<GetLearningPathUseCase>()(
-          params: LearningPathParams(
-            profileId: profileId,
-            domainId: LearningDomainIds.multiplication,
-          ),
+          params: LearningPathParams(profileId: profileId, domainId: domainId),
         );
     return (path as DataSuccess<LearningPathEntity>).data;
   }

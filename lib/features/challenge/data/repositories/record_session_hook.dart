@@ -8,7 +8,8 @@ import 'package:kid_matix/features/challenge/domain/services/record_policy.dart'
 import 'package:sqflite/sqflite.dart';
 
 /// Writes a new record in the transaction that saves a completed quiz of
-/// a mode with records, when its right answers beat the player's best.
+/// a mode with records, when its right answers beat the player's best;
+/// only the multiplication keeps records ([RecordPolicy.recordDomainId]).
 final class RecordSessionHook implements SessionSavedHook {
   /// Creates the hook.
   const RecordSessionHook({
@@ -24,6 +25,7 @@ final class RecordSessionHook implements SessionSavedHook {
   @override
   Future<SessionWrite> prepare({required SavedQuizSession session}) async {
     if (!session.isCompleted ||
+        session.domainId != RecordPolicy.recordDomainId ||
         !RecordPolicy.recordModes.contains(session.mode)) {
       return (Transaction transaction) async => const <String>[];
     }

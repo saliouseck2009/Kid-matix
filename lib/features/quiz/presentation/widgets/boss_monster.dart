@@ -15,6 +15,7 @@ class BossMonster extends StatelessWidget {
   /// Creates the monster [number].
   const BossMonster({
     required this.number,
+    this.family = MonsterPainter.hornedFamily,
     this.blow,
     this.outcome,
     super.key,
@@ -27,6 +28,9 @@ class BossMonster extends StatelessWidget {
   /// Number of the monster.
   final int number;
 
+  /// Family of the monster, one per learning domain.
+  final int family;
+
   /// What the last answer did, or `null`.
   final BossBlow? blow;
 
@@ -35,7 +39,11 @@ class BossMonster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget monster = MonsterIllustration(number: number, width: _width);
+    final Widget monster = MonsterIllustration(
+      number: number,
+      family: family,
+      width: _width,
+    );
     final bool isStill =
         MediaQuery.disableAnimationsOf(context) ||
         (blow == null && outcome == null);
