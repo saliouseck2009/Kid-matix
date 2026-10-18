@@ -90,59 +90,82 @@ void main() {
       // Act
       await useCase(params: inputParams);
       // Assert
+      verify(
+        () => mockRepository.createProfile(profile: any(named: 'profile')),
+      ).called(1);
       verifyNever(
         () => mockRepository.updateProfileSettings(
           settings: any(named: 'settings'),
         ),
       );
     });
-    test('turns the reading aloud on when the offer is accepted', () async {
-      // Arrange
-      const CreateProfileParams inputReadAloud = CreateProfileParams(
-        nickname: 'Awa',
-        avatar: ProfileAvatar.avatar3,
-        color: ProfileColor.green,
-        isReadAloudEnabled: true,
-      );
-      when(
-        () => mockRepository.updateProfileSettings(
-          settings: any(named: 'settings'),
-        ),
-      ).thenAnswer((_) async => const DataSuccess<void>(null));
-      // Act
-      final DataState<ProfileEntity> actualState = await useCase(
-        params: inputReadAloud,
-      );
-      // Assert
-      expect(actualState, isA<DataSuccess<ProfileEntity>>());
-      verify(
-        () => mockRepository.updateProfileSettings(
-          settings: const ProfileSettingsEntity.defaults(
-            profileId: 'new-id',
-          ).copyWith(isReadAloudEnabled: true),
-        ),
-      ).called(1);
-    });
-    test('still creates the player when the offer cannot be saved', () async {
-      // Arrange
-      const CreateProfileParams inputReadAloud = CreateProfileParams(
-        nickname: 'Awa',
-        avatar: ProfileAvatar.avatar3,
-        color: ProfileColor.green,
-        isReadAloudEnabled: true,
-      );
-      when(
-        () => mockRepository.updateProfileSettings(
-          settings: any(named: 'settings'),
-        ),
-      ).thenAnswer((_) async => const DataFailed<void>(CacheException()));
-      // Act
-      final DataState<ProfileEntity> actualState = await useCase(
-        params: inputReadAloud,
-      );
-      // Assert
-      expect(actualState, isA<DataSuccess<ProfileEntity>>());
-    });
+    test(
+      'creates the player with the reading on when the offer is accepted',
+      () async {
+        // Arrange
+        const CreateProfileParams inputReadAloud = CreateProfileParams(
+          nickname: 'Awa',
+          avatar: ProfileAvatar.avatar3,
+          color: ProfileColor.green,
+          isReadAloudEnabled: true,
+        );
+        when(
+          () => mockRepository.createProfile(
+            profile: any(named: 'profile'),
+            settings: any(named: 'settings'),
+          ),
+        ).thenAnswer(
+          (Invocation invocation) async => DataSuccess<ProfileEntity>(
+            invocation.namedArguments[#profile] as ProfileEntity,
+          ),
+        );
+        // Act
+        final DataState<ProfileEntity> actualState = await useCase(
+          params: inputReadAloud,
+        );
+        // Assert: one write for the player and their settings.
+        expect(actualState, isA<DataSuccess<ProfileEntity>>());
+        verify(
+          () => mockRepository.createProfile(
+            profile: any(named: 'profile'),
+            settings: const ProfileSettingsEntity.defaults(
+              profileId: 'new-id',
+            ).copyWith(isReadAloudEnabled: true),
+          ),
+        ).called(1);
+        verifyNever(
+          () => mockRepository.updateProfileSettings(
+            settings: any(named: 'settings'),
+          ),
+        );
+      },
+    );
+    test(
+      'fails with the player when the accepted offer cannot be stored',
+      () async {
+        // Arrange
+        const CreateProfileParams inputReadAloud = CreateProfileParams(
+          nickname: 'Awa',
+          avatar: ProfileAvatar.avatar3,
+          color: ProfileColor.green,
+          isReadAloudEnabled: true,
+        );
+        when(
+          () => mockRepository.createProfile(
+            profile: any(named: 'profile'),
+            settings: any(named: 'settings'),
+          ),
+        ).thenAnswer(
+          (_) async => const DataFailed<ProfileEntity>(CacheException()),
+        );
+        // Act
+        final DataState<ProfileEntity> actualState = await useCase(
+          params: inputReadAloud,
+        );
+        // Assert: nothing is half created.
+        expect(actualState, isA<DataFailed<ProfileEntity>>());
+      },
+    );
     test(
       'does not turn the reading on for a player that was refused',
       () async {
@@ -154,10 +177,14 @@ void main() {
           isReadAloudEnabled: true,
         );
         // Act
-        await useCase(params: inputReadAloud);
+        final DataState<ProfileEntity> actualState = await useCase(
+          params: inputReadAloud,
+        );
         // Assert
+        expect(actualState, isA<DataFailed<ProfileEntity>>());
         verifyNever(
-          () => mockRepository.updateProfileSettings(
+          () => mockRepository.createProfile(
+            profile: any(named: 'profile'),
             settings: any(named: 'settings'),
           ),
         );

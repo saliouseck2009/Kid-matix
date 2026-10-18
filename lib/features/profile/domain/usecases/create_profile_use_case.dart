@@ -46,22 +46,15 @@ class CreateProfileUseCase
       color: params.color,
       createdAt: _clock.now(),
     );
-    final DataState<ProfileEntity> created = await _repository.createProfile(
-      profile: profile,
-    );
-    if (created is DataSuccess<ProfileEntity> && params.isReadAloudEnabled) {
-      await _turnReadAloudOn(profile.id);
+    // The offer accepted in the creation form goes in with the player, in
+    // the same write; a player who declined keeps the default settings.
+    if (!params.isReadAloudEnabled) {
+      return _repository.createProfile(profile: profile);
     }
-    return created;
-  }
-
-  /// Applies the offer accepted in the creation form. The player exists
-  /// by now, so a failure here is not worth failing the creation: the
-  /// setting stays off and the settings screen can turn it on.
-  Future<void> _turnReadAloudOn(String profileId) {
-    return _repository.updateProfileSettings(
+    return _repository.createProfile(
+      profile: profile,
       settings: ProfileSettingsEntity.defaults(
-        profileId: profileId,
+        profileId: profile.id,
       ).copyWith(isReadAloudEnabled: true),
     );
   }

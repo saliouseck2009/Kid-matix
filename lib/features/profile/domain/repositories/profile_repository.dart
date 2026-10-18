@@ -42,11 +42,14 @@ abstract interface class ProfileRepository {
     String? excludedProfileId,
   });
 
-  /// Stores the new [profile] with default settings.
+  /// Stores the new [profile] with default settings, or with [settings]
+  /// when the player chose some while being created; the profile and its
+  /// settings are written together.
   ///
   /// Fails with a `ConflictException` when the nickname is already taken.
   Future<DataState<ProfileEntity>> createProfile({
     required ProfileEntity profile,
+    ProfileSettingsEntity? settings,
   });
 
   /// Saves the changes made to an existing [profile].
