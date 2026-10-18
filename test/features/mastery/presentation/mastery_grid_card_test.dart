@@ -39,7 +39,7 @@ void main() {
           body: SingleChildScrollView(
             child: buildTestMasteryPages(
               repository: repository,
-            ).buildGridCard(profileId: 'p1', gridDomainId: domainId),
+            ).buildGridCard(profileId: 'p1', domainId: domainId),
           ),
         ),
       );
@@ -79,7 +79,7 @@ void main() {
     ) async {
       // Arrange
       repository = InMemoryItemProgressRepository(<ItemProgressEntity>[
-        _progress('num:compare:34-43', 1, domainId: 'numbers'),
+        _progress('num:compare:34:43', 1, domainId: 'numbers'),
       ]);
       // Act
       await pumpGrid(tester, domainId: 'numbers');

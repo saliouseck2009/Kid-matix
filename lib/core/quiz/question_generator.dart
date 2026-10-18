@@ -10,18 +10,18 @@ import 'package:kid_matix/core/services/random_source.dart';
 /// never comes twice in a row: a repeated item is moved after the next
 /// different one. Each question gets a type drawn among the allowed ones
 /// that fit its item ([LearningDomain.questionTypeIdsOf]); an item that
-/// none of them fits, such as a comparison in a quiz of numbers to pick,
-/// is asked with its own types. The same [RandomSource] seed always gives
-/// the same questions.
+/// none of them fits is a programming error: a stage lists every format
+/// its items may need, and the mastery engine plans each item with its
+/// own. The same [RandomSource] seed always gives the same questions.
 final class QuestionGenerator {
   /// Creates the generator.
   const QuestionGenerator();
 
   /// Builds one question of [domain] per item of [items], with a type
-  /// drawn among [questionTypeIds] that the domain supports.
+  /// drawn among [questionTypeIds] that fits the item.
   ///
   /// Throws an [ArgumentError] when the domain supports none of
-  /// [questionTypeIds].
+  /// [questionTypeIds] or an item fits none of them.
   List<Question> generate({
     required LearningDomain domain,
     required List<LearningItem> items,
@@ -97,8 +97,9 @@ final class QuestionGenerator {
     );
   }
 
-  /// The types of [allowedTypeIds] fit for [item], in their order; the
-  /// item's own types when none is.
+  /// The types of [allowedTypeIds] fit for [item], in their order.
+  ///
+  /// Throws an [ArgumentError] when none is.
   List<String> _fitTypeIds(
     LearningDomain domain,
     LearningItem item,
@@ -108,7 +109,14 @@ final class QuestionGenerator {
     final List<String> fitTypeIds = allowedTypeIds
         .where(itemTypeIds.contains)
         .toList();
-    return fitTypeIds.isEmpty ? itemTypeIds : fitTypeIds;
+    if (fitTypeIds.isEmpty) {
+      throw ArgumentError.value(
+        allowedTypeIds,
+        'questionTypeIds',
+        'None fits ${item.key}',
+      );
+    }
+    return fitTypeIds;
   }
 
   /// Keeps the order of [values] but never puts the same key twice in a

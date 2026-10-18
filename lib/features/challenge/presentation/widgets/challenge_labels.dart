@@ -1,4 +1,4 @@
-import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
+import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_code.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_code_error.dart';
@@ -17,22 +17,10 @@ final class ChallengeLabels {
   final AppLocalizations l10n;
 
   /// Short mark of [unit] on its button, such as "×5".
-  String unitMark(LearningUnit unit) {
-    return switch (domainId) {
-      LearningDomainIds.multiplication => '×${unit.number}',
-      _ => '${unit.number}',
-    };
-  }
+  String unitMark(LearningUnit unit) => l10n.unitMark(domainId, unit.key);
 
   /// Name of [unit], such as "Table de 5".
-  String unitName(LearningUnit unit) {
-    return switch (domainId) {
-      LearningDomainIds.multiplication => l10n.quizMultiplicationUnit(
-        unit.number,
-      ),
-      _ => '',
-    };
-  }
+  String unitName(LearningUnit unit) => l10n.unitName(domainId, unit.key);
 
   /// Name of the game of [code]: "Entraînement libre" or
   /// "Contre-la-montre".

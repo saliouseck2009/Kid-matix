@@ -57,11 +57,7 @@ class MasteryGridCard extends StatelessWidget {
   /// "Mes tables" for the multiplication, "Mes nombres" for the numbers,
   /// the name of another domain.
   String _titleOf(BuildContext context) {
-    return switch (domain.id) {
-      LearningDomainIds.multiplication => context.l10n.masteryGridTitle,
-      LearningDomainIds.numbers => context.l10n.masteryGridTitleNumbers,
-      _ => context.l10n.domainName(domain.id),
-    };
+    return context.l10n.gridTitle(domain.id);
   }
 }
 
@@ -85,7 +81,7 @@ class _Grid extends StatelessWidget {
     if (number == null) return '';
     return isMultiplication
         ? '$number'
-        : context.l10n.unitMark(domain.id, number);
+        : context.l10n.unitMark(domain.id, unitKey);
   }
 
   @override

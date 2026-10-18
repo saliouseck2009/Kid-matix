@@ -66,7 +66,7 @@ class PlacementQuestionView extends StatelessWidget {
           ),
           Expanded(
             child: slots.questionCard(
-              label: labels.unitName(state.question.unitNumber),
+              label: labels.unitName(state.question.question.unitKey),
               prompt: state.question.question.prompt,
               typedDigits: typed.isEmpty ? null : typed,
             ),

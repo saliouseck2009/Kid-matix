@@ -5,7 +5,7 @@ import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 void main() {
   const QuestionGenerator generator = QuestionGenerator();
@@ -13,8 +13,8 @@ void main() {
   final List<LearningItem> mixedItems = <LearningItem>[
     domain.findItem('num:count:7')!,
     domain.findItem('num:place:34')!,
-    domain.findItem('num:compare:34-43')!,
-    domain.findItem('num:order:8:2')!,
+    domain.findItem('num:compare:34:43')!,
+    domain.findItem('num:line:8:2')!,
     domain.findItem('num:after:39')!,
   ];
 
@@ -40,22 +40,17 @@ void main() {
       QuestionTypeIds.numberLine,
     ]);
   });
-  test('asks an item none of the allowed types fits with its own', () {
-    // Act
-    final List<Question> actual = generator.generate(
-      domain: domain,
-      items: mixedItems,
-      questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
-      random: DartRandomSource(seed: 3),
-    );
+  test('refuses an item that none of the allowed types fits', () {
     // Assert
-    expect(actual.map((Question question) => question.questionTypeId), <String>[
-      QuestionTypeIds.typedAnswer,
-      QuestionTypeIds.typedAnswer,
-      QuestionTypeIds.compare,
-      QuestionTypeIds.typedAnswer,
-      QuestionTypeIds.typedAnswer,
-    ]);
+    expect(
+      () => generator.generate(
+        domain: domain,
+        items: mixedItems,
+        questionTypeIds: const <String>[QuestionTypeIds.typedAnswer],
+        random: DartRandomSource(seed: 3),
+      ),
+      throwsArgumentError,
+    );
   });
   test('asks a planned item with the planned types that fit it', () {
     // Act
@@ -63,10 +58,10 @@ void main() {
       domain: domain,
       plans: <QuizItemPlan>[
         QuizItemPlan(
-          itemKey: 'num:compare:9-6',
+          itemKey: 'num:compare:9:6',
           questionTypeIds: const <String>[
-            QuestionTypeIds.countObjects,
             QuestionTypeIds.numberLine,
+            QuestionTypeIds.compare,
           ],
         ),
         QuizItemPlan(

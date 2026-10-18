@@ -13,9 +13,11 @@ import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/numbers/domain/entities/number_item.dart';
-import 'package:kid_matix/features/numbers/domain/services/number_distractor_generator.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/entities/numbers_unit.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_catalog.dart';
+import 'package:kid_matix/features/number/domain/services/number_distractor_generator.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 /// Every key of the numbers domain as released: a change here loses the
 /// progress of the children.
@@ -69,28 +71,28 @@ const Map<String, List<String>> _releasedKeys = <String, List<String>>{
     'num:place:98',
   ],
   'num:compare': <String>[
-    'num:compare:3-8',
-    'num:compare:9-6',
-    'num:compare:12-21',
-    'num:compare:15-15',
-    'num:compare:34-43',
-    'num:compare:58-49',
-    'num:compare:76-67',
-    'num:compare:80-80',
-    'num:compare:91-19',
-    'num:compare:99-100',
+    'num:compare:3:8',
+    'num:compare:9:6',
+    'num:compare:12:21',
+    'num:compare:15:15',
+    'num:compare:34:43',
+    'num:compare:58:49',
+    'num:compare:76:67',
+    'num:compare:80:80',
+    'num:compare:91:19',
+    'num:compare:99:100',
   ],
   'num:order': <String>[
-    'num:order:8:2',
-    'num:order:14:2',
-    'num:order:15:5',
-    'num:order:26:2',
-    'num:order:30:10',
-    'num:order:40:5',
-    'num:order:55:5',
-    'num:order:70:10',
-    'num:order:85:5',
-    'num:order:90:10',
+    'num:line:8:2',
+    'num:line:14:2',
+    'num:line:15:5',
+    'num:line:26:2',
+    'num:line:30:10',
+    'num:line:40:5',
+    'num:line:55:5',
+    'num:line:70:10',
+    'num:line:85:5',
+    'num:line:90:10',
   ],
   'num:beforeafter': <String>[
     'num:after:5',
@@ -164,6 +166,35 @@ void main() {
       expect(actualKeys.toSet(), hasLength(70));
       expect(actualKeys.every((String key) => key.startsWith('num:')), isTrue);
       expect(actualKeys.toSet().intersection(multiplicationKeys), isEmpty);
+    });
+    test('tells two units apart by their slug and names them by key', () {
+      // Arrange
+      final NumbersUnit inputCompare = NumbersCatalog.compare;
+      // Assert
+      expect(domain.findUnit('num:compare'), inputCompare);
+      expect(
+        NumbersUnit(slug: 'compare', number: 9, items: const <NumberItem>[]),
+        inputCompare,
+      );
+      expect(
+        <NumbersUnit>{...NumbersCatalog.units, NumbersCatalog.order},
+        hasLength(7),
+      );
+      expect('$inputCompare', 'num:compare');
+      expect('${inputCompare.numberItems.first}', 'num:compare:3:8');
+    });
+    test('tells two items apart by their key only', () {
+      // Assert
+      expect(
+        const NumberLineItem(missing: 8, step: 2, blankIndex: 3),
+        const NumberLineItem(missing: 8, step: 2, blankIndex: 1),
+      );
+      expect(
+        const TensOnesItem(30),
+        isNot(const TensOnesItem(30, isWholeTens: true)),
+      );
+      expect(const CompareItem(3, 8).hashCode, 'num:compare:3:8'.hashCode);
+      expect(const CompareItem(3, 8), isNot(const CompareItem(8, 3)));
     });
     test('finds an item and a unit from its key', () {
       // Assert
@@ -287,7 +318,7 @@ void main() {
     test('hide one number of a line in its drawing', () {
       // Act
       final Question actual = build(
-        domain.findItem('num:order:8:2')!,
+        domain.findItem('num:line:8:2')!,
         QuestionTypeIds.numberLine,
       );
       // Assert
@@ -323,15 +354,15 @@ void main() {
     test('compare two numbers with three signs', () {
       // Act
       final Question actualLess = build(
-        domain.findItem('num:compare:34-43')!,
+        domain.findItem('num:compare:34:43')!,
         QuestionTypeIds.compare,
       );
       final Question actualEqual = build(
-        domain.findItem('num:compare:15-15')!,
+        domain.findItem('num:compare:15:15')!,
         QuestionTypeIds.compare,
       );
       final Question actualGreater = build(
-        domain.findItem('num:compare:58-49')!,
+        domain.findItem('num:compare:58:49')!,
         QuestionTypeIds.compare,
       );
       // Assert
@@ -362,7 +393,7 @@ void main() {
       );
       expect(
         () => build(
-          domain.findItem('num:compare:3-8')!,
+          domain.findItem('num:compare:3:8')!,
           QuestionTypeIds.typedAnswer,
         ),
         throwsArgumentError,
@@ -413,24 +444,24 @@ void main() {
       );
       expect(
         domain
-            .describeItem(domain.findItem('num:compare:34-43')!)
+            .describeItem(domain.findItem('num:compare:34:43')!)
             .toDisplayText(),
         '34 < 43',
       );
       expect(
         domain
-            .describeItem(domain.findItem('num:compare:58-49')!)
+            .describeItem(domain.findItem('num:compare:58:49')!)
             .toDisplayText(),
         '58 > 49',
       );
       expect(
         domain
-            .describeItem(domain.findItem('num:compare:15-15')!)
+            .describeItem(domain.findItem('num:compare:15:15')!)
             .toDisplayText(),
         '15 = 15',
       );
       expect(
-        domain.describeItem(domain.findItem('num:order:8:2')!).toDisplayText(),
+        domain.describeItem(domain.findItem('num:line:8:2')!).toDisplayText(),
         '2 4 6 8 10',
       );
       expect(
@@ -451,10 +482,10 @@ void main() {
     test('help a comparison with a line, the greater on the right', () {
       // Act
       final ItemHelp actualGreater = domain.helpOf(
-        domain.findItem('num:compare:58-49')!,
+        domain.findItem('num:compare:58:49')!,
       );
       final ItemHelp actualEqual = domain.helpOf(
-        domain.findItem('num:compare:15-15')!,
+        domain.findItem('num:compare:15:15')!,
       );
       // Assert
       expect(
@@ -462,6 +493,33 @@ void main() {
         NumberLinePicture(values: const <int>[49, 58], highlightIndex: 1),
       );
       expect(actualEqual.picture, isNull);
+    });
+    test('help a count with the objects to count again', () {
+      // Act
+      final ItemHelp actual = domain.helpOf(domain.findItem('num:count:7')!);
+      // Assert
+      expect(actual.picture, const ObjectsPicture(count: 7));
+      expect(actual.itemIndex, 6);
+      expect(actual.unitFacts, hasLength(10));
+    });
+    test('help an ordered line with the missing number in place', () {
+      // Act
+      final ItemHelp actual = domain.helpOf(domain.findItem('num:line:55:5')!);
+      // Assert
+      expect(
+        actual.picture,
+        NumberLinePicture(
+          values: const <int>[50, 55, 60, 65, 70],
+          highlightIndex: 1,
+        ),
+      );
+      expect(actual.unitFacts[actual.itemIndex], const <PromptToken>[
+        NumberToken(50),
+        NumberToken(55),
+        NumberToken(60),
+        NumberToken(65),
+        NumberToken(70),
+      ]);
     });
     test('help a line with every number shown', () {
       // Act

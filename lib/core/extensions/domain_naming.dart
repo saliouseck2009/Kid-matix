@@ -1,56 +1,56 @@
+import 'package:kid_matix/core/extensions/domain_names/domain_names.dart';
+import 'package:kid_matix/core/extensions/domain_names/multiplication_names.dart';
+import 'package:kid_matix/core/extensions/domain_names/number_names.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Names of the learning domains and of their units, shared by every
-/// screen that shows a unit: the path, the quiz, the profile, the badges.
+/// screen that shows a unit: the path, the quiz, the Profile, the badges,
+/// the challenges.
 ///
-/// A new domain adds its name to `commonDomainName` and a case to each
-/// method here; nothing else changes on the screens.
+/// A new domain writes its [DomainNames] next to the others and adds one
+/// line to [_names]; no screen changes.
 extension DomainNaming on AppLocalizations {
-  /// Name of the domain [domainId], such as "Nombres".
-  String domainName(String domainId) => commonDomainName(domainId);
+  static const Map<String, DomainNames> _names = <String, DomainNames>{
+    LearningDomainIds.multiplication: MultiplicationNames(),
+    LearningDomainIds.numbers: NumberNames(),
+  };
 
-  /// Name of the unit [number] of [domainId], such as "Table de 5" or
+  /// The names of [domainId], or `null` when the domain has none.
+  static DomainNames? namesOf(String domainId) => _names[domainId];
+
+  /// Name of the domain [domainId], such as "Nombres"; empty when it has
+  /// no names.
+  String domainName(String domainId) {
+    return _names[domainId]?.domainName(this) ?? '';
+  }
+
+  /// Name of the unit [unitKey] of [domainId], such as "Table de 5" or
   /// "Compter jusqu'à 10".
-  String unitName(String domainId, int number) {
-    return switch (domainId) {
-      LearningDomainIds.multiplication => quizMultiplicationUnit(number),
-      LearningDomainIds.numbers => numbersUnitName('$number'),
-      _ => '',
-    };
+  String unitName(String domainId, String unitKey) {
+    return _names[domainId]?.unitName(this, _slugOf(unitKey)) ?? '';
   }
 
-  /// Short mark of the unit [number] of [domainId] on its badge, such as
+  /// Short mark of the unit [unitKey] of [domainId] on its badge, such as
   /// "×5" or "<>".
-  String unitMark(String domainId, int number) {
-    return switch (domainId) {
-      LearningDomainIds.multiplication => '×$number',
-      LearningDomainIds.numbers
-          when number >= 1 && number <= _numbersMarks.length =>
-        _numbersMarks[number - 1],
-      _ => '$number',
-    };
+  String unitMark(String domainId, String unitKey) {
+    return _names[domainId]?.unitMark(_slugOf(unitKey)) ?? '';
   }
 
-  /// Tip of the unit [number] of [domainId], shown at its Discovery
+  /// Tip of the unit [unitKey] of [domainId], shown at its Discovery
   /// stage.
-  String unitTip(String domainId, int number) {
-    return switch (domainId) {
-      LearningDomainIds.multiplication => pathMultiplicationTip('$number'),
-      LearningDomainIds.numbers => numbersUnitTip('$number'),
-      _ => '',
-    };
+  String unitTip(String domainId, String unitKey) {
+    return _names[domainId]?.unitTip(this, _slugOf(unitKey)) ?? '';
   }
 
-  /// Marks of the seven units of the numbers: digits and signs, the same
-  /// in every language.
-  static const List<String> _numbersMarks = <String>[
-    '10',
-    '20',
-    '100',
-    '34',
-    '<>',
-    '123',
-    '±1',
-  ];
+  /// Title of the mastery grid of [domainId] in the Profile, such as "Mes
+  /// tables".
+  String gridTitle(String domainId) {
+    return _names[domainId]?.gridTitle(this) ?? '';
+  }
+
+  /// The part of [unitKey] after its domain prefix: `5` for `mul:5`.
+  static String _slugOf(String unitKey) {
+    return unitKey.substring(unitKey.indexOf(':') + 1);
+  }
 }

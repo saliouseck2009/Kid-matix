@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
@@ -94,10 +95,7 @@ class MonstersCard extends StatelessWidget {
                     _Monster(
                       number: table.number,
                       family: MonsterIllustration.familyOf(domainId),
-                      label: labels.describeMonster(
-                        table.number,
-                        isDefeated: table.crown != TableCrown.none,
-                      ),
+                      label: labels.describeMonster(table),
                       width: width,
                       isDefeated: table.crown != TableCrown.none,
                     ),
@@ -163,7 +161,7 @@ class _Monster extends StatelessWidget {
   static const double _drawingShare = 0.8;
 
   final int number;
-  final int family;
+  final MonsterFamily family;
   final String label;
   final double width;
   final bool isDefeated;

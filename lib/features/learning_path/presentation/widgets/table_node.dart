@@ -46,7 +46,7 @@ class TableNode extends StatelessWidget {
               clipBehavior: Clip.none,
               children: <Widget>[
                 UnitBadge(
-                  mark: labels.unitMark(table.number),
+                  mark: labels.unitMark(table.unitKey),
                   size: isCurrent ? _currentSize : _size,
                   style: switch (table.status) {
                     TableStatus.current => UnitBadgeStyle.current,

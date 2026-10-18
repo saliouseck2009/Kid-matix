@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
@@ -206,7 +207,7 @@ class _ResultsView extends StatelessWidget {
             subtitle: unit == null
                 ? _describeMode(context)
                 : context.l10n.resultsSubtitle(
-                    labels.describeUnit(unit, domainId),
+                    context.l10n.unitName(domainId, unit.key),
                     _describeMode(context),
                   ),
           ),

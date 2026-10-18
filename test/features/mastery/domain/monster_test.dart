@@ -246,6 +246,7 @@ void main() {
       // Act
       final List<QuizItemPlan> actualPlans = const QuizItemPlanner()
           .planMonsterHunt(
+            domain: domain,
             items: inputItems,
             progressByKey: inputProgress,
             questionTypeNatures: const <String, AnswerNature>{

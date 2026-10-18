@@ -22,7 +22,7 @@ class PlacementResultView extends StatelessWidget {
   static const double _mascotSize = 140;
 
   /// Each unit of the test, with whether it was found.
-  final List<({int number, bool isKnown})> units;
+  final List<({int number, String unitKey, bool isKnown})> units;
 
   /// Texts of the path.
   final PathLabels labels;
@@ -93,7 +93,7 @@ class _TileGrid extends StatelessWidget {
   static const int _columns = 4;
   static const double _gap = 10;
 
-  final List<({int number, bool isKnown})> units;
+  final List<({int number, String unitKey, bool isKnown})> units;
   final PathLabels labels;
 
   @override
@@ -110,8 +110,8 @@ class _TileGrid extends StatelessWidget {
                   child: index < units.length
                       ? PlacementTableTile(
                           key: ValueKey<int>(units[index].number),
-                          mark: labels.unitMark(units[index].number),
-                          name: labels.unitName(units[index].number),
+                          mark: labels.unitMark(units[index].unitKey),
+                          name: labels.unitName(units[index].unitKey),
                           isKnown: units[index].isKnown,
                         )
                       : const SizedBox.shrink(),

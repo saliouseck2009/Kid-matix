@@ -45,7 +45,7 @@ class CurrentTableCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: AppSizes.space4,
         children: <Widget>[
-          Text(labels.unitName(table.number), style: textTheme.titleLarge),
+          Text(labels.unitName(table.unitKey), style: textTheme.titleLarge),
           if (next != null)
             Text(
               context.l10n.pathCurrentStage(

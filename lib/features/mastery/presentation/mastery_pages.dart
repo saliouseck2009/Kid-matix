@@ -30,7 +30,7 @@ final class MasteryPages {
 
   /// Domain of « Mes monstres », the little monsters: the hunt it starts
   /// is a challenge of the multiplication.
-  static const String domainId = LearningDomainIds.multiplication;
+  static const String littleMonstersDomainId = LearningDomainIds.multiplication;
 
   final GetMasteryGridUseCase _getGrid;
   final GetMonstersUseCase _getMonsters;
@@ -38,17 +38,17 @@ final class MasteryPages {
   final DomainRegistry _domains;
 
   /// "Mes tables" or "Mes nombres": the mastery grid of [profileId] in
-  /// [gridDomainId].
+  /// [domainId], the multiplication by default.
   Widget buildGridCard({
     required String profileId,
-    String gridDomainId = domainId,
+    String domainId = LearningDomainIds.multiplication,
   }) {
-    final LearningDomain? domain = _domains.find(gridDomainId);
+    final LearningDomain? domain = _domains.find(domainId);
     if (domain == null) return const SizedBox.shrink();
     return BlocProvider<MasteryGridCubit>(
-      key: ValueKey<String>('mastery-$profileId-$gridDomainId'),
+      key: ValueKey<String>('mastery-$profileId-$domainId'),
       create: (_) => MasteryGridCubit(
-        scope: MasteryScope(profileId: profileId, domainId: gridDomainId),
+        scope: MasteryScope(profileId: profileId, domainId: domainId),
         getGrid: _getGrid,
         watchChanges: _watchChanges,
       )..load(),
@@ -68,12 +68,15 @@ final class MasteryPages {
     required VoidCallback onBack,
     required VoidCallback onHunt,
   }) {
-    final LearningDomain? domain = _domains.find(domainId);
+    final LearningDomain? domain = _domains.find(littleMonstersDomainId);
     if (domain == null) return const SizedBox.shrink();
     return BlocProvider<MonstersCubit>(
       key: ValueKey<String>('monsters-$profileId'),
       create: (_) => MonstersCubit(
-        scope: MasteryScope(profileId: profileId, domainId: domainId),
+        scope: MasteryScope(
+          profileId: profileId,
+          domainId: littleMonstersDomainId,
+        ),
         getMonsters: _getMonsters,
         watchChanges: _watchChanges,
       )..load(),

@@ -1,6 +1,6 @@
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
-import 'package:kid_matix/features/numbers/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/entities/number_item.dart';
 import 'package:meta/meta.dart';
 
 /// One unit of the numbers up to 100, such as "Compter jusqu'à 10": a
@@ -17,7 +17,8 @@ final class NumbersUnit implements LearningUnit {
   /// Short stable name of the unit inside its key, such as `count10`.
   final String slug;
 
-  /// Position of the unit on the path, from 1; names its texts.
+  /// Position of the unit on the path, from 1; its texts are chosen by
+  /// [slug], never by this position.
   @override
   final int number;
 

@@ -42,7 +42,7 @@ class TableSummaryCard extends StatelessWidget {
         children: <Widget>[
           ExcludeSemantics(
             child: UnitBadge(
-              mark: labels.unitMark(table.number),
+              mark: labels.unitMark(table.unitKey),
               style: UnitBadgeStyle.current,
               size: _badgeSize,
             ),

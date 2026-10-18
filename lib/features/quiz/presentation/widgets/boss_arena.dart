@@ -4,7 +4,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
-import 'package:kid_matix/core/widgets/monster_painter.dart';
+import 'package:kid_matix/core/widgets/monster_family.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_monster.dart';
@@ -18,7 +18,7 @@ class BossArena extends StatelessWidget {
   const BossArena({
     required this.monsterNumber,
     required this.prompt,
-    this.monsterFamily = MonsterPainter.hornedFamily,
+    this.monsterFamily = MonsterFamily.horned,
     required this.blowCount,
     this.blow,
     this.outcome,
@@ -37,7 +37,7 @@ class BossArena extends StatelessWidget {
   final int monsterNumber;
 
   /// Family of the monster, one per learning domain.
-  final int monsterFamily;
+  final MonsterFamily monsterFamily;
 
   /// Operation asked.
   final List<PromptToken> prompt;
@@ -72,7 +72,9 @@ class BossArena extends StatelessWidget {
   Widget build(BuildContext context) {
     final String? bubble = _bubbleText(context);
     return Column(
-      spacing: AppSizes.space12,
+      // A drawing takes a third row: tighter gaps keep room for the
+      // answer box on a small phone with large text.
+      spacing: picture == null ? AppSizes.space12 : AppSizes.space4,
       children: <Widget>[
         Expanded(
           child: Stack(

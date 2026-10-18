@@ -8,6 +8,7 @@ import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
+import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_combo.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -96,10 +97,7 @@ class QuizPlayView extends StatelessWidget {
             )
           else
             BossHeader(
-              title: labels.describeBoss(
-                _monsterNumberOf(data),
-                data.run.domainId,
-              ),
+              title: labels.describeBoss(data.question, data.run.domainId),
               boss: boss,
               onQuit: onQuit,
             ),
@@ -132,7 +130,7 @@ class QuizPlayView extends StatelessWidget {
                 ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
-                monsterFamily: labels.monsterFamilyOf(data.run.domainId),
+                monsterFamily: MonsterIllustration.familyOf(data.run.domainId),
                 prompt: data.question.prompt,
                 picture: data.question.picture,
                 spokenText: labels.speakQuestion(

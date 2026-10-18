@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
@@ -13,9 +15,10 @@ import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_p
 import 'package:kid_matix/features/learning_path/domain/usecases/select_domain_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_domain_choice_use_case.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/in_memory_local_storage.dart';
@@ -33,6 +36,17 @@ final class _BrokenStorage implements LocalStorage {
   @override
   Future<void> writeString({required String key, required String value}) {
     throw Exception('broken');
+  }
+}
+
+/// Keeps the errors the Blocs report, as the crash reporter would.
+final class _RecordingObserver extends BlocObserver {
+  final List<Object> errors = <Object>[];
+
+  @override
+  void onError(BlocBase<Object?> bloc, Object error, StackTrace stackTrace) {
+    errors.add(error);
+    super.onError(bloc, error, stackTrace);
   }
 }
 
@@ -168,6 +182,11 @@ void main() {
   });
 
   group('DomainChoiceCubit', () {
+    String? selectedOf(DomainChoiceCubit cubit) {
+      final DomainChoiceState state = cubit.state;
+      return state is DomainChoiceLoaded ? state.choice.selectedId : null;
+    }
+
     DomainChoiceCubit buildCubit() {
       return DomainChoiceCubit(
         profileId: 'p1',
@@ -185,12 +204,29 @@ void main() {
       // Act
       await cubit.load();
       // Assert
-      expect(cubit.state?.selectedId, 'multiplication');
+      expect(selectedOf(cubit), 'multiplication');
       // Act
       await cubit.select('numbers');
       // Assert
-      expect(cubit.state?.selectedId, 'numbers');
+      expect(selectedOf(cubit), 'numbers');
       expect(await storage.readString(key: 'path_domain.p1'), 'numbers');
+      await cubit.close();
+    });
+    test('emits a choice once, even read again after its save', () async {
+      // Arrange
+      final DomainChoiceCubit cubit = buildCubit();
+      await cubit.load();
+      final List<DomainChoiceState> actualStates = <DomainChoiceState>[];
+      final StreamSubscription<DomainChoiceState> subscription = cubit.stream
+          .listen(actualStates.add);
+      // Act
+      await cubit.select('numbers');
+      await Future<void>.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
+      // Assert
+      expect(actualStates, hasLength(1));
+      expect(selectedOf(cubit), 'numbers');
+      await subscription.cancel();
       await cubit.close();
     });
     test('ignores a domain the app does not have', () async {
@@ -200,8 +236,60 @@ void main() {
       // Act
       await cubit.select('division');
       // Assert
-      expect(cubit.state?.selectedId, 'multiplication');
+      expect(selectedOf(cubit), 'multiplication');
       expect(await storage.readString(key: 'path_domain.p1'), isNull);
+      await cubit.close();
+    });
+    test('fails without a domain instead of reading forever', () async {
+      // Arrange
+      final DomainChoiceCubit cubit = DomainChoiceCubit(
+        profileId: 'p1',
+        useCases: DomainChoiceUseCases(
+          getChoice: GetDomainChoiceUseCase(
+            repository: repository,
+            domains: DomainRegistry(),
+          ),
+          selectDomain: selectDomain,
+          watchChoice: WatchDomainChoiceUseCase(repository: repository),
+        ),
+      );
+      // Act
+      await cubit.load();
+      // Assert
+      expect(cubit.state, isA<DomainChoiceFailure>());
+      expect(
+        (cubit.state as DomainChoiceFailure).errorCode,
+        AppErrorCode.validation,
+      );
+      await cubit.close();
+    });
+    test('reports a choice it cannot keep and still shows it', () async {
+      // Arrange
+      final _RecordingObserver observer = _RecordingObserver();
+      final BlocObserver previous = Bloc.observer;
+      Bloc.observer = observer;
+      addTearDown(() => Bloc.observer = previous);
+      final PathDomainRepositoryImpl brokenRepository =
+          PathDomainRepositoryImpl(
+            domains: PathDomainLocalDataSourceImpl(storage: _BrokenStorage()),
+          );
+      final DomainChoiceCubit cubit = DomainChoiceCubit(
+        profileId: 'p1',
+        useCases: DomainChoiceUseCases(
+          getChoice: GetDomainChoiceUseCase(
+            repository: brokenRepository,
+            domains: domains,
+          ),
+          selectDomain: SelectDomainUseCase(repository: brokenRepository),
+          watchChoice: WatchDomainChoiceUseCase(repository: brokenRepository),
+        ),
+      );
+      await cubit.load();
+      // Act
+      await cubit.select('numbers');
+      // Assert
+      expect(selectedOf(cubit), 'numbers');
+      expect(observer.errors.single, isA<CacheException>());
       await cubit.close();
     });
     test('follows a choice made on another screen', () async {
@@ -215,7 +303,7 @@ void main() {
       await Future<void>.delayed(Duration.zero);
       await Future<void>.delayed(Duration.zero);
       // Assert
-      expect(mapCubit.state?.selectedId, 'numbers');
+      expect(selectedOf(mapCubit), 'numbers');
       await mapCubit.close();
       await profileCubit.close();
     });

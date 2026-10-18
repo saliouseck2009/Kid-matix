@@ -34,17 +34,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonBack => 'Volver';
 
   @override
-  String commonDomainName(String domain) {
-    String _temp0 = intl.Intl.selectLogic(
-      domain,
-      {
-        'multiplication': 'Multiplicación',
-        'numbers': 'Números',
-        'other': 'Matemáticas',
-      },
-    );
-    return '$_temp0';
-  }
+  String get multiplicationDomainName => 'Multiplicación';
+
+  @override
+  String get numbersDomainName => 'Números';
 
   @override
   String get errorStorage => 'Uy, no pudimos leer o guardar tus datos.';
@@ -1114,13 +1107,14 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Contar hasta 10',
-        '2': 'Contar hasta 20',
-        '3': 'Contar hasta 100',
-        '4': 'Decenas y unidades',
-        '5': 'Comparar',
-        '6': 'Ordenar',
-        'other': 'Antes y después',
+        'count10': 'Contar hasta 10',
+        'count20': 'Contar hasta 20',
+        'count100': 'Contar hasta 100',
+        'tensones': 'Decenas y unidades',
+        'compare': 'Comparar',
+        'order': 'Ordenar',
+        'beforeafter': 'Antes y después',
+        'other': '',
       },
     );
     return '$_temp0';
@@ -1131,13 +1125,14 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Toca cada mango con el dedo mientras cuentas: uno, dos, tres… El último número dice cuántos hay.',
-        '2': 'Cuenta primero la fila de 10 y luego sigue: 11, 12, 13…',
-        '3': 'Un paquete son 10 palitos. Cuenta los paquetes de 10 en 10: 10, 20, 30…',
-        '4': 'La cifra de las decenas cuenta los paquetes, la de las unidades los palitos sueltos: 3 paquetes y 4 palitos son 34.',
-        '5': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
-        '6': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
-        'other': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+        'count10': 'Toca cada mango con el dedo mientras cuentas: uno, dos, tres… El último número dice cuántos hay.',
+        'count20': 'Cuenta primero la fila de 10 y luego sigue: 11, 12, 13…',
+        'count100': 'Un paquete son 10 palitos. Cuenta los paquetes de 10 en 10: 10, 20, 30…',
+        'tensones': 'La cifra de las decenas cuenta los paquetes, la de las unidades los palitos sueltos: 3 paquetes y 4 palitos son 34.',
+        'compare': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
+        'order': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
+        'beforeafter': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+        'other': '',
       },
     );
     return '$_temp0';

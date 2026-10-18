@@ -10,7 +10,6 @@ import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/extensions/domain_naming.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
-import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_labels.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -37,13 +36,29 @@ final class QuizLabels {
         _ => '',
       },
       QuestionTypeIds.compare => l10n.quizCompareLabel,
-      _ => switch (question.picture) {
+      _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
         NumberLinePicture() => l10n.quizNumberLineLabel,
         null => describeUnitOf(question, domainId),
       },
     };
+  }
+
+  /// The drawing [question] asks to read: that of a format made for it,
+  /// or of a written answer whose prompt is the blank alone; `null` when
+  /// the drawing only helps an operation, such as a line next to 7 + 8.
+  MathPicture? _askedDrawing(Question question) {
+    final bool isAboutDrawing = switch (question.questionTypeId) {
+      QuestionTypeIds.countObjects ||
+      QuestionTypeIds.tensAndOnes ||
+      QuestionTypeIds.numberLine => true,
+      QuestionTypeIds.typedAnswer => question.prompt.every(
+        (PromptToken token) => token is BlankToken,
+      ),
+      _ => false,
+    };
+    return isAboutDrawing ? question.picture : null;
   }
 
   /// The whole of [question] as one sentence: what the « Écouter » button
@@ -80,7 +95,7 @@ final class QuizLabels {
       if (numbers.length < 2) return null;
       return l10n.quizCompareSpoken(numbers.first.value, numbers.last.value);
     }
-    return switch (question.picture) {
+    return switch (_askedDrawing(question)) {
       ObjectsPicture() => l10n.quizCountLabel,
       TenBundlesPicture(:final int tens, :final int ones) =>
         l10n.quizBundlesSpoken(tens, ones),
@@ -119,13 +134,10 @@ final class QuizLabels {
     };
   }
 
-  /// Name of the unit of [question], such as "Table de 5"; empty when its
-  /// domain lacks it.
+  /// Name of the unit of [question], such as "Table de 5" or "Comparer";
+  /// empty when its domain lacks it.
   String describeUnitOf(Question question, String domainId) {
-    final LearningUnit? unit = domains
-        .find(domainId)
-        ?.findUnit(question.unitKey);
-    return unit == null ? '' : describeUnit(unit, domainId);
+    return l10n.unitName(domainId, question.unitKey);
   }
 
   /// Number of the unit of [question], such as 5, or `null` when its
@@ -134,24 +146,15 @@ final class QuizLabels {
     return domains.find(domainId)?.findUnit(question.unitKey)?.number;
   }
 
-  /// Title of the boss fight of the unit [number].
-  String describeBoss(int number, String domainId) {
+  /// Title of the boss fight of the unit of [question], such as "Boss de
+  /// la table de 5" or "Boss · Comparer".
+  String describeBoss(Question question, String domainId) {
     return switch (domainId) {
       LearningDomainIds.multiplication => l10n.quizBossTitleMultiplication(
-        number,
+        unitNumberOf(question, domainId) ?? 0,
       ),
-      _ => l10n.quizBossTitleUnit(l10n.unitName(domainId, number)),
+      _ => l10n.quizBossTitleUnit(l10n.unitName(domainId, question.unitKey)),
     };
-  }
-
-  /// Family of the monsters of the boss fights of [domainId].
-  int monsterFamilyOf(String domainId) {
-    return MonsterIllustration.familyOf(domainId);
-  }
-
-  /// Name of [unit], such as "Table de 5" or "Comparer".
-  String describeUnit(LearningUnit unit, String domainId) {
-    return l10n.unitName(domainId, unit.number);
   }
 
   /// The unit shared by every item of [itemKeys], or `null` when they

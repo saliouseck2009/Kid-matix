@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/domain_choice_entity.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/domain_switch.dart';
 
 /// Cards of the Profile that follow one domain, under the switch of the
@@ -19,9 +20,10 @@ class DomainSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DomainChoiceCubit, DomainChoiceEntity?>(
-      builder: (BuildContext context, DomainChoiceEntity? choice) {
-        if (choice == null) return const SizedBox.shrink();
+    return BlocBuilder<DomainChoiceCubit, DomainChoiceState>(
+      builder: (BuildContext context, DomainChoiceState state) {
+        if (state is! DomainChoiceLoaded) return const SizedBox.shrink();
+        final DomainChoiceEntity choice = state.choice;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: gap,

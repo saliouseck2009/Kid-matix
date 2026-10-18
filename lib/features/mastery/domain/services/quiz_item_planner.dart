@@ -14,7 +14,8 @@ import 'package:kid_matix/features/mastery/domain/services/review_item_selector.
 /// come back at the next quiz; the other questions are drawn with
 /// replacement, low boxes more often, and weighted by the domain. The
 /// order is then shuffled. Items in the first boxes are asked with
-/// answers to pick, the others with answers to write.
+/// answers to pick, the others with answers to write, always among the
+/// formats that fit the item (`LearningDomain.questionTypeIdsOf`).
 ///
 /// A review asks instead the items [ReviewItemSelector] chooses, each
 /// once, and a monster hunt those [MonsterHuntSelector] chooses, with the
@@ -73,7 +74,11 @@ final class QuizItemPlanner {
             itemKey: item.key,
             questionTypeIds: questionTypesFor(
               box: _boxOf(progressByKey, item),
-              questionTypeNatures: questionTypeNatures,
+              questionTypeNatures: _fitFor(
+                domain,
+                item,
+                questionTypeNatures,
+              ),
             ),
           ),
         )
@@ -85,6 +90,7 @@ final class QuizItemPlanner {
   /// order. Items never presented are left out, so the review is empty
   /// for a player who has seen none.
   List<QuizItemPlan> planReview({
+    required LearningDomain domain,
     required List<LearningItem> items,
     required Map<String, ItemProgressEntity> progressByKey,
     required Map<String, AnswerNature> questionTypeNatures,
@@ -99,13 +105,14 @@ final class QuizItemPlanner {
       now: now,
       count: count,
     );
-    return _planEach(random.shuffled(chosen), questionTypeNatures);
+    return _planEach(domain, random.shuffled(chosen), questionTypeNatures);
   }
 
   /// Plans a monster hunt of at most [count] questions among [items] at
   /// [now]: each monster twice, never twice in a row, completed with the
   /// items a review would pick. Items never presented are left out.
   List<QuizItemPlan> planMonsterHunt({
+    required LearningDomain domain,
     required List<LearningItem> items,
     required Map<String, ItemProgressEntity> progressByKey,
     required Map<String, AnswerNature> questionTypeNatures,
@@ -121,7 +128,7 @@ final class QuizItemPlanner {
       count: count,
       random: random,
     );
-    return _planEach(chosen, questionTypeNatures);
+    return _planEach(domain, chosen, questionTypeNatures);
   }
 
   /// Question types fit for an item of [box]: answers to pick up to
@@ -145,20 +152,36 @@ final class QuizItemPlanner {
   /// One question per item of [chosen], in order, with the formats of
   /// its box.
   List<QuizItemPlan> _planEach(
+    LearningDomain domain,
     List<ItemProgressEntity> chosen,
     Map<String, AnswerNature> questionTypeNatures,
   ) {
-    return chosen
-        .map(
-          (ItemProgressEntity item) => QuizItemPlan(
-            itemKey: item.itemKey,
-            questionTypeIds: questionTypesFor(
-              box: item.box.clamp(0, MasteryPolicy.lastBox),
-              questionTypeNatures: questionTypeNatures,
-            ),
-          ),
-        )
-        .toList();
+    return chosen.map((ItemProgressEntity progress) {
+      final LearningItem? item = domain.findItem(progress.itemKey);
+      return QuizItemPlan(
+        itemKey: progress.itemKey,
+        questionTypeIds: questionTypesFor(
+          box: progress.box.clamp(0, MasteryPolicy.lastBox),
+          questionTypeNatures: item == null
+              ? questionTypeNatures
+              : _fitFor(domain, item, questionTypeNatures),
+        ),
+      );
+    }).toList();
+  }
+
+  /// The types of [questionTypeNatures] fit for [item] in [domain].
+  Map<String, AnswerNature> _fitFor(
+    LearningDomain domain,
+    LearningItem item,
+    Map<String, AnswerNature> questionTypeNatures,
+  ) {
+    final List<String> itemTypeIds = domain.questionTypeIdsOf(item);
+    return <String, AnswerNature>{
+      for (final MapEntry<String, AnswerNature> type
+          in questionTypeNatures.entries)
+        if (itemTypeIds.contains(type.key)) type.key: type.value,
+    };
   }
 
   int _boxOf(Map<String, ItemProgressEntity> progressByKey, LearningItem item) {

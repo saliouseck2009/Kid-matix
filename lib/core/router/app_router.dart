@@ -207,12 +207,13 @@ GoRouter createAppRouter({
                 builder: (String domainId) => <Widget>[
                   masteryPages.buildGridCard(
                     profileId: profileId,
-                    gridDomainId: domainId,
+                    domainId: domainId,
                   ),
                   pathPages.buildMonstersCard(
                     profileId: profileId,
                     domainId: domainId,
-                    onOpenLittle: domainId == MasteryPages.domainId
+                    onOpenLittle:
+                        domainId == MasteryPages.littleMonstersDomainId
                         ? () => context.go(AppRoutes.profileMonsters)
                         : null,
                   ),

@@ -103,8 +103,12 @@ void main() {
     expect(actualFinished.knownUnitKeys, <String>{'mul:1', 'mul:2', 'mul:10'});
     expect(
       actualFinished.units
-          .where((({int number, bool isKnown}) unit) => unit.isKnown)
-          .map((({int number, bool isKnown}) unit) => unit.number),
+          .where(
+            (({int number, String unitKey, bool isKnown}) unit) => unit.isKnown,
+          )
+          .map(
+            (({int number, String unitKey, bool isKnown}) unit) => unit.number,
+          ),
       <int>[1, 2, 10],
     );
     expect(actualFinished.units, hasLength(12));

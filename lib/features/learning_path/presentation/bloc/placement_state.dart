@@ -106,12 +106,14 @@ final class PlacementFinished extends PlacementState {
   /// Units found, now open on the path.
   final Set<String> knownUnitKeys;
 
-  /// Numbers of the units of the test, each with whether it was found.
-  List<({int number, bool isKnown})> get units {
-    return <({int number, bool isKnown})>[
+  /// Numbers and keys of the units of the test, each with whether it
+  /// was found.
+  List<({int number, String unitKey, bool isKnown})> get units {
+    return <({int number, String unitKey, bool isKnown})>[
       for (final PlacementQuestionEntity question in test.questions)
         (
           number: question.unitNumber,
+          unitKey: question.unitKey,
           isKnown: knownUnitKeys.contains(question.unitKey),
         ),
     ];

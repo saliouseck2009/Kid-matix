@@ -8,10 +8,10 @@ import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/random_source.dart';
-import 'package:kid_matix/features/numbers/domain/entities/number_item.dart';
-import 'package:kid_matix/features/numbers/domain/entities/numbers_unit.dart';
-import 'package:kid_matix/features/numbers/domain/services/number_distractor_generator.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_catalog.dart';
+import 'package:kid_matix/features/number/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/entities/numbers_unit.dart';
+import 'package:kid_matix/features/number/domain/services/number_distractor_generator.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_catalog.dart';
 
 /// The numbers up to 100: counting objects, tens and ones, comparing,
 /// ordering on a number line, before and after. Seven units of ten items.

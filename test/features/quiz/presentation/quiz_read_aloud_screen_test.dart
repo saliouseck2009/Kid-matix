@@ -7,7 +7,7 @@ import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
@@ -317,7 +317,7 @@ void main() {
           ),
           (
             'compare',
-            'num:compare:34-43',
+            'num:compare:34:43',
             QuestionTypeIds.compare,
             '34 est-il plus petit, égal ou plus grand que '
                 '43\u00a0?',
@@ -325,7 +325,7 @@ void main() {
           ),
           (
             'number line',
-            'num:order:8:2',
+            'num:line:8:2',
             QuestionTypeIds.numberLine,
             'Droite des nombres\u00a0: 2, 4, 6, nombre caché, 10. '
                 'Quel nombre manque\u00a0?',
@@ -376,7 +376,7 @@ void main() {
       await pumpQuiz(
         tester,
         domainId: NumbersDomain.domainId,
-        itemKeys: const <String>['num:compare:34-43'],
+        itemKeys: const <String>['num:compare:34:43'],
         questionTypeId: QuestionTypeIds.compare,
         readsByItself: true,
       );

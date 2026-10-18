@@ -6,7 +6,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
-import 'package:kid_matix/features/numbers/domain/services/numbers_domain.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
@@ -140,7 +140,7 @@ void main() {
     // Arrange
     await pumpQuiz(
       tester,
-      itemKey: 'num:compare:34-43',
+      itemKey: 'num:compare:34:43',
       questionTypeId: QuestionTypeIds.compare,
     );
     // Assert
@@ -170,7 +170,7 @@ void main() {
     // Arrange
     await pumpQuiz(
       tester,
-      itemKey: 'num:compare:58-49',
+      itemKey: 'num:compare:58:49',
       questionTypeId: QuestionTypeIds.compare,
     );
     // Act
@@ -186,7 +186,7 @@ void main() {
     // Arrange
     await pumpQuiz(
       tester,
-      itemKey: 'num:order:8:2',
+      itemKey: 'num:line:8:2',
       questionTypeId: QuestionTypeIds.numberLine,
     );
     // Assert

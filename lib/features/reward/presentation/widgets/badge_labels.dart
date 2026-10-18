@@ -55,7 +55,7 @@ final class BadgeLabels {
         LearningDomainIds.multiplication => l10n.rewardBadgeTamerMultiplication(
           unit.number,
         ),
-        _ => l10n.rewardBadgeTamerUnit(l10n.unitName(domain.id, unit.number)),
+        _ => l10n.rewardBadgeTamerUnit(l10n.unitName(domain.id, unit.key)),
       };
     }
     return '';

@@ -1,6 +1,6 @@
 import 'package:kid_matix/core/quiz/math_picture.dart';
-import 'package:kid_matix/features/numbers/domain/entities/number_item.dart';
-import 'package:kid_matix/features/numbers/domain/entities/numbers_unit.dart';
+import 'package:kid_matix/features/number/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/entities/numbers_unit.dart';
 
 /// The seven units of the numbers up to 100 and their items, ten each, in
 /// the order of the learning path.
