@@ -14,6 +14,8 @@ import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/number/domain/entities/number_item.dart';
+import 'package:kid_matix/features/number/domain/entities/numbers_unit.dart';
+import 'package:kid_matix/features/number/domain/services/numbers_catalog.dart';
 import 'package:kid_matix/features/number/domain/services/number_distractor_generator.dart';
 import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
@@ -164,6 +166,22 @@ void main() {
       expect(actualKeys.toSet(), hasLength(70));
       expect(actualKeys.every((String key) => key.startsWith('num:')), isTrue);
       expect(actualKeys.toSet().intersection(multiplicationKeys), isEmpty);
+    });
+    test('tells two units apart by their slug and names them by key', () {
+      // Arrange
+      final NumbersUnit inputCompare = NumbersCatalog.compare;
+      // Assert
+      expect(domain.findUnit('num:compare'), inputCompare);
+      expect(
+        NumbersUnit(slug: 'compare', number: 9, items: const <NumberItem>[]),
+        inputCompare,
+      );
+      expect(
+        <NumbersUnit>{...NumbersCatalog.units, NumbersCatalog.order},
+        hasLength(7),
+      );
+      expect('$inputCompare', 'num:compare');
+      expect('${inputCompare.numberItems.first}', 'num:compare:3:8');
     });
     test('tells two items apart by their key only', () {
       // Assert
@@ -475,6 +493,33 @@ void main() {
         NumberLinePicture(values: const <int>[49, 58], highlightIndex: 1),
       );
       expect(actualEqual.picture, isNull);
+    });
+    test('help a count with the objects to count again', () {
+      // Act
+      final ItemHelp actual = domain.helpOf(domain.findItem('num:count:7')!);
+      // Assert
+      expect(actual.picture, const ObjectsPicture(count: 7));
+      expect(actual.itemIndex, 6);
+      expect(actual.unitFacts, hasLength(10));
+    });
+    test('help an ordered line with the missing number in place', () {
+      // Act
+      final ItemHelp actual = domain.helpOf(domain.findItem('num:line:55:5')!);
+      // Assert
+      expect(
+        actual.picture,
+        NumberLinePicture(
+          values: const <int>[50, 55, 60, 65, 70],
+          highlightIndex: 1,
+        ),
+      );
+      expect(actual.unitFacts[actual.itemIndex], const <PromptToken>[
+        NumberToken(50),
+        NumberToken(55),
+        NumberToken(60),
+        NumberToken(65),
+        NumberToken(70),
+      ]);
     });
     test('help a line with every number shown', () {
       // Act
