@@ -17,4 +17,19 @@ abstract final class QuestionTypeIds {
 
   /// Match 4 operations with their 4 results, version 1.1.
   static const String matchPairs = 'matchPairs';
+
+  /// Count the objects drawn and pick their number among four, version
+  /// 2.0.
+  static const String countObjects = 'countObjects';
+
+  /// Read the bundles of ten and the loose sticks drawn and pick their
+  /// number among four, version 2.0.
+  static const String tensAndOnes = 'tensAndOnes';
+
+  /// Say whether a number is smaller than, equal to or greater than
+  /// another with one of three signs: `34 ? 43`, version 2.0.
+  static const String compare = 'compare';
+
+  /// Find the number missing on a number line among four, version 2.0.
+  static const String numberLine = 'numberLine';
 }

@@ -1,8 +1,10 @@
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
 /// The help card of an item missed twice in a quiz: every fact of its
-/// unit, and a picture of the item when the domain has one.
+/// unit, and a picture of the item when the domain has one: dots for a
+/// multiplication, objects, bundles or a number line for a number.
 @immutable
 final class ItemHelp {
   /// Creates the help of the [itemIndex]th fact of [unitFacts].
@@ -10,6 +12,7 @@ final class ItemHelp {
     required List<List<PromptToken>> unitFacts,
     required this.itemIndex,
     this.dotGrid,
+    this.picture,
   }) : unitFacts = List<List<PromptToken>>.unmodifiable(
          unitFacts.map(List<PromptToken>.unmodifiable),
        );
@@ -23,6 +26,10 @@ final class ItemHelp {
 
   /// Dots that picture the item, or `null` when the domain has none.
   final DotGrid? dotGrid;
+
+  /// Drawing of the item with its answer, or `null` when the domain has
+  /// none.
+  final MathPicture? picture;
 }
 
 /// A grid of dots: 7 rows of 8 dots pictures 7 x 8.

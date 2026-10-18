@@ -608,6 +608,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizSpokenBlank => 'cuánto';
 
   @override
+  String get quizSpokenPlus => 'más';
+
+  @override
+  String get quizSpokenLessThan => 'es menor que';
+
+  @override
+  String get quizSpokenGreaterThan => 'es mayor que';
+
+  @override
   String get quizModePath => 'Camino';
 
   @override

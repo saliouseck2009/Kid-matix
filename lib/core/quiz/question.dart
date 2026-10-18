@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question_pair.dart';
 import 'package:meta/meta.dart';
@@ -15,6 +16,7 @@ final class Question {
     required this.expectedAnswer,
     List<Answer> choices = const <Answer>[],
     List<QuestionPair> pairs = const <QuestionPair>[],
+    this.picture,
   }) : prompt = List<PromptToken>.unmodifiable(prompt),
        choices = List<Answer>.unmodifiable(choices),
        pairs = List<QuestionPair>.unmodifiable(pairs);
@@ -48,6 +50,9 @@ final class Question {
   /// The right answer.
   final Answer expectedAnswer;
 
+  /// Drawing shown above [prompt], such as objects to count, or `null`.
+  final MathPicture? picture;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -58,7 +63,8 @@ final class Question {
             _haveSameElements(other.prompt, prompt) &&
             _haveSameElements(other.choices, choices) &&
             _haveSameElements(other.pairs, pairs) &&
-            other.expectedAnswer == expectedAnswer;
+            other.expectedAnswer == expectedAnswer &&
+            other.picture == picture;
   }
 
   @override
@@ -70,6 +76,7 @@ final class Question {
     Object.hashAll(choices),
     Object.hashAll(pairs),
     expectedAnswer,
+    picture,
   );
 
   @override

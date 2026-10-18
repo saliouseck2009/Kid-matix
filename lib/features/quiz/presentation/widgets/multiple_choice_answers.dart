@@ -63,7 +63,7 @@ class MultipleChoiceAnswers extends StatelessWidget {
     return switch (answer) {
       NumberAnswer(:final int value) => '$value',
       OperationAnswer(:final operation) => operation.toDisplayText(),
-      BooleanAnswer() || PairsAnswer() => '',
+      BooleanAnswer() || PairsAnswer() || ComparisonAnswer() => '',
     };
   }
 }

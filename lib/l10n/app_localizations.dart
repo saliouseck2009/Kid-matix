@@ -1000,6 +1000,24 @@ abstract class AppLocalizations {
   /// **'combien'**
   String get quizSpokenBlank;
 
+  /// Word read by the screen reader for the plus sign of a number written as its tens and ones ("plus"), as in "30 plus 4 égale 34". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'plus'**
+  String get quizSpokenPlus;
+
+  /// Words read by the screen reader for the sign < between two numbers ("is less than"), as in "34 est plus petit que 43". Joined with the numbers around it. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'est plus petit que'**
+  String get quizSpokenLessThan;
+
+  /// Words read by the screen reader for the sign > between two numbers ("is greater than"), as in "58 est plus grand que 49". Joined with the numbers around it. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'est plus grand que'**
+  String get quizSpokenGreaterThan;
+
   /// Name of the game mode shown under the results title after a stage of the learning path ("Learning path"), after the table name and a middle dot.
   ///
   /// In fr, this message translates to:
