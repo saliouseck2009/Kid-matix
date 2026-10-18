@@ -10,7 +10,8 @@ import 'package:kid_matix/features/speech/domain/services/text_to_speech_engine.
 /// happen. A reading is also cut after a time proportional to its text,
 /// so a voice that forgets to say it has finished can never hold a caller
 /// (a quiz timer waiting for the end of a question) for good; an engine
-/// that does not say whether it has a voice counts as having none.
+/// that does not say whether it has a voice counts as having none, and one
+/// that never answers a stop is left behind after [stopTimeout].
 final class SpeechServiceImpl implements SpeechService {
   /// Creates the service over [engine].
   const SpeechServiceImpl({required this._engine});
@@ -25,6 +26,11 @@ final class SpeechServiceImpl implements SpeechService {
   /// waits for the answer before it starts, so an engine that never
   /// answers counts as having no voice.
   static const Duration availabilityTimeout = Duration(seconds: 2);
+
+  /// Time given to the engine to stop the voice; a plugin that queues its
+  /// calls while the engine of the phone starts, or restarts, may never
+  /// answer, and nothing may wait for it.
+  static const Duration stopTimeout = Duration(seconds: 1);
 
   static const String _logName = 'speech';
 
@@ -58,7 +64,8 @@ final class SpeechServiceImpl implements SpeechService {
           .speak(text: text, languageCode: languageCode)
           .timeout(readingTimeOf(text));
     } on TimeoutException {
-      await stop();
+      // The voice is cut without waiting for the engine to say so.
+      unawaited(stop());
     } on Exception catch (error, stackTrace) {
       _logFailure('Reading failed', error, stackTrace);
     }
@@ -67,7 +74,7 @@ final class SpeechServiceImpl implements SpeechService {
   @override
   Future<void> stop() async {
     try {
-      await _engine.stop();
+      await _engine.stop().timeout(stopTimeout, onTimeout: () {});
     } on Exception catch (error, stackTrace) {
       _logFailure('Stopping the voice failed', error, stackTrace);
     }

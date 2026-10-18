@@ -10,6 +10,7 @@ final class _FakeEngine implements TextToSpeechEngine {
   bool fails = false;
   bool keepsSpeaking = false;
   bool neverAnswersVoiceCheck = false;
+  bool neverStops = false;
   final List<String> spoken = <String>[];
   final List<String> languages = <String>[];
   int stopCount = 0;
@@ -36,6 +37,7 @@ final class _FakeEngine implements TextToSpeechEngine {
   Future<void> stop() async {
     if (fails) throw Exception('engine down');
     stopCount++;
+    if (neverStops) await Completer<void>().future;
   }
 }
 
@@ -149,6 +151,46 @@ void main() {
       // Assert
       expect(actualLong, greaterThan(actualShort));
       expect(actualShort, greaterThan(SpeechServiceImpl.baseReadingTime));
+    });
+  });
+
+  group('SpeechServiceImpl when the engine never answers a stop', () {
+    testWidgets('leaves a stop behind after the time given', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      engine.neverStops = true;
+      bool isDone = false;
+      unawaited(service.stop().then((_) => isDone = true));
+      await tester.pump();
+      expect(isDone, isFalse);
+      // Act
+      await tester.pump(SpeechServiceImpl.stopTimeout);
+      // Assert
+      expect(isDone, isTrue);
+    });
+    testWidgets('still ends a reading after the time of its text', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      engine
+        ..keepsSpeaking = true
+        ..neverStops = true;
+      const String inputText = '5 fois 7 égale combien';
+      bool isDone = false;
+      unawaited(
+        service
+            .speak(text: inputText, languageCode: 'fr')
+            .then((_) => isDone = true),
+      );
+      await tester.pump();
+      // Act: the reading is cut, with no wait for the engine.
+      await tester.pump(SpeechServiceImpl.readingTimeOf(inputText));
+      // Assert
+      expect(isDone, isTrue);
+      expect(engine.stopCount, 1);
+      // The stop left behind gives up on its own.
+      await tester.pump(SpeechServiceImpl.stopTimeout);
     });
   });
 

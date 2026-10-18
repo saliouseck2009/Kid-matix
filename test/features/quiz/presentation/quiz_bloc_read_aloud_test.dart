@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
@@ -552,6 +553,63 @@ void main() {
       ]);
       expect(asking().isReading, isTrue);
       expect(asking().isReadingInstruction, isFalse);
+    });
+  });
+
+  group('QuizBloc when the engine is slow to stop', () {
+    test('restarts the timer at once when the reading is stopped', () async {
+      // Arrange
+      speech.hangsOnStop = true;
+      buildBloc();
+      await start();
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      // Act
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      await tick(10);
+      // Assert
+      expect(asking().isReading, isFalse);
+      expect(asking().elapsed, const Duration(seconds: 1));
+      speech.hangsOnStop = false;
+      speech.finishReading();
+    });
+    test(
+      'judges an answer at once even if the voice cannot be stopped',
+      () async {
+        // Arrange
+        speech.hangsOnStop = true;
+        buildBloc();
+        await start();
+        bloc.add(const ReadAloudToggled());
+        await pumpEventQueue();
+        // Act
+        bloc.add(
+          AnswerSubmitted(answer: asking().turn.question.expectedAnswer),
+        );
+        await pumpEventQueue();
+        // Assert
+        expect(bloc.state, isA<QuizShowingFeedback>());
+        speech.hangsOnStop = false;
+        speech.finishReading();
+      },
+    );
+  });
+
+  group('QuizBloc when a reading starts while an answer is judged', () {
+    test('silences the voice once the answer is judged', () async {
+      // Arrange
+      buildBloc();
+      await start();
+      final Answer inputAnswer = asking().turn.question.expectedAnswer;
+      // Act: the button is tapped in the same breath as the answer.
+      bloc
+        ..add(AnswerSubmitted(answer: inputAnswer))
+        ..add(const ReadAloudToggled());
+      await pumpEventQueue();
+      // Assert
+      expect(bloc.state, isA<QuizShowingFeedback>());
+      expect(speech.isSpeaking, isFalse);
     });
   });
 

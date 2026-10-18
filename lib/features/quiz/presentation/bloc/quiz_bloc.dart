@@ -201,6 +201,9 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         errorCode: exception.code,
       ),
     });
+    // A reading started while the answer was judged must not outlive the
+    // question.
+    _reading.silence();
   }
 
   Future<void> _onNext(NextRequested event, Emitter<QuizState> emit) async {

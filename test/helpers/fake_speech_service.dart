@@ -14,6 +14,7 @@ final class FakeSpeechService implements SpeechService {
     this.hasVoice = true,
     this.isInstant = false,
     this.ignoresStop = false,
+    this.hangsOnStop = false,
   });
 
   /// Whether [isAvailable] answers `true`.
@@ -24,6 +25,10 @@ final class FakeSpeechService implements SpeechService {
 
   /// Whether [stop] is counted but does not end the reading in progress.
   bool ignoresStop;
+
+  /// Whether [stop] never answers, as a plugin does that queues its calls
+  /// while the engine of the phone restarts; the reading is not ended.
+  bool hangsOnStop;
 
   /// Texts read so far, in order.
   final List<String> spoken = <String>[];
@@ -60,6 +65,7 @@ final class FakeSpeechService implements SpeechService {
   @override
   Future<void> stop() async {
     stopCount++;
+    if (hangsOnStop) await Completer<void>().future;
     if (!ignoresStop) finishReading();
   }
 

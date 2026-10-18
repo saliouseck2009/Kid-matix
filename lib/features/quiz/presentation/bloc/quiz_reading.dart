@@ -98,20 +98,22 @@ final class QuizReading {
     }
   }
 
-  /// Stops the reading in progress and lets the question go on.
+  /// Stops the reading in progress and lets the question go on at once;
+  /// the voice is stopped behind, since an engine may be slow to answer.
   Future<void> stop(Emitter<QuizState> emit) async {
     _readingId++;
-    await _setup?.useCases.stop();
     final QuizState latest = _readState();
     if (latest is QuizAsking && latest.isReading) {
       emit(latest.copyWith(isReading: false));
     }
+    unawaited(_setup?.useCases.stop());
   }
 
   /// Stops the voice without waiting for it, for a question that is
-  /// answered, left or hidden.
+  /// answered, left or hidden. Does nothing to the engine when no voice
+  /// exists.
   void silence() {
     _readingId++;
-    unawaited(_setup?.useCases.stop());
+    if (canRead) unawaited(_setup?.useCases.stop());
   }
 }
