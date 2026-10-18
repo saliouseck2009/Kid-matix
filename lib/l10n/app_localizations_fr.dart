@@ -496,6 +496,47 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get quizCountLabel => 'Combien de mangues ?';
+
+  @override
+  String get quizBundlesLabel => 'Quel nombre ?';
+
+  @override
+  String get quizNumberLineLabel => 'Quel nombre manque ?';
+
+  @override
+  String get quizCompareLabel => 'Plus petit, égal ou plus grand ?';
+
+  @override
+  String quizCompareSpoken(int first, int second) {
+    return '$first est-il plus petit, égal ou plus grand que $second ?';
+  }
+
+  @override
+  String quizBundlesSpoken(int tens, int ones) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tens,
+      locale: localeName,
+      other: '$tens paquets de dix',
+      one: '1 paquet de dix',
+      zero: 'Aucun paquet de dix',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      ones,
+      locale: localeName,
+      other: '$ones bâtonnets',
+      one: '1 bâtonnet',
+      zero: 'aucun bâtonnet',
+    );
+    return '$_temp0 et $_temp1 : quel nombre ?';
+  }
+
+  @override
+  String quizNumberLineSpoken(String numbers) {
+    return 'Droite des nombres : $numbers. Quel nombre manque ?';
+  }
+
+  @override
   String get quizObjectsPictureLabel => 'Des mangues à compter';
 
   @override
@@ -535,6 +576,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizHintFindOperation => 'Touche la bonne opération';
+
+  @override
+  String get quizHintCompare => 'Touche le bon signe';
+
+  @override
+  String get quizCompareLess => 'plus petit';
+
+  @override
+  String get quizCompareEqual => 'égal';
+
+  @override
+  String get quizCompareGreater => 'plus grand';
 
   @override
   String get quizMatchPairsTitle => 'Relie chaque opération à son résultat';

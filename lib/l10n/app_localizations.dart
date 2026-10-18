@@ -844,6 +844,48 @@ abstract class AppLocalizations {
   /// **'Quelle multiplication donne {result} ?'**
   String quizFindOperationSpokenMultiplication(int result);
 
+  /// Label in a pill above the drawing of a question of the numbers domain that shows mangoes to count ("How many mangoes?"). Also what the screen reader and the read-aloud button say for the question. One short line, speaks to a child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Combien de mangues ?'**
+  String get quizCountLabel;
+
+  /// Label in a pill above the drawing of bundles of ten sticks and loose sticks, in a question of the numbers domain ("What number is it?"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quel nombre ?'**
+  String get quizBundlesLabel;
+
+  /// Label in a pill above a number line with one hidden number, in a question of the numbers domain ("Which number is missing?"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quel nombre manque ?'**
+  String get quizNumberLineLabel;
+
+  /// Label in a pill above two numbers to compare, such as "34 ? 43", in a question of the numbers domain ("Less, equal or greater?"): is the first number smaller than, equal to or greater than the second. One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus petit, égal ou plus grand ?'**
+  String get quizCompareLabel;
+
+  /// What a screen reader and the read-aloud button say for a comparison question of the numbers domain ("Is 34 less than, equal to or greater than 43?"). {first} is the number on the left, {second} the one on the right. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{first} est-il plus petit, égal ou plus grand que {second} ?'**
+  String quizCompareSpoken(int first, int second);
+
+  /// What a screen reader and the read-aloud button say for a question showing bundles of ten sticks and loose sticks ("3 bundles of ten and 4 sticks: what number is it?"). {tens} counts the bundles, {ones} the loose sticks. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{tens, plural, =0{Aucun paquet de dix} =1{1 paquet de dix} other{{tens} paquets de dix}} et {ones, plural, =0{aucun bâtonnet} =1{1 bâtonnet} other{{ones} bâtonnets}} : quel nombre ?'**
+  String quizBundlesSpoken(int tens, int ones);
+
+  /// What a screen reader and the read-aloud button say for a number line question ("Number line: 2, 4, 6, hidden number, 10. Which number is missing?"). {numbers} lists the numbers of the line from left to right, separated by commas, with quizSpokenHiddenNumber for the one to find. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Droite des nombres : {numbers}. Quel nombre manque ?'**
+  String quizNumberLineSpoken(String numbers);
+
   /// What a screen reader says for the drawing of mangoes in a counting question ("Mangoes to count"); it does not tell how many, since that is the answer. Never shown.
   ///
   /// In fr, this message translates to:
@@ -873,6 +915,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Touche la bonne opération'**
   String get quizHintFindOperation;
+
+  /// Hint in a dashed box under the three sign buttons (<, =, >) of a comparison question of the numbers domain ("Tap the right sign"). Imperative verb, speaks to a child with "tu"; one short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche le bon signe'**
+  String get quizHintCompare;
+
+  /// Caption under the button < of a comparison question, also what a screen reader says for it ("less"): the first number is smaller than the second. Two short words at most, lowercase.
+  ///
+  /// In fr, this message translates to:
+  /// **'plus petit'**
+  String get quizCompareLess;
+
+  /// Caption under the button = of a comparison question, also what a screen reader says for it ("equal"): both numbers are the same. One short word, lowercase.
+  ///
+  /// In fr, this message translates to:
+  /// **'égal'**
+  String get quizCompareEqual;
+
+  /// Caption under the button > of a comparison question, also what a screen reader says for it ("greater"): the first number is greater than the second. Two short words at most, lowercase.
+  ///
+  /// In fr, this message translates to:
+  /// **'plus grand'**
+  String get quizCompareGreater;
 
   /// Title at the top of a "match the pairs" question, in place of the question card, above two columns: four operations and their four results ("Match each operation with its result"). Imperative verb, speaks to a child with "tu"; two lines at most.
   ///

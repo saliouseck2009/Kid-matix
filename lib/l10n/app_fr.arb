@@ -688,6 +688,60 @@
       }
     }
   },
+  "quizCountLabel": "Combien de mangues ?",
+  "@quizCountLabel": {
+    "description": "Label in a pill above the drawing of a question of the numbers domain that shows mangoes to count (\"How many mangoes?\"). Also what the screen reader and the read-aloud button say for the question. One short line, speaks to a child."
+  },
+  "quizBundlesLabel": "Quel nombre ?",
+  "@quizBundlesLabel": {
+    "description": "Label in a pill above the drawing of bundles of ten sticks and loose sticks, in a question of the numbers domain (\"What number is it?\"). One short line."
+  },
+  "quizNumberLineLabel": "Quel nombre manque ?",
+  "@quizNumberLineLabel": {
+    "description": "Label in a pill above a number line with one hidden number, in a question of the numbers domain (\"Which number is missing?\"). One short line."
+  },
+  "quizCompareLabel": "Plus petit, égal ou plus grand ?",
+  "@quizCompareLabel": {
+    "description": "Label in a pill above two numbers to compare, such as \"34 ? 43\", in a question of the numbers domain (\"Less, equal or greater?\"): is the first number smaller than, equal to or greater than the second. One short line."
+  },
+  "quizCompareSpoken": "{first} est-il plus petit, égal ou plus grand que {second} ?",
+  "@quizCompareSpoken": {
+    "description": "What a screen reader and the read-aloud button say for a comparison question of the numbers domain (\"Is 34 less than, equal to or greater than 43?\"). {first} is the number on the left, {second} the one on the right. Never shown.",
+    "placeholders": {
+      "first": {
+        "type": "int",
+        "example": "34"
+      },
+      "second": {
+        "type": "int",
+        "example": "43"
+      }
+    }
+  },
+  "quizBundlesSpoken": "{tens, plural, =0{Aucun paquet de dix} =1{1 paquet de dix} other{{tens} paquets de dix}} et {ones, plural, =0{aucun bâtonnet} =1{1 bâtonnet} other{{ones} bâtonnets}} : quel nombre ?",
+  "@quizBundlesSpoken": {
+    "description": "What a screen reader and the read-aloud button say for a question showing bundles of ten sticks and loose sticks (\"3 bundles of ten and 4 sticks: what number is it?\"). {tens} counts the bundles, {ones} the loose sticks. Never shown.",
+    "placeholders": {
+      "tens": {
+        "type": "int",
+        "example": "3"
+      },
+      "ones": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "quizNumberLineSpoken": "Droite des nombres : {numbers}. Quel nombre manque ?",
+  "@quizNumberLineSpoken": {
+    "description": "What a screen reader and the read-aloud button say for a number line question (\"Number line: 2, 4, 6, hidden number, 10. Which number is missing?\"). {numbers} lists the numbers of the line from left to right, separated by commas, with quizSpokenHiddenNumber for the one to find. Never shown.",
+    "placeholders": {
+      "numbers": {
+        "type": "String",
+        "example": "2, 4, 6, nombre caché, 10"
+      }
+    }
+  },
   "quizObjectsPictureLabel": "Des mangues à compter",
   "@quizObjectsPictureLabel": {
     "description": "What a screen reader says for the drawing of mangoes in a counting question (\"Mangoes to count\"); it does not tell how many, since that is the answer. Never shown."
@@ -729,6 +783,22 @@
   "quizHintFindOperation": "Touche la bonne opération",
   "@quizHintFindOperation": {
     "description": "Hint in a dashed box under the four operation buttons of a \"find the operation\" question (\"Tap the right operation\"). Imperative verb, speaks to a child with \"tu\"; one or two short lines."
+  },
+  "quizHintCompare": "Touche le bon signe",
+  "@quizHintCompare": {
+    "description": "Hint in a dashed box under the three sign buttons (<, =, >) of a comparison question of the numbers domain (\"Tap the right sign\"). Imperative verb, speaks to a child with \"tu\"; one short line."
+  },
+  "quizCompareLess": "plus petit",
+  "@quizCompareLess": {
+    "description": "Caption under the button < of a comparison question, also what a screen reader says for it (\"less\"): the first number is smaller than the second. Two short words at most, lowercase."
+  },
+  "quizCompareEqual": "égal",
+  "@quizCompareEqual": {
+    "description": "Caption under the button = of a comparison question, also what a screen reader says for it (\"equal\"): both numbers are the same. One short word, lowercase."
+  },
+  "quizCompareGreater": "plus grand",
+  "@quizCompareGreater": {
+    "description": "Caption under the button > of a comparison question, also what a screen reader says for it (\"greater\"): the first number is greater than the second. Two short words at most, lowercase."
   },
   "quizMatchPairsTitle": "Relie chaque opération à son résultat",
   "@quizMatchPairsTitle": {

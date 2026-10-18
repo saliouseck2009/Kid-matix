@@ -4,10 +4,12 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_labels.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Texts of the quiz that depend on the learning domain.
@@ -22,7 +24,8 @@ final class QuizLabels {
   final AppLocalizations l10n;
 
   /// Label above [question]: "Vrai ou faux ?", "Quelle multiplication
-  /// donne" or the name of its unit.
+  /// donne", what to do with its drawing or its two numbers, or the name
+  /// of its unit.
   String describeQuestion(Question question, String domainId) {
     return switch (question.questionTypeId) {
       QuestionTypeIds.trueFalse => l10n.quizTrueFalseLabel,
@@ -31,7 +34,37 @@ final class QuizLabels {
           l10n.quizFindOperationMultiplication,
         _ => '',
       },
-      _ => describeUnitOf(question, domainId),
+      QuestionTypeIds.compare => l10n.quizCompareLabel,
+      _ => switch (question.picture) {
+        ObjectsPicture() => l10n.quizCountLabel,
+        TenBundlesPicture() => l10n.quizBundlesLabel,
+        NumberLinePicture() => l10n.quizNumberLineLabel,
+        null => describeUnitOf(question, domainId),
+      },
+    };
+  }
+
+  /// The whole of [question] as one sentence, for a screen reader and the
+  /// read-aloud button, when its prompt alone does not say it: "Combien
+  /// de mangues ?", "3 paquets de dix et 4 bâtonnets : quel nombre ?",
+  /// "34 est-il plus petit, égal ou plus grand que 43 ?"; `null` when the
+  /// prompt reads as it is, such as "5 fois 7 égale combien".
+  String? speakQuestion(Question question) {
+    if (question.questionTypeId == QuestionTypeIds.compare) {
+      final List<NumberToken> numbers = question.prompt
+          .whereType<NumberToken>()
+          .toList();
+      if (numbers.length < 2) return null;
+      return l10n.quizCompareSpoken(numbers.first.value, numbers.last.value);
+    }
+    return switch (question.picture) {
+      ObjectsPicture() => l10n.quizCountLabel,
+      TenBundlesPicture(:final int tens, :final int ones) =>
+        l10n.quizBundlesSpoken(tens, ones),
+      final NumberLinePicture line => l10n.quizNumberLineSpoken(
+        MathPictureLabels(l10n).listNumbers(line),
+      ),
+      null => null,
     };
   }
 

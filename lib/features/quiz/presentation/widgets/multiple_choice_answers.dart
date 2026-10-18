@@ -4,6 +4,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_feedback.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/compare_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_answer_button.dart';
 
 /// The four answers of a multiple choice question, two by two: numbers,
@@ -58,12 +59,13 @@ class MultipleChoiceAnswers extends StatelessWidget {
     );
   }
 
-  /// Text of an answer button: `35` or `4 × 6`.
+  /// Text of an answer button: `35`, `4 × 6` or a sign such as `<`.
   static String describeAnswer(Answer answer) {
     return switch (answer) {
       NumberAnswer(:final int value) => '$value',
       OperationAnswer(:final operation) => operation.toDisplayText(),
-      BooleanAnswer() || PairsAnswer() || ComparisonAnswer() => '',
+      ComparisonAnswer(:final comparison) => CompareAnswers.signOf(comparison),
+      BooleanAnswer() || PairsAnswer() => '',
     };
   }
 }
