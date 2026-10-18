@@ -7,6 +7,10 @@ enum MathOperator {
   /// a number (version 2.0).
   add,
 
+  /// Subtraction, shown as "−": `15 − 7 = 8`. The result is never
+  /// negative (version 2.0).
+  subtract,
+
   /// "Is smaller than", shown as "<" (version 2.0).
   lessThan,
 

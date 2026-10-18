@@ -21,6 +21,7 @@ extension PromptReading on List<PromptToken> {
         NumberToken(:final int value) => '$value',
         OperatorToken(operator: MathOperator.multiply) => '×',
         OperatorToken(operator: MathOperator.add) => '+',
+        OperatorToken(operator: MathOperator.subtract) => '−',
         OperatorToken(operator: MathOperator.divide) => '÷',
         OperatorToken(operator: MathOperator.lessThan) => '<',
         OperatorToken(operator: MathOperator.greaterThan) => '>',
@@ -38,6 +39,7 @@ extension PromptReading on List<PromptToken> {
         NumberToken(:final int value) => '$value',
         OperatorToken(operator: MathOperator.multiply) => l10n.quizSpokenTimes,
         OperatorToken(operator: MathOperator.add) => l10n.quizSpokenPlus,
+        OperatorToken(operator: MathOperator.subtract) => l10n.quizSpokenMinus,
         OperatorToken(operator: MathOperator.divide) =>
           l10n.quizSpokenDividedBy,
         OperatorToken(operator: MathOperator.lessThan) =>

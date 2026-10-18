@@ -58,6 +58,27 @@ void main() {
       }
     });
   }
+  test('speaks the name of the sign-only domain in words', () {
+    // Arrange
+    final AppLocalizations inputFr = AppLocalizationsFr();
+    // Assert
+    expect(inputFr.domainName('addition'), '+ et −');
+    expect(inputFr.domainSpokenName('addition'), 'Additions et soustractions');
+    expect(
+      inputFr.gridSpokenTitle('addition'),
+      'Mes additions et soustractions',
+    );
+    expect(
+      AppLocalizationsEn().domainSpokenName('addition'),
+      contains('subtractions'),
+    );
+    expect(
+      AppLocalizationsEs().domainSpokenName('addition'),
+      contains('restas'),
+    );
+    expect(inputFr.domainSpokenName('numbers'), inputFr.domainName('numbers'));
+    expect(inputFr.gridSpokenTitle('numbers'), inputFr.gridTitle('numbers'));
+  });
   test('says nothing for a unit or a domain it does not know', () {
     // Arrange
     final AppLocalizations l10n = AppLocalizationsFr();

@@ -45,6 +45,8 @@ class MasteryGridCard extends StatelessWidget {
         children: <Widget>[
           Semantics(
             header: true,
+            label: context.l10n.gridSpokenTitle(domain.id),
+            excludeSemantics: true,
             child: Text(_titleOf(context), style: textTheme.titleMedium),
           ),
           _Grid(grid: grid, domain: domain),

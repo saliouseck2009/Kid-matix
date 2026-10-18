@@ -3,6 +3,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
+import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
 import 'package:kid_matix/features/division/domain/services/division_domain.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
@@ -133,6 +134,19 @@ void main() {
       );
       expect(
         labels.describeQuestion(inputMultiplication, 'multiplication'),
+        'Trouve le nombre caché',
+      );
+      final Question inputAddition = AdditionDomain().buildQuestion(
+        item: AdditionDomain().findItem('add:7+8')!,
+        questionTypeId: QuestionTypeIds.missingNumber,
+        random: DartRandomSource(seed: 3),
+      );
+      expect(
+        labels.describeQuestion(inputAddition, 'addition'),
+        'Trouve le nombre caché',
+      );
+      expect(
+        labels.describeQuestion(inputAddition, 'mixed'),
         'Trouve le nombre caché',
       );
       expect(

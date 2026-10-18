@@ -166,6 +166,18 @@ abstract class AppLocalizations {
   /// **'Division'**
   String get divisionDomainName;
 
+  /// Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards ("+ and −"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'+ et −'**
+  String get additionDomainName;
+
+  /// What a screen reader says for the name of the addition and subtraction domain in the switch of the domains, whose written name is made of signs ("Additions and subtractions"). Spoken only, never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Additions et soustractions'**
+  String get additionDomainSpokenName;
+
   /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
   /// In fr, this message translates to:
@@ -381,6 +393,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mes divisions'**
   String get masteryGridTitleDivision;
+
+  /// Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it ("My + and −"): one row per unit, one cell per fact colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes + et −'**
+  String get masteryGridTitleAddition;
+
+  /// What a screen reader says for the title of the mastery grid card of the addition and subtraction domain ("My additions and subtractions"), whose written title is made of signs. Spoken only, never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes additions et soustractions'**
+  String get masteryGridTitleAdditionSpoken;
 
   /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).
   ///
@@ -1186,6 +1210,12 @@ abstract class AppLocalizations {
   /// **'divisé par'**
   String get quizSpokenDividedBy;
 
+  /// Word read by the screen reader for the minus sign of a subtraction ("minus"), as in "15 moins 7 égale 8". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'moins'**
+  String get quizSpokenMinus;
+
   /// Words read by the screen reader for the sign < between two numbers ("is less than"), as in "34 est plus petit que 43". Joined with the numbers around it. Never displayed.
   ///
   /// In fr, this message translates to:
@@ -1665,6 +1695,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{unit, select, 1{Diviser par 1 ne change rien : 7 ÷ 1 = 7.} 2{Diviser par 2, c\'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.} 3{Diviser par 3, c\'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.} 4{Diviser par 4, c\'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.} 5{Pour 35 ÷ 5, compte de 5 en 5 jusqu\'à 35 : 5, 10, 15, 20, 25, 30, 35. Ça fait 7 bonds, donc 35 ÷ 5 = 7.} 6{Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.} 7{Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.} 8{Diviser par 8, c\'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.} 9{Dans la table de 9, les deux chiffres ajoutés font 9 (36 : 3 + 6 = 9). Et 36 ÷ 9 = 4, car 9 × 4 = 36.} 10{Diviser par 10, c\'est enlever le 0 à droite : 70 ÷ 10 = 7.} 11{Jusqu\'à 99 ÷ 11, les nombres de la table de 11 ont deux chiffres pareils : 77 ÷ 11 = 7.} 12{Pour 36 ÷ 12, compte de 12 en 12 : 12, 24, 36. Ça fait 3 bonds, donc 36 ÷ 12 = 3.} other{}}'**
   String divisionUnitTip(String unit);
+
+  /// Name of a unit of the addition and subtraction domain, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Additions up to 10", "Complete to 10", "Additions with carrying"). Short title, a few words. {unit} is the slug of the unit (the end of its key), never shown: add5, sub5, add7, add9, toten, sub7, sub9, subten, add12, add14, add20, sub12, sub14, sub20, add100 (no carrying), sub100 (no borrowing), carry, borrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, add5{Additions jusqu\'à 5} sub5{Soustractions jusqu\'à 5} add7{Additions jusqu\'à 7} add9{Additions jusqu\'à 9} toten{Compléter jusqu\'à 10} sub7{Soustractions jusqu\'à 7} sub9{Soustractions jusqu\'à 9} subten{Soustractions à partir de 10} add12{Additions jusqu\'à 12} add14{Additions jusqu\'à 14} add20{Additions jusqu\'à 20} sub12{Soustractions jusqu\'à 12} sub14{Soustractions jusqu\'à 14} sub20{Soustractions jusqu\'à 20} add100{Additions sans retenue} sub100{Soustractions sans retenue} carry{Additions avec retenue} borrow{Soustractions avec retenue} other{}}'**
+  String additionUnitName(String unit);
+
+  /// Tip of a unit of the addition and subtraction domain, shown on its Discovery page under all its items ("To add, start from the bigger number…"). One or two short sentences for a child of 5 to 8, informal "tu". {unit} is the slug of the unit (the end of its key), never shown: add5, sub5, add7, add9, toten (complete to 10), sub7, sub9, subten (from 10), add12, add14, add20 (these three cross the ten), sub12, sub14, sub20, add100 (no carrying), sub100 (no borrowing), carry, borrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, add5{Pour ajouter, avance sur la droite : 2 + 3 ? Pars de 2 et avance de 3 : 3, 4, 5 !} sub5{Soustraire, c\'est enlever. 5 − 2 ? Pars de 5 et recule de 2 : 4, 3 !} add7{Pour ajouter, pars du plus grand nombre et avance du plus petit. 2 + 5 ? Pars de 5 et avance de 2 : 6, 7 !} add9{Pense aux doubles : 4 + 4 = 8, donc 4 + 5 = 9.} toten{Cherche ce qui manque pour arriver à 10. Il manque 3 à 7, car 7 + 3 = 10. Compte sur tes doigts si tu veux !} sub7{Soustraire, c\'est enlever. 7 − 3 ? Pars de 7 et recule de 3 : 6, 5, 4. Ou cherche : 3 + combien font 7 ?} sub9{Pour 9 − 4, cherche ce qu\'il faut ajouter à 4 pour faire 9 : 4 + 5 = 9, donc 9 − 4 = 5.} subten{Pour 10 − 3, pense au complément : 3 + 7 = 10, donc 10 − 3 = 7.} add12{Pour 9 + 2, va d\'abord jusqu\'à 10 : 9 + 1 = 10. Il reste 1 à ajouter : 10 + 1 = 11.} add14{Pour 8 + 5, va d\'abord jusqu\'à 10 : 8 + 2 = 10. Il reste 3 à ajouter : 10 + 3 = 13.} add20{Pour 7 + 8, va d\'abord jusqu\'à 10 : 7 + 3 = 10. Il reste 5 à ajouter : 10 + 5 = 15.} sub12{Pour 12 − 4, enlève d\'abord 2 pour arriver à 10, puis encore 2 : 12 − 2 = 10, puis 10 − 2 = 8.} sub14{Pour 13 − 6, enlève d\'abord 3 pour arriver à 10, puis encore 3 : 13 − 3 = 10, puis 10 − 3 = 7.} sub20{Pour 15 − 7, enlève d\'abord 5 pour arriver à 10, puis encore 2 : 15 − 5 = 10, puis 10 − 2 = 8.} add100{Additionne les unités, puis les dizaines. Pour 23 + 14 : 3 + 4 = 7 et 20 + 10 = 30, donc 37.} sub100{Soustrais les unités, puis les dizaines. Pour 47 − 23 : 7 − 3 = 4 et 40 − 20 = 20, donc 24.} carry{Quand les unités font 10 ou plus, tu retiens une dizaine. Pour 27 + 15, 7 + 5 = 12 : tu écris 2 et tu retiens 1 dizaine. 20 + 10 + 10 = 40, et 40 + 2 = 42.} borrow{Si tu ne peux pas enlever les unités, casse une dizaine. Pour 42 − 17 : 42 devient 30 et 12. 12 − 7 = 5 et 30 − 10 = 20, donc 25.} other{}}'**
+  String additionUnitTip(String unit);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///

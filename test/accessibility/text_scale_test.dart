@@ -115,6 +115,11 @@ void main() {
         ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
         ..._numbersScreens,
         ('a numbers boss fight', AppRoutes.playOf('path:num:count10:boss')),
+        ..._additionScreens,
+        (
+          'an addition boss fight',
+          AppRoutes.playOf('path:addsub:borrow:boss'),
+        ),
         ..._divisionScreens,
         ('a division boss fight', AppRoutes.playOf('path:div:7:boss')),
       ]) {
@@ -193,6 +198,14 @@ final List<(String, String)> _guidelineScreens = <(String, String)>[
   ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
   ..._numbersScreens,
   ..._divisionScreens,
+  ..._additionScreens,
+];
+
+/// Screens of the additions and subtractions: the unit with the longest
+/// name and a quiz asking a subtraction with a borrow.
+final List<(String, String)> _additionScreens = <(String, String)>[
+  ('a unit of the additions', AppRoutes.tableDetailOf('addsub:sub100')),
+  ('an addition quiz', AppRoutes.playOf('path:addsub:borrow:discovery')),
 ];
 
 /// Screens of the numbers domain: a unit, a drawing to read, the signs of
