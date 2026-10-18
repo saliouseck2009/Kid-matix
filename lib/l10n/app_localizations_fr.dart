@@ -40,6 +40,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get numbersDomainName => 'Nombres';
 
   @override
+  String get additionDomainName => 'Calculs';
+
+  @override
   String get errorStorage =>
       'Oups, on n\'a pas pu lire ou enregistrer tes données.';
 
@@ -214,6 +217,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'Mes nombres';
+
+  @override
+  String get masteryGridTitleAddition => 'Mes calculs';
 
   @override
   String get masteryStatusNotSeen => 'Nouveau';
@@ -740,6 +746,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizSpokenPlus => 'plus';
 
   @override
+  String get quizSpokenMinus => 'moins';
+
+  @override
   String get quizSpokenLessThan => 'est plus petit que';
 
   @override
@@ -1134,6 +1143,46 @@ class AppLocalizationsFr extends AppLocalizations {
         'compare': 'Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.',
         'order': 'Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.',
         'beforeafter': 'Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add10': 'Additions jusqu\'à 10',
+        'toten': 'Compléter jusqu\'à 10',
+        'add20': 'Additions jusqu\'à 20',
+        'sub10': 'Soustractions jusqu\'à 10',
+        'sub20': 'Soustractions jusqu\'à 20',
+        'add100': 'Additions sans retenue',
+        'sub100': 'Soustractions sans retenue',
+        'carry': 'Additions avec retenue',
+        'borrow': 'Soustractions avec retenue',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add10': 'Pour ajouter, pars du plus grand nombre et avance du plus petit. 2 + 5 ? Pars de 5 et avance de 2 : 6, 7 !',
+        'toten': 'Cherche ce qui manque pour arriver à 10. Il manque 3 à 7, car 7 + 3 = 10. Compte sur tes doigts si tu veux !',
+        'add20': 'Pour 7 + 8, va d\'abord jusqu\'à 10 : 7 + 3 = 10. Il reste 5 à ajouter : 10 + 5 = 15.',
+        'sub10': 'Soustraire, c\'est enlever. 7 − 3 ? Pars de 7 et recule de 3 : 6, 5, 4. Ou cherche : 3 + combien font 7 ?',
+        'sub20': 'Pour 15 − 7, enlève d\'abord 5 pour arriver à 10, puis encore 2 : 15 − 5 = 10, puis 10 − 2 = 8.',
+        'add100': 'Additionne les unités, puis les dizaines. Pour 23 + 14 : 3 + 4 = 7 et 20 + 10 = 30, donc 37.',
+        'sub100': 'Soustrais les unités, puis les dizaines. Pour 47 − 23 : 7 − 3 = 4 et 40 − 20 = 20, donc 24.',
+        'carry': 'Quand les unités font 10 ou plus, tu retiens une dizaine. Pour 27 + 15 : 7 + 5 = 12, j\'écris 2 et je retiens 1 dizaine. 20 + 10 + 10 = 40, donc 42.',
+        'borrow': 'Si tu ne peux pas enlever les unités, casse une dizaine. Pour 42 − 17 : 42 devient 30 et 12. 12 − 7 = 5 et 30 − 10 = 20, donc 25.',
         'other': '',
       },
     );

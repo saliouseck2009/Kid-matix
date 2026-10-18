@@ -40,6 +40,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numbersDomainName => 'Numbers';
 
   @override
+  String get additionDomainName => 'Sums';
+
+  @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
 
   @override
@@ -212,6 +215,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'My numbers';
+
+  @override
+  String get masteryGridTitleAddition => 'My sums';
 
   @override
   String get masteryStatusNotSeen => 'New';
@@ -736,6 +742,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizSpokenPlus => 'plus';
 
   @override
+  String get quizSpokenMinus => 'minus';
+
+  @override
   String get quizSpokenLessThan => 'is less than';
 
   @override
@@ -1129,6 +1138,46 @@ class AppLocalizationsEn extends AppLocalizations {
         'compare': 'Look at the tens first: the number with more tens is greater. If the tens are the same, look at the ones.',
         'order': 'On the line, numbers go from smallest to greatest. Find how much they go up each time.',
         'beforeafter': 'The number after is 1 more; the number before is 1 less. After 39 comes 40!',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add10': 'Additions up to 10',
+        'toten': 'Complete to 10',
+        'add20': 'Additions up to 20',
+        'sub10': 'Subtractions up to 10',
+        'sub20': 'Subtractions up to 20',
+        'add100': 'Additions without carrying',
+        'sub100': 'Subtractions without borrowing',
+        'carry': 'Additions with carrying',
+        'borrow': 'Subtractions with borrowing',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add10': 'To add, start from the bigger number and count up the smaller one. 2 + 5? Start at 5 and go up 2: 6, 7!',
+        'toten': 'Find what is missing to reach 10. 7 needs 3, because 7 + 3 = 10. Count on your fingers if you like!',
+        'add20': 'For 7 + 8, first go up to 10: 7 + 3 = 10. There are 5 left to add: 10 + 5 = 15.',
+        'sub10': 'To subtract is to take away. 7 − 3? Start at 7 and go back 3: 6, 5, 4. Or ask: 3 plus what makes 7?',
+        'sub20': 'For 15 − 7, first take away 5 to reach 10, then 2 more: 15 − 5 = 10, then 10 − 2 = 8.',
+        'add100': 'Add the ones, then the tens. For 23 + 14: 3 + 4 = 7 and 20 + 10 = 30, so 37.',
+        'sub100': 'Subtract the ones, then the tens. For 47 − 23: 7 − 3 = 4 and 40 − 20 = 20, so 24.',
+        'carry': 'When the ones make 10 or more, you carry one ten. For 27 + 15: 7 + 5 = 12, write 2 and carry 1 ten. 20 + 10 + 10 = 40, so 42.',
+        'borrow': 'If you cannot take away the ones, break a ten. For 42 − 17: 42 becomes 30 and 12. 12 − 7 = 5 and 30 − 10 = 20, so 25.',
         'other': '',
       },
     );

@@ -40,6 +40,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numbersDomainName => 'Números';
 
   @override
+  String get additionDomainName => 'Cuentas';
+
+  @override
   String get errorStorage => 'Uy, no pudimos leer o guardar tus datos.';
 
   @override
@@ -212,6 +215,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'Mis números';
+
+  @override
+  String get masteryGridTitleAddition => 'Mis cuentas';
 
   @override
   String get masteryStatusNotSeen => 'Nuevo';
@@ -739,6 +745,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizSpokenPlus => 'más';
 
   @override
+  String get quizSpokenMinus => 'menos';
+
+  @override
   String get quizSpokenLessThan => 'es menor que';
 
   @override
@@ -1132,6 +1141,46 @@ class AppLocalizationsEs extends AppLocalizations {
         'compare': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
         'order': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
         'beforeafter': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add10': 'Sumas hasta 10',
+        'toten': 'Completar hasta 10',
+        'add20': 'Sumas hasta 20',
+        'sub10': 'Restas hasta 10',
+        'sub20': 'Restas hasta 20',
+        'add100': 'Sumas sin llevada',
+        'sub100': 'Restas sin llevada',
+        'carry': 'Sumas con llevada',
+        'borrow': 'Restas con llevada',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add10': 'Para sumar, empieza por el número más grande y avanza el más pequeño. ¿2 + 5? Empieza en 5 y avanza 2: 6, 7.',
+        'toten': 'Busca lo que falta para llegar a 10. A 7 le faltan 3, porque 7 + 3 = 10. Cuenta con los dedos si quieres.',
+        'add20': 'Para 7 + 8, ve primero hasta 10: 7 + 3 = 10. Quedan 5 por sumar: 10 + 5 = 15.',
+        'sub10': 'Restar es quitar. ¿7 − 3? Empieza en 7 y retrocede 3: 6, 5, 4. O busca: 3 más cuánto es 7.',
+        'sub20': 'Para 15 − 7, quita primero 5 para llegar a 10 y luego 2 más: 15 − 5 = 10 y 10 − 2 = 8.',
+        'add100': 'Suma las unidades y luego las decenas. Para 23 + 14: 3 + 4 = 7 y 20 + 10 = 30, así que 37.',
+        'sub100': 'Resta las unidades y luego las decenas. Para 47 − 23: 7 − 3 = 4 y 40 − 20 = 20, así que 24.',
+        'carry': 'Cuando las unidades suman 10 o más, te llevas una decena. Para 27 + 15: 7 + 5 = 12, escribo 2 y me llevo 1 decena. 20 + 10 + 10 = 40, así que 42.',
+        'borrow': 'Si no puedes quitar las unidades, rompe una decena. Para 42 − 17: 42 se convierte en 30 y 12. 12 − 7 = 5 y 30 − 10 = 20, así que 25.',
         'other': '',
       },
     );

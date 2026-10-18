@@ -160,6 +160,12 @@ abstract class AppLocalizations {
   /// **'Nombres'**
   String get numbersDomainName;
 
+  /// Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards ("Sums"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Calculs'**
+  String get additionDomainName;
+
   /// Error shown to a child on the "Qui joue ?" screen, under the button of the player creation, and on the quiz and results screens when the local database fails. Friendly tone, informal "tu", no technical words.
   ///
   /// In fr, this message translates to:
@@ -369,6 +375,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mes nombres'**
   String get masteryGridTitleNumbers;
+
+  /// Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it ("My sums"): one row per unit, one cell per fact colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes calculs'**
+  String get masteryGridTitleAddition;
 
   /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).
   ///
@@ -1156,6 +1168,12 @@ abstract class AppLocalizations {
   /// **'plus'**
   String get quizSpokenPlus;
 
+  /// Word read by the screen reader for the minus sign of a subtraction ("minus"), as in "15 moins 7 égale 8". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'moins'**
+  String get quizSpokenMinus;
+
   /// Words read by the screen reader for the sign < between two numbers ("is less than"), as in "34 est plus petit que 43". Joined with the numbers around it. Never displayed.
   ///
   /// In fr, this message translates to:
@@ -1623,6 +1641,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{unit, select, count10{Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.} count20{Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…} count100{Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…} tensones{Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.} compare{Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.} order{Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.} beforeafter{Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !} other{}}'**
   String numbersUnitTip(String unit);
+
+  /// Name of a unit of the addition and subtraction domain, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Additions up to 10", "Complete to 10", "Additions with carrying"). Short title, a few words. {unit} is the slug of the unit (the end of its key), never shown: add10, toten, add20, sub10, sub20, add100 (no carrying), sub100 (no borrowing), carry, borrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, add10{Additions jusqu\'à 10} toten{Compléter jusqu\'à 10} add20{Additions jusqu\'à 20} sub10{Soustractions jusqu\'à 10} sub20{Soustractions jusqu\'à 20} add100{Additions sans retenue} sub100{Soustractions sans retenue} carry{Additions avec retenue} borrow{Soustractions avec retenue} other{}}'**
+  String additionUnitName(String unit);
+
+  /// Tip of a unit of the addition and subtraction domain, shown on its Discovery page under all its items ("To add, start from the bigger number…"). One or two short sentences for a child of 5 to 8, informal "tu". {unit} is the slug of the unit (the end of its key), never shown: add10, toten (complete to 10), add20 (crossing the ten), sub10, sub20, add100 (no carrying), sub100 (no borrowing), carry, borrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, add10{Pour ajouter, pars du plus grand nombre et avance du plus petit. 2 + 5 ? Pars de 5 et avance de 2 : 6, 7 !} toten{Cherche ce qui manque pour arriver à 10. Il manque 3 à 7, car 7 + 3 = 10. Compte sur tes doigts si tu veux !} add20{Pour 7 + 8, va d\'abord jusqu\'à 10 : 7 + 3 = 10. Il reste 5 à ajouter : 10 + 5 = 15.} sub10{Soustraire, c\'est enlever. 7 − 3 ? Pars de 7 et recule de 3 : 6, 5, 4. Ou cherche : 3 + combien font 7 ?} sub20{Pour 15 − 7, enlève d\'abord 5 pour arriver à 10, puis encore 2 : 15 − 5 = 10, puis 10 − 2 = 8.} add100{Additionne les unités, puis les dizaines. Pour 23 + 14 : 3 + 4 = 7 et 20 + 10 = 30, donc 37.} sub100{Soustrais les unités, puis les dizaines. Pour 47 − 23 : 7 − 3 = 4 et 40 − 20 = 20, donc 24.} carry{Quand les unités font 10 ou plus, tu retiens une dizaine. Pour 27 + 15 : 7 + 5 = 12, j\'écris 2 et je retiens 1 dizaine. 20 + 10 + 10 = 40, donc 42.} borrow{Si tu ne peux pas enlever les unités, casse une dizaine. Pour 42 − 17 : 42 devient 30 et 12. 12 − 7 = 5 et 30 − 10 = 20, donc 25.} other{}}'**
+  String additionUnitTip(String unit);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///

@@ -5,8 +5,8 @@ import 'package:kid_matix/core/widgets/monster_family.dart';
 /// of the design: the body color, the horns and the eyes change with
 /// [number], one monster per unit; the [family] tells the domain, one
 /// look per domain (horns for the multiplication, antennae and spots for
-/// the numbers). Final illustrations replace this painter without
-/// touching the callers.
+/// the numbers, round ears for the additions). Final illustrations
+/// replace this painter without touching the callers.
 class MonsterPainter extends CustomPainter {
   /// Creates the painter of the monster [number], from 1, of [family].
   MonsterPainter({required this.number, this.family = MonsterFamily.horned});
@@ -51,6 +51,8 @@ class MonsterPainter extends CustomPainter {
         _paintHorns(canvas);
       case MonsterFamily.antennae:
         _paintAntennae(canvas);
+      case MonsterFamily.eared:
+        _paintEars(canvas);
     }
     _paintArms(canvas);
     canvas.drawRRect(
@@ -102,6 +104,15 @@ class MonsterPainter extends CustomPainter {
     final Paint ball = Paint()..color = _horn;
     canvas.drawCircle(const Offset(54, 10), 9, ball);
     canvas.drawCircle(const Offset(146, 10), 9, ball);
+  }
+
+  void _paintEars(Canvas canvas) {
+    final Paint outer = Paint()..color = _body;
+    final Paint inner = Paint()..color = _horn;
+    for (final double x in <double>[48, 152]) {
+      canvas.drawCircle(Offset(x, 32), 22, outer);
+      canvas.drawCircle(Offset(x, 32), 11, inner);
+    }
   }
 
   void _paintSpots(Canvas canvas) {
