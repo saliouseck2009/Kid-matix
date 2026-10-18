@@ -12,6 +12,7 @@ lang: fr
 exclude:
   - decisions.md
   - git-workflow.md
+  - parallel-plan.md
   - implementation.html
   - status.md
   - design/
