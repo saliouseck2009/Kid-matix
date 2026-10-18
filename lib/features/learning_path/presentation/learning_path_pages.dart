@@ -11,6 +11,8 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_source.da
 import 'package:kid_matix/features/learning_path/domain/services/stage_quiz_specs.dart';
 import 'package:kid_matix/features/learning_path/domain/services/unit_domain_resolver.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
@@ -19,6 +21,7 @@ import 'package:kid_matix/features/learning_path/presentation/pages/discovery_pa
 import 'package:kid_matix/features/learning_path/presentation/pages/learning_path_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/placement_test_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/table_detail_page.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/domain_section.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
@@ -28,8 +31,8 @@ import 'package:kid_matix/l10n/app_localizations.dart';
 /// Builds the pages of the learning path for the router, and turns its
 /// stages into quiz specs.
 ///
-/// A unit, a stage or a review finds its own domain from its key, so
-/// every page follows it.
+/// The map shows the domain the player chose; a unit, a stage or a review
+/// finds its own domain from its key, so every other page follows it.
 /// Created at the composition root with the dependencies resolved there,
 /// so no widget ever reads the service locator.
 final class LearningPathPages {
@@ -37,6 +40,7 @@ final class LearningPathPages {
   const LearningPathPages({
     required this._useCases,
     required this._placement,
+    required this._domainChoice,
     required this._domains,
     required this._clock,
     this._specs = const StageQuizSpecs(),
@@ -48,12 +52,13 @@ final class LearningPathPages {
 
   final LearningPathUseCases _useCases;
   final PlacementUseCases _placement;
+  final DomainChoiceUseCases _domainChoice;
   final DomainRegistry _domains;
   final Clock _clock;
   final StageQuizSpecs _specs;
   final UnitDomainResolver _resolver;
 
-  /// The map of the path of [profileId] in the multiplication; a new
+  /// The map of the path of [profileId], in the domain they chose; a new
   /// player gets a new map.
   Widget buildLearningPathPage({
     required String profileId,
@@ -64,11 +69,9 @@ final class LearningPathPages {
   }) {
     return LearningPathPage(
       key: ValueKey<String>(profileId),
-      params: LearningPathParams(
-        profileId: profileId,
-        domainId: LearningDomainIds.multiplication,
-      ),
+      profileId: profileId,
       useCases: _useCases,
+      domainChoice: _domainChoice,
       onOpenTable: onOpenTable,
       onPlay: onPlay,
       header: header,
@@ -97,12 +100,28 @@ final class LearningPathPages {
     );
   }
 
+  /// The cards of [profileId] that follow one domain, for the Profile tab:
+  /// the switch of the domains, then the cards [builder] gives for the
+  /// domain chosen, the same as on the map.
+  Widget buildDomainSection({
+    required String profileId,
+    required List<Widget> Function(String domainId) builder,
+  }) {
+    return BlocProvider<DomainChoiceCubit>(
+      key: ValueKey<String>('domain-section-$profileId'),
+      create: (_) =>
+          DomainChoiceCubit(profileId: profileId, useCases: _domainChoice)
+            ..load(),
+      child: DomainSection(builder: builder),
+    );
+  }
+
   /// "Mes monstres" of [profileId] in [domainId], for the Profile tab;
   /// [onOpenLittle] opens the screen of the little monsters, or is `null`
   /// to leave its link out.
   Widget buildMonstersCard({
     required String profileId,
-    String domainId = LearningDomainIds.multiplication,
+    required String domainId,
     VoidCallback? onOpenLittle,
   }) {
     final LearningPathParams params = LearningPathParams(

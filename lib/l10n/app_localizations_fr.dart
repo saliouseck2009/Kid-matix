@@ -216,6 +216,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get masteryGridTitle => 'Mes tables';
 
   @override
+  String get masteryGridTitleNumbers => 'Mes nombres';
+
+  @override
   String get masteryStatusNotSeen => 'Nouveau';
 
   @override

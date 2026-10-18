@@ -352,6 +352,12 @@ abstract class AppLocalizations {
   /// **'Mes tables'**
   String get masteryGridTitle;
 
+  /// Title of the mastery grid card of the Profile tab when the numbers domain is chosen above it ("My numbers"): one row per unit, one cell per item colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes nombres'**
+  String get masteryGridTitleNumbers;
+
   /// Status of a fact never asked, in the legend of the mastery grid and read with each cell ("New"). Masculine: it qualifies "fait" (fact).
   ///
   /// In fr, this message translates to:

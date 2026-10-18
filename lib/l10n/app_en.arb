@@ -42,6 +42,7 @@
   "profileCrownsLabel": "{count, plural, =1{crown} other{crowns}}",
   "profileBadgesLabel": "{count, plural, =1{badge} other{badges}}",
   "masteryGridTitle": "My tables",
+  "masteryGridTitleNumbers": "My numbers",
   "masteryStatusNotSeen": "New",
   "masteryStatusToReview": "To review",
   "masteryStatusInProgress": "In progress",

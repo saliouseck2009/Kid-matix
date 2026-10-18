@@ -20,6 +20,13 @@ import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_backup_part.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source_impl.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/path_domain_repository_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/repositories/path_domain_repository.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/get_domain_choice_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/select_domain_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/watch_domain_choice_use_case.dart';
 
 /// Registers the learning path feature in [sl] and adds its session hook;
 /// Blocs are never registered.
@@ -51,6 +58,7 @@ void registerLearningPathFeature(GetIt sl) {
   sl.registerLazySingleton<WatchLearningPathChangesUseCase>(
     () => WatchLearningPathChangesUseCase(repository: sl()),
   );
+  _registerDomainChoice(sl);
   sl.registerLazySingleton<LearningPathService>(LearningPathServiceImpl.new);
   sl.registerLazySingleton<CrownService>(
     () => CrownServiceImpl(getPath: sl(), watchChanges: sl(), domains: sl()),
@@ -66,4 +74,23 @@ void registerLearningPathFeature(GetIt sl) {
   );
   sl<ProgressResetHooks>().add(const StageProgressResetHook());
   sl<ProfileBackupParts>().add(const StageProgressBackupPart());
+}
+
+/// The domain each player last chose on the map, kept on the device.
+void _registerDomainChoice(GetIt sl) {
+  sl.registerLazySingleton<PathDomainLocalDataSource>(
+    () => PathDomainLocalDataSourceImpl(storage: sl()),
+  );
+  sl.registerLazySingleton<PathDomainRepository>(
+    () => PathDomainRepositoryImpl(domains: sl()),
+  );
+  sl.registerLazySingleton<GetDomainChoiceUseCase>(
+    () => GetDomainChoiceUseCase(repository: sl(), domains: sl()),
+  );
+  sl.registerLazySingleton<SelectDomainUseCase>(
+    () => SelectDomainUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<WatchDomainChoiceUseCase>(
+    () => WatchDomainChoiceUseCase(repository: sl()),
+  );
 }

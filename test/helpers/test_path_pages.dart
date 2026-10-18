@@ -5,6 +5,14 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
+import 'package:kid_matix/core/storage/local_storage.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source_impl.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/path_domain_repository_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/repositories/path_domain_repository.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/get_domain_choice_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/select_domain_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/watch_domain_choice_use_case.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/repositories/stage_progress_repository.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/answer_placement_question_use_case.dart';
@@ -17,6 +25,7 @@ import 'package:kid_matix/features/learning_path/presentation/learning_path_page
 
 import '../features/quiz/helpers/quiz_fixtures.dart';
 import 'fake_mastery_service.dart';
+import 'in_memory_local_storage.dart';
 import 'test_quiz_pages.dart';
 
 /// [StageProgressRepository] over a list the test fills, which tells its
@@ -114,11 +123,31 @@ PlacementUseCases buildTestPlacementUseCases({
   );
 }
 
-/// Learning path pages over the real domains of the app.
+/// Use cases of the domain switch over [storage], the device preferences
+/// of the test.
+DomainChoiceUseCases buildTestDomainChoiceUseCases({LocalStorage? storage}) {
+  final PathDomainRepository repository = PathDomainRepositoryImpl(
+    domains: PathDomainLocalDataSourceImpl(
+      storage: storage ?? InMemoryLocalStorage(),
+    ),
+  );
+  return DomainChoiceUseCases(
+    getChoice: GetDomainChoiceUseCase(
+      repository: repository,
+      domains: buildDomainRegistry(),
+    ),
+    selectDomain: SelectDomainUseCase(repository: repository),
+    watchChoice: WatchDomainChoiceUseCase(repository: repository),
+  );
+}
+
+/// Learning path pages over the real domains of the app; the domain
+/// choices go to [storage].
 LearningPathPages buildTestPathPages({
   StageProgressRepository? repository,
   PlayerSettingsService settings = const FixedPlayerSettings(),
   MasteryService? mastery,
+  LocalStorage? storage,
 }) {
   final StageProgressRepository stages =
       repository ?? InMemoryStageProgressRepository();
@@ -128,6 +157,7 @@ LearningPathPages buildTestPathPages({
       repository: stages,
       mastery: mastery,
     ),
+    domainChoice: buildTestDomainChoiceUseCases(storage: storage),
     domains: buildDomainRegistry(),
     clock: FakeClock(quizStart),
   );

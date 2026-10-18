@@ -238,6 +238,10 @@
   "@masteryGridTitle": {
     "description": "Title of the mastery grid card on the Profile tab: one row per multiplication table, one cell per fact (\"My tables\")."
   },
+  "masteryGridTitleNumbers": "Mes nombres",
+  "@masteryGridTitleNumbers": {
+    "description": "Title of the mastery grid card of the Profile tab when the numbers domain is chosen above it (\"My numbers\"): one row per unit, one cell per item colored by how well it is known. Short title."
+  },
   "masteryStatusNotSeen": "Nouveau",
   "@masteryStatusNotSeen": {
     "description": "Status of a fact never asked, in the legend of the mastery grid and read with each cell (\"New\"). Masculine: it qualifies \"fait\" (fact)."

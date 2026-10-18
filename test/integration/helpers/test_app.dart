@@ -14,6 +14,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
@@ -106,6 +107,11 @@ abstract final class TestApp {
     final LearningPathPages pages = LearningPathPages(
       useCases: LearningPathUseCases(getLearningPath: sl(), watchChanges: sl()),
       placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
+      domainChoice: DomainChoiceUseCases(
+        getChoice: sl(),
+        selectDomain: sl(),
+        watchChoice: sl(),
+      ),
       domains: sl(),
       clock: sl(),
     );

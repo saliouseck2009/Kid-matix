@@ -21,6 +21,7 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/duel_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
@@ -207,6 +208,11 @@ GoRouter _createRouter(
         watchChanges: sl(),
       ),
       placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
+      domainChoice: DomainChoiceUseCases(
+        getChoice: sl(),
+        selectDomain: sl(),
+        watchChoice: sl(),
+      ),
       domains: sl(),
       clock: sl(),
     ),

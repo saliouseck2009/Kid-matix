@@ -28,7 +28,8 @@ final class MasteryPages {
     required this._domains,
   });
 
-  /// Domain of the grid on the Profile tab.
+  /// Domain of « Mes monstres », the little monsters: the hunt it starts
+  /// is a challenge of the multiplication.
   static const String domainId = LearningDomainIds.multiplication;
 
   final GetMasteryGridUseCase _getGrid;
@@ -36,14 +37,18 @@ final class MasteryPages {
   final WatchMasteryChangesUseCase _watchChanges;
   final DomainRegistry _domains;
 
-  /// "Mes tables": the mastery grid of [profileId].
-  Widget buildGridCard({required String profileId}) {
-    final LearningDomain? domain = _domains.find(domainId);
+  /// "Mes tables" or "Mes nombres": the mastery grid of [profileId] in
+  /// [gridDomainId].
+  Widget buildGridCard({
+    required String profileId,
+    String gridDomainId = domainId,
+  }) {
+    final LearningDomain? domain = _domains.find(gridDomainId);
     if (domain == null) return const SizedBox.shrink();
     return BlocProvider<MasteryGridCubit>(
-      key: ValueKey<String>('mastery-$profileId'),
+      key: ValueKey<String>('mastery-$profileId-$gridDomainId'),
       create: (_) => MasteryGridCubit(
-        scope: MasteryScope(profileId: profileId, domainId: domainId),
+        scope: MasteryScope(profileId: profileId, domainId: gridDomainId),
         getGrid: _getGrid,
         watchChanges: _watchChanges,
       )..load(),
