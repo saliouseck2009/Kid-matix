@@ -37,13 +37,29 @@ final class QuizLabels {
         _ => '',
       },
       QuestionTypeIds.compare => l10n.quizCompareLabel,
-      _ => switch (question.picture) {
+      _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
         NumberLinePicture() => l10n.quizNumberLineLabel,
         null => describeUnitOf(question, domainId),
       },
     };
+  }
+
+  /// The drawing [question] asks to read: that of a format made for it,
+  /// or of a written answer whose prompt is the blank alone; `null` when
+  /// the drawing only helps an operation, such as a line next to 7 + 8.
+  MathPicture? _askedDrawing(Question question) {
+    final bool isAboutDrawing = switch (question.questionTypeId) {
+      QuestionTypeIds.countObjects ||
+      QuestionTypeIds.tensAndOnes ||
+      QuestionTypeIds.numberLine => true,
+      QuestionTypeIds.typedAnswer => question.prompt.every(
+        (PromptToken token) => token is BlankToken,
+      ),
+      _ => false,
+    };
+    return isAboutDrawing ? question.picture : null;
   }
 
   /// The whole of [question] as one sentence, for a screen reader and the
@@ -59,7 +75,7 @@ final class QuizLabels {
       if (numbers.length < 2) return null;
       return l10n.quizCompareSpoken(numbers.first.value, numbers.last.value);
     }
-    return switch (question.picture) {
+    return switch (_askedDrawing(question)) {
       ObjectsPicture() => l10n.quizCountLabel,
       TenBundlesPicture(:final int tens, :final int ones) =>
         l10n.quizBundlesSpoken(tens, ones),
