@@ -4,17 +4,16 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 
 ## En bref
 
-- Un fichier par mot, nommé `wo_<clé>.m4a`, par exemple `wo_il_reste.m4a`.
-- Dans chaque fichier : l'explication, une courte pause, puis l'exemple.
+- Deux fichiers par mot : l'explication dans `wo_<clé>.m4a`, l'exemple dans `wo_<clé>_exemple.m4a`. Par exemple `wo_il_reste.m4a` et `wo_il_reste_exemple.m4a`.
 - Deux secondes de silence avant et après.
 - Une voix lente et chaleureuse, comme pour un petit enfant qui apprend.
-- Environ 10 à 20 secondes par mot. Compte deux ou trois séances.
+- Environ 5 à 10 secondes par fichier. Compte deux ou trois séances.
 
 ## 0. Préparer le texte
 
 - Avant d'ouvrir l'enregistreur, remplis dans `math-words.md` le mot wolof retenu de chaque notion (section 2), puis les deux colonnes wolof de chaque mot : « Explication en wolof » et « Exemple en wolof ».
 - Relis chaque texte à voix haute, une fois, sans enregistrer. Si une phrase te gêne, change-la avant.
-- Enregistre ensuite le fichier du mot.
+- Enregistre ensuite les deux fichiers du mot.
 
 ## 1. Choisir la pièce
 
@@ -32,13 +31,13 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 - Garde la même pièce, le même téléphone et la même distance du début à la fin, et à chaque séance, pour que tous les fichiers sonnent pareil.
 - Format : prends M4A (AAC) si l'enregistreur le propose. Si le fichier n'est pas en `.m4a`, garde son extension (par exemple `wo_il_reste.mp3`) ; ne change jamais l'extension à la main, le script convertira.
 
-## 3. Un fichier par mot, et son nom
+## 3. Deux fichiers par mot, et leurs noms
 
-- Un mot, un fichier. Ne mets jamais deux mots dans un même fichier, et ne coupe pas un mot en plusieurs fichiers.
-- Le nom vient de la colonne « Clé » du tableau : `wo_<clé>.m4a`. La colonne « Fichier audio » donne le nom exact (pour l'extension, voir la section 2).
-- Exemples : `wo_il_reste.m4a`, `wo_de_plus_que.m4a`, `wo_a_la_fin.m4a`.
+- Un mot, deux fichiers : l'explication dans l'un, l'exemple dans l'autre. Ne mets jamais deux mots dans un même fichier.
+- Les noms viennent de la colonne « Clé » du tableau : `wo_<clé>.m4a` pour l'explication, `wo_<clé>_exemple.m4a` pour l'exemple. Les colonnes « Audio : explication » et « Audio : exemple » donnent les noms exacts (pour l'extension, voir la section 2).
+- Exemples : `wo_il_reste.m4a` et `wo_il_reste_exemple.m4a`, `wo_de_plus_que.m4a` et `wo_de_plus_que_exemple.m4a`.
 - En minuscules, sans accent, sans espace, sans majuscule. Les `_` restent : `wo_de_plus_que.m4a`, pas `wo-de-plus-que.m4a` ni `Wo de plus que.m4a`.
-- Renomme le fichier tout de suite après l'enregistrement, pour ne pas le mélanger avec les autres.
+- Renomme chaque fichier tout de suite après l'enregistrement, pour ne pas le mélanger avec les autres.
 
 ## 4. Le ton
 
@@ -57,13 +56,12 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 
 ## 6. Ce qu'on enregistre : l'explication, puis l'exemple
 
-Pour chaque mot, dans le même fichier, dans cet ordre :
+Pour chaque mot, deux fichiers :
 
-1. **L'explication** (colonne « Explication en wolof ») : ce que veut dire le mot, en une ou deux phrases simples, comme à un enfant.
-2. **Une pause** d'environ une seconde.
-3. **L'exemple** (colonne « Exemple en wolof ») : une courte situation du quotidien.
+1. **L'explication** (colonne « Explication en wolof »), dans `wo_<clé>.m4a` : ce que veut dire le mot, en une ou deux phrases simples, comme à un enfant.
+2. **L'exemple** (colonne « Exemple en wolof »), dans `wo_<clé>_exemple.m4a` : une courte situation du quotidien.
 
-Le mot français n'est pas enregistré : l'app le fait lire par la voix du téléphone. Vise 10 à 20 secondes par fichier. Au-delà de 30 secondes, raccourcis l'explication.
+Avec deux fichiers, l'app peut faire entendre l'explication seule, par exemple quand l'enfant touche un mot dans une phrase, et l'exemple à la demande. Le mot français n'est pas enregistré : l'app le fait lire par la voix du téléphone. Vise 5 à 10 secondes par fichier. Au-delà de 15 secondes, raccourcis.
 
 ## 7. Vérifier chaque fichier
 
@@ -72,10 +70,10 @@ Avant de livrer, écoute chaque fichier au casque, dans l'ordre du tableau :
 - [ ] Le fichier commence et finit par du silence, sans bruit de rue, de voix ou de téléphone.
 - [ ] La voix est claire, sans souffle ni coupure au milieu.
 - [ ] Le volume ne baisse pas au cours du fichier.
-- [ ] L'explication puis l'exemple sont là, avec une pause entre les deux.
+- [ ] Chaque mot a ses deux fichiers : l'explication et l'exemple.
 - [ ] Le contenu correspond à la ligne du tableau (le bon mot, le bon exemple).
-- [ ] Le nom est exactement `wo_<clé>.m4a`.
-- [ ] La durée reste entre 10 et 20 secondes environ, 30 au plus.
+- [ ] Les noms sont exactement `wo_<clé>.m4a` et `wo_<clé>_exemple.m4a`.
+- [ ] La durée reste entre 5 et 10 secondes environ, 15 au plus.
 
 ## 8. Livrer les fichiers
 
@@ -96,6 +94,6 @@ Cette partie n'est pas encore écrite. Elle sera ajoutée par un agent de code, 
 - couper les silences au début et à la fin, en gardant une marge ;
 - égaliser le volume entre les fichiers ;
 - convertir chaque fichier en un format mono compressé ;
-- vérifier que chaque mot du tableau a son fichier `wo_<clé>.m4a`, et signaler les fichiers manquants.
+- vérifier que chaque mot du tableau a ses deux fichiers, `wo_<clé>.m4a` et `wo_<clé>_exemple.m4a`, et signaler les fichiers manquants.
 
 Le format de sortie et le dossier de destination dans l'app (probablement `assets/audio/wo/`, à confirmer avec F28-03) restent à valider. Le propriétaire ne lance rien : le développeur traitera les fichiers reçus.
