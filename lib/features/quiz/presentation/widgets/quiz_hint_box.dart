@@ -5,8 +5,8 @@ import 'package:kid_matix/core/widgets/dashed_border_painter.dart';
 
 /// Dashed box under the answers that tells what to do.
 class QuizHintBox extends StatelessWidget {
-  /// Creates the box showing [hint].
-  const QuizHintBox({required this.hint, super.key});
+  /// Creates the box showing [hint]; [listenButton] reads it aloud.
+  const QuizHintBox({required this.hint, this.listenButton, super.key});
 
   /// Height shared with the feedback panel, so nothing jumps.
   static const double height = 116;
@@ -15,6 +15,10 @@ class QuizHintBox extends StatelessWidget {
 
   /// What the player has to do.
   final String hint;
+
+  /// The listen button that reads [hint], at the right of the text, or
+  /// `null` when no voice can read it.
+  final Widget? listenButton;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +32,20 @@ class QuizHintBox extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: height),
         alignment: Alignment.center,
         padding: const EdgeInsets.all(AppSizes.space16),
-        child: Text(
-          hint,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: context.palette.mutedText,
-          ),
+        child: Row(
+          spacing: AppSizes.space8,
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                hint,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: context.palette.mutedText,
+                ),
+              ),
+            ),
+            ?listenButton,
+          ],
         ),
       ),
     );

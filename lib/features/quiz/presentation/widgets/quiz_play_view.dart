@@ -60,7 +60,7 @@ class QuizPlayView extends StatelessWidget {
     final int? lives = data.run.lives;
     final Widget? listenButton = data.canReadAloud
         ? ListenButton(
-            isSpeaking: data.isReading,
+            isSpeaking: data.isReading && !data.isReadingInstruction,
             onPressed: () =>
                 context.read<QuizBloc>().add(const ReadAloudToggled()),
           )
@@ -228,6 +228,7 @@ final class _PlayData {
     this.timer,
     this.canReadAloud = false,
     this.isReading = false,
+    this.isReadingInstruction = false,
   });
 
   factory _PlayData.of(QuizState state) {
@@ -253,6 +254,7 @@ final class _PlayData {
         },
         canReadAloud: state.canReadAloud,
         isReading: state.isReading,
+        isReadingInstruction: state.isReadingInstruction,
       ),
     };
   }
@@ -272,8 +274,11 @@ final class _PlayData {
   /// still waits for its answer.
   final bool canReadAloud;
 
-  /// Whether a voice is reading the question.
+  /// Whether a voice is reading, the question or its instruction.
   final bool isReading;
+
+  /// Whether what the voice reads is the instruction under the answers.
+  final bool isReadingInstruction;
 
   static (double, bool)? _frozenTimer(
     Duration? limit,
@@ -354,7 +359,17 @@ class _AnswerZone extends StatelessWidget {
                 : () => bloc.add(const TypedAnswerValidated()),
           )
         else if (labels.describeHint(question) case final String hint)
-          QuizHintBox(hint: hint),
+          QuizHintBox(
+            hint: hint,
+            listenButton: data.canReadAloud
+                ? ListenButton(
+                    isSpeaking: data.isReading && data.isReadingInstruction,
+                    onPressed: () => bloc.add(
+                      const ReadAloudToggled(isInstruction: true),
+                    ),
+                  )
+                : null,
+          ),
       ],
     );
   }

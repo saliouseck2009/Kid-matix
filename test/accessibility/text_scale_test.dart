@@ -47,11 +47,12 @@ void main() {
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     mascotPages = buildTestMascotPages();
+    // A voice is installed: every listen button must fit at every size.
+    final FakeSpeechService speech = FakeSpeechService();
     router = createAppRouter(
       session: FakeProfileSessionService(activeProfileId: 'p-1'),
       profilePages: buildProfilePages(),
-      // A voice is installed: the listen button must fit at every size.
-      quizPages: buildTestQuizPages(speech: FakeSpeechService()),
+      quizPages: buildTestQuizPages(speech: speech),
       pathPages: buildTestPathPages(),
       rewardPages: buildTestRewardPages(),
       mascotPages: mascotPages,
@@ -82,6 +83,7 @@ void main() {
       KidMatixApp(
         locale: locale,
         router: router,
+        speech: speech,
         scope: (Widget child) =>
             Theme(data: AppTheme.of(theme), child: mascotScope(child)),
       ),

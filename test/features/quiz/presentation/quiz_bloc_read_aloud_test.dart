@@ -470,4 +470,71 @@ void main() {
       },
     );
   });
+
+  group('QuizBloc reading the instruction', () {
+    QuizRequest multipleChoiceRequest() {
+      return QuizRequest(
+        profileId: 'profile-1',
+        domainId: MultiplicationDomain.domainId,
+        mode: QuizMode.freeTraining,
+        itemKeys: tableKeys(5),
+        questionTypeIds: const <String>[QuestionTypeIds.multipleChoice],
+        baseTimeLimit: QuizTimeLimits.freeTraining,
+      );
+    }
+
+    test('reads the instruction when its button is tapped', () async {
+      // Arrange
+      buildBloc();
+      await start(request: multipleChoiceRequest());
+      // Act
+      bloc.add(const ReadAloudToggled(isInstruction: true));
+      await pumpEventQueue();
+      // Assert
+      expect(speech.spoken, <String>['instruction mul:5x1']);
+      expect(asking().isReading, isTrue);
+      expect(asking().isReadingInstruction, isTrue);
+    });
+    test('holds the timer while the instruction is read', () async {
+      // Arrange
+      buildBloc();
+      await start(request: multipleChoiceRequest());
+      // Act
+      bloc.add(const ReadAloudToggled(isInstruction: true));
+      await pumpEventQueue();
+      await tick(30);
+      // Assert
+      expect(asking().elapsed, Duration.zero);
+    });
+    test('stops the instruction when its button is tapped again', () async {
+      // Arrange
+      buildBloc();
+      await start(request: multipleChoiceRequest());
+      bloc.add(const ReadAloudToggled(isInstruction: true));
+      await pumpEventQueue();
+      // Act
+      bloc.add(const ReadAloudToggled(isInstruction: true));
+      await pumpEventQueue();
+      // Assert
+      expect(speech.isSpeaking, isFalse);
+      expect(asking().isReading, isFalse);
+    });
+    test('switches to the question when its button is tapped', () async {
+      // Arrange
+      buildBloc();
+      await start(request: multipleChoiceRequest());
+      bloc.add(const ReadAloudToggled(isInstruction: true));
+      await pumpEventQueue();
+      // Act
+      bloc.add(const ReadAloudToggled());
+      await pumpEventQueue();
+      // Assert
+      expect(speech.spoken, <String>[
+        'instruction mul:5x1',
+        'question mul:5x1',
+      ]);
+      expect(asking().isReading, isTrue);
+      expect(asking().isReadingInstruction, isFalse);
+    });
+  });
 }

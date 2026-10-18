@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -326,15 +327,19 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     );
   }
 
-  /// The listen button: reads the question, or stops the reading.
+  /// A listen button: reads what it stands for, or stops its reading. A
+  /// tap on the other button replaces the reading in progress.
   Future<void> _onReadAloudToggled(
     ReadAloudToggled event,
     Emitter<QuizState> emit,
   ) async {
     final QuizState current = state;
     if (current is! QuizAsking || !current.canReadAloud) return;
-    if (current.isReading) return _stopReading(emit);
-    await _read(emit, current);
+    final bool isThisOneReading =
+        current.isReading &&
+        current.isReadingInstruction == event.isInstruction;
+    if (isThisOneReading) return _stopReading(emit);
+    await _read(emit, current, isInstruction: event.isInstruction);
   }
 
   /// A question asked to a player who has them read by themselves.
@@ -346,17 +351,25 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     if (current is QuizAsking) await _read(emit, current);
   }
 
-  /// Says the question of [asking] and waits for the end of the voice.
-  Future<void> _read(Emitter<QuizState> emit, QuizAsking asking) async {
+  /// Says the question of [asking], or its instruction, and waits for the
+  /// end of the voice.
+  Future<void> _read(
+    Emitter<QuizState> emit,
+    QuizAsking asking, {
+    bool isInstruction = false,
+  }) async {
     final QuizReadAloud? reading = _readAloud;
-    if (reading == null) return;
+    final Question question = asking.turn.question;
+    final String? text = isInstruction
+        ? reading?.text.ofInstruction(question)
+        : reading?.text.ofQuestion(question);
+    if (reading == null || text == null) return;
     final int readingId = ++_readingId;
-    emit(asking.copyWith(isReading: true));
+    emit(
+      asking.copyWith(isReading: true, isReadingInstruction: isInstruction),
+    );
     await reading.useCases.read(
-      params: ReadAloudParams(
-        text: reading.text.ofQuestion(asking.turn.question),
-        languageCode: reading.languageCode,
-      ),
+      params: ReadAloudParams(text: text, languageCode: reading.languageCode),
     );
     final QuizState latest = state;
     if (readingId == _readingId && latest is QuizAsking) {

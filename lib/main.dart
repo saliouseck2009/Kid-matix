@@ -12,9 +12,11 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
+import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
 import 'package:kid_matix/core/widgets/app_width_limit.dart';
+import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/code_challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
@@ -100,6 +102,7 @@ Future<void> main() async {
       builder: (Locale? locale) => KidMatixApp(
         router: router,
         locale: locale,
+        speech: sl<SpeechService>(),
         scope: (Widget child) => PlayerScope(
           session: session,
           profilePages: profilePages,
@@ -294,6 +297,7 @@ class KidMatixApp extends StatelessWidget {
     required this.router,
     this.scope,
     this.locale,
+    this.speech,
     super.key,
   });
 
@@ -306,6 +310,9 @@ class KidMatixApp extends StatelessWidget {
   /// Wraps every screen, to give them the active player's mascot, or
   /// `null`.
   final Widget Function(Widget child)? scope;
+
+  /// The voice that reads tips and messages aloud, or `null` for none.
+  final SpeechService? speech;
 
   @override
   Widget build(BuildContext context) {
@@ -320,7 +327,16 @@ class KidMatixApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (BuildContext context, Widget? child) {
         final Widget screen = child ?? const SizedBox.shrink();
-        return AppWidthLimit(child: scope?.call(screen) ?? screen);
+        final Widget scoped = AppWidthLimit(
+          child: scope?.call(screen) ?? screen,
+        );
+        return switch (speech) {
+          final SpeechService voice => ReadAloudScope(
+            speech: voice,
+            child: scoped,
+          ),
+          null => scoped,
+        };
       },
     );
   }

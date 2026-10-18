@@ -141,7 +141,7 @@ void main() {
           isBossFight: format.isBossFight,
         );
         // Act
-        await tester.tap(find.byTooltip('Écouter'));
+        await tester.tap(find.byTooltip('Écouter').first);
         await tester.pump();
         // Assert
         expect(speech.spoken, hasLength(1));
@@ -155,12 +155,12 @@ void main() {
       // Act
       await pumpQuiz(tester);
       // Assert
-      expect(find.byIcon(Icons.volume_up_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.volume_up_rounded), findsNWidgets(2));
       expect(
-        tester.getSemantics(find.byType(ListenButton)),
+        tester.getSemantics(find.byType(ListenButton).first),
         isSemantics(isButton: true, tooltip: 'Écouter', hasTapAction: true),
       );
-      final Size actualSize = tester.getSize(find.byType(ListenButton));
+      final Size actualSize = tester.getSize(find.byType(ListenButton).first);
       expect(actualSize.width, greaterThanOrEqualTo(48));
       expect(actualSize.height, greaterThanOrEqualTo(48));
     });
@@ -170,30 +170,31 @@ void main() {
       // Arrange
       await pumpQuiz(tester);
       // Act
-      await tester.tap(find.byTooltip('Écouter'));
+      await tester.tap(find.byTooltip('Écouter').first);
       await tester.pump();
-      // Assert
+      // Assert: only the button of the question is a stop sign.
       expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
       expect(find.byTooltip('Arrêter la lecture'), findsOneWidget);
+      expect(find.byIcon(Icons.volume_up_rounded), findsOneWidget);
       // Act: the voice is done.
       speech.finishReading();
       await tester.pump();
       // Assert
-      expect(find.byIcon(Icons.volume_up_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.volume_up_rounded), findsNWidgets(2));
     });
     testWidgets('stops the voice when tapped while it speaks', (
       WidgetTester tester,
     ) async {
       // Arrange
       await pumpQuiz(tester);
-      await tester.tap(find.byTooltip('Écouter'));
+      await tester.tap(find.byTooltip('Écouter').first);
       await tester.pump();
       // Act
       await tester.tap(find.byTooltip('Arrêter la lecture'));
       await tester.pump();
       // Assert
       expect(speech.isSpeaking, isFalse);
-      expect(find.byTooltip('Écouter'), findsOneWidget);
+      expect(find.byTooltip('Écouter'), findsNWidgets(2));
     });
     testWidgets('is hidden, without a message, when no voice is installed', (
       WidgetTester tester,
@@ -241,7 +242,7 @@ void main() {
     ) async {
       // Arrange
       await pumpQuiz(tester, questionTypeId: QuestionTypeIds.trueFalse);
-      expect(find.byType(ListenButton), findsOneWidget);
+      expect(find.byType(ListenButton), findsNWidgets(2));
       // Act
       await tester.tap(find.text('Vrai'));
       await tester.pumpAndSettle();
@@ -284,6 +285,50 @@ void main() {
         anyOf('4 times 6 equals what', '6 times 4 equals what'),
       );
       expect(speech.languages.single, 'en');
+    });
+  });
+
+  group('The listen button of the instruction', () {
+    testWidgets('reads "Touche la bonne réponse"', (WidgetTester tester) async {
+      // Arrange
+      await pumpQuiz(tester);
+      expect(find.byType(ListenButton), findsNWidgets(2));
+      // Act
+      await tester.tap(find.byType(ListenButton).last);
+      await tester.pump();
+      // Assert
+      expect(speech.spoken, <String>['Touche la bonne réponse']);
+      expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
+    });
+    testWidgets('reads the instruction of a true or false question', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(tester, questionTypeId: QuestionTypeIds.trueFalse);
+      // Act
+      await tester.tap(find.byType(ListenButton).last);
+      await tester.pump();
+      // Assert
+      expect(speech.spoken, <String>['Ce calcul est-il juste\u00a0?']);
+    });
+    testWidgets('is absent where the answer is written on the keypad', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpQuiz(tester, questionTypeId: QuestionTypeIds.typedAnswer);
+      // Assert
+      expect(find.byType(ListenButton), findsOneWidget);
+    });
+    testWidgets('is hidden with the other button when no voice exists', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      speech.hasVoice = false;
+      // Act
+      await pumpQuiz(tester);
+      // Assert
+      expect(find.byType(ListenButton), findsNothing);
+      expect(find.text('Touche la bonne réponse'), findsOneWidget);
     });
   });
 

@@ -30,6 +30,7 @@ final class QuizAsking extends QuizState {
     this.playedTime = Duration.zero,
     this.canReadAloud = false,
     this.isReading = false,
+    this.isReadingInstruction = false,
   });
 
   /// Most digits the keypad accepts; every answer of version 1.0 fits.
@@ -53,8 +54,12 @@ final class QuizAsking extends QuizState {
   /// Whether a voice can read the question, which shows the listen button.
   final bool canReadAloud;
 
-  /// Whether a voice is reading the question.
+  /// Whether a voice is reading, the question or its instruction.
   final bool isReading;
+
+  /// Whether what the voice reads is the instruction under the answers;
+  /// only meaningful while [isReading].
+  final bool isReadingInstruction;
 
   /// Question shown.
   QuizTurn get turn => run.currentTurn!;
@@ -99,6 +104,7 @@ final class QuizAsking extends QuizState {
     String? typedDigits,
     Duration? playedTime,
     bool? isReading,
+    bool? isReadingInstruction,
   }) {
     return QuizAsking(
       run: run,
@@ -108,6 +114,7 @@ final class QuizAsking extends QuizState {
       playedTime: playedTime ?? this.playedTime,
       canReadAloud: canReadAloud,
       isReading: isReading ?? this.isReading,
+      isReadingInstruction: isReadingInstruction ?? this.isReadingInstruction,
     );
   }
 }
