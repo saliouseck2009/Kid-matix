@@ -316,6 +316,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsReadAloud => 'Lire les questions à voix haute';
 
   @override
+  String get settingsHelpAudio => 'Aide audio';
+
+  @override
+  String get helpAudioNone => 'Aucune';
+
+  @override
+  String helpAudioLanguageName(String code) {
+    String _temp0 = intl.Intl.selectLogic(
+      code,
+      {
+        'wo': 'wolof',
+        'other': '$code',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String helpAudioListen(String language) {
+    return 'Écouter en $language';
+  }
+
+  @override
   String get commonClose => 'Fermer';
 
   @override

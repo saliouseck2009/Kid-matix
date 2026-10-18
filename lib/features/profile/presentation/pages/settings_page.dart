@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
+import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
@@ -26,6 +28,7 @@ class SettingsPage extends StatelessWidget {
     this.backupSection,
     this.reminderRows = const <Widget>[],
     this.languageRows = const <Widget>[],
+    this.helpAudioLanguages = const <String>[],
     super.key,
   });
 
@@ -43,6 +46,10 @@ class SettingsPage extends StatelessWidget {
 
   /// Rows of the « Langue » section, hidden when empty.
   final List<Widget> languageRows;
+
+  /// Codes of the help languages the app has an audio pack for; the "Aide
+  /// audio" row is hidden when empty.
+  final List<String> helpAudioLanguages;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +77,7 @@ class SettingsPage extends StatelessWidget {
                   backupSection: backupSection,
                   reminderRows: reminderRows,
                   languageRows: languageRows,
+                  helpAudioLanguages: helpAudioLanguages,
                 ),
               };
             },
@@ -99,6 +107,7 @@ class _SettingsView extends StatelessWidget {
     required this.backupSection,
     required this.reminderRows,
     required this.languageRows,
+    required this.helpAudioLanguages,
   });
 
   static const double _gap = 20;
@@ -109,6 +118,7 @@ class _SettingsView extends StatelessWidget {
   final Widget? backupSection;
   final List<Widget> reminderRows;
   final List<Widget> languageRows;
+  final List<String> helpAudioLanguages;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -230,6 +240,16 @@ class _SettingsView extends StatelessWidget {
                     old.copyWith(isReadAloudEnabled: isOn),
               ),
             ),
+            if (helpAudioLanguages.isNotEmpty)
+              _HelpAudioRow(
+                languages: helpAudioLanguages,
+                selected: settings.helpAudioLanguage,
+                backgroundColor: band,
+                onSelected: (String language) => cubit.update(
+                  (ProfileSettingsEntity old) =>
+                      old.copyWith(helpAudioLanguage: language),
+                ),
+              ),
             ...gameRows,
           ],
         ),
@@ -266,6 +286,42 @@ class _SettingsView extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+/// "Aide audio": the language of the recorded help of the math words, or
+/// none.
+class _HelpAudioRow extends StatelessWidget {
+  const _HelpAudioRow({
+    required this.languages,
+    required this.selected,
+    required this.backgroundColor,
+    required this.onSelected,
+  });
+
+  final List<String> languages;
+  final String selected;
+  final Color backgroundColor;
+  final ValueChanged<String> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> choices = <String>[...languages, HelpAudio.none];
+    return SettingsChoiceRow(
+      label: context.l10n.settingsHelpAudio,
+      choices: ChoiceSegments<String>(
+        choices: choices,
+        // A language the app no longer ships counts as none.
+        selected: choices.contains(selected) ? selected : HelpAudio.none,
+        backgroundColor: backgroundColor,
+        labelOf: (String code) => code == HelpAudio.none
+            ? context.l10n.helpAudioNone
+            : toBeginningOfSentenceCase(
+                context.l10n.helpAudioLanguageName(code),
+              ),
+        onSelected: onSelected,
+      ),
     );
   }
 }

@@ -190,8 +190,10 @@ ProfilePages buildProfilePages({
   SettingsUseCases? settingsUseCases,
   BackupUseCases? backupUseCases,
   Random? gateRandom,
+  List<String> helpAudioLanguages = const <String>[],
 }) {
   return ProfilePages(
+    helpAudioLanguages: helpAudioLanguages,
     getProfiles: getProfiles ?? MockGetProfilesUseCase(),
     getProfile: getProfile ?? MockGetProfileUseCase(),
     createProfile: createProfile ?? MockCreateProfileUseCase(),

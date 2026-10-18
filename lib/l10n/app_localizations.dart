@@ -538,6 +538,30 @@ abstract class AppLocalizations {
   /// **'Lire les questions à voix haute'**
   String get settingsReadAloud;
 
+  /// Name of the setting that chooses the language of the recorded help of the math words ("Audio help"), in the game section of the settings screen. Its choices are the languages of the audio packs and "None". Two words at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aide audio'**
+  String get settingsHelpAudio;
+
+  /// Choice of the audio help setting that turns the recorded help off ("None"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune'**
+  String get helpAudioNone;
+
+  /// Name of a help language, from the code of its audio pack: it fills the audio help setting and the "Listen in..." button. Lower case in French and Spanish (a language name), as it is used inside a sentence. A new language adds one choice here; an unknown code is shown as it is.
+  ///
+  /// In fr, this message translates to:
+  /// **'{code, select, wo{wolof} other{{code}}}'**
+  String helpAudioLanguageName(String code);
+
+  /// Button that plays the recorded explanation of a math word in the help language of the player, such as "Listen in Wolof". {language} is the name from helpAudioLanguageName. Shown only when the recording exists.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écouter en {language}'**
+  String helpAudioListen(String language);
+
   /// Tooltip of the cross button that closes a full screen such as the parental gate ("Close"). Infinitive verb, one word.
   ///
   /// In fr, this message translates to:
