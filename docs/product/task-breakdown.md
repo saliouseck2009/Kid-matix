@@ -696,7 +696,7 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 - [x] **F26-01** Fonctionnalité `division` qui implémente `LearningDomain`, calculée à partir des 120 faits de multiplication : clés `div:56/7`, une unité par table, même ordre que le parcours de multiplication.
 - [x] **F26-02** Lien avec la multiplication : après une erreur sur 56 ÷ 7, rappel de 7 × 8 = 56.
 - [x] **F26-03** Aide visuelle : partager des objets en groupes égaux ; astuce par table.
-- [ ] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
+- [x] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
 - [ ] **F26-05** Tests : clés, génération, lien avec la multiplication.
 
 **Terminé quand :** un joueur fait le parcours de la division par 2 et voit le rappel de la multiplication après une erreur.
