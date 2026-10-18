@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/storage/sqlite_bool_converter.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
@@ -21,6 +22,7 @@ final class ProfileSettingsLocalModel {
     required this.isEverythingUnlocked,
     required this.updatedAt,
     this.isReadAloudEnabled = false,
+    this.helpAudioLanguage = HelpAudio.defaultLanguage,
     this.deletedAt,
   });
 
@@ -38,6 +40,7 @@ final class ProfileSettingsLocalModel {
       isReducedMotionEnabled: settings.isReducedMotionEnabled,
       isEverythingUnlocked: settings.isEverythingUnlocked,
       isReadAloudEnabled: settings.isReadAloudEnabled,
+      helpAudioLanguage: settings.helpAudioLanguage,
       updatedAt: updatedAt.millisecondsSinceEpoch,
     );
   }
@@ -72,6 +75,11 @@ final class ProfileSettingsLocalModel {
   @JsonKey(defaultValue: false)
   final bool isReadAloudEnabled;
 
+  /// Language of the recorded help of the math words. A backup made before
+  /// schema version 13 has no such column and reads as the default one.
+  @JsonKey(defaultValue: HelpAudio.defaultLanguage)
+  final String helpAudioLanguage;
+
   /// Last change of the row, in milliseconds since epoch.
   final int updatedAt;
 
@@ -97,6 +105,7 @@ final class ProfileSettingsLocalModel {
       isReducedMotionEnabled: isReducedMotionEnabled,
       isEverythingUnlocked: isEverythingUnlocked,
       isReadAloudEnabled: isReadAloudEnabled,
+      helpAudioLanguage: helpAudioLanguage,
     );
   }
 }

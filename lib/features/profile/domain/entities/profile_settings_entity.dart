@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:meta/meta.dart';
@@ -18,6 +19,7 @@ final class ProfileSettingsEntity {
     required this.isReducedMotionEnabled,
     required this.isEverythingUnlocked,
     this.isReadAloudEnabled = false,
+    this.helpAudioLanguage = HelpAudio.defaultLanguage,
   });
 
   /// Creates the settings of a new player.
@@ -28,7 +30,8 @@ final class ProfileSettingsEntity {
       isVibrationEnabled = true,
       isReducedMotionEnabled = false,
       isEverythingUnlocked = false,
-      isReadAloudEnabled = false;
+      isReadAloudEnabled = false,
+      helpAudioLanguage = HelpAudio.defaultLanguage;
 
   /// Identifier of the profile these settings belong to.
   final String profileId;
@@ -55,6 +58,10 @@ final class ProfileSettingsEntity {
   /// questions à voix haute"); the player can always ask for a reading.
   final bool isReadAloudEnabled;
 
+  /// Language of the recorded help of the math words ("Aide audio"): the
+  /// code of an audio pack, or [HelpAudio.none].
+  final String helpAudioLanguage;
+
   /// Returns a copy with the given fields replaced.
   ProfileSettingsEntity copyWith({
     String? profileId,
@@ -65,6 +72,7 @@ final class ProfileSettingsEntity {
     bool? isReducedMotionEnabled,
     bool? isEverythingUnlocked,
     bool? isReadAloudEnabled,
+    String? helpAudioLanguage,
   }) {
     return ProfileSettingsEntity(
       profileId: profileId ?? this.profileId,
@@ -76,6 +84,7 @@ final class ProfileSettingsEntity {
           isReducedMotionEnabled ?? this.isReducedMotionEnabled,
       isEverythingUnlocked: isEverythingUnlocked ?? this.isEverythingUnlocked,
       isReadAloudEnabled: isReadAloudEnabled ?? this.isReadAloudEnabled,
+      helpAudioLanguage: helpAudioLanguage ?? this.helpAudioLanguage,
     );
   }
 
@@ -90,7 +99,8 @@ final class ProfileSettingsEntity {
             other.isVibrationEnabled == isVibrationEnabled &&
             other.isReducedMotionEnabled == isReducedMotionEnabled &&
             other.isEverythingUnlocked == isEverythingUnlocked &&
-            other.isReadAloudEnabled == isReadAloudEnabled;
+            other.isReadAloudEnabled == isReadAloudEnabled &&
+            other.helpAudioLanguage == helpAudioLanguage;
   }
 
   @override
@@ -103,5 +113,6 @@ final class ProfileSettingsEntity {
     isReducedMotionEnabled,
     isEverythingUnlocked,
     isReadAloudEnabled,
+    helpAudioLanguage,
   );
 }

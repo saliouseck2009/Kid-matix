@@ -30,6 +30,7 @@ ProfileSettingsLocalModel _$ProfileSettingsLocalModelFromJson(
       : const SqliteBoolConverter().fromJson(
           (json['is_read_aloud_enabled'] as num).toInt(),
         ),
+  helpAudioLanguage: json['help_audio_language'] as String? ?? 'wo',
   deletedAt: (json['deleted_at'] as num?)?.toInt(),
 );
 
@@ -54,6 +55,7 @@ Map<String, dynamic> _$ProfileSettingsLocalModelToJson(
   'is_read_aloud_enabled': const SqliteBoolConverter().toJson(
     instance.isReadAloudEnabled,
   ),
+  'help_audio_language': instance.helpAudioLanguage,
   'updated_at': instance.updatedAt,
   'deleted_at': instance.deletedAt,
 };
