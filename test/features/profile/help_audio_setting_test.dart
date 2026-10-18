@@ -18,9 +18,9 @@ void main() {
   );
 
   group('Help audio setting', () {
-    test('starts on the shipped language', () {
+    test('starts with no choice, which means the first pack', () {
       // Assert
-      expect(defaults.helpAudioLanguage, HelpAudio.defaultLanguage);
+      expect(defaults.helpAudioLanguage, isNull);
     });
 
     test('turns off without touching the rest', () {
@@ -32,8 +32,8 @@ void main() {
       expect(actualSettings.helpAudioLanguage, HelpAudio.none);
       expect(actualSettings, isNot(defaults));
       expect(
-        actualSettings.copyWith(helpAudioLanguage: 'wo'),
-        defaults,
+        actualSettings.copyWith(isSoundEnabled: false).helpAudioLanguage,
+        HelpAudio.none,
       );
     });
 
@@ -56,7 +56,7 @@ void main() {
       );
     });
 
-    test('reads a backup made before the audio help as the default', () {
+    test('reads a backup made before the audio help as no choice', () {
       // Arrange
       final Map<String, Object?> inputRow =
           ProfileSettingsLocalModel.fromEntity(
@@ -67,7 +67,7 @@ void main() {
       final ProfileSettingsEntity actualSettings =
           ProfileSettingsLocalModel.fromJson(inputRow).toEntity();
       // Assert
-      expect(actualSettings.helpAudioLanguage, HelpAudio.defaultLanguage);
+      expect(actualSettings.helpAudioLanguage, isNull);
     });
 
     test('is read by the other features through the service', () async {
@@ -84,7 +84,7 @@ void main() {
         repository: repository,
       );
       // Act
-      final String actualLanguage = (await service.readHelpAudioLanguage(
+      final String? actualLanguage = (await service.readHelpAudioLanguage(
         profileId: 'p-1',
       )).requireData;
       // Assert

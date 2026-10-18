@@ -160,6 +160,28 @@ void main() {
     test('lists the languages of its packs', () {
       // Assert
       expect(service.languages, <String>['wo']);
+      expect(service.defaultLanguage, 'wo');
+    });
+
+    test('offers a pack only once it holds a recording', () {
+      // Arrange
+      final WordAudioServiceImpl actual = WordAudioServiceImpl(
+        packs: <AudioPackManifest>[
+          AudioPackManifest(language: 'aa', files: const {}),
+          _manifest(),
+        ],
+        player: player,
+      );
+      // Assert
+      expect(actual.languages, <String>['wo']);
+      expect(actual.defaultLanguage, 'aa');
+      expect(
+        WordAudioServiceImpl(
+          packs: const <AudioPackManifest>[],
+          player: player,
+        ).defaultLanguage,
+        isNull,
+      );
     });
 
     test('knows which recordings exist', () {

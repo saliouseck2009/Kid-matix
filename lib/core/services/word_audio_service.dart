@@ -9,9 +9,13 @@ import 'package:kid_matix/core/services/speech_reading.dart';
 /// particular: a language is the code of a pack. A word without recording
 /// has no audio, and the screens then show no button for it.
 abstract interface class WordAudioService {
-  /// Codes of the help languages the app ships a pack for, even when the
-  /// pack holds no recording yet.
+  /// Codes of the help languages whose pack holds at least one recording;
+  /// a pack with none yet is not offered.
   List<String> get languages;
+
+  /// The language of a player who never chose: the first pack of the
+  /// index, or `null` when the app ships none.
+  String? get defaultLanguage;
 
   /// Whether the pack of [languageCode] holds the recording [kind] of the
   /// word [wordKey].

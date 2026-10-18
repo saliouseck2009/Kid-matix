@@ -44,7 +44,7 @@ void main() {
     });
 
     test(
-      'upgrades a version 12 database: settings kept, wolof help on',
+      'upgrades a version 12 database: settings kept, no language chosen',
       () async {
         // Arrange
         final String inputPath =
@@ -70,7 +70,7 @@ void main() {
           'profile_settings',
         );
         expect(await upgraded.getVersion(), 13);
-        expect(actualRows.single['help_audio_language'], 'wo');
+        expect(actualRows.single['help_audio_language'], isNull);
         expect(actualRows.single['daily_goal_xp'], 20);
         await versionThirteen.close();
         await databaseFactoryFfi.deleteDatabase(inputPath);

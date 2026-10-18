@@ -57,7 +57,9 @@ final class PlayerSettingsServiceImpl implements PlayerSettingsService {
   }
 
   @override
-  Future<DataState<String>> readHelpAudioLanguage({required String profileId}) {
+  Future<DataState<String?>> readHelpAudioLanguage({
+    required String profileId,
+  }) {
     return _read(
       profileId,
       (ProfileSettingsEntity settings) => settings.helpAudioLanguage,

@@ -76,6 +76,8 @@ run_analyze() {
 run_test() {
   run_step "test" flutter test --coverage
   run_step "git hooks" bash tool/hooks_test.sh
+  run_step "audio script" python3 -m unittest tool/process_audio_test.py
+  run_step "math words asset" python3 tool/build_math_words.py --check
 }
 
 run_build_android() {
