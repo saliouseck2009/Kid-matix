@@ -39,7 +39,7 @@ void main() {
           body: SingleChildScrollView(
             child: buildTestMasteryPages(
               repository: repository,
-            ).buildGridCard(profileId: 'p1', gridDomainId: domainId),
+            ).buildGridCard(profileId: 'p1', domainId: domainId),
           ),
         ),
       );
