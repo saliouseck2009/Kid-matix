@@ -19,6 +19,13 @@ owner. Add a line here whenever a new decision is taken.
 | Scope: 1.0 = F0–F11, 1.1 = F12–F18, 1.2 = F19–F21 | See `docs/product/task-breakdown.md` |
 | App name "Kid Matix" is provisional (project folder `kid_matix`) | "Mathimo" and "Numi" were proposed; the owner has not chosen. Final name is task F11-07 |
 | UI language is French only at launch; every string is in `lib/l10n/app_fr.arb` | Other languages come with F21: English and Spanish since F21 |
+| Version 2.0 « Kid Matix pour tous » (2026-10-18): the app aims at as many children as possible and at real progress in maths, so that it can be offered to NGOs and schools working with children in Africa. Lots F23 to F32; vision in section 17 of the specifications | Owner |
+| No in-app purchase, ever, and no advertising. The shop stays paid only with coins earned by playing | Owner (2026-10-18) |
+| Dropped: weekly world competitions, sharing between players and any free chat between children. The online mode is no longer a priority; only an optional sync of class results may come (F32-03) | Owner (2026-10-18) |
+| Children are placed by skill, not by age, following the "Teaching at the Right Level" approach: the path starts with numbers up to 100, then addition and subtraction, multiplication, division and word problems | Many children reached by NGOs lack the basics; a common approach of those NGOs |
+| Wolof is an audio help, not an interface language: explanations of words and problem statements are recorded by real voices (the owner, a native speaker, for the first version), never by speech synthesis, and shipped as audio packs (`assets/audio/<language>/`) so that other languages need no code change. A glossary fixes the Wolof word chosen for each notion | Many children do not read Wolof; Wolof speech synthesis is not reliable |
+| Word problems are taught through understanding the situation (bar models, guided steps), never through "keyword means operation" rules | "3 more than" can require a subtraction |
+| A teacher mode protected by a 4-digit code chosen by the teacher (no account) is allowed for the class mode. It does not reopen a parent area: nothing in the child's game is configured by an adult outside the class tools | Owner (2026-10-18), class mode for schools and NGOs |
 
 ## Technical
 
@@ -159,4 +166,9 @@ Ask the owner when the lot that needs the answer starts.
 | Final illustrations for the mascot, the 12 monsters and the 12 avatars (current drawings are provisional) | Any time; code must not depend on the drawings |
 | Screens not drawn yet (see `docs/design/README.md`) | F4, F12, F14 |
 | Unconfirmed defaults of section 16 of the specifications (table order, no profile code, Android and iOS released together...) | Treated as valid until the owner says otherwise |
-| Online mode: backend choice, parental consent, leaderboard scope, anti-cheat | After 1.2 |
+| Main context of the class mode: tablets shared at school, or the families' phones; maximum class size | F29-01 |
+| Reading questions aloud: confirm that system speech synthesis works offline on low-end Android and on iOS | F23-01 |
+| Review of the Wolof glossary and recordings by a teacher before an NGO pilot | Before F29 is shown to a partner |
+| Publishing the code as open source (trust of NGOs, community translations) | Before presenting the project to NGOs |
+| Other audio help languages after Wolof, and the partners who record them | F32-01 |
+| Optional online sync of class results: server, consent, data protection | F32-03 |
