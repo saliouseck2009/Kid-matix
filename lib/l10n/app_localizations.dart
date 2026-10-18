@@ -160,6 +160,12 @@ abstract class AppLocalizations {
   /// **'Nombres'**
   String get numbersDomainName;
 
+  /// Name of the division domain (the divisions of the multiplication tables) in the switch of the domains above the map and above the Profile progress cards ("Division"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Division'**
+  String get divisionDomainName;
+
   /// Name of the addition and subtraction domain in the switch of the domains above the map and above the Profile progress cards ("+ and −"). One word, a segment label.
   ///
   /// In fr, this message translates to:
@@ -381,6 +387,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mes nombres'**
   String get masteryGridTitleNumbers;
+
+  /// Title of the mastery grid card of the Profile tab when the division domain is chosen above it ("My divisions"): one row per unit, one cell per division colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes divisions'**
+  String get masteryGridTitleDivision;
 
   /// Title of the mastery grid card of the Profile tab when the addition and subtraction domain is chosen above it ("My + and −"): one row per unit, one cell per fact colored by how well it is known. Short title.
   ///
@@ -946,6 +958,12 @@ abstract class AppLocalizations {
   /// **'Plus petit, égal ou plus grand ?'**
   String get quizCompareLabel;
 
+  /// Label above a question whose number to write is hidden in the operation ("Find the hidden number"), in every domain. It replaces the unit name, which would give the answer away (the divisor of 56 ÷ ? = 8). One short line in a pill.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trouve le nombre caché'**
+  String get quizMissingNumberLabel;
+
   /// What a screen reader and the read-aloud button say for a comparison question of the numbers domain ("Is 34 less than, equal to or greater than 43?"). {first} is the number on the left, {second} the one on the right. Never shown.
   ///
   /// In fr, this message translates to:
@@ -1120,6 +1138,12 @@ abstract class AppLocalizations {
   /// **'{rows, plural, =1{1 rangée} other{{rows} rangées}} de {columns, plural, =1{1 point} other{{columns} points}}'**
   String quizHelpDotGridLabel(int rows, int columns);
 
+  /// Caption under the grid of dots that pictures a division, also read by screen readers: the dots are shared into equal groups, one row per group ("56 dots shared into 7 groups: 8 in each group" for 56 ÷ 7).
+  ///
+  /// In fr, this message translates to:
+  /// **'{total, plural, =1{1 point partagé} other{{total} points partagés}} en {groups, plural, =1{1 groupe} other{{groups} groupes}} : {each} dans chaque groupe'**
+  String quizHelpDotGridSharingLabel(int total, int groups, int each);
+
   /// Button under the answer feedback that shows the next question ("Continue"). Infinitive verb.
   ///
   /// In fr, this message translates to:
@@ -1179,6 +1203,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'plus'**
   String get quizSpokenPlus;
+
+  /// Words read by the screen reader for the division sign of a question ("divided by"), as in "56 divisé par 7 égale combien". Joined with the other words in the order of the operation. Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'divisé par'**
+  String get quizSpokenDividedBy;
 
   /// Word read by the screen reader for the minus sign of a subtraction ("minus"), as in "15 moins 7 égale 8". Joined with the other words in the order of the operation. Never displayed.
   ///
@@ -1653,6 +1683,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{unit, select, count10{Touche chaque mangue du doigt en comptant : un, deux, trois… Le dernier nombre dit combien il y en a.} count20{Compte d\'abord la rangée de 10, puis continue : 11, 12, 13…} count100{Un paquet, c\'est 10 bâtonnets. Compte les paquets de 10 en 10 : 10, 20, 30…} tensones{Le chiffre des dizaines compte les paquets, celui des unités les bâtonnets seuls : 3 paquets et 4 bâtonnets font 34.} compare{Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.} order{Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.} beforeafter{Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !} other{}}'**
   String numbersUnitTip(String unit);
+
+  /// Name of a unit of the division domain, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Divide by 7"). Short title. {number} is the divisor, from 1 to 12, the number of the multiplication table the unit reverses.
+  ///
+  /// In fr, this message translates to:
+  /// **'Diviser par {number}'**
+  String divisionUnitName(int number);
+
+  /// Tip of a unit of the division domain, shown on its Discovery page under all its divisions ("For 56 ÷ 7, think of 7 × 8 = 56"). One or two short sentences for a child of 6 to 11, with an example. {unit} is the slug of the unit (the end of its key), the divisor as text, never shown: 1 to 12.
+  ///
+  /// In fr, this message translates to:
+  /// **'{unit, select, 1{Diviser par 1 ne change rien : 7 ÷ 1 = 7.} 2{Diviser par 2, c\'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.} 3{Diviser par 3, c\'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.} 4{Diviser par 4, c\'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.} 5{Pour 35 ÷ 5, compte de 5 en 5 jusqu\'à 35 : 5, 10, 15, 20, 25, 30, 35. Ça fait 7 bonds, donc 35 ÷ 5 = 7.} 6{Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.} 7{Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.} 8{Diviser par 8, c\'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.} 9{Dans la table de 9, les deux chiffres ajoutés font 9 (36 : 3 + 6 = 9). Et 36 ÷ 9 = 4, car 9 × 4 = 36.} 10{Diviser par 10, c\'est enlever le 0 à droite : 70 ÷ 10 = 7.} 11{Jusqu\'à 99 ÷ 11, les nombres de la table de 11 ont deux chiffres pareils : 77 ÷ 11 = 7.} 12{Pour 36 ÷ 12, compte de 12 en 12 : 12, 24, 36. Ça fait 3 bonds, donc 36 ÷ 12 = 3.} other{}}'**
+  String divisionUnitTip(String unit);
 
   /// Name of a unit of the addition and subtraction domain, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Additions up to 10", "Complete to 10", "Additions with carrying"). Short title, a few words. {unit} is the slug of the unit (the end of its key), never shown: add5, sub5, add7, add9, toten, sub7, sub9, subten, add12, add14, add20, sub12, sub14, sub20, add100 (no carrying), sub100 (no borrowing), carry, borrow.
   ///

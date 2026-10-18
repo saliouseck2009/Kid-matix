@@ -16,7 +16,10 @@ enum MonsterFamily {
 
   /// Round ears and a tail: the monsters of the additions and
   /// subtractions.
-  eared(LearningDomainIds.addition);
+  eared(LearningDomainIds.addition),
+
+  /// Small wings on the sides: the monsters of the division.
+  winged(LearningDomainIds.division);
 
   const MonsterFamily(this.domainId);
 

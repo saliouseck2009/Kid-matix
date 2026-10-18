@@ -120,6 +120,8 @@ void main() {
           'an addition boss fight',
           AppRoutes.playOf('path:addsub:borrow:boss'),
         ),
+        ..._divisionScreens,
+        ('a division boss fight', AppRoutes.playOf('path:div:7:boss')),
       ]) {
         testWidgets('cuts no text on $name in $language', (
           WidgetTester tester,
@@ -195,6 +197,7 @@ final List<(String, String)> _guidelineScreens = <(String, String)>[
   ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
   ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
   ..._numbersScreens,
+  ..._divisionScreens,
   ..._additionScreens,
 ];
 
@@ -211,6 +214,12 @@ final List<(String, String)> _numbersScreens = <(String, String)>[
   ('a unit of the numbers', AppRoutes.tableDetailOf('num:count10')),
   ('a numbers quiz', AppRoutes.playOf('path:num:tensones:discovery')),
   ('a comparison quiz', AppRoutes.playOf('path:num:compare:writing')),
+];
+
+/// Screens of the division domain: a unit and a quiz with its operation.
+final List<(String, String)> _divisionScreens = <(String, String)>[
+  ('a unit of the division', AppRoutes.tableDetailOf('div:7')),
+  ('a division quiz', AppRoutes.playOf('path:div:7:writing')),
 ];
 
 /// Longest a guideline test may take: the contrast check takes a picture

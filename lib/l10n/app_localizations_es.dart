@@ -40,6 +40,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numbersDomainName => 'Números';
 
   @override
+  String get divisionDomainName => 'División';
+
+  @override
   String get additionDomainName => '+ y −';
 
   @override
@@ -218,6 +221,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'Mis números';
+
+  @override
+  String get masteryGridTitleDivision => 'Mis divisiones';
 
   @override
   String get masteryGridTitleAddition => 'Mis + y −';
@@ -551,6 +557,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizCompareLabel => '¿Menor, igual o mayor?';
 
   @override
+  String get quizMissingNumberLabel => 'Encuentra el número escondido';
+
+  @override
   String quizCompareSpoken(int first, int second) {
     return '¿$first es menor, igual o mayor que $second?';
   }
@@ -718,6 +727,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String quizHelpDotGridSharingLabel(int total, int groups, int each) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total puntos repartidos',
+      one: '1 punto repartido',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      groups,
+      locale: localeName,
+      other: '$groups grupos',
+      one: '1 grupo',
+    );
+    return '$_temp0 en $_temp1: $each en cada grupo';
+  }
+
+  @override
   String get quizContinue => 'Continuar';
 
   @override
@@ -749,6 +775,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizSpokenPlus => 'más';
+
+  @override
+  String get quizSpokenDividedBy => 'entre';
 
   @override
   String get quizSpokenMinus => 'menos';
@@ -1147,6 +1176,34 @@ class AppLocalizationsEs extends AppLocalizations {
         'compare': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
         'order': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
         'beforeafter': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String divisionUnitName(int number) {
+    return 'Dividir entre $number';
+  }
+
+  @override
+  String divisionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Dividir entre 1 no cambia nada: 7 ÷ 1 = 7.',
+        '2': 'Dividir entre 2 es repartir en dos partes iguales: 12 ÷ 2 = 6, la mitad de 12.',
+        '3': 'Dividir entre 3 es hacer 3 partes iguales: 12 ÷ 3 = 4, porque 3 × 4 = 12.',
+        '4': 'Dividir entre 4 es sacar la mitad de la mitad: 20 ÷ 4 = 5, porque la mitad de 20 es 10 y la mitad de 10 es 5.',
+        '5': 'Para 35 ÷ 5, cuenta de 5 en 5 hasta 35: 5, 10, 15, 20, 25, 30, 35. Son 7 saltos, así que 35 ÷ 5 = 7.',
+        '6': 'Para 42 ÷ 6, busca en la tabla del 6: 6 × 7 = 42, así que 42 ÷ 6 = 7.',
+        '7': 'Para 56 ÷ 7, piensa en 7 × 8 = 56: así que 56 ÷ 7 = 8.',
+        '8': 'Dividir entre 8 es sacar la mitad tres veces: para 48 ÷ 8, 48 → 24 → 12 → 6.',
+        '9': 'En la tabla del 9, las cifras suman 9 (36: 3 + 6 = 9). Y 36 ÷ 9 = 4, porque 9 × 4 = 36.',
+        '10': 'Dividir entre 10 es quitar el 0 de la derecha: 70 ÷ 10 = 7.',
+        '11': 'Hasta 99 ÷ 11, los números de la tabla del 11 tienen dos cifras iguales: 77 ÷ 11 = 7.',
+        '12': 'Para 36 ÷ 12, cuenta de 12 en 12: 12, 24, 36. Son 3 saltos, así que 36 ÷ 12 = 3.',
         'other': '',
       },
     );

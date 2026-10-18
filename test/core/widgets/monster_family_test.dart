@@ -36,6 +36,7 @@ void main() {
     );
     expect(MonsterIllustration.familyOf('numbers'), MonsterFamily.antennae);
     expect(MonsterIllustration.familyOf('addition'), MonsterFamily.eared);
-    expect(MonsterFamily.of('division'), isNull);
+    expect(MonsterIllustration.familyOf('division'), MonsterFamily.winged);
+    expect(MonsterFamily.of('unknown'), isNull);
   });
 }

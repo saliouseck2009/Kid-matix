@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/extensions/domain_names/addition_names.dart';
+import 'package:kid_matix/core/extensions/domain_names/division_names.dart';
 import 'package:kid_matix/core/extensions/domain_names/domain_names.dart';
 import 'package:kid_matix/core/extensions/domain_names/multiplication_names.dart';
 import 'package:kid_matix/core/extensions/domain_names/number_names.dart';
@@ -16,6 +17,7 @@ extension DomainNaming on AppLocalizations {
     LearningDomainIds.multiplication: MultiplicationNames(),
     LearningDomainIds.numbers: NumberNames(),
     LearningDomainIds.addition: AdditionNames(),
+    LearningDomainIds.division: DivisionNames(),
   };
 
   /// The names of [domainId], or `null` when the domain has none.

@@ -16,4 +16,7 @@ abstract final class LearningDomainIds {
   /// domain, such as the daily review. It names no unit and no item
   /// progress; each item belongs to its own domain.
   static const String mixed = 'mixed';
+
+  /// The divisions of the multiplication tables (version 2.0).
+  static const String division = 'division';
 }
