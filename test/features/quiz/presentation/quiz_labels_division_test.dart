@@ -4,6 +4,7 @@ import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/division/domain/services/division_domain.dart';
+import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
 import 'package:kid_matix/l10n/app_localizations_en.dart';
 import 'package:kid_matix/l10n/app_localizations_es.dart';
@@ -115,6 +116,38 @@ void main() {
       expect(
         questionOf(QuestionTypeIds.missingNumber).expectedAnswer,
         isA<NumberAnswer>(),
+      );
+    });
+    test('asks to find the hidden number without naming the unit', () {
+      // Arrange
+      final Question inputDivision = questionOf(QuestionTypeIds.missingNumber);
+      final Question inputMultiplication = MultiplicationDomain().buildQuestion(
+        item: MultiplicationDomain().findItem('mul:7x8')!,
+        questionTypeId: QuestionTypeIds.missingNumber,
+        random: DartRandomSource(seed: 3),
+      );
+      // Assert
+      expect(
+        labels.describeQuestion(inputDivision, 'division'),
+        'Trouve le nombre caché',
+      );
+      expect(
+        labels.describeQuestion(inputMultiplication, 'multiplication'),
+        'Trouve le nombre caché',
+      );
+      expect(
+        QuizLabels(
+          domains: buildDomainRegistry(),
+          l10n: AppLocalizationsEn(),
+        ).describeQuestion(inputDivision, 'division'),
+        'Find the hidden number',
+      );
+      expect(
+        labels.describeQuestion(
+          questionOf(QuestionTypeIds.typedAnswer),
+          'division',
+        ),
+        'Diviser par 7',
       );
     });
   });

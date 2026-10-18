@@ -760,6 +760,10 @@
   "@quizCompareLabel": {
     "description": "Label in a pill above two numbers to compare, such as \"34 ? 43\", in a question of the numbers domain (\"Less, equal or greater?\"): is the first number smaller than, equal to or greater than the second. One short line."
   },
+  "quizMissingNumberLabel": "Trouve le nombre caché",
+  "@quizMissingNumberLabel": {
+    "description": "Label above a question whose number to write is hidden in the operation (\"Find the hidden number\"), in every domain. It replaces the unit name, which would give the answer away (the divisor of 56 ÷ ? = 8). One short line in a pill."
+  },
   "quizCompareSpoken": "{first} est-il plus petit, égal ou plus grand que {second} ?",
   "@quizCompareSpoken": {
     "description": "What a screen reader and the read-aloud button say for a comparison question of the numbers domain (\"Is 34 less than, equal to or greater than 43?\"). {first} is the number on the left, {second} the one on the right. Never shown.",
@@ -969,6 +973,24 @@
         "example": "7"
       },
       "columns": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "quizHelpDotGridSharingLabel": "{total, plural, =1{1 point partagé} other{{total} points partagés}} en {groups, plural, =1{1 groupe} other{{groups} groupes}} : {each} dans chaque groupe",
+  "@quizHelpDotGridSharingLabel": {
+    "description": "Caption under the grid of dots that pictures a division, also read by screen readers: the dots are shared into equal groups, one row per group (\"56 dots shared into 7 groups: 8 in each group\" for 56 ÷ 7).",
+    "placeholders": {
+      "total": {
+        "type": "int",
+        "example": "56"
+      },
+      "groups": {
+        "type": "int",
+        "example": "7"
+      },
+      "each": {
         "type": "int",
         "example": "8"
       }
@@ -1540,7 +1562,7 @@
       }
     }
   },
-  "divisionUnitTip": "{unit, select, 1{Diviser par 1 ne change rien : 7 ÷ 1 = 7.} 2{Diviser par 2, c'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.} 3{Diviser par 3, c'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.} 4{Diviser par 4, c'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.} 5{Dans la table de 5, les nombres finissent par 0 ou par 5 : 35 ÷ 5 = 7, car 5 × 7 = 35.} 6{Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.} 7{Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.} 8{Diviser par 8, c'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.} 9{Les chiffres des nombres de la table de 9 font 9 : 36, c'est 3 + 6 = 9, et 36 ÷ 9 = 4.} 10{Diviser par 10, c'est enlever le 0 à droite : 70 ÷ 10 = 7.} 11{Un nombre comme 44 ou 77 a deux chiffres pareils : 77 ÷ 11 = 7.} 12{Diviser par 12, c'est penser à 10 fois plus 2 fois : 36 ÷ 12 = 3, car 12 × 3 = 36.} other{}}",
+  "divisionUnitTip": "{unit, select, 1{Diviser par 1 ne change rien : 7 ÷ 1 = 7.} 2{Diviser par 2, c'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.} 3{Diviser par 3, c'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.} 4{Diviser par 4, c'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.} 5{Pour 35 ÷ 5, compte de 5 en 5 jusqu'à 35 : 5, 10, 15, 20, 25, 30, 35. Ça fait 7 bonds, donc 35 ÷ 5 = 7.} 6{Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.} 7{Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.} 8{Diviser par 8, c'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.} 9{Dans la table de 9, les deux chiffres ajoutés font 9 (36 : 3 + 6 = 9). Et 36 ÷ 9 = 4, car 9 × 4 = 36.} 10{Diviser par 10, c'est enlever le 0 à droite : 70 ÷ 10 = 7.} 11{Jusqu'à 99 ÷ 11, les nombres de la table de 11 ont deux chiffres pareils : 77 ÷ 11 = 7.} 12{Pour 36 ÷ 12, compte de 12 en 12 : 12, 24, 36. Ça fait 3 bonds, donc 36 ÷ 12 = 3.} other{}}",
   "@divisionUnitTip": {
     "description": "Tip of a unit of the division domain, shown on its Discovery page under all its divisions (\"For 56 ÷ 7, think of 7 × 8 = 56\"). One or two short sentences for a child of 6 to 11, with an example. {unit} is the slug of the unit (the end of its key), the divisor as text, never shown: 1 to 12.",
     "placeholders": {

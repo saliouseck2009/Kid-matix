@@ -1,4 +1,3 @@
-import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
@@ -11,7 +10,7 @@ import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/division/domain/entities/division_fact.dart';
 import 'package:kid_matix/features/division/domain/entities/division_unit.dart';
-import 'package:kid_matix/features/division/domain/services/division_distractor_generator.dart';
+import 'package:kid_matix/features/division/domain/services/division_question_builder.dart';
 
 /// The divisions of the multiplication tables: the 120 facts of the
 /// tables 1 to 12 up to x 10, read backwards, such as 56 ÷ 7 = 8.
@@ -20,9 +19,9 @@ import 'package:kid_matix/features/division/domain/services/division_distractor_
 /// tables. After a mistake, the player is reminded of the multiplication
 /// that gives the same numbers (see [mirrorOf]).
 final class DivisionDomain implements LearningDomain {
-  /// Creates the domain; [distractors] builds the wrong answers.
+  /// Creates the domain; [questions] builds its questions.
   DivisionDomain({
-    this._distractors = const DivisionDistractorGenerator(),
+    this._questions = const DivisionQuestionBuilder(),
   }) : units = List<DivisionUnit>.unmodifiable(
          List<DivisionUnit>.generate(
            unitCount,
@@ -67,7 +66,7 @@ final class DivisionDomain implements LearningDomain {
   /// Quotients that make a division easy outside its own unit.
   static const List<int> easyQuotients = <int>[1, 10];
 
-  final DivisionDistractorGenerator _distractors;
+  final DivisionQuestionBuilder _questions;
 
   /// The 12 units, the divisions by 1 first.
   @override
@@ -133,7 +132,11 @@ final class DivisionDomain implements LearningDomain {
     return ItemHelp(
       unitFacts: units[fact.divisor - 1].facts.map(describeItem).toList(),
       itemIndex: fact.quotient - 1,
-      dotGrid: DotGrid(rows: fact.divisor, columns: fact.quotient),
+      dotGrid: DotGrid(
+        rows: fact.divisor,
+        columns: fact.quotient,
+        reading: DotGridReading.sharing,
+      ),
     );
   }
 
@@ -151,7 +154,11 @@ final class DivisionDomain implements LearningDomain {
       ];
     }
     final DivisionFact fact = _requireFact(item);
-    return _prompt(fact.dividend, fact.divisor, NumberToken(fact.quotient));
+    return DivisionQuestionBuilder.operation(
+      fact.dividend,
+      fact.divisor,
+      NumberToken(fact.quotient),
+    );
   }
 
   @override
@@ -160,75 +167,10 @@ final class DivisionDomain implements LearningDomain {
     required String questionTypeId,
     required RandomSource random,
   }) {
-    final DivisionFact fact = _requireFact(item);
-    return switch (questionTypeId) {
-      QuestionTypeIds.multipleChoice => _buildMultipleChoice(fact, random),
-      QuestionTypeIds.typedAnswer => _buildTypedAnswer(fact),
-      QuestionTypeIds.missingNumber => _buildMissingNumber(fact, random),
-      QuestionTypeIds.trueFalse => _buildTrueFalse(fact, random),
-      _ => throw ArgumentError.value(
-        questionTypeId,
-        'questionTypeId',
-        'Not supported by the division domain',
-      ),
-    };
-  }
-
-  /// `56 ÷ 7 = ?` with the quotient among three plausible wrong answers.
-  Question _buildMultipleChoice(DivisionFact fact, RandomSource random) {
-    final List<int> values = <int>[
-      fact.quotient,
-      ..._distractors.generate(fact: fact, random: random),
-    ];
-    return Question(
-      itemKey: fact.key,
-      unitKey: units[fact.divisor - 1].key,
-      questionTypeId: QuestionTypeIds.multipleChoice,
-      prompt: _prompt(fact.dividend, fact.divisor, const BlankToken()),
-      choices: random.shuffled(values).map(NumberAnswer.new).toList(),
-      expectedAnswer: NumberAnswer(fact.quotient),
-    );
-  }
-
-  /// `72 ÷ 9 = ?`, written on the keypad.
-  Question _buildTypedAnswer(DivisionFact fact) {
-    return Question(
-      itemKey: fact.key,
-      unitKey: units[fact.divisor - 1].key,
-      questionTypeId: QuestionTypeIds.typedAnswer,
-      prompt: _prompt(fact.dividend, fact.divisor, const BlankToken()),
-      expectedAnswer: NumberAnswer(fact.quotient),
-    );
-  }
-
-  /// `56 ÷ ? = 8` or `? ÷ 7 = 8`, either number hidden at random.
-  Question _buildMissingNumber(DivisionFact fact, RandomSource random) {
-    final bool hidesDivisor = random.nextInt(2) == 0;
-    final PromptToken quotient = NumberToken(fact.quotient);
-    return Question(
-      itemKey: fact.key,
-      unitKey: units[fact.divisor - 1].key,
-      questionTypeId: QuestionTypeIds.missingNumber,
-      prompt: hidesDivisor
-          ? _prompt(fact.dividend, null, quotient)
-          : _prompt(null, fact.divisor, quotient),
-      expectedAnswer: NumberAnswer(hidesDivisor ? fact.divisor : fact.dividend),
-    );
-  }
-
-  /// `56 ÷ 7 = 8` or a plausible mistake such as `56 ÷ 7 = 9`, true one
-  /// time out of two.
-  Question _buildTrueFalse(DivisionFact fact, RandomSource random) {
-    final bool isTrue = random.nextInt(2) == 0;
-    final int shown = isTrue
-        ? fact.quotient
-        : _distractors.generate(fact: fact, random: random, count: 1).single;
-    return Question(
-      itemKey: fact.key,
-      unitKey: units[fact.divisor - 1].key,
-      questionTypeId: QuestionTypeIds.trueFalse,
-      prompt: _prompt(fact.dividend, fact.divisor, NumberToken(shown)),
-      expectedAnswer: BooleanAnswer(value: isTrue),
+    return _questions.build(
+      fact: _requireFact(item),
+      questionTypeId: questionTypeId,
+      random: random,
     );
   }
 
@@ -238,16 +180,5 @@ final class DivisionDomain implements LearningDomain {
       throw ArgumentError.value(item.key, 'item', 'Not a division fact');
     }
     return fact;
-  }
-
-  /// `left ÷ right = result`, a `null` operand shown as the blank.
-  static List<PromptToken> _prompt(int? left, int? right, PromptToken result) {
-    return <PromptToken>[
-      if (left == null) const BlankToken() else NumberToken(left),
-      const OperatorToken(MathOperator.divide),
-      if (right == null) const BlankToken() else NumberToken(right),
-      const EqualsToken(),
-      result,
-    ];
   }
 }

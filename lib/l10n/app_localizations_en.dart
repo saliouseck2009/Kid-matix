@@ -543,6 +543,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizCompareLabel => 'Less, equal or greater?';
 
   @override
+  String get quizMissingNumberLabel => 'Find the hidden number';
+
+  @override
   String quizCompareSpoken(int first, int second) {
     return 'Is $first less than, equal to or greater than $second?';
   }
@@ -706,6 +709,23 @@ class AppLocalizationsEn extends AppLocalizations {
       one: '1 dot',
     );
     return '$_temp0 of $_temp1';
+  }
+
+  @override
+  String quizHelpDotGridSharingLabel(int total, int groups, int each) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total dots shared',
+      one: '1 dot shared',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      groups,
+      locale: localeName,
+      other: '$groups groups',
+      one: '1 group',
+    );
+    return '$_temp0 into $_temp1: $each in each group';
   }
 
   @override
@@ -1158,15 +1178,15 @@ class AppLocalizationsEn extends AppLocalizations {
         '2': 'Dividing by 2 means sharing into two equal parts: 12 ÷ 2 = 6, half of 12.',
         '3': 'Dividing by 3 means making 3 equal parts: 12 ÷ 3 = 4, because 3 × 4 = 12.',
         '4': 'Dividing by 4 means halving twice: 20 ÷ 4 = 5, because half of 20 is 10 and half of 10 is 5.',
-        '5': 'In the 5 times table, the numbers end in 0 or 5: 35 ÷ 5 = 7, because 5 × 7 = 35.',
+        '5': 'For 35 ÷ 5, count by 5s up to 35: 5, 10, 15, 20, 25, 30, 35. That is 7 jumps, so 35 ÷ 5 = 7.',
         '6':
             'For 42 ÷ 6, look in the 6 times table: 6 × 7 = 42, so 42 ÷ 6 = 7.',
         '7': 'For 56 ÷ 7, think of 7 × 8 = 56: so 56 ÷ 7 = 8.',
         '8': 'Dividing by 8 means halving three times: for 48 ÷ 8, 48 → 24 → 12 → 6.',
-        '9': 'The digits of the numbers in the 9 times table add up to 9: 36 is 3 + 6 = 9, and 36 ÷ 9 = 4.',
+        '9': 'In the 9 times table, the digits add up to 9 (36: 3 + 6 = 9). And 36 ÷ 9 = 4, because 9 × 4 = 36.',
         '10': 'Dividing by 10 means removing the 0 on the right: 70 ÷ 10 = 7.',
-        '11': 'A number like 44 or 77 has two identical digits: 77 ÷ 11 = 7.',
-        '12': 'Dividing by 12 means thinking 10 times plus 2 times: 36 ÷ 12 = 3, because 12 × 3 = 36.',
+        '11': 'Up to 99 ÷ 11, the numbers in the 11 times table have two identical digits: 77 ÷ 11 = 7.',
+        '12': 'For 36 ÷ 12, count by 12s: 12, 24, 36. That is 3 jumps, so 36 ÷ 12 = 3.',
         'other': '',
       },
     );

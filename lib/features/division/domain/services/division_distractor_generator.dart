@@ -13,6 +13,9 @@ final class DivisionDistractorGenerator {
   /// Wrong answers of a multiple choice question.
   static const int defaultCount = 3;
 
+  /// First gap tried when the usual candidates are not enough.
+  static const int _firstFallbackOffset = 3;
+
   /// Returns [count] distinct wrong answers to [fact], drawn with [random].
   List<int> generate({
     required DivisionFact fact,
@@ -34,7 +37,7 @@ final class DivisionDistractorGenerator {
         .shuffled(candidates)
         .take(count)
         .toList();
-    int offset = 3;
+    int offset = _firstFallbackOffset;
     while (distractors.length < count) {
       _addIfValid(distractors, answer + offset, answer);
       _addIfValid(distractors, answer - offset, answer);

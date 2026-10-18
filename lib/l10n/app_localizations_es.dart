@@ -545,6 +545,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizCompareLabel => '¿Menor, igual o mayor?';
 
   @override
+  String get quizMissingNumberLabel => 'Encuentra el número escondido';
+
+  @override
   String quizCompareSpoken(int first, int second) {
     return '¿$first es menor, igual o mayor que $second?';
   }
@@ -709,6 +712,23 @@ class AppLocalizationsEs extends AppLocalizations {
       one: '1 punto',
     );
     return '$_temp0 de $_temp1';
+  }
+
+  @override
+  String quizHelpDotGridSharingLabel(int total, int groups, int each) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total puntos repartidos',
+      one: '1 punto repartido',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      groups,
+      locale: localeName,
+      other: '$groups grupos',
+      one: '1 grupo',
+    );
+    return '$_temp0 en $_temp1: $each en cada grupo';
   }
 
   @override
@@ -1161,14 +1181,14 @@ class AppLocalizationsEs extends AppLocalizations {
         '2': 'Dividir entre 2 es repartir en dos partes iguales: 12 ÷ 2 = 6, la mitad de 12.',
         '3': 'Dividir entre 3 es hacer 3 partes iguales: 12 ÷ 3 = 4, porque 3 × 4 = 12.',
         '4': 'Dividir entre 4 es sacar la mitad de la mitad: 20 ÷ 4 = 5, porque la mitad de 20 es 10 y la mitad de 10 es 5.',
-        '5': 'En la tabla del 5, los números terminan en 0 o en 5: 35 ÷ 5 = 7, porque 5 × 7 = 35.',
+        '5': 'Para 35 ÷ 5, cuenta de 5 en 5 hasta 35: 5, 10, 15, 20, 25, 30, 35. Son 7 saltos, así que 35 ÷ 5 = 7.',
         '6': 'Para 42 ÷ 6, busca en la tabla del 6: 6 × 7 = 42, así que 42 ÷ 6 = 7.',
         '7': 'Para 56 ÷ 7, piensa en 7 × 8 = 56: así que 56 ÷ 7 = 8.',
         '8': 'Dividir entre 8 es sacar la mitad tres veces: para 48 ÷ 8, 48 → 24 → 12 → 6.',
-        '9': 'Las cifras de los números de la tabla del 9 suman 9: 36 es 3 + 6 = 9, y 36 ÷ 9 = 4.',
+        '9': 'En la tabla del 9, las cifras suman 9 (36: 3 + 6 = 9). Y 36 ÷ 9 = 4, porque 9 × 4 = 36.',
         '10': 'Dividir entre 10 es quitar el 0 de la derecha: 70 ÷ 10 = 7.',
-        '11': 'Un número como 44 o 77 tiene dos cifras iguales: 77 ÷ 11 = 7.',
-        '12': 'Dividir entre 12 es pensar en 10 veces más 2 veces: 36 ÷ 12 = 3, porque 12 × 3 = 36.',
+        '11': 'Hasta 99 ÷ 11, los números de la tabla del 11 tienen dos cifras iguales: 77 ÷ 11 = 7.',
+        '12': 'Para 36 ÷ 12, cuenta de 12 en 12: 12, 24, 36. Son 3 saltos, así que 36 ÷ 12 = 3.',
         'other': '',
       },
     );

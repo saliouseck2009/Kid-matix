@@ -25,8 +25,9 @@ final class QuizLabels {
   final AppLocalizations l10n;
 
   /// Label above [question]: "Vrai ou faux ?", "Quelle multiplication
-  /// donne", what to do with its drawing or its two numbers, or the name
-  /// of its unit.
+  /// donne", what to do with its drawing or its two numbers, "Trouve le
+  /// nombre caché" (the unit name would give the hidden number away), or
+  /// the name of its unit.
   String describeQuestion(Question question, String domainId) {
     return switch (question.questionTypeId) {
       QuestionTypeIds.trueFalse => l10n.quizTrueFalseLabel,
@@ -36,6 +37,7 @@ final class QuizLabels {
         _ => '',
       },
       QuestionTypeIds.compare => l10n.quizCompareLabel,
+      QuestionTypeIds.missingNumber => l10n.quizMissingNumberLabel,
       _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,

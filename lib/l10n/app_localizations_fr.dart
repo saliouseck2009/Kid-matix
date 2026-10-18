@@ -546,6 +546,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizCompareLabel => 'Plus petit, égal ou plus grand ?';
 
   @override
+  String get quizMissingNumberLabel => 'Trouve le nombre caché';
+
+  @override
   String quizCompareSpoken(int first, int second) {
     return '$first est-il plus petit, égal ou plus grand que $second ?';
   }
@@ -710,6 +713,23 @@ class AppLocalizationsFr extends AppLocalizations {
       one: '1 point',
     );
     return '$_temp0 de $_temp1';
+  }
+
+  @override
+  String quizHelpDotGridSharingLabel(int total, int groups, int each) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total points partagés',
+      one: '1 point partagé',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      groups,
+      locale: localeName,
+      other: '$groups groupes',
+      one: '1 groupe',
+    );
+    return '$_temp0 en $_temp1 : $each dans chaque groupe';
   }
 
   @override
@@ -1159,18 +1179,18 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        '1': 'Diviser par 1 ne change rien : 7 ÷ 1 = 7.',
-        '2': 'Diviser par 2, c\'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.',
-        '3': 'Diviser par 3, c\'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.',
-        '4': 'Diviser par 4, c\'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.',
-        '5': 'Dans la table de 5, les nombres finissent par 0 ou par 5 : 35 ÷ 5 = 7, car 5 × 7 = 35.',
-        '6': 'Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.',
-        '7': 'Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.',
-        '8': 'Diviser par 8, c\'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.',
-        '9': 'Les chiffres des nombres de la table de 9 font 9 : 36, c\'est 3 + 6 = 9, et 36 ÷ 9 = 4.',
-        '10': 'Diviser par 10, c\'est enlever le 0 à droite : 70 ÷ 10 = 7.',
-        '11': 'Un nombre comme 44 ou 77 a deux chiffres pareils : 77 ÷ 11 = 7.',
-        '12': 'Diviser par 12, c\'est penser à 10 fois plus 2 fois : 36 ÷ 12 = 3, car 12 × 3 = 36.',
+        '1': 'Diviser par 1 ne change rien : 7 ÷ 1 = 7.',
+        '2': 'Diviser par 2, c\'est partager en deux parts égales : 12 ÷ 2 = 6, la moitié de 12.',
+        '3': 'Diviser par 3, c\'est faire 3 parts égales : 12 ÷ 3 = 4, car 3 × 4 = 12.',
+        '4': 'Diviser par 4, c\'est prendre la moitié de la moitié : 20 ÷ 4 = 5, car la moitié de 20 est 10 et la moitié de 10 est 5.',
+        '5': 'Pour 35 ÷ 5, compte de 5 en 5 jusqu\'à 35 : 5, 10, 15, 20, 25, 30, 35. Ça fait 7 bonds, donc 35 ÷ 5 = 7.',
+        '6': 'Pour 42 ÷ 6, cherche dans la table de 6 : 6 × 7 = 42, donc 42 ÷ 6 = 7.',
+        '7': 'Pour 56 ÷ 7, pense à 7 × 8 = 56 : donc 56 ÷ 7 = 8.',
+        '8': 'Diviser par 8, c\'est prendre trois fois la moitié : pour 48 ÷ 8, 48 → 24 → 12 → 6.',
+        '9': 'Dans la table de 9, les deux chiffres ajoutés font 9 (36 : 3 + 6 = 9). Et 36 ÷ 9 = 4, car 9 × 4 = 36.',
+        '10': 'Diviser par 10, c\'est enlever le 0 à droite : 70 ÷ 10 = 7.',
+        '11': 'Jusqu\'à 99 ÷ 11, les nombres de la table de 11 ont deux chiffres pareils : 77 ÷ 11 = 7.',
+        '12': 'Pour 36 ÷ 12, compte de 12 en 12 : 12, 24, 36. Ça fait 3 bonds, donc 36 ÷ 12 = 3.',
         'other': '',
       },
     );

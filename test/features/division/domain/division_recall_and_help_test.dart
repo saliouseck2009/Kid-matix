@@ -81,7 +81,14 @@ void main() {
       // Act
       final ItemHelp actual = domain.helpOf(fact);
       // Assert
-      expect(actual.dotGrid, const DotGrid(rows: 7, columns: 8));
+      expect(
+        actual.dotGrid,
+        const DotGrid(
+          rows: 7,
+          columns: 8,
+          reading: DotGridReading.sharing,
+        ),
+      );
     });
     test('lists the divisions by 7 and highlights 56 ÷ 7', () {
       // Act
@@ -102,7 +109,11 @@ void main() {
           // Assert
           expect(
             actual.dotGrid,
-            DotGrid(rows: each.divisor, columns: each.quotient),
+            DotGrid(
+              rows: each.divisor,
+              columns: each.quotient,
+              reading: DotGridReading.sharing,
+            ),
           );
           expect(actual.itemIndex, each.quotient - 1);
         }

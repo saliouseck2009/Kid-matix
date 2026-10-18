@@ -26,6 +26,9 @@ final class DivisionFact implements LearningItem {
   @override
   String get key => '$keyPrefix:$dividend/$divisor';
 
+  /// Key of the unit of the fact, such as `div:7`.
+  String get unitKey => '$keyPrefix:$divisor';
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
