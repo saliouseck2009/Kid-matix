@@ -7,6 +7,7 @@ import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/core/widgets/speech_bubble.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/spoken_as.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 
 /// White card of the question: a label, the operation and the mascot.
@@ -109,10 +110,16 @@ class QuestionCard extends StatelessWidget {
                     ? AppSizes.space16
                     : AppSizes.space16 + _mascotSize / 2,
               ),
-              child: _Spoken(
-                sentence:
-                    spokenText ??
-                    (asksOperation ? prompt.toSpokenText(context.l10n) : null),
+              // The whole card is one sentence for a screen reader, except
+              // a plain operation: its label (« Table de 5 ») stays visible
+              // to it and only the prompt is replaced.
+              child: SpokenAs(
+                sentence: asksOperation || picture != null
+                    ? spokenText ??
+                          (asksOperation
+                              ? prompt.toSpokenText(context.l10n)
+                              : null)
+                    : null,
                 child: switch ((asksOperation, picture)) {
                   (true, _) => _ResultPrompt(label: label, prompt: prompt),
                   (false, final MathPicture shown) => _PictureQuestion(
@@ -128,11 +135,14 @@ class QuestionCard extends StatelessWidget {
                     children: <Widget>[
                       _QuestionLabel(label: label),
                       const SizedBox(height: AppSizes.space8),
-                      _PromptText(
-                        prompt: prompt,
-                        blankText: blankText,
-                        blankColor: blankColor,
-                        fontSize: _promptFontSize,
+                      SpokenAs(
+                        sentence: spokenText,
+                        child: _PromptText(
+                          prompt: prompt,
+                          blankText: blankText,
+                          blankColor: blankColor,
+                          fontSize: _promptFontSize,
+                        ),
                       ),
                     ],
                   ),
@@ -149,22 +159,6 @@ class QuestionCard extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-/// Makes a screen reader read [child] as the one [sentence], when there
-/// is one.
-class _Spoken extends StatelessWidget {
-  const _Spoken({required this.sentence, required this.child});
-
-  final String? sentence;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final String? label = sentence;
-    if (label == null) return child;
-    return Semantics(label: label, excludeSemantics: true, child: child);
   }
 }
 

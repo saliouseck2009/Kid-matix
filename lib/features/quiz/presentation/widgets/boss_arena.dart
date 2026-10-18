@@ -9,6 +9,7 @@ import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/boss_monster.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/spoken_as.dart';
 
 /// Middle of the boss fight: the monster with its bubble, then the
 /// drawing of the question if it has one, then the operation with the
@@ -101,7 +102,7 @@ class BossArena extends StatelessWidget {
         ),
         if (picture case final MathPicture shown)
           Expanded(
-            child: _SpokenWhenAlone(
+            child: SpokenAs(
               // Without a prompt the drawing is the whole question: a
               // screen reader says it as the same sentence as the voice.
               sentence: prompt.isEmpty ? spokenText : null,
@@ -122,16 +123,19 @@ class BossArena extends StatelessWidget {
             ),
           ),
         if (prompt.isNotEmpty)
-          Semantics(
-            label: spokenText ?? prompt.toSpokenText(context.l10n),
-            excludeSemantics: true,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: _BossPrompt(
-                prompt: prompt,
-                blankText: blankText,
-                blankColor: blankColor,
-                fontSize: _promptFontSize,
+          // Flexible: on a tiny screen the prompt gives way instead of
+          // overflowing the column.
+          Flexible(
+            child: SpokenAs(
+              sentence: spokenText ?? prompt.toSpokenText(context.l10n),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _BossPrompt(
+                  prompt: prompt,
+                  blankText: blankText,
+                  blankColor: blankColor,
+                  fontSize: _promptFontSize,
+                ),
               ),
             ),
           ),
@@ -155,22 +159,6 @@ class BossArena extends StatelessWidget {
       BossBlow.strikeBack => context.l10n.quizBossStrikeBack,
       null => null,
     };
-  }
-}
-
-/// Reads [child] as the one [sentence] for a screen reader, when there is
-/// one.
-class _SpokenWhenAlone extends StatelessWidget {
-  const _SpokenWhenAlone({required this.sentence, required this.child});
-
-  final String? sentence;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final String? label = sentence;
-    if (label == null) return child;
-    return Semantics(label: label, excludeSemantics: true, child: child);
   }
 }
 
