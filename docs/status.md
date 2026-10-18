@@ -30,8 +30,8 @@ middle of one). Last update: 2026-10-18.
 | F20 · File backup | **Done** (closed 2026-10-12) |
 | F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
 | F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
-| F23 · Read aloud | **In review** (wave 1): PR #104, main merged in and review fixes in progress; F23-01 device check by the owner pending |
-| F24 · Numbers up to 100 | **Merged** (wave 1, #103 and #105); follow-up PR `refactor/f24-domain-pattern` in progress (final keys, `number/` folder, review fixes); F24-09 screens to validate |
+| F23 · Read aloud | **Merged** (wave 1, #104 and #108); closes after the owner's device check (F23-01) |
+| F24 · Numbers up to 100 | **Merged** (wave 1, #103, #105 and #107); closes after the owner's device check and the validation of its screens (F24-09) |
 | F28 · Math words | F28-01 **done** (#102) and the guide part of F28-02; the owner fills the Wolof and records; the rest in wave 2 |
 | F25 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
@@ -594,7 +594,7 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Version 2.0, wave 1 (in progress)
+## Version 2.0, wave 1 (merged, device checks pending)
 
 Run on 2026-10-18 as planned in `docs/parallel-plan.md`: `lot-implementer`
 (Sonnet) for F23, `lot-implementer` (Opus) for F24, `content-writer`
@@ -624,23 +624,37 @@ Merged:
   "done when" (numbers stars won, multiplication stars and mastery
   unchanged after a restart). Not checked on a device.
 
-Open:
+Then merged:
 
-- #104 (F23-01 to F23-08), read aloud: `SpeechService` and the `speech`
+- #104 (F23-02 to F23-08), read aloud: `SpeechService` and the `speech`
   feature over `flutter_tts` (iOS now also uses CocoaPods), the « Écouter »
   button on every question surface, automatic reading, the timer that
   waits for the voice, readings of instructions, tips and mascot messages,
-  the per-player setting (migration 012, schema 12). It conflicts with
-  F24; the agent merges `main` in and keeps one spoken-text mechanism
-  (`QuizLabels.speakQuestion` first). Review: changes requested — the timer
-  can stay held when the platform `stop()` never answers, overlapping
-  readings can end or cut the wrong one, `QuizBloc` is over the class size
-  limit, the creation offer is saved in a second write. Fixes and the
-  owner's timing rule are in progress. Merge it only once CI is green.
-- F24 follow-up `refactor/f24-domain-pattern`, after #104: keys
-  `num:compare:a:b` and `num:line:m:s`, folder `lib/features/number/`,
-  labels chosen by question type, unit names and tips by slug with a guard
-  test, numbers screens in the text-scale tests, smaller review findings.
+  the per-player setting (migration 012, schema 12). Two reviews: the
+  timer stuck on a voice that never stops, overlapping readings and the
+  creation offer in a second write were fixed; one spoken-text entry for
+  every format, `QuizLabels.speakQuestion`, shared with F24.
+- #107, F24 follow-up: final keys `num:compare:a:b` and `num:line:m:s`,
+  folder `lib/features/number/`, names, tips and marks by unit slug
+  (`DomainNames`, `DomainNaming`), one monster family per domain, guard
+  tests (every unit named, every stage gives each item a format, no two
+  domains share a monster family), numbers screens in the text-scale and
+  guideline tests (a real overflow on the numbers boss was fixed),
+  `number/domain` at 100 % coverage.
+- #108, F23 follow-up: the typed `SpeechReading` stop handle, a voice
+  check that fails is "no voice for now" (retried on resume, never holds
+  a quiz back), the visible card label kept for screen readers, the boss
+  prompt in a `Flexible`, the quiz timer moved into `QuizClock`
+  (`QuizBloc` at the 200-line limit). A review caught a regression (a
+  phone without a speech engine could not start a quiz) before the merge.
+
+Recipe for a new domain (wave 2): a feature folder with a singular name
+implementing `LearningDomain` (with `questionTypeIdsOf`), its id in
+`LearningDomainIds` (no `:`, not a number), its registration after the
+previous domains, a names file in `core/extensions/domain_names/` and one
+line in `DomainNaming`, its ARB keys (domain name, unit names and tips by
+slug), a `MonsterFamily` value and its provisional drawing, its keys
+pinned by a test. The guard tests fail until each piece is there.
 
 To check on a device (owner), short:
 
@@ -677,8 +691,9 @@ daily review per domain); `flutter_tts` applies the Kotlin Gradle plugin
 (warning to revisit at the next Flutter bump); the privacy policy does not
 mention the system voice yet.
 
-Next: merge #104, then the F24 follow-up; device checks; close F23 and F24
-here; then wave 2 (F25, F26, the rest of F28 with migration 013).
+Next: the two device checks above; then F23 and F24 close here (F23-01
+ticked, F24-09 once the screens are validated) and wave 2 starts (F25, F26,
+the rest of F28 with migration 013).
 
 ## F21 closure
 
