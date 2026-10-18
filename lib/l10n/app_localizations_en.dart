@@ -650,9 +650,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizHintWordOperation => 'Tap the operation';
 
   @override
-  String get quizHintTouchWords => 'Tap the colored words';
-
-  @override
   String get quizWordListenLabel => 'Listen and tap';
 
   @override
@@ -663,6 +660,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizWordMatchTitle => 'Match each word with its picture';
+
+  @override
+  String get quizWordMatchHintStart => 'Tap a word, then its picture';
+
+  @override
+  String quizWordMatchHintPicture(String word) {
+    return 'Tap the picture of « $word »';
+  }
+
+  @override
+  String get quizWordMatchHintWord =>
+      'Tap the word that goes with this picture';
 
   @override
   String get quizWordUnderstood => 'I understand';

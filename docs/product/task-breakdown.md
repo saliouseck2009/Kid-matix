@@ -724,11 +724,11 @@ Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énonc�
 - [x] **F28-03** Packs audio : `assets/audio/<langue>/` avec un manifeste ; le pack wolof est intégré à l'app ; un fichier manquant masque simplement le bouton. Le code ne dépend d'aucune langue en particulier.
 - [x] **F28-04** Fonctionnalité `math_words` qui implémente `LearningDomain` : chaque mot est un item (`word:il_reste`) suivi par la répétition espacée.
 - [x] **F28-05** Une illustration vectorielle simple par mot (provisoire, remplaçable sans changer le code).
-- [ ] **F28-06** Type de question « Écoute et touche » : on entend le mot (français, puis wolof à la demande), on touche la bonne image parmi 4.
-- [ ] **F28-07** Type de question « Mot et image » : relier des expressions à leurs dessins (réutiliser le widget de « Relier les paires »).
-- [ ] **F28-08** Type de question « Toucher pour comprendre » : dans une phrase, chaque mot important se touche pour l'entendre en français et en wolof et voir son image.
-- [ ] **F28-09** Type de question « Quelle opération ? » : un petit énoncé lu à voix haute, l'enfant choisit +, −, × ou ÷ sans calculer ; une vingtaine d'énoncés courts dans le tableau de contenu.
-- [ ] **F28-10** Bouton « Écouter en wolof » partout où un mot est présenté ; réglage par joueur « Aide audio : wolof / aucune ».
+- [x] **F28-06** Type de question « Écoute et touche » : on entend le mot (français, puis wolof à la demande), on touche la bonne image parmi 4.
+- [x] **F28-07** Type de question « Mot et image » : relier des expressions à leurs dessins (réutiliser le widget de « Relier les paires »).
+- [x] **F28-08** Type de question « Toucher pour comprendre » : dans une phrase, chaque mot important se touche pour l'entendre en français et en wolof et voir son image.
+- [x] **F28-09** Type de question « Quelle opération ? » : un petit énoncé lu à voix haute, l'enfant choisit +, −, × ou ÷ sans calculer ; une vingtaine d'énoncés courts dans le tableau de contenu.
+- [x] **F28-10** Bouton « Écouter en wolof » partout où un mot est présenté ; réglage par joueur « Aide audio : wolof / aucune ».
 - [ ] **F28-11** Parcours des mots : une unité par famille, dans le sélecteur de domaine.
 - [ ] **F28-12** Maquettes à proposer et faire valider : les quatre activités et le bouton wolof.
 - [ ] **F28-13** Tests : clés, manifeste du pack audio, fichier manquant, activités, répétition espacée des mots.

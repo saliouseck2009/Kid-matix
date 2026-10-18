@@ -4,6 +4,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 
@@ -59,7 +60,15 @@ class QuizHelpCard extends StatelessWidget {
                     constraints: const BoxConstraints(
                       maxWidth: _pictureMaxWidth,
                     ),
-                    child: MathPictureView(picture: picture, isSolved: true),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: AppSizes.space8,
+                      children: <Widget>[
+                        MathPictureView(picture: picture, isSolved: true),
+                        if (picture is WordPicture)
+                          HelpAudioButton(wordKey: picture.wordKey),
+                      ],
+                    ),
                   ),
               ],
             ),

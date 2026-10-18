@@ -6,6 +6,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/question_pair.dart';
+import 'package:kid_matix/core/widgets/word_picture/word_picture_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_feedback.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_answer_button.dart';
@@ -56,6 +57,7 @@ typedef _Pick = ({_Side side, int index});
 /// What a button of the board shows and does.
 typedef _ButtonData = ({
   String label,
+  Widget? picture,
   String semanticLabel,
   AnswerFeedback feedback,
   bool isSelected,
@@ -77,6 +79,10 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
   _Pick? _wrong;
 
   bool get _isJudged => widget.onMatched == null;
+
+  /// Whether the board ties words to their drawings (lot F28) rather than
+  /// operations to their results.
+  bool get _isWordBoard => widget.pairs.first.operation is WordAnswer;
 
   @override
   void dispose() {
@@ -139,6 +145,9 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
       spacing: AppSizes.space16,
       children: <Widget>[
         _Title(
+          title: _isWordBoard
+              ? context.l10n.quizWordMatchTitle
+              : context.l10n.quizMatchPairsTitle,
           foundCount: foundCount,
           total: widget.pairs.length,
           listenButton: widget.listenButton,
@@ -161,8 +170,20 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
 
   String _hintOf(BuildContext context) {
     final _Pick? selected = _selected;
-    if (selected == null) return context.l10n.quizMatchPairsHintStart;
+    if (selected == null) {
+      return _isWordBoard
+          ? context.l10n.quizWordMatchHintStart
+          : context.l10n.quizMatchPairsHintStart;
+    }
     final QuestionPair pair = _pairOf(selected);
+    if (_isWordBoard) {
+      return switch (selected.side) {
+        _Side.operation => context.l10n.quizWordMatchHintPicture(
+          MultipleChoiceAnswers.describeAnswer(pair.operation),
+        ),
+        _Side.result => context.l10n.quizWordMatchHintWord,
+      };
+    }
     return switch (selected.side) {
       _Side.operation => context.l10n.quizMatchPairsHintResult(
         MultipleChoiceAnswers.describeAnswer(pair.operation),
@@ -185,8 +206,15 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
       ),
       _ => MultipleChoiceAnswers.describeAnswer(answer),
     };
+    // The right side of a word board is the drawing of the word.
+    final Widget? picture = pick.side == _Side.result && answer is WordAnswer
+        ? WordPictureView(wordKey: answer.wordKey)
+        : null;
     return (
-      label: MultipleChoiceAnswers.describeAnswer(answer),
+      label: picture == null
+          ? MultipleChoiceAnswers.describeAnswer(answer)
+          : '',
+      picture: picture,
       semanticLabel: isFound
           ? context.l10n.quizMatchPairsFound(spoken)
           : spoken,
@@ -204,11 +232,13 @@ class _MatchPairsAnswersState extends State<MatchPairsAnswers>
 
 class _Title extends StatelessWidget {
   const _Title({
+    required this.title,
     required this.foundCount,
     required this.total,
     required this.listenButton,
   });
 
+  final String title;
   final int foundCount;
   final int total;
   final Widget? listenButton;
@@ -224,10 +254,7 @@ class _Title extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSizes.space4,
             children: <Widget>[
-              Text(
-                context.l10n.quizMatchPairsTitle,
-                style: textTheme.headlineSmall,
-              ),
+              Text(title, style: textTheme.headlineSmall),
               Semantics(
                 liveRegion: true,
                 child: Text(
@@ -322,6 +349,7 @@ class _PairButton extends StatelessWidget {
         feedback: data.feedback,
         height: height,
         onTap: data.onTap,
+        child: data.picture,
       ),
     );
   }

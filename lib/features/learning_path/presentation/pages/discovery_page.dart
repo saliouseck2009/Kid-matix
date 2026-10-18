@@ -9,6 +9,7 @@ import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/app_progress_bar.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
+import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/tip_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/unit_facts_grid.dart';
@@ -71,6 +72,10 @@ class DiscoveryPage extends StatelessWidget {
                         ),
                         UnitFactsGrid(
                           facts: unit.items.map(_describe).toList(),
+                          trailingOf: (int index) => HelpAudioButton(
+                            wordKey: _recordingKeyOf(unit.items[index]),
+                            isCompact: true,
+                          ),
                         ),
                         TipCard(tip: labels.unitTip(unit.key)),
                       ],
@@ -91,6 +96,12 @@ class DiscoveryPage extends StatelessWidget {
   }
 
   List<PromptToken> _describe(LearningItem item) => domain.describeItem(item);
+
+  /// Name of the recordings of an item: the end of its key (`il_reste` for
+  /// `word:il_reste`). An item with no recording shows no button.
+  String _recordingKeyOf(LearningItem item) {
+    return item.key.substring(item.key.indexOf(':') + 1);
+  }
 }
 
 /// Close cross and empty progress bar while playing; back arrow alone

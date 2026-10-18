@@ -18,6 +18,7 @@ import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/utils/app_bloc_observer.dart';
 import 'package:kid_matix/core/widgets/app_width_limit.dart';
 import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
+import 'package:kid_matix/core/widgets/word_audio_scope.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/code_challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
@@ -108,6 +109,7 @@ Future<void> main() async {
         router: router,
         locale: locale,
         speech: sl<SpeechService>(),
+        wordAudio: sl<WordAudioService>(),
         scope: (Widget child) => PlayerScope(
           session: session,
           profilePages: profilePages,
@@ -309,6 +311,7 @@ class KidMatixApp extends StatelessWidget {
     this.scope,
     this.locale,
     this.speech,
+    this.wordAudio,
     super.key,
   });
 
@@ -324,6 +327,9 @@ class KidMatixApp extends StatelessWidget {
 
   /// The voice that reads tips and messages aloud, or `null` for none.
   final SpeechService? speech;
+
+  /// The recorded help of the math words, or `null` for none.
+  final WordAudioService? wordAudio;
 
   @override
   Widget build(BuildContext context) {
@@ -341,12 +347,19 @@ class KidMatixApp extends StatelessWidget {
         final Widget scoped = AppWidthLimit(
           child: scope?.call(screen) ?? screen,
         );
-        return switch (speech) {
-          final SpeechService voice => ReadAloudScope(
-            speech: voice,
+        final Widget withAudio = switch (wordAudio) {
+          final WordAudioService audio => WordAudioScope(
+            audio: audio,
             child: scoped,
           ),
           null => scoped,
+        };
+        return switch (speech) {
+          final SpeechService voice => ReadAloudScope(
+            speech: voice,
+            child: withAudio,
+          ),
+          null => withAudio,
         };
       },
     );

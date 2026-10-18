@@ -7,6 +7,7 @@ import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/core/widgets/monster_painter.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
@@ -33,7 +34,9 @@ import 'package:kid_matix/features/quiz/presentation/widgets/quiz_help_card.dart
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_hint_box.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_timer_bar.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/touch_words_board.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/true_false_answers.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/word_picture_choices.dart';
 
 /// A question of the quiz, waiting for an answer or showing its feedback.
 class QuizPlayView extends StatelessWidget {
@@ -128,6 +131,17 @@ class QuizPlayView extends StatelessWidget {
                   ),
                   listenButton: listenButton,
                 ),
+              null when data.asksTouch => TouchWordsBoard(
+                sentence: data.question.sentence,
+                targetKey: (data.question.expectedAnswer as WordAnswer).wordKey,
+                targetAnswer: data.question.expectedAnswer,
+                onUnderstood: data.feedback == null
+                    ? (Answer answer) => context.read<QuizBloc>().add(
+                        AnswerSubmitted(answer: answer),
+                      )
+                    : null,
+                listenButton: listenButton,
+              ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
                 monsterFamily: MonsterIllustration.familyOf(data.run.domainId),
@@ -170,10 +184,21 @@ class QuizPlayView extends StatelessWidget {
                 mascotMood: _moodOf(data),
                 mascotMessage: _mascotMessage(context, data),
                 listenButton: listenButton,
+                wrapsPrompt:
+                    data.question.questionTypeId ==
+                    QuestionTypeIds.whichOperation,
+                extra: switch (data.question) {
+                  Question(
+                    questionTypeId: QuestionTypeIds.listenAndTouch,
+                    expectedAnswer: WordAnswer(:final String wordKey),
+                  ) =>
+                    HelpAudioButton(wordKey: wordKey),
+                  _ => null,
+                },
               ),
             },
           ),
-          if (!data.asksPairs || data.feedback != null)
+          if (!data.hasBoard || data.feedback != null)
             _AnswerZone(data: data, labels: labels),
         ],
       ),
@@ -305,6 +330,13 @@ final class _PlayData {
   /// of the question card and of the answers.
   bool get asksPairs => question.pairs.isNotEmpty;
 
+  /// Whether the question asks to touch the words of a sentence: its board
+  /// takes the room of the question card and of the answers.
+  bool get asksTouch => question.sentence.isNotEmpty;
+
+  /// Whether a board of its own replaces the card and the answers.
+  bool get hasBoard => asksPairs || asksTouch;
+
   /// Item the answer was judged on: the question's, or the first pair
   /// missed when matching pairs.
   String get answeredItemKey =>
@@ -312,6 +344,7 @@ final class _PlayData {
 
   bool get isWritten =>
       question.choices.isEmpty &&
+      !asksTouch &&
       question.questionTypeId != QuestionTypeIds.trueFalse;
 
   /// What fills the blank once answered: the digits written, or the
@@ -355,7 +388,13 @@ class _AnswerZone extends StatelessWidget {
           TrueFalseAnswers(feedbackOf: data.feedbackOf, onPicked: onPicked)
         else if (question.questionTypeId == QuestionTypeIds.compare)
           CompareAnswers(feedbackOf: data.feedbackOf, onPicked: onPicked)
-        else if (!data.isWritten && !data.asksPairs)
+        else if (question.questionTypeId == QuestionTypeIds.listenAndTouch)
+          WordPictureChoices(
+            choices: question.choices,
+            feedbackOf: data.feedbackOf,
+            onPicked: onPicked,
+          )
+        else if (!data.isWritten && !data.asksPairs && !data.asksTouch)
           MultipleChoiceAnswers(
             choices: question.choices,
             feedbackOf: data.feedbackOf,

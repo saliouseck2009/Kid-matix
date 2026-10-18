@@ -653,19 +653,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizHintWordOperation => 'Touche l\'opération';
 
   @override
-  String get quizHintTouchWords => 'Touche les mots en couleur';
-
-  @override
   String get quizWordListenLabel => 'Écoute et touche';
 
   @override
   String get quizWordTouchLabel => 'Touche pour comprendre';
 
   @override
-  String get quizWordOperationLabel => 'Quelle opération ?';
+  String get quizWordOperationLabel => 'Quelle opération ?';
 
   @override
   String get quizWordMatchTitle => 'Relie chaque mot à son dessin';
+
+  @override
+  String get quizWordMatchHintStart => 'Touche un mot, puis son dessin';
+
+  @override
+  String quizWordMatchHintPicture(String word) {
+    return 'Touche le dessin de « $word »';
+  }
+
+  @override
+  String get quizWordMatchHintWord => 'Touche le mot qui va avec ce dessin';
 
   @override
   String get quizWordUnderstood => 'J\'ai compris';
@@ -1229,12 +1237,12 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       unit,
       {
-        'add': 'Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.',
-        'remove': 'Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.',
-        'compare': 'Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.',
-        'group': 'Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.',
-        'share': 'Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.',
-        'ask': 'Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).',
+        'add': 'Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.',
+        'remove': 'Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.',
+        'compare': 'Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.',
+        'group': 'Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.',
+        'share': 'Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.',
+        'ask': 'Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).',
         'other': '',
       },
     );

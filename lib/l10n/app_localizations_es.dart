@@ -652,9 +652,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizHintWordOperation => 'Toca la operación';
 
   @override
-  String get quizHintTouchWords => 'Toca las palabras de color';
-
-  @override
   String get quizWordListenLabel => 'Escucha y toca';
 
   @override
@@ -665,6 +662,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizWordMatchTitle => 'Une cada palabra con su dibujo';
+
+  @override
+  String get quizWordMatchHintStart => 'Toca una palabra y luego su dibujo';
+
+  @override
+  String quizWordMatchHintPicture(String word) {
+    return 'Toca el dibujo de « $word »';
+  }
+
+  @override
+  String get quizWordMatchHintWord => 'Toca la palabra que va con este dibujo';
 
   @override
   String get quizWordUnderstood => 'Lo entiendo';

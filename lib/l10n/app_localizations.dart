@@ -1030,12 +1030,6 @@ abstract class AppLocalizations {
   /// **'Touche l\'opération'**
   String get quizHintWordOperation;
 
-  /// Instruction on a "Tap to understand" question: the colored words of the sentence can be touched to hear them and see their picture ("Tap the colored words").
-  ///
-  /// In fr, this message translates to:
-  /// **'Touche les mots en couleur'**
-  String get quizHintTouchWords;
-
   /// Label of the card of a question where the child hears a math word and taps its picture ("Listen and tap"). Short, imperative.
   ///
   /// In fr, this message translates to:
@@ -1051,7 +1045,7 @@ abstract class AppLocalizations {
   /// Label of a question where the child reads a short statement and picks +, −, × or ÷ without computing ("Which operation?").
   ///
   /// In fr, this message translates to:
-  /// **'Quelle opération ?'**
+  /// **'Quelle opération ?'**
   String get quizWordOperationLabel;
 
   /// Title of the board where the child ties four math words to their four pictures, also read aloud as the question ("Match each word with its picture").
@@ -1059,6 +1053,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Relie chaque mot à son dessin'**
   String get quizWordMatchTitle;
+
+  /// Hint under the board that ties math words to their pictures, before anything is touched ("Tap a word, then its picture").
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche un mot, puis son dessin'**
+  String get quizWordMatchHintStart;
+
+  /// Hint under the board of words and pictures once a word is touched ("Tap the picture of « il reste »"). {word} is the French math word, kept in French in every language.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche le dessin de « {word} »'**
+  String quizWordMatchHintPicture(String word);
+
+  /// Hint under the board of words and pictures once a picture is touched ("Tap the word that goes with this picture").
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche le mot qui va avec ce dessin'**
+  String get quizWordMatchHintWord;
 
   /// Button that ends a "Tap to understand" question once the child has touched the word asked ("I understand"). Spoken by the child.
   ///
@@ -1741,7 +1753,7 @@ abstract class AppLocalizations {
   /// Tip of a unit of the math words domain, shown on its Discovery page under all its words. One or two short sentences for a child of 6 to 9, informal "tu". The French words in « » are the math words themselves, kept in French in every language, since the child learns them in French. {unit} is the slug of the unit, never shown: add, remove, compare, group, share, ask.
   ///
   /// In fr, this message translates to:
-  /// **'{unit, select, add{Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.} remove{Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.} compare{Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.} group{Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.} share{Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.} ask{Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).} other{}}'**
+  /// **'{unit, select, add{Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.} remove{Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.} compare{Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.} group{Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.} share{Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.} ask{Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).} other{}}'**
   String mathWordsUnitTip(String unit);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").

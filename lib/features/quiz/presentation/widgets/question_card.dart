@@ -29,6 +29,8 @@ class QuestionCard extends StatelessWidget {
     this.picture,
     this.spokenText,
     this.listenButton,
+    this.extra,
+    this.wrapsPrompt = false,
     super.key,
   });
 
@@ -77,6 +79,14 @@ class QuestionCard extends StatelessWidget {
   /// can read the question.
   final Widget? listenButton;
 
+  /// A widget under the prompt, such as the "Écouter en wolof" button of a
+  /// word, or `null`.
+  final Widget? extra;
+
+  /// Whether the prompt is a statement that wraps on several lines in a
+  /// smaller type, instead of one big line scaled down.
+  final bool wrapsPrompt;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -111,7 +121,7 @@ class QuestionCard extends StatelessWidget {
                     ? AppSizes.space16
                     : AppSizes.minTouchTarget + AppSizes.space8,
                 AppSizes.space16,
-                picture == null
+                picture == null && !wrapsPrompt
                     ? AppSizes.space16
                     : AppSizes.space16 + _mascotSize / 2,
               ),
@@ -140,15 +150,22 @@ class QuestionCard extends StatelessWidget {
                     children: <Widget>[
                       _QuestionLabel(label: label),
                       const SizedBox(height: AppSizes.space8),
-                      SpokenAs(
-                        sentence: _saysLabel ? null : spokenText,
-                        child: _PromptText(
-                          prompt: prompt,
-                          blankText: blankText,
-                          blankColor: blankColor,
-                          fontSize: _promptFontSize,
+                      Flexible(
+                        child: SpokenAs(
+                          sentence: _saysLabel ? null : spokenText,
+                          child: _PromptText(
+                            prompt: prompt,
+                            blankText: blankText,
+                            blankColor: blankColor,
+                            fontSize: _promptFontSize,
+                            wraps: wrapsPrompt,
+                          ),
                         ),
                       ),
+                      if (extra case final Widget shown) ...<Widget>[
+                        const SizedBox(height: AppSizes.space12),
+                        shown,
+                      ],
                     ],
                   ),
                 },
@@ -248,12 +265,14 @@ class _PromptText extends StatelessWidget {
     required this.blankText,
     required this.blankColor,
     required this.fontSize,
+    this.wraps = false,
   });
 
   final List<PromptToken> prompt;
   final String? blankText;
   final Color? blankColor;
   final double fontSize;
+  final bool wraps;
 
   List<InlineSpan> _buildSpans() {
     final List<String> parts = prompt.toDisplayParts(blankText: blankText);
@@ -273,6 +292,19 @@ class _PromptText extends StatelessWidget {
     final TextStyle? style = Theme.of(
       context,
     ).textTheme.displaySmall?.copyWith(fontSize: fontSize);
+    if (wraps) {
+      return Semantics(
+        label: prompt.toSpokenText(context.l10n),
+        excludeSemantics: true,
+        child: SingleChildScrollView(
+          child: Text(
+            prompt.toDisplayText(),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+      );
+    }
     return Semantics(
       label: prompt.toSpokenText(context.l10n),
       excludeSemantics: true,

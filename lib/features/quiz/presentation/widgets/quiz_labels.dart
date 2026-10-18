@@ -36,6 +36,9 @@ final class QuizLabels {
         _ => '',
       },
       QuestionTypeIds.compare => l10n.quizCompareLabel,
+      QuestionTypeIds.listenAndTouch => l10n.quizWordListenLabel,
+      QuestionTypeIds.touchToUnderstand => l10n.quizWordTouchLabel,
+      QuestionTypeIds.whichOperation => l10n.quizWordOperationLabel,
       _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
@@ -81,6 +84,7 @@ final class QuizLabels {
         _speakFindOperation(question, domainId) ?? operation,
       QuestionTypeIds.trueFalse => l10n.quizSpokenTrueFalse(operation),
       QuestionTypeIds.matchPairs => l10n.quizMatchPairsTitle,
+      QuestionTypeIds.wordAndImage => l10n.quizWordMatchTitle,
       _ => operation,
     };
   }
@@ -115,6 +119,8 @@ final class QuizLabels {
       QuestionTypeIds.trueFalse => l10n.quizHintTrueFalse,
       QuestionTypeIds.findOperation => l10n.quizHintFindOperation,
       QuestionTypeIds.compare => l10n.quizHintCompare,
+      QuestionTypeIds.listenAndTouch => l10n.quizHintWordListen,
+      QuestionTypeIds.whichOperation => l10n.quizHintWordOperation,
       _ when question.choices.isNotEmpty => l10n.quizHintMultipleChoice,
       _ => null,
     };
