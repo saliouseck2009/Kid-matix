@@ -40,7 +40,7 @@ final class QuizLabels {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
         NumberLinePicture() => l10n.quizNumberLineLabel,
-        null => describeUnitOf(question, domainId),
+        WordPicture() || null => describeUnitOf(question, domainId),
       },
     };
   }
@@ -102,7 +102,7 @@ final class QuizLabels {
       final NumberLinePicture line => l10n.quizNumberLineSpoken(
         MathPictureLabels(l10n).listNumbers(line),
       ),
-      null => null,
+      WordPicture() || null => null,
     };
   }
 

@@ -27,6 +27,51 @@ FAMILIES = {
     "Partager": "share",
     "Questions": "ask",
 }
+# The form of each word as it appears in its example sentence, so the app can
+# make it touchable ("il reste" is written "reste" in "Il lui reste 6
+# mangues"). Checked against the example by the build.
+SURFACES = {
+    "ajouter": "ajoute",
+    "en_plus": "en plus",
+    "en_tout": "en tout",
+    "ensemble": "ensemble",
+    "gagner": "gagne",
+    "recevoir": "reçoit",
+    "augmenter": "augmente",
+    "enlever": "enlève",
+    "il_reste": "reste",
+    "retirer": "retire",
+    "vendre": "vend",
+    "donner": "donne",
+    "perdre": "perd",
+    "acheter": "achète",
+    "de_plus_que": "de plus que",
+    "de_moins_que": "de moins que",
+    "autant_que": "autant",
+    "le_plus_grand": "le plus grand",
+    "le_plus_petit": "le plus petit",
+    "difference": "différence",
+    "egal": "égaux",
+    "par_paquets_de": "par paquets de",
+    "chacun": "chacun",
+    "fois": "fois",
+    "dans_chaque": "Dans chaque",
+    "rangee": "rangées",
+    "double": "le double",
+    "partager": "partage",
+    "partager_egalement": "partage également",
+    "repartir": "répartit",
+    "par_personne": "par personne",
+    "diviser": "diviser",
+    "moitie": "la moitié",
+    "quart": "un quart",
+    "combien": "combien",
+    "combien_de_fois": "Combien de fois",
+    "total": "le total",
+    "au_depart": "Au départ",
+    "a_la_fin": "À la fin",
+    "apres": "Après",
+}
 OPERATIONS = {"+": "add", "−": "subtract", "×": "multiply", "÷": "divide"}
 KEY_PATTERN = re.compile(r"^[a-z]+(_[a-z]+)*$")
 
@@ -104,6 +149,17 @@ def build(markdown):
         raise SystemExit("math-words.md is inconsistent:\n" + "\n".join(problems))
     for word in words:
         word["notion"] = notion_of[word["key"]]
+        surface = SURFACES.get(word["key"])
+        if surface is None:
+            problems.append(f"{word['key']} has no surface in SURFACES")
+        elif surface.lower() not in word["example"].lower():
+            problems.append(
+                f"the example of {word['key']} does not contain '{surface}'"
+            )
+        else:
+            word["surface"] = surface
+    if problems:
+        raise SystemExit("math-words.md is inconsistent:\n" + "\n".join(problems))
     return {"words": words, "statements": statements}
 
 

@@ -7,4 +7,8 @@ abstract final class LearningDomainIds {
   /// The numbers up to 100: counting, tens and ones, comparing and
   /// ordering (version 2.0).
   static const String numbers = 'numbers';
+
+  /// The words of mathematics: add, take away, compare, group, share
+  /// (version 2.0).
+  static const String mathWords = 'math_words';
 }

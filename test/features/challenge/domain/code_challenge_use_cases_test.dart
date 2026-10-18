@@ -90,6 +90,8 @@ String _answer(Answer answer) {
     OperationAnswer(:final List<PromptToken> operation) => _tokens(operation),
     PairsAnswer() => 'pairs',
     ComparisonAnswer(:final comparison) => comparison.name,
+    WordAnswer(:final String wordKey) => wordKey,
+    ProblemOperationAnswer(:final operation) => operation.name,
   };
 }
 

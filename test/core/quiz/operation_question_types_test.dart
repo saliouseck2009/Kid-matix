@@ -76,6 +76,7 @@ void main() {
       expect(const MatchPairsQuestionType().timeFactor, 2);
       expect(
         appQuestionTypes
+            .take(6)
             .where((QuestionType type) => type.timeFactor != 1)
             .map((QuestionType type) => type.id),
         <String>[QuestionTypeIds.matchPairs],

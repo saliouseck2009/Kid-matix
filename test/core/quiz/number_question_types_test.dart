@@ -19,18 +19,21 @@ QuestionType _typeOf(String id) {
 
 void main() {
   group('question types of the numbers', () {
-    test('are registered last, with distinct identifiers', () {
+    test('are registered after version 1.1, with distinct identifiers', () {
       // Act
       final List<String> actualIds = appQuestionTypes
           .map((QuestionType type) => type.id)
           .toList();
       // Assert
-      expect(actualIds.sublist(actualIds.length - 4), <String>[
-        QuestionTypeIds.countObjects,
-        QuestionTypeIds.tensAndOnes,
-        QuestionTypeIds.compare,
-        QuestionTypeIds.numberLine,
-      ]);
+      expect(
+        actualIds.sublist(actualIds.length - 8, actualIds.length - 4),
+        <String>[
+          QuestionTypeIds.countObjects,
+          QuestionTypeIds.tensAndOnes,
+          QuestionTypeIds.compare,
+          QuestionTypeIds.numberLine,
+        ],
+      );
       expect(actualIds.toSet(), hasLength(actualIds.length));
     });
     test('pick the numbers, decide the comparison', () {

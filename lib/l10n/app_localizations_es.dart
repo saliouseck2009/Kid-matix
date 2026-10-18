@@ -40,6 +40,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numbersDomainName => 'Números';
 
   @override
+  String get mathWordsDomainName => 'Palabras de mates';
+
+  @override
   String get errorStorage => 'Uy, no pudimos leer o guardar tus datos.';
 
   @override
@@ -214,6 +217,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get masteryGridTitleNumbers => 'Mis números';
 
   @override
+  String get masteryGridTitleMathWords => 'Mis palabras';
+
+  @override
   String get masteryStatusNotSeen => 'Nuevo';
 
   @override
@@ -334,6 +340,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String helpAudioListen(String language) {
     return 'Escuchar en $language';
+  }
+
+  @override
+  String helpAudioListenExample(String language) {
+    return 'Ejemplo en $language';
   }
 
   @override
@@ -635,6 +646,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizHintCompare => 'Toca el signo correcto';
 
   @override
+  String get quizHintWordListen => 'Toca el dibujo correcto';
+
+  @override
+  String get quizHintWordOperation => 'Toca la operación';
+
+  @override
+  String get quizHintTouchWords => 'Toca las palabras de color';
+
+  @override
+  String get quizWordListenLabel => 'Escucha y toca';
+
+  @override
+  String get quizWordTouchLabel => 'Toca para entender';
+
+  @override
+  String get quizWordOperationLabel => '¿Qué operación?';
+
+  @override
+  String get quizWordMatchTitle => 'Une cada palabra con su dibujo';
+
+  @override
+  String get quizWordUnderstood => 'Lo entiendo';
+
+  @override
+  String get quizWordTouchFirst => 'Toca la palabra de color';
+
+  @override
   String get quizCompareLess => 'menor';
 
   @override
@@ -760,6 +798,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizSpokenPlus => 'más';
+
+  @override
+  String get quizSpokenMinus => 'menos';
+
+  @override
+  String get quizSpokenDividedBy => 'dividido entre';
 
   @override
   String get quizSpokenLessThan => 'es menor que';
@@ -1155,6 +1199,40 @@ class AppLocalizationsEs extends AppLocalizations {
         'compare': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
         'order': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
         'beforeafter': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Añadir',
+        'remove': 'Quitar',
+        'compare': 'Comparar',
+        'group': 'Agrupar',
+        'share': 'Repartir',
+        'ask': 'Las preguntas',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Cuando añadimos, tenemos más que antes. Escucha « en plus », « en tout », « ensemble »: dicen que juntamos.',
+        'remove': 'Cuando quitamos, queda menos. Las palabras « il reste », « vendre », « perdre » dicen que la cantidad baja.',
+        'compare': 'Para comparar, mira dos cantidades: una es más grande, la otra más pequeña, o son iguales.',
+        'group': 'Los paquetes del mismo tamaño son grupos iguales. Las palabras « dans chaque » y « par paquets de » los anuncian.',
+        'share': 'Repartir es hacer partes iguales: cada uno recibe tanto como los demás.',
+        'ask': 'Estas palabras dicen qué buscamos (« combien », « le total ») o cuándo pasa (« au départ », « à la fin »).',
         'other': '',
       },
     );

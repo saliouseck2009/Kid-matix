@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/comparison.dart';
+import 'package:kid_matix/core/quiz/problem_operation.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
@@ -126,4 +127,56 @@ final class PairsAnswer extends Answer {
 
   @override
   String toString() => 'PairsAnswer(missed: $missedItemKeys)';
+}
+
+/// A math word picked or paired (lot F28), told by its key; [text] is the
+/// word as the child reads it, such as "il reste". Two answers are the same
+/// when they have the same key.
+final class WordAnswer extends Answer {
+  /// Creates the answer of the word [wordKey].
+  const WordAnswer({required this.wordKey, required this.text});
+
+  /// Key of the math word, such as `il_reste`.
+  final String wordKey;
+
+  /// The word written in French, such as "il reste".
+  final String text;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is WordAnswer && other.wordKey == wordKey;
+
+  @override
+  int get hashCode => wordKey.hashCode;
+
+  @override
+  String toString() => 'WordAnswer($wordKey)';
+}
+
+/// The operation picked for a statement, among the four (lot F28).
+final class ProblemOperationAnswer extends Answer {
+  /// Creates the answer [operation].
+  const ProblemOperationAnswer(this.operation);
+
+  /// Every answer, in the order of the buttons: + − × ÷.
+  static const List<ProblemOperationAnswer> all = <ProblemOperationAnswer>[
+    ProblemOperationAnswer(ProblemOperation.add),
+    ProblemOperationAnswer(ProblemOperation.subtract),
+    ProblemOperationAnswer(ProblemOperation.multiply),
+    ProblemOperationAnswer(ProblemOperation.divide),
+  ];
+
+  /// Operation picked.
+  final ProblemOperation operation;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProblemOperationAnswer && other.operation == operation;
+
+  @override
+  int get hashCode => operation.hashCode;
+
+  @override
+  String toString() => 'ProblemOperationAnswer(${operation.name})';
 }

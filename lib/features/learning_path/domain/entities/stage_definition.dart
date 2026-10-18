@@ -38,6 +38,8 @@ final class StageDefinition {
       questionTypeIds: <String>[
         QuestionTypeIds.multipleChoice,
         ..._numberTypes,
+        QuestionTypeIds.touchToUnderstand,
+        QuestionTypeIds.listenAndTouch,
       ],
       selection: QuizSelection.inOrder,
     ),
@@ -47,6 +49,7 @@ final class StageDefinition {
         QuestionTypeIds.multipleChoice,
         QuestionTypeIds.trueFalse,
         ..._numberTypes,
+        ..._wordTypes,
       ],
       selection: QuizSelection.shuffled,
     ),
@@ -56,6 +59,9 @@ final class StageDefinition {
         QuestionTypeIds.typedAnswer,
         QuestionTypeIds.missingNumber,
         QuestionTypeIds.compare,
+        QuestionTypeIds.whichOperation,
+        QuestionTypeIds.wordAndImage,
+        QuestionTypeIds.listenAndTouch,
       ],
       selection: QuizSelection.shuffled,
     ),
@@ -76,7 +82,11 @@ final class StageDefinition {
   /// The review stage after every group of 3 tables.
   static const StageDefinition review = StageDefinition(
     kind: StageKind.review,
-    questionTypeIds: <String>[..._versionOneTypes, ..._numberTypes],
+    questionTypeIds: <String>[
+      ..._versionOneTypes,
+      ..._numberTypes,
+      ..._wordTypes,
+    ],
     selection: QuizSelection.mastery,
     questionCount: reviewQuestionCount,
   );
@@ -104,13 +114,33 @@ final class StageDefinition {
     QuestionTypeIds.compare,
   ];
 
-  /// Every format, for the speed stage and the boss fight (lots F15 and
-  /// F24).
+  /// The formats of the math words (lot F28): hear a word and touch its
+  /// drawing, tie words to drawings, touch the words of a sentence, pick
+  /// the operation of a statement. Each word is asked with the ones that
+  /// fit it (a statement uses only some words).
+  static const List<String> _wordTypes = <String>[
+    QuestionTypeIds.listenAndTouch,
+    QuestionTypeIds.wordAndImage,
+    QuestionTypeIds.touchToUnderstand,
+    QuestionTypeIds.whichOperation,
+  ];
+
+  /// The formats of the math words that suit a timed stage: a sentence to
+  /// explore or a long statement does not fit the speed stage nor the
+  /// boss arena.
+  static const List<String> _timedWordTypes = <String>[
+    QuestionTypeIds.listenAndTouch,
+    QuestionTypeIds.wordAndImage,
+  ];
+
+  /// Every format, for the speed stage and the boss fight (lots F15, F24
+  /// and F28).
   static const List<String> _timedTypes = <String>[
     ..._versionOneTypes,
     QuestionTypeIds.findOperation,
     QuestionTypeIds.matchPairs,
     ..._numberTypes,
+    ..._timedWordTypes,
   ];
 
   /// Which stage it is.

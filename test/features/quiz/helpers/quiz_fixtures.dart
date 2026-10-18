@@ -21,6 +21,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
+import '../../math_word/helpers/math_word_fixtures.dart';
 
 /// Test double of [QuizSessionRepository].
 final class MockQuizSessionRepository extends Mock
@@ -71,11 +72,12 @@ void registerQuizFallbacks() {
 }
 
 /// Registry holding the domains of the app: the multiplication, then
-/// the numbers.
+/// the numbers, then the math words.
 DomainRegistry buildDomainRegistry() {
   return DomainRegistry()
     ..register(MultiplicationDomain())
-    ..register(NumbersDomain());
+    ..register(NumbersDomain())
+    ..register(buildMathWordDomain());
 }
 
 /// Registry of every question type of the app.

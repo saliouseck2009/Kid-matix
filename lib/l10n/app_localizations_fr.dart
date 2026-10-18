@@ -40,6 +40,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get numbersDomainName => 'Nombres';
 
   @override
+  String get mathWordsDomainName => 'Mots des maths';
+
+  @override
   String get errorStorage =>
       'Oups, on n\'a pas pu lire ou enregistrer tes données.';
 
@@ -216,6 +219,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get masteryGridTitleNumbers => 'Mes nombres';
 
   @override
+  String get masteryGridTitleMathWords => 'Mes mots';
+
+  @override
   String get masteryStatusNotSeen => 'Nouveau';
 
   @override
@@ -336,6 +342,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String helpAudioListen(String language) {
     return 'Écouter en $language';
+  }
+
+  @override
+  String helpAudioListenExample(String language) {
+    return 'Exemple en $language';
   }
 
   @override
@@ -636,6 +647,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizHintCompare => 'Touche le bon signe';
 
   @override
+  String get quizHintWordListen => 'Touche le bon dessin';
+
+  @override
+  String get quizHintWordOperation => 'Touche l\'opération';
+
+  @override
+  String get quizHintTouchWords => 'Touche les mots en couleur';
+
+  @override
+  String get quizWordListenLabel => 'Écoute et touche';
+
+  @override
+  String get quizWordTouchLabel => 'Touche pour comprendre';
+
+  @override
+  String get quizWordOperationLabel => 'Quelle opération ?';
+
+  @override
+  String get quizWordMatchTitle => 'Relie chaque mot à son dessin';
+
+  @override
+  String get quizWordUnderstood => 'J\'ai compris';
+
+  @override
+  String get quizWordTouchFirst => 'Touche le mot en couleur';
+
+  @override
   String get quizCompareLess => 'plus petit';
 
   @override
@@ -761,6 +799,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizSpokenPlus => 'plus';
+
+  @override
+  String get quizSpokenMinus => 'moins';
+
+  @override
+  String get quizSpokenDividedBy => 'divisé par';
 
   @override
   String get quizSpokenLessThan => 'est plus petit que';
@@ -1157,6 +1201,40 @@ class AppLocalizationsFr extends AppLocalizations {
         'compare': 'Regarde d\'abord les dizaines : le nombre qui en a le plus est le plus grand. Si elles sont égales, regarde les unités.',
         'order': 'Sur la droite, les nombres vont du plus petit au plus grand. Trouve de combien ils avancent à chaque fois.',
         'beforeafter': 'Le nombre d\'après, c\'est 1 de plus ; le nombre d\'avant, 1 de moins. Après 39 vient 40 !',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Ajouter',
+        'remove': 'Enlever',
+        'compare': 'Comparer',
+        'group': 'Grouper',
+        'share': 'Partager',
+        'ask': 'Les questions',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.',
+        'remove': 'Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.',
+        'compare': 'Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.',
+        'group': 'Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.',
+        'share': 'Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.',
+        'ask': 'Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).',
         'other': '',
       },
     );

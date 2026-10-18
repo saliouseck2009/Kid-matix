@@ -26,6 +26,7 @@ extension PromptReading on List<PromptToken> {
         OperatorToken(operator: MathOperator.equalTo) => '=',
         EqualsToken() => '=',
         BlankToken() => blankText ?? '?',
+        TextToken(:final String text) => text,
       };
     }).toList();
   }
@@ -44,6 +45,7 @@ extension PromptReading on List<PromptToken> {
         OperatorToken(operator: MathOperator.equalTo) => l10n.quizSpokenEqualTo,
         EqualsToken() => l10n.quizSpokenEquals,
         BlankToken() => l10n.quizSpokenBlank,
+        TextToken(:final String text) => text,
       };
     }).join(' ');
   }
