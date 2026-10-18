@@ -38,12 +38,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WORDS = ROOT / "assets" / "math_words" / "math_words.json"
 PACKS = ROOT / "assets" / "audio"
-INDEX = PACKS / "packs.json"
 PUBSPEC = ROOT / "pubspec.yaml"
 
 INPUT_EXTENSIONS = {
     ".m4a", ".mp3", ".wav", ".aac", ".ogg", ".opus", ".flac", ".amr",
-    ".3gp", ".caf", ".aiff", ".aif", ".mp4",
+    ".3gp", ".caf", ".aiff", ".aif", ".mp4", ".webm", ".wma",
 }
 EXAMPLE_SUFFIX = "_exemple"
 MARGIN_SECONDS = 0.25
@@ -73,6 +72,7 @@ def load_keys():
 
 def classify(stem, language, keys):
     """('key', 'explanation'|'example') for a file stem, or None."""
+    stem = stem.lower()
     prefix = f"{language}_"
     if not stem.startswith(prefix):
         return None
@@ -120,6 +120,16 @@ def file_name(language, key, kind):
     return f"{language}_{key}{suffix}.m4a"
 
 
+def present_in(output, language, keys):
+    """The (key, kind) slots whose converted file is in the output folder."""
+    return {
+        (key, kind)
+        for key in keys
+        for kind in ("explanation", "example")
+        if (output / file_name(language, key, kind)).exists()
+    }
+
+
 def build_manifest(language, keys, present):
     """The manifest dict for the slots in `present`."""
     words = {}
@@ -157,16 +167,19 @@ def convert(source, target):
 
 def register_language(language, output):
     """Lists the language in packs.json; warns when pubspec lacks its folder."""
+    index = output.parent / "packs.json"
     languages = []
-    if INDEX.exists():
-        languages = json.loads(INDEX.read_text(encoding="utf-8"))["languages"]
+    if index.exists():
+        languages = json.loads(index.read_text(encoding="utf-8"))["languages"]
     if language not in languages:
         languages.append(language)
-        INDEX.write_text(
+        index.write_text(
             json.dumps({"languages": languages}, indent=2) + "\n", encoding="utf-8"
         )
     declared = f"- assets/audio/{output.name}/"
-    if declared not in PUBSPEC.read_text(encoding="utf-8"):
+    if output.parent == PACKS and declared not in PUBSPEC.read_text(
+        encoding="utf-8"
+    ):
         print(f"add '{declared}' to the assets of pubspec.yaml")
 
 
@@ -180,6 +193,8 @@ def main():
     args = parser.parse_args()
     keys = load_keys()
     output = args.output or PACKS / args.language
+    if output.resolve() == args.input_dir.resolve():
+        raise SystemExit("the input folder and the output folder must differ")
     found, unrecognized, duplicates = scan(args.input_dir, args.language, keys)
     for path in unrecognized:
         print(f"not recognized: {path.name}")
@@ -194,6 +209,9 @@ def main():
             seconds = convert(source, target)
             note = " (long: shorten it)" if seconds > MAX_SECONDS else ""
             print(f"{source.name} -> {target.name}  {seconds:.1f} s{note}")
+        # The pack is what the output folder holds, so a second partial
+        # delivery adds to the first instead of erasing it.
+        found = {slot: None for slot in present_in(output, args.language, keys)}
         manifest = build_manifest(args.language, keys, set(found))
         (output / "manifest.json").write_text(
             json.dumps(manifest, indent=2) + "\n", encoding="utf-8"

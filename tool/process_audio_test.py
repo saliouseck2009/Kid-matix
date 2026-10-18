@@ -24,6 +24,24 @@ class ClassifyTest(unittest.TestCase):
             audio.classify("wo_de_plus_que_exemple", "wo", KEYS), ("de_plus_que", "example")
         )
 
+    def test_names_are_case_insensitive(self):
+        self.assertEqual(audio.classify("WO_Il_Reste", "wo", KEYS), ("il_reste", "explanation"))
+        self.assertEqual(
+            audio.classify("Wo_de_plus_que_Exemple", "wo", KEYS), ("de_plus_que", "example")
+        )
+
+    def test_pack_is_what_the_output_folder_holds_and_index_follows_it(self):
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / "xx"
+            output.mkdir()
+            (output / "xx_il_reste.m4a").write_bytes(b"")
+            self.assertEqual(
+                audio.present_in(output, "xx", KEYS), {("il_reste", "explanation")}
+            )
+            audio.register_language("xx", output)
+            index = json.loads((Path(folder) / "packs.json").read_text())
+            self.assertEqual(index, {"languages": ["xx"]})
+
     def test_unknown_names(self):
         self.assertIsNone(audio.classify("wo_inconnu", "wo", KEYS))
         self.assertIsNone(audio.classify("fr_il_reste", "wo", KEYS))

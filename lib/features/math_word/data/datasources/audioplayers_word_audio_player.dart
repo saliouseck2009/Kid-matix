@@ -26,14 +26,13 @@ final class AudioplayersWordAudioPlayer implements WordAudioPlayer {
     _finishPending();
     final Completer<void> done = Completer<void>();
     _pending = done;
+    StreamSubscription<void>? subscription;
     try {
       final AudioPlayer player = _player ??= AudioPlayer();
       await player.stop();
-      final StreamSubscription<void> subscription = player.onPlayerComplete
-          .listen((_) => _finish(done));
+      subscription = player.onPlayerComplete.listen((_) => _finish(done));
       await player.play(AssetSource(assetPath));
       await done.future.timeout(_giveUp, onTimeout: () {});
-      await subscription.cancel();
     } on Exception catch (error, stackTrace) {
       log(
         'Recording not played',
@@ -42,6 +41,7 @@ final class AudioplayersWordAudioPlayer implements WordAudioPlayer {
         stackTrace: stackTrace,
       );
     } finally {
+      await subscription?.cancel();
       _finish(done);
     }
   }

@@ -30,7 +30,7 @@ ProfileSettingsLocalModel _$ProfileSettingsLocalModelFromJson(
       : const SqliteBoolConverter().fromJson(
           (json['is_read_aloud_enabled'] as num).toInt(),
         ),
-  helpAudioLanguage: json['help_audio_language'] as String? ?? 'wo',
+  helpAudioLanguage: json['help_audio_language'] as String?,
   deletedAt: (json['deleted_at'] as num?)?.toInt(),
 );
 

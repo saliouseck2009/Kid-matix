@@ -291,7 +291,7 @@ class _SettingsView extends StatelessWidget {
 }
 
 /// "Aide audio": the language of the recorded help of the math words, or
-/// none.
+/// none. Shown only for the packs that hold recordings.
 class _HelpAudioRow extends StatelessWidget {
   const _HelpAudioRow({
     required this.languages,
@@ -301,7 +301,7 @@ class _HelpAudioRow extends StatelessWidget {
   });
 
   final List<String> languages;
-  final String selected;
+  final String? selected;
   final Color backgroundColor;
   final ValueChanged<String> onSelected;
 
@@ -312,8 +312,13 @@ class _HelpAudioRow extends StatelessWidget {
       label: context.l10n.settingsHelpAudio,
       choices: ChoiceSegments<String>(
         choices: choices,
-        // A language the app no longer ships counts as none.
-        selected: choices.contains(selected) ? selected : HelpAudio.none,
+        // Never chosen: the first pack. A language the app no longer ships
+        // counts as none.
+        selected: switch (selected) {
+          null => languages.first,
+          final String code when choices.contains(code) => code,
+          _ => HelpAudio.none,
+        },
         backgroundColor: backgroundColor,
         labelOf: (String code) => code == HelpAudio.none
             ? context.l10n.helpAudioNone

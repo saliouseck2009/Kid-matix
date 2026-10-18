@@ -101,7 +101,7 @@ python3 -m unittest tool/process_audio_test.py            # tests du script
 
 Le script :
 
-- accepte tout format audio courant (`.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.opus`, `.flac`, `.amr`, `.3gp`, `.caf`, `.aiff`) : l'extension est celle de l'enregistreur, le nom seul compte (`wo_<clé>` ou `wo_<clé>_exemple`) ;
+- accepte tout format audio courant (`.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.opus`, `.flac`, `.amr`, `.3gp`, `.caf`, `.aiff`, `.webm`, `.wma`) : l'extension est celle de l'enregistreur, le nom seul compte (`wo_<clé>` ou `wo_<clé>_exemple`, majuscules acceptées) ;
 - coupe les silences au début et à la fin en gardant une marge de 0,25 seconde, égalise le volume (norme EBU R128, -16 LUFS) et convertit en mono AAC, 32 kHz, 48 kbit/s, au format `.m4a` (environ 6 Ko par seconde) ;
 - écrit les fichiers `wo_<clé>.m4a` et `wo_<clé>_exemple.m4a` et le manifeste `manifest.json` dans `assets/audio/wo/` (`--language` et `--output` changent la langue et le dossier) ;
 - vérifie que chaque clé de `assets/math_words/math_words.json` (dérivé du tableau par `tool/build_math_words.py`) a ses deux fichiers, liste ceux qui manquent, signale les fichiers non reconnus ou en double et les fichiers de plus de 15 secondes ; il se termine avec un code d'erreur tant qu'un fichier manque, mais le manifeste ne liste que les fichiers présents, donc un pack incomplet peut être livré : l'app masque le bouton des mots sans fichier.

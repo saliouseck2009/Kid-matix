@@ -24,7 +24,13 @@ final class WordAudioServiceImpl implements WordAudioService {
   SpeechReading? _latest;
 
   @override
-  List<String> get languages => List<String>.unmodifiable(_packs.keys);
+  List<String> get languages => List<String>.unmodifiable(<String>[
+    for (final AudioPackManifest pack in _packs.values)
+      if (pack.wordKeys.isNotEmpty) pack.language,
+  ]);
+
+  @override
+  String? get defaultLanguage => _packs.keys.firstOrNull;
 
   @override
   bool hasAudio({

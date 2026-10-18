@@ -27,7 +27,7 @@ final class FixedPlayerSettings implements PlayerSettingsService {
     this.mode = TimerMode.normal,
     this.isEverythingUnlocked = false,
     this.isReadAloudEnabled = false,
-    this.helpAudioLanguage = 'wo',
+    this.helpAudioLanguage,
   });
 
   /// Timer mode returned.
@@ -40,12 +40,12 @@ final class FixedPlayerSettings implements PlayerSettingsService {
   final bool isReadAloudEnabled;
 
   /// "Aide audio" returned.
-  final String helpAudioLanguage;
+  final String? helpAudioLanguage;
 
   @override
-  Future<DataState<String>> readHelpAudioLanguage({
+  Future<DataState<String?>> readHelpAudioLanguage({
     required String profileId,
-  }) async => DataSuccess<String>(helpAudioLanguage);
+  }) async => DataSuccess<String?>(helpAudioLanguage);
 
   @override
   Future<DataState<bool>> readReadAloudEnabled({

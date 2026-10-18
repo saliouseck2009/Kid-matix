@@ -1,4 +1,3 @@
-import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:meta/meta.dart';
@@ -19,7 +18,7 @@ final class ProfileSettingsEntity {
     required this.isReducedMotionEnabled,
     required this.isEverythingUnlocked,
     this.isReadAloudEnabled = false,
-    this.helpAudioLanguage = HelpAudio.defaultLanguage,
+    this.helpAudioLanguage,
   });
 
   /// Creates the settings of a new player.
@@ -31,7 +30,7 @@ final class ProfileSettingsEntity {
       isReducedMotionEnabled = false,
       isEverythingUnlocked = false,
       isReadAloudEnabled = false,
-      helpAudioLanguage = HelpAudio.defaultLanguage;
+      helpAudioLanguage = null;
 
   /// Identifier of the profile these settings belong to.
   final String profileId;
@@ -59,8 +58,9 @@ final class ProfileSettingsEntity {
   final bool isReadAloudEnabled;
 
   /// Language of the recorded help of the math words ("Aide audio"): the
-  /// code of an audio pack, or [HelpAudio.none].
-  final String helpAudioLanguage;
+  /// code of an audio pack, `HelpAudio.none`, or `null` for a player who
+  /// never chose (the first pack).
+  final String? helpAudioLanguage;
 
   /// Returns a copy with the given fields replaced.
   ProfileSettingsEntity copyWith({

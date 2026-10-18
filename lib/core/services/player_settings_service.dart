@@ -28,6 +28,6 @@ abstract interface class PlayerSettingsService {
 
   /// Returns the language of the recorded help the player [profileId]
   /// chose for the math words ("Aide audio"): the code of an audio pack,
-  /// or `HelpAudio.none`.
-  Future<DataState<String>> readHelpAudioLanguage({required String profileId});
+  /// `HelpAudio.none`, or `null` when they never chose (the first pack).
+  Future<DataState<String?>> readHelpAudioLanguage({required String profileId});
 }
