@@ -4,7 +4,9 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/domain_choice_entity.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
@@ -62,10 +64,23 @@ class LearningPathPage extends StatelessWidget {
             ..load(),
       child: Scaffold(
         body: SafeArea(
-          child: BlocBuilder<DomainChoiceCubit, DomainChoiceEntity?>(
-            builder: (BuildContext context, DomainChoiceEntity? choice) {
-              if (choice == null) {
-                return const Center(child: CircularProgressIndicator());
+          child: BlocBuilder<DomainChoiceCubit, DomainChoiceState>(
+            builder: (BuildContext context, DomainChoiceState state) {
+              final DomainChoiceEntity choice;
+              switch (state) {
+                case DomainChoiceLoading():
+                  return const Center(child: CircularProgressIndicator());
+                case DomainChoiceFailure(:final errorCode):
+                  return Center(
+                    child: Text(
+                      PathLabels(
+                        domainId: LearningDomainIds.multiplication,
+                        l10n: context.l10n,
+                      ).describeError(errorCode),
+                    ),
+                  );
+                case DomainChoiceLoaded():
+                  choice = state.choice;
               }
               return _DomainPath(
                 key: ValueKey<String>(choice.selectedId),
