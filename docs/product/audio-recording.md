@@ -12,7 +12,7 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 
 ## 0. Préparer le texte
 
-- Avant d'ouvrir l'enregistreur, remplis dans `math-words.md` le mot wolof retenu de chaque notion (section 2), puis les deux colonnes wolof de chaque mot : « Explication en wolof » et « Exemple en wolof ».
+- Avant d'ouvrir l'enregistreur, remplis dans `math-words.md` le mot wolof retenu de chaque notion (section 2), puis les deux colonnes wolof de chaque mot : « Explication en wolof » et « Exemple en wolof ».
 - Relis chaque texte à voix haute, une fois, sans enregistrer. Si une phrase te gêne, change-la avant.
 - Enregistre ensuite le fichier du mot.
 
@@ -26,7 +26,7 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 
 ## 2. Placer le téléphone ou le micro
 
-- Téléphone à environ 20 centimètres de la bouche, un peu sur le côté et pas droit devant : on évite le souffle des « p » et des « f ».
+- Téléphone à environ 20 centimètres de la bouche, un peu sur le côté et pas droit devant : on évite le souffle des « p » et des « f ».
 - Pose le téléphone sur un coussin ou un livre, sur une surface qui ne vibre pas. Ne le tiens pas pendant l'enregistrement.
 - Un micro-cravate ou un micro branché au téléphone donne un son plus net. Si tu en as un, utilise-le.
 - Garde la même pièce, le même téléphone et la même distance du début à la fin, et à chaque séance, pour que tous les fichiers sonnent pareil.
@@ -35,7 +35,7 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 ## 3. Un fichier par mot, et son nom
 
 - Un mot, un fichier. Ne mets jamais deux mots dans un même fichier, et ne coupe pas un mot en plusieurs fichiers.
-- Le nom vient de la colonne « Clé » du tableau : `wo_<clé>.m4a`. La colonne « Fichier audio » donne le nom exact (pour l'extension, voir la section 2).
+- Le nom vient de la colonne « Clé » du tableau : `wo_<clé>.m4a`. La colonne « Fichier audio » donne le nom exact (pour l'extension, voir la section 2).
 - Exemples : `wo_il_reste.m4a`, `wo_de_plus_que.m4a`, `wo_a_la_fin.m4a`.
 - En minuscules, sans accent, sans espace, sans majuscule. Les `_` restent : `wo_de_plus_que.m4a`, pas `wo-de-plus-que.m4a` ni `Wo de plus que.m4a`.
 - Renomme le fichier tout de suite après l'enregistrement, pour ne pas le mélanger avec les autres.
@@ -59,9 +59,9 @@ Pour le propriétaire. Ce guide sert à enregistrer, en wolof, l'explication et 
 
 Pour chaque mot, dans le même fichier, dans cet ordre :
 
-1. **L'explication** (colonne « Explication en wolof ») : ce que veut dire le mot, en une ou deux phrases simples, comme à un enfant.
+1. **L'explication** (colonne « Explication en wolof ») : ce que veut dire le mot, en une ou deux phrases simples, comme à un enfant.
 2. **Une pause** d'environ une seconde.
-3. **L'exemple** (colonne « Exemple en wolof ») : une courte situation du quotidien.
+3. **L'exemple** (colonne « Exemple en wolof ») : une courte situation du quotidien.
 
 Le mot français n'est pas enregistré : l'app le fait lire par la voix du téléphone. Vise 10 à 20 secondes par fichier. Au-delà de 30 secondes, raccourcis l'explication.
 
@@ -87,7 +87,7 @@ Avant de livrer, écoute chaque fichier au casque, dans l'ordre du tableau :
 
 ## 9. Ce qui se passe ensuite
 
-Après la livraison, tu n'as rien d'autre à faire. Le script de traitement (à venir) prépare les fichiers pour l'app. Un mot sans fichier audio n'affiche simplement pas le bouton « Écouter en wolof » : l'app continue de fonctionner.
+Après la livraison, tu n'as rien d'autre à faire. Le script de traitement (à venir) prépare les fichiers pour l'app. Un mot sans fichier audio n'affiche simplement pas le bouton « Écouter en wolof » : l'app continue de fonctionner.
 
 ## 10. Script de traitement (à venir, F28-02)
 

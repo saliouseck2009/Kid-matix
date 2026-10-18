@@ -1,6 +1,6 @@
 # Les mots des maths : tableau de contenu
 
-Statut : brouillon, à valider par le propriétaire (textes, clés et montants en francs). Ce document est le tableau de contenu du lot F28 (tâche F28-01). Sa section 3 prépare aussi l'activité « Quelle opération ? » (F28-09), qui n'est pas encore codée.
+Statut : brouillon, à valider par le propriétaire (textes, clés et montants en francs). Ce document est le tableau de contenu du lot F28 (tâche F28-01). Sa section 3 prépare aussi l'activité « Quelle opération ? » (F28-09), qui n'est pas encore codée.
 
 **Les clés ne changent jamais une fois publiées.** Une clé est le nom stable d'un mot : elle donne le nom du fichier audio (`wo_<clé>.m4a`) et l'identifiant du mot dans l'app (`word:<clé>`). Renommer une clé après publication ferait perdre les progrès déjà enregistrés sur les téléphones, et obligerait à renommer les fichiers audio déjà enregistrés. Une nouvelle notion reçoit une nouvelle clé ; une clé retirée reste réservée.
 
@@ -91,7 +91,7 @@ Ces mots disent ce qu'on cherche, ou quand ça se passe.
 
 ## 2. Glossaire de cohérence
 
-Une notion, un mot wolof : le propriétaire note ici le mot wolof retenu pour chaque notion, avant d'enregistrer. Ainsi, les explications qui parlent de la même chose utilisent le même mot. Une notion peut regrouper plusieurs clés. La colonne « Situation » sert au développeur et à la relecture ; elle n'est jamais dite à l'enfant.
+Une notion, un mot wolof : le propriétaire note ici le mot wolof retenu pour chaque notion, avant d'enregistrer. Ainsi, les explications qui parlent de la même chose utilisent le même mot. Une notion peut regrouper plusieurs clés. La colonne « Situation » sert au développeur et à la relecture ; elle n'est jamais dite à l'enfant.
 
 | Notion | Situation | Clés | Mot wolof retenu |
 | --- | --- | --- | --- |
@@ -110,31 +110,31 @@ Une notion, un mot wolof : le propriétaire note ici le mot wolof retenu pour c
 | Demander combien | question | `combien`, `combien_de_fois` | |
 | Début, fin, après | suivre l'histoire | `au_depart`, `a_la_fin`, `apres` | |
 
-## 3. Énoncés « Quelle opération ? » (F28-09)
+## 3. Énoncés « Quelle opération ? » (F28-09)
 
-Vingt énoncés courts, lus à voix haute (F23). L'enfant choisit +, −, × ou ÷ sans calculer. Beaucoup contiennent un mot qui fait penser à une autre situation : « de plus » fait penser à réunir, alors qu'il peut s'agir de comparer. Ces pièges ne sont pas des règles à apprendre ; ils montrent qu'il faut lire l'histoire. Les sommes sont des montants ronds en francs CFA, comme au marché (multiples de 25, 50 ou 100 francs) : montants à valider par le propriétaire.
+Vingt énoncés courts, lus à voix haute (F23). L'enfant choisit +, −, × ou ÷ sans calculer. Beaucoup contiennent un mot qui fait penser à une autre situation : « de plus » fait penser à réunir, alors qu'il peut s'agir de comparer. Ces pièges ne sont pas des règles à apprendre ; ils montrent qu'il faut lire l'histoire. Les sommes sont des montants ronds en francs CFA, comme au marché (multiples de 25, 50 ou 100 francs) : montants à valider par le propriétaire.
 
-La colonne « Clés » renvoie à la section 1. La colonne « Piège » sert au développeur et à la relecture, pas à l'enfant.
+La colonne « Clés » renvoie à la section 1. La colonne « Piège » sert au développeur et à la relecture, pas à l'enfant.
 
 | Id | Énoncé | Opération | Clés | Piège |
 | --- | --- | --- | --- | --- |
 | OP-01 | Awa a 4 mangues. Elle en achète 3 au marché. Combien de mangues a-t-elle en tout ? | + | `en_tout`, `combien` | Aucun piège : Awa reçoit encore des mangues, la quantité grandit. |
-| OP-02 | Aminata achète 5 paquets. Dans chaque paquet, il y a 3 biscuits. Combien de biscuits a-t-elle en tout ? | × | `dans_chaque`, `en_tout`, `combien` | « en tout » fait penser à réunir, mais ici il y a 5 paquets de même taille : des groupes égaux. |
+| OP-02 | Aminata achète 5 paquets. Dans chaque paquet, il y a 3 biscuits. Combien de biscuits a-t-elle en tout ? | × | `dans_chaque`, `en_tout`, `combien` | « en tout » fait penser à réunir, mais ici il y a 5 paquets de même taille : des groupes égaux. |
 | OP-03 | Ibrahima a 10 mangues. Il en vend 4 au marché. Combien de mangues lui reste-t-il ? | − | `vendre`, `il_reste`, `combien` | Aucun piège : des mangues sortent du panier, la quantité diminue. |
-| OP-04 | Il y a 12 mangues pour 4 enfants. Combien de mangues par personne ? | ÷ | `par_personne`, `combien` | « par » fait penser à des groupes égaux (comme « par paquets de »), mais ici 12 mangues sont partagées entre 4 enfants : c'est un partage. |
-| OP-05 | Mamadou a 6 billes. On lui en donne 4 en plus. Combien de billes a-t-il maintenant ? | + | `en_plus`, `donner`, `combien` | « donner » fait penser à retirer, mais Mamadou reçoit : on réunit ce qu'il avait et ce qu'il reçoit. |
-| OP-06 | Awa a 12 mangues. Elle en a 3 de plus que Moussa. Combien Moussa en a-t-il ? | − | `de_plus_que`, `combien` | « de plus » fait penser à réunir, mais on compare deux quantités : il faut retirer l'écart de ce qu'Awa a. |
-| OP-07 | Au marché, Fatou a 4 tas de 6 mangues. Combien de mangues a-t-elle ? | × | `combien` | « tas de 6 » ne dit pas la situation : 4 tas de même taille, ce sont des groupes égaux. |
-| OP-08 | Ibrahima a 15 billes. Il les range en 3 tas égaux. Combien de billes y a-t-il dans chaque tas ? | ÷ | `dans_chaque`, `combien` | « dans chaque » fait penser à des groupes égaux (voir OP-02), mais ici 15 billes sont réparties en 3 tas égaux : c'est un partage. |
+| OP-04 | Il y a 12 mangues pour 4 enfants. Combien de mangues par personne ? | ÷ | `par_personne`, `combien` | « par » fait penser à des groupes égaux (comme « par paquets de »), mais ici 12 mangues sont partagées entre 4 enfants : c'est un partage. |
+| OP-05 | Mamadou a 6 billes. On lui en donne 4 en plus. Combien de billes a-t-il maintenant ? | + | `en_plus`, `donner`, `combien` | « donner » fait penser à retirer, mais Mamadou reçoit : on réunit ce qu'il avait et ce qu'il reçoit. |
+| OP-06 | Awa a 12 mangues. Elle en a 3 de plus que Moussa. Combien Moussa en a-t-il ? | − | `de_plus_que`, `combien` | « de plus » fait penser à réunir, mais on compare deux quantités : il faut retirer l'écart de ce qu'Awa a. |
+| OP-07 | Au marché, Fatou a 4 tas de 6 mangues. Combien de mangues a-t-elle ? | × | `combien` | « tas de 6 » ne dit pas la situation : 4 tas de même taille, ce sont des groupes égaux. |
+| OP-08 | Ibrahima a 15 billes. Il les range en 3 tas égaux. Combien de billes y a-t-il dans chaque tas ? | ÷ | `dans_chaque`, `combien` | « dans chaque » fait penser à des groupes égaux (voir OP-02), mais ici 15 billes sont réparties en 3 tas égaux : c'est un partage. |
 | OP-09 | Mamadou a 9 billes. Il en perd 2 au jeu. Combien en a-t-il après ? | − | `perdre`, `apres`, `combien` | Aucun piège : des billes partent au jeu, la quantité diminue. |
-| OP-10 | Aminata a 300 francs. Elle en a 100 de moins que Fatou. Combien Fatou en a-t-elle ? | + | `de_moins_que`, `combien` | « de moins » fait penser à retirer, mais Fatou a la plus grande somme : il faut réunir l'écart avec ce qu'Aminata a. |
+| OP-10 | Aminata a 300 francs. Elle en a 100 de moins que Fatou. Combien Fatou en a-t-elle ? | + | `de_moins_que`, `combien` | « de moins » fait penser à retirer, mais Fatou a la plus grande somme : il faut réunir l'écart avec ce qu'Aminata a. |
 | OP-11 | Pour la Tabaski, il y a 3 rangées de 5 chaises dans la cour. Combien de chaises y a-t-il ? | × | `rangee`, `combien` | Aucun piège : des rangées de même taille, ce sont des groupes égaux. |
-| OP-12 | Moussa a 14 mangues et en donne la moitié à Ibrahima. Combien Ibrahima en reçoit-il ? | ÷ | `moitie`, `donner`, `combien` | « donne » fait penser à retirer, mais on cherche la part qu'Ibrahima reçoit : c'est un partage. |
-| OP-13 | Dans le panier d'Aminata, il y a 9 mangues. Dans celui de Fatou, il y en a 4. Quelle est la différence entre les deux paniers ? | − | `difference` | Aucun piège : on compare deux paniers ; le mot « différence » doit être connu de l'enfant. |
+| OP-12 | Moussa a 14 mangues et en donne la moitié à Ibrahima. Combien Ibrahima en reçoit-il ? | ÷ | `moitie`, `donner`, `combien` | « donne » fait penser à retirer, mais on cherche la part qu'Ibrahima reçoit : c'est un partage. |
+| OP-13 | Dans le panier d'Aminata, il y a 9 mangues. Dans celui de Fatou, il y en a 4. Quelle est la différence entre les deux paniers ? | − | `difference` | Aucun piège : on compare deux paniers ; le mot « différence » doit être connu de l'enfant. |
 | OP-14 | Ibrahima a 200 francs. Il gagne 500 francs en lavant une voiture. Combien a-t-il maintenant ? | + | `gagner`, `combien` | Aucun piège : une somme s'ajoute à une autre, on réunit. |
-| OP-15 | Au départ, le pain coûte 150 francs. Son prix augmente de 50 francs. Combien coûte-t-il à la fin ? | + | `au_depart`, `augmenter`, `a_la_fin`, `combien` | « au départ » et « à la fin » ne disent pas la situation : le prix monte, on réunit la hausse au prix de départ. |
+| OP-15 | Au départ, le pain coûte 150 francs. Son prix augmente de 50 francs. Combien coûte-t-il à la fin ? | + | `au_depart`, `augmenter`, `a_la_fin`, `combien` | « au départ » et « à la fin » ne disent pas la situation : le prix monte, on réunit la hausse au prix de départ. |
 | OP-16 | Dans le car rapide, il y a 14 personnes. 6 personnes descendent. Il reste combien de personnes dans le car ? | − | `il_reste`, `combien` | Aucun piège : des personnes sortent du car, la quantité diminue. |
-| OP-17 | Awa a 6 mangues. Moussa en a 4 fois plus. Combien Moussa en a-t-il ? | × | `fois`, `combien` | « plus » fait penser à comparer, mais Moussa a 4 fois la quantité d'Awa : ce sont des groupes égaux. |
-| OP-18 | Awa a 12 mangues. Elle les met en parts égales pour ses 3 amis. Combien chacun reçoit-il de mangues ? | ÷ | `chacun`, `combien` | « chacun » fait penser à des groupes égaux, mais ici 12 mangues sont réparties entre 3 amis : c'est un partage. |
-| OP-19 | Chacun des 4 enfants reçoit 3 billes. Combien de billes faut-il en tout ? | × | `chacun`, `en_tout` | « chacun » fait penser au partage, et « en tout » à réunir ; ici chaque enfant reçoit la même quantité : des groupes égaux. |
-| OP-20 | Awa a 12 billes. Combien de fois peut-elle faire un tas de 3 billes ? | ÷ | `combien_de_fois` | « combien de fois » fait penser à des groupes égaux, mais ici on cherche combien de tas on peut faire avec les billes : c'est un partage. |
+| OP-17 | Awa a 6 mangues. Moussa en a 4 fois plus. Combien Moussa en a-t-il ? | × | `fois`, `combien` | « plus » fait penser à comparer, mais Moussa a 4 fois la quantité d'Awa : ce sont des groupes égaux. |
+| OP-18 | Awa a 12 mangues. Elle les met en parts égales pour ses 3 amis. Combien chacun reçoit-il de mangues ? | ÷ | `chacun`, `combien` | « chacun » fait penser à des groupes égaux, mais ici 12 mangues sont réparties entre 3 amis : c'est un partage. |
+| OP-19 | Chacun des 4 enfants reçoit 3 billes. Combien de billes faut-il en tout ? | × | `chacun`, `en_tout` | « chacun » fait penser au partage, et « en tout » à réunir ; ici chaque enfant reçoit la même quantité : des groupes égaux. |
+| OP-20 | Awa a 12 billes. Combien de fois peut-elle faire un tas de 3 billes ? | ÷ | `combien_de_fois` | « combien de fois » fait penser à des groupes égaux, mais ici on cherche combien de tas on peut faire avec les billes : c'est un partage. |
