@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
@@ -93,13 +94,13 @@ void main() {
       );
       bool isDone = false;
       // Act
-      final Future<void> voice = inputRead(
+      final SpeechReading voice = inputRead(
         params: const ReadAloudParams(
           text: '5 fois 7 égale combien',
           languageCode: 'fr',
         ),
       );
-      final Future<void> actualReading = voice.then((_) => isDone = true);
+      final Future<void> actualReading = voice.done.then((_) => isDone = true);
       await pumpEventQueue();
       // Assert
       expect(speech.spoken, <String>['5 fois 7 égale combien']);
@@ -123,8 +124,8 @@ void main() {
         text: 'seconde',
         languageCode: 'fr',
       );
-      final Future<void> older = inputRead(params: inputFirst);
-      final Future<void> newer = inputRead(params: inputSecond);
+      final SpeechReading older = inputRead(params: inputFirst);
+      final SpeechReading newer = inputRead(params: inputSecond);
       await pumpEventQueue();
       // Act
       await inputStop(params: older);

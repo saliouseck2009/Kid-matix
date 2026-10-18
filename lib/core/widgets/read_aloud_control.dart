@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/widgets/read_aloud_builder.dart';
 import 'package:kid_matix/core/widgets/read_aloud_scope.dart';
@@ -41,7 +42,7 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
 
   // The reading of this control, to stop it and no other: another screen
   // may have started its own since.
-  Future<void>? _reading;
+  SpeechReading? _reading;
   late final AppLifecycleListener _lifecycle;
 
   @override
@@ -84,13 +85,13 @@ class _ReadAloudControlState extends State<ReadAloudControl> {
     final String? languageCode = _languageCode;
     if (speech == null || languageCode == null) return;
     if (_isSpeaking) return speech.stop(reading: _reading);
-    final Future<void> reading = speech.speak(
+    final SpeechReading reading = speech.speak(
       text: widget.text,
       languageCode: languageCode,
     );
     _reading = reading;
     setState(() => _isSpeaking = true);
-    await reading;
+    await reading.done;
     if (mounted) setState(() => _isSpeaking = false);
   }
 

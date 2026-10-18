@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/features/speech/domain/services/speech_service_impl.dart';
+import 'package:kid_matix/features/speech/domain/services/speech_voices_unknown_exception.dart';
 import 'package:kid_matix/features/speech/domain/services/text_to_speech_engine.dart';
 
 /// [TextToSpeechEngine] whose answers and failures the test sets.
 final class _FakeEngine implements TextToSpeechEngine {
   bool hasInstalledVoice = true;
   bool fails = false;
+  bool voicesUnknown = false;
   bool keepsSpeaking = false;
   bool neverAnswersVoiceCheck = false;
   bool neverStops = false;
@@ -20,6 +23,7 @@ final class _FakeEngine implements TextToSpeechEngine {
   Future<bool> hasVoice({required String languageCode}) async {
     voiceChecks++;
     if (fails) throw Exception('engine down');
+    if (voicesUnknown) throw const SpeechVoicesUnknownException();
     if (neverAnswersVoiceCheck) await Completer<void>().future;
     return hasInstalledVoice;
   }
@@ -101,25 +105,42 @@ void main() {
   group('SpeechServiceImpl.speak', () {
     test('reads the text in the language asked', () async {
       // Act
-      await service.speak(text: '5 fois 7 égale combien', languageCode: 'fr');
+      await service
+          .speak(text: '5 fois 7 égale combien', languageCode: 'fr')
+          .done;
       // Assert
       expect(engine.spoken, <String>['5 fois 7 égale combien']);
       expect(engine.languages, <String>['fr']);
     });
     test('reads nothing for a blank text', () async {
       // Act
-      await service.speak(text: '  ', languageCode: 'fr');
+      await service.speak(text: '  ', languageCode: 'fr').done;
       // Assert
       expect(engine.spoken, isEmpty);
+    });
+    test('stops the reading in progress for a blank text', () async {
+      // Arrange
+      engine.keepsSpeaking = true;
+      service.speak(text: 'première', languageCode: 'fr');
+      await pumpEventQueue();
+      // Act
+      final SpeechReading actualReading = service.speak(
+        text: ' ',
+        languageCode: 'fr',
+      );
+      await pumpEventQueue();
+      // Assert
+      expect(engine.stopCount, 1);
+      expect(engine.spoken, <String>['première']);
+      await expectLater(actualReading.done, completes);
     });
     test('does not throw when the engine breaks', () async {
       // Arrange
       engine.fails = true;
       // Act
-      final Future<void> actualReading = service.speak(
-        text: '5 fois 7',
-        languageCode: 'fr',
-      );
+      final Future<void> actualReading = service
+          .speak(text: '5 fois 7', languageCode: 'fr')
+          .done;
       // Assert
       await expectLater(actualReading, completes);
     });
@@ -133,6 +154,7 @@ void main() {
       unawaited(
         service
             .speak(text: inputText, languageCode: 'fr')
+            .done
             .then((_) => isDone = true),
       );
       await tester.pump();
@@ -183,6 +205,7 @@ void main() {
       unawaited(
         service
             .speak(text: inputText, languageCode: 'fr')
+            .done
             .then((_) => isDone = true),
       );
       await tester.pump();
@@ -209,12 +232,14 @@ void main() {
       unawaited(
         service
             .speak(text: inputFirst, languageCode: 'fr')
+            .done
             .then((_) => isFirstDone = true),
       );
       await tester.pump(const Duration(seconds: 1));
       unawaited(
         service
             .speak(text: inputSecond, languageCode: 'fr')
+            .done
             .then((_) => isSecondDone = true),
       );
       await tester.pump();
@@ -236,11 +261,11 @@ void main() {
     test('leaves alone a reading that a newer one replaced', () async {
       // Arrange
       engine.keepsSpeaking = true;
-      final Future<void> inputOlder = service.speak(
+      final SpeechReading inputOlder = service.speak(
         text: 'première',
         languageCode: 'fr',
       );
-      final Future<void> inputNewer = service.speak(
+      final SpeechReading inputNewer = service.speak(
         text: 'seconde',
         languageCode: 'fr',
       );
@@ -254,7 +279,7 @@ void main() {
     test('stops the newest reading when no reading is given', () async {
       // Arrange
       engine.keepsSpeaking = true;
-      unawaited(service.speak(text: 'première', languageCode: 'fr'));
+      service.speak(text: 'première', languageCode: 'fr');
       // Act
       await service.stop();
       // Assert
@@ -264,11 +289,11 @@ void main() {
       // Arrange
       engine.keepsSpeaking = true;
       final SpeechServiceImpl other = SpeechServiceImpl(engine: engine);
-      final Future<void> inputForeign = other.speak(
+      final SpeechReading inputForeign = other.speak(
         text: 'étrangère',
         languageCode: 'fr',
       );
-      unawaited(service.speak(text: 'la mienne', languageCode: 'fr'));
+      service.speak(text: 'la mienne', languageCode: 'fr');
       // Act
       await service.stop(reading: inputForeign);
       // Assert
@@ -287,6 +312,29 @@ void main() {
       // Assert
       expect(actualResult, isFalse);
       expect(engine.voiceChecks, 1);
+    });
+    test('asks again once the missing voices are forgotten', () async {
+      // Arrange
+      engine.hasInstalledVoice = false;
+      await service.isAvailable(languageCode: 'fr');
+      engine.hasInstalledVoice = true;
+      // Act
+      service.forgetMissingVoices();
+      final bool actualResult = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualResult, isTrue);
+    });
+    test('asks again after the engine could not list its voices', () async {
+      // Arrange
+      engine.voicesUnknown = true;
+      final bool actualFirst = await service.isAvailable(languageCode: 'fr');
+      engine.voicesUnknown = false;
+      // Act
+      final bool actualSecond = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualFirst, isFalse);
+      expect(actualSecond, isTrue);
+      expect(engine.voiceChecks, 2);
     });
     test('asks again for another language', () async {
       // Arrange
