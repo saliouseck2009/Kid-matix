@@ -16,6 +16,7 @@ import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_clock.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
@@ -127,7 +128,7 @@ void main() {
   }
 
   int ticksOf(Duration time) =>
-      time.inMilliseconds ~/ QuizBloc.tickInterval.inMilliseconds;
+      time.inMilliseconds ~/ QuizClock.tickInterval.inMilliseconds;
 
   void useTimerMode(TimerMode mode) {
     when(

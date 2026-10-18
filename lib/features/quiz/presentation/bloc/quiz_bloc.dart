@@ -6,14 +6,15 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
-import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_clock.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_request_params.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_reading.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state_run.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 
 /// Drives a quiz: questions, timer, feedback, end and abandon.
@@ -32,9 +33,10 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   /// Creates the Bloc; [readAloud] is `null` when nothing can be read.
   QuizBloc({
     required this._useCases,
-    required this._ticker,
+    required Ticker ticker,
     QuizReadAloud? readAloud,
   }) : super(const QuizPreparing()) {
+    _clock = QuizClock(ticker: ticker, addEvent: add);
     _reading = QuizReading(setup: readAloud, readState: () => state);
     on<QuizStarted>(_onStarted);
     on<TimerTicked>(_onTicked);
@@ -52,25 +54,19 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<ClockRanOut>(_onClockRanOut);
     on<QuizPaused>(_onPaused);
     on<QuizResumed>(_onResumed);
-    on<ReadAloudToggled>(_onReadAloudToggled);
-    on<AutoReadStarted>(_onAutoReadStarted);
+    on<ReadAloudToggled>(
+      (ReadAloudToggled event, Emitter<QuizState> emit) =>
+          _reading.toggle(emit, isInstruction: event.isInstruction),
+    );
+    on<AutoReadStarted>(
+      (AutoReadStarted event, Emitter<QuizState> emit) => _reading.read(emit),
+    );
     on<QuizAbandoned>(_onAbandoned);
   }
 
-  /// Time between two ticks of the timer.
-  static const Duration tickInterval = Duration(milliseconds: 100);
-
-  /// In a non-stop quiz, how long a right answer shows before the next
-  /// question.
-  static const Duration rightFeedbackTime = Duration(milliseconds: 600);
-
-  /// In a non-stop quiz, how long a mistake and its right answer show.
-  static const Duration wrongFeedbackTime = Duration(milliseconds: 1500);
-
   final QuizUseCases _useCases;
-  final Ticker _ticker;
+  late final QuizClock _clock;
   late final QuizReading _reading;
-  StreamSubscription<int>? _ticks;
 
   Future<void> _onStarted(QuizStarted event, Emitter<QuizState> emit) async {
     emit(const QuizPreparing());
@@ -78,22 +74,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     // The voice check runs while the questions are built.
     final Future<void> foundVoice = _reading.findMode(request);
     final DataState<QuizRun> built = await _useCases.buildQuiz(
-      params: BuildQuizParams(
-        profileId: request.profileId,
-        domainId: request.domainId,
-        mode: request.mode,
-        itemKeys: request.itemKeys,
-        selection: request.selection,
-        questionCount: request.questionCount,
-        sourceKey: request.sourceKey,
-        followUpItemKeys: request.followUpItemKeys,
-        followUpQuestionCount: request.followUpQuestionCount,
-        isBossFight: request.isBossFight,
-        totalTimeLimit: request.totalTimeLimit,
-        lives: request.lives,
-        timeSchedule: request.timeSchedule,
-        seededDraw: request.seededDraw,
-        questionTypeIds: request.questionTypeIds,
+      params: request.toBuildParams(
         timeLimit: await _useCases.getTimeLimit(params: request),
       ),
     );
@@ -107,60 +88,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   }
 
   void _onTicked(TimerTicked event, Emitter<QuizState> emit) {
-    switch (state) {
-      // While the voice reads, the time of the question is held: only the
-      // reading is timed, in case the player answers before its end.
-      case final QuizAsking current when !current.isPaused && current.isReading:
-        emit(
-          current.copyWith(readingTime: current.readingTime + tickInterval),
-        );
-      // The time of a question starts when the voice has finished reading
-      // it, and stops while the player listens to it again.
-      case final QuizAsking current
-          when !current.isPaused && !current.isReading:
-        final QuizAsking next = current.copyWith(
-          elapsed: current.elapsed + tickInterval,
-          playedTime: current.playedTime + tickInterval,
-        );
-        emit(next);
-        final Duration? limit = next.run.currentTimeLimit;
-        if (_isOutOfTime(next.run, next.playedTime)) {
-          add(const ClockRanOut());
-        } else if (limit != null &&
-            next.elapsed >= limit &&
-            current.elapsed < limit) {
-          // Once only: in a non-stop quiz the ticks go on while the
-          // timeout is judged.
-          add(const TimeExpired());
-        }
-      case final QuizShowingFeedback current:
-        _tickFeedback(current, emit);
-      default:
-        return;
-    }
-  }
-
-  /// In a non-stop quiz, the feedback counts in the time and leads to
-  /// the next question by itself.
-  void _tickFeedback(QuizShowingFeedback current, Emitter<QuizState> emit) {
-    final QuizShowingFeedback next = current.copyWith(
-      playedTime: current.playedTime + tickInterval,
-      shownFor: current.shownFor + tickInterval,
-    );
-    emit(next);
-    final Duration shownTime = next.submission.answer.isCorrect
-        ? rightFeedbackTime
-        : wrongFeedbackTime;
-    if (_isOutOfTime(next.submission.run, next.playedTime)) {
-      add(const ClockRanOut());
-    } else if (next.shownFor >= shownTime) {
-      add(const NextRequested());
-    }
-  }
-
-  static bool _isOutOfTime(QuizRun run, Duration playedTime) {
-    final Duration? limit = run.totalTimeLimit;
-    return limit != null && playedTime >= limit;
+    _clock.onTicked(state, emit);
   }
 
   void _onDigitTyped(DigitTyped event, Emitter<QuizState> emit) {
@@ -185,7 +113,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   Future<void> _submit(Answer? answer, Emitter<QuizState> emit) async {
     final QuizState current = state;
     if (current is! QuizAsking) return;
-    if (!current.run.isNonStop) _stopTicker();
+    if (!current.run.isNonStop) _clock.stop();
     if (current.isReading) _reading.silence();
     final DataState<QuizSubmission> judged = await _useCases.submitAnswer(
       params: SubmitAnswerParams(
@@ -224,35 +152,25 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     ClockRanOut event,
     Emitter<QuizState> emit,
   ) async {
-    final QuizRun? run = _runOf(state);
+    final QuizRun? run = state.playedRun;
     if (run == null) return;
-    _stopTicker();
+    _clock.stop();
     await _complete(run.stopped(), emit);
   }
 
   Future<void> _complete(QuizRun run, Emitter<QuizState> emit) async {
     emit(const QuizPreparing());
-    final DataState<QuizSessionEntity> saved = await _useCases.completeSession(
-      params: run,
-    );
-    emit(switch (saved) {
-      DataSuccess<QuizSessionEntity>(:final data) => QuizCompleted(
-        session: data,
-      ),
-      DataFailed<QuizSessionEntity>(:final exception) => QuizFailure(
-        errorCode: exception.code,
-      ),
-    });
+    emit(await _useCases.finish(run));
   }
 
   void _onPaused(QuizPaused event, Emitter<QuizState> emit) {
     switch (state) {
       case final QuizAsking current when !current.isPaused:
-        _stopTicker();
+        _clock.stop();
         if (current.isReading) _reading.silence();
         emit(current.afterReading().copyWith(isPaused: true));
       case QuizShowingFeedback():
-        _stopTicker();
+        _clock.stop();
       default:
         return;
     }
@@ -263,14 +181,14 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
       case final QuizAsking current when current.isPaused:
         if (!current.run.isNonStop) {
           emit(current.copyWith(isPaused: false));
-          return _startTicker();
+          return _clock.start();
         }
         final QuizRun next = current.run.withoutCurrentTurn();
         if (next.isFinished) return _complete(next, emit);
         _ask(next, emit, current.playedTime);
       case final QuizShowingFeedback current
-          when current.submission.run.isNonStop && _ticks == null:
-        _startTicker();
+          when current.submission.run.isNonStop && !_clock.isRunning:
+        _clock.start();
       default:
         return;
     }
@@ -280,26 +198,18 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     QuizAbandoned event,
     Emitter<QuizState> emit,
   ) async {
-    _stopTicker();
+    _clock.stop();
     _reading.silence();
-    final QuizRun? run = _runOf(state);
+    final QuizRun? run = state.playedRun;
     if (run != null) await _useCases.abandonSession(params: run);
     emit(const QuizLeft());
   }
 
   @override
   Future<void> close() async {
-    _stopTicker();
+    _clock.stop();
     _reading.silence();
     return super.close();
-  }
-
-  static QuizRun? _runOf(QuizState state) {
-    return switch (state) {
-      QuizAsking(:final QuizRun run) => run,
-      QuizShowingFeedback(:final QuizSubmission submission) => submission.run,
-      _ => null,
-    };
   }
 
   void _ask(
@@ -315,33 +225,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         isReading: _reading.readsByItself,
       ),
     );
-    _startTicker();
+    _clock.start();
     if (_reading.readsByItself && !isClosed) add(const AutoReadStarted());
-  }
-
-  Future<void> _onReadAloudToggled(
-    ReadAloudToggled event,
-    Emitter<QuizState> emit,
-  ) {
-    return _reading.toggle(emit, isInstruction: event.isInstruction);
-  }
-
-  Future<void> _onAutoReadStarted(
-    AutoReadStarted event,
-    Emitter<QuizState> emit,
-  ) {
-    return _reading.read(emit);
-  }
-
-  void _startTicker() {
-    _stopTicker();
-    _ticks = _ticker
-        .tick(interval: tickInterval)
-        .listen((_) => add(const TimerTicked()));
-  }
-
-  void _stopTicker() {
-    unawaited(_ticks?.cancel());
-    _ticks = null;
   }
 }
