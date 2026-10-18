@@ -149,6 +149,7 @@ final class RewardSessionHook implements SessionSavedHook {
   /// Facts of the domain mastered; 0 when they cannot be read, so the
   /// "Les 120" badge simply waits for the next quiz.
   Future<int> _masteredCount(SavedQuizSession session) async {
+    if (_itemCount(session.domainId) == 0) return 0;
     final DataState<Set<String>> mastered = await _mastery.readMasteredItems(
       profileId: session.profileId,
       domainId: session.domainId,

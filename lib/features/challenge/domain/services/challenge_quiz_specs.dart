@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
@@ -14,7 +15,7 @@ import 'package:kid_matix/features/challenge/domain/services/code_challenge_rule
 /// Turns a free training or a challenge into the quiz to play.
 ///
 /// The mastery engine draws the questions: low boxes come more often.
-/// For the daily review it picks them among every fact of the domain:
+/// For the daily review it picks them among every fact of every domain:
 /// the overdue first, then the least known; for the monster hunt, the
 /// player's monsters twice each, then the same as a review. A game
 /// replayed from a challenge code draws its questions from the seed of
@@ -78,15 +79,7 @@ final class ChallengeQuizSpecs {
         lives: ChallengeRules.survivalLives,
         sourceKey: source.toKey(),
       ),
-      DailyReviewSource() => QuizSpec(
-        domainId: domain.id,
-        mode: QuizMode.dailyReview,
-        itemKeys: itemKeys,
-        questionTypeIds: ChallengeRules.dailyReviewQuestionTypeIds,
-        selection: QuizSelection.review,
-        questionCount: ChallengeRules.dailyReviewQuestionCount,
-        sourceKey: source.toKey(),
-      ),
+      DailyReviewSource() => _dailyReviewSpec(itemKeys, source.toKey()),
       MonsterHuntSource() => QuizSpec(
         domainId: domain.id,
         mode: QuizMode.monsterHunt,
@@ -103,6 +96,31 @@ final class ChallengeQuizSpecs {
         source.toKey(),
       ),
     };
+  }
+
+  /// The daily review over every item of [domains]: it mixes the missed
+  /// items of every domain (owner's decision, 2026-10-18); `null` when
+  /// [domains] hold no item.
+  QuizSpec? dailyReviewOf(List<LearningDomain> domains) {
+    final List<String> itemKeys = <String>[
+      for (final LearningDomain domain in domains)
+        for (final LearningUnit unit in domain.units)
+          for (final LearningItem item in unit.items) item.key,
+    ];
+    if (itemKeys.isEmpty) return null;
+    return _dailyReviewSpec(itemKeys, DailyReviewSource().toKey());
+  }
+
+  QuizSpec _dailyReviewSpec(List<String> itemKeys, String sourceKey) {
+    return QuizSpec(
+      domainId: LearningDomainIds.mixed,
+      mode: QuizMode.dailyReview,
+      itemKeys: itemKeys,
+      questionTypeIds: ChallengeRules.dailyReviewQuestionTypeIds,
+      selection: QuizSelection.review,
+      questionCount: ChallengeRules.dailyReviewQuestionCount,
+      sourceKey: sourceKey,
+    );
   }
 
   /// Keys of the units numbered [tables] in [domain], or `null` when one

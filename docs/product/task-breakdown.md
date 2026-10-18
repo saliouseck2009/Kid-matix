@@ -686,7 +686,7 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 - [x] **F25-02** Mauvaises réponses plausibles : écart de 1, mauvaise opération, chiffres inversés, oubli de la retenue ; jamais de nombre négatif.
 - [x] **F25-03** Familles de faits : 7 + 8, 8 + 7, 15 − 8 et 15 − 7 sont liés ; rappel après une erreur, comme le fait inversé de la multiplication (`mirrorOf`).
 - [x] **F25-04** Aides visuelles : droite numérique, paquets de dix, « compléter jusqu'à 10 » ; une astuce par unité.
-- [ ] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
+- [x] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
 - [x] **F25-06** Tests : clés, génération, familles de faits, mauvaises réponses sans doublon pour tous les faits.
 
 **Terminé quand :** un joueur enchaîne les additions jusqu'à 20, une erreur sur 7 + 8 rappelle 8 + 7, et les faits ratés reviennent le lendemain.

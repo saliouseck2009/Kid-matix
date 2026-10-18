@@ -1,5 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../quiz/helpers/quiz_fixtures.dart';
+
 import 'package:kid_matix/core/entities/timer_mode.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/features/challenge/data/datasources/training_choice_local_data_source_impl.dart';
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
@@ -175,6 +180,7 @@ void main() {
       // Act
       final ReviewOverview actualOverview = (await GetDailyReviewUseCase(
         mastery: inputMastery,
+        domains: DomainRegistry()..register(MultiplicationDomain()),
       )(params: 'p1')).requireData;
       // Assert
       expect(
@@ -183,10 +189,23 @@ void main() {
       );
       expect(actualOverview.hasSeenItems, isTrue);
     });
+    test('adds up the facts due in every domain', () async {
+      // Arrange
+      final FakeMasteryService inputMastery = FakeMasteryService()
+        ..reviewOverview = const ReviewOverview(dueCount: 2, seenCount: 10);
+      // Act
+      final ReviewOverview actualOverview = (await GetDailyReviewUseCase(
+        mastery: inputMastery,
+        domains: buildDomainRegistry(),
+      )(params: 'p1')).requireData;
+      // Assert
+      expect(actualOverview, const ReviewOverview(dueCount: 6, seenCount: 30));
+    });
     test('fails when the progress cannot be read', () async {
       // Act
       final AppException? actualException = (await GetDailyReviewUseCase(
         mastery: FakeMasteryService(failure: const CacheException()),
+        domains: DomainRegistry()..register(MultiplicationDomain()),
       )(params: 'p1')).exceptionOrNull;
       // Assert
       expect(actualException, isA<CacheException>());

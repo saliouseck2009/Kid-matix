@@ -3,6 +3,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/frozen_question_generator.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
@@ -58,6 +59,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
 
   @override
   Future<DataState<QuizRun>> call({required BuildQuizParams params}) async {
+    if (params.domainId == LearningDomainIds.mixed) return _buildMixed(params);
     final LearningDomain? domain = _domains.find(params.domainId);
     final List<LearningItem>? items = domain == null
         ? null
@@ -69,7 +71,11 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
     }
     final SeededDraw? draw = params.seededDraw;
     if (draw != null) return _generateSeeded(params, domain, draw);
-    final DataState<List<QuizItemPlan>> main = await _plan(params, items);
+    final DataState<List<QuizItemPlan>> main = await _plan(
+      params,
+      params.domainId,
+      items,
+    );
     final DataState<List<QuizItemPlan>> plans =
         main is DataSuccess<List<QuizItemPlan>>
         ? await _addFollowUp(params, main.data)
@@ -95,6 +101,7 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   /// or a random order.
   Future<DataState<List<QuizItemPlan>>> _plan(
     BuildQuizParams params,
+    String domainId,
     List<LearningItem> items,
   ) async {
     return switch (params.selection) {
@@ -103,8 +110,8 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       QuizSelection.monsterHunt => await _mastery.planQuiz(
         request: QuizPlanRequest(
           profileId: params.profileId,
-          domainId: params.domainId,
-          itemKeys: params.itemKeys,
+          domainId: domainId,
+          itemKeys: items.map((LearningItem item) => item.key).toList(),
           questionTypeIds: params.questionTypeIds,
           questionCount: params.questionCount ?? items.length,
           selection: params.selection,
@@ -113,6 +120,86 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       QuizSelection.inOrder => _askEach(params, items),
       QuizSelection.shuffled => _askEach(params, _random.shuffled(items)),
     };
+  }
+
+  /// A quiz that mixes the items of several domains, such as the daily
+  /// review: each domain plans its own items, the plans take turns, and
+  /// every question is built by the domain of its item. It has no follow-up
+  /// questions and no seeded draw.
+  Future<DataState<QuizRun>> _buildMixed(BuildQuizParams params) async {
+    final Map<LearningDomain, List<LearningItem>>? groups = _groupByDomain(
+      params.itemKeys,
+    );
+    if (groups == null || groups.isEmpty || params.seededDraw != null) {
+      return const DataFailed<QuizRun>(
+        ValidationException(message: 'Unknown items for a mixed quiz.'),
+      );
+    }
+    final List<List<QuizItemPlan>> planned = <List<QuizItemPlan>>[];
+    for (final MapEntry<LearningDomain, List<LearningItem>> group
+        in groups.entries) {
+      final DataState<List<QuizItemPlan>> plans = await _plan(
+        params,
+        group.key.id,
+        group.value,
+      );
+      if (plans is DataFailed<List<QuizItemPlan>>) {
+        return DataFailed<QuizRun>(plans.exception);
+      }
+      planned.add((plans as DataSuccess<List<QuizItemPlan>>).data);
+    }
+    final List<QuizItemPlan> turns = _takeTurns(planned, params.questionCount);
+    if (turns.isEmpty) {
+      return const DataFailed<QuizRun>(
+        NotFoundException(message: 'No question to ask.'),
+      );
+    }
+    try {
+      final List<Question> questions = <Question>[
+        for (final QuizItemPlan plan in _random.shuffled(turns))
+          ..._generator.generatePlanned(
+            domain: _domains.findByItemKey(plan.itemKey)!,
+            plans: <QuizItemPlan>[plan],
+            random: _random,
+          ),
+      ];
+      return DataSuccess<QuizRun>(_createRun(params, questions));
+    } on ArgumentError catch (error) {
+      return DataFailed<QuizRun>(ValidationException(message: '$error'));
+    }
+  }
+
+  /// The items of [keys] grouped by the domain that teaches them, in order
+  /// of appearance; `null` when a key belongs to no domain.
+  Map<LearningDomain, List<LearningItem>>? _groupByDomain(List<String> keys) {
+    final Map<LearningDomain, List<LearningItem>> groups =
+        <LearningDomain, List<LearningItem>>{};
+    for (final String key in keys) {
+      final LearningDomain? domain = _domains.findByItemKey(key);
+      final LearningItem? item = domain?.findItem(key);
+      if (domain == null || item == null) return null;
+      (groups[domain] ??= <LearningItem>[]).add(item);
+    }
+    return groups;
+  }
+
+  /// One plan of each list in turn, the first of each first, up to
+  /// [limit] plans (all when `null`).
+  List<QuizItemPlan> _takeTurns(List<List<QuizItemPlan>> lists, int? limit) {
+    final List<QuizItemPlan> turns = <QuizItemPlan>[];
+    final int longest = lists.fold(
+      0,
+      (int most, List<QuizItemPlan> list) =>
+          list.length > most ? list.length : most,
+    );
+    for (int index = 0; index < longest; index++) {
+      for (final List<QuizItemPlan> list in lists) {
+        if (index < list.length) turns.add(list[index]);
+      }
+    }
+    return limit == null || turns.length <= limit
+        ? turns
+        : turns.sublist(0, limit);
   }
 
   DataState<List<QuizItemPlan>> _askEach(
