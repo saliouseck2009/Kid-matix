@@ -729,7 +729,7 @@ Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énonc�
 - [x] **F28-08** Type de question « Toucher pour comprendre » : dans une phrase, chaque mot important se touche pour l'entendre en français et en wolof et voir son image.
 - [x] **F28-09** Type de question « Quelle opération ? » : un petit énoncé lu à voix haute, l'enfant choisit +, −, × ou ÷ sans calculer ; une vingtaine d'énoncés courts dans le tableau de contenu.
 - [x] **F28-10** Bouton « Écouter en wolof » partout où un mot est présenté ; réglage par joueur « Aide audio : wolof / aucune ».
-- [ ] **F28-11** Parcours des mots : une unité par famille, dans le sélecteur de domaine.
+- [x] **F28-11** Parcours des mots : une unité par famille, dans le sélecteur de domaine.
 - [ ] **F28-12** Maquettes à proposer et faire valider : les quatre activités et le bouton wolof.
 - [ ] **F28-13** Tests : clés, manifeste du pack audio, fichier manquant, activités, répétition espacée des mots.
 
