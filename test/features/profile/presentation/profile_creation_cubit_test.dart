@@ -73,6 +73,15 @@ void main() {
       ],
     );
     blocTest<ProfileCreationCubit, ProfileFormState>(
+      'records the offer to read the questions aloud',
+      build: buildCubit,
+      act: (ProfileCreationCubit cubit) =>
+          cubit.changeReadAloud(isEnabled: true),
+      expect: () => <ProfileFormState>[
+        const ProfileFormState.initial().copyWith(isReadAloudEnabled: true),
+      ],
+    );
+    blocTest<ProfileCreationCubit, ProfileFormState>(
       'shows the nickname error instead of saving a broken nickname',
       build: buildCubit,
       seed: () => filledState('A'),

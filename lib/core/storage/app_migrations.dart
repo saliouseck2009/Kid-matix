@@ -10,6 +10,7 @@ import 'package:kid_matix/core/storage/migrations/migration_008_create_mascot_ta
 import 'package:kid_matix/core/storage/migrations/migration_009_create_record_table.dart';
 import 'package:kid_matix/core/storage/migrations/migration_010_create_xp_award_table.dart';
 import 'package:kid_matix/core/storage/migrations/migration_011_create_shop_tables.dart';
+import 'package:kid_matix/core/storage/migrations/migration_012_add_read_aloud_setting.dart';
 
 /// Every schema migration of the app database, in version order.
 ///
@@ -27,4 +28,5 @@ const List<DatabaseMigration> appMigrations = <DatabaseMigration>[
   Migration009CreateRecordTable(),
   Migration010CreateXpAwardTable(),
   Migration011CreateShopTables(),
+  Migration012AddReadAloudSetting(),
 ];

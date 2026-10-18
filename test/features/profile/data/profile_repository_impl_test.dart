@@ -94,6 +94,25 @@ void main() {
         expectedSettings,
       );
     });
+    test('creates the settings the player chose with the profile', () async {
+      // Arrange
+      final ProfileSettingsEntity expectedSettings =
+          const ProfileSettingsEntity.defaults(
+            profileId: 'p-awa',
+          ).copyWith(isReadAloudEnabled: true);
+      // Act
+      await repository.createProfile(
+        profile: inputAwa,
+        settings: expectedSettings,
+      );
+      // Assert
+      final List<Map<String, Object?>> actualRows =
+          await (await appDatabase.database).query('profile_settings');
+      expect(
+        ProfileSettingsLocalModel.fromJson(actualRows.single).toEntity(),
+        expectedSettings,
+      );
+    });
     test('reads the settings of a profile, or fails without one', () async {
       // Arrange
       await repository.createProfile(profile: inputAwa);

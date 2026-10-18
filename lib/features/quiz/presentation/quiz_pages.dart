@@ -6,6 +6,7 @@ import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/results_page.dart';
@@ -24,6 +25,7 @@ final class QuizPages {
     required this._ticker,
     required this._domains,
     required this._feedback,
+    this._readAloud,
   });
 
   final QuizUseCases _useCases;
@@ -31,6 +33,9 @@ final class QuizPages {
   final Ticker _ticker;
   final DomainRegistry _domains;
   final GameFeedbackService _feedback;
+
+  // Reads the questions aloud; `null` where no voice is wired.
+  final QuizReadAloudUseCases? _readAloud;
 
   /// Quiz of [profileId] described by [spec].
   Widget buildQuizPage({
@@ -47,6 +52,7 @@ final class QuizPages {
       feedback: _feedback,
       onCompleted: onCompleted,
       onLeft: onLeft,
+      readAloud: _readAloud,
     );
   }
 

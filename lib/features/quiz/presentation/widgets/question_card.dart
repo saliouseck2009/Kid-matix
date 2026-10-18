@@ -24,9 +24,10 @@ class QuestionCard extends StatelessWidget {
     this.blankColor,
     this.mascotMood = MascotMood.neutral,
     this.mascotMessage,
-    this.resultSemanticLabel,
+    this.asksOperation = false,
     this.picture,
     this.spokenText,
+    this.listenButton,
     super.key,
   });
 
@@ -53,19 +54,22 @@ class QuestionCard extends StatelessWidget {
   /// What the mascot says, or `null`.
   final String? mascotMessage;
 
-  /// What a screen reader says for a question that asks for the
-  /// operation; `null` for an operation to complete. When set, only the
-  /// result side of [prompt], after the equals sign, is shown.
-  final String? resultSemanticLabel;
+  /// Whether the question asks for the operation that gives a result:
+  /// only the result side of [prompt], after the equals sign, is shown.
+  final bool asksOperation;
 
   /// Drawing shown between [label] and [prompt], or `null`.
   final MathPicture? picture;
 
-  /// The whole question as one sentence, said by a screen reader in place
-  /// of [label], [picture] and [prompt] when the prompt alone does not
-  /// say it, such as "Combien de mangues ?"; `null` to read the prompt
-  /// token by token. The read-aloud button says it too.
+  /// The whole question as one sentence (`QuizLabels.speakQuestion`), the
+  /// same one the read-aloud button says. A screen reader reads it in place
+  /// of [label], [picture] and [prompt]; `null` reads the prompt token by
+  /// token.
   final String? spokenText;
+
+  /// The listen button, in the top right corner, or `null` when no voice
+  /// can read the question.
+  final Widget? listenButton;
 
   @override
   Widget build(BuildContext context) {
@@ -93,49 +97,74 @@ class QuestionCard extends StatelessWidget {
             ),
           Center(
             child: Padding(
+              // The listen button takes the top corner: the label and the
+              // operation start under it, so a large text never meets it.
               padding: EdgeInsets.fromLTRB(
                 AppSizes.space16,
-                AppSizes.space16,
+                listenButton == null
+                    ? AppSizes.space16
+                    : AppSizes.minTouchTarget + AppSizes.space8,
                 AppSizes.space16,
                 picture == null
                     ? AppSizes.space16
                     : AppSizes.space16 + _mascotSize / 2,
               ),
-              child: switch ((resultSemanticLabel, picture)) {
-                (final String semanticLabel, _) => _ResultPrompt(
-                  label: label,
-                  prompt: prompt,
-                  semanticLabel: semanticLabel,
-                ),
-                (null, final MathPicture shown) => _PictureQuestion(
-                  label: label,
-                  picture: shown,
-                  prompt: prompt,
-                  blankText: blankText,
-                  blankColor: blankColor,
-                  spokenText: spokenText,
-                  fontSize: _picturePromptFontSize,
-                ),
-                (null, null) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _QuestionLabel(label: label),
-                    const SizedBox(height: AppSizes.space8),
-                    _PromptText(
-                      prompt: prompt,
-                      blankText: blankText,
-                      blankColor: blankColor,
-                      fontSize: _promptFontSize,
-                      semanticLabel: spokenText,
-                    ),
-                  ],
-                ),
-              },
+              child: _Spoken(
+                sentence:
+                    spokenText ??
+                    (asksOperation ? prompt.toSpokenText(context.l10n) : null),
+                child: switch ((asksOperation, picture)) {
+                  (true, _) => _ResultPrompt(label: label, prompt: prompt),
+                  (false, final MathPicture shown) => _PictureQuestion(
+                    label: label,
+                    picture: shown,
+                    prompt: prompt,
+                    blankText: blankText,
+                    blankColor: blankColor,
+                    fontSize: _picturePromptFontSize,
+                  ),
+                  (false, null) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      _QuestionLabel(label: label),
+                      const SizedBox(height: AppSizes.space8),
+                      _PromptText(
+                        prompt: prompt,
+                        blankText: blankText,
+                        blankColor: blankColor,
+                        fontSize: _promptFontSize,
+                      ),
+                    ],
+                  ),
+                },
+              ),
             ),
           ),
+          if (listenButton case final Widget button)
+            Positioned(
+              top: AppSizes.space8,
+              right: AppSizes.space8,
+              child: button,
+            ),
         ],
       ),
     );
+  }
+}
+
+/// Makes a screen reader read [child] as the one [sentence], when there
+/// is one.
+class _Spoken extends StatelessWidget {
+  const _Spoken({required this.sentence, required this.child});
+
+  final String? sentence;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final String? label = sentence;
+    if (label == null) return child;
+    return Semantics(label: label, excludeSemantics: true, child: child);
   }
 }
 
@@ -176,7 +205,6 @@ class _PictureQuestion extends StatelessWidget {
     required this.prompt,
     required this.blankText,
     required this.blankColor,
-    required this.spokenText,
     required this.fontSize,
   });
 
@@ -185,12 +213,11 @@ class _PictureQuestion extends StatelessWidget {
   final List<PromptToken> prompt;
   final String? blankText;
   final Color? blankColor;
-  final String? spokenText;
   final double fontSize;
 
   @override
   Widget build(BuildContext context) {
-    final Widget content = Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         _QuestionLabel(label: label),
@@ -213,9 +240,6 @@ class _PictureQuestion extends StatelessWidget {
         ],
       ],
     );
-    final String? sentence = spokenText;
-    if (sentence == null) return content;
-    return Semantics(label: sentence, excludeSemantics: true, child: content);
   }
 }
 
@@ -225,14 +249,12 @@ class _PromptText extends StatelessWidget {
     required this.blankText,
     required this.blankColor,
     required this.fontSize,
-    this.semanticLabel,
   });
 
   final List<PromptToken> prompt;
   final String? blankText;
   final Color? blankColor;
   final double fontSize;
-  final String? semanticLabel;
 
   List<InlineSpan> _buildSpans() {
     final List<String> parts = prompt.toDisplayParts(blankText: blankText);
@@ -253,7 +275,7 @@ class _PromptText extends StatelessWidget {
       context,
     ).textTheme.displaySmall?.copyWith(fontSize: fontSize);
     return Semantics(
-      label: semanticLabel ?? prompt.toSpokenText(context.l10n),
+      label: prompt.toSpokenText(context.l10n),
       excludeSemantics: true,
       child: FittedBox(
         fit: BoxFit.scaleDown,
@@ -274,7 +296,6 @@ class _ResultPrompt extends StatelessWidget {
   const _ResultPrompt({
     required this.label,
     required this.prompt,
-    required this.semanticLabel,
   });
 
   static const double _fontSize = 84;
@@ -287,7 +308,6 @@ class _ResultPrompt extends StatelessWidget {
 
   final String label;
   final List<PromptToken> prompt;
-  final String semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -297,42 +317,38 @@ class _ResultPrompt extends StatelessWidget {
         .skipWhile((PromptToken token) => token is! EqualsToken)
         .skip(1)
         .toList();
-    return Semantics(
-      label: semanticLabel,
-      excludeSemantics: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: AppSizes.space8,
-        children: <Widget>[
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyLarge?.copyWith(
-              color: context.palette.mutedText,
-              fontWeight: FontWeight.w800,
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: AppSizes.space8,
+      children: <Widget>[
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: textTheme.bodyLarge?.copyWith(
+            color: context.palette.mutedText,
+            fontWeight: FontWeight.w800,
           ),
-          Container(
-            constraints: const BoxConstraints(minWidth: _minWidth),
-            padding: _padding,
-            decoration: BoxDecoration(
-              color: colors.secondary,
-              borderRadius: BorderRadius.circular(_radius),
-            ),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                result.toDisplayText(),
-                textAlign: TextAlign.center,
-                style: textTheme.displaySmall?.copyWith(
-                  fontSize: _fontSize,
-                  color: colors.onSecondary,
-                ),
+        ),
+        Container(
+          constraints: const BoxConstraints(minWidth: _minWidth),
+          padding: _padding,
+          decoration: BoxDecoration(
+            color: colors.secondary,
+            borderRadius: BorderRadius.circular(_radius),
+          ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              result.toDisplayText(),
+              textAlign: TextAlign.center,
+              style: textTheme.displaySmall?.copyWith(
+                fontSize: _fontSize,
+                color: colors.onSecondary,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

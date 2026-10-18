@@ -10,6 +10,7 @@ final class CreateProfileParams {
     required this.nickname,
     required this.avatar,
     required this.color,
+    this.isReadAloudEnabled = false,
   });
 
   /// Nickname as typed; it is cleaned before being stored.
@@ -20,4 +21,8 @@ final class CreateProfileParams {
 
   /// Chosen color.
   final ProfileColor color;
+
+  /// Whether the player accepted the offer to have every question read
+  /// aloud; off unless they turned it on.
+  final bool isReadAloudEnabled;
 }

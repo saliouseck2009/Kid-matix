@@ -11,6 +11,7 @@ import 'package:kid_matix/main.dart';
 
 import '../features/profile/helpers/profile_fixtures.dart';
 import '../helpers/fake_profile_session_service.dart';
+import '../helpers/fake_speech_service.dart';
 import '../helpers/test_challenge_pages.dart';
 import '../helpers/test_mascot_pages.dart';
 import '../helpers/test_mastery_pages.dart';
@@ -46,10 +47,12 @@ void main() {
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     mascotPages = buildTestMascotPages();
+    // A voice is installed: every listen button must fit at every size.
+    final FakeSpeechService speech = FakeSpeechService();
     router = createAppRouter(
       session: FakeProfileSessionService(activeProfileId: 'p-1'),
       profilePages: buildProfilePages(),
-      quizPages: buildTestQuizPages(),
+      quizPages: buildTestQuizPages(speech: speech),
       pathPages: buildTestPathPages(),
       rewardPages: buildTestRewardPages(),
       mascotPages: mascotPages,
@@ -80,6 +83,7 @@ void main() {
       KidMatixApp(
         locale: locale,
         router: router,
+        speech: speech,
         scope: (Widget child) =>
             Theme(data: AppTheme.of(theme), child: mascotScope(child)),
       ),

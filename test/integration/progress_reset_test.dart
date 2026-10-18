@@ -46,6 +46,7 @@ Future<void> _seedPlayer(Database database, String id) async {
     'is_vibration_enabled': 1,
     'is_reduced_motion_enabled': 0,
     'is_everything_unlocked': 1,
+    'is_read_aloud_enabled': 1,
     'updated_at': 0,
   });
   final String session = 's-$id';
@@ -192,6 +193,12 @@ void main() {
     expect(actualProfile['total_xp'], 0);
     expect(actualProfile['level'], 1);
     expect(await _count(database, 'profile_settings', 'p1'), 1);
+    final Map<String, Object?> actualSettings = (await database.query(
+      'profile_settings',
+      where: 'profile_id = ?',
+      whereArgs: <Object>['p1'],
+    )).single;
+    expect(actualSettings['is_read_aloud_enabled'], 1);
     final Map<String, Object?> actualMascot = (await database.query(
       'mascot',
       where: 'profile_id = ?',

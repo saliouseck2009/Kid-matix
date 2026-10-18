@@ -24,6 +24,7 @@ class BossArena extends StatelessWidget {
     this.outcome,
     this.blankText,
     this.blankColor,
+    this.listenButton,
     this.picture,
     this.spokenText,
     super.key,
@@ -56,6 +57,10 @@ class BossArena extends StatelessWidget {
   /// Color of the typed digits.
   final Color? blankColor;
 
+  /// The listen button, in the top right corner, or `null` when no voice
+  /// can read the question.
+  final Widget? listenButton;
+
   /// Drawing of the question, such as objects to count, or `null`.
   final MathPicture? picture;
 
@@ -87,23 +92,30 @@ class BossArena extends StatelessWidget {
                   top: AppSizes.space16,
                   child: _Bubble(text: bubble),
                 ),
+              if (listenButton case final Widget button)
+                Positioned(top: 0, right: 0, child: button),
             ],
           ),
         ),
         if (picture case final MathPicture shown)
           Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(AppSizes.space12),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(_pictureRadius),
-              ),
-              child: MathPictureView(
-                picture: shown,
-                blankText: prompt.isEmpty ? blankText : null,
-                blankColor: blankColor,
+            child: _SpokenWhenAlone(
+              // Without a prompt the drawing is the whole question: a
+              // screen reader says it as the same sentence as the voice.
+              sentence: prompt.isEmpty ? spokenText : null,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppSizes.space12),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(_pictureRadius),
+                ),
+                child: MathPictureView(
+                  picture: shown,
+                  blankText: prompt.isEmpty ? blankText : null,
+                  blankColor: blankColor,
+                ),
               ),
             ),
           ),
@@ -141,6 +153,22 @@ class BossArena extends StatelessWidget {
       BossBlow.strikeBack => context.l10n.quizBossStrikeBack,
       null => null,
     };
+  }
+}
+
+/// Reads [child] as the one [sentence] for a screen reader, when there is
+/// one.
+class _SpokenWhenAlone extends StatelessWidget {
+  const _SpokenWhenAlone({required this.sentence, required this.child});
+
+  final String? sentence;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final String? label = sentence;
+    if (label == null) return child;
+    return Semantics(label: label, excludeSemantics: true, child: child);
   }
 }
 

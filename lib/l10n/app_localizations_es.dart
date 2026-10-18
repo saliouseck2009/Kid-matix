@@ -169,6 +169,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileColorPink => 'Rosa';
 
   @override
+  String get profileCreationReadAloudHint =>
+      'Una voz lee cada pregunta. Podrás cambiarlo después en los ajustes.';
+
+  @override
   String get createProfileButton => '¡Vamos!';
 
   @override
@@ -314,7 +318,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsReducedMotion => 'Animaciones reducidas';
 
   @override
+  String get settingsReadAloud => 'Leer las preguntas en voz alta';
+
+  @override
   String get commonClose => 'Cerrar';
+
+  @override
+  String get commonListen => 'Escuchar';
+
+  @override
+  String get commonListenStop => 'Detener la lectura';
 
   @override
   String get settingsBackupSection => 'Copia de seguridad';
@@ -723,6 +736,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizSpokenBlank => 'cuánto';
+
+  @override
+  String quizSpokenTrueFalse(String statement) {
+    return '$statement. ¿Verdadero o falso?';
+  }
 
   @override
   String get quizSpokenPlus => 'más';

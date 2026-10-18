@@ -46,12 +46,33 @@ final class QuizLabels {
     };
   }
 
-  /// The whole of [question] as one sentence, for a screen reader and the
-  /// read-aloud button, when its prompt alone does not say it: "Combien
-  /// de mangues ?", "3 paquets de dix et 4 bâtonnets : quel nombre ?",
-  /// "34 est-il plus petit, égal ou plus grand que 43 ?"; `null` when the
-  /// prompt reads as it is, such as "5 fois 7 égale combien".
-  String? speakQuestion(Question question) {
+  /// The whole of [question] as one sentence: what the « Écouter » button
+  /// and the automatic reading say, and what a screen reader reads on the
+  /// card. This is the one place where a question type gets its reading.
+  ///
+  /// The formats of the numbers say what their drawing shows ("Combien de
+  /// mangues ?", "3 paquets de dix et 4 bâtonnets : quel nombre ?", "34
+  /// est-il plus petit, égal ou plus grand que 43 ?"); the others say
+  /// their prompt, token by token ("5 fois 7 égale combien"), after the
+  /// words their type adds ("Vrai ou faux ?", "Quelle multiplication
+  /// donne 24 ?"). A type with no case here reads as an operation, so a
+  /// question is never silent.
+  String speakQuestion(Question question, String domainId) {
+    final String? numbers = _speakNumbersFormat(question);
+    if (numbers != null) return numbers;
+    final String operation = question.prompt.toSpokenText(l10n);
+    return switch (question.questionTypeId) {
+      QuestionTypeIds.findOperation =>
+        _speakFindOperation(question, domainId) ?? operation,
+      QuestionTypeIds.trueFalse => l10n.quizSpokenTrueFalse(operation),
+      QuestionTypeIds.matchPairs => l10n.quizMatchPairsTitle,
+      _ => operation,
+    };
+  }
+
+  /// The sentence of a comparison or of a question with a drawing, or
+  /// `null` for another question.
+  String? _speakNumbersFormat(Question question) {
     if (question.questionTypeId == QuestionTypeIds.compare) {
       final List<NumberToken> numbers = question.prompt
           .whereType<NumberToken>()
@@ -70,10 +91,23 @@ final class QuizLabels {
     };
   }
 
-  /// What a screen reader says for a question that asks for the
-  /// operation, such as "Quelle multiplication donne 24 ?"; `null` for
-  /// another question.
-  String? speakFindOperation(Question question, String domainId) {
+  /// The instruction under the answers of [question], such as "Touche la
+  /// bonne réponse"; `null` when it shows none (a written answer, whose
+  /// keypad needs no words, and the pairs board, which has its own hints).
+  String? describeHint(Question question) {
+    if (question.pairs.isNotEmpty) return null;
+    return switch (question.questionTypeId) {
+      QuestionTypeIds.trueFalse => l10n.quizHintTrueFalse,
+      QuestionTypeIds.findOperation => l10n.quizHintFindOperation,
+      QuestionTypeIds.compare => l10n.quizHintCompare,
+      _ when question.choices.isNotEmpty => l10n.quizHintMultipleChoice,
+      _ => null,
+    };
+  }
+
+  /// "Quelle multiplication donne 24 ?", or `null` when [question] is not
+  /// one that asks for the operation.
+  String? _speakFindOperation(Question question, String domainId) {
     if (question.questionTypeId != QuestionTypeIds.findOperation) return null;
     final Iterable<NumberToken> numbers = question.prompt
         .whereType<NumberToken>();

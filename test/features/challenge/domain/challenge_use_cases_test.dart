@@ -36,7 +36,7 @@ void main() {
     return GetTrainingChoiceUseCase(
       repository: repository,
       openUnits: FixedOpenUnits(openUnits),
-      settings: FixedPlayerSettings(timerMode),
+      settings: FixedPlayerSettings(mode: timerMode),
     );
   }
 
@@ -148,7 +148,7 @@ void main() {
       final SurvivalChallengeEntity actualChallenge =
           (await const GetSurvivalUseCase(
             openUnits: FixedOpenUnits(),
-            settings: FixedPlayerSettings(TimerMode.off),
+            settings: FixedPlayerSettings(mode: TimerMode.off),
           )(params: 'p1')).requireData;
       // Assert
       expect(actualChallenge.keepsTimerTurnedOff, isTrue);

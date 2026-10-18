@@ -264,6 +264,7 @@ Future<void> _seedPlayer(
     'is_vibration_enabled': 1,
     'is_reduced_motion_enabled': 1,
     'is_everything_unlocked': 0,
+    'is_read_aloud_enabled': 1,
     'updated_at': 9000,
   });
 }

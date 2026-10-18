@@ -7,12 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quit_quiz_dialog.dart';
@@ -31,6 +34,7 @@ class QuizPage extends StatelessWidget {
     required this.feedback,
     required this.onCompleted,
     required this.onLeft,
+    this.readAloud,
     super.key,
   });
 
@@ -55,11 +59,16 @@ class QuizPage extends StatelessWidget {
   /// Called once the player left the quiz.
   final VoidCallback onLeft;
 
+  /// Use cases that read the questions aloud, or `null` to read nothing.
+  final QuizReadAloudUseCases? readAloud;
+
   @override
   Widget build(BuildContext context) {
+    // Read here, not in `create`: the language is an inherited value.
+    final QuizReadAloud? reading = _readAloudOf(context);
     return BlocProvider<QuizBloc>(
       create: (_) =>
-          QuizBloc(useCases: useCases, ticker: ticker)
+          QuizBloc(useCases: useCases, ticker: ticker, readAloud: reading)
             ..add(QuizStarted(request: request)),
       child: _QuizLifecycle(
         child: BlocListener<QuizBloc, QuizState>(
@@ -93,6 +102,20 @@ class QuizPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  /// The reading aloud of this quiz, in the language of the interface.
+  QuizReadAloud? _readAloudOf(BuildContext context) {
+    final QuizReadAloudUseCases? cases = readAloud;
+    if (cases == null) return null;
+    final QuizLabels labels = QuizLabels(domains: domains, l10n: context.l10n);
+    return QuizReadAloud(
+      useCases: cases,
+      languageCode: Localizations.localeOf(context).languageCode,
+      speakQuestion: (Question question) =>
+          labels.speakQuestion(question, request.domainId),
+      speakInstruction: labels.describeHint,
     );
   }
 }

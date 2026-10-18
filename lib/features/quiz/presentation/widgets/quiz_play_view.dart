@@ -7,6 +7,7 @@ import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/widgets/listen_button.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_combo.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -58,6 +59,13 @@ class QuizPlayView extends StatelessWidget {
     final BossFight? boss = data.run.boss;
     final Duration? totalTime = data.run.totalTimeLimit;
     final int? lives = data.run.lives;
+    final Widget? listenButton = data.canReadAloud
+        ? ListenButton(
+            isSpeaking: data.isReading && !data.isReadingInstruction,
+            onPressed: () =>
+                context.read<QuizBloc>().add(const ReadAloudToggled()),
+          )
+        : null;
     return Padding(
       padding: const EdgeInsets.all(AppSizes.space24),
       child: Column(
@@ -120,13 +128,17 @@ class QuizPlayView extends StatelessWidget {
                   onMatched: (Answer answer) => context.read<QuizBloc>().add(
                     AnswerSubmitted(answer: answer),
                   ),
+                  listenButton: listenButton,
                 ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
                 monsterFamily: labels.monsterFamilyOf(data.run.domainId),
                 prompt: data.question.prompt,
                 picture: data.question.picture,
-                spokenText: labels.speakQuestion(data.question),
+                spokenText: labels.speakQuestion(
+                  data.question,
+                  data.run.domainId,
+                ),
                 blowCount: data.run.answers.length,
                 blow: data.feedback?.bossBlow,
                 outcome: data.run.bossOutcome,
@@ -134,6 +146,7 @@ class QuizPlayView extends StatelessWidget {
                 blankColor: data.isRight == null
                     ? null
                     : _blankColor(context, data),
+                listenButton: listenButton,
               ),
               null when data.asksPairs => MatchPairsAnswers(
                 pairs: data.question.pairs,
@@ -145,17 +158,20 @@ class QuizPlayView extends StatelessWidget {
                   data.question,
                   data.run.domainId,
                 ),
-                resultSemanticLabel: labels.speakFindOperation(
+                asksOperation:
+                    data.question.questionTypeId ==
+                    QuestionTypeIds.findOperation,
+                prompt: data.question.prompt,
+                picture: data.question.picture,
+                spokenText: labels.speakQuestion(
                   data.question,
                   data.run.domainId,
                 ),
-                prompt: data.question.prompt,
-                picture: data.question.picture,
-                spokenText: labels.speakQuestion(data.question),
                 blankText: data.typedDigits,
                 blankColor: _blankColor(context, data),
                 mascotMood: _moodOf(data),
                 mascotMessage: _mascotMessage(context, data),
+                listenButton: listenButton,
               ),
             },
           ),
@@ -221,6 +237,9 @@ final class _PlayData {
     this.typedDigits,
     this.feedback,
     this.timer,
+    this.canReadAloud = false,
+    this.isReading = false,
+    this.isReadingInstruction = false,
   });
 
   factory _PlayData.of(QuizState state) {
@@ -244,6 +263,9 @@ final class _PlayData {
           final double fraction => (fraction, state.isRunningOut),
           null => null,
         },
+        canReadAloud: state.canReadAloud,
+        isReading: state.isReading,
+        isReadingInstruction: state.isReadingInstruction,
       ),
     };
   }
@@ -258,6 +280,16 @@ final class _PlayData {
   /// Fraction of the time left and whether it runs out; `null` without
   /// a timer. Frozen at the answer during the feedback, so nothing jumps.
   final (double, bool)? timer;
+
+  /// Whether the listen button shows: a voice exists and the question
+  /// still waits for its answer.
+  final bool canReadAloud;
+
+  /// Whether a voice is reading, the question or its instruction.
+  final bool isReading;
+
+  /// Whether what the voice reads is the instruction under the answers.
+  final bool isReadingInstruction;
 
   static (double, bool)? _frozenTimer(
     Duration? limit,
@@ -341,15 +373,17 @@ class _AnswerZone extends StatelessWidget {
                 ? null
                 : () => bloc.add(const TypedAnswerValidated()),
           )
-        else
+        else if (labels.describeHint(question) case final String hint)
           QuizHintBox(
-            hint: switch (question.questionTypeId) {
-              QuestionTypeIds.trueFalse => context.l10n.quizHintTrueFalse,
-              QuestionTypeIds.findOperation =>
-                context.l10n.quizHintFindOperation,
-              QuestionTypeIds.compare => context.l10n.quizHintCompare,
-              _ => context.l10n.quizHintMultipleChoice,
-            },
+            hint: hint,
+            listenButton: data.canReadAloud
+                ? ListenButton(
+                    isSpeaking: data.isReading && data.isReadingInstruction,
+                    onPressed: () => bloc.add(
+                      const ReadAloudToggled(isInstruction: true),
+                    ),
+                  )
+                : null,
           ),
       ],
     );

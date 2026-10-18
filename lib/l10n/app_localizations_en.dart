@@ -169,6 +169,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileColorPink => 'Pink';
 
   @override
+  String get profileCreationReadAloudHint =>
+      'A voice reads every question. You can change this later in the settings.';
+
+  @override
   String get createProfileButton => 'Let\'s go!';
 
   @override
@@ -314,7 +318,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsReducedMotion => 'Reduced motion';
 
   @override
+  String get settingsReadAloud => 'Read questions aloud';
+
+  @override
   String get commonClose => 'Close';
+
+  @override
+  String get commonListen => 'Listen';
+
+  @override
+  String get commonListenStop => 'Stop reading';
 
   @override
   String get settingsBackupSection => 'Backup';
@@ -720,6 +733,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizSpokenBlank => 'what';
+
+  @override
+  String quizSpokenTrueFalse(String statement) {
+    return '$statement. True or false?';
+  }
 
   @override
   String get quizSpokenPlus => 'plus';
