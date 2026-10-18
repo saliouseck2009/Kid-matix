@@ -62,5 +62,28 @@ void main() {
         findsOneWidget,
       );
     });
+    testWidgets('does not say the label twice when the sentence has it', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      const String inputSentence = '5 fois 7 égale 35. Vrai ou faux ?';
+      await pumpLocalized(
+        tester,
+        const Scaffold(
+          body: SizedBox(
+            width: 360,
+            height: 360,
+            child: QuestionCard(
+              label: 'Vrai ou faux ?',
+              prompt: inputPrompt,
+              spokenText: inputSentence,
+            ),
+          ),
+        ),
+      );
+      // Assert
+      expect(find.bySemanticsLabel(inputSentence), findsOneWidget);
+      expect(find.bySemanticsLabel('Vrai ou faux ?'), findsNothing);
+    });
   });
 }

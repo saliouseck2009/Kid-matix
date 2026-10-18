@@ -10,7 +10,8 @@ import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_mode_params.d
 /// Without an installed voice for the language nothing is read
 /// ([ReadAloudMode.unavailable]). With one, the questions read themselves
 /// when the player turned "Lire les questions à voix haute" on, and
-/// otherwise only on request. A setting that cannot be read counts as off.
+/// otherwise only on request. A setting that cannot be read counts as off, and
+/// a voice check that fails counts as no voice.
 class GetReadAloudModeUseCase
     implements UseCase<ReadAloudMode, ReadAloudModeParams> {
   /// Creates the use case.
@@ -24,9 +25,10 @@ class GetReadAloudModeUseCase
 
   @override
   Future<ReadAloudMode> call({required ReadAloudModeParams params}) async {
-    final bool hasVoice = await _speech.isAvailable(
-      languageCode: params.languageCode,
-    );
+    // A voice check that fails must never hold a quiz back.
+    final bool hasVoice = await _speech
+        .isAvailable(languageCode: params.languageCode)
+        .onError((Object _, StackTrace _) => false);
     if (!hasVoice) return ReadAloudMode.unavailable;
     final DataState<bool> readsByItself = await _settings.readReadAloudEnabled(
       profileId: params.profileId,

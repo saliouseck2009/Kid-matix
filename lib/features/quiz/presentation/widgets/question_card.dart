@@ -37,6 +37,11 @@ class QuestionCard extends StatelessWidget {
   static const double _promptFontSize = 68;
   static const double _picturePromptFontSize = 52;
 
+  // Whether the sentence already says the label (« Vrai ou faux ? » ends
+  // the sentence of a true or false question): then the whole card is that
+  // one sentence, so a screen reader does not say the label twice.
+  bool get _saysLabel => spokenText?.contains(label) ?? false;
+
   /// Short label above the operation: the table, or "Vrai ou faux ?".
   final String label;
 
@@ -114,7 +119,7 @@ class QuestionCard extends StatelessWidget {
               // a plain operation: its label (« Table de 5 ») stays visible
               // to it and only the prompt is replaced.
               child: SpokenAs(
-                sentence: asksOperation || picture != null
+                sentence: asksOperation || picture != null || _saysLabel
                     ? spokenText ??
                           (asksOperation
                               ? prompt.toSpokenText(context.l10n)
@@ -136,7 +141,7 @@ class QuestionCard extends StatelessWidget {
                       _QuestionLabel(label: label),
                       const SizedBox(height: AppSizes.space8),
                       SpokenAs(
-                        sentence: spokenText,
+                        sentence: _saysLabel ? null : spokenText,
                         child: _PromptText(
                           prompt: prompt,
                           blankText: blankText,

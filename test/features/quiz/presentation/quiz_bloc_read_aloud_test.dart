@@ -12,6 +12,7 @@ import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/features/speech/domain/services/speech_voices_unknown_exception.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_time_limits.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case.dart';
@@ -48,6 +49,14 @@ String? _sayInstruction(Question question) {
 }
 
 final class _MockSettings extends Mock implements PlayerSettingsService {}
+
+/// A phone whose voice check itself fails.
+final class _UnknownVoiceSpeech extends _BrokenSpeech {
+  @override
+  Future<bool> isAvailable({required String languageCode}) async {
+    throw const SpeechVoicesUnknownException();
+  }
+}
 
 /// A voice that is installed but fails when it has to speak.
 final class _BrokenSpeech implements SpeechService {
@@ -808,6 +817,17 @@ void main() {
         expect(speech.spoken, isEmpty);
         expect(asking().isReading, isFalse);
         expect(asking().elapsed, const Duration(seconds: 1));
+      },
+    );
+    test(
+      'starts the quiz without a voice when the voice check fails',
+      () async {
+        // Arrange
+        buildBloc(speechOverride: _UnknownVoiceSpeech());
+        // Act
+        await start();
+        // Assert
+        expect(asking().canReadAloud, isFalse);
       },
     );
     test('starts the time of the question when the voice breaks', () async {

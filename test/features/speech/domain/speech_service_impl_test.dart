@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/services/speech_reading.dart';
 import 'package:kid_matix/features/speech/domain/services/speech_service_impl.dart';
+import 'package:kid_matix/features/speech/domain/services/speech_voices_unknown_exception.dart';
 import 'package:kid_matix/features/speech/domain/services/text_to_speech_engine.dart';
 
 /// [TextToSpeechEngine] whose answers and failures the test sets.
 final class _FakeEngine implements TextToSpeechEngine {
   bool hasInstalledVoice = true;
   bool fails = false;
+  bool voicesUnknown = false;
   bool keepsSpeaking = false;
   bool neverAnswersVoiceCheck = false;
   bool neverStops = false;
@@ -21,6 +23,7 @@ final class _FakeEngine implements TextToSpeechEngine {
   Future<bool> hasVoice({required String languageCode}) async {
     voiceChecks++;
     if (fails) throw Exception('engine down');
+    if (voicesUnknown) throw const SpeechVoicesUnknownException();
     if (neverAnswersVoiceCheck) await Completer<void>().future;
     return hasInstalledVoice;
   }
@@ -320,6 +323,18 @@ void main() {
       final bool actualResult = await service.isAvailable(languageCode: 'fr');
       // Assert
       expect(actualResult, isTrue);
+    });
+    test('asks again after the engine could not list its voices', () async {
+      // Arrange
+      engine.voicesUnknown = true;
+      final bool actualFirst = await service.isAvailable(languageCode: 'fr');
+      engine.voicesUnknown = false;
+      // Act
+      final bool actualSecond = await service.isAvailable(languageCode: 'fr');
+      // Assert
+      expect(actualFirst, isFalse);
+      expect(actualSecond, isTrue);
+      expect(engine.voiceChecks, 2);
     });
     test('asks again for another language', () async {
       // Arrange

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/features/speech/data/datasources/flutter_tts_engine.dart';
+import 'package:kid_matix/features/speech/domain/services/speech_voices_unknown_exception.dart';
 
 const MethodChannel _channel = MethodChannel('flutter_tts');
 
@@ -175,7 +176,7 @@ void main() {
       // Act & Assert
       await expectLater(
         androidEngine().hasVoice(languageCode: 'fr'),
-        throwsStateError,
+        throwsA(isA<SpeechVoicesUnknownException>()),
       );
     });
     test('finds the voice once the service answers', () async {
@@ -184,7 +185,7 @@ void main() {
       plugin.voicesAreUnknown = true;
       await expectLater(
         inputEngine.hasVoice(languageCode: 'fr'),
-        throwsStateError,
+        throwsA(isA<SpeechVoicesUnknownException>()),
       );
       plugin.voicesAreUnknown = false;
       // Act

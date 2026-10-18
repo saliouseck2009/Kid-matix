@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:kid_matix/features/speech/data/datasources/offline_voice.dart';
 import 'package:kid_matix/features/speech/data/datasources/offline_voices.dart';
+import 'package:kid_matix/features/speech/domain/services/speech_voices_unknown_exception.dart';
 import 'package:kid_matix/features/speech/domain/services/text_to_speech_engine.dart';
 
 /// [TextToSpeechEngine] over the `flutter_tts` plugin, which drives the
@@ -138,7 +139,7 @@ final class FlutterTtsEngine implements TextToSpeechEngine {
   Future<Object?> _androidVoices() async {
     final Object? voices = await _tts.getVoices;
     if (voices == null) {
-      throw StateError('The speech service did not list its voices');
+      throw const SpeechVoicesUnknownException();
     }
     return voices;
   }
