@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
-import 'package:kid_matix/core/quiz/question_types/version_one_question_types.dart';
+import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
@@ -13,6 +13,7 @@ import 'package:kid_matix/core/services/system_clock.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/core/services/uuid_id_generator.dart';
 import 'package:kid_matix/core/services/progress_reset_service.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/core/storage/progress_resetter.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
@@ -31,6 +32,7 @@ import 'package:kid_matix/features/profile/injection.dart';
 import 'package:kid_matix/features/quiz/injection.dart';
 import 'package:kid_matix/features/reward/injection.dart';
 import 'package:kid_matix/features/setting/injection.dart';
+import 'package:kid_matix/features/shop/injection.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -55,6 +57,7 @@ Future<void> configureDependencies() async {
   registerMascotFeature(sl);
   registerChallengeFeature(sl);
   registerSettingFeature(sl);
+  registerShopFeature(sl);
   registerQuizFeature(sl);
 }
 
@@ -73,6 +76,7 @@ void _registerCoreStorage() {
   sl.registerLazySingleton<TableChangeBus>(TableChangeBus.new);
   sl.registerLazySingleton<SessionSavedHooks>(SessionSavedHooks.new);
   sl.registerLazySingleton<ProgressResetHooks>(ProgressResetHooks.new);
+  sl.registerLazySingleton<ProfileBackupParts>(ProfileBackupParts.new);
   sl.registerLazySingleton<ProgressResetService>(
     () => ProgressResetter(database: sl(), hooks: sl(), changeBus: sl()),
   );
@@ -89,7 +93,7 @@ void _registerQuizEngine() {
   sl.registerLazySingleton<DomainRegistry>(DomainRegistry.new);
   sl.registerLazySingleton<QuestionTypeRegistry>(() {
     final QuestionTypeRegistry registry = QuestionTypeRegistry();
-    versionOneQuestionTypes.forEach(registry.register);
+    appQuestionTypes.forEach(registry.register);
     return registry;
   });
 }

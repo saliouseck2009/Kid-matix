@@ -5,7 +5,8 @@ import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 
-/// Grid of the 12 avatars, drawn in the chosen [color].
+/// Grid of the 12 free avatars, drawn in the chosen [color]; the avatars
+/// of the shop are worn from the shop.
 class AvatarPicker extends StatelessWidget {
   /// Creates the picker with [selected] highlighted.
   const AvatarPicker({
@@ -28,7 +29,7 @@ class AvatarPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<ProfileAvatar> avatars = ProfileAvatar.values;
+    final List<ProfileAvatar> avatars = ProfileAvatar.free;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[

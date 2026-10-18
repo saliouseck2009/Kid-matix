@@ -43,6 +43,23 @@ final class _BrokenRepository implements StageProgressRepository {
   }) async {
     return const DataFailed<List<StageProgressEntity>>(CacheException());
   }
+
+  @override
+  Future<DataState<Set<String>>> getPlacedUnitKeys({
+    required String profileId,
+    required String domainId,
+  }) async {
+    return const DataFailed<Set<String>>(CacheException());
+  }
+
+  @override
+  Future<DataState<void>> openUnit({
+    required String profileId,
+    required String domainId,
+    required String unitKey,
+  }) async {
+    return const DataFailed<void>(CacheException());
+  }
 }
 
 String? _currentOf(LearningPathState state) {

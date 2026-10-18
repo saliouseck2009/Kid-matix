@@ -10,4 +10,14 @@ enum QuizMode {
 
   /// Against the clock: as many right answers as possible in a set time.
   timeAttack,
+
+  /// Survival: a few lives, and less time per question as the right
+  /// answers add up.
+  survival,
+
+  /// Daily review: the facts the mastery engine picks for the player.
+  dailyReview,
+
+  /// Monster hunt: the facts the player keeps missing, each asked twice.
+  monsterHunt,
 }

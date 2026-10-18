@@ -3,6 +3,9 @@ abstract final class RewardTables {
   /// XP of each completed quiz.
   static const String sessionReward = 'session_reward';
 
+  /// XP earned outside a quiz, such as in a duel.
+  static const String xpAward = 'xp_award';
+
   /// Daily streak per player.
   static const String streak = 'streak';
 

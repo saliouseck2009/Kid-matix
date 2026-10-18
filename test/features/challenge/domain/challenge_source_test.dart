@@ -2,7 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_quiz_specs.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dart';
@@ -52,6 +54,46 @@ void main() {
       expect(actualKey, 'timeAttack:mul:1+mul:2');
       expect(ChallengeSource.tryParse(actualKey), inputSource);
     });
+    test('writes and reads a survival game', () {
+      // Arrange
+      final SurvivalSource inputSource = SurvivalSource(
+        unitKeys: const <String>['mul:1', 'mul:2'],
+      );
+      // Act
+      final String actualKey = inputSource.toKey();
+      // Assert
+      expect(actualKey, 'survival:mul:1+mul:2');
+      expect(ChallengeSource.tryParse(actualKey), inputSource);
+      expect(
+        ChallengeSource.tryParse(actualKey).hashCode,
+        inputSource.hashCode,
+      );
+      expect(
+        inputSource,
+        isNot(TimeAttackSource(unitKeys: inputSource.unitKeys)),
+      );
+    });
+    test('writes and reads the daily review', () {
+      // Act
+      final String actualKey = DailyReviewSource().toKey();
+      final ChallengeSource? actualSource = ChallengeSource.tryParse(actualKey);
+      // Assert
+      expect(actualKey, 'dailyReview');
+      expect(actualSource, DailyReviewSource());
+      expect(actualSource.hashCode, DailyReviewSource().hashCode);
+      expect(actualSource!.unitKeys, isEmpty);
+    });
+    test('writes and reads the monster hunt', () {
+      // Act
+      final String actualKey = MonsterHuntSource().toKey();
+      final ChallengeSource? actualSource = ChallengeSource.tryParse(actualKey);
+      // Assert
+      expect(actualKey, 'monsterHunt');
+      expect(actualSource, MonsterHuntSource());
+      expect(actualSource, isNot(DailyReviewSource()));
+      expect(actualSource.hashCode, MonsterHuntSource().hashCode);
+      expect(actualSource!.unitKeys, isEmpty);
+    });
     test('ignores the keys of other features and broken keys', () {
       // Act & Assert
       for (final String? inputKey in <String?>[
@@ -61,6 +103,10 @@ void main() {
         'training:10:maybe:mul:2',
         'training:10:timer:',
         'timeAttack:',
+        'survival:',
+        'survival:mul:1++mul:2',
+        'dailyReview:mul:2',
+        'monsterHunt:mul:2',
       ]) {
         expect(ChallengeSource.tryParse(inputKey), isNull, reason: inputKey);
       }
@@ -84,6 +130,13 @@ void main() {
       )!;
       // Assert
       expect(actualSpec.mode, QuizMode.freeTraining);
+      expect(
+        actualSpec.questionTypeIds,
+        containsAll(<String>[
+          QuestionTypeIds.findOperation,
+          QuestionTypeIds.matchPairs,
+        ]),
+      );
       expect(actualSpec.itemKeys, hasLength(20));
       expect(actualSpec.itemKeys, containsAll(<String>['mul:2x3', 'mul:5x9']));
       expect(actualSpec.questionCount, 30);
@@ -121,6 +174,37 @@ void main() {
       ]);
       expect(actualSpec.itemKeys, hasLength(20));
     });
+    test('plays survival with 3 lives and a shrinking time', () {
+      // Act
+      final QuizSpec actualSpec = specs.specOf(
+        domain: domain,
+        source: SurvivalSource(unitKeys: const <String>['mul:1', 'mul:2']),
+      )!;
+      // Assert
+      expect(actualSpec.mode, QuizMode.survival);
+      expect(actualSpec.lives, 3);
+      expect(actualSpec.baseTimeLimit, const Duration(seconds: 10));
+      expect(actualSpec.timeSchedule, ChallengeRules.survivalTimeSchedule);
+      expect(actualSpec.keepsTimer, isTrue);
+      expect(actualSpec.totalTimeLimit, isNull);
+      expect(actualSpec.questionCount, ChallengeRules.survivalQuestionCount);
+      expect(actualSpec.questionTypeIds, <String>[
+        QuestionTypeIds.multipleChoice,
+      ]);
+      expect(actualSpec.itemKeys, hasLength(20));
+      expect(actualSpec.sourceKey, 'survival:mul:1+mul:2');
+    });
+    test('loses half a second every 5 right answers, down to 4', () {
+      // Arrange
+      const QuizTimeSchedule inputSchedule =
+          ChallengeRules.survivalTimeSchedule;
+      // Act & Assert
+      expect(inputSchedule.limitAfter(0), const Duration(seconds: 10));
+      expect(inputSchedule.limitAfter(5), const Duration(milliseconds: 9500));
+      expect(inputSchedule.limitAfter(59), const Duration(milliseconds: 4500));
+      expect(inputSchedule.limitAfter(60), const Duration(seconds: 4));
+      expect(inputSchedule.limitAfter(90), const Duration(seconds: 4));
+    });
     test('has no quiz for an unknown table', () {
       // Act
       final QuizSpec? actualSpec = specs.specOf(
@@ -129,6 +213,46 @@ void main() {
       );
       // Assert
       expect(actualSpec, isNull);
+    });
+    test('reviews 10 facts of every table without timer', () {
+      // Act
+      final QuizSpec actualSpec = specs.specOf(
+        domain: domain,
+        source: DailyReviewSource(),
+      )!;
+      // Assert
+      expect(actualSpec.mode, QuizMode.dailyReview);
+      expect(actualSpec.selection, QuizSelection.review);
+      expect(actualSpec.questionCount, 10);
+      expect(actualSpec.itemKeys, hasLength(120));
+      expect(actualSpec.baseTimeLimit, isNull);
+      expect(actualSpec.totalTimeLimit, isNull);
+      expect(actualSpec.keepsTimer, isFalse);
+      expect(
+        actualSpec.questionTypeIds,
+        ChallengeRules.versionOneQuestionTypeIds,
+      );
+      expect(actualSpec.sourceKey, 'dailyReview');
+    });
+    test('hunts the monsters in 10 questions without timer', () {
+      // Act
+      final QuizSpec actualSpec = specs.specOf(
+        domain: domain,
+        source: MonsterHuntSource(),
+      )!;
+      // Assert
+      expect(actualSpec.mode, QuizMode.monsterHunt);
+      expect(actualSpec.selection, QuizSelection.monsterHunt);
+      expect(actualSpec.questionCount, 10);
+      expect(actualSpec.itemKeys, hasLength(120));
+      expect(actualSpec.baseTimeLimit, isNull);
+      expect(actualSpec.totalTimeLimit, isNull);
+      expect(actualSpec.lives, isNull);
+      expect(
+        actualSpec.questionTypeIds,
+        ChallengeRules.versionOneQuestionTypeIds,
+      );
+      expect(actualSpec.sourceKey, 'monsterHunt');
     });
   });
 }

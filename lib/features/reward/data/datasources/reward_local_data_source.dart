@@ -1,6 +1,7 @@
 import 'package:kid_matix/features/reward/data/models/badge_unlock_local_model.dart';
 import 'package:kid_matix/features/reward/data/models/session_reward_local_model.dart';
 import 'package:kid_matix/features/reward/data/models/streak_local_model.dart';
+import 'package:kid_matix/features/reward/data/models/xp_award_local_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Rewards stored in the local SQLite database.
@@ -32,7 +33,8 @@ abstract interface class RewardLocalDataSource {
   });
 
   /// Returns the XP [profileId] earned from [from], included, to [to],
-  /// excluded, in milliseconds since epoch; every XP without bounds.
+  /// excluded, in milliseconds since epoch, quizzes and awards together;
+  /// every XP without bounds.
   Future<int> getXpEarned(
     DatabaseExecutor executor, {
     required String profileId,
@@ -54,6 +56,14 @@ abstract interface class RewardLocalDataSource {
     required StreakLocalModel streak,
     required int lightningAnswers,
     required List<BadgeUnlockLocalModel> badges,
+    required int totalXp,
+    required int level,
+  });
+
+  /// Writes [award] with the new XP total and level of its profile.
+  Future<void> writeXpAward(
+    DatabaseExecutor executor, {
+    required XpAwardLocalModel award,
     required int totalXp,
     required int level,
   });

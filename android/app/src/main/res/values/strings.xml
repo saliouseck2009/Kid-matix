@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Google Play Games Services project id, linked to the OAuth client
+         declared in Google Cloud Console (see docs/decisions.md). -->
+    <string name="game_services_project_id" translatable="false">566762106039</string>
+</resources>

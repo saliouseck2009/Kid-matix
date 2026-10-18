@@ -41,6 +41,12 @@ void main() {
       find.bySemanticsLabel(RegExp(r'^Sprinter, à obtenir')),
       findsOneWidget,
     );
+    expect(
+      find.bySemanticsLabel(
+        'Survivant, à obtenir : 30 bonnes réponses en Survie.',
+      ),
+      findsOneWidget,
+    );
     handle.dispose();
   });
 
@@ -49,6 +55,7 @@ void main() {
   ) async {
     // Arrange
     final SemanticsHandle handle = tester.ensureSemantics();
+    final List<String> opened = <String>[];
     final InMemoryStageProgressRepository inputProgress =
         InMemoryStageProgressRepository(<StageProgressEntity>[
           StageProgressEntity(
@@ -65,9 +72,13 @@ void main() {
     await pumpLocalized(
       tester,
       Scaffold(
-        body: buildTestPathPages(
-          repository: inputProgress,
-        ).buildMonstersCard(profileId: 'p1'),
+        body:
+            buildTestPathPages(
+              repository: inputProgress,
+            ).buildMonstersCard(
+              profileId: 'p1',
+              onOpenLittle: () => opened.add('little'),
+            ),
       ),
     );
     await tester.pumpAndSettle();
@@ -82,6 +93,8 @@ void main() {
       find.bySemanticsLabel('Monstre de la table de 7, pas encore vaincu'),
       findsOneWidget,
     );
+    await tester.tap(find.text('Voir mes petits monstres'));
+    expect(opened, <String>['little']);
     handle.dispose();
   });
 }

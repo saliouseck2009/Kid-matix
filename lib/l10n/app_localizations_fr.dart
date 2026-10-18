@@ -290,6 +290,124 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsReducedMotion => 'Animations réduites';
 
   @override
+  String get commonClose => 'Fermer';
+
+  @override
+  String get settingsBackupSection => 'Sauvegarde';
+
+  @override
+  String get backupExport => 'Exporter mon profil';
+
+  @override
+  String get backupImport => 'Importer un profil';
+
+  @override
+  String get backupExportDone =>
+      'Fichier prêt ! Ouvre-le dans Kid Matix sur l\'autre téléphone, avec « Importer un profil ».';
+
+  @override
+  String backupImportDone(String nickname) {
+    return 'Profil de $nickname importé ! Retrouve-le avec « Changer de joueur ».';
+  }
+
+  @override
+  String backupImportReplaced(String nickname) {
+    return 'Progression de $nickname restaurée !';
+  }
+
+  @override
+  String backupConflictTitle(String nickname) {
+    return '$nickname existe déjà';
+  }
+
+  @override
+  String backupConflictMessage(String nickname, int level) {
+    return 'Ce téléphone a déjà un joueur $nickname. Le fichier contient $nickname au niveau $level.\n\nRemplacer efface la progression actuelle de $nickname sur ce téléphone. Renommer garde les deux joueurs.';
+  }
+
+  @override
+  String get backupConflictReplace => 'Remplacer';
+
+  @override
+  String get backupConflictRename => 'Renommer';
+
+  @override
+  String get backupRenameTitle => 'Nouveau pseudo';
+
+  @override
+  String get backupRenameMessage =>
+      'Choisis un autre pseudo pour le joueur importé.';
+
+  @override
+  String get backupRenameConfirm => 'Importer';
+
+  @override
+  String get errorBackupInvalid =>
+      'Ce fichier n\'est pas une sauvegarde Kid Matix, ou il est abîmé.';
+
+  @override
+  String get errorBackupVersion =>
+      'Cette sauvegarde vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
+
+  @override
+  String get parentalGateTitle => 'Demande à un adulte';
+
+  @override
+  String get parentalGateMessage =>
+      'Cette action est réservée aux adultes. Écris ce nombre en chiffres :';
+
+  @override
+  String get parentalGateAnswerLabel => 'Nombre en chiffres';
+
+  @override
+  String get parentalGateConfirm => 'Valider';
+
+  @override
+  String get settingsReminderSection => 'Rappel';
+
+  @override
+  String get settingsReminderDaily => 'Rappel quotidien';
+
+  @override
+  String get settingsReminderTime => 'Heure du rappel';
+
+  @override
+  String get settingsReminderPermissionDenied =>
+      'Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.';
+
+  @override
+  String get settingsReminderError => 'Oups, le rappel n\'a pas pu être réglé.';
+
+  @override
+  String get settingsLanguageSection => 'Langue';
+
+  @override
+  String get settingsLanguageSystem => 'Langue du téléphone';
+
+  @override
+  String get languageNameFrench => 'Français';
+
+  @override
+  String get languageNameEnglish => 'English';
+
+  @override
+  String get languageNameSpanish => 'Español';
+
+  @override
+  String get settingsLanguageError =>
+      'Oups, la langue n\'a pas pu être enregistrée.';
+
+  @override
+  String get reminderNotificationBody => 'C\'est l\'heure de tes tables !';
+
+  @override
+  String get reminderChannelName => 'Rappel quotidien';
+
+  @override
+  String get reminderChannelDescription =>
+      'Te rappelle de jouer chaque jour à l\'heure choisie.';
+
+  @override
   String get settingsPlayerSection => 'Ce joueur';
 
   @override
@@ -368,6 +486,51 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizHintTrueFalse => 'Ce calcul est-il juste ?';
+
+  @override
+  String get quizFindOperationMultiplication => 'Quelle multiplication donne';
+
+  @override
+  String quizFindOperationSpokenMultiplication(int result) {
+    return 'Quelle multiplication donne $result ?';
+  }
+
+  @override
+  String get quizHintFindOperation => 'Touche la bonne opération';
+
+  @override
+  String get quizMatchPairsTitle => 'Relie chaque opération à son résultat';
+
+  @override
+  String quizMatchPairsProgress(int count, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count paires trouvées sur $total',
+      one: '1 paire trouvée sur $total',
+      zero: 'Aucune paire trouvée sur $total',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quizMatchPairsHintStart =>
+      'Touche une opération, puis son résultat';
+
+  @override
+  String quizMatchPairsHintResult(String operation) {
+    return 'Touche maintenant le résultat de $operation';
+  }
+
+  @override
+  String quizMatchPairsHintOperation(String result) {
+    return 'Touche maintenant l\'opération qui donne $result';
+  }
+
+  @override
+  String quizMatchPairsFound(String label) {
+    return '$label, paire trouvée';
+  }
 
   @override
   String get quizTrue => 'Vrai';
@@ -453,6 +616,27 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizModeTimeAttack => 'Contre-la-montre';
+
+  @override
+  String get quizModeSurvival => 'Survie';
+
+  @override
+  String quizLivesSpoken(int left, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: '$left vies sur $total',
+      one: '1 vie sur $total',
+      zero: 'Plus de vie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quizModeDailyReview => 'Révision du jour';
+
+  @override
+  String get quizModeMonsterHunt => 'Chasse aux monstres';
 
   @override
   String quizScoreSpoken(int count) {
@@ -595,6 +779,86 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pathCrownHint => 'Bats le boss pour gagner la couronne.';
+
+  @override
+  String get placementOfferTitle => 'Tu connais déjà des tables ?';
+
+  @override
+  String get placementOfferMessage =>
+      'Réponds à une question par table, sans chrono. Chaque table que tu connais s\'ouvre tout de suite dans ton parcours.';
+
+  @override
+  String get placementOfferStart => 'Faire le test';
+
+  @override
+  String get placementOfferSkip => 'Passer';
+
+  @override
+  String placementQuestionProgress(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String get placementUnknownAnswer => 'Je ne sais pas';
+
+  @override
+  String get placementQuitTooltip => 'Arrêter le test';
+
+  @override
+  String get placementQuitTitle => 'Arrêter le test ?';
+
+  @override
+  String get placementQuitMessage =>
+      'Les tables déjà trouvées restent ouvertes dans ton parcours.';
+
+  @override
+  String get placementQuitCancel => 'Continuer le test';
+
+  @override
+  String get placementQuitConfirm => 'Arrêter';
+
+  @override
+  String placementResultTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu connais déjà $count tables !',
+      one: 'Tu connais déjà 1 table !',
+      zero: 'Tout est à découvrir !',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String placementResultSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.',
+      one: 'Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.',
+      zero: 'Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get placementLegendKnown => 'Déjà connue';
+
+  @override
+  String get placementLegendToDiscover => 'À découvrir';
+
+  @override
+  String placementTableKnown(String name) {
+    return '$name, déjà connue';
+  }
+
+  @override
+  String placementTableToDiscover(String name) {
+    return '$name, à découvrir';
+  }
+
+  @override
+  String get placementSeePath => 'Voir mon parcours';
 
   @override
   String get pathTableBack => 'Retour au parcours';
@@ -751,6 +1015,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rewardXpEarnedLabel => 'XP gagnés';
 
   @override
+  String rewardXpEarnedInline(int xp) {
+    return '+$xp XP';
+  }
+
+  @override
   String rewardLevel(int level) {
     return 'Niveau $level';
   }
@@ -789,6 +1058,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rewardBadgeSprinter => 'Sprinter';
 
   @override
+  String get rewardBadgeSurvivor => 'Survivant';
+
+  @override
   String get rewardBadgeRegular => 'Régulier';
 
   @override
@@ -811,6 +1083,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get rewardBadgeSprinterHint =>
       '20 bonnes réponses en Contre-la-montre.';
+
+  @override
+  String get rewardBadgeSurvivorHint => '30 bonnes réponses en Survie.';
 
   @override
   String get rewardBadgeRegularHint => '7 jours de jeu d\'affilée.';
@@ -1070,6 +1345,37 @@ class AppLocalizationsFr extends AppLocalizations {
       '60 secondes, un maximum de réponses';
 
   @override
+  String get challengeSurvivalSubtitle => '3 vies, de plus en plus vite';
+
+  @override
+  String get challengeSurvivalTimerNote => 'Ici, le chrono reste actif.';
+
+  @override
+  String challengeDailyReviewSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions choisies pour toi',
+      one: '1 question choisie pour toi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String challengeDailyReviewDue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count à revoir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get challengeDailyReviewLocked =>
+      'Joue d\'abord une étape du parcours';
+
+  @override
   String get resultsNewRecord => 'Nouveau record !';
 
   @override
@@ -1106,4 +1412,537 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String challengeMonsterHuntSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count monstres à apprivoiser',
+      one: '1 monstre à apprivoiser',
+      zero: 'Aucun monstre pour l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get duelTitle => 'Duel';
+
+  @override
+  String get challengeDuelSubtitle => '2 joueurs, 1 téléphone';
+
+  @override
+  String get challengeCodeCardTitle => 'J\'ai un code';
+
+  @override
+  String get challengeCodeCardSubtitle => 'Rejoue le défi d\'un ami';
+
+  @override
+  String get challengeShareButton => 'Défier un ami';
+
+  @override
+  String get challengeCodeToBeat => 'à battre';
+
+  @override
+  String get challengeCodeYours => 'Ton code de défi';
+
+  @override
+  String challengeCodeSemantics(String characters) {
+    return 'Code de défi : $characters';
+  }
+
+  @override
+  String get challengeCodeCopy => 'Copier le code';
+
+  @override
+  String get challengeCodeCopied => 'Code copié !';
+
+  @override
+  String get challengeCodeShareHint =>
+      'Donne ce code à un ami : même mode, mêmes tables, et ton score à battre !';
+
+  @override
+  String get challengeCodeOr => 'ou';
+
+  @override
+  String get challengeCodeEntryTitle => 'Tu as reçu un code ?';
+
+  @override
+  String get challengeCodeEntryHint => 'ÉCRIS LE CODE ICI';
+
+  @override
+  String get challengeCodePlay => 'Jouer ce défi';
+
+  @override
+  String get challengeCodeErrorMalformed =>
+      'Ce code n\'existe pas. Un code a 10 lettres et chiffres.';
+
+  @override
+  String get challengeCodeErrorAltered =>
+      'Une lettre ou un chiffre ne va pas. Vérifie le code avec ton ami.';
+
+  @override
+  String get challengeCodeErrorVersion =>
+      'Ce défi vient d\'une version plus récente de l\'app. Mets l\'app à jour pour le jouer.';
+
+  @override
+  String get challengeCodeTablesAll => 'toutes les tables';
+
+  @override
+  String challengeCodeTablesOne(int table) {
+    return 'table de $table';
+  }
+
+  @override
+  String challengeCodeTableItem(int table) {
+    return 'de $table';
+  }
+
+  @override
+  String challengeCodeTablesMany(String first, String last) {
+    return 'tables $first et $last';
+  }
+
+  @override
+  String get challengeCodeCardTablesAll => 'Toutes les tables';
+
+  @override
+  String challengeCodeCardTablesOne(int table) {
+    return 'Table de $table';
+  }
+
+  @override
+  String challengeCodeCardTablesMany(String first, String last) {
+    return 'Tables $first et $last';
+  }
+
+  @override
+  String challengeCodeSubtitle(String mode, String tables) {
+    return '$mode · $tables';
+  }
+
+  @override
+  String get challengeOutcomeWon => 'Défi gagné !';
+
+  @override
+  String get challengeOutcomeLost => 'Pas cette fois !';
+
+  @override
+  String get challengeOutcomeTie => 'Égalité !';
+
+  @override
+  String get challengeOutcomeToBeat => 'Score à battre';
+
+  @override
+  String get challengeOutcomeYours => 'Ton score';
+
+  @override
+  String challengeOutcomeCorrect(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bonnes réponses',
+      one: 'bonne réponse',
+      zero: 'bonne réponse',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String challengeOutcomeMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bonnes réponses de plus',
+      one: '1 bonne réponse de plus',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String challengeOutcomeFewer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bonnes réponses de moins',
+      one: '1 bonne réponse de moins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get challengeOutcomeSame => 'Autant de bonnes réponses';
+
+  @override
+  String get challengeOutcomeResend => 'Renvoyer un défi';
+
+  @override
+  String get challengeOutcomeBack => 'Retour aux défis';
+
+  @override
+  String get duelPickIntro =>
+      'Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l\'envers.';
+
+  @override
+  String get duelSideTop => 'Joueur du haut';
+
+  @override
+  String get duelSideBottom => 'Joueur du bas';
+
+  @override
+  String get duelGuest => 'Invité';
+
+  @override
+  String get duelGuestRule => 'Toutes les tables, sans XP';
+
+  @override
+  String get duelPickHint => 'Choisissez deux joueurs différents.';
+
+  @override
+  String get duelStart => 'C\'est parti !';
+
+  @override
+  String get duelPlayerTaken => 'Déjà choisi';
+
+  @override
+  String duelScore(int score, int target) {
+    return '$score / $target';
+  }
+
+  @override
+  String duelScoreSpoken(String name, int score, int target) {
+    String _temp0 = intl.Intl.pluralLogic(
+      score,
+      locale: localeName,
+      other: '$score bonnes réponses',
+      one: '1 bonne réponse',
+      zero: 'aucune bonne réponse',
+    );
+    return '$name : $_temp0 sur $target';
+  }
+
+  @override
+  String get duelPause => 'Mettre le duel en pause';
+
+  @override
+  String get duelPauseTitle => 'Duel en pause';
+
+  @override
+  String get duelPauseMessage =>
+      'Si vous arrêtez maintenant, personne ne gagne d\'XP.';
+
+  @override
+  String get duelResume => 'Reprendre';
+
+  @override
+  String get duelStop => 'Arrêter le duel';
+
+  @override
+  String get duelBlocked => 'Oups ! Attends un peu…';
+
+  @override
+  String duelAnswerRight(int answer) {
+    return '$answer, bonne réponse';
+  }
+
+  @override
+  String duelAnswerWrong(int answer) {
+    return '$answer, mauvaise réponse';
+  }
+
+  @override
+  String duelWinner(String name) {
+    return '$name gagne !';
+  }
+
+  @override
+  String duelXpEarned(int xp) {
+    return '+$xp XP';
+  }
+
+  @override
+  String get duelGuestNoXp => 'Pas d\'XP pour un invité';
+
+  @override
+  String get duelXpNotSaved => 'Les XP n\'ont pas pu être enregistrés.';
+
+  @override
+  String get duelReplay => 'Rejouer';
+
+  @override
+  String get duelQuit => 'Quitter';
+
+  @override
+  String get monstersPageTitle => 'Mes monstres';
+
+  @override
+  String get monstersIntro =>
+      'Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.';
+
+  @override
+  String get monstersEmpty =>
+      'Aucun monstre en vue, bravo ! Un calcul raté deux fois deviendra un petit monstre à apprivoiser.';
+
+  @override
+  String get monsterToughnessVeryTough => 'Très coriace';
+
+  @override
+  String get monsterToughnessTough => 'Coriace';
+
+  @override
+  String get monsterToughnessAlmostTamed => 'Presque apprivoisé';
+
+  @override
+  String monsterWildSpoken(String fact, String toughness) {
+    return 'Monstre $fact, $toughness';
+  }
+
+  @override
+  String monsterTamedSpoken(String fact) {
+    return 'Monstre $fact, apprivoisé';
+  }
+
+  @override
+  String get monstersHuntButton => 'Lancer la chasse';
+
+  @override
+  String monstersHuntQuestions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions',
+      one: '1 question',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get monstersTamedTitle => 'Apprivoisés';
+
+  @override
+  String monstersTamedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count monstres',
+      one: '1 monstre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pathMonstersOpenLittle => 'Voir mes petits monstres';
+
+  @override
+  String get leaderboardTitle => 'Classement';
+
+  @override
+  String get leaderboardWeekLabel => 'XP gagnés cette semaine';
+
+  @override
+  String get leaderboardResetHint => 'Remise à zéro lundi';
+
+  @override
+  String get leaderboardYou => 'C\'est toi';
+
+  @override
+  String leaderboardXp(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String leaderboardEntrySpoken(String nickname, int rank, int xp) {
+    return '$nickname, place $rank, $xp XP';
+  }
+
+  @override
+  String leaderboardEntryYouSpoken(String nickname, int rank, int xp) {
+    return '$nickname, c\'est toi, place $rank, $xp XP';
+  }
+
+  @override
+  String leaderboardChaseBehind(int xp, String nickname) {
+    return 'Encore $xp XP et tu rattrapes $nickname !';
+  }
+
+  @override
+  String leaderboardChaseTied(String nickname) {
+    return 'Tu es à égalité avec $nickname !';
+  }
+
+  @override
+  String get leaderboardChaseLeading => 'Tu es en tête cette semaine !';
+
+  @override
+  String get leaderboardChaseNotStarted =>
+      'Joue pour gagner tes premiers XP de la semaine !';
+
+  @override
+  String get leaderboardEntrySubtitle =>
+      'Qui a gagné le plus d\'XP cette semaine ?';
+
+  @override
+  String get settingsShowLeaderboard => 'Afficher le classement';
+
+  @override
+  String get shopTitle => 'Boutique';
+
+  @override
+  String get shopEntrySubtitle => 'Avatars et thèmes à débloquer';
+
+  @override
+  String shopCoinBalance(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pièces',
+      one: '1 pièce',
+      zero: '0 pièce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shopTabAvatars => 'Avatars';
+
+  @override
+  String get shopTabThemes => 'Thèmes';
+
+  @override
+  String get shopWorn => 'Porté';
+
+  @override
+  String get shopActive => 'Actif';
+
+  @override
+  String get shopChoose => 'Choisir';
+
+  @override
+  String shopWornLabel(String name) {
+    return '$name, porté';
+  }
+
+  @override
+  String shopActiveLabel(String name) {
+    return '$name, actif';
+  }
+
+  @override
+  String shopChooseLabel(String name) {
+    return 'Choisir $name';
+  }
+
+  @override
+  String shopBuyLabel(String name, int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: 'Acheter $name pour $price pièces',
+      one: 'Acheter $name pour 1 pièce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopTooExpensiveLabel(String name, int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: '$name, $price pièces : il te manque des pièces',
+      one: '$name, 1 pièce : il te manque des pièces',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopNotEnoughCoins(int missing) {
+    String _temp0 = intl.Intl.pluralLogic(
+      missing,
+      locale: localeName,
+      other: 'Il te manque $missing pièces. Joue encore pour les gagner !',
+      one: 'Il te manque 1 pièce. Joue encore pour la gagner !',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopBuyTitle(String name) {
+    return 'Acheter $name ?';
+  }
+
+  @override
+  String shopBuyMessage(int price, int left) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: '$price pièces',
+      one: '1 pièce',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      left,
+      locale: localeName,
+      other: 'Il t\'en restera $left.',
+      one: 'Il t\'en restera 1.',
+      zero: 'Il ne t\'en restera aucune.',
+    );
+    return 'Ça coûte $_temp0. $_temp1';
+  }
+
+  @override
+  String get shopBuyConfirm => 'Acheter';
+
+  @override
+  String shopPurchased(String name) {
+    return 'Bravo, $name est à toi ! Touche « Choisir » pour l\'utiliser.';
+  }
+
+  @override
+  String shopEarnHint(int xpPerCoin, int coinsPerCrown, int coinsPerBadge) {
+    return 'Gagne des pièces en jouant : 1 pièce tous les $xpPerCoin XP, $coinsPerCrown par couronne et $coinsPerBadge par badge.';
+  }
+
+  @override
+  String get shopErrorNotEnoughCoins => 'Tu n\'as pas assez de pièces pour ça.';
+
+  @override
+  String get shopErrorAlreadyOwned => 'Tu l\'as déjà !';
+
+  @override
+  String get shopAvatarFox => 'Renard';
+
+  @override
+  String get shopAvatarPanda => 'Panda';
+
+  @override
+  String get shopAvatarRobot => 'Robot';
+
+  @override
+  String get shopAvatarAlien => 'Extraterrestre';
+
+  @override
+  String get shopAvatarUnicorn => 'Licorne';
+
+  @override
+  String get shopAvatarDragon => 'Dragon';
+
+  @override
+  String get shopAvatarNinja => 'Ninja';
+
+  @override
+  String get shopAvatarKing => 'Roi';
+
+  @override
+  String get shopThemeLavender => 'Lavande';
+
+  @override
+  String get shopThemeOcean => 'Océan';
+
+  @override
+  String get shopThemeForest => 'Forêt';
+
+  @override
+  String get shopThemeSunset => 'Coucher de soleil';
+
+  @override
+  String get shopThemeNight => 'Nuit';
 }

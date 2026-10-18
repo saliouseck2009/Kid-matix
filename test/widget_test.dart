@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
@@ -12,6 +13,9 @@ import 'helpers/test_reward_pages.dart';
 import 'helpers/test_mascot_pages.dart';
 import 'helpers/test_challenge_pages.dart';
 import 'helpers/test_mastery_pages.dart';
+import 'helpers/test_code_challenge_pages.dart';
+import 'helpers/test_duel_pages.dart';
+import 'helpers/test_leaderboard_pages.dart';
 
 /// Mascot of the test player.
 final MascotPages mascotPages = buildTestMascotPages();
@@ -27,6 +31,9 @@ GoRouter _createPlayingRouter() {
     mascotPages: mascotPages,
     challengePages: buildTestChallengePages(),
     masteryPages: buildTestMasteryPages(),
+    duelPages: buildTestDuelPages(),
+    codePages: buildTestCodeChallengePages(),
+    leaderboardPages: buildTestLeaderboardPages(),
   );
 }
 
@@ -43,6 +50,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         KidMatixApp(
+          locale: const Locale('fr'),
           router: _createPlayingRouter(),
           scope: testMascotScope(mascotPages),
         ),
@@ -59,6 +67,7 @@ void main() {
       // Act
       await tester.pumpWidget(
         KidMatixApp(
+          locale: const Locale('fr'),
           router: _createPlayingRouter(),
           scope: testMascotScope(mascotPages),
         ),
@@ -75,6 +84,7 @@ void main() {
       const String inputTab = 'Défis';
       await tester.pumpWidget(
         KidMatixApp(
+          locale: const Locale('fr'),
           router: _createPlayingRouter(),
           scope: testMascotScope(mascotPages),
         ),
@@ -86,6 +96,52 @@ void main() {
       // Assert
       expect(find.text(inputTab), findsNWidgets(2));
       expect(find.text('Contre-la-montre'), findsOneWidget);
+    });
+  });
+  group('App languages', () {
+    Future<void> pumpApp(WidgetTester tester, {Locale? locale}) async {
+      await tester.pumpWidget(
+        KidMatixApp(
+          locale: locale,
+          router: _createPlayingRouter(),
+          scope: testMascotScope(mascotPages),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    void expectTabs(List<String> expectedTabs) {
+      for (final String expectedTab in expectedTabs) {
+        expect(find.text(expectedTab), findsWidgets);
+      }
+    }
+
+    testWidgets('shows the app in English', (WidgetTester tester) async {
+      // Act
+      await pumpApp(tester, locale: const Locale('en'));
+      // Assert
+      expectTabs(<String>['Path', 'Practice', 'Challenges', 'Profile']);
+    });
+
+    testWidgets('shows the app in Spanish', (WidgetTester tester) async {
+      // Act
+      await pumpApp(tester, locale: const Locale('es'));
+      // Assert
+      expectTabs(<String>['Camino', 'Practicar', 'Retos', 'Perfil']);
+    });
+
+    testWidgets('follows the phone, French when it is not spoken', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      tester.platformDispatcher.localesTestValue = const <Locale>[
+        Locale('it', 'IT'),
+      ];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+      // Act
+      await pumpApp(tester);
+      // Assert
+      expectTabs(<String>['Parcours', "S'entraîner", 'Défis', 'Profil']);
     });
   });
 }

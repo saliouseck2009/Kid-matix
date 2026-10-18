@@ -70,6 +70,7 @@ final class RewardSessionHook implements SessionSavedHook {
       itemCount: _itemCount(session.domainId),
       now: session.endedAt,
       isTimeAttack: session.mode == QuizMode.timeAttack,
+      isSurvival: session.mode == QuizMode.survival,
     );
     return (Transaction transaction) => _write(transaction, session, input);
   }

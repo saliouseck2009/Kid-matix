@@ -16,7 +16,7 @@
 | Catégorie secondaire | Jeux (sous-catégories : Éducatif, Famille) |
 | Prix | Gratuit |
 | Achats intégrés | Aucun |
-| URL de la politique de confidentialité | [adresse publique de `docs/store/privacy-policy.md`, à héberger] |
+| URL de la politique de confidentialité | https://saliouseck2009.github.io/Kid-matix/store/privacy-policy.html (anglais : https://saliouseck2009.github.io/Kid-matix/store/privacy-policy-en.html ; espagnol : https://saliouseck2009.github.io/Kid-matix/store/privacy-policy-es.html) |
 
 ## Catégorie Enfants
 
@@ -42,7 +42,7 @@ plus être retirée de l'app.
 | Pas d'envoi de données personnelles ou d'informations sur l'appareil à des tiers | Rien n'est envoyé : aucune connexion réseau |
 | Politique de confidentialité publiée | Brouillon prêt, à héberger |
 | Respect des lois sur les données des enfants (COPPA, RGPD) | Aucune collecte ; le pseudo reste sur l'appareil |
-| Pas de demande d'autorisation sans nécessité | Aucune autorisation demandée (pas de photo, micro, localisation, suivi) |
+| Pas de demande d'autorisation sans nécessité | Seulement les notifications, demandées quand on active le rappel quotidien (désactivé par défaut, F18) ; pas de photo, micro, localisation, suivi |
 
 ## Confidentialité de l'app (« étiquette de confidentialité »)
 
@@ -54,6 +54,13 @@ plus être retirée de l'app.
 
 Pour Apple, une donnée est « collectée » quand elle est transmise hors de
 l'appareil. Le pseudo et la progression restent sur l'appareil.
+
+La sauvegarde par fichier (F20, version 1.2) ne change pas ces réponses :
+l'utilisateur exporte lui-même un profil et le partage par la feuille de
+partage du système ; rien n'est envoyé au développeur ni à un tiers. L'export
+et l'import passent par un contrôle parental (« Demande à un adulte » : écrire
+en chiffres un nombre écrit en lettres), comme la guideline 1.3 le demande
+pour une action qui fait sortir l'enfant de l'app.
 
 **Point lié à l'audit** : la base de données du jeu est aujourd'hui incluse
 dans la sauvegarde iCloud de l'appareil. Cette sauvegarde appartient à

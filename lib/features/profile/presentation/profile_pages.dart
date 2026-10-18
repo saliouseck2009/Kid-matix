@@ -1,10 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kid_matix/core/entities/player_identity.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/get_profiles_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/update_profile_use_case.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/backup_cubit.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/backup_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_cubit.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/player_settings_cubit.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/profile_tab_use_cases.dart';
@@ -15,7 +22,9 @@ import 'package:kid_matix/features/profile/presentation/pages/profile_edit_page.
 import 'package:kid_matix/features/profile/presentation/pages/profile_tab_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/settings_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/who_is_playing_page.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/backup_settings_section.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/player_badge.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/reduced_motion_scope.dart';
 
 /// Builds the pages of the profile feature for the router.
@@ -32,6 +41,8 @@ final class ProfilePages {
     required this._selectProfile,
     required this._tabUseCases,
     required this._settingsUseCases,
+    required this._backupUseCases,
+    this._gateRandom,
   });
 
   final GetProfilesUseCase _getProfiles;
@@ -41,6 +52,10 @@ final class ProfilePages {
   final SelectProfileUseCase _selectProfile;
   final ProfileTabUseCases _tabUseCases;
   final SettingsUseCases _settingsUseCases;
+  final BackupUseCases _backupUseCases;
+
+  // Draws the numbers of the parental gate; seeded in tests.
+  final Random? _gateRandom;
 
   /// "Qui joue ?".
   Widget buildWhoIsPlayingPage({
@@ -61,6 +76,20 @@ final class ProfilePages {
       create: (_) =>
           ProfileTabCubit(profileId: profileId, useCases: _tabUseCases)..load(),
       child: const PlayerBadge(),
+    );
+  }
+
+  /// The avatar of [player], [size] wide; the first avatar or color
+  /// stands in for an unknown name.
+  Widget buildAvatar({required PlayerIdentity player, required double size}) {
+    return ProfileAvatarView(
+      avatar:
+          ProfileAvatar.values.asNameMap()[player.avatarKey] ??
+          ProfileAvatar.values.first,
+      color:
+          ProfileColor.values.asNameMap()[player.colorKey] ??
+          ProfileColor.values.first,
+      size: size,
     );
   }
 
@@ -100,20 +129,39 @@ final class ProfilePages {
   Widget buildSettingsPage({
     required String profileId,
     required VoidCallback onBack,
+    List<Widget> gameRows = const <Widget>[],
+    List<Widget> reminderRows = const <Widget>[],
+    List<Widget> languageRows = const <Widget>[],
   }) {
-    return BlocProvider<SettingsCubit>(
-      create: (_) =>
-          SettingsCubit(profileId: profileId, useCases: _settingsUseCases)
-            ..load(),
-      child: SettingsPage(onBack: onBack),
+    return MultiBlocProvider(
+      providers: <BlocProvider<Object?>>[
+        BlocProvider<SettingsCubit>(
+          create: (_) =>
+              SettingsCubit(profileId: profileId, useCases: _settingsUseCases)
+                ..load(),
+        ),
+        BlocProvider<BackupCubit>(
+          create: (_) =>
+              BackupCubit(profileId: profileId, useCases: _backupUseCases),
+        ),
+      ],
+      child: SettingsPage(
+        onBack: onBack,
+        gameRows: gameRows,
+        backupSection: BackupSettingsSection(random: _gateRandom),
+        reminderRows: reminderRows,
+        languageRows: languageRows,
+      ),
     );
   }
 
   /// Gives the settings of [profileId] to [child], and turns the
-  /// animations off when the player asked for it.
+  /// animations off when the player asked for it, as long as
+  /// [isPlayerActive].
   Widget buildSettingsScope({
     required String profileId,
     required Widget child,
+    bool isPlayerActive = true,
   }) {
     return BlocProvider<PlayerSettingsCubit>(
       key: ValueKey<String>('settings-$profileId'),
@@ -122,7 +170,7 @@ final class ProfilePages {
         getSettings: _settingsUseCases.getSettings,
         watchChanges: _tabUseCases.watchChanges,
       )..load(),
-      child: ReducedMotionScope(child: child),
+      child: ReducedMotionScope(isPlayerActive: isPlayerActive, child: child),
     );
   }
 }

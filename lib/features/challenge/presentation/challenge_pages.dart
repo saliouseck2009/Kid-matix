@@ -9,6 +9,7 @@ import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/features/challenge/domain/entities/challenge_source.dart';
 import 'package:kid_matix/features/challenge/domain/entities/record_entity.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_quiz_specs.dart';
+import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenge_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/challenges_cubit.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/session_record_cubit.dart';
@@ -26,6 +27,12 @@ enum ChallengeOrigin {
 
   /// The challenges tab.
   challenges,
+
+  /// « Mes monstres », opened from the challenges tab.
+  challengeMonsters,
+
+  /// « Mes monstres », opened from the Profile tab.
+  profileMonsters,
 }
 
 /// Builds the pages of the free training and the challenges for the
@@ -67,10 +74,15 @@ final class ChallengePages {
     );
   }
 
-  /// The challenges tab of [profileId]; [onPlay] plays a source key.
+  /// The challenges tab of [profileId]; [onPlay] plays a source key,
+  /// [onOpenMonsters] opens « Mes monstres », [onOpenDuel] the duel and
+  /// [onOpenCode] the entry of a challenge code.
   Widget buildChallengesPage({
     required String profileId,
     required ValueChanged<String> onPlay,
+    required VoidCallback onOpenMonsters,
+    required VoidCallback onOpenDuel,
+    required VoidCallback onOpenCode,
   }) {
     return BlocProvider<ChallengesCubit>(
       key: ValueKey<String>('challenges-$profileId'),
@@ -78,8 +90,20 @@ final class ChallengePages {
           ChallengesCubit(profileId: profileId, useCases: _useCases)..load(),
       child: ChallengesPage(
         onPlay: (ChallengeSource source) => onPlay(source.toKey()),
+        onOpenMonsters: onOpenMonsters,
+        onOpenDuel: onOpenDuel,
+        onOpenCode: onOpenCode,
       ),
     );
+  }
+
+  /// Questions of a monster hunt.
+  int get monsterHuntQuestionCount => ChallengeRules.monsterHuntQuestionCount;
+
+  /// Source key of a monster hunt started from « Mes monstres », opened
+  /// from the Profile tab when [isFromProfile].
+  String monsterHuntKeyOf({required bool isFromProfile}) {
+    return MonsterHuntSource(isFromProfile: isFromProfile).toKey();
   }
 
   /// "Nouveau record !" on the results of [sessionId], when it set one.
@@ -111,7 +135,14 @@ final class ChallengePages {
   ChallengeOrigin? originOf(String? sourceKey) {
     return switch (ChallengeSource.tryParse(sourceKey)) {
       TrainingSource() => ChallengeOrigin.training,
-      TimeAttackSource() => ChallengeOrigin.challenges,
+      TimeAttackSource() ||
+      SurvivalSource() ||
+      DailyReviewSource() ||
+      CodeChallengeSource() => ChallengeOrigin.challenges,
+      MonsterHuntSource(:final bool isFromProfile) =>
+        isFromProfile
+            ? ChallengeOrigin.profileMonsters
+            : ChallengeOrigin.challengeMonsters,
       null => null,
     };
   }

@@ -1,5 +1,7 @@
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
+import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
+import 'package:kid_matix/core/quiz/seeded_draw.dart';
 import 'package:meta/meta.dart';
 
 /// A quiz to play, as the feature that starts it describes it.
@@ -24,7 +26,14 @@ final class QuizSpec {
     this.isBossFight = false,
     this.totalTimeLimit,
     this.keepsTimer = false,
-  }) : followUpItemKeys = List<String>.unmodifiable(followUpItemKeys),
+    this.lives,
+    this.timeSchedule,
+    this.seededDraw,
+  }) : assert(
+         timeSchedule == null || baseTimeLimit == timeSchedule.start,
+         'a time schedule starts at the base time limit',
+       ),
+       followUpItemKeys = List<String>.unmodifiable(followUpItemKeys),
        itemKeys = List<String>.unmodifiable(itemKeys),
        questionTypeIds = List<String>.unmodifiable(questionTypeIds);
 
@@ -73,4 +82,18 @@ final class QuizSpec {
   /// Whether the player chose to play with [baseTimeLimit]: the timer then
   /// stays even when their setting turns it off.
   final bool keepsTimer;
+
+  /// Mistakes the player may make, or `null` for a quiz without lives.
+  /// With lives, the quiz ends at the last one lost, goes on by itself
+  /// after each answer and no question comes back.
+  final int? lives;
+
+  /// How the time per question shrinks with the right answers, or `null`
+  /// for a time that never changes; it starts at [baseTimeLimit].
+  final QuizTimeSchedule? timeSchedule;
+
+  /// The draw fixing the questions, or `null` to choose them by
+  /// [selection]. With it, the frozen generator of its version asks
+  /// [questionCount] questions among [itemKeys], the same on every phone.
+  final SeededDraw? seededDraw;
 }

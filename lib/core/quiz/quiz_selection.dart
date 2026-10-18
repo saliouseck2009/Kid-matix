@@ -9,4 +9,12 @@ enum QuizSelection {
 
   /// Every item once, in a random order.
   shuffled,
+
+  /// The mastery engine picks the items to review: the overdue first,
+  /// then the least known, each once, with the formats fit for its box.
+  review,
+
+  /// The mastery engine asks the player's monsters, the facts missed
+  /// again and again, each twice, then completes like a review.
+  monsterHunt,
 }

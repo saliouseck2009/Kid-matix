@@ -1,7 +1,7 @@
 # Project status
 
 Update this file at the end of every lot (and whenever work stops in the
-middle of one). Last update: 2026-10-10.
+middle of one). Last update: 2026-10-13.
 
 ## Where we are
 
@@ -18,8 +18,17 @@ middle of one). Last update: 2026-10-10.
 | F8 · Growing mascot | **Done** (closed 2026-10-10) |
 | F9 · Free training and Against the clock | **Done** (closed 2026-10-10) |
 | F10 · Profile and settings | **Done** (closed 2026-10-10) |
-| F11 · Polish and release of 1.0 | **Next** |
-| F12 – F21 | Not started |
+| F11 · Polish and release of 1.0 | **Done** (closed 2026-10-12), except F11-11: builds in the test channels |
+| F12 · Daily review and Survival | **Done** (closed 2026-10-12) |
+| F13 · My monsters | **Done** (closed 2026-10-12) |
+| F14 · Duel on one phone | **Done** (closed 2026-10-12) |
+| F15 · New question formats | **Done** (closed 2026-10-12) |
+| F16 · Placement test | **Done** (closed 2026-10-12) |
+| F17 · Local leaderboard | **Done** (closed 2026-10-12) |
+| F18 · Daily reminder | **Done** (closed 2026-10-12), real-phone check by the owner pending |
+| F19 · Challenge by code | **Done** (closed 2026-10-12) |
+| F20 · File backup | **Done** (closed 2026-10-12) |
+| F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -448,10 +457,375 @@ Known gaps left on purpose, to handle in the lot named:
 - `RewardService.readStreak`, `PlayerSettingsService.readFeedback`,
   `ChoiceSegments` moved to `core/widgets`.
 
-## Starting F11
+## F11 closure
 
-Tasks F11-01 to F11-11 in `docs/product/task-breakdown.md`. Some are
-handed to Codex in parallel (briefs in the untracked `codex/` folder):
-F11-03 and F11-04 (tests, portrait lock), F11-05 (coverage), F11-08
-(release audit), F11-09 and F11-10 (store drafts). F11-07 needs the final
-name, icon and splash from the owner; F11-11 needs the store accounts.
+- `bash tool/check.sh`: every step OK (671 tests); coverage at least 90 %
+  on every `domain/` and 80 % on every `data/` (`tool/coverage_report.py`);
+  CI green on #61 to #73.
+- Accessibility, tablet layout, integration journey and edge cases are
+  covered by tests (#62, #68, #69). Performance measured on a Galaxy A16:
+  start in 1.8 to 2.3 s, 99 % of the quiz frames at 90 Hz
+  (`docs/release/performance-1.0.md`).
+- Release audit (`docs/release/audit-1.0.md`): no network call, no
+  communicating SDK; system backup turned off.
+- Signed and obfuscated builds: `bash tool/build_release.sh` with the
+  upload key of `android/key.properties` (`docs/release/signing.md`).
+- Privacy policy published on GitHub Pages in the three languages of the
+  app (https://saliouseck2009.github.io/Kid-matix/store/privacy-policy.html,
+  and the same address suffixed `-en.html` and `-es.html`), reached from
+  the landing page of the site
+  (https://saliouseck2009.github.io/Kid-matix/).
+- Google Play: listing, content rating, target audience and data safety
+  filled. App Store Connect: listing, iPhone and iPad screenshots, Kids
+  category 6-8, age rating 4+, "Data Not Collected", free in every country.
+
+Left open, done by the owner:
+
+- **F11-11**: the Android bundle goes to internal testing; the iOS build
+  (bundle id `sn.ckroot.kidmatix`) goes to TestFlight through Transporter.
+  The lot's "done when" (both builds installed from the test channels, the
+  journey played on a phone) is checked then.
+- App Store Connect: the phone number of the review contact, and
+  "Publish" in App Privacy.
+- A new personal Play account may need a closed test (12 testers for 14
+  days) before production.
+
+## F12 closure
+
+- `bash tool/check.sh`: every step OK (728 tests), coverage thresholds
+  met; CI green on #75 to #78.
+- Survival checked on the Android emulator (API 36): the game ends at the
+  third mistake, a heart empties at each one, the question is replaced
+  after the background, first record then "Nouveau record !", Survivant
+  badge at 31 right answers, timer note when the setting is "Sans".
+- Daily review: the choice of the facts (overdue first, then the lowest
+  success rate, each once) is covered by tests with a fake clock,
+  including a fact missed the day before; the card and the quiz were not
+  played on a device yet.
+
+Texts waiting for the owner's confirmation: "Joue d'abord une étape du
+parcours", no pill when no fact is due, "Ici, le chrono reste actif.",
+"{n} vies sur {total}" / "Plus de vie", "Survivant" and "30 bonnes
+réponses en Survie.", the survival quiz screen (hearts, score, timer bar)
+which has no mockup.
+
+## F13 closure
+
+- `bash tool/check.sh`: every step OK; coverage thresholds met; CI green
+  on #80 to #82.
+- Checked on the Android emulator with progress seeded through the use
+  cases: 7 × 8 missed twice showed as a monster ("1 monstre à
+  apprivoiser" on the Défis card); a first hunt asked each monster twice,
+  never in a row; after a second hunt both monsters reached box 4 and
+  "Apprivoisés" showed "2 monstres". The Profile link to the screen is
+  covered by a widget test only (the emulator was overloaded).
+
+Texts and choices waiting for the owner: "Aucun monstre pour l'instant",
+the empty-screen text, "Voir mes petits monstres", the screen-reader
+texts of the monsters, the progress bar at box / 4, dark horns, no
+celebration when a monster is tamed (mastery keeps no history).
+
+## F15 closure
+
+- Two question types registered in the registry, no change to `QuizBloc`:
+  "Trouver l'opération" (`findOperation`, `? = 24`, 4 operations, one
+  right) and "Relier les paires" (`matchPairs`, 4 operations and their 4
+  results). Both are recognized answers (box 3 cap). They join the speed
+  stage, the boss fight and free training.
+- The match-pairs interaction lives in its answer widget, which submits
+  one `PairsAnswer` (the facts missed) through the existing
+  `AnswerSubmitted` event. `SubmitAnswerUseCase` records each pair in the
+  mastery; `QuizRun` doubles the time of a match-pairs question through
+  the time factor of its type. Rules in `docs/decisions.md`.
+- `bash tool/check.sh`: every step OK (805 tests); coverage thresholds
+  met (`quiz/domain` 100 %, `multiplication/domain` 94.6 %).
+- Checked on the Android emulator (API 36) in free training (same quiz
+  screen as the stages; the test profile had no speed stage open): "Quelle
+  multiplication donne 5" with four operations; then a match-pairs board
+  of the table of 6, a wrong pair turned red with the operation still
+  selected, the four pairs matched green and "Presque !" named 6 × 8 = 48.
+  That both formats are drawn in the speed stage and the boss fight is
+  covered by tests; to try on the phone.
+
+Texts and choices waiting for the owner: "Quelle multiplication donne",
+"Touche la bonne opération", "Relie chaque opération à son résultat",
+"{n} paire(s) trouvée(s) sur 4", "Touche une opération, puis son
+résultat", "Touche maintenant le résultat de 5 × 6", "Touche maintenant
+l'opération qui donne 30"; the pairs drawn in the table of the fact
+asked; the selection kept after a wrong pair; the 4 facts counted as
+missed when the time runs out.
+
+## F14 closure
+
+- `bash tool/check.sh`: every step OK (815 tests); coverage thresholds
+  met (`features/challenge/domain` 97 %, `features/reward/data` 98 %).
+- Checked on the Android emulator (API 36, debug build), with the one
+  profile of the emulator against a guest: the Duel card of Défis opens
+  the player choice (active player at the bottom, guest at the top, a
+  player already chosen greyed on the other half), the two halves head to
+  tail as in mockup 15, a wrong answer showed red with a cross, the right
+  one green with a check and "Oups ! Attends un peu…" for 2 seconds, then
+  a new question; at 10 the end screen showed "Chasseur gagne !", "+120
+  XP" and "Pas d'XP pour un invité"; back on the map the player had moved
+  to level 2 and the daily goal read 120 / 20 XP, streak unchanged. Two
+  profiles of different levels each receiving their XP is covered by the
+  `DuelBloc` tests (the emulator holds one profile).
+- `DuelBloc` tests (F14-07): two taps at the same time each scored on its
+  own half, the 2-second block (19 ticks of 100 ms ignore a tap, the 20th
+  frees it), victory at 10, XP for both profiles and none for a guest,
+  restart, stop without XP; a test over the real database checks that a
+  whole duel writes only `xp_award` and the profile's XP (no
+  `item_progress`, no quiz session, no streak).
+- Schema version 10: `xp_award` (XP earned outside a quiz).
+
+Texts and choices waiting for the owner: the player choice (no mockup:
+"Joueur du haut" / "Joueur du bas", "Invité" with "Toutes les tables, sans
+XP", "Posez le téléphone à plat entre vous deux. Le joueur du haut lit à
+l'envers.", "Choisissez deux joueurs différents.", "C'est parti !"), the
+answers shown red and green during the 2-second block with "Oups ! Attends
+un peu…", the pause dialog ("Duel en pause", "Si vous arrêtez maintenant,
+personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
+(no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
+"Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
+celebrations belong to the quiz results).
+
+## F21 closure
+
+All lots, F0 to F21, are done. Left for the owner: the builds in the
+test channels (F11-11), the check of the daily reminder on a real phone
+(F18), the device check of the shop below, and the texts, prices and
+translations to confirm.
+
+- Languages (F21-01, F21-02): English and Spanish, chosen in the
+  settings, delivered by their own pull request (`feat/f21-languages`).
+- Coins (F21-03): 1 coin every 10 XP (quizzes and duels), 20 per crown,
+  10 per badge, computed from the totals, minus the prices paid; no real
+  money. Schema version 11: `shop_purchase` and `shop_choice` (new
+  feature `shop`). Rules in `docs/decisions.md`.
+- Catalog (F21-04): the 12 free avatars; 8 avatars to buy, 80 to 300
+  coins, drawn in their own colors (`PremiumAvatarPainter`); 4 color
+  themes, 150 to 250 coins (Océan, Forêt, Coucher de soleil, Nuit),
+  Lavande free. A theme recolors the app for its player only
+  (`AppTheme.of`, `ActiveThemeCubit` in `PlayerScope`).
+- Shop screen (F21-05, mockup 22), opened from the « Boutique » card of
+  the Profile tab: coins, tabs « Avatars » / « Thèmes », « Porté » /
+  « Actif », « Choisir », price, greyed price; purchase confirmed in a
+  dialog.
+- The progress reset takes the purchases, the theme and the coins back
+  and leaves the avatar worn; the backup carries the shop (`shop`
+  section, format version 2, version 1 files still read).
+- Tests (F21-06): coin rules (XP rest, crown, badge), the balance with a
+  duel and a stage over the real wiring, purchase, insufficient coins,
+  item owned, wearing and applying, reset, backup round trip of the shop
+  rows and a version 1 file, migration 11, the screen and its Cubit, the
+  theme scope, AA contrast of the five themes and the text contrast of
+  every screen in each theme. The language tests come with the languages.
+- `bash tool/check.sh`: every step OK (1204 tests). Coverage:
+  `features/shop/domain` 97.7 %, `features/shop/data` 100 %, every other
+  folder above its threshold.
+- Not checked on a device: no Android emulator was running. To try:
+  play a few quizzes (or a duel), Profil → « Boutique », buy the fox,
+  « Choisir », then « Thèmes » → buy and apply « Nuit » and look at every
+  tab; « Changer de joueur » goes back to lavender. Profil → Réglages →
+  « Réinitialiser ma progression »: coins back to 0, the fox stays worn.
+
+Texts and choices waiting for the owner: the 8 avatar names (Renard,
+Panda, Robot, Extraterrestre, Licorne, Dragon, Ninja, Roi) and their
+prices (80, 80, 120, 150, 180, 220, 250, 300), the theme names and
+prices (Océan 150, Forêt 150, Coucher de soleil 200, Nuit 250),
+« Actif » for the theme applied, the purchase dialog (« Acheter Renard ? »,
+« Ça coûte 80 pièces. Il t'en restera 160. », « Acheter »), the messages
+(« Bravo, Renard est à toi ! Touche « Choisir » pour l'utiliser. »,
+« Il te manque 60 pièces. Joue encore pour les gagner ! »), the hint
+under the grid and the card subtitle « Avatars et thèmes à débloquer ».
+
+### Languages (F21-01, F21-02)
+
+- F21-01 and F21-02 done: English and Spanish (`lib/l10n/app_en.arb`,
+  `app_es.arb`, every key), chosen for the whole phone in the « Langue »
+  section of the settings, the phone's language by default and French
+  when the phone speaks neither. The app switches live; the reminder
+  notification and its Android channel follow; the parental gate spells
+  its number in the language shown (`core/utils/number_words.dart`).
+- Tests: key and placeholder parity of the three ARB files
+  (`test/l10n/arb_parity_test.dart`), the language kept and applied, the
+  phone default and the French fallback, the app and the settings in
+  English and Spanish, the text-scale test in the three languages.
+- Translations to be proofread by the owner (choices listed in #92).
+  Every new key needs its English and Spanish text: the parity test
+  fails otherwise.
+
+## F20 closure
+
+- Settings, section « Sauvegarde » (mockup 13): « Exporter mon profil »
+  writes the active player to `KidMatix-<nickname>-<day>.kidmatix` and
+  opens the share sheet; « Importer un profil » opens the system picker.
+  Both open behind the parental gate « Demande à un adulte »
+  (`core/widgets/parental_gate.dart`: a number from 1,000 to 9,999 in
+  French words, to type in digits). Format and rules in
+  `docs/decisions.md`. No schema change, no Android or iOS setting.
+- Each feature exports and imports its own tables through a
+  `ProfileBackupPart` (`core/storage/`); the profile feature runs them in
+  one transaction, with new ids for everything but a replaced player.
+  The placement rows of `stage_progress` travel apart, the last free
+  training (a preference) travels with the challenges.
+- A nickname already on the phone asks « Remplacer » or « Renommer »;
+  a damaged file or a file of a newer version is refused with its own
+  message. New packages: `share_plus`, `file_selector`,
+  `package_info_plus`. Privacy policy updated; the Play data-safety and
+  App Store privacy answers do not change.
+- Tests (F20-05): a round trip between two databases (every table of the
+  player identical, links between rows kept, the other player left out),
+  replace keeping the id, rename twice without collision, nickname taken,
+  damaged JSON, malformed row and dangling row refused with nothing
+  written, newer version refused, unknown keys and missing sections
+  read; the codec, the use cases, the Cubit, the settings section with
+  the gate, the gate and the French number spelling.
+- `bash tool/check.sh`: every step OK (1041 tests); `bash tool/check.sh
+  build` OK (Android and iOS). Coverage: `features/profile/domain`
+  96.3 %, `features/profile/data` 91.1 %, every other folder above its
+  threshold.
+- Not checked on a device: the debug build installed on the shared
+  Android emulator, but another session was playing a quiz on it, so the
+  check stopped there. To try with two phones: on the first, Profil →
+  Réglages → « Exporter mon profil », answer the gate, send the file
+  (e-mail, messaging app, Drive); on the second, install the app, create
+  any player, then « Importer un profil » and pick the file — with the
+  same nickname, « Remplacer » brings back level, streak, stars and
+  mastery grid.
+
+Texts waiting for the owner: the gate (« Demande à un adulte », « Cette
+action est réservée aux adultes. Écris ce nombre en chiffres : »,
+« Nombre en chiffres », « Valider »), the conflict dialog (« Awa existe
+déjà », its text, « Remplacer », « Renommer »), the rename dialog
+(« Nouveau pseudo », « Choisis un autre pseudo pour le joueur
+importé. », « Importer »), the messages after an export or an import and
+the two refusals. Choices to confirm: 4-digit numbers for the gate, the
+imported player not made active, a wrong gate answer going back silently.
+
+## F19 closure
+
+- A challenge code is 10 characters (`K7M2-QX9T-B4`, no 0, O, 1, I, L):
+  tables, mode, question count, seed, score to beat, generator version
+  and a check character (layout in `ChallengeCodeCodec` and
+  `docs/decisions.md`). No schema change.
+- `EncodeChallengeCodeUseCase` and `BuildQuizFromCodeUseCase` (challenge
+  feature); a quiz with a `SeededDraw` is built by the frozen
+  `FrozenQuestionGenerator` over `SeededRandomSource` (Mulberry32 written
+  in Dart), without the mastery. Version 1: 6 formats in a coded free
+  training, multiple choice in a coded time attack.
+- « Défier un ami » on the results of a free training and a time attack;
+  code screen (mockup 20) with copy and entry; « J'ai un code » on the
+  Défis tab; comparison screen (mockup 21) in place of the results of a
+  coded game, with « Renvoyer un défi » (same seed, new score).
+- A coded game counts like a game of its mode: XP, mastery, streak,
+  badges, time attack record.
+- "Done when" proved by tests (F19-07): encode then decode for every mode,
+  every single changed character and every swap refused, unknown version
+  refused, a code made on one phone gives the same questions on a second
+  (two separate registries and random sources), golden lists of version 1
+  for a training and a time attack code, the quiz Bloc asking the seeded
+  questions.
+- `bash tool/check.sh`: every step OK (915 tests); coverage thresholds met
+  (`features/challenge/domain` 97.2 %, `features/quiz/domain` 100 %).
+- Not checked on a device: the shared Android emulator stayed on the
+  loading indicator of the map and of the Défis tab after install (45 s
+  to the first frame), screens this lot does not change. To try on the
+  phone: a free training then « Défier un ami », copy the code, « J'ai un
+  code » on a second phone (or player), play it, the comparison, then
+  « Renvoyer un défi ».
+
+Texts and choices waiting for the owner: the hint under the code
+(« Donne ce code à un ami : même mode, mêmes tables, et ton score à
+battre ! » instead of « exactement les mêmes questions que toi »: the
+sender's own game was drawn by the mastery, the friend plays the code's
+draw; both play the same questions from the first « Renvoyer un défi »),
+« Code copié ! », the three error messages, « Pas cette fois ! » and
+« Égalité ! », « Autant de bonnes réponses », the 6 formats drawn evenly
+in a coded training (no mastery), back from the code screen to the Défis
+tab.
+
+## F18 closure
+
+- One reminder for the whole phone, off by default, 17:00 by default, in
+  the « Rappel » section of the settings (mockup 13); device preferences
+  in `shared_preferences`, no migration. The notification permission is
+  asked only when the switch goes on; a refusal puts it back off with a
+  snack bar. Rules in `docs/decisions.md`.
+- `flutter_local_notifications` (+ `timezone`) behind
+  `NotificationScheduler` (`core/services/`), implemented in the setting
+  feature. Each day is its own notification for the next 30 days, inexact
+  on Android (no exact alarm permission); planned again at every launch,
+  after every completed quiz (a `SessionSavedHook` keeps the day: no
+  reminder that day) and on every settings change. Android: desugaring,
+  boot receiver, `RECEIVE_BOOT_COMPLETED`, white `ic_notification`; iOS:
+  the notification center delegate in `AppDelegate`.
+- Tests (F18-05), with a fake notification scheduler and a fake clock:
+  scheduling, cancelling, change of time, skip today after a session (also
+  over the real wiring and after a restart), permission refused, broken
+  plugin or preferences, the settings rows and the plugin calls (mocked
+  plugin). `bash tool/check.sh all`: every step OK, Android and iOS builds
+  included.
+- "Done when" (a reminder set a few minutes ahead shows on a real Android
+  phone and an iPhone): to be checked by the owner on the phones, steps in
+  the pull request. Not run on an emulator.
+- The privacy policy and the store notes now say the app asks for one
+  permission, the notifications, only when the reminder is switched on.
+
+Texts waiting for the owner: the notification (« Kid Matix » /
+« C'est l'heure de tes tables ! »), the refusal message (« Les
+notifications sont bloquées. Autorise-les dans les réglages du téléphone
+pour recevoir le rappel. »), « Oups, le rappel n'a pas pu être réglé. »,
+and the Android channel (« Rappel quotidien », « Te rappelle de jouer
+chaque jour à l'heure choisie. »).
+
+## F17 closure
+
+- `bash tool/check.sh`: every step OK (895 tests); coverage thresholds
+  met (`features/reward/domain` 97 %, `features/reward/data` 99 %).
+- Checked on the Android emulator (API 36, debug build) with its two
+  players: the "Classement" card at the bottom of the Profile tab opens the
+  screen of mockup 19, Chasseur first on the podium with the 120 XP of
+  today's duel, Placid second with 0 XP and "C'est toi", and the mascot
+  saying "Encore 120 XP et tu rattrapes Chasseur !". The settings switch
+  and the Monday reset were checked by the tests only (short session on
+  purpose).
+- Tests (F17-05): the week from Monday 00:00 with a fake clock (every day
+  of the week, across a month, a year and a daylight saving change),
+  Sunday 23:59:59 → Monday 00:00 starting again from zero (also over the
+  real database), ties by nickname ignoring case, quiz and duel XP summed,
+  deleted rows ignored, the setting kept on the device and hiding the
+  Profile card, and the whole path Profil → Classement → Réglages.
+- No schema change: the weekly XP are summed from `session_reward` and
+  `xp_award` when read.
+
+Texts and choices waiting for the owner: the "Classement" card at the
+bottom of the Profile tab with "Qui a gagné le plus d'XP cette
+semaine ?" (no mockup for the entry), the mascot messages other than the
+mockup's "Encore 110 XP et tu rattrapes Moussa !" ("Tu es à égalité avec
+Moussa !", "Tu es en tête cette semaine !", "Joue pour gagner tes premiers
+XP de la semaine !"), and the frame plus "C'est toi" on the active player's
+row under the podium.
+
+## F16 closure
+
+- Offered at the end of the profile creation (« Passer »); 12 typed
+  questions, one per table; a right answer opens its table, stars still
+  to win; mastery counts, no XP. Result screen of mockup 18. Rules in
+  `docs/decisions.md`. No migration: placed tables are `stage_progress`
+  rows with the stage `placement`.
+- Tests (F16-05): right tables opened (1, 2 and 10 → exactly those),
+  test passed, skipped and left midway (Bloc, page, router, real
+  database). `bash tool/check.sh`: every step OK (893 tests);
+  `learning_path` domain 99 %, data 100 %.
+- Short check on the Android emulator (API 36, debug): after « C'est
+  parti ! » the offer showed, then the keypad questions (1 × 7, 2 × 3).
+  The rest of the run was cut short: another session reinstalled the
+  app on the shared emulator. The result screen and the map are covered
+  by tests; to try on the phone.
+
+Texts waiting for the owner: the offer (no mockup: « Tu connais déjà des
+tables ? », its text, « Faire le test »), « Je ne sais pas », the quit
+dialog, the result with 0 table (« Tout est à découvrir ! », « Pas de
+souci, tu vas les apprendre une par une. Ton parcours commence par la
+table de 1. ») and with 1 table (« Elle est ouverte… Ses étoiles… »).

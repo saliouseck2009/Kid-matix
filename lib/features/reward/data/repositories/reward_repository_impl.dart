@@ -9,9 +9,12 @@ import 'package:kid_matix/features/reward/data/datasources/reward_tables.dart';
 import 'package:kid_matix/features/reward/data/models/badge_unlock_local_model.dart';
 import 'package:kid_matix/features/reward/data/models/session_reward_local_model.dart';
 import 'package:kid_matix/features/reward/data/models/streak_local_model.dart';
+import 'package:kid_matix/features/reward/data/models/xp_award_local_model.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/domain/entities/streak_entity.dart';
+import 'package:kid_matix/features/reward/domain/entities/xp_award_entity.dart';
 import 'package:kid_matix/features/reward/domain/repositories/reward_repository.dart';
+import 'package:kid_matix/features/reward/domain/services/level_policy.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// [RewardRepository] over the local database.
@@ -20,12 +23,14 @@ final class RewardRepositoryImpl implements RewardRepository {
   const RewardRepositoryImpl({
     required this._rewards,
     required this._changeBus,
+    this._levels = const LevelPolicy(),
   });
 
   static const String _logName = 'reward';
 
   final RewardLocalDataSource _rewards;
   final TableChangeBus _changeBus;
+  final LevelPolicy _levels;
 
   @override
   Future<DataState<StreakEntity>> getStreak({required String profileId}) {
@@ -84,6 +89,28 @@ final class RewardRepositoryImpl implements RewardRepository {
   }
 
   @override
+  Future<DataState<void>> saveXpAward({required XpAwardEntity award}) async {
+    final DataState<void> saved = await _read(() async {
+      final DatabaseExecutor database = await _rewards.database;
+      final int totalXp =
+          await _rewards.getXpEarned(database, profileId: award.profileId) +
+          award.xp;
+      await _rewards.writeXpAward(
+        database,
+        award: XpAwardLocalModel.fromEntity(award, updatedAt: award.earnedAt),
+        totalXp: totalXp,
+        level: _levels.levelOf(totalXp).level,
+      );
+    }, failure: 'XP award not saved');
+    if (saved is DataSuccess<void>) {
+      _changeBus
+        ..notifyChanged(table: RewardTables.xpAward)
+        ..notifyChanged(table: RewardTables.profile);
+    }
+    return saved;
+  }
+
+  @override
   Stream<void> watchChanges() {
     final List<StreamSubscription<String>> subscriptions =
         <StreamSubscription<String>>[];
@@ -92,6 +119,7 @@ final class RewardRepositoryImpl implements RewardRepository {
       onListen: () {
         for (final String table in <String>[
           RewardTables.sessionReward,
+          RewardTables.xpAward,
           RewardTables.profile,
         ]) {
           subscriptions.add(
@@ -110,12 +138,15 @@ final class RewardRepositoryImpl implements RewardRepository {
     return controller.stream;
   }
 
-  Future<DataState<T>> _read<T>(Future<T> Function() read) async {
+  Future<DataState<T>> _read<T>(
+    Future<T> Function() read, {
+    String failure = 'Rewards not read',
+  }) async {
     try {
       return DataSuccess<T>(await read());
     } on DatabaseException catch (error, stackTrace) {
       log(
-        'Rewards not read',
+        failure,
         name: _logName,
         error: error,
         stackTrace: stackTrace,

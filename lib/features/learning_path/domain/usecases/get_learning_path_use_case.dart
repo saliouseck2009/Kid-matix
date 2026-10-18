@@ -12,7 +12,8 @@ import 'package:kid_matix/features/learning_path/domain/services/learning_path_b
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 
 /// Returns the tables, stages, stars, crowns and locks of a player, with
-/// the "Tout débloquer" setting applied.
+/// the "Tout débloquer" setting and the tables opened by the placement
+/// test applied.
 ///
 /// Fails with a `ValidationException` when the domain is unknown.
 class GetLearningPathUseCase
@@ -55,6 +56,13 @@ class GetLearningPathUseCase
     if (mastered case DataFailed<Set<String>>(:final exception)) {
       return DataFailed<LearningPathEntity>(exception);
     }
+    final DataState<Set<String>> placed = await _repository.getPlacedUnitKeys(
+      profileId: params.profileId,
+      domainId: domain.id,
+    );
+    if (placed case DataFailed<Set<String>>(:final exception)) {
+      return DataFailed<LearningPathEntity>(exception);
+    }
     final DataState<List<StageProgressEntity>> progress = await _repository
         .getProgress(profileId: params.profileId, domainId: domain.id);
     return switch (progress) {
@@ -66,6 +74,7 @@ class GetLearningPathUseCase
             progress: data,
             isEverythingUnlocked: (unlocked as DataSuccess<bool>).data,
             masteredItemKeys: (mastered as DataSuccess<Set<String>>).data,
+            placedUnitKeys: (placed as DataSuccess<Set<String>>).data,
           ),
         ),
       DataFailed<List<StageProgressEntity>>(:final exception) =>

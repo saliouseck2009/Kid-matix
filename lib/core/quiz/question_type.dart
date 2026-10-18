@@ -13,6 +13,10 @@ abstract interface class QuestionType {
   /// Whether the answer is picked or written.
   AnswerNature get answerNature;
 
+  /// How many times the time per question of a timed quiz this type
+  /// gets: 2 for a question that takes twice as long to answer.
+  int get timeFactor;
+
   /// Whether [answer] is right for [question].
   bool isCorrect({required Question question, required Answer answer});
 }

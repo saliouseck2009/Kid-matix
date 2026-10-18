@@ -1,5 +1,7 @@
 # Politique de confidentialité — Kid Matix
 
+**Français** · [English](privacy-policy-en.html) · [Español](privacy-policy-es.html)
+
 Dernière mise à jour : 11 octobre 2026
 
 Kid Matix est une application qui aide les enfants à apprendre les tables de
@@ -43,8 +45,11 @@ progression, choisir les questions à revoir, attribuer les récompenses.
 
 ## Ce que l'application ne fait pas
 
-- Elle ne demande aucune autorisation sur le téléphone : ni Internet, ni
-  appareil photo, ni micro, ni localisation, ni contacts, ni photos.
+- Elle ne demande qu'une autorisation, et seulement si l'on active le
+  rappel quotidien dans les réglages : afficher des notifications. Le
+  rappel est programmé sur le téléphone, sans connexion. Elle ne demande
+  ni Internet, ni appareil photo, ni micro, ni localisation, ni contacts,
+  ni photos.
 - Elle n'envoie aucune donnée, ni à nous ni à personne. Nous n'avons accès à
   aucune information sur les joueurs.
 - Elle n'affiche aucune publicité et ne propose aucun achat.
@@ -71,7 +76,17 @@ effacer :
   de tous les joueurs.
 
 Comme rien n'est envoyé sur un serveur, une donnée effacée ne peut pas être
-récupérée, et changer d'appareil fait repartir de zéro.
+récupérée, et changer d'appareil fait repartir de zéro, sauf avec un fichier
+de sauvegarde (voir ci-dessous).
+
+## Sauvegarde dans un fichier
+
+Dans Réglages, rubrique « Sauvegarde », un adulte peut exporter un profil
+dans un fichier (pseudo, avatar, réglages, progression et mascotte de ce
+joueur) et le partager lui-même avec les outils du téléphone, par exemple
+pour l'importer sur un autre appareil ; un contrôle parental protège
+l'export et l'import. L'application n'envoie rien : le fichier va seulement
+où l'utilisateur choisit de l'envoyer.
 
 La sauvegarde automatique du système (compte Google ou iCloud) est
 désactivée pour Kid Matix : les données du jeu n'y sont pas copiées.

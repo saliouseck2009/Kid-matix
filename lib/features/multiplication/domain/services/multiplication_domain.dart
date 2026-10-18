@@ -12,6 +12,8 @@ import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/multiplication/domain/entities/multiplication_fact.dart';
 import 'package:kid_matix/features/multiplication/domain/entities/multiplication_table.dart';
 import 'package:kid_matix/features/multiplication/domain/services/distractor_generator.dart';
+import 'package:kid_matix/features/multiplication/domain/services/operation_distractor_generator.dart';
+import 'package:kid_matix/features/multiplication/domain/services/operation_question_builder.dart';
 
 /// The multiplication tables from 1 to 12, up to x 10: 120 facts.
 final class MultiplicationDomain implements LearningDomain {
@@ -65,6 +67,13 @@ final class MultiplicationDomain implements LearningDomain {
 
   final DistractorGenerator _distractors;
 
+  final OperationQuestionBuilder _operations = const OperationQuestionBuilder(
+    distractors: OperationDistractorGenerator(
+      lastTable: tableCount,
+      lastMultiplier: lastMultiplier,
+    ),
+  );
+
   /// The 12 tables, table of 1 first.
   final List<MultiplicationTable> tables;
 
@@ -91,6 +100,8 @@ final class MultiplicationDomain implements LearningDomain {
     QuestionTypeIds.typedAnswer,
     QuestionTypeIds.missingNumber,
     QuestionTypeIds.trueFalse,
+    QuestionTypeIds.findOperation,
+    QuestionTypeIds.matchPairs,
   ];
 
   @override
@@ -150,6 +161,16 @@ final class MultiplicationDomain implements LearningDomain {
       QuestionTypeIds.typedAnswer => _buildTypedAnswer(fact),
       QuestionTypeIds.missingNumber => _buildMissingNumber(fact, random),
       QuestionTypeIds.trueFalse => _buildTrueFalse(fact, random),
+      QuestionTypeIds.findOperation => _operations.buildFindOperation(
+        fact: fact,
+        table: tables[fact.table - 1],
+        random: random,
+      ),
+      QuestionTypeIds.matchPairs => _operations.buildMatchPairs(
+        fact: fact,
+        table: tables[fact.table - 1],
+        random: random,
+      ),
       _ => throw ArgumentError.value(
         questionTypeId,
         'questionTypeId',

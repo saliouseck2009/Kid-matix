@@ -21,6 +21,7 @@ class BadgesCard extends StatelessWidget {
     BadgeKey.perfect,
     BadgeKey.lightning,
     BadgeKey.sprinter,
+    BadgeKey.survivor,
     BadgeKey.regular,
     BadgeKey.allFacts,
   ];
@@ -102,6 +103,7 @@ class BadgesCard extends StatelessWidget {
       BadgeKey.perfect => Icons.verified_rounded,
       BadgeKey.lightning => Icons.bolt_rounded,
       BadgeKey.sprinter => Icons.timer_rounded,
+      BadgeKey.survivor => Icons.favorite_rounded,
       BadgeKey.regular => Icons.local_fire_department_rounded,
       BadgeKey.allFacts => Icons.emoji_events_rounded,
       _ => Icons.military_tech_rounded,

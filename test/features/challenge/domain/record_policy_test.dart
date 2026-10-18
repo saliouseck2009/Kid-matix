@@ -50,6 +50,18 @@ void main() {
       expect(newRecordOf(18, current: current), isNull);
       expect(newRecordOf(12, current: current), isNull);
     });
+    test('keeps a record of survival', () {
+      // Act
+      final RecordEntity? actualRecord = policy.newRecordOf(
+        mode: QuizMode.survival,
+        score: 24,
+        sessionId: 'new',
+        endedAt: endedAt,
+      );
+      // Assert
+      expect(actualRecord?.mode, QuizMode.survival);
+      expect(actualRecord?.bestScore, 24);
+    });
     test('sets no record without a right answer', () {
       // Act & Assert
       expect(newRecordOf(0), isNull);

@@ -69,7 +69,14 @@ void main() {
       final QuizSpec actualSpec = specOf('mul:5', StageKind.speed);
       // Assert
       expect(actualSpec.baseTimeLimit, const Duration(seconds: 10));
-      expect(actualSpec.questionTypeIds, hasLength(4));
+      expect(actualSpec.questionTypeIds, hasLength(6));
+      expect(
+        actualSpec.questionTypeIds,
+        containsAll(<String>[
+          QuestionTypeIds.findOperation,
+          QuestionTypeIds.matchPairs,
+        ]),
+      );
     });
     test('mixes 15 questions of the tables seen in a review', () {
       // Act
@@ -77,6 +84,7 @@ void main() {
       // Assert
       expect(actualSpec.questionCount, 15);
       expect(actualSpec.selection, QuizSelection.mastery);
+      expect(actualSpec.questionTypeIds, hasLength(4));
       expect(actualSpec.itemKeys, hasLength(30));
       expect(
         actualSpec.itemKeys.map((String key) => key.split('x').first).toSet(),
@@ -90,7 +98,14 @@ void main() {
       // Assert
       expect(actualFirst.isBossFight, isTrue);
       expect(actualFirst.baseTimeLimit, const Duration(seconds: 8));
-      expect(actualFirst.questionTypeIds, hasLength(4));
+      expect(actualFirst.questionTypeIds, hasLength(6));
+      expect(
+        actualFirst.questionTypeIds,
+        containsAll(<String>[
+          QuestionTypeIds.findOperation,
+          QuestionTypeIds.matchPairs,
+        ]),
+      );
       expect(actualFirst.followUpQuestionCount, 10);
       expect(actualFirst.followUpItemKeys, actualFirst.itemKeys);
       expect(actualFifth.itemKeys.first, 'mul:5x1');
@@ -164,6 +179,12 @@ void main() {
           ],
         ),
       );
+      when(
+        () => mockRepository.getPlacedUnitKeys(
+          profileId: any(named: 'profileId'),
+          domainId: any(named: 'domainId'),
+        ),
+      ).thenAnswer((_) async => const DataSuccess<Set<String>>(<String>{}));
     });
 
     test('builds the path of the player from the stored stars', () async {
@@ -189,6 +210,45 @@ void main() {
       )).requireData;
       // Assert
       expect(actualPath.tables.last.status, TableStatus.open);
+    });
+    test('opens the tables found by the placement test', () async {
+      // Arrange
+      when(
+        () => mockRepository.getPlacedUnitKeys(
+          profileId: any(named: 'profileId'),
+          domainId: any(named: 'domainId'),
+        ),
+      ).thenAnswer(
+        (_) async => const DataSuccess<Set<String>>(<String>{'mul:10'}),
+      );
+      // Act
+      final LearningPathEntity actualPath = (await useCase(
+        params: _params,
+      )).requireData;
+      // Assert
+      final List<String> actualOpen = <String>[
+        for (final TablePathNode table in actualPath.tables)
+          if (table.status != TableStatus.locked) table.unitKey,
+      ];
+      expect(actualOpen, <String>['mul:1', 'mul:10']);
+      expect(actualPath.tables[2].totalStars, 0);
+    });
+    test('fails when the placed tables cannot be read', () async {
+      // Arrange
+      when(
+        () => mockRepository.getPlacedUnitKeys(
+          profileId: any(named: 'profileId'),
+          domainId: any(named: 'domainId'),
+        ),
+      ).thenAnswer(
+        (_) async => const DataFailed<Set<String>>(CacheException()),
+      );
+      // Act
+      final AppException? actualException = (await useCase(
+        params: _params,
+      )).exceptionOrNull;
+      // Assert
+      expect(actualException, isA<CacheException>());
     });
     test('fails on an unknown domain', () async {
       // Act

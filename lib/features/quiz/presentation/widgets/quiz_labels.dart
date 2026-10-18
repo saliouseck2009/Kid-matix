@@ -4,6 +4,7 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
@@ -20,12 +21,33 @@ final class QuizLabels {
   /// Localized strings.
   final AppLocalizations l10n;
 
-  /// Label above [question]: "Vrai ou faux ?" or the name of its unit.
+  /// Label above [question]: "Vrai ou faux ?", "Quelle multiplication
+  /// donne" or the name of its unit.
   String describeQuestion(Question question, String domainId) {
-    if (question.questionTypeId == QuestionTypeIds.trueFalse) {
-      return l10n.quizTrueFalseLabel;
-    }
-    return describeUnitOf(question, domainId);
+    return switch (question.questionTypeId) {
+      QuestionTypeIds.trueFalse => l10n.quizTrueFalseLabel,
+      QuestionTypeIds.findOperation => switch (domainId) {
+        LearningDomainIds.multiplication =>
+          l10n.quizFindOperationMultiplication,
+        _ => '',
+      },
+      _ => describeUnitOf(question, domainId),
+    };
+  }
+
+  /// What a screen reader says for a question that asks for the
+  /// operation, such as "Quelle multiplication donne 24 ?"; `null` for
+  /// another question.
+  String? speakFindOperation(Question question, String domainId) {
+    if (question.questionTypeId != QuestionTypeIds.findOperation) return null;
+    final Iterable<NumberToken> numbers = question.prompt
+        .whereType<NumberToken>();
+    if (numbers.isEmpty) return null;
+    return switch (domainId) {
+      LearningDomainIds.multiplication =>
+        l10n.quizFindOperationSpokenMultiplication(numbers.last.value),
+      _ => null,
+    };
   }
 
   /// Name of the unit of [question], such as "Table de 5"; empty when its

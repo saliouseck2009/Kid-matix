@@ -56,13 +56,13 @@ final class StageDefinition {
     ),
     StageDefinition(
       kind: StageKind.speed,
-      questionTypeIds: _allTypes,
+      questionTypeIds: _timedTypes,
       selection: QuizSelection.shuffled,
       baseTimeLimit: speedTimeLimit,
     ),
     StageDefinition(
       kind: StageKind.boss,
-      questionTypeIds: _allTypes,
+      questionTypeIds: _timedTypes,
       selection: QuizSelection.shuffled,
       baseTimeLimit: bossTimeLimit,
     ),
@@ -71,16 +71,24 @@ final class StageDefinition {
   /// The review stage after every group of 3 tables.
   static const StageDefinition review = StageDefinition(
     kind: StageKind.review,
-    questionTypeIds: _allTypes,
+    questionTypeIds: _versionOneTypes,
     selection: QuizSelection.mastery,
     questionCount: reviewQuestionCount,
   );
 
-  static const List<String> _allTypes = <String>[
+  /// The four formats of version 1.0, kept by the review stage.
+  static const List<String> _versionOneTypes = <String>[
     QuestionTypeIds.multipleChoice,
     QuestionTypeIds.typedAnswer,
     QuestionTypeIds.missingNumber,
     QuestionTypeIds.trueFalse,
+  ];
+
+  /// Every format, for the speed stage and the boss fight (lot F15).
+  static const List<String> _timedTypes = <String>[
+    ..._versionOneTypes,
+    QuestionTypeIds.findOperation,
+    QuestionTypeIds.matchPairs,
   ];
 
   /// Which stage it is.

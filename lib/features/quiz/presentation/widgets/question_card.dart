@@ -8,6 +8,10 @@ import 'package:kid_matix/core/widgets/speech_bubble.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 
 /// White card of the question: a label, the operation and the mascot.
+///
+/// A question that asks for the operation shows its label as words that
+/// lead to the result, such as "Quelle multiplication donne", and the
+/// result in a big yellow box.
 class QuestionCard extends StatelessWidget {
   /// Creates the card of [prompt] under [label].
   const QuestionCard({
@@ -17,6 +21,7 @@ class QuestionCard extends StatelessWidget {
     this.blankColor,
     this.mascotMood = MascotMood.neutral,
     this.mascotMessage,
+    this.resultSemanticLabel,
     super.key,
   });
 
@@ -41,6 +46,11 @@ class QuestionCard extends StatelessWidget {
 
   /// What the mascot says, or `null`.
   final String? mascotMessage;
+
+  /// What a screen reader says for a question that asks for the
+  /// operation; `null` for an operation to complete. When set, only the
+  /// result side of [prompt], after the equals sign, is shown.
+  final String? resultSemanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -71,16 +81,25 @@ class QuestionCard extends StatelessWidget {
               padding: const EdgeInsets.all(AppSizes.space16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _QuestionLabel(label: label),
-                  const SizedBox(height: AppSizes.space8),
-                  _PromptText(
-                    prompt: prompt,
-                    blankText: blankText,
-                    blankColor: blankColor,
-                    fontSize: _promptFontSize,
-                  ),
-                ],
+                children: switch (resultSemanticLabel) {
+                  final String semanticLabel => <Widget>[
+                    _ResultPrompt(
+                      label: label,
+                      prompt: prompt,
+                      semanticLabel: semanticLabel,
+                    ),
+                  ],
+                  null => <Widget>[
+                    _QuestionLabel(label: label),
+                    const SizedBox(height: AppSizes.space8),
+                    _PromptText(
+                      prompt: prompt,
+                      blankText: blankText,
+                      blankColor: blankColor,
+                      fontSize: _promptFontSize,
+                    ),
+                  ],
+                },
               ),
             ),
           ),
@@ -161,6 +180,74 @@ class _PromptText extends StatelessWidget {
           ),
           maxLines: 1,
         ),
+      ),
+    );
+  }
+}
+
+/// "Quelle multiplication donne" above the result in a yellow box.
+class _ResultPrompt extends StatelessWidget {
+  const _ResultPrompt({
+    required this.label,
+    required this.prompt,
+    required this.semanticLabel,
+  });
+
+  static const double _fontSize = 84;
+  static const double _radius = 28;
+  static const double _minWidth = 150;
+  static const EdgeInsets _padding = EdgeInsets.symmetric(
+    horizontal: AppSizes.space24,
+    vertical: AppSizes.space4,
+  );
+
+  final String label;
+  final List<PromptToken> prompt;
+  final String semanticLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colors = Theme.of(context).colorScheme;
+    final List<PromptToken> result = prompt
+        .skipWhile((PromptToken token) => token is! EqualsToken)
+        .skip(1)
+        .toList();
+    return Semantics(
+      label: semanticLabel,
+      excludeSemantics: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        spacing: AppSizes.space8,
+        children: <Widget>[
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: textTheme.bodyLarge?.copyWith(
+              color: context.palette.mutedText,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          Container(
+            constraints: const BoxConstraints(minWidth: _minWidth),
+            padding: _padding,
+            decoration: BoxDecoration(
+              color: colors.secondary,
+              borderRadius: BorderRadius.circular(_radius),
+            ),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                result.toDisplayText(),
+                textAlign: TextAlign.center,
+                style: textTheme.displaySmall?.copyWith(
+                  fontSize: _fontSize,
+                  color: colors.onSecondary,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

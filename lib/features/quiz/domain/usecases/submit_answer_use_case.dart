@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
@@ -28,9 +29,13 @@ import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_params.dar
 /// never stops the game.
 /// A missed fact comes back 3 questions later, once per session, with a
 /// question drawn again; that second chance does not count in the score,
-/// except in a boss fight; a quiz against the clock gives none. In a boss
-/// fight every right answer hits the boss, and the fight ends when it
-/// falls or after its last question.
+/// except in a boss fight; a non-stop quiz gives none. In a boss fight
+/// every right answer hits the boss, and the fight ends when it falls or
+/// after its last question. A quiz with lives ends at the last life lost.
+/// A question about several items, such as matching pairs, counts once in
+/// the quiz but records each item in the mastery: right unless its pair
+/// failed or the time ran out, with an equal share of the answer time.
+/// Its answer names the first item missed, which gets the second chance.
 /// Fails with a `ValidationException` when the quiz is over or its domain
 /// or question type is unknown.
 class SubmitAnswerUseCase
@@ -71,31 +76,40 @@ class SubmitAnswerUseCase
       );
     }
     final QuizAnswerEntity answer = _judge(turn, type, params);
-    await _record(run, answer);
+    await _record(run, turn, answer, params.answer);
     final List<QuizAnswerEntity> answers = <QuizAnswerEntity>[
       ...run.answers,
       answer,
     ];
     final BossFight? boss = run.boss?.hit(answer);
-    final bool isFightOver =
-        boss != null &&
-        (boss.isDefeated || answers.length >= BossFight.maxQuestions);
-    final List<QuizTurn> queue = isFightOver
+    final QuizRun answered = run.copyWith(answers: answers, boss: boss);
+    final bool isOver = _isOver(answered);
+    final List<QuizTurn> queue = isOver
         ? const <QuizTurn>[]
         : <QuizTurn>[...run.queue.skip(1)];
-    if (!isFightOver && _needsRetry(run, turn, answer)) {
+    if (!isOver && _needsRetry(run, turn, answer)) {
       queue.insert(
         queue.length < retryDelay ? queue.length : retryDelay,
-        _buildRetry(domain, run, turn.question),
+        _buildRetry(domain, run, answer.itemKey),
       );
     }
     return DataSuccess<QuizSubmission>(
       QuizSubmission(
         turn: turn,
         answer: answer,
-        run: run.copyWith(queue: queue, answers: answers, boss: boss),
+        run: answered.copyWith(queue: queue),
       ),
     );
+  }
+
+  /// Whether [run] ends before its last question: its boss fell or fled,
+  /// or its last life is lost.
+  static bool _isOver(QuizRun run) {
+    final BossFight? boss = run.boss;
+    final bool isFightOver =
+        boss != null &&
+        (boss.isDefeated || run.answers.length >= BossFight.maxQuestions);
+    return isFightOver || run.livesLeft == 0;
   }
 
   QuizAnswerEntity _judge(
@@ -104,11 +118,11 @@ class SubmitAnswerUseCase
     SubmitAnswerParams params,
   ) {
     final Question question = turn.question;
+    final Answer? given = params.answer;
     final bool isCorrect =
-        params.answer != null &&
-        type.isCorrect(question: question, answer: params.answer!);
+        given != null && type.isCorrect(question: question, answer: given);
     return QuizAnswerEntity(
-      itemKey: question.itemKey,
+      itemKey: _firstMissedItem(question, given) ?? question.itemKey,
       questionTypeId: question.questionTypeId,
       isCorrect: isCorrect,
       isTimedOut: params.answer == null,
@@ -117,32 +131,64 @@ class SubmitAnswerUseCase
     );
   }
 
-  Future<void> _record(QuizRun run, QuizAnswerEntity answer) async {
-    final DataState<void> recorded = await _mastery.recordAnswer(
-      answer: ItemAnswer(
-        profileId: run.profileId,
-        domainId: run.domainId,
-        itemKey: answer.itemKey,
-        questionTypeId: answer.questionTypeId,
-        isCorrect: answer.isCorrect,
-        answerTime: answer.answerTime,
-        isRetry: answer.isRetry,
-      ),
-    );
-    if (recorded case DataFailed<void>(:final exception)) {
-      log('Progress not recorded', name: _logName, error: exception);
+  /// The first item of [question], in display order, whose pair failed;
+  /// `null` when none did.
+  static String? _firstMissedItem(Question question, Answer? given) {
+    if (given is! PairsAnswer) return null;
+    for (final String itemKey in question.itemKeys) {
+      if (given.missedItemKeys.contains(itemKey)) return itemKey;
     }
+    return null;
+  }
+
+  /// Records the answer in the mastery of each item of the question.
+  Future<void> _record(
+    QuizRun run,
+    QuizTurn turn,
+    QuizAnswerEntity answer,
+    Answer? given,
+  ) async {
+    final Question question = turn.question;
+    final List<String> itemKeys = question.itemKeys;
+    for (final String itemKey in itemKeys) {
+      final DataState<void> recorded = await _mastery.recordAnswer(
+        answer: ItemAnswer(
+          profileId: run.profileId,
+          domainId: run.domainId,
+          itemKey: itemKey,
+          questionTypeId: answer.questionTypeId,
+          isCorrect: _isItemCorrect(question, itemKey, answer, given),
+          answerTime: answer.answerTime ~/ itemKeys.length,
+          isRetry: turn.isRetry && itemKey == question.itemKey,
+        ),
+      );
+      if (recorded case DataFailed<void>(:final exception)) {
+        log('Progress not recorded', name: _logName, error: exception);
+      }
+    }
+  }
+
+  /// Whether [itemKey] was answered right: the whole answer for a question
+  /// about one item; for pairs, unless its pair failed or time ran out.
+  static bool _isItemCorrect(
+    Question question,
+    String itemKey,
+    QuizAnswerEntity answer,
+    Answer? given,
+  ) {
+    if (question.pairs.isEmpty) return answer.isCorrect;
+    return given is PairsAnswer && !given.missedItemKeys.contains(itemKey);
   }
 
   bool _needsRetry(QuizRun run, QuizTurn turn, QuizAnswerEntity answer) {
     return !answer.isCorrect &&
-        !run.isAgainstTheClock &&
+        !run.isNonStop &&
         !turn.isRetry &&
-        !run.hasRetry(turn.question.itemKey);
+        !run.hasRetry(answer.itemKey);
   }
 
-  QuizTurn _buildRetry(LearningDomain domain, QuizRun run, Question missed) {
-    final LearningItem item = domain.findItem(missed.itemKey)!;
+  QuizTurn _buildRetry(LearningDomain domain, QuizRun run, String itemKey) {
+    final LearningItem item = domain.findItem(itemKey)!;
     final Question question = _generator
         .generate(
           domain: domain,

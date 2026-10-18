@@ -75,6 +75,9 @@ final class RewardPages {
   /// The XP tile of the results, inside [buildSessionRewardsScope].
   Widget buildSessionXpTile() => const SessionXpTile();
 
+  /// The XP earned on one line, inside [buildSessionRewardsScope].
+  Widget buildSessionXpLabel() => const SessionXpLabel();
+
   /// The level and badges of the results, inside
   /// [buildSessionRewardsScope].
   Widget buildSessionLevelCard() {

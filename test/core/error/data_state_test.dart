@@ -41,6 +41,8 @@ void main() {
         NotFoundException(),
         ConflictException(),
         LimitReachedException(),
+        InvalidFileException(),
+        UnsupportedVersionException(),
         UnknownException(),
       ];
       const List<AppErrorCode> expectedCodes = <AppErrorCode>[
@@ -49,6 +51,8 @@ void main() {
         AppErrorCode.notFound,
         AppErrorCode.conflict,
         AppErrorCode.limitReached,
+        AppErrorCode.invalidFile,
+        AppErrorCode.unsupportedVersion,
         AppErrorCode.unknown,
       ];
       // Act

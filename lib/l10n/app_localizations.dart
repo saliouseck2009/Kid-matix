@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
 import 'app_localizations_fr.dart';
 
 // ignore_for_file: type=lint
@@ -92,7 +94,11 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('fr')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('es'),
+    Locale('fr'),
+  ];
 
   /// Provisional application name, shown as the task-switcher title. Brand name: keep as is, do not translate.
   ///
@@ -490,6 +496,210 @@ abstract class AppLocalizations {
   /// **'Animations réduites'**
   String get settingsReducedMotion;
 
+  /// Tooltip of the cross button that closes a full screen such as the parental gate ("Close"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get commonClose;
+
+  /// Name of the section of the settings screen holding the export and the import of a player to and from a file ("Backup"). Noun, short section header.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarde'**
+  String get settingsBackupSection;
+
+  /// Row of the settings screen, in the "Sauvegarde" section, that writes the player and all their progress to a file and opens the share sheet of the phone, after the parental gate ("Export my profile"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter mon profil'**
+  String get backupExport;
+
+  /// Row of the settings screen, in the "Sauvegarde" section, that opens the file picker to bring a player from a backup file onto this phone, after the parental gate ("Import a profile"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importer un profil'**
+  String get backupImport;
+
+  /// Snack bar of the settings screen, shown after the backup file was shared, telling how to use it on the other phone ("File ready! Open it in Kid Matix on the other phone, with 'Import a profile'."). The quoted label must match the settings row of the key backupImport. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Fichier prêt ! Ouvre-le dans Kid Matix sur l\'autre téléphone, avec « Importer un profil ».'**
+  String get backupExportDone;
+
+  /// Snack bar of the settings screen, shown after a backup file was imported as a new player of the phone ("Awa's profile imported! Find it with 'Switch player'."). The quoted label must match the Profile tab button of the key switchPlayerButton. Informal "tu"; "le" stands for the profile.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil de {nickname} importé ! Retrouve-le avec « Changer de joueur ».'**
+  String backupImportDone(String nickname);
+
+  /// Snack bar of the settings screen, shown after a backup file replaced the player of the phone with the same nickname ("Awa's progress restored!").
+  ///
+  /// In fr, this message translates to:
+  /// **'Progression de {nickname} restaurée !'**
+  String backupImportReplaced(String nickname);
+
+  /// Title of the dialog shown when the nickname of an imported backup is already used by a player of this phone ("Awa already exists").
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname} existe déjà'**
+  String backupConflictTitle(String nickname);
+
+  /// Body of the dialog shown when the nickname of an imported backup is already used on this phone: what each choice does ("This phone already has a player Awa. The file holds Awa at level 5. Replace erases the current progress of Awa on this phone. Rename keeps both players.").
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce téléphone a déjà un joueur {nickname}. Le fichier contient {nickname} au niveau {level}.\n\nRemplacer efface la progression actuelle de {nickname} sur ce téléphone. Renommer garde les deux joueurs.'**
+  String backupConflictMessage(String nickname, int level);
+
+  /// Destructive button of the nickname conflict dialog: the player of the phone is replaced by the file ("Replace"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplacer'**
+  String get backupConflictReplace;
+
+  /// Button of the nickname conflict dialog: the imported player gets another nickname, both players are kept ("Rename"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renommer'**
+  String get backupConflictRename;
+
+  /// Title of the dialog asking another nickname for the imported player ("New nickname").
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau pseudo'**
+  String get backupRenameTitle;
+
+  /// Text of the dialog asking another nickname for the imported player ("Choose another nickname for the imported player."). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis un autre pseudo pour le joueur importé.'**
+  String get backupRenameMessage;
+
+  /// Button of the rename dialog that imports the backup under the nickname typed ("Import"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importer'**
+  String get backupRenameConfirm;
+
+  /// Error snack bar of the settings screen, shown when the file picked for an import is not a Kid Matix backup or is damaged ("This file is not a Kid Matix backup, or it is damaged.").
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas une sauvegarde Kid Matix, ou il est abîmé.'**
+  String get errorBackupInvalid;
+
+  /// Error snack bar of the settings screen, shown when the file picked for an import was written by a newer version of the app ("This backup comes from a newer version of Kid Matix. Update the app, then try again."). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette sauvegarde vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
+  String get errorBackupVersion;
+
+  /// Title of the parental gate, a full screen shown before exporting or importing a backup ("Ask an adult"). Informal "tu", addressed to the child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demande à un adulte'**
+  String get parentalGateTitle;
+
+  /// Text of the parental gate, above a number written in words that the adult types in digits ("This action is for adults. Write this number in digits:"). The number in words is spelled by code per language, not by this key. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette action est réservée aux adultes. Écris ce nombre en chiffres :'**
+  String get parentalGateMessage;
+
+  /// Label of the field of the parental gate where the adult types the number in digits ("Number in digits").
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre en chiffres'**
+  String get parentalGateAnswerLabel;
+
+  /// Button of the parental gate that checks the number typed ("Confirm"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Valider'**
+  String get parentalGateConfirm;
+
+  /// Name of the section of the settings screen holding the daily reminder ("Reminder"), mockup 13. Short section header, one line, a noun.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rappel'**
+  String get settingsReminderSection;
+
+  /// Switch of the settings screen that turns the daily reminder notification on or off for the whole phone ("Daily reminder"), mockup 13. Off by default; switching it on asks for the notification permission. Switch label: one line, a noun phrase, not a verb.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rappel quotidien'**
+  String get settingsReminderDaily;
+
+  /// Row of the settings screen showing the time of the daily reminder, such as 17:00; tapping it opens the time picker ("Reminder time"), mockup 13. Greyed while the reminder is off.
+  ///
+  /// In fr, this message translates to:
+  /// **'Heure du rappel'**
+  String get settingsReminderTime;
+
+  /// Message shown at the bottom of the settings screen when the phone refuses the notifications after the daily reminder is switched on; the switch goes back off ("Notifications are blocked. Allow them in the phone settings to get the reminder."). Read by a child or a parent, informal "tu". Shown in a snack bar, at most 2 lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.'**
+  String get settingsReminderPermissionDenied;
+
+  /// Message shown at the bottom of the settings screen when the daily reminder cannot be saved or scheduled ("Oops, the reminder could not be set."). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, le rappel n\'a pas pu être réglé.'**
+  String get settingsReminderError;
+
+  /// Name of the section of the settings screen where the language of the app is chosen for the whole phone ("Language"). Short section header, one line, a noun.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get settingsLanguageSection;
+
+  /// First choice of the "Langue" section of the settings screen: the app follows the language of the phone (French when the phone speaks none of the app's languages). One line, radio button label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue du téléphone'**
+  String get settingsLanguageSystem;
+
+  /// Choice of the "Langue" section of the settings screen: the French language, always written in French whatever the language of the app. Do not translate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Français'**
+  String get languageNameFrench;
+
+  /// Choice of the "Langue" section of the settings screen: the English language, always written in English whatever the language of the app. Do not translate.
+  ///
+  /// In fr, this message translates to:
+  /// **'English'**
+  String get languageNameEnglish;
+
+  /// Choice of the "Langue" section of the settings screen: the Spanish language, always written in Spanish whatever the language of the app. Do not translate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Español'**
+  String get languageNameSpanish;
+
+  /// Message shown at the bottom of the settings screen when the language chosen cannot be saved; the previous language comes back ("Oops, the language could not be saved."). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, la langue n\'a pas pu être enregistrée.'**
+  String get settingsLanguageError;
+
+  /// Message of the daily reminder notification, under the app name; tapping it opens the app ("It's time for your tables!"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est l\'heure de tes tables !'**
+  String get reminderNotificationBody;
+
+  /// Name of the notification category of the daily reminder, shown by Android in the notification settings of the app ("Daily reminder"). Short, one line: Android lists it as the title of a notification category. Kept apart from settingsReminderDaily on purpose, though the French is the same.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rappel quotidien'**
+  String get reminderChannelName;
+
+  /// Description of the notification category of the daily reminder, shown by Android in the notification settings of the app ("Reminds you to play every day at the chosen time."). One short sentence; speaks to the child with the informal "tu", though a parent may read it in the phone settings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Te rappelle de jouer chaque jour à l\'heure choisie.'**
+  String get reminderChannelDescription;
+
   /// Name of the section of the settings screen holding the actions on the player: reset and delete ("This player").
   ///
   /// In fr, this message translates to:
@@ -622,6 +832,60 @@ abstract class AppLocalizations {
   /// **'Ce calcul est-il juste ?'**
   String get quizHintTrueFalse;
 
+  /// Words at the top of the question card of a "find the operation" question in the multiplication domain ("Which multiplication gives"). The result follows on its own line in a big yellow box, so the sentence stays open and has no question mark: phrase it so the number can come right after it. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle multiplication donne'**
+  String get quizFindOperationMultiplication;
+
+  /// What a screen reader says for the question card of a "find the operation" question in the multiplication domain ("Which multiplication gives 24?"), in place of the words and the result shown. {result} is the product the player must reach. Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle multiplication donne {result} ?'**
+  String quizFindOperationSpokenMultiplication(int result);
+
+  /// Hint in a dashed box under the four operation buttons of a "find the operation" question ("Tap the right operation"). Imperative verb, speaks to a child with "tu"; one or two short lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche la bonne opération'**
+  String get quizHintFindOperation;
+
+  /// Title at the top of a "match the pairs" question, in place of the question card, above two columns: four operations and their four results ("Match each operation with its result"). Imperative verb, speaks to a child with "tu"; two lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relie chaque opération à son résultat'**
+  String get quizMatchPairsTitle;
+
+  /// Line under the title of a "match the pairs" question counting the pairs already matched ("1 pair found out of 4"); also read aloud by screen readers when it changes. {count} is the number of pairs found, {total} the number of pairs of the question (4). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune paire trouvée sur {total}} =1{1 paire trouvée sur {total}} other{{count} paires trouvées sur {total}}}'**
+  String quizMatchPairsProgress(int count, int total);
+
+  /// Hint in a dashed box under a "match the pairs" question before anything is selected ("Tap an operation, then its result"). Speaks to a child with "tu"; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche une opération, puis son résultat'**
+  String get quizMatchPairsHintStart;
+
+  /// Hint in the dashed box under a "match the pairs" board once the player has tapped an operation ("Now tap the result of 5 × 6"); also read aloud by screen readers. {operation} is the operation as shown on its button, digits and the × sign. Speaks to a child with "tu"; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche maintenant le résultat de {operation}'**
+  String quizMatchPairsHintResult(String operation);
+
+  /// Hint in the dashed box under a "match the pairs" board once the player has tapped a result first ("Now tap the operation that gives 30"); also read aloud by screen readers. {result} is the number shown on the result button. Speaks to a child with "tu"; one or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche maintenant l\'opération qui donne {result}'**
+  String quizMatchPairsHintOperation(String result);
+
+  /// What a screen reader says for an operation or a result button already matched in a "match the pairs" question ("5 times 6, pair found"). {label} is the button as spoken words: an operation ("5 fois 6") or a number ("30"). Never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label}, paire trouvée'**
+  String quizMatchPairsFound(String label);
+
   /// Label of the button that says the statement is true ("True"). One word.
   ///
   /// In fr, this message translates to:
@@ -753,6 +1017,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Contre-la-montre'**
   String get quizModeTimeAttack;
+
+  /// Name of the survival challenge (3 lives, less and less time per question), shown under the results title and on the challenges screen ("Survival").
+  ///
+  /// In fr, this message translates to:
+  /// **'Survie'**
+  String get quizModeSurvival;
+
+  /// Screen-reader text of the hearts at the top of a survival quiz, whose visible content is only hearts, full or emptied ("2 lives out of 3", "No life left").
+  ///
+  /// In fr, this message translates to:
+  /// **'{left, plural, =0{Plus de vie} =1{1 vie sur {total}} other{{left} vies sur {total}}}'**
+  String quizLivesSpoken(int left, int total);
+
+  /// Name of the daily review (10 questions on the facts the player should review), shown as the title of its card on the challenges screen and under the results title ("Daily review").
+  ///
+  /// In fr, this message translates to:
+  /// **'Révision du jour'**
+  String get quizModeDailyReview;
+
+  /// Name of the monster hunt (10 questions on the facts the player keeps missing, drawn as little monsters), shown as the title of its card on the challenges screen and under the results title ("Monster hunt").
+  ///
+  /// In fr, this message translates to:
+  /// **'Chasse aux monstres'**
+  String get quizModeMonsterHunt;
 
   /// Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.
   ///
@@ -934,6 +1222,114 @@ abstract class AppLocalizations {
   /// **'Bats le boss pour gagner la couronne.'**
   String get pathCrownHint;
 
+  /// Header of the placement test offer, the full screen shown right after a new player is created ("Do you already know some tables?"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu connais déjà des tables ?'**
+  String get placementOfferTitle;
+
+  /// Text under the title of the placement test offer ("Answer one question per table, no timer. Each table you know opens right away in your path."). The path is the map of tables the child plays through. Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Réponds à une question par table, sans chrono. Chaque table que tu connais s\'ouvre tout de suite dans ton parcours.'**
+  String get placementOfferMessage;
+
+  /// Primary full-width button of the placement test offer that starts the 12 questions ("Take the test"). One line, short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faire le test'**
+  String get placementOfferStart;
+
+  /// Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer'**
+  String get placementOfferSkip;
+
+  /// What a screen reader says for the progress bar at the top of a placement test question ("Question 3 of 12"). Not shown on screen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Question {current} sur {total}'**
+  String placementQuestionProgress(int current, int total);
+
+  /// Text button under the keypad of a placement test question: the child does not know the answer and goes to the next question ("I don't know"). Said by the child (first person). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Je ne sais pas'**
+  String get placementUnknownAnswer;
+
+  /// Tooltip and screen-reader text of the cross icon at the top left of a placement test question, that leaves the test ("Stop the test"). "Arrêter" is an infinitive verb. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter le test'**
+  String get placementQuitTooltip;
+
+  /// Title of the dialog confirming that the child leaves the placement test, shown by the cross or the system back ("Stop the test?"). Talks to the child. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter le test ?'**
+  String get placementQuitTitle;
+
+  /// Body of the dialog confirming that the child leaves the placement test ("The tables already found stay open in your path."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Les tables déjà trouvées restent ouvertes dans ton parcours.'**
+  String get placementQuitMessage;
+
+  /// Dialog button that stays in the placement test ("Go on with the test"). "Continuer" is an infinitive verb. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer le test'**
+  String get placementQuitCancel;
+
+  /// Dialog button that leaves the placement test for the path ("Stop"). "Arrêter" is an infinitive verb. One word if possible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter'**
+  String get placementQuitConfirm;
+
+  /// Header of the placement test result screen, with the number of tables the child already knows ("You already know 3 tables!"); with none, "Everything is to discover!". Talks to the child (informal tu). Two short lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}'**
+  String placementResultTitle(int count);
+
+  /// Text under the title of the placement test result. With one table or more: "It is / They are open in your path. Its / Their stars are still to win." ("Elle"/"Elles" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}'**
+  String placementResultSubtitle(int count);
+
+  /// Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows ("Already known"; feminine in French because it agrees with "table"). One line, a few words.
+  ///
+  /// In fr, this message translates to:
+  /// **'Déjà connue'**
+  String get placementLegendKnown;
+
+  /// Legend label under the grid of the placement test result, next to the light swatch: a table still to learn ("To discover"). One line, a few words.
+  ///
+  /// In fr, this message translates to:
+  /// **'À découvrir'**
+  String get placementLegendToDiscover;
+
+  /// What a screen reader says for a tile of the placement test result grid when the table was found ("Table of 2, already known"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, déjà connue'**
+  String placementTableKnown(String name);
+
+  /// What a screen reader says for a tile of the placement test result grid when the table was not found ("Table of 7, to discover"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, à découvrir'**
+  String placementTableToDiscover(String name);
+
+  /// Primary full-width button that leaves the placement test for the path ("See my path"): on the result screen, and on the error screen when the test cannot be built or saved. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir mon parcours'**
+  String get placementSeePath;
+
   /// Tooltip and screen-reader label of the back arrow of the table detail ("Back to the learning path").
   ///
   /// In fr, this message translates to:
@@ -1102,6 +1498,12 @@ abstract class AppLocalizations {
   /// **'XP gagnés'**
   String get rewardXpEarnedLabel;
 
+  /// XP earned by a quiz, written on one line with its unit, such as "+210 XP" at the right of the band of the challenge comparison screen. XP means experience points.
+  ///
+  /// In fr, this message translates to:
+  /// **'+{xp} XP'**
+  String rewardXpEarnedInline(int xp);
+
   /// Level of the player, bold title of the level card on the results screen ("Level 4"). Short, one line.
   ///
   /// In fr, this message translates to:
@@ -1150,6 +1552,12 @@ abstract class AppLocalizations {
   /// **'Sprinter'**
   String get rewardBadgeSprinter;
 
+  /// Name of the badge for 30 right answers in one survival game ("Survivor"). Short: title of the badge celebration and of the badge list of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Survivant'**
+  String get rewardBadgeSurvivor;
+
   /// Name of the badge for a 7-day streak ("Steady", adjective describing the player). Short: title of the badge celebration and of the badge list of the results.
   ///
   /// In fr, this message translates to:
@@ -1191,6 +1599,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'20 bonnes réponses en Contre-la-montre.'**
   String get rewardBadgeSprinterHint;
+
+  /// Line under the Survivant badge in its celebration and on the Profile tab ("30 right answers in survival."). One or two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'30 bonnes réponses en Survie.'**
+  String get rewardBadgeSurvivorHint;
 
   /// Line under the Régulier badge in its celebration ("7 days of play in a row."). One or two lines.
   ///
@@ -1582,6 +1996,36 @@ abstract class AppLocalizations {
   /// **'60 secondes, un maximum de réponses'**
   String get challengeTimeAttackSubtitle;
 
+  /// Line under "Survie" on its card of the challenges screen ("3 lives, faster and faster").
+  ///
+  /// In fr, this message translates to:
+  /// **'3 vies, de plus en plus vite'**
+  String get challengeSurvivalSubtitle;
+
+  /// Small line on the Survie card, shown only to a player who turned the timer off in the settings: survival keeps its timer anyway ("Here, the timer stays on."). Talks to the child. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ici, le chrono reste actif.'**
+  String get challengeSurvivalTimerNote;
+
+  /// Line under "Révision du jour" on its card of the challenges screen ("10 questions chosen for you"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 question choisie pour toi} other{{count} questions choisies pour toi}}'**
+  String challengeDailyReviewSubtitle(int count);
+
+  /// Yellow pill at the end of the daily review card: number of facts whose review date has passed ("8 to review"). Short; hidden when no fact is due.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, other{{count} à revoir}}'**
+  String challengeDailyReviewDue(int count);
+
+  /// Line under "Révision du jour" on its greyed-out card while the player has never been asked a fact ("Play a stage of the path first"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Joue d\'abord une étape du parcours'**
+  String get challengeDailyReviewLocked;
+
   /// Title of the card on the results of a time attack that beat the player's best score ("New record!").
   ///
   /// In fr, this message translates to:
@@ -1617,6 +2061,738 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{score, plural, =1{1 bonne réponse} other{{score} bonnes réponses}}'**
   String resultsRecordScore(int score);
+
+  /// Line under "Chasse aux monstres" on its card of the challenges screen: how many little monsters (facts the player keeps missing) wait to be tamed ("3 monsters to tame"); a neutral line when there is none ("No monster for now").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun monstre pour l\'instant} =1{1 monstre à apprivoiser} other{{count} monstres à apprivoiser}}'**
+  String challengeMonsterHuntSubtitle(int count);
+
+  /// Name of the duel on one phone, on its card of the challenges screen and at the top of the player choice ("Duel").
+  ///
+  /// In fr, this message translates to:
+  /// **'Duel'**
+  String get duelTitle;
+
+  /// Line under "Duel" on its card of the challenges screen ("2 players, 1 phone").
+  ///
+  /// In fr, this message translates to:
+  /// **'2 joueurs, 1 téléphone'**
+  String get challengeDuelSubtitle;
+
+  /// Title of the dashed card at the bottom of the challenges screen, and of the screen it opens, where the child types the code a friend gave ("I have a code"). The child speaks in the first person. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai un code'**
+  String get challengeCodeCardTitle;
+
+  /// Line under "J'ai un code" on its card of the challenges screen ("Replay a friend's challenge"). Imperative. Talks to the child (informal tu). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejoue le défi d\'un ami'**
+  String get challengeCodeCardSubtitle;
+
+  /// Button at the end of a free training or a time attack, and title of the screen it opens showing the challenge code to give to a friend ("Challenge a friend"). "Défier" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défier un ami'**
+  String get challengeShareButton;
+
+  /// Small line under the score in the yellow badge of the challenge code card: the score is the one the friend has to beat ("to beat"). Very short: the badge is narrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'à battre'**
+  String get challengeCodeToBeat;
+
+  /// Small line above the big challenge code on the "Défier un ami" screen ("Your challenge code"). Talks to the child (informal tu). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton code de défi'**
+  String get challengeCodeYours;
+
+  /// Screen-reader text of the big challenge code: the characters are given one by one, separated by spaces, so they are spelled ("Challenge code: K 7 M 2…").
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de défi : {characters}'**
+  String challengeCodeSemantics(String characters);
+
+  /// Yellow button under the challenge code: copies it to the clipboard ("Copy the code"). "Copier" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Copier le code'**
+  String get challengeCodeCopy;
+
+  /// Short message shown in a snackbar at the bottom of the screen once the challenge code is copied ("Code copied!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code copié !'**
+  String get challengeCodeCopied;
+
+  /// Line under the challenge code card: what giving the code does ("Give this code to a friend: same mode, same tables, and your score to beat!"). The friend's questions come from the code, so they may differ from the ones the player just had. Talks to the child (informal tu). Up to three centered lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donne ce code à un ami : même mode, mêmes tables, et ton score à battre !'**
+  String get challengeCodeShareHint;
+
+  /// Word in the middle of the line separating the shown code from the code entry on the "Défier un ami" screen ("or"). One short lowercase word.
+  ///
+  /// In fr, this message translates to:
+  /// **'ou'**
+  String get challengeCodeOr;
+
+  /// Title of the card where the child types a challenge code received from a friend ("Did you get a code?"). Talks to the child (informal tu). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu as reçu un code ?'**
+  String get challengeCodeEntryTitle;
+
+  /// Placeholder of the challenge code field ("Type the code here"). Written in capital letters because the field turns what the child types into capitals, as in the mockup; keep it in capitals in languages that have them. Talks to the child (informal tu). One line, about 20 characters.
+  ///
+  /// In fr, this message translates to:
+  /// **'ÉCRIS LE CODE ICI'**
+  String get challengeCodeEntryHint;
+
+  /// Button under the challenge code field: checks the code and starts its game ("Play this challenge"). "Jouer" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouer ce défi'**
+  String get challengeCodePlay;
+
+  /// Message under the code field when what was typed is not a challenge code: wrong length or a character that codes never use ("This code does not exist. A code has 10 letters and digits."). Talks to the child (informal tu). Kind, never blaming; up to two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce code n\'existe pas. Un code a 10 lettres et chiffres.'**
+  String get challengeCodeErrorMalformed;
+
+  /// Message under the code field when the check character shows a typing mistake: a character changed or two swapped ("A letter or a digit is wrong. Check the code with your friend."). Talks to the child (informal tu). Kind, never blaming; up to two lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une lettre ou un chiffre ne va pas. Vérifie le code avec ton ami.'**
+  String get challengeCodeErrorAltered;
+
+  /// Message under the code field when the code was made by a newer version of the app, whose questions this one cannot draw ("This challenge comes from a newer version of the app. Update the app to play it."). Talks to the child (informal tu). Up to three lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce défi vient d\'une version plus récente de l\'app. Mets l\'app à jour pour le jouer.'**
+  String get challengeCodeErrorVersion;
+
+  /// Tables of a challenge when it covers the 12 tables, after the mode in the subtitle of the comparison screen ("all the tables"). Lowercase: it follows "Contre-la-montre ·". The capitalized form on its own line is challengeCodeCardTablesAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'toutes les tables'**
+  String get challengeCodeTablesAll;
+
+  /// Tables of a challenge on one table, after the mode in the subtitle of the comparison screen ("table of 7"). Lowercase: it follows "Contre-la-montre ·". The capitalized form on its own line is challengeCodeCardTablesOne.
+  ///
+  /// In fr, this message translates to:
+  /// **'table de {table}'**
+  String challengeCodeTablesOne(int table);
+
+  /// One table in the list of the tables of a challenge, such as "de 2" in "tables de 2, de 5 et de 7". Used by challengeCodeTablesMany and challengeCodeCardTablesMany; the items are joined by ", " in code.
+  ///
+  /// In fr, this message translates to:
+  /// **'de {table}'**
+  String challengeCodeTableItem(int table);
+
+  /// Tables of a challenge on several tables, after the mode in the subtitle of the comparison screen ("tables de 2, de 5 et de 7"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Lowercase: it follows "Contre-la-montre ·". The capitalized form on its own line is challengeCodeCardTablesMany.
+  ///
+  /// In fr, this message translates to:
+  /// **'tables {first} et {last}'**
+  String challengeCodeTablesMany(String first, String last);
+
+  /// Tables of a challenge covering the 12 tables, on their own line under the mode in the violet card of the "Défier un ami" screen ("All the tables"). Starts with a capital letter: it begins its line. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les tables'**
+  String get challengeCodeCardTablesAll;
+
+  /// Tables of a challenge on one table, on their own line under the mode in the violet card of the "Défier un ami" screen ("Table of 7"). Starts with a capital letter: it begins its line. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Table de {table}'**
+  String challengeCodeCardTablesOne(int table);
+
+  /// Tables of a challenge on several tables, on their own line under the mode in the violet card of the "Défier un ami" screen ("Tables de 2 et de 5"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Starts with a capital letter: it begins its line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tables {first} et {last}'**
+  String challengeCodeCardTablesMany(String first, String last);
+
+  /// Line under the title of the challenge score comparison: the mode and the tables of the challenge ("Contre-la-montre · tables de 2 et de 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'{mode} · {tables}'**
+  String challengeCodeSubtitle(String mode, String tables);
+
+  /// Big title of the comparison screen when the child beat the score of the code ("Challenge won!"). Joyful, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défi gagné !'**
+  String get challengeOutcomeWon;
+
+  /// Big title of the comparison screen when the child did not reach the score of the code; kind, never discouraging ("Not this time!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas cette fois !'**
+  String get challengeOutcomeLost;
+
+  /// Big title of the comparison screen when the child made exactly the score of the code ("It's a tie!"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Égalité !'**
+  String get challengeOutcomeTie;
+
+  /// Label of the white card of the comparison screen: the score the friend made, written in the code ("Score to beat"). Short: the card is half the screen wide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Score à battre'**
+  String get challengeOutcomeToBeat;
+
+  /// Label of the violet card of the comparison screen: the child's score ("Your score"). Talks to the child (informal tu). Short: the card is half the screen wide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton score'**
+  String get challengeOutcomeYours;
+
+  /// Line under the big score of each card of the comparison screen; the number itself is shown above it, so the text has no number ("right answer(s)"). Short: the card is half the screen wide.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{bonne réponse} =1{bonne réponse} other{bonnes réponses}}'**
+  String challengeOutcomeCorrect(int count);
+
+  /// Difference shown in the yellow band of the comparison screen when the child won ("3 more right answers"). One line, beside the XP earned.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 bonne réponse de plus} other{{count} bonnes réponses de plus}}'**
+  String challengeOutcomeMore(int count);
+
+  /// Difference shown in the yellow band of the comparison screen when the child lost ("2 fewer right answers"). One line, beside the XP earned.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 bonne réponse de moins} other{{count} bonnes réponses de moins}}'**
+  String challengeOutcomeFewer(int count);
+
+  /// Text of the yellow band of the comparison screen on a tie ("As many right answers"). One line, beside the XP earned.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autant de bonnes réponses'**
+  String get challengeOutcomeSame;
+
+  /// Main button of the comparison screen: makes a new code with the same questions and the child's score to beat ("Send a challenge back"). "Renvoyer" is an infinitive verb. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renvoyer un défi'**
+  String get challengeOutcomeResend;
+
+  /// Second button of the comparison screen: back to the challenges tab ("Back to the challenges"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour aux défis'**
+  String get challengeOutcomeBack;
+
+  /// Line under the title of the duel player choice: how to hold the phone ("Lay the phone flat between you. The top player reads upside down."). Talks to both children (vous).
+  ///
+  /// In fr, this message translates to:
+  /// **'Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l\'envers.'**
+  String get duelPickIntro;
+
+  /// Section title in the duel player choice: the list where the player of the upside-down top half is chosen ("Top player"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Joueur du haut'**
+  String get duelSideTop;
+
+  /// Section title in the duel player choice: the list where the player of the bottom half is chosen ("Bottom player"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Joueur du bas'**
+  String get duelSideBottom;
+
+  /// Choice for someone who has no profile on the phone; also the name shown on their half of the duel ("Guest"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Invité'**
+  String get duelGuest;
+
+  /// Small line under "Invité" in the player choice: a guest plays every table and earns no XP ("All tables, no XP"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les tables, sans XP'**
+  String get duelGuestRule;
+
+  /// Line above the disabled start button of the duel player choice while the two players are not chosen or are the same ("Pick two different players."). Talks to both children (vous).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisissez deux joueurs différents.'**
+  String get duelPickHint;
+
+  /// Button at the bottom of the duel player choice that starts the duel once both players are chosen ("Let's go!"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est parti !'**
+  String get duelStart;
+
+  /// Screen-reader hint, in the duel player choice, of a player already chosen for the other half, who cannot be picked twice ("Already picked"; masculine singular past participle, may refer to a girl or a boy).
+  ///
+  /// In fr, this message translates to:
+  /// **'Déjà choisi'**
+  String get duelPlayerTaken;
+
+  /// Score of a player on their half of the duel: right answers / answers that win ("4 / 10").
+  ///
+  /// In fr, this message translates to:
+  /// **'{score} / {target}'**
+  String duelScore(int score, int target);
+
+  /// Screen-reader text of a player's progress bar on their half of the duel: nickname (or "Invité"), then right answers out of the answers that win, with a plural on the score ("Moussa: 4 right answers out of 10").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : {score, plural, =0{aucune bonne réponse} =1{1 bonne réponse} other{{score} bonnes réponses}} sur {target}'**
+  String duelScoreSpoken(String name, int score, int target);
+
+  /// Tooltip of the round pause button between the two halves of the duel ("Pause the duel").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mettre le duel en pause'**
+  String get duelPause;
+
+  /// Title of the dialog opened by the pause button of the duel ("Duel paused").
+  ///
+  /// In fr, this message translates to:
+  /// **'Duel en pause'**
+  String get duelPauseTitle;
+
+  /// Text of the pause dialog of the duel ("If you stop now, nobody earns XP."). Talks to both children (vous).
+  ///
+  /// In fr, this message translates to:
+  /// **'Si vous arrêtez maintenant, personne ne gagne d\'XP.'**
+  String get duelPauseMessage;
+
+  /// Button of the pause dialog that goes back to the duel ("Resume").
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre'**
+  String get duelResume;
+
+  /// Button of the pause dialog that stops the duel and goes back to the player choice ("Stop the duel").
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter le duel'**
+  String get duelStop;
+
+  /// Line on the half of a player who just gave a wrong answer: their buttons are blocked for 2 seconds while the right answer shows ("Oops! Wait a moment…"). Talks to that child (informal tu). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups ! Attends un peu…'**
+  String get duelBlocked;
+
+  /// Screen-reader label of the answer button showing the right answer after a mistake in the duel ("42, right answer").
+  ///
+  /// In fr, this message translates to:
+  /// **'{answer}, bonne réponse'**
+  String duelAnswerRight(int answer);
+
+  /// Screen-reader label of the answer button the player tapped by mistake in the duel ("36, wrong answer").
+  ///
+  /// In fr, this message translates to:
+  /// **'{answer}, mauvaise réponse'**
+  String duelAnswerWrong(int answer);
+
+  /// Title of the end of the duel, with the winner's nickname, or "Invité" ("Awa wins!").
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} gagne !'**
+  String duelWinner(String name);
+
+  /// XP a player of the phone earned in the duel, on the end screen ("+120 XP").
+  ///
+  /// In fr, this message translates to:
+  /// **'+{xp} XP'**
+  String duelXpEarned(int xp);
+
+  /// Line instead of the XP for a guest on the end screen of the duel ("No XP for a guest").
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas d\'XP pour un invité'**
+  String get duelGuestNoXp;
+
+  /// Line on the end screen of the duel when the phone failed to save the XP ("The XP could not be saved.").
+  ///
+  /// In fr, this message translates to:
+  /// **'Les XP n\'ont pas pu être enregistrés.'**
+  String get duelXpNotSaved;
+
+  /// Button of the end screen of the duel that starts a new duel between the same players ("Play again", infinitive verb). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejouer'**
+  String get duelReplay;
+
+  /// Button of the end screen of the duel that goes back to the challenges screen ("Leave", infinitive verb). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get duelQuit;
+
+  /// Title of the « Mes monstres » screen, which lists the facts the player keeps missing as little monsters to tame ("My monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes monstres'**
+  String get monstersPageTitle;
+
+  /// Line under the title of the « Mes monstres » screen ("These sums still resist you. Get them right to tame their monsters."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.'**
+  String get monstersIntro;
+
+  /// Encouraging text of the « Mes monstres » screen when no fact is a monster ("No monster in sight, well done! A sum missed twice will become a little monster to tame."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun monstre en vue, bravo ! Un calcul raté deux fois deviendra un petit monstre à apprivoiser.'**
+  String get monstersEmpty;
+
+  /// Label on the right of a monster whose fact was missed lately, the hardest to tame ("Very tough"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Très coriace'**
+  String get monsterToughnessVeryTough;
+
+  /// Label on the right of a monster whose fact is improving ("Tough"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coriace'**
+  String get monsterToughnessTough;
+
+  /// Label on the right of a monster whose fact is one step from being known ("Almost tamed"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Presque apprivoisé'**
+  String get monsterToughnessAlmostTamed;
+
+  /// What a screen reader says for a monster still to tame on the « Mes monstres » screen ("Monster 7 times 8, very tough").
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre {fact}, {toughness}'**
+  String monsterWildSpoken(String fact, String toughness);
+
+  /// What a screen reader says for a tamed monster of the « Apprivoisés » collection ("Monster 6 times 7, tamed").
+  ///
+  /// In fr, this message translates to:
+  /// **'Monstre {fact}, apprivoisé'**
+  String monsterTamedSpoken(String fact);
+
+  /// Main button of the « Mes monstres » screen: starts the monster hunt quiz ("Start the hunt").
+  ///
+  /// In fr, this message translates to:
+  /// **'Lancer la chasse'**
+  String get monstersHuntButton;
+
+  /// Second line of the "Lancer la chasse" button: number of questions of the hunt ("10 questions").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 question} other{{count} questions}}'**
+  String monstersHuntQuestions(int count);
+
+  /// Title of the collection of tamed monsters at the bottom of the « Mes monstres » screen ("Tamed").
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprivoisés'**
+  String get monstersTamedTitle;
+
+  /// Number of tamed monsters, at the right of "Apprivoisés" ("4 monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 monstre} other{{count} monstres}}'**
+  String monstersTamedCount(int count);
+
+  /// Link at the bottom of the "Mes monstres" card of the Profile tab: opens the screen of the little monsters, the facts the player keeps missing ("See my little monsters").
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir mes petits monstres'**
+  String get pathMonstersOpenLittle;
+
+  /// Title of the weekly leaderboard screen, where the players of the phone are ranked by the XP earned this week, and of its card on the Profile tab ("Leaderboard"). Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classement'**
+  String get leaderboardTitle;
+
+  /// Line under the title of the leaderboard: the players are ranked by the XP earned since Monday ("XP earned this week"). One line, shares the row with the "Remise à zéro lundi" pill.
+  ///
+  /// In fr, this message translates to:
+  /// **'XP gagnés cette semaine'**
+  String get leaderboardWeekLabel;
+
+  /// Pill at the right of "XP gagnés cette semaine" on the leaderboard: the ranking starts again from zero every Monday ("Reset on Monday"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remise à zéro lundi'**
+  String get leaderboardResetHint;
+
+  /// Dark tag under the nickname of the active player on the leaderboard, so the child finds themselves ("That's you"). Informal "tu", short.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est toi'**
+  String get leaderboardYou;
+
+  /// XP earned this week by a player of the leaderboard, under the rank on a podium step and at the right of each row ("310 XP"). XP means experience points. Short, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'{xp} XP'**
+  String leaderboardXp(int xp);
+
+  /// Screen-reader text of a player of the leaderboard ("Moussa, rank 1, 420 XP"). Neutral wording, no gendered ordinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname}, place {rank}, {xp} XP'**
+  String leaderboardEntrySpoken(String nickname, int rank, int xp);
+
+  /// Screen-reader text of the active player on the leaderboard ("Awa, that's you, rank 2, 310 XP"). Neutral wording, no gendered ordinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname}, c\'est toi, place {rank}, {xp} XP'**
+  String leaderboardEntryYouSpoken(String nickname, int rank, int xp);
+
+  /// What the mascot says at the bottom of the leaderboard: the XP the active player needs to catch up with the player just above ("110 more XP and you catch up with Moussa!"). Informal "tu", encouraging.
+  ///
+  /// In fr, this message translates to:
+  /// **'Encore {xp} XP et tu rattrapes {nickname} !'**
+  String leaderboardChaseBehind(int xp, String nickname);
+
+  /// What the mascot says at the bottom of the leaderboard when the active player has as many XP this week as the player just above, who is listed before them because ties are ordered by nickname ("You are tied with Moussa!"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es à égalité avec {nickname} !'**
+  String leaderboardChaseTied(String nickname);
+
+  /// What the mascot says at the bottom of the leaderboard when the active player is first with XP this week ("You are leading this week!"). Informal "tu", cheerful.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es en tête cette semaine !'**
+  String get leaderboardChaseLeading;
+
+  /// What the mascot says at the bottom of the leaderboard when nobody has earned XP yet this week, for instance on Monday morning ("Play to earn your first XP of the week!"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Joue pour gagner tes premiers XP de la semaine !'**
+  String get leaderboardChaseNotStarted;
+
+  /// Line under "Classement" on the card of the Profile tab that opens the weekly leaderboard ("Who earned the most XP this week?"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui a gagné le plus d\'XP cette semaine ?'**
+  String get leaderboardEntrySubtitle;
+
+  /// Switch of the settings screen, in the "Jeu" section, that shows or hides the weekly leaderboard for every player of the phone; when off, its card disappears from the Profile tab ("Show the leaderboard"). Infinitive verb, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher le classement'**
+  String get settingsShowLeaderboard;
+
+  /// Title of the shop screen (mockup 22) and of its card on the Profile tab, where a player spends the coins earned by playing on avatars and color themes ("Shop"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Boutique'**
+  String get shopTitle;
+
+  /// Line under "Boutique" on the card of the Profile tab that opens the shop ("Avatars and themes to unlock"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avatars et thèmes à débloquer'**
+  String get shopEntrySubtitle;
+
+  /// Screen-reader label of the coin pill: how many coins the player can spend in the shop ("240 coins"). Only the number is displayed, next to a yellow coin.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{0 pièce} =1{1 pièce} other{{count} pièces}}'**
+  String shopCoinBalance(int count);
+
+  /// Tab of the shop that lists the avatars ("Avatars"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avatars'**
+  String get shopTabAvatars;
+
+  /// Tab of the shop that lists the color themes of the app ("Themes"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thèmes'**
+  String get shopTabThemes;
+
+  /// Label of the button under the avatar the player wears now, in the shop ("Worn"). One short word, masculine (un avatar).
+  ///
+  /// In fr, this message translates to:
+  /// **'Porté'**
+  String get shopWorn;
+
+  /// Label of the button under the color theme the player applied, in the shop ("Active"). One short word, masculine (un thème).
+  ///
+  /// In fr, this message translates to:
+  /// **'Actif'**
+  String get shopActive;
+
+  /// Button under an avatar or a theme the player owns but does not use: wears the avatar or applies the theme ("Choose"). Infinitive verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir'**
+  String get shopChoose;
+
+  /// Screen-reader label of the button under the avatar the player wears ("Fox, worn"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, porté'**
+  String shopWornLabel(String name);
+
+  /// Screen-reader label of the button under the theme the player applied ("Ocean, active"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name}, actif'**
+  String shopActiveLabel(String name);
+
+  /// Screen-reader label of the "Choisir" button under an avatar or a theme the player owns ("Choose Fox"). Never displayed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir {name}'**
+  String shopChooseLabel(String name);
+
+  /// Screen-reader label of the price button under an item the player can afford; it opens the purchase confirmation ("Buy Fox for 80 coins"). Never displayed. Prices go from 80 to 300 coins; the plural follows the price.
+  ///
+  /// In fr, this message translates to:
+  /// **'{price, plural, =1{Acheter {name} pour 1 pièce} other{Acheter {name} pour {price} pièces}}'**
+  String shopBuyLabel(String name, int price);
+
+  /// Screen-reader label of the greyed price button under an item the player cannot afford yet ("King, 300 coins: you need more coins"). Never displayed. Informal "tu"; the plural follows the price.
+  ///
+  /// In fr, this message translates to:
+  /// **'{price, plural, =1{{name}, 1 pièce : il te manque des pièces} other{{name}, {price} pièces : il te manque des pièces}}'**
+  String shopTooExpensiveLabel(String name, int price);
+
+  /// Message shown at the bottom of the shop when the player taps the greyed price of an item they cannot afford ("You need 60 more coins. Keep playing to earn them!"). Encouraging tone, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'{missing, plural, =1{Il te manque 1 pièce. Joue encore pour la gagner !} other{Il te manque {missing} pièces. Joue encore pour les gagner !}}'**
+  String shopNotEnoughCoins(int missing);
+
+  /// Title of the dialog that confirms a purchase in the shop ("Buy Fox?"). The item is drawn under it.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acheter {name} ?'**
+  String shopBuyTitle(String name);
+
+  /// Text of the purchase confirmation dialog: the price and the coins left after it ("It costs 80 coins. You will have 160 left."; with 0 left: "You will have none left."). Informal "tu"; each plural follows its own number.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ça coûte {price, plural, =1{1 pièce} other{{price} pièces}}. {left, plural, =0{Il ne t\'en restera aucune.} =1{Il t\'en restera 1.} other{Il t\'en restera {left}.}}'**
+  String shopBuyMessage(int price, int left);
+
+  /// Button of the purchase confirmation dialog that spends the coins ("Buy"). Infinitive verb, one word. Coins only: no real money.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acheter'**
+  String get shopBuyConfirm;
+
+  /// Message shown at the bottom of the shop after a purchase ("Well done, Fox is yours! Tap Choose to use it."). Cheerful tone, informal "tu"; "Choisir" is the button of the item.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bravo, {name} est à toi ! Touche « Choisir » pour l\'utiliser.'**
+  String shopPurchased(String name);
+
+  /// Hint at the bottom of the shop grid that tells how coins are earned ("Earn coins by playing: 1 coin every 10 XP, 20 per crown and 10 per badge"). A crown is won by beating the boss of a table, a badge by an achievement. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Gagne des pièces en jouant : 1 pièce tous les {xpPerCoin} XP, {coinsPerCrown} par couronne et {coinsPerBadge} par badge.'**
+  String shopEarnHint(int xpPerCoin, int coinsPerCrown, int coinsPerBadge);
+
+  /// Message shown at the bottom of the shop when a purchase is refused because the player lacks coins ("You do not have enough coins for that"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu n\'as pas assez de pièces pour ça.'**
+  String get shopErrorNotEnoughCoins;
+
+  /// Message shown at the bottom of the shop when a purchase is refused because the player already owns the item ("You already have it!"). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu l\'as déjà !'**
+  String get shopErrorAlreadyOwned;
+
+  /// Name of an avatar of the shop, an orange fox ("Fox"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renard'**
+  String get shopAvatarFox;
+
+  /// Name of an avatar of the shop, a panda ("Panda"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Panda'**
+  String get shopAvatarPanda;
+
+  /// Name of an avatar of the shop, a robot ("Robot"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Robot'**
+  String get shopAvatarRobot;
+
+  /// Name of an avatar of the shop, a green alien ("Alien"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Extraterrestre'**
+  String get shopAvatarAlien;
+
+  /// Name of an avatar of the shop, a unicorn ("Unicorn"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Licorne'**
+  String get shopAvatarUnicorn;
+
+  /// Name of an avatar of the shop, a dragon ("Dragon"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dragon'**
+  String get shopAvatarDragon;
+
+  /// Name of an avatar of the shop, a ninja ("Ninja"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ninja'**
+  String get shopAvatarNinja;
+
+  /// Name of an avatar of the shop, a king with a crown ("King"). Read by screen readers and in the purchase dialog. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Roi'**
+  String get shopAvatarKing;
+
+  /// Name of the default color theme of the app, lavender and violet ("Lavender"), shown under its picture in the shop. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lavande'**
+  String get shopThemeLavender;
+
+  /// Name of a color theme of the shop, in blues ("Ocean"), shown under its picture. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Océan'**
+  String get shopThemeOcean;
+
+  /// Name of a color theme of the shop, in greens ("Forest"), shown under its picture. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forêt'**
+  String get shopThemeForest;
+
+  /// Name of a color theme of the shop, in oranges ("Sunset"), shown under its picture in a half-width card. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coucher de soleil'**
+  String get shopThemeSunset;
+
+  /// Name of the dark color theme of the shop: light text on a deep blue ground ("Night"), shown under its picture. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nuit'**
+  String get shopThemeNight;
 }
 
 class _AppLocalizationsDelegate
@@ -1630,7 +2806,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['fr'].contains(locale.languageCode);
+      <String>['en', 'es', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1639,6 +2815,10 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
     case 'fr':
       return AppLocalizationsFr();
   }

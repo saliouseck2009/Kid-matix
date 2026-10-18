@@ -67,7 +67,8 @@ file:
 - No `equatable`; no `google_fonts` (fonts are bundled); no package added
   before the lot that needs it.
 - All code, comments and documentation are in English. User-facing text is
-  French and lives in `lib/l10n/app_fr.arb`; widgets read it with
+  French and lives in `lib/l10n/app_fr.arb`, translated in `app_en.arb` and
+  `app_es.arb` (every key, checked by `test/l10n/`); widgets read it with
   `context.l10n`.
 
 ## Structure
@@ -83,7 +84,7 @@ lib/
 ```
 
 Feature names: `profile`, `multiplication`, `quiz`, `mastery`,
-`learning_path`, `reward`, `mascot`, `challenge`, `setting`
+`learning_path`, `reward`, `mascot`, `challenge`, `setting`, `shop`
 (see `lib/features/README.md`). A feature folder is created by the lot that
 delivers it, never ahead of time.
 

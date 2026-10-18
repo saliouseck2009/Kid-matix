@@ -19,6 +19,8 @@ import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_due_facts_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -102,6 +104,7 @@ void main() {
     domains: domains,
     questionTypes: types,
     random: DartRandomSource(seed: 1),
+    clock: clock,
   );
 
   group('RecordAnswerUseCase', () {
@@ -133,6 +136,23 @@ void main() {
       expect(actualProgress.box, 3);
       expect(actualProgress.presentationCount, 2);
     });
+    for (final String inputTypeId in <String>[
+      QuestionTypeIds.findOperation,
+      QuestionTypeIds.matchPairs,
+    ]) {
+      test('caps a $inputTypeId answer at box 3', () async {
+        // Arrange
+        await repository.saveProgress(
+          progress: buildProgress('mul:7x8', box: 3),
+        );
+        // Act
+        final ItemProgressEntity actualProgress = (await recordAnswer()(
+          params: _answer(questionTypeId: inputTypeId),
+        )).requireData;
+        // Assert
+        expect(actualProgress.box, 3);
+      });
+    }
     test('sends a wrong answer back to box 1', () async {
       // Arrange
       await repository.saveProgress(
@@ -360,6 +380,14 @@ void main() {
           repository: repository,
           domains: domains,
         ),
+        getReviewOverview: GetReviewOverviewUseCase(
+          repository: repository,
+          clock: clock,
+        ),
+        getMonsters: GetMonstersUseCase(
+          repository: repository,
+          domains: domains,
+        ),
       );
       // Act
       final List<QuizItemPlan> actualPlans = (await service.planQuiz(
@@ -382,6 +410,14 @@ void main() {
         planQuiz: planQuiz(),
         recordAnswer: recordAnswer(),
         getGrid: GetMasteryGridUseCase(
+          repository: repository,
+          domains: domains,
+        ),
+        getReviewOverview: GetReviewOverviewUseCase(
+          repository: repository,
+          clock: clock,
+        ),
+        getMonsters: GetMonstersUseCase(
           repository: repository,
           domains: domains,
         ),

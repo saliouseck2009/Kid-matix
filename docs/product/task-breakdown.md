@@ -473,19 +473,19 @@ Ce lot vérifie l'ensemble et prépare la mise en ligne sur les stores.
 
 **Qualité**
 
-- [ ] **F11-01** Accessibilité : zones tactiles de 48 dp au minimum et 56 dp pour les réponses, contraste AA, police du système jusqu'à 130 % sans texte coupé, libellés pour lecteurs d'écran.
-- [ ] **F11-02** Performances sur un téléphone d'entrée de gamme : démarrage en moins de 2 secondes, 60 images par seconde pendant le quiz.
-- [ ] **F11-03** Test d'intégration du trajet complet : créer un profil, jouer une étape, voir les résultats, retrouver la progression après redémarrage.
-- [ ] **F11-04** Cas limites : deux pseudos identiques à la casse près, changement de date du téléphone, suppression du joueur actif, fermeture en plein quiz.
-- [ ] **F11-05** Couverture de tests : 90 % sur le domaine et 80 % au moins sur les données.
-- [ ] **F11-06** Mise en page utilisable sur tablette.
+- [x] **F11-01** Accessibilité : zones tactiles de 48 dp au minimum et 56 dp pour les réponses, contraste AA, police du système jusqu'à 130 % sans texte coupé, libellés pour lecteurs d'écran.
+- [x] **F11-02** Performances sur un téléphone d'entrée de gamme : démarrage en moins de 2 secondes, 60 images par seconde pendant le quiz.
+- [x] **F11-03** Test d'intégration du trajet complet : créer un profil, jouer une étape, voir les résultats, retrouver la progression après redémarrage.
+- [x] **F11-04** Cas limites : deux pseudos identiques à la casse près, changement de date du téléphone, suppression du joueur actif, fermeture en plein quiz.
+- [x] **F11-05** Couverture de tests : 90 % sur le domaine et 80 % au moins sur les données.
+- [x] **F11-06** Mise en page utilisable sur tablette.
 
 **Publication**
 
-- [ ] **F11-07** Nom définitif de l'app, icône et écran de lancement.
-- [ ] **F11-08** Aucun appel réseau ni SDK tiers qui communique dans la version 1.0 ; paquet de moins de 40 Mo.
-- [ ] **F11-09** Politique de confidentialité et déclarations « public enfants » de Google Play et de l'App Store.
-- [ ] **F11-10** Fiches des stores : textes et captures d'écran.
+- [x] **F11-07** Nom définitif de l'app, icône et écran de lancement.
+- [x] **F11-08** Aucun appel réseau ni SDK tiers qui communique dans la version 1.0 ; paquet de moins de 40 Mo.
+- [x] **F11-09** Politique de confidentialité et déclarations « public enfants » de Google Play et de l'App Store.
+- [x] **F11-10** Fiches des stores : textes et captures d'écran.
 - [ ] **F11-11** Builds signés et obfusqués Android et iOS, envoyés en test interne.
 
 **Terminé quand :** les deux builds sont installés depuis les canaux de test des stores et le trajet complet passe sur un vrai téléphone.
@@ -494,12 +494,12 @@ Ce lot vérifie l'ensemble et prépare la mise en ligne sur les stores.
 
 Deux défis s'ajoutent à l'onglet Défis : une révision choisie par le moteur et un mode à 3 vies.
 
-- [ ] **F12-01** Révision du jour : 10 questions sans chrono, d'abord les faits dont la date de révision est passée, puis ceux au plus faible taux de réussite.
-- [ ] **F12-02** Survie : 3 vies, une erreur en retire une ; le temps par question part de 10 secondes et raccourcit au fil de la partie.
-- [ ] **F12-03** Record de Survie et badge Survivant (30 bonnes réponses).
-- [ ] **F12-04** Mode Survie du `QuizBloc` : vies, temps décroissant, question remplacée au retour d'arrière-plan.
-- [ ] **F12-05** Cartes Révision du jour et Survie dans l'écran Défis ; affichage des vies pendant le quiz.
-- [ ] **F12-06** Tests : sélection des faits à revoir avec une horloge factice, fin de partie à la troisième erreur, record.
+- [x] **F12-01** Révision du jour : 10 questions sans chrono, d'abord les faits dont la date de révision est passée, puis ceux au plus faible taux de réussite.
+- [x] **F12-02** Survie : 3 vies, une erreur en retire une ; le temps par question part de 10 secondes et raccourcit au fil de la partie.
+- [x] **F12-03** Record de Survie et badge Survivant (30 bonnes réponses).
+- [x] **F12-04** Mode Survie du `QuizBloc` : vies, temps décroissant, question remplacée au retour d'arrière-plan.
+- [x] **F12-05** Cartes Révision du jour et Survie dans l'écran Défis ; affichage des vies pendant le quiz.
+- [x] **F12-06** Tests : sélection des faits à revoir avec une horloge factice, fin de partie à la troisième erreur, record.
 
 **Terminé quand :** la Révision du jour propose les faits ratés la veille, et une partie de Survie s'arrête à la troisième erreur.
 
@@ -507,13 +507,13 @@ Deux défis s'ajoutent à l'onglet Défis : une révision choisie par le moteur 
 
 Les faits les plus difficiles du joueur deviennent des petits monstres à apprivoiser.
 
-- [ ] **F13-01** Règle : un fait raté au moins 2 fois et encore en boîte 1 à 3 devient un monstre ; 5 au plus sont montrés, les plus coriaces.
-- [ ] **F13-02** Cas d'usage `GetMonsters`, calculé à partir de la maîtrise des items, sans nouvelle table.
-- [ ] **F13-03** Chasse aux monstres : quiz de 10 questions centré sur ces faits.
-- [ ] **F13-04** Un monstre est apprivoisé quand son fait atteint le statut « Acquis » ; il rejoint la collection.
-- [ ] **F13-05** Carte Chasse aux monstres dans Défis ; monstres apprivoisés dans la collection du Profil.
-- [ ] **F13-06** Dessins des petits monstres.
-- [ ] **F13-07** Tests : apparition, limite de 5, apprivoisement.
+- [x] **F13-01** Règle : un fait raté au moins 2 fois et encore en boîte 1 à 3 devient un monstre ; 5 au plus sont montrés, les plus coriaces.
+- [x] **F13-02** Cas d'usage `GetMonsters`, calculé à partir de la maîtrise des items, sans nouvelle table.
+- [x] **F13-03** Chasse aux monstres : quiz de 10 questions centré sur ces faits.
+- [x] **F13-04** Un monstre est apprivoisé quand son fait atteint le statut « Acquis » ; il rejoint la collection.
+- [x] **F13-05** Carte Chasse aux monstres dans Défis ; monstres apprivoisés dans la collection du Profil.
+- [x] **F13-06** Dessins des petits monstres.
+- [x] **F13-07** Tests : apparition, limite de 5, apprivoisement.
 
 **Terminé quand :** un fait raté deux fois apparaît comme monstre, puis rejoint la collection une fois acquis.
 
@@ -521,13 +521,13 @@ Les faits les plus difficiles du joueur deviennent des petits monstres à appriv
 
 Deux joueurs s'affrontent face à face sur un écran coupé en deux.
 
-- [ ] **F14-01** Règles : le premier à 10 bonnes réponses gagne ; une erreur bloque les boutons du joueur pendant 2 secondes.
-- [ ] **F14-02** Chaque joueur reçoit des questions de ses propres tables débloquées ; les tables proposées à un invité sans profil restent à trancher.
-- [ ] **F14-03** Le duel rapporte des XP aux profils qui jouent et ne modifie pas la maîtrise des faits.
-- [ ] **F14-04** `DuelBloc` : choix des joueurs, duel en cours, terminé avec vainqueur.
-- [ ] **F14-05** Écran Duel : deux moitiés tête-bêche, une question et 4 boutons par joueur, les deux scores. Maquette : `15-duel.png`.
-- [ ] **F14-06** Choix des deux joueurs, ou d'un invité, avant le duel.
-- [ ] **F14-07** Tests de `DuelBloc` : appuis simultanés, blocage de 2 secondes, victoire.
+- [x] **F14-01** Règles : le premier à 10 bonnes réponses gagne ; une erreur bloque les boutons du joueur pendant 2 secondes.
+- [x] **F14-02** Chaque joueur reçoit des questions de ses propres tables débloquées ; un invité sans profil joue les 12 tables.
+- [x] **F14-03** Le duel rapporte des XP aux profils qui jouent et ne modifie pas la maîtrise des faits.
+- [x] **F14-04** `DuelBloc` : choix des joueurs, duel en cours, terminé avec vainqueur.
+- [x] **F14-05** Écran Duel : deux moitiés tête-bêche, une question et 4 boutons par joueur, les deux scores. Maquette : `15-duel.png`.
+- [x] **F14-06** Choix des deux joueurs, ou d'un invité, avant le duel.
+- [x] **F14-07** Tests de `DuelBloc` : appuis simultanés, blocage de 2 secondes, victoire.
 
 **Terminé quand :** deux profils de niveaux différents jouent un duel complet et reçoivent chacun leurs XP.
 
@@ -535,12 +535,12 @@ Deux joueurs s'affrontent face à face sur un écran coupé en deux.
 
 Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le registre des types.
 
-- [ ] **F15-01** Type « Trouver l'opération » : un résultat, 4 opérations au choix, une seule juste.
-- [ ] **F15-02** Type « Relier les paires » : 4 opérations et 4 résultats à associer.
-- [ ] **F15-03** Les deux types comptent comme réponse reconnue pour la maîtrise (plafond à la boîte 3).
-- [ ] **F15-04** Widgets de réponse des deux types. Maquettes : `16-quiz-find-operation.png` et `17-quiz-match-pairs.png`.
-- [ ] **F15-05** Ajout des deux types aux étapes Vitesse et Boss, et à l'Entraînement libre.
-- [ ] **F15-06** Tests : génération sans ambiguïté (une seule opération juste, 4 résultats distincts), validation, tests de widget.
+- [x] **F15-01** Type « Trouver l'opération » : un résultat, 4 opérations au choix, une seule juste.
+- [x] **F15-02** Type « Relier les paires » : 4 opérations et 4 résultats à associer.
+- [x] **F15-03** Les deux types comptent comme réponse reconnue pour la maîtrise (plafond à la boîte 3).
+- [x] **F15-04** Widgets de réponse des deux types. Maquettes : `16-quiz-find-operation.png` et `17-quiz-match-pairs.png`.
+- [x] **F15-05** Ajout des deux types aux étapes Vitesse et Boss, et à l'Entraînement libre.
+- [x] **F15-06** Tests : génération sans ambiguïté (une seule opération juste, 4 résultats distincts), validation, tests de widget.
 
 **Terminé quand :** les deux formats apparaissent dans un quiz de l'étape Vitesse, sans changement dans le code du `QuizBloc`.
 
@@ -548,11 +548,11 @@ Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le regi
 
 À la création du profil, un test rapide ouvre d'emblée les tables que l'enfant connaît déjà.
 
-- [ ] **F16-01** Cas d'usage `RunPlacementTest` : 12 questions, une par table.
-- [ ] **F16-02** Une table réussie est ouverte dans le parcours ; ses étoiles restent à gagner.
-- [ ] **F16-03** Proposition du test en fin de création de profil, avec un bouton « Passer ».
-- [ ] **F16-04** Écran de bilan du test : tables ouvertes. Maquette : `18-placement-test-result.png`.
-- [ ] **F16-05** Tests : ouverture des bonnes tables, test passé, test abandonné en cours.
+- [x] **F16-01** Cas d'usage `RunPlacementTest` : 12 questions, une par table.
+- [x] **F16-02** Une table réussie est ouverte dans le parcours ; ses étoiles restent à gagner.
+- [x] **F16-03** Proposition du test en fin de création de profil, avec un bouton « Passer ».
+- [x] **F16-04** Écran de bilan du test : tables ouvertes. Maquette : `18-placement-test-result.png`.
+- [x] **F16-05** Tests : ouverture des bonnes tables, test passé, test abandonné en cours.
 
 **Terminé quand :** un nouveau joueur qui réussit les questions des tables de 1, 2 et 10 démarre avec ces trois tables ouvertes.
 
@@ -560,11 +560,11 @@ Deux formats s'ajoutent sans toucher au moteur : ils s'enregistrent dans le regi
 
 Les joueurs du téléphone sont classés par XP gagnés dans la semaine.
 
-- [ ] **F17-01** Contrat `LeaderboardRepository` avec une portée (téléphone, amis, monde) ; seule la portée téléphone est implémentée.
-- [ ] **F17-02** Cas d'usage `GetLeaderboard` : XP de la semaine calculés à partir du journal des sessions, remise à zéro chaque lundi.
-- [ ] **F17-03** `LeaderboardCubit` et écran Classement : avatar, pseudo, XP de la semaine. Maquette : `19-leaderboard.png`.
-- [ ] **F17-04** Réglage pour masquer le classement.
-- [ ] **F17-05** Tests : calcul hebdomadaire avec une horloge factice, passage du dimanche au lundi, égalités.
+- [x] **F17-01** Contrat `LeaderboardRepository` avec une portée (téléphone, amis, monde) ; seule la portée téléphone est implémentée.
+- [x] **F17-02** Cas d'usage `GetLeaderboard` : XP de la semaine calculés à partir du journal des sessions, remise à zéro chaque lundi.
+- [x] **F17-03** `LeaderboardCubit` et écran Classement : avatar, pseudo, XP de la semaine. Maquette : `19-leaderboard.png`.
+- [x] **F17-04** Réglage pour masquer le classement.
+- [x] **F17-05** Tests : calcul hebdomadaire avec une horloge factice, passage du dimanche au lundi, égalités.
 
 **Terminé quand :** deux joueurs qui ont joué dans la semaine apparaissent classés, et le classement repart de zéro le lundi.
 
@@ -572,11 +572,11 @@ Les joueurs du téléphone sont classés par XP gagnés dans la semaine.
 
 Une notification locale rappelle à l'enfant de jouer, à l'heure choisie.
 
-- [ ] **F18-01** Ajout de flutter_local_notifications et configuration Android et iOS.
-- [ ] **F18-02** Demande d'autorisation au moment où le rappel est activé, jamais au premier lancement.
-- [ ] **F18-03** Réglage : rappel activé ou non (désactivé par défaut) et heure du rappel.
-- [ ] **F18-04** Programmation et annulation de la notification ; pas de rappel le jour où une session est déjà terminée.
-- [ ] **F18-05** Tests : programmation, annulation, changement d'heure, avec un service de notification factice.
+- [x] **F18-01** Ajout de flutter_local_notifications et configuration Android et iOS.
+- [x] **F18-02** Demande d'autorisation au moment où le rappel est activé, jamais au premier lancement.
+- [x] **F18-03** Réglage : rappel activé ou non (désactivé par défaut) et heure du rappel.
+- [x] **F18-04** Programmation et annulation de la notification ; pas de rappel le jour où une session est déjà terminée.
+- [x] **F18-05** Tests : programmation, annulation, changement d'heure, avec un service de notification factice.
 
 **Terminé quand :** un rappel réglé sur une heure proche s'affiche sur un vrai téléphone Android et sur un iPhone.
 
@@ -584,13 +584,13 @@ Une notification locale rappelle à l'enfant de jouer, à l'heure choisie.
 
 Un joueur partage un code ; un ami rejoue exactement les mêmes questions sur un autre téléphone, sans réseau.
 
-- [ ] **F19-01** Format du code, une dizaine de caractères : tables choisies, mode, graine du tirage, score à battre, version du générateur, caractère de contrôle.
-- [ ] **F19-02** Cas d'usage `EncodeChallengeCode` et `BuildQuizFromCode`.
-- [ ] **F19-03** Générateur de questions figé par version : une même graine donne les mêmes questions sur tout téléphone.
-- [ ] **F19-04** Bouton « Défier un ami » en fin d'Entraînement libre et de Contre-la-montre ; affichage et copie du code.
-- [ ] **F19-05** Saisie d'un code dans l'écran Défis, avec un message clair si le code est invalide ou d'une version inconnue.
-- [ ] **F19-06** Écran de comparaison des deux scores. Maquette : `21-challenge-score.png`.
-- [ ] **F19-07** Tests : encodage puis décodage, code altéré refusé, mêmes questions pour un même code.
+- [x] **F19-01** Format du code, une dizaine de caractères : tables choisies, mode, graine du tirage, score à battre, version du générateur, caractère de contrôle.
+- [x] **F19-02** Cas d'usage `EncodeChallengeCode` et `BuildQuizFromCode`.
+- [x] **F19-03** Générateur de questions figé par version : une même graine donne les mêmes questions sur tout téléphone.
+- [x] **F19-04** Bouton « Défier un ami » en fin d'Entraînement libre et de Contre-la-montre ; affichage et copie du code.
+- [x] **F19-05** Saisie d'un code dans l'écran Défis, avec un message clair si le code est invalide ou d'une version inconnue.
+- [x] **F19-06** Écran de comparaison des deux scores. Maquette : `21-challenge-score.png`.
+- [x] **F19-07** Tests : encodage puis décodage, code altéré refusé, mêmes questions pour un même code.
 
 **Terminé quand :** un code créé sur un téléphone donne les mêmes questions sur un second, qui affiche les deux scores.
 
@@ -598,11 +598,11 @@ Un joueur partage un code ; un ami rejoue exactement les mêmes questions sur un
 
 La progression survit à un changement de téléphone grâce à un fichier exporté puis importé.
 
-- [ ] **F20-01** Format de fichier versionné contenant un profil et toutes ses données.
-- [ ] **F20-02** Export d'un profil vers un fichier, partagé par la feuille de partage du système.
-- [ ] **F20-03** Import : contrôle du format, puis choix entre remplacer le profil existant ou renommer en cas de pseudo déjà pris.
-- [ ] **F20-04** Entrées « Exporter » et « Importer » dans les réglages. Maquette : `13-settings.png` (section Sauvegarde).
-- [ ] **F20-05** Tests : aller-retour export puis import sans perte, fichier corrompu refusé, conflit de pseudo.
+- [x] **F20-01** Format de fichier versionné contenant un profil et toutes ses données.
+- [x] **F20-02** Export d'un profil vers un fichier, partagé par la feuille de partage du système.
+- [x] **F20-03** Import : contrôle du format, puis choix entre remplacer le profil existant ou renommer en cas de pseudo déjà pris.
+- [x] **F20-04** Entrées « Exporter » et « Importer » dans les réglages. Maquette : `13-settings.png` (section Sauvegarde).
+- [x] **F20-05** Tests : aller-retour export puis import sans perte, fichier corrompu refusé, conflit de pseudo.
 
 **Terminé quand :** un profil exporté puis importé sur un second téléphone retrouve son niveau, sa série, ses étoiles et sa grille de maîtrise.
 
@@ -610,11 +610,11 @@ La progression survit à un changement de téléphone grâce à un fichier expor
 
 L'app s'ouvre à d'autres langues, et des pièces gagnées en jouant servent à débloquer des avatars et des thèmes.
 
-- [ ] **F21-01** Fichiers de traduction supplémentaires ; la liste des langues reste à définir.
-- [ ] **F21-02** Choix de la langue dans les réglages, langue du téléphone par défaut.
-- [ ] **F21-03** Pièces gagnées en jouant : règles de gain à définir, solde par profil, migration.
-- [ ] **F21-04** Catalogue d'avatars et de thèmes à débloquer avec des pièces ; aucun achat en argent réel.
-- [ ] **F21-05** Écran Boutique : catalogue, solde, achat, élément actif. Maquette : `22-shop.png`.
-- [ ] **F21-06** Tests : gain de pièces, achat, solde insuffisant, changement de langue.
+- [x] **F21-01** Fichiers de traduction supplémentaires : anglais et espagnol.
+- [x] **F21-02** Choix de la langue dans les réglages, langue du téléphone par défaut.
+- [x] **F21-03** Pièces gagnées en jouant : 1 pièce tous les 10 XP, 20 par couronne, 10 par badge ; solde par profil, migration.
+- [x] **F21-04** Catalogue d'avatars et de thèmes à débloquer avec des pièces ; aucun achat en argent réel.
+- [x] **F21-05** Écran Boutique : catalogue, solde, achat, élément actif. Maquette : `22-shop.png`.
+- [x] **F21-06** Tests : gain de pièces, achat, solde insuffisant, changement de langue.
 
 **Terminé quand :** l'app s'affiche dans une seconde langue, et un joueur achète un avatar avec ses pièces.

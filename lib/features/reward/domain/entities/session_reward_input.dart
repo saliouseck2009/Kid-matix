@@ -15,6 +15,7 @@ final class SessionRewardInput {
     required this.now,
     this.crownedUnitKey,
     this.isTimeAttack = false,
+    this.isSurvival = false,
   });
 
   /// Whether the quiz was completed rather than abandoned.
@@ -46,4 +47,7 @@ final class SessionRewardInput {
 
   /// Whether the quiz was a time attack.
   final bool isTimeAttack;
+
+  /// Whether the quiz was a survival game.
+  final bool isSurvival;
 }

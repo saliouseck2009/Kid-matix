@@ -1,19 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
+import 'package:kid_matix/core/router/challenge_code_routes.dart';
 import 'package:kid_matix/core/router/play_routes.dart';
 import 'package:kid_matix/core/router/profile_session_redirect.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
+import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
+import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
+import 'package:kid_matix/features/reward/presentation/leaderboard_pages.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
+import 'package:kid_matix/features/setting/presentation/language_pages.dart';
+import 'package:kid_matix/features/setting/presentation/reminder_pages.dart';
+import 'package:kid_matix/features/shop/presentation/shop_pages.dart';
 
 /// Builds the router of the app: the player selection, then a shell with
 /// one branch per tab; the learning path is the home.
@@ -29,9 +38,20 @@ GoRouter createAppRouter({
   required MascotPages mascotPages,
   required ChallengePages challengePages,
   required MasteryPages masteryPages,
+  required DuelPages duelPages,
+  required CodeChallengePages codePages,
+  required LeaderboardPages leaderboardPages,
+  ReminderPages? reminderPages,
+  ShopPages? shopPages,
+  LanguagePages? languagePages,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
+  final _MonstersScreen monsters = _MonstersScreen(
+    session: session,
+    masteryPages: masteryPages,
+    challengePages: challengePages,
+  );
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.learningPath,
@@ -61,12 +81,28 @@ GoRouter createAppRouter({
           );
         },
       ),
+      GoRoute(
+        path: AppRoutes.placementTest,
+        builder: (BuildContext context, GoRouterState state) {
+          final String? profileId = session.activeProfileId;
+          if (profileId == null) return const SizedBox.shrink();
+          return pathPages.buildPlacementTestPage(
+            profileId: profileId,
+            slots: PlacementSlots(
+              keypad: quizPages.buildKeypad,
+              questionCard: quizPages.buildQuestionCard,
+            ),
+            onDone: () => context.go(AppRoutes.learningPath),
+          );
+        },
+      ),
       ...createPlayRoutes(
         session: session,
         pathPages: pathPages,
         quizPages: quizPages,
         rewardPages: rewardPages,
         challengePages: challengePages,
+        codePages: codePages,
       ),
       StatefulShellRoute.indexedStack(
         builder: (
@@ -112,7 +148,7 @@ GoRouter createAppRouter({
           _createChallengeBranch(
             session: session,
             path: AppRoutes.training,
-            build: (String profileId, ValueChanged<String> onPlay) =>
+            build: (_, String profileId, ValueChanged<String> onPlay) =>
                 challengePages.buildTrainingPage(
                   profileId: profileId,
                   onLaunch: onPlay,
@@ -121,20 +157,105 @@ GoRouter createAppRouter({
           _createChallengeBranch(
             session: session,
             path: AppRoutes.challenges,
-            build: (String profileId, ValueChanged<String> onPlay) =>
-                challengePages.buildChallengesPage(
+            build:
+                (
+                  BuildContext context,
+                  String profileId,
+                  ValueChanged<String> onPlay,
+                ) => challengePages.buildChallengesPage(
                   profileId: profileId,
                   onPlay: onPlay,
+                  onOpenMonsters: () => context.go(AppRoutes.challengeMonsters),
+                  onOpenDuel: () => context.go(AppRoutes.duel),
+                  onOpenCode: () => context.go(AppRoutes.challengeCodeEntry),
                 ),
+            routes: <RouteBase>[
+              _createMonstersRoute(
+                path: AppRoutes.challengeMonsters,
+                monsters: monsters,
+                rootNavigatorKey: rootNavigatorKey,
+              ),
+              GoRoute(
+                path: _lastSegment(AppRoutes.duel),
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (BuildContext context, GoRouterState state) {
+                  return duelPages.buildDuelPage(
+                    activeProfileId: session.activeProfileId,
+                    avatarOf: (PlayerIdentity player, double size) =>
+                        profilePages.buildAvatar(player: player, size: size),
+                    onClose: () => context.go(AppRoutes.challenges),
+                  );
+                },
+              ),
+              createChallengeCodeRoute(
+                codePages: codePages,
+                rootNavigatorKey: rootNavigatorKey,
+              ),
+            ],
           ),
           _createProfileBranch(
             session: session,
             profilePages: profilePages,
             mascotPages: mascotPages,
-            sectionsOf: (String profileId) => <Widget>[
+            sectionsOf: (BuildContext context, String profileId) => <Widget>[
+              ?shopPages?.buildEntryCard(
+                profileId: profileId,
+                onOpen: () => context.go(AppRoutes.shop),
+              ),
               masteryPages.buildGridCard(profileId: profileId),
               rewardPages.buildBadgesCard(profileId: profileId),
-              pathPages.buildMonstersCard(profileId: profileId),
+              pathPages.buildMonstersCard(
+                profileId: profileId,
+                onOpenLittle: () => context.go(AppRoutes.profileMonsters),
+              ),
+              leaderboardPages.buildEntryCard(
+                onOpen: () => context.go(AppRoutes.leaderboard),
+              ),
+            ],
+            settingsGameRows: <Widget>[
+              leaderboardPages.buildVisibilitySwitch(),
+            ],
+            settingsReminderRows: <Widget>[
+              ?reminderPages?.buildSettingsRows(),
+            ],
+            settingsLanguageRows: <Widget>[
+              ?languagePages?.buildSettingsRows(),
+            ],
+            routes: <RouteBase>[
+              _createMonstersRoute(
+                path: AppRoutes.profileMonsters,
+                monsters: monsters,
+                rootNavigatorKey: rootNavigatorKey,
+              ),
+              GoRoute(
+                path: _lastSegment(AppRoutes.leaderboard),
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (BuildContext context, GoRouterState state) {
+                  final String? profileId = session.activeProfileId;
+                  if (profileId == null) return const SizedBox.shrink();
+                  return leaderboardPages.buildLeaderboardPage(
+                    profileId: profileId,
+                    avatarOf: (PlayerIdentity player, double size) =>
+                        profilePages.buildAvatar(player: player, size: size),
+                    onBack: () => context.go(AppRoutes.profile),
+                  );
+                },
+              ),
+              if (shopPages != null)
+                GoRoute(
+                  path: _lastSegment(AppRoutes.shop),
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (BuildContext context, GoRouterState state) {
+                    final String? profileId = session.activeProfileId;
+                    if (profileId == null) return const SizedBox.shrink();
+                    return shopPages.buildShopPage(
+                      profileId: profileId,
+                      avatarOf: (PlayerIdentity player, double size) =>
+                          profilePages.buildAvatar(player: player, size: size),
+                      onBack: () => context.go(AppRoutes.profile),
+                    );
+                  },
+                ),
             ],
             rootNavigatorKey: rootNavigatorKey,
           ),
@@ -149,8 +270,13 @@ StatefulShellBranch _createProfileBranch({
   required ProfileSessionService session,
   required ProfilePages profilePages,
   required MascotPages mascotPages,
-  required List<Widget> Function(String profileId) sectionsOf,
+  required List<Widget> Function(BuildContext context, String profileId)
+  sectionsOf,
+  required List<RouteBase> routes,
   required GlobalKey<NavigatorState> rootNavigatorKey,
+  List<Widget> settingsGameRows = const <Widget>[],
+  List<Widget> settingsReminderRows = const <Widget>[],
+  List<Widget> settingsLanguageRows = const <Widget>[],
 }) {
   return StatefulShellBranch(
     routes: <RouteBase>[
@@ -164,7 +290,7 @@ StatefulShellBranch _createProfileBranch({
             mascotCard: mascotPages.buildProfileCard(
               onOpen: () => context.go(AppRoutes.mascot),
             ),
-            sections: sectionsOf(profileId),
+            sections: sectionsOf(context, profileId),
           );
         },
         routes: <RouteBase>[
@@ -186,6 +312,9 @@ StatefulShellBranch _createProfileBranch({
               return profilePages.buildSettingsPage(
                 profileId: profileId,
                 onBack: () => context.go(AppRoutes.profile),
+                gameRows: settingsGameRows,
+                reminderRows: settingsReminderRows,
+                languageRows: settingsLanguageRows,
               );
             },
           ),
@@ -198,6 +327,7 @@ StatefulShellBranch _createProfileBranch({
               );
             },
           ),
+          ...routes,
         ],
       ),
     ],
@@ -208,11 +338,17 @@ StatefulShellBranch _createProfileBranch({
 String _lastSegment(String path) => path.split('/').last;
 
 /// A tab of the challenge feature at [path], whose page plays a quiz by
-/// its source key.
+/// its source key, with its full-screen [routes].
 StatefulShellBranch _createChallengeBranch({
   required ProfileSessionService session,
   required String path,
-  required Widget Function(String profileId, ValueChanged<String> onPlay) build,
+  required Widget Function(
+    BuildContext context,
+    String profileId,
+    ValueChanged<String> onPlay,
+  )
+  build,
+  List<RouteBase> routes = const <RouteBase>[],
 }) {
   return StatefulShellBranch(
     routes: <RouteBase>[
@@ -222,11 +358,63 @@ StatefulShellBranch _createChallengeBranch({
           final String? profileId = session.activeProfileId;
           if (profileId == null) return const SizedBox.shrink();
           return build(
+            context,
             profileId,
             (String sourceKey) => context.go(AppRoutes.playOf(sourceKey)),
           );
         },
+        routes: routes,
       ),
     ],
   );
+}
+
+/// « Mes monstres » at [path], over the tab bar.
+GoRoute _createMonstersRoute({
+  required String path,
+  required _MonstersScreen monsters,
+  required GlobalKey<NavigatorState> rootNavigatorKey,
+}) {
+  return GoRoute(
+    path: _lastSegment(path),
+    parentNavigatorKey: rootNavigatorKey,
+    builder: (BuildContext context, GoRouterState state) {
+      return monsters.build(
+        context,
+        isFromProfile: path == AppRoutes.profileMonsters,
+      );
+    },
+  );
+}
+
+/// Builds « Mes monstres »: the screen belongs to the mastery feature,
+/// the hunt it starts to the challenges.
+final class _MonstersScreen {
+  const _MonstersScreen({
+    required this.session,
+    required this.masteryPages,
+    required this.challengePages,
+  });
+
+  final ProfileSessionService session;
+  final MasteryPages masteryPages;
+  final ChallengePages challengePages;
+
+  /// The screen opened from the Profile tab when [isFromProfile], from the
+  /// challenges otherwise; back and the hunt return there.
+  Widget build(BuildContext context, {required bool isFromProfile}) {
+    final String? profileId = session.activeProfileId;
+    if (profileId == null) return const SizedBox.shrink();
+    final String huntKey = challengePages.monsterHuntKeyOf(
+      isFromProfile: isFromProfile,
+    );
+    return masteryPages.buildMonstersPage(
+      profileId: profileId,
+      huntQuestionCount: challengePages.monsterHuntQuestionCount,
+      onBack: () => context.go(
+        isFromProfile ? AppRoutes.profile : AppRoutes.challenges,
+      ),
+      onHunt: () => context.go(AppRoutes.playOf(huntKey)),
+    );
+  }
 }

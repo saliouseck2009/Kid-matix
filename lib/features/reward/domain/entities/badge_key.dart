@@ -13,6 +13,9 @@ abstract final class BadgeKey {
   /// Sprinter: 20 right answers in one time attack.
   static const String sprinter = 'sprinter';
 
+  /// Survivant: 30 right answers in one survival game.
+  static const String survivor = 'survivor';
+
   /// Régulier: a 7-day streak.
   static const String regular = 'regular';
 

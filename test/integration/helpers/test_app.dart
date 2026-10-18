@@ -4,6 +4,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/core/services/clock.dart';
+import 'package:kid_matix/core/services/notification_scheduler.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/storage/local_storage.dart';
@@ -14,6 +15,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_source.da
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
@@ -29,6 +31,7 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import '../../features/setting/helpers/reminder_fixtures.dart';
 import '../../helpers/test_quiz_pages.dart';
 
 /// The app's real dependency graph, as `main` builds it, over an on-disk
@@ -36,8 +39,8 @@ import '../../helpers/test_quiz_pages.dart';
 ///
 /// [start] plays the launch of the app and [stop] its end, so a test can
 /// rebuild the app over the same database file. Only the platform parts
-/// are replaced: the database factory, the key-value storage and the
-/// timer.
+/// are replaced: the database factory, the key-value storage, the timer
+/// and the notifications.
 abstract final class TestApp {
   /// Starts the app with its databases in [databasesPath] and [storage] as
   /// the phone's key-value storage.
@@ -52,6 +55,9 @@ abstract final class TestApp {
     sl.allowReassignment = true;
     sl.registerLazySingleton<LocalStorage>(() => storage);
     sl.registerLazySingleton<Ticker>(() => const SilentTicker());
+    sl.registerLazySingleton<NotificationScheduler>(
+      FakeNotificationScheduler.new,
+    );
     sl.allowReassignment = false;
   }
 
@@ -98,7 +104,9 @@ abstract final class TestApp {
   }) {
     final LearningPathPages pages = LearningPathPages(
       useCases: LearningPathUseCases(getLearningPath: sl(), watchChanges: sl()),
+      placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
       domains: sl(),
+      clock: sl(),
     );
     final QuizSpec spec = pages.specOf(
       StageSource(unitKey: unitKey, stage: stage).toKey(),

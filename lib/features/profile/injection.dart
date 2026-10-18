@@ -1,12 +1,27 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/core/services/player_avatar_service.dart';
+import 'package:kid_matix/features/profile/domain/services/player_avatar_service_impl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:kid_matix/core/services/player_directory_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
+import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
+import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source_impl.dart';
+import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
+import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source.dart';
+import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source_impl.dart';
+import 'package:kid_matix/features/profile/data/repositories/profile_backup_repository_impl.dart';
 import 'package:kid_matix/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:kid_matix/features/profile/domain/repositories/profile_backup_repository.dart';
+import 'package:kid_matix/features/profile/domain/usecases/export_profile_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/import_backup_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/pick_backup_use_case.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
+import 'package:kid_matix/features/profile/domain/services/player_directory_service_impl.dart';
 import 'package:kid_matix/features/profile/domain/services/player_settings_service_impl.dart';
 import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
@@ -29,8 +44,15 @@ import 'package:kid_matix/features/profile/presentation/session/profile_session_
 void registerProfileFeature(GetIt sl) {
   _registerData(sl);
   _registerUseCases(sl);
+  _registerBackup(sl);
   sl.registerLazySingleton<PlayerSettingsService>(
     () => PlayerSettingsServiceImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<PlayerAvatarService>(
+    () => PlayerAvatarServiceImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<PlayerDirectoryService>(
+    () => PlayerDirectoryServiceImpl(getProfiles: sl()),
   );
   sl.registerLazySingleton<ProfileSessionService>(
     () => ProfileSessionServiceImpl(getSession: sl(), watchChanges: sl()),
@@ -104,5 +126,42 @@ void _registerUseCases(GetIt sl) {
   );
   sl.registerLazySingleton<WatchProfileChangesUseCase>(
     () => WatchProfileChangesUseCase(repository: sl()),
+  );
+}
+
+void _registerBackup(GetIt sl) {
+  sl.registerLazySingleton<ProfileBackupLocalDataSource>(
+    () => ProfileBackupLocalDataSourceImpl(
+      database: sl(),
+      parts: sl(),
+      idGenerator: sl(),
+    ),
+  );
+  sl.registerLazySingleton<BackupFileDataSource>(
+    () => const BackupFileDataSourceImpl(),
+  );
+  sl.registerLazySingleton<ProfileBackupRepository>(
+    () => ProfileBackupRepositoryImpl(
+      local: sl(),
+      files: sl(),
+      codec: const ProfileBackupCodec(),
+      clock: sl(),
+      readAppVersion: () async => (await PackageInfo.fromPlatform()).version,
+      changeBus: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ExportProfileUseCase>(
+    () => ExportProfileUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<PickBackupUseCase>(
+    () => PickBackupUseCase(backups: sl(), profiles: sl()),
+  );
+  sl.registerLazySingleton<ImportBackupUseCase>(
+    () => ImportBackupUseCase(
+      backups: sl(),
+      profiles: sl(),
+      nicknameChecker: sl(),
+      idGenerator: sl(),
+    ),
   );
 }

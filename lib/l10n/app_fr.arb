@@ -376,6 +376,170 @@
   "@settingsReducedMotion": {
     "description": "Switch of the settings screen that replaces the animations by still screens (\"Reduced motion\")."
   },
+  "commonClose": "Fermer",
+  "@commonClose": {
+    "description": "Tooltip of the cross button that closes a full screen such as the parental gate (\"Close\"). Infinitive verb, one word."
+  },
+  "settingsBackupSection": "Sauvegarde",
+  "@settingsBackupSection": {
+    "description": "Name of the section of the settings screen holding the export and the import of a player to and from a file (\"Backup\"). Noun, short section header."
+  },
+  "backupExport": "Exporter mon profil",
+  "@backupExport": {
+    "description": "Row of the settings screen, in the \"Sauvegarde\" section, that writes the player and all their progress to a file and opens the share sheet of the phone, after the parental gate (\"Export my profile\"). One line."
+  },
+  "backupImport": "Importer un profil",
+  "@backupImport": {
+    "description": "Row of the settings screen, in the \"Sauvegarde\" section, that opens the file picker to bring a player from a backup file onto this phone, after the parental gate (\"Import a profile\"). One line."
+  },
+  "backupExportDone": "Fichier prêt ! Ouvre-le dans Kid Matix sur l'autre téléphone, avec « Importer un profil ».",
+  "@backupExportDone": {
+    "description": "Snack bar of the settings screen, shown after the backup file was shared, telling how to use it on the other phone (\"File ready! Open it in Kid Matix on the other phone, with 'Import a profile'.\"). The quoted label must match the settings row of the key backupImport. Informal \"tu\"."
+  },
+  "backupImportDone": "Profil de {nickname} importé ! Retrouve-le avec « Changer de joueur ».",
+  "@backupImportDone": {
+    "description": "Snack bar of the settings screen, shown after a backup file was imported as a new player of the phone (\"Awa's profile imported! Find it with 'Switch player'.\"). The quoted label must match the Profile tab button of the key switchPlayerButton. Informal \"tu\"; \"le\" stands for the profile.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "backupImportReplaced": "Progression de {nickname} restaurée !",
+  "@backupImportReplaced": {
+    "description": "Snack bar of the settings screen, shown after a backup file replaced the player of the phone with the same nickname (\"Awa's progress restored!\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "backupConflictTitle": "{nickname} existe déjà",
+  "@backupConflictTitle": {
+    "description": "Title of the dialog shown when the nickname of an imported backup is already used by a player of this phone (\"Awa already exists\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "backupConflictMessage": "Ce téléphone a déjà un joueur {nickname}. Le fichier contient {nickname} au niveau {level}.\n\nRemplacer efface la progression actuelle de {nickname} sur ce téléphone. Renommer garde les deux joueurs.",
+  "@backupConflictMessage": {
+    "description": "Body of the dialog shown when the nickname of an imported backup is already used on this phone: what each choice does (\"This phone already has a player Awa. The file holds Awa at level 5. Replace erases the current progress of Awa on this phone. Rename keeps both players.\").",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      },
+      "level": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "backupConflictReplace": "Remplacer",
+  "@backupConflictReplace": {
+    "description": "Destructive button of the nickname conflict dialog: the player of the phone is replaced by the file (\"Replace\"). Infinitive verb, one word."
+  },
+  "backupConflictRename": "Renommer",
+  "@backupConflictRename": {
+    "description": "Button of the nickname conflict dialog: the imported player gets another nickname, both players are kept (\"Rename\"). Infinitive verb, one word."
+  },
+  "backupRenameTitle": "Nouveau pseudo",
+  "@backupRenameTitle": {
+    "description": "Title of the dialog asking another nickname for the imported player (\"New nickname\")."
+  },
+  "backupRenameMessage": "Choisis un autre pseudo pour le joueur importé.",
+  "@backupRenameMessage": {
+    "description": "Text of the dialog asking another nickname for the imported player (\"Choose another nickname for the imported player.\"). Informal \"tu\"."
+  },
+  "backupRenameConfirm": "Importer",
+  "@backupRenameConfirm": {
+    "description": "Button of the rename dialog that imports the backup under the nickname typed (\"Import\"). Infinitive verb, one word."
+  },
+  "errorBackupInvalid": "Ce fichier n'est pas une sauvegarde Kid Matix, ou il est abîmé.",
+  "@errorBackupInvalid": {
+    "description": "Error snack bar of the settings screen, shown when the file picked for an import is not a Kid Matix backup or is damaged (\"This file is not a Kid Matix backup, or it is damaged.\")."
+  },
+  "errorBackupVersion": "Cette sauvegarde vient d'une version plus récente de Kid Matix. Mets l'app à jour, puis réessaie.",
+  "@errorBackupVersion": {
+    "description": "Error snack bar of the settings screen, shown when the file picked for an import was written by a newer version of the app (\"This backup comes from a newer version of Kid Matix. Update the app, then try again.\"). Informal \"tu\"."
+  },
+  "parentalGateTitle": "Demande à un adulte",
+  "@parentalGateTitle": {
+    "description": "Title of the parental gate, a full screen shown before exporting or importing a backup (\"Ask an adult\"). Informal \"tu\", addressed to the child."
+  },
+  "parentalGateMessage": "Cette action est réservée aux adultes. Écris ce nombre en chiffres :",
+  "@parentalGateMessage": {
+    "description": "Text of the parental gate, above a number written in words that the adult types in digits (\"This action is for adults. Write this number in digits:\"). The number in words is spelled by code per language, not by this key. Informal \"tu\"."
+  },
+  "parentalGateAnswerLabel": "Nombre en chiffres",
+  "@parentalGateAnswerLabel": {
+    "description": "Label of the field of the parental gate where the adult types the number in digits (\"Number in digits\")."
+  },
+  "parentalGateConfirm": "Valider",
+  "@parentalGateConfirm": {
+    "description": "Button of the parental gate that checks the number typed (\"Confirm\"). Infinitive verb, one word."
+  },
+  "settingsReminderSection": "Rappel",
+  "@settingsReminderSection": {
+    "description": "Name of the section of the settings screen holding the daily reminder (\"Reminder\"), mockup 13. Short section header, one line, a noun."
+  },
+  "settingsReminderDaily": "Rappel quotidien",
+  "@settingsReminderDaily": {
+    "description": "Switch of the settings screen that turns the daily reminder notification on or off for the whole phone (\"Daily reminder\"), mockup 13. Off by default; switching it on asks for the notification permission. Switch label: one line, a noun phrase, not a verb."
+  },
+  "settingsReminderTime": "Heure du rappel",
+  "@settingsReminderTime": {
+    "description": "Row of the settings screen showing the time of the daily reminder, such as 17:00; tapping it opens the time picker (\"Reminder time\"), mockup 13. Greyed while the reminder is off."
+  },
+  "settingsReminderPermissionDenied": "Les notifications sont bloquées. Autorise-les dans les réglages du téléphone pour recevoir le rappel.",
+  "@settingsReminderPermissionDenied": {
+    "description": "Message shown at the bottom of the settings screen when the phone refuses the notifications after the daily reminder is switched on; the switch goes back off (\"Notifications are blocked. Allow them in the phone settings to get the reminder.\"). Read by a child or a parent, informal \"tu\". Shown in a snack bar, at most 2 lines."
+  },
+  "settingsReminderError": "Oups, le rappel n'a pas pu être réglé.",
+  "@settingsReminderError": {
+    "description": "Message shown at the bottom of the settings screen when the daily reminder cannot be saved or scheduled (\"Oops, the reminder could not be set.\"). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines."
+  },
+  "settingsLanguageSection": "Langue",
+  "@settingsLanguageSection": {
+    "description": "Name of the section of the settings screen where the language of the app is chosen for the whole phone (\"Language\"). Short section header, one line, a noun."
+  },
+  "settingsLanguageSystem": "Langue du téléphone",
+  "@settingsLanguageSystem": {
+    "description": "First choice of the \"Langue\" section of the settings screen: the app follows the language of the phone (French when the phone speaks none of the app's languages). One line, radio button label."
+  },
+  "languageNameFrench": "Français",
+  "@languageNameFrench": {
+    "description": "Choice of the \"Langue\" section of the settings screen: the French language, always written in French whatever the language of the app. Do not translate."
+  },
+  "languageNameEnglish": "English",
+  "@languageNameEnglish": {
+    "description": "Choice of the \"Langue\" section of the settings screen: the English language, always written in English whatever the language of the app. Do not translate."
+  },
+  "languageNameSpanish": "Español",
+  "@languageNameSpanish": {
+    "description": "Choice of the \"Langue\" section of the settings screen: the Spanish language, always written in Spanish whatever the language of the app. Do not translate."
+  },
+  "settingsLanguageError": "Oups, la langue n'a pas pu être enregistrée.",
+  "@settingsLanguageError": {
+    "description": "Message shown at the bottom of the settings screen when the language chosen cannot be saved; the previous language comes back (\"Oops, the language could not be saved.\"). Friendly tone, no technical words. Shown in a snack bar, at most 2 lines."
+  },
+  "reminderNotificationBody": "C'est l'heure de tes tables !",
+  "@reminderNotificationBody": {
+    "description": "Message of the daily reminder notification, under the app name; tapping it opens the app (\"It's time for your tables!\"). Neutral: the phone is shared by several children, so no nickname. Short, fits on one line of a notification."
+  },
+  "reminderChannelName": "Rappel quotidien",
+  "@reminderChannelName": {
+    "description": "Name of the notification category of the daily reminder, shown by Android in the notification settings of the app (\"Daily reminder\"). Short, one line: Android lists it as the title of a notification category. Kept apart from settingsReminderDaily on purpose, though the French is the same."
+  },
+  "reminderChannelDescription": "Te rappelle de jouer chaque jour à l'heure choisie.",
+  "@reminderChannelDescription": {
+    "description": "Description of the notification category of the daily reminder, shown by Android in the notification settings of the app (\"Reminds you to play every day at the chosen time.\"). One short sentence; speaks to the child with the informal \"tu\", though a parent may read it in the phone settings."
+  },
   "settingsPlayerSection": "Ce joueur",
   "@settingsPlayerSection": {
     "description": "Name of the section of the settings screen holding the actions on the player: reset and delete (\"This player\")."
@@ -510,6 +674,76 @@
   "@quizHintTrueFalse": {
     "description": "Hint in a dashed box under the true and false buttons, asking whether the calculation shown is right (\"Is this calculation right?\"). One or two short lines."
   },
+  "quizFindOperationMultiplication": "Quelle multiplication donne",
+  "@quizFindOperationMultiplication": {
+    "description": "Words at the top of the question card of a \"find the operation\" question in the multiplication domain (\"Which multiplication gives\"). The result follows on its own line in a big yellow box, so the sentence stays open and has no question mark: phrase it so the number can come right after it. One line."
+  },
+  "quizFindOperationSpokenMultiplication": "Quelle multiplication donne {result} ?",
+  "@quizFindOperationSpokenMultiplication": {
+    "description": "What a screen reader says for the question card of a \"find the operation\" question in the multiplication domain (\"Which multiplication gives 24?\"), in place of the words and the result shown. {result} is the product the player must reach. Never shown.",
+    "placeholders": {
+      "result": {
+        "type": "int",
+        "example": "24"
+      }
+    }
+  },
+  "quizHintFindOperation": "Touche la bonne opération",
+  "@quizHintFindOperation": {
+    "description": "Hint in a dashed box under the four operation buttons of a \"find the operation\" question (\"Tap the right operation\"). Imperative verb, speaks to a child with \"tu\"; one or two short lines."
+  },
+  "quizMatchPairsTitle": "Relie chaque opération à son résultat",
+  "@quizMatchPairsTitle": {
+    "description": "Title at the top of a \"match the pairs\" question, in place of the question card, above two columns: four operations and their four results (\"Match each operation with its result\"). Imperative verb, speaks to a child with \"tu\"; two lines at most."
+  },
+  "quizMatchPairsProgress": "{count, plural, =0{Aucune paire trouvée sur {total}} =1{1 paire trouvée sur {total}} other{{count} paires trouvées sur {total}}}",
+  "@quizMatchPairsProgress": {
+    "description": "Line under the title of a \"match the pairs\" question counting the pairs already matched (\"1 pair found out of 4\"); also read aloud by screen readers when it changes. {count} is the number of pairs found, {total} the number of pairs of the question (4). One line.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "quizMatchPairsHintStart": "Touche une opération, puis son résultat",
+  "@quizMatchPairsHintStart": {
+    "description": "Hint in a dashed box under a \"match the pairs\" question before anything is selected (\"Tap an operation, then its result\"). Speaks to a child with \"tu\"; one or two lines."
+  },
+  "quizMatchPairsHintResult": "Touche maintenant le résultat de {operation}",
+  "@quizMatchPairsHintResult": {
+    "description": "Hint in the dashed box under a \"match the pairs\" board once the player has tapped an operation (\"Now tap the result of 5 × 6\"); also read aloud by screen readers. {operation} is the operation as shown on its button, digits and the × sign. Speaks to a child with \"tu\"; one or two lines.",
+    "placeholders": {
+      "operation": {
+        "type": "String",
+        "example": "5 × 6"
+      }
+    }
+  },
+  "quizMatchPairsHintOperation": "Touche maintenant l'opération qui donne {result}",
+  "@quizMatchPairsHintOperation": {
+    "description": "Hint in the dashed box under a \"match the pairs\" board once the player has tapped a result first (\"Now tap the operation that gives 30\"); also read aloud by screen readers. {result} is the number shown on the result button. Speaks to a child with \"tu\"; one or two lines.",
+    "placeholders": {
+      "result": {
+        "type": "String",
+        "example": "30"
+      }
+    }
+  },
+  "quizMatchPairsFound": "{label}, paire trouvée",
+  "@quizMatchPairsFound": {
+    "description": "What a screen reader says for an operation or a result button already matched in a \"match the pairs\" question (\"5 times 6, pair found\"). {label} is the button as spoken words: an operation (\"5 fois 6\") or a number (\"30\"). Never shown.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "5 fois 6"
+      }
+    }
+  },
   "quizTrue": "Vrai",
   "@quizTrue": {
     "description": "Label of the button that says the statement is true (\"True\"). One word."
@@ -619,6 +853,32 @@
   "quizModeTimeAttack": "Contre-la-montre",
   "@quizModeTimeAttack": {
     "description": "Name of the time attack challenge (as many right answers as possible in 60 seconds), shown under the results title and on the challenges screen (\"Against the clock\")."
+  },
+  "quizModeSurvival": "Survie",
+  "@quizModeSurvival": {
+    "description": "Name of the survival challenge (3 lives, less and less time per question), shown under the results title and on the challenges screen (\"Survival\")."
+  },
+  "quizLivesSpoken": "{left, plural, =0{Plus de vie} =1{1 vie sur {total}} other{{left} vies sur {total}}}",
+  "@quizLivesSpoken": {
+    "description": "Screen-reader text of the hearts at the top of a survival quiz, whose visible content is only hearts, full or emptied (\"2 lives out of 3\", \"No life left\").",
+    "placeholders": {
+      "left": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "quizModeDailyReview": "Révision du jour",
+  "@quizModeDailyReview": {
+    "description": "Name of the daily review (10 questions on the facts the player should review), shown as the title of its card on the challenges screen and under the results title (\"Daily review\")."
+  },
+  "quizModeMonsterHunt": "Chasse aux monstres",
+  "@quizModeMonsterHunt": {
+    "description": "Name of the monster hunt (10 questions on the facts the player keeps missing, drawn as little monsters), shown as the title of its card on the challenges screen and under the results title (\"Monster hunt\")."
   },
   "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
   "@quizScoreSpoken": {
@@ -821,6 +1081,112 @@
   "pathCrownHint": "Bats le boss pour gagner la couronne.",
   "@pathCrownHint": {
     "description": "Hint under the stars of a table on its detail screen (\"Beat the boss to win the crown.\"). Talks to the child."
+  },
+  "placementOfferTitle": "Tu connais déjà des tables ?",
+  "@placementOfferTitle": {
+    "description": "Header of the placement test offer, the full screen shown right after a new player is created (\"Do you already know some tables?\"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most."
+  },
+  "placementOfferMessage": "Réponds à une question par table, sans chrono. Chaque table que tu connais s'ouvre tout de suite dans ton parcours.",
+  "@placementOfferMessage": {
+    "description": "Text under the title of the placement test offer (\"Answer one question per table, no timer. Each table you know opens right away in your path.\"). The path is the map of tables the child plays through. Talks to the child (informal tu)."
+  },
+  "placementOfferStart": "Faire le test",
+  "@placementOfferStart": {
+    "description": "Primary full-width button of the placement test offer that starts the 12 questions (\"Take the test\"). One line, short."
+  },
+  "placementOfferSkip": "Passer",
+  "@placementOfferSkip": {
+    "description": "Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
+  },
+  "placementQuestionProgress": "Question {current} sur {total}",
+  "@placementQuestionProgress": {
+    "description": "What a screen reader says for the progress bar at the top of a placement test question (\"Question 3 of 12\"). Not shown on screen.",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "placementUnknownAnswer": "Je ne sais pas",
+  "@placementUnknownAnswer": {
+    "description": "Text button under the keypad of a placement test question: the child does not know the answer and goes to the next question (\"I don't know\"). Said by the child (first person). One line."
+  },
+  "placementQuitTooltip": "Arrêter le test",
+  "@placementQuitTooltip": {
+    "description": "Tooltip and screen-reader text of the cross icon at the top left of a placement test question, that leaves the test (\"Stop the test\"). \"Arrêter\" is an infinitive verb. Short."
+  },
+  "placementQuitTitle": "Arrêter le test ?",
+  "@placementQuitTitle": {
+    "description": "Title of the dialog confirming that the child leaves the placement test, shown by the cross or the system back (\"Stop the test?\"). Talks to the child. One line."
+  },
+  "placementQuitMessage": "Les tables déjà trouvées restent ouvertes dans ton parcours.",
+  "@placementQuitMessage": {
+    "description": "Body of the dialog confirming that the child leaves the placement test (\"The tables already found stay open in your path.\"). Talks to the child (informal tu)."
+  },
+  "placementQuitCancel": "Continuer le test",
+  "@placementQuitCancel": {
+    "description": "Dialog button that stays in the placement test (\"Go on with the test\"). \"Continuer\" is an infinitive verb. Short, one line."
+  },
+  "placementQuitConfirm": "Arrêter",
+  "@placementQuitConfirm": {
+    "description": "Dialog button that leaves the placement test for the path (\"Stop\"). \"Arrêter\" is an infinitive verb. One word if possible."
+  },
+  "placementResultTitle": "{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}",
+  "@placementResultTitle": {
+    "description": "Header of the placement test result screen, with the number of tables the child already knows (\"You already know 3 tables!\"); with none, \"Everything is to discover!\". Talks to the child (informal tu). Two short lines at most.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placementResultSubtitle": "{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}",
+  "@placementResultSubtitle": {
+    "description": "Text under the title of the placement test result. With one table or more: \"It is / They are open in your path. Its / Their stars are still to win.\" (\"Elle\"/\"Elles\" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placementLegendKnown": "Déjà connue",
+  "@placementLegendKnown": {
+    "description": "Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows (\"Already known\"; feminine in French because it agrees with \"table\"). One line, a few words."
+  },
+  "placementLegendToDiscover": "À découvrir",
+  "@placementLegendToDiscover": {
+    "description": "Legend label under the grid of the placement test result, next to the light swatch: a table still to learn (\"To discover\"). One line, a few words."
+  },
+  "placementTableKnown": "{name}, déjà connue",
+  "@placementTableKnown": {
+    "description": "What a screen reader says for a tile of the placement test result grid when the table was found (\"Table of 2, already known\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 2"
+      }
+    }
+  },
+  "placementTableToDiscover": "{name}, à découvrir",
+  "@placementTableToDiscover": {
+    "description": "What a screen reader says for a tile of the placement test result grid when the table was not found (\"Table of 7, to discover\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Table de 7"
+      }
+    }
+  },
+  "placementSeePath": "Voir mon parcours",
+  "@placementSeePath": {
+    "description": "Primary full-width button that leaves the placement test for the path (\"See my path\"): on the result screen, and on the error screen when the test cannot be built or saved. One line."
   },
   "pathTableBack": "Retour au parcours",
   "@pathTableBack": {
@@ -1044,6 +1410,16 @@
   "@rewardXpEarnedLabel": {
     "description": "Label under the XP earned on the first results tile (\"XP earned\"). XP means experience points. Short, one line in a third of the screen width."
   },
+  "rewardXpEarnedInline": "+{xp} XP",
+  "@rewardXpEarnedInline": {
+    "description": "XP earned by a quiz, written on one line with its unit, such as \"+210 XP\" at the right of the band of the challenge comparison screen. XP means experience points.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "210"
+      }
+    }
+  },
   "rewardLevel": "Niveau {level}",
   "@rewardLevel": {
     "description": "Level of the player, bold title of the level card on the results screen (\"Level 4\"). Short, one line.",
@@ -1104,6 +1480,10 @@
   "@rewardBadgeSprinter": {
     "description": "Name of the badge for 20 right answers in one time attack (\"Sprinter\", a fast runner). Short: title of the badge celebration and of the badge list of the results."
   },
+  "rewardBadgeSurvivor": "Survivant",
+  "@rewardBadgeSurvivor": {
+    "description": "Name of the badge for 30 right answers in one survival game (\"Survivor\"). Short: title of the badge celebration and of the badge list of the results."
+  },
   "rewardBadgeRegular": "Régulier",
   "@rewardBadgeRegular": {
     "description": "Name of the badge for a 7-day streak (\"Steady\", adjective describing the player). Short: title of the badge celebration and of the badge list of the results."
@@ -1137,6 +1517,10 @@
   "rewardBadgeSprinterHint": "20 bonnes réponses en Contre-la-montre.",
   "@rewardBadgeSprinterHint": {
     "description": "Line under the Sprinter badge in its celebration (\"20 right answers in a time attack.\"). One or two lines."
+  },
+  "rewardBadgeSurvivorHint": "30 bonnes réponses en Survie.",
+  "@rewardBadgeSurvivorHint": {
+    "description": "Line under the Survivant badge in its celebration and on the Profile tab (\"30 right answers in survival.\"). One or two lines."
   },
   "rewardBadgeRegularHint": "7 jours de jeu d'affilée.",
   "@rewardBadgeRegularHint": {
@@ -1528,6 +1912,38 @@
   "@challengeTimeAttackSubtitle": {
     "description": "Line under \"Contre-la-montre\" on its card of the challenges screen (\"60 seconds, as many answers as you can\")."
   },
+  "challengeSurvivalSubtitle": "3 vies, de plus en plus vite",
+  "@challengeSurvivalSubtitle": {
+    "description": "Line under \"Survie\" on its card of the challenges screen (\"3 lives, faster and faster\")."
+  },
+  "challengeSurvivalTimerNote": "Ici, le chrono reste actif.",
+  "@challengeSurvivalTimerNote": {
+    "description": "Small line on the Survie card, shown only to a player who turned the timer off in the settings: survival keeps its timer anyway (\"Here, the timer stays on.\"). Talks to the child. One line."
+  },
+  "challengeDailyReviewSubtitle": "{count, plural, =1{1 question choisie pour toi} other{{count} questions choisies pour toi}}",
+  "@challengeDailyReviewSubtitle": {
+    "description": "Line under \"Révision du jour\" on its card of the challenges screen (\"10 questions chosen for you\"). Talks to the child (informal tu).",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "challengeDailyReviewDue": "{count, plural, other{{count} à revoir}}",
+  "@challengeDailyReviewDue": {
+    "description": "Yellow pill at the end of the daily review card: number of facts whose review date has passed (\"8 to review\"). Short; hidden when no fact is due.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "challengeDailyReviewLocked": "Joue d'abord une étape du parcours",
+  "@challengeDailyReviewLocked": {
+    "description": "Line under \"Révision du jour\" on its greyed-out card while the player has never been asked a fact (\"Play a stage of the path first\"). Talks to the child (informal tu)."
+  },
   "resultsNewRecord": "Nouveau record !",
   "@resultsNewRecord": {
     "description": "Title of the card on the results of a time attack that beat the player's best score (\"New record!\")."
@@ -1579,5 +1995,783 @@
         "example": "18"
       }
     }
+  },
+  "challengeMonsterHuntSubtitle": "{count, plural, =0{Aucun monstre pour l'instant} =1{1 monstre à apprivoiser} other{{count} monstres à apprivoiser}}",
+  "@challengeMonsterHuntSubtitle": {
+    "description": "Line under \"Chasse aux monstres\" on its card of the challenges screen: how many little monsters (facts the player keeps missing) wait to be tamed (\"3 monsters to tame\"); a neutral line when there is none (\"No monster for now\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "duelTitle": "Duel",
+  "@duelTitle": {
+    "description": "Name of the duel on one phone, on its card of the challenges screen and at the top of the player choice (\"Duel\")."
+  },
+  "challengeDuelSubtitle": "2 joueurs, 1 téléphone",
+  "@challengeDuelSubtitle": {
+    "description": "Line under \"Duel\" on its card of the challenges screen (\"2 players, 1 phone\")."
+  },
+  "challengeCodeCardTitle": "J'ai un code",
+  "@challengeCodeCardTitle": {
+    "description": "Title of the dashed card at the bottom of the challenges screen, and of the screen it opens, where the child types the code a friend gave (\"I have a code\"). The child speaks in the first person. Short, one line."
+  },
+  "challengeCodeCardSubtitle": "Rejoue le défi d'un ami",
+  "@challengeCodeCardSubtitle": {
+    "description": "Line under \"J'ai un code\" on its card of the challenges screen (\"Replay a friend's challenge\"). Imperative. Talks to the child (informal tu). One line."
+  },
+  "challengeShareButton": "Défier un ami",
+  "@challengeShareButton": {
+    "description": "Button at the end of a free training or a time attack, and title of the screen it opens showing the challenge code to give to a friend (\"Challenge a friend\"). \"Défier\" is an infinitive verb. One line."
+  },
+  "challengeCodeToBeat": "à battre",
+  "@challengeCodeToBeat": {
+    "description": "Small line under the score in the yellow badge of the challenge code card: the score is the one the friend has to beat (\"to beat\"). Very short: the badge is narrow."
+  },
+  "challengeCodeYours": "Ton code de défi",
+  "@challengeCodeYours": {
+    "description": "Small line above the big challenge code on the \"Défier un ami\" screen (\"Your challenge code\"). Talks to the child (informal tu). One line."
+  },
+  "challengeCodeSemantics": "Code de défi : {characters}",
+  "@challengeCodeSemantics": {
+    "description": "Screen-reader text of the big challenge code: the characters are given one by one, separated by spaces, so they are spelled (\"Challenge code: K 7 M 2…\").",
+    "placeholders": {
+      "characters": {
+        "type": "String",
+        "example": "K 7 M 2 Q X 9 T B 4"
+      }
+    }
+  },
+  "challengeCodeCopy": "Copier le code",
+  "@challengeCodeCopy": {
+    "description": "Yellow button under the challenge code: copies it to the clipboard (\"Copy the code\"). \"Copier\" is an infinitive verb. One line."
+  },
+  "challengeCodeCopied": "Code copié !",
+  "@challengeCodeCopied": {
+    "description": "Short message shown in a snackbar at the bottom of the screen once the challenge code is copied (\"Code copied!\"). One line."
+  },
+  "challengeCodeShareHint": "Donne ce code à un ami : même mode, mêmes tables, et ton score à battre !",
+  "@challengeCodeShareHint": {
+    "description": "Line under the challenge code card: what giving the code does (\"Give this code to a friend: same mode, same tables, and your score to beat!\"). The friend's questions come from the code, so they may differ from the ones the player just had. Talks to the child (informal tu). Up to three centered lines."
+  },
+  "challengeCodeOr": "ou",
+  "@challengeCodeOr": {
+    "description": "Word in the middle of the line separating the shown code from the code entry on the \"Défier un ami\" screen (\"or\"). One short lowercase word."
+  },
+  "challengeCodeEntryTitle": "Tu as reçu un code ?",
+  "@challengeCodeEntryTitle": {
+    "description": "Title of the card where the child types a challenge code received from a friend (\"Did you get a code?\"). Talks to the child (informal tu). One line."
+  },
+  "challengeCodeEntryHint": "ÉCRIS LE CODE ICI",
+  "@challengeCodeEntryHint": {
+    "description": "Placeholder of the challenge code field (\"Type the code here\"). Written in capital letters because the field turns what the child types into capitals, as in the mockup; keep it in capitals in languages that have them. Talks to the child (informal tu). One line, about 20 characters."
+  },
+  "challengeCodePlay": "Jouer ce défi",
+  "@challengeCodePlay": {
+    "description": "Button under the challenge code field: checks the code and starts its game (\"Play this challenge\"). \"Jouer\" is an infinitive verb. One line."
+  },
+  "challengeCodeErrorMalformed": "Ce code n'existe pas. Un code a 10 lettres et chiffres.",
+  "@challengeCodeErrorMalformed": {
+    "description": "Message under the code field when what was typed is not a challenge code: wrong length or a character that codes never use (\"This code does not exist. A code has 10 letters and digits.\"). Talks to the child (informal tu). Kind, never blaming; up to two lines."
+  },
+  "challengeCodeErrorAltered": "Une lettre ou un chiffre ne va pas. Vérifie le code avec ton ami.",
+  "@challengeCodeErrorAltered": {
+    "description": "Message under the code field when the check character shows a typing mistake: a character changed or two swapped (\"A letter or a digit is wrong. Check the code with your friend.\"). Talks to the child (informal tu). Kind, never blaming; up to two lines."
+  },
+  "challengeCodeErrorVersion": "Ce défi vient d'une version plus récente de l'app. Mets l'app à jour pour le jouer.",
+  "@challengeCodeErrorVersion": {
+    "description": "Message under the code field when the code was made by a newer version of the app, whose questions this one cannot draw (\"This challenge comes from a newer version of the app. Update the app to play it.\"). Talks to the child (informal tu). Up to three lines."
+  },
+  "challengeCodeTablesAll": "toutes les tables",
+  "@challengeCodeTablesAll": {
+    "description": "Tables of a challenge when it covers the 12 tables, after the mode in the subtitle of the comparison screen (\"all the tables\"). Lowercase: it follows \"Contre-la-montre ·\". The capitalized form on its own line is challengeCodeCardTablesAll."
+  },
+  "challengeCodeTablesOne": "table de {table}",
+  "@challengeCodeTablesOne": {
+    "description": "Tables of a challenge on one table, after the mode in the subtitle of the comparison screen (\"table of 7\"). Lowercase: it follows \"Contre-la-montre ·\". The capitalized form on its own line is challengeCodeCardTablesOne.",
+    "placeholders": {
+      "table": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "challengeCodeTableItem": "de {table}",
+  "@challengeCodeTableItem": {
+    "description": "One table in the list of the tables of a challenge, such as \"de 2\" in \"tables de 2, de 5 et de 7\". Used by challengeCodeTablesMany and challengeCodeCardTablesMany; the items are joined by \", \" in code.",
+    "placeholders": {
+      "table": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "challengeCodeTablesMany": "tables {first} et {last}",
+  "@challengeCodeTablesMany": {
+    "description": "Tables of a challenge on several tables, after the mode in the subtitle of the comparison screen (\"tables de 2, de 5 et de 7\"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Lowercase: it follows \"Contre-la-montre ·\". The capitalized form on its own line is challengeCodeCardTablesMany.",
+    "placeholders": {
+      "first": {
+        "type": "String",
+        "example": "de 2, de 5"
+      },
+      "last": {
+        "type": "String",
+        "example": "de 7"
+      }
+    }
+  },
+  "challengeCodeCardTablesAll": "Toutes les tables",
+  "@challengeCodeCardTablesAll": {
+    "description": "Tables of a challenge covering the 12 tables, on their own line under the mode in the violet card of the \"Défier un ami\" screen (\"All the tables\"). Starts with a capital letter: it begins its line. One line."
+  },
+  "challengeCodeCardTablesOne": "Table de {table}",
+  "@challengeCodeCardTablesOne": {
+    "description": "Tables of a challenge on one table, on their own line under the mode in the violet card of the \"Défier un ami\" screen (\"Table of 7\"). Starts with a capital letter: it begins its line. One line.",
+    "placeholders": {
+      "table": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "challengeCodeCardTablesMany": "Tables {first} et {last}",
+  "@challengeCodeCardTablesMany": {
+    "description": "Tables of a challenge on several tables, on their own line under the mode in the violet card of the \"Défier un ami\" screen (\"Tables de 2 et de 5\"): first is every table but the last, each written with challengeCodeTableItem and separated by commas; last is the last one, written the same way. Starts with a capital letter: it begins its line.",
+    "placeholders": {
+      "first": {
+        "type": "String",
+        "example": "de 2, de 5"
+      },
+      "last": {
+        "type": "String",
+        "example": "de 7"
+      }
+    }
+  },
+  "challengeCodeSubtitle": "{mode} · {tables}",
+  "@challengeCodeSubtitle": {
+    "description": "Line under the title of the challenge score comparison: the mode and the tables of the challenge (\"Contre-la-montre · tables de 2 et de 5\").",
+    "placeholders": {
+      "mode": {
+        "type": "String",
+        "example": "Contre-la-montre"
+      },
+      "tables": {
+        "type": "String",
+        "example": "tables de 2 et de 5"
+      }
+    }
+  },
+  "challengeOutcomeWon": "Défi gagné !",
+  "@challengeOutcomeWon": {
+    "description": "Big title of the comparison screen when the child beat the score of the code (\"Challenge won!\"). Joyful, one line."
+  },
+  "challengeOutcomeLost": "Pas cette fois !",
+  "@challengeOutcomeLost": {
+    "description": "Big title of the comparison screen when the child did not reach the score of the code; kind, never discouraging (\"Not this time!\"). One line."
+  },
+  "challengeOutcomeTie": "Égalité !",
+  "@challengeOutcomeTie": {
+    "description": "Big title of the comparison screen when the child made exactly the score of the code (\"It's a tie!\"). One line."
+  },
+  "challengeOutcomeToBeat": "Score à battre",
+  "@challengeOutcomeToBeat": {
+    "description": "Label of the white card of the comparison screen: the score the friend made, written in the code (\"Score to beat\"). Short: the card is half the screen wide."
+  },
+  "challengeOutcomeYours": "Ton score",
+  "@challengeOutcomeYours": {
+    "description": "Label of the violet card of the comparison screen: the child's score (\"Your score\"). Talks to the child (informal tu). Short: the card is half the screen wide."
+  },
+  "challengeOutcomeCorrect": "{count, plural, =0{bonne réponse} =1{bonne réponse} other{bonnes réponses}}",
+  "@challengeOutcomeCorrect": {
+    "description": "Line under the big score of each card of the comparison screen; the number itself is shown above it, so the text has no number (\"right answer(s)\"). Short: the card is half the screen wide.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "18"
+      }
+    }
+  },
+  "challengeOutcomeMore": "{count, plural, =1{1 bonne réponse de plus} other{{count} bonnes réponses de plus}}",
+  "@challengeOutcomeMore": {
+    "description": "Difference shown in the yellow band of the comparison screen when the child won (\"3 more right answers\"). One line, beside the XP earned.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "challengeOutcomeFewer": "{count, plural, =1{1 bonne réponse de moins} other{{count} bonnes réponses de moins}}",
+  "@challengeOutcomeFewer": {
+    "description": "Difference shown in the yellow band of the comparison screen when the child lost (\"2 fewer right answers\"). One line, beside the XP earned.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "challengeOutcomeSame": "Autant de bonnes réponses",
+  "@challengeOutcomeSame": {
+    "description": "Text of the yellow band of the comparison screen on a tie (\"As many right answers\"). One line, beside the XP earned."
+  },
+  "challengeOutcomeResend": "Renvoyer un défi",
+  "@challengeOutcomeResend": {
+    "description": "Main button of the comparison screen: makes a new code with the same questions and the child's score to beat (\"Send a challenge back\"). \"Renvoyer\" is an infinitive verb. One line."
+  },
+  "challengeOutcomeBack": "Retour aux défis",
+  "@challengeOutcomeBack": {
+    "description": "Second button of the comparison screen: back to the challenges tab (\"Back to the challenges\"). One line."
+  },
+  "duelPickIntro": "Posez le téléphone à plat entre vous deux. Le joueur du haut lit à l'envers.",
+  "@duelPickIntro": {
+    "description": "Line under the title of the duel player choice: how to hold the phone (\"Lay the phone flat between you. The top player reads upside down.\"). Talks to both children (vous)."
+  },
+  "duelSideTop": "Joueur du haut",
+  "@duelSideTop": {
+    "description": "Section title in the duel player choice: the list where the player of the upside-down top half is chosen (\"Top player\"). One line."
+  },
+  "duelSideBottom": "Joueur du bas",
+  "@duelSideBottom": {
+    "description": "Section title in the duel player choice: the list where the player of the bottom half is chosen (\"Bottom player\"). One line."
+  },
+  "duelGuest": "Invité",
+  "@duelGuest": {
+    "description": "Choice for someone who has no profile on the phone; also the name shown on their half of the duel (\"Guest\"). Short."
+  },
+  "duelGuestRule": "Toutes les tables, sans XP",
+  "@duelGuestRule": {
+    "description": "Small line under \"Invité\" in the player choice: a guest plays every table and earns no XP (\"All tables, no XP\"). Short."
+  },
+  "duelPickHint": "Choisissez deux joueurs différents.",
+  "@duelPickHint": {
+    "description": "Line above the disabled start button of the duel player choice while the two players are not chosen or are the same (\"Pick two different players.\"). Talks to both children (vous)."
+  },
+  "duelStart": "C'est parti !",
+  "@duelStart": {
+    "description": "Button at the bottom of the duel player choice that starts the duel once both players are chosen (\"Let's go!\"). Short, one line."
+  },
+  "duelPlayerTaken": "Déjà choisi",
+  "@duelPlayerTaken": {
+    "description": "Screen-reader hint, in the duel player choice, of a player already chosen for the other half, who cannot be picked twice (\"Already picked\"; masculine singular past participle, may refer to a girl or a boy)."
+  },
+  "duelScore": "{score} / {target}",
+  "@duelScore": {
+    "description": "Score of a player on their half of the duel: right answers / answers that win (\"4 / 10\").",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "4"
+      },
+      "target": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "duelScoreSpoken": "{name} : {score, plural, =0{aucune bonne réponse} =1{1 bonne réponse} other{{score} bonnes réponses}} sur {target}",
+  "@duelScoreSpoken": {
+    "description": "Screen-reader text of a player's progress bar on their half of the duel: nickname (or \"Invité\"), then right answers out of the answers that win, with a plural on the score (\"Moussa: 4 right answers out of 10\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Moussa"
+      },
+      "score": {
+        "type": "int",
+        "example": "4"
+      },
+      "target": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "duelPause": "Mettre le duel en pause",
+  "@duelPause": {
+    "description": "Tooltip of the round pause button between the two halves of the duel (\"Pause the duel\")."
+  },
+  "duelPauseTitle": "Duel en pause",
+  "@duelPauseTitle": {
+    "description": "Title of the dialog opened by the pause button of the duel (\"Duel paused\")."
+  },
+  "duelPauseMessage": "Si vous arrêtez maintenant, personne ne gagne d'XP.",
+  "@duelPauseMessage": {
+    "description": "Text of the pause dialog of the duel (\"If you stop now, nobody earns XP.\"). Talks to both children (vous)."
+  },
+  "duelResume": "Reprendre",
+  "@duelResume": {
+    "description": "Button of the pause dialog that goes back to the duel (\"Resume\")."
+  },
+  "duelStop": "Arrêter le duel",
+  "@duelStop": {
+    "description": "Button of the pause dialog that stops the duel and goes back to the player choice (\"Stop the duel\")."
+  },
+  "duelBlocked": "Oups ! Attends un peu…",
+  "@duelBlocked": {
+    "description": "Line on the half of a player who just gave a wrong answer: their buttons are blocked for 2 seconds while the right answer shows (\"Oops! Wait a moment…\"). Talks to that child (informal tu). Short, one line."
+  },
+  "duelAnswerRight": "{answer}, bonne réponse",
+  "@duelAnswerRight": {
+    "description": "Screen-reader label of the answer button showing the right answer after a mistake in the duel (\"42, right answer\").",
+    "placeholders": {
+      "answer": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "duelAnswerWrong": "{answer}, mauvaise réponse",
+  "@duelAnswerWrong": {
+    "description": "Screen-reader label of the answer button the player tapped by mistake in the duel (\"36, wrong answer\").",
+    "placeholders": {
+      "answer": {
+        "type": "int",
+        "example": "36"
+      }
+    }
+  },
+  "duelWinner": "{name} gagne !",
+  "@duelWinner": {
+    "description": "Title of the end of the duel, with the winner's nickname, or \"Invité\" (\"Awa wins!\").",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "duelXpEarned": "+{xp} XP",
+  "@duelXpEarned": {
+    "description": "XP a player of the phone earned in the duel, on the end screen (\"+120 XP\").",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "120"
+      }
+    }
+  },
+  "duelGuestNoXp": "Pas d'XP pour un invité",
+  "@duelGuestNoXp": {
+    "description": "Line instead of the XP for a guest on the end screen of the duel (\"No XP for a guest\")."
+  },
+  "duelXpNotSaved": "Les XP n'ont pas pu être enregistrés.",
+  "@duelXpNotSaved": {
+    "description": "Line on the end screen of the duel when the phone failed to save the XP (\"The XP could not be saved.\")."
+  },
+  "duelReplay": "Rejouer",
+  "@duelReplay": {
+    "description": "Button of the end screen of the duel that starts a new duel between the same players (\"Play again\", infinitive verb). Short, one line."
+  },
+  "duelQuit": "Quitter",
+  "@duelQuit": {
+    "description": "Button of the end screen of the duel that goes back to the challenges screen (\"Leave\", infinitive verb). Short, one line."
+  },
+  "monstersPageTitle": "Mes monstres",
+  "@monstersPageTitle": {
+    "description": "Title of the « Mes monstres » screen, which lists the facts the player keeps missing as little monsters to tame (\"My monsters\")."
+  },
+  "monstersIntro": "Ces calculs te résistent encore. Réussis-les pour apprivoiser leurs monstres.",
+  "@monstersIntro": {
+    "description": "Line under the title of the « Mes monstres » screen (\"These sums still resist you. Get them right to tame their monsters.\"). Talks to the child (informal tu)."
+  },
+  "monstersEmpty": "Aucun monstre en vue, bravo ! Un calcul raté deux fois deviendra un petit monstre à apprivoiser.",
+  "@monstersEmpty": {
+    "description": "Encouraging text of the « Mes monstres » screen when no fact is a monster (\"No monster in sight, well done! A sum missed twice will become a little monster to tame.\"). Talks to the child (informal tu)."
+  },
+  "monsterToughnessVeryTough": "Très coriace",
+  "@monsterToughnessVeryTough": {
+    "description": "Label on the right of a monster whose fact was missed lately, the hardest to tame (\"Very tough\"). Short."
+  },
+  "monsterToughnessTough": "Coriace",
+  "@monsterToughnessTough": {
+    "description": "Label on the right of a monster whose fact is improving (\"Tough\"). Short."
+  },
+  "monsterToughnessAlmostTamed": "Presque apprivoisé",
+  "@monsterToughnessAlmostTamed": {
+    "description": "Label on the right of a monster whose fact is one step from being known (\"Almost tamed\"). Short."
+  },
+  "monsterWildSpoken": "Monstre {fact}, {toughness}",
+  "@monsterWildSpoken": {
+    "description": "What a screen reader says for a monster still to tame on the « Mes monstres » screen (\"Monster 7 times 8, very tough\").",
+    "placeholders": {
+      "fact": {
+        "type": "String",
+        "example": "7 fois 8"
+      },
+      "toughness": {
+        "type": "String",
+        "example": "Très coriace"
+      }
+    }
+  },
+  "monsterTamedSpoken": "Monstre {fact}, apprivoisé",
+  "@monsterTamedSpoken": {
+    "description": "What a screen reader says for a tamed monster of the « Apprivoisés » collection (\"Monster 6 times 7, tamed\").",
+    "placeholders": {
+      "fact": {
+        "type": "String",
+        "example": "6 fois 7"
+      }
+    }
+  },
+  "monstersHuntButton": "Lancer la chasse",
+  "@monstersHuntButton": {
+    "description": "Main button of the « Mes monstres » screen: starts the monster hunt quiz (\"Start the hunt\")."
+  },
+  "monstersHuntQuestions": "{count, plural, =1{1 question} other{{count} questions}}",
+  "@monstersHuntQuestions": {
+    "description": "Second line of the \"Lancer la chasse\" button: number of questions of the hunt (\"10 questions\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "monstersTamedTitle": "Apprivoisés",
+  "@monstersTamedTitle": {
+    "description": "Title of the collection of tamed monsters at the bottom of the « Mes monstres » screen (\"Tamed\")."
+  },
+  "monstersTamedCount": "{count, plural, =1{1 monstre} other{{count} monstres}}",
+  "@monstersTamedCount": {
+    "description": "Number of tamed monsters, at the right of \"Apprivoisés\" (\"4 monsters\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "pathMonstersOpenLittle": "Voir mes petits monstres",
+  "@pathMonstersOpenLittle": {
+    "description": "Link at the bottom of the \"Mes monstres\" card of the Profile tab: opens the screen of the little monsters, the facts the player keeps missing (\"See my little monsters\")."
+  },
+  "leaderboardTitle": "Classement",
+  "@leaderboardTitle": {
+    "description": "Title of the weekly leaderboard screen, where the players of the phone are ranked by the XP earned this week, and of its card on the Profile tab (\"Leaderboard\"). Short, one line."
+  },
+  "leaderboardWeekLabel": "XP gagnés cette semaine",
+  "@leaderboardWeekLabel": {
+    "description": "Line under the title of the leaderboard: the players are ranked by the XP earned since Monday (\"XP earned this week\"). One line, shares the row with the \"Remise à zéro lundi\" pill."
+  },
+  "leaderboardResetHint": "Remise à zéro lundi",
+  "@leaderboardResetHint": {
+    "description": "Pill at the right of \"XP gagnés cette semaine\" on the leaderboard: the ranking starts again from zero every Monday (\"Reset on Monday\"). Short."
+  },
+  "leaderboardYou": "C'est toi",
+  "@leaderboardYou": {
+    "description": "Dark tag under the nickname of the active player on the leaderboard, so the child finds themselves (\"That's you\"). Informal \"tu\", short."
+  },
+  "leaderboardXp": "{xp} XP",
+  "@leaderboardXp": {
+    "description": "XP earned this week by a player of the leaderboard, under the rank on a podium step and at the right of each row (\"310 XP\"). XP means experience points. Short, one line.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "310"
+      }
+    }
+  },
+  "leaderboardEntrySpoken": "{nickname}, place {rank}, {xp} XP",
+  "@leaderboardEntrySpoken": {
+    "description": "Screen-reader text of a player of the leaderboard (\"Moussa, rank 1, 420 XP\"). Neutral wording, no gendered ordinal.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Moussa"
+      },
+      "rank": {
+        "type": "int",
+        "example": "1"
+      },
+      "xp": {
+        "type": "int",
+        "example": "420"
+      }
+    }
+  },
+  "leaderboardEntryYouSpoken": "{nickname}, c'est toi, place {rank}, {xp} XP",
+  "@leaderboardEntryYouSpoken": {
+    "description": "Screen-reader text of the active player on the leaderboard (\"Awa, that's you, rank 2, 310 XP\"). Neutral wording, no gendered ordinal.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      },
+      "rank": {
+        "type": "int",
+        "example": "2"
+      },
+      "xp": {
+        "type": "int",
+        "example": "310"
+      }
+    }
+  },
+  "leaderboardChaseBehind": "Encore {xp} XP et tu rattrapes {nickname} !",
+  "@leaderboardChaseBehind": {
+    "description": "What the mascot says at the bottom of the leaderboard: the XP the active player needs to catch up with the player just above (\"110 more XP and you catch up with Moussa!\"). Informal \"tu\", encouraging.",
+    "placeholders": {
+      "xp": {
+        "type": "int",
+        "example": "110"
+      },
+      "nickname": {
+        "type": "String",
+        "example": "Moussa"
+      }
+    }
+  },
+  "leaderboardChaseTied": "Tu es à égalité avec {nickname} !",
+  "@leaderboardChaseTied": {
+    "description": "What the mascot says at the bottom of the leaderboard when the active player has as many XP this week as the player just above, who is listed before them because ties are ordered by nickname (\"You are tied with Moussa!\"). Informal \"tu\".",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Moussa"
+      }
+    }
+  },
+  "leaderboardChaseLeading": "Tu es en tête cette semaine !",
+  "@leaderboardChaseLeading": {
+    "description": "What the mascot says at the bottom of the leaderboard when the active player is first with XP this week (\"You are leading this week!\"). Informal \"tu\", cheerful."
+  },
+  "leaderboardChaseNotStarted": "Joue pour gagner tes premiers XP de la semaine !",
+  "@leaderboardChaseNotStarted": {
+    "description": "What the mascot says at the bottom of the leaderboard when nobody has earned XP yet this week, for instance on Monday morning (\"Play to earn your first XP of the week!\"). Informal \"tu\"."
+  },
+  "leaderboardEntrySubtitle": "Qui a gagné le plus d'XP cette semaine ?",
+  "@leaderboardEntrySubtitle": {
+    "description": "Line under \"Classement\" on the card of the Profile tab that opens the weekly leaderboard (\"Who earned the most XP this week?\"). One short line."
+  },
+  "settingsShowLeaderboard": "Afficher le classement",
+  "@settingsShowLeaderboard": {
+    "description": "Switch of the settings screen, in the \"Jeu\" section, that shows or hides the weekly leaderboard for every player of the phone; when off, its card disappears from the Profile tab (\"Show the leaderboard\"). Infinitive verb, one line."
+  },
+  "shopTitle": "Boutique",
+  "@shopTitle": {
+    "description": "Title of the shop screen (mockup 22) and of its card on the Profile tab, where a player spends the coins earned by playing on avatars and color themes (\"Shop\"). One word."
+  },
+  "shopEntrySubtitle": "Avatars et thèmes à débloquer",
+  "@shopEntrySubtitle": {
+    "description": "Line under \"Boutique\" on the card of the Profile tab that opens the shop (\"Avatars and themes to unlock\"). One short line."
+  },
+  "shopCoinBalance": "{count, plural, =0{0 pièce} =1{1 pièce} other{{count} pièces}}",
+  "@shopCoinBalance": {
+    "description": "Screen-reader label of the coin pill: how many coins the player can spend in the shop (\"240 coins\"). Only the number is displayed, next to a yellow coin.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "240"
+      }
+    }
+  },
+  "shopTabAvatars": "Avatars",
+  "@shopTabAvatars": {
+    "description": "Tab of the shop that lists the avatars (\"Avatars\"). One word."
+  },
+  "shopTabThemes": "Thèmes",
+  "@shopTabThemes": {
+    "description": "Tab of the shop that lists the color themes of the app (\"Themes\"). One word."
+  },
+  "shopWorn": "Porté",
+  "@shopWorn": {
+    "description": "Label of the button under the avatar the player wears now, in the shop (\"Worn\"). One short word, masculine (un avatar)."
+  },
+  "shopActive": "Actif",
+  "@shopActive": {
+    "description": "Label of the button under the color theme the player applied, in the shop (\"Active\"). One short word, masculine (un thème)."
+  },
+  "shopChoose": "Choisir",
+  "@shopChoose": {
+    "description": "Button under an avatar or a theme the player owns but does not use: wears the avatar or applies the theme (\"Choose\"). Infinitive verb, one word."
+  },
+  "shopWornLabel": "{name}, porté",
+  "@shopWornLabel": {
+    "description": "Screen-reader label of the button under the avatar the player wears (\"Fox, worn\"). Never displayed.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopActiveLabel": "{name}, actif",
+  "@shopActiveLabel": {
+    "description": "Screen-reader label of the button under the theme the player applied (\"Ocean, active\"). Never displayed.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Océan"
+      }
+    }
+  },
+  "shopChooseLabel": "Choisir {name}",
+  "@shopChooseLabel": {
+    "description": "Screen-reader label of the \"Choisir\" button under an avatar or a theme the player owns (\"Choose Fox\"). Never displayed.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopBuyLabel": "{price, plural, =1{Acheter {name} pour 1 pièce} other{Acheter {name} pour {price} pièces}}",
+  "@shopBuyLabel": {
+    "description": "Screen-reader label of the price button under an item the player can afford; it opens the purchase confirmation (\"Buy Fox for 80 coins\"). Never displayed. Prices go from 80 to 300 coins; the plural follows the price.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      },
+      "price": {
+        "type": "int",
+        "example": "80"
+      }
+    }
+  },
+  "shopTooExpensiveLabel": "{price, plural, =1{{name}, 1 pièce : il te manque des pièces} other{{name}, {price} pièces : il te manque des pièces}}",
+  "@shopTooExpensiveLabel": {
+    "description": "Screen-reader label of the greyed price button under an item the player cannot afford yet (\"King, 300 coins: you need more coins\"). Never displayed. Informal \"tu\"; the plural follows the price.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Roi"
+      },
+      "price": {
+        "type": "int",
+        "example": "300"
+      }
+    }
+  },
+  "shopNotEnoughCoins": "{missing, plural, =1{Il te manque 1 pièce. Joue encore pour la gagner !} other{Il te manque {missing} pièces. Joue encore pour les gagner !}}",
+  "@shopNotEnoughCoins": {
+    "description": "Message shown at the bottom of the shop when the player taps the greyed price of an item they cannot afford (\"You need 60 more coins. Keep playing to earn them!\"). Encouraging tone, informal \"tu\".",
+    "placeholders": {
+      "missing": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "shopBuyTitle": "Acheter {name} ?",
+  "@shopBuyTitle": {
+    "description": "Title of the dialog that confirms a purchase in the shop (\"Buy Fox?\"). The item is drawn under it.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopBuyMessage": "Ça coûte {price, plural, =1{1 pièce} other{{price} pièces}}. {left, plural, =0{Il ne t'en restera aucune.} =1{Il t'en restera 1.} other{Il t'en restera {left}.}}",
+  "@shopBuyMessage": {
+    "description": "Text of the purchase confirmation dialog: the price and the coins left after it (\"It costs 80 coins. You will have 160 left.\"; with 0 left: \"You will have none left.\"). Informal \"tu\"; each plural follows its own number.",
+    "placeholders": {
+      "price": {
+        "type": "int",
+        "example": "80"
+      },
+      "left": {
+        "type": "int",
+        "example": "160"
+      }
+    }
+  },
+  "shopBuyConfirm": "Acheter",
+  "@shopBuyConfirm": {
+    "description": "Button of the purchase confirmation dialog that spends the coins (\"Buy\"). Infinitive verb, one word. Coins only: no real money."
+  },
+  "shopPurchased": "Bravo, {name} est à toi ! Touche « Choisir » pour l'utiliser.",
+  "@shopPurchased": {
+    "description": "Message shown at the bottom of the shop after a purchase (\"Well done, Fox is yours! Tap Choose to use it.\"). Cheerful tone, informal \"tu\"; \"Choisir\" is the button of the item.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Renard"
+      }
+    }
+  },
+  "shopEarnHint": "Gagne des pièces en jouant : 1 pièce tous les {xpPerCoin} XP, {coinsPerCrown} par couronne et {coinsPerBadge} par badge.",
+  "@shopEarnHint": {
+    "description": "Hint at the bottom of the shop grid that tells how coins are earned (\"Earn coins by playing: 1 coin every 10 XP, 20 per crown and 10 per badge\"). A crown is won by beating the boss of a table, a badge by an achievement. Informal \"tu\".",
+    "placeholders": {
+      "xpPerCoin": {
+        "type": "int",
+        "example": "10"
+      },
+      "coinsPerCrown": {
+        "type": "int",
+        "example": "20"
+      },
+      "coinsPerBadge": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "shopErrorNotEnoughCoins": "Tu n'as pas assez de pièces pour ça.",
+  "@shopErrorNotEnoughCoins": {
+    "description": "Message shown at the bottom of the shop when a purchase is refused because the player lacks coins (\"You do not have enough coins for that\"). Informal \"tu\"."
+  },
+  "shopErrorAlreadyOwned": "Tu l'as déjà !",
+  "@shopErrorAlreadyOwned": {
+    "description": "Message shown at the bottom of the shop when a purchase is refused because the player already owns the item (\"You already have it!\"). Informal \"tu\"."
+  },
+  "shopAvatarFox": "Renard",
+  "@shopAvatarFox": {
+    "description": "Name of an avatar of the shop, an orange fox (\"Fox\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarPanda": "Panda",
+  "@shopAvatarPanda": {
+    "description": "Name of an avatar of the shop, a panda (\"Panda\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarRobot": "Robot",
+  "@shopAvatarRobot": {
+    "description": "Name of an avatar of the shop, a robot (\"Robot\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarAlien": "Extraterrestre",
+  "@shopAvatarAlien": {
+    "description": "Name of an avatar of the shop, a green alien (\"Alien\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarUnicorn": "Licorne",
+  "@shopAvatarUnicorn": {
+    "description": "Name of an avatar of the shop, a unicorn (\"Unicorn\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarDragon": "Dragon",
+  "@shopAvatarDragon": {
+    "description": "Name of an avatar of the shop, a dragon (\"Dragon\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarNinja": "Ninja",
+  "@shopAvatarNinja": {
+    "description": "Name of an avatar of the shop, a ninja (\"Ninja\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopAvatarKing": "Roi",
+  "@shopAvatarKing": {
+    "description": "Name of an avatar of the shop, a king with a crown (\"King\"). Read by screen readers and in the purchase dialog. One word."
+  },
+  "shopThemeLavender": "Lavande",
+  "@shopThemeLavender": {
+    "description": "Name of the default color theme of the app, lavender and violet (\"Lavender\"), shown under its picture in the shop. One word."
+  },
+  "shopThemeOcean": "Océan",
+  "@shopThemeOcean": {
+    "description": "Name of a color theme of the shop, in blues (\"Ocean\"), shown under its picture. One word."
+  },
+  "shopThemeForest": "Forêt",
+  "@shopThemeForest": {
+    "description": "Name of a color theme of the shop, in greens (\"Forest\"), shown under its picture. One word."
+  },
+  "shopThemeSunset": "Coucher de soleil",
+  "@shopThemeSunset": {
+    "description": "Name of a color theme of the shop, in oranges (\"Sunset\"), shown under its picture in a half-width card. Short."
+  },
+  "shopThemeNight": "Nuit",
+  "@shopThemeNight": {
+    "description": "Name of the dark color theme of the shop: light text on a deep blue ground (\"Night\"), shown under its picture. One word."
   }
 }

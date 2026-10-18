@@ -2,12 +2,16 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_mastery_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_grid_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
+import 'package:kid_matix/features/mastery/domain/entities/monster_collection_entity.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/mastery_scope.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
@@ -19,11 +23,15 @@ final class MasteryServiceImpl implements MasteryService {
     required this._planQuiz,
     required this._recordAnswer,
     required this._getGrid,
+    required this._getReviewOverview,
+    required this._getMonsters,
   });
 
   final PlanQuizUseCase _planQuiz;
   final RecordAnswerUseCase _recordAnswer;
   final GetMasteryGridUseCase _getGrid;
+  final GetReviewOverviewUseCase _getReviewOverview;
+  final GetMonstersUseCase _getMonsters;
 
   @override
   Future<DataState<Set<String>>> readMasteredItems({
@@ -60,6 +68,34 @@ final class MasteryServiceImpl implements MasteryService {
     return switch (await _recordAnswer(params: answer)) {
       DataSuccess<ItemProgressEntity>() => const DataSuccess<void>(null),
       DataFailed<ItemProgressEntity>(:final exception) => DataFailed<void>(
+        exception,
+      ),
+    };
+  }
+
+  @override
+  Future<DataState<ReviewOverview>> readReviewOverview({
+    required String profileId,
+    required String domainId,
+  }) {
+    return _getReviewOverview(
+      params: MasteryScope(profileId: profileId, domainId: domainId),
+    );
+  }
+
+  @override
+  Future<DataState<int>> readMonsterCount({
+    required String profileId,
+    required String domainId,
+  }) async {
+    final DataState<MonsterCollectionEntity> monsters = await _getMonsters(
+      params: MasteryScope(profileId: profileId, domainId: domainId),
+    );
+    return switch (monsters) {
+      DataSuccess<MonsterCollectionEntity>(:final data) => DataSuccess<int>(
+        data.wild.length,
+      ),
+      DataFailed<MonsterCollectionEntity>(:final exception) => DataFailed<int>(
         exception,
       ),
     };

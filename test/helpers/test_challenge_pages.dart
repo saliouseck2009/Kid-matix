@@ -1,11 +1,15 @@
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/open_units_service.dart';
 import 'package:kid_matix/features/challenge/data/datasources/training_choice_local_data_source_impl.dart';
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/record_repository.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_monster_count_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
@@ -15,6 +19,7 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 
 import '../features/challenge/helpers/challenge_fakes.dart';
+import 'fake_mastery_service.dart';
 import 'in_memory_local_storage.dart';
 import 'test_quiz_pages.dart';
 
@@ -23,6 +28,7 @@ ChallengeUseCases buildTestChallengeUseCases({
   RecordRepository? records,
   OpenUnitsService openUnits = const FixedOpenUnits(),
   TimerMode timerMode = TimerMode.normal,
+  MasteryService? mastery,
 }) {
   final RecordRepository recordRepository =
       records ?? InMemoryRecordRepository();
@@ -39,10 +45,20 @@ ChallengeUseCases buildTestChallengeUseCases({
     ),
     saveTrainingChoice: SaveTrainingChoiceUseCase(repository: choices),
     getTimeAttack: GetTimeAttackUseCase(openUnits: openUnits),
+    getSurvival: GetSurvivalUseCase(
+      openUnits: openUnits,
+      settings: FixedPlayerSettings(timerMode),
+    ),
     getRecords: GetRecordsUseCase(repository: recordRepository),
     getSessionRecord: GetSessionRecordUseCase(repository: recordRepository),
     watchRecordChanges: WatchRecordChangesUseCase(
       repository: recordRepository,
+    ),
+    getDailyReview: GetDailyReviewUseCase(
+      mastery: mastery ?? FakeMasteryService(),
+    ),
+    getMonsterCount: GetMonsterCountUseCase(
+      mastery: mastery ?? FakeMasteryService(),
     ),
   );
 }

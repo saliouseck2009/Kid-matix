@@ -4,6 +4,7 @@ import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
+import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
@@ -20,6 +21,7 @@ List<RouteBase> createPlayRoutes({
   required QuizPages quizPages,
   required RewardPages rewardPages,
   required ChallengePages challengePages,
+  required CodeChallengePages codePages,
 }) {
   final _Origins origins = _Origins(pathPages, challengePages);
   return <RouteBase>[
@@ -104,6 +106,22 @@ List<RouteBase> createPlayRoutes({
           ),
           xpTile: rewardPages.buildSessionXpTile(),
           rewardsCard: rewardPages.buildSessionLevelCard(),
+          actionOf: (String? sourceKey, int score) =>
+              codePages.buildShareButton(
+                sourceKey: sourceKey,
+                score: score,
+                onShare: (String code) =>
+                    context.go(AppRoutes.challengeCodeOf(code)),
+              ),
+          outcomeOf: (String? sourceKey, int score) => codePages.buildOutcome(
+            sourceKey: sourceKey,
+            score: score,
+            onShare: (String code) =>
+                context.go(AppRoutes.challengeCodeOf(code)),
+            onBack: () => context.go(AppRoutes.challenges),
+            xpLabel: rewardPages.buildSessionXpLabel(),
+            recordCard: challengePages.buildRecordCard(sessionId: sessionId),
+          ),
         );
       },
     ),
@@ -139,6 +157,8 @@ final class _Origins {
     return switch (_challengePages.originOf(sourceKey)) {
       ChallengeOrigin.training => AppRoutes.training,
       ChallengeOrigin.challenges => AppRoutes.challenges,
+      ChallengeOrigin.challengeMonsters => AppRoutes.challengeMonsters,
+      ChallengeOrigin.profileMonsters => AppRoutes.profileMonsters,
       null => AppRoutes.learningPath,
     };
   }

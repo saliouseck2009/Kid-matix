@@ -10,7 +10,9 @@ import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_cas
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/quiz/data/repositories/quiz_backup_part.dart';
 import 'package:kid_matix/features/quiz/data/repositories/quiz_reset_hook.dart';
 
 /// Registers the quiz feature in [sl]; Blocs are never registered.
@@ -36,6 +38,7 @@ void _registerUseCases(GetIt sl) {
   sl.registerLazySingleton<BuildQuizUseCase>(
     () => BuildQuizUseCase(
       domains: sl(),
+      questionTypes: sl(),
       mastery: sl(),
       generator: sl(),
       random: sl(),
@@ -62,4 +65,5 @@ void _registerUseCases(GetIt sl) {
     () => GetQuizResultUseCase(repository: sl(), learningPath: sl()),
   );
   sl<ProgressResetHooks>().add(const QuizResetHook());
+  sl<ProfileBackupParts>().add(const QuizBackupPart());
 }

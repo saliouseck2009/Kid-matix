@@ -18,6 +18,16 @@ enum AppErrorCode {
   /// A business limit is reached, such as the number of profiles.
   limitReached,
 
+  /// A file is damaged or is not what the app expects.
+  invalidFile,
+
+  /// A file was written by a newer version of the app.
+  unsupportedVersion,
+
+  /// The person refused a permission the app asked for, such as the
+  /// notifications of the daily reminder.
+  permissionDenied,
+
   /// Any failure that has no dedicated code.
   unknown,
 }

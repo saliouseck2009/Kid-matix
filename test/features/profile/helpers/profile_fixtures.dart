@@ -1,4 +1,10 @@
+import 'dart:math';
+
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
+import 'package:kid_matix/features/profile/domain/usecases/export_profile_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/import_backup_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/pick_backup_use_case.dart';
+import 'package:kid_matix/features/profile/presentation/bloc/backup_use_cases.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_use_cases.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/domain/usecases/reset_progress_use_case.dart';
@@ -28,6 +34,30 @@ export '../../../helpers/fixed_progress_services.dart';
 
 /// Test double of [ProfileRepository].
 final class MockProfileRepository extends Mock implements ProfileRepository {}
+
+/// Mock of [ExportProfileUseCase].
+final class MockExportProfileUseCase extends Mock
+    implements ExportProfileUseCase {}
+
+/// Mock of [PickBackupUseCase].
+final class MockPickBackupUseCase extends Mock implements PickBackupUseCase {}
+
+/// Mock of [ImportBackupUseCase].
+final class MockImportBackupUseCase extends Mock
+    implements ImportBackupUseCase {}
+
+/// Backup use cases over doubles; pass the ones a test drives.
+BackupUseCases buildBackupUseCases({
+  ExportProfileUseCase? exportProfile,
+  PickBackupUseCase? pickBackup,
+  ImportBackupUseCase? importBackup,
+}) {
+  return BackupUseCases(
+    exportProfile: exportProfile ?? MockExportProfileUseCase(),
+    pickBackup: pickBackup ?? MockPickBackupUseCase(),
+    importBackup: importBackup ?? MockImportBackupUseCase(),
+  );
+}
 
 /// Test double of [GetProfilesUseCase].
 final class MockGetProfilesUseCase extends Mock implements GetProfilesUseCase {}
@@ -158,6 +188,8 @@ ProfilePages buildProfilePages({
   SelectProfileUseCase? selectProfile,
   ProfileTabUseCases? tabUseCases,
   SettingsUseCases? settingsUseCases,
+  BackupUseCases? backupUseCases,
+  Random? gateRandom,
 }) {
   return ProfilePages(
     getProfiles: getProfiles ?? MockGetProfilesUseCase(),
@@ -167,6 +199,8 @@ ProfilePages buildProfilePages({
     selectProfile: selectProfile ?? MockSelectProfileUseCase(),
     tabUseCases: tabUseCases ?? buildTabUseCases(),
     settingsUseCases: settingsUseCases ?? buildSettingsUseCases(),
+    backupUseCases: backupUseCases ?? buildBackupUseCases(),
+    gateRandom: gateRandom,
   );
 }
 

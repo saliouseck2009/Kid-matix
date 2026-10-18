@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/quiz/question_pair.dart';
 import 'package:meta/meta.dart';
 
 /// One question of a quiz, ready to be shown and checked.
@@ -13,8 +14,10 @@ final class Question {
     required List<PromptToken> prompt,
     required this.expectedAnswer,
     List<Answer> choices = const <Answer>[],
+    List<QuestionPair> pairs = const <QuestionPair>[],
   }) : prompt = List<PromptToken>.unmodifiable(prompt),
-       choices = List<Answer>.unmodifiable(choices);
+       choices = List<Answer>.unmodifiable(choices),
+       pairs = List<QuestionPair>.unmodifiable(pairs);
 
   /// Key of the item the question asks about, such as `mul:7x8`.
   final String itemKey;
@@ -29,7 +32,18 @@ final class Question {
   final List<PromptToken> prompt;
 
   /// Answers to pick from, in display order; empty when the player writes.
+  /// For a match-pairs question, the results of [pairs] in display order.
   final List<Answer> choices;
+
+  /// Pairs to match, in the display order of their operations; empty
+  /// unless the question asks to match pairs. [itemKey] is one of them.
+  final List<QuestionPair> pairs;
+
+  /// Keys of the items the question asks about: those of its [pairs], or
+  /// [itemKey] alone.
+  List<String> get itemKeys => pairs.isEmpty
+      ? <String>[itemKey]
+      : pairs.map((QuestionPair pair) => pair.itemKey).toList();
 
   /// The right answer.
   final Answer expectedAnswer;
@@ -43,6 +57,7 @@ final class Question {
             other.questionTypeId == questionTypeId &&
             _haveSameElements(other.prompt, prompt) &&
             _haveSameElements(other.choices, choices) &&
+            _haveSameElements(other.pairs, pairs) &&
             other.expectedAnswer == expectedAnswer;
   }
 
@@ -53,6 +68,7 @@ final class Question {
     questionTypeId,
     Object.hashAll(prompt),
     Object.hashAll(choices),
+    Object.hashAll(pairs),
     expectedAnswer,
   );
 

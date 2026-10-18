@@ -1,5 +1,8 @@
+import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_monster_count_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
@@ -12,9 +15,12 @@ final class ChallengeUseCases {
     required this.getTrainingChoice,
     required this.saveTrainingChoice,
     required this.getTimeAttack,
+    required this.getSurvival,
     required this.getRecords,
     required this.getSessionRecord,
     required this.watchRecordChanges,
+    required this.getDailyReview,
+    required this.getMonsterCount,
   });
 
   /// The free training to offer.
@@ -26,6 +32,9 @@ final class ChallengeUseCases {
   /// The time attack of the player.
   final GetTimeAttackUseCase getTimeAttack;
 
+  /// The survival game of the player.
+  final GetSurvivalUseCase getSurvival;
+
   /// The records of the player.
   final GetRecordsUseCase getRecords;
 
@@ -34,4 +43,10 @@ final class ChallengeUseCases {
 
   /// Changes of the records.
   final WatchRecordChangesUseCase watchRecordChanges;
+
+  /// The daily review of the player.
+  final GetDailyReviewUseCase getDailyReview;
+
+  /// The monsters the player has to tame.
+  final GetMonsterCountUseCase getMonsterCount;
 }

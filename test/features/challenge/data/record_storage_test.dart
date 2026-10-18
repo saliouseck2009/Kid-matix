@@ -99,6 +99,21 @@ void main() {
     )(params: 'p1')).requireData;
   }
 
+  group('RecordRepositoryImpl.watchChanges', () {
+    test('tells the records and the settings changed', () async {
+      // Arrange
+      final List<void> actualEvents = <void>[];
+      repository.watchChanges().listen(actualEvents.add);
+      // Act
+      changeBus.notifyChanged(table: 'record');
+      changeBus.notifyChanged(table: 'profile');
+      changeBus.notifyChanged(table: 'quiz_session');
+      await Future<void>.delayed(Duration.zero);
+      // Assert
+      expect(actualEvents, hasLength(2));
+    });
+  });
+
   group('RecordSessionHook', () {
     test('stores the first time attack as the record', () async {
       // Act
@@ -129,6 +144,23 @@ void main() {
       expect(actualRecord.bestScore, 18);
       expect(actualRecord.sessionId, 's3');
       expect(actualRecord.previousBest, 15);
+    });
+    test('keeps the survival record apart from the time attack', () async {
+      // Arrange
+      await save(_session(id: 's1', correctCount: 15));
+      await save(
+        _session(id: 's2', correctCount: 9, mode: QuizMode.survival),
+      );
+      // Act
+      await save(
+        _session(id: 's3', correctCount: 24, mode: QuizMode.survival),
+      );
+      // Assert
+      final Map<QuizMode, RecordEntity> actualRecords = await readRecords();
+      expect(actualRecords[QuizMode.timeAttack]!.bestScore, 15);
+      expect(actualRecords[QuizMode.survival]!.bestScore, 24);
+      expect(actualRecords[QuizMode.survival]!.previousBest, 9);
+      expect(actualRecords[QuizMode.survival]!.sessionId, 's3');
     });
     test('ignores an abandoned quiz and a free training', () async {
       // Act

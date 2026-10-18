@@ -3,7 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
+import 'package:kid_matix/core/entities/app_color_theme.dart';
+import 'package:kid_matix/core/theme/app_theme.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
+import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/main.dart';
 
 import '../features/profile/helpers/profile_fixtures.dart';
@@ -14,6 +17,10 @@ import '../helpers/test_mastery_pages.dart';
 import '../helpers/test_path_pages.dart';
 import '../helpers/test_quiz_pages.dart';
 import '../helpers/test_reward_pages.dart';
+import '../helpers/test_code_challenge_pages.dart';
+import '../helpers/test_duel_pages.dart';
+import '../helpers/test_leaderboard_pages.dart';
+import '../helpers/test_shop_pages.dart';
 
 /// A small phone: 360 x 740 points.
 const Size _phone = Size(1080, 2220);
@@ -29,6 +36,8 @@ void main() {
   Future<void> pumpApp(
     WidgetTester tester, {
     double textScale = _largestTextScale,
+    AppColorTheme theme = AppColorTheme.lavender,
+    Locale locale = const Locale('fr'),
   }) async {
     tester.view
       ..physicalSize = _phone
@@ -45,10 +54,35 @@ void main() {
       rewardPages: buildTestRewardPages(),
       mascotPages: mascotPages,
       challengePages: buildTestChallengePages(),
-      masteryPages: buildTestMasteryPages(),
+      duelPages: buildTestDuelPages(),
+      codePages: buildTestCodeChallengePages(),
+      leaderboardPages: buildTestLeaderboardPages(),
+      shopPages: buildTestShopPages(),
+      masteryPages: buildTestMasteryPages(
+        repository: InMemoryItemProgressRepository(<ItemProgressEntity>[
+          for (int multiplier = 1; multiplier <= 10; multiplier++)
+            ItemProgressEntity(
+              profileId: 'p-1',
+              domainId: 'multiplication',
+              itemKey: 'mul:12x$multiplier',
+              presentationCount: 9,
+              correctCount: 6,
+              lastAnswerTimes: const <Duration>[Duration(seconds: 4)],
+              box: multiplier % 5 + 1,
+            ),
+        ]),
+      ),
+    );
+    final Widget Function(Widget child) mascotScope = testMascotScope(
+      mascotPages,
     );
     await tester.pumpWidget(
-      KidMatixApp(router: router, scope: testMascotScope(mascotPages)),
+      KidMatixApp(
+        locale: locale,
+        router: router,
+        scope: (Widget child) =>
+            Theme(data: AppTheme.of(theme), child: mascotScope(child)),
+      ),
     );
     await tester.pumpAndSettle();
   }
@@ -59,44 +93,40 @@ void main() {
   }
 
   group('Text at 130 % on a small phone', () {
-    for (final (String name, String location) in <(String, String)>[
-      ('the learning path', AppRoutes.learningPath),
-      ('the training', AppRoutes.training),
-      ('the challenges', AppRoutes.challenges),
-      ('the profile', AppRoutes.profile),
-      ('the settings', AppRoutes.settings),
-      ('the mascot', AppRoutes.mascot),
-      ('the table detail', AppRoutes.tableDetailOf('mul:1')),
-      ('the whole table', AppRoutes.tableViewOf('mul:1')),
-      ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
-      ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
-      ('a quiz against the clock', AppRoutes.playOf('timeAttack:mul:1')),
-      ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
-    ]) {
-      testWidgets('cuts no text on $name', (WidgetTester tester) async {
-        // Arrange
-        await pumpApp(tester);
-        // Act
-        await visit(tester, location);
-        // Assert
-        expect(tester.takeException(), isNull);
-        expect(find.byType(Scaffold), findsWidgets);
-      });
+    for (final String language in <String>['fr', 'en', 'es']) {
+      for (final (String name, String location) in <(String, String)>[
+        ('the learning path', AppRoutes.learningPath),
+        ('the training', AppRoutes.training),
+        ('the challenges', AppRoutes.challenges),
+        ('the profile', AppRoutes.profile),
+        ('the settings', AppRoutes.settings),
+        ('the mascot', AppRoutes.mascot),
+        ('the shop', AppRoutes.shop),
+        ('my monsters', AppRoutes.challengeMonsters),
+        ('the table detail', AppRoutes.tableDetailOf('mul:1')),
+        ('the whole table', AppRoutes.tableViewOf('mul:1')),
+        ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
+        ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
+        ('a quiz against the clock', AppRoutes.playOf('timeAttack:mul:1')),
+        ('a boss fight', AppRoutes.playOf('path:mul:1:boss')),
+      ]) {
+        testWidgets('cuts no text on $name in $language', (
+          WidgetTester tester,
+        ) async {
+          // Arrange
+          await pumpApp(tester, locale: Locale(language));
+          // Act
+          await visit(tester, location);
+          // Assert
+          expect(tester.takeException(), isNull);
+          expect(find.byType(Scaffold), findsWidgets);
+        });
+      }
     }
   });
 
   group('Accessibility guidelines', () {
-    for (final (String name, String location) in <(String, String)>[
-      ('the learning path', AppRoutes.learningPath),
-      ('the training', AppRoutes.training),
-      ('the challenges', AppRoutes.challenges),
-      ('the profile', AppRoutes.profile),
-      ('the settings', AppRoutes.settings),
-      ('the mascot', AppRoutes.mascot),
-      ('the table detail', AppRoutes.tableDetailOf('mul:1')),
-      ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
-      ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
-    ]) {
+    for (final (String name, String location) in _guidelineScreens) {
       testWidgets('meets the tap, label and contrast rules on $name', (
         WidgetTester tester,
       ) async {
@@ -113,4 +143,44 @@ void main() {
       });
     }
   });
+
+  group('Color themes of the shop', () {
+    for (final AppColorTheme theme in AppColorTheme.values.skip(1)) {
+      for (final (String name, String location) in _guidelineScreens) {
+        testWidgets('keeps the text readable on $name in ${theme.name}', (
+          WidgetTester tester,
+        ) async {
+          // Arrange
+          final SemanticsHandle handle = tester.ensureSemantics();
+          await pumpApp(tester, textScale: 1, theme: theme);
+          // Act
+          await visit(tester, location);
+          // Assert
+          expect(
+            Theme.of(tester.element(find.byType(Scaffold).last)).colorScheme,
+            AppTheme.of(theme).colorScheme,
+          );
+          await expectLater(tester, meetsGuideline(textContrastGuideline));
+          handle.dispose();
+        });
+      }
+    }
+  });
 }
+
+/// Screens checked against the accessibility guidelines.
+final List<(String, String)> _guidelineScreens = <(String, String)>[
+  ('the learning path', AppRoutes.learningPath),
+  ('the training', AppRoutes.training),
+  ('the challenges', AppRoutes.challenges),
+  ('the profile', AppRoutes.profile),
+  ('the settings', AppRoutes.settings),
+  ('the mascot', AppRoutes.mascot),
+  ('the shop', AppRoutes.shop),
+  ('the leaderboard', AppRoutes.leaderboard),
+  ('my monsters', AppRoutes.challengeMonsters),
+  ('the table detail', AppRoutes.tableDetailOf('mul:1')),
+  ('the whole table', AppRoutes.tableViewOf('mul:1')),
+  ('a multiple choice quiz', AppRoutes.playOf('path:mul:1:discovery')),
+  ('a written quiz', AppRoutes.playOf('path:mul:1:writing')),
+];

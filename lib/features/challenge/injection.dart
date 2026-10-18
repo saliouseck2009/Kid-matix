@@ -9,13 +9,25 @@ import 'package:kid_matix/features/challenge/data/repositories/record_session_ho
 import 'package:kid_matix/features/challenge/data/repositories/training_choice_repository_impl.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/record_repository.dart';
 import 'package:kid_matix/features/challenge/domain/repositories/training_choice_repository.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/answer_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/build_quiz_from_code_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/encode_challenge_code_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/elapse_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/finish_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_daily_review_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_duel_players_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/start_duel_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_monster_count_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_records_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_session_record_use_case.dart';
+import 'package:kid_matix/features/challenge/domain/usecases/get_survival_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_time_attack_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/get_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/save_training_choice_use_case.dart';
 import 'package:kid_matix/features/challenge/domain/usecases/watch_record_changes_use_case.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/challenge/data/repositories/challenge_backup_part.dart';
 import 'package:kid_matix/features/challenge/data/repositories/record_reset_hook.dart';
 
 /// Registers the challenge feature in [sl] and adds its session hook;
@@ -55,6 +67,43 @@ void registerChallengeFeature(GetIt sl) {
   sl.registerLazySingleton<GetTimeAttackUseCase>(
     () => GetTimeAttackUseCase(openUnits: sl()),
   );
+  sl.registerLazySingleton<GetSurvivalUseCase>(
+    () => GetSurvivalUseCase(openUnits: sl(), settings: sl()),
+  );
+  sl.registerLazySingleton<GetDailyReviewUseCase>(
+    () => GetDailyReviewUseCase(mastery: sl()),
+  );
+  sl.registerLazySingleton<GetMonsterCountUseCase>(
+    () => GetMonsterCountUseCase(mastery: sl()),
+  );
+  _registerDuel(sl);
+  sl.registerLazySingleton<EncodeChallengeCodeUseCase>(
+    () => EncodeChallengeCodeUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<BuildQuizFromCodeUseCase>(
+    () => BuildQuizFromCodeUseCase(domains: sl()),
+  );
   sl<SessionSavedHooks>().add(RecordSessionHook(records: sl(), clock: sl()));
   sl<ProgressResetHooks>().add(const RecordResetHook());
+  sl<ProfileBackupParts>().add(
+    ChallengeBackupPart(choicesOf: () => sl<TrainingChoiceLocalDataSource>()),
+  );
+}
+
+void _registerDuel(GetIt sl) {
+  sl.registerLazySingleton<GetDuelPlayersUseCase>(
+    () => GetDuelPlayersUseCase(players: sl()),
+  );
+  sl.registerLazySingleton<StartDuelUseCase>(
+    () => StartDuelUseCase(openUnits: sl(), domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<AnswerDuelUseCase>(
+    () => AnswerDuelUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<ElapseDuelUseCase>(
+    () => ElapseDuelUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<FinishDuelUseCase>(
+    () => FinishDuelUseCase(xpAwards: sl()),
+  );
 }

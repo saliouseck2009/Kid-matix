@@ -21,4 +21,11 @@ final class QuizSubmission {
 
   /// Run after the answer: the turn is gone, a second chance may be queued.
   final QuizRun run;
+
+  /// Time the answered question had, or `null` without a timer: a right
+  /// answer may have shortened the time of the next ones.
+  Duration? get answeredTimeLimit {
+    final int correctBefore = run.correctCount - (answer.isCorrect ? 1 : 0);
+    return run.timeLimitOf(turn, correctBefore);
+  }
 }

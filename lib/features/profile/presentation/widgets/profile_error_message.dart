@@ -13,7 +13,11 @@ extension ProfileErrorMessage on AppErrorCode {
       AppErrorCode.limitReached => l10n.profileLimitReached(
         ProfileLimits.maxProfiles,
       ),
-      AppErrorCode.validation || AppErrorCode.unknown => l10n.errorUnknown,
+      AppErrorCode.invalidFile => l10n.errorBackupInvalid,
+      AppErrorCode.unsupportedVersion => l10n.errorBackupVersion,
+      AppErrorCode.validation ||
+      AppErrorCode.permissionDenied ||
+      AppErrorCode.unknown => l10n.errorUnknown,
     };
   }
 }

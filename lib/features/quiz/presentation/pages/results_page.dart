@@ -27,6 +27,13 @@ typedef SourceDescriber = String? Function(
   AppLocalizations l10n,
 );
 
+/// A widget of the results built from what the session was played for
+/// and its right answers, or `null` to show nothing.
+typedef SessionScoreSlot = Widget? Function(
+  String? sourceKey,
+  int correctCount,
+);
+
 /// Results of a quiz, loaded from the session identifier alone.
 ///
 /// A stage of the learning path shows its stars; XP and level arrive
@@ -44,6 +51,8 @@ class ResultsPage extends StatelessWidget {
     this.xpTile,
     this.rewardsCard,
     this.recordCard,
+    this.actionOf,
+    this.outcomeOf,
     super.key,
   });
 
@@ -80,6 +89,13 @@ class ResultsPage extends StatelessWidget {
   /// Card above the tiles: a new record, or `null`.
   final Widget? recordCard;
 
+  /// A last button under "Rejouer", such as "Défier un ami", or `null`.
+  final SessionScoreSlot? actionOf;
+
+  /// A screen that replaces the results, such as the comparison of a
+  /// challenge played from a code, or `null`.
+  final SessionScoreSlot? outcomeOf;
+
   @override
   Widget build(BuildContext context) {
     final Widget Function(Widget child) scope =
@@ -99,16 +115,28 @@ class ResultsPage extends StatelessWidget {
                   ResultsFailure(:final errorCode) => Center(
                     child: Text(errorCode.toQuizMessage(context.l10n)),
                   ),
-                  ResultsLoaded(:final result) => _ResultsView(
-                    result: result,
-                    labels: QuizLabels(domains: domains, l10n: context.l10n),
-                    onContinue: onContinue,
-                    onReplay: onReplay,
-                    describeSource: describeSource,
-                    xpTile: xpTile,
-                    rewardsCard: rewardsCard,
-                    recordCard: recordCard,
-                  ),
+                  ResultsLoaded(:final result) =>
+                    outcomeOf?.call(
+                          result.session.sourceKey,
+                          result.session.correctCount,
+                        ) ??
+                        _ResultsView(
+                          result: result,
+                          labels: QuizLabels(
+                            domains: domains,
+                            l10n: context.l10n,
+                          ),
+                          onContinue: onContinue,
+                          onReplay: onReplay,
+                          describeSource: describeSource,
+                          xpTile: xpTile,
+                          rewardsCard: rewardsCard,
+                          recordCard: recordCard,
+                          action: actionOf?.call(
+                            result.session.sourceKey,
+                            result.session.correctCount,
+                          ),
+                        ),
                 };
               },
             ),
@@ -129,6 +157,7 @@ class _ResultsView extends StatelessWidget {
     required this.xpTile,
     required this.rewardsCard,
     required this.recordCard,
+    required this.action,
   });
 
   static const double _mascotSize = 140;
@@ -142,6 +171,7 @@ class _ResultsView extends StatelessWidget {
   final Widget? xpTile;
   final Widget? rewardsCard;
   final Widget? recordCard;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +234,7 @@ class _ResultsView extends StatelessWidget {
               variant: DepthButtonVariant.secondary,
               onPressed: () => onReplay(sourceKey),
             ),
+          ?action,
         ],
       ),
     );
@@ -219,6 +250,9 @@ class _ResultsView extends StatelessWidget {
       QuizMode.freeTraining => context.l10n.quizModeFreeTraining,
       QuizMode.path => context.l10n.quizModePath,
       QuizMode.timeAttack => context.l10n.quizModeTimeAttack,
+      QuizMode.survival => context.l10n.quizModeSurvival,
+      QuizMode.dailyReview => context.l10n.quizModeDailyReview,
+      QuizMode.monsterHunt => context.l10n.quizModeMonsterHunt,
     };
   }
 }

@@ -7,10 +7,14 @@ import 'package:kid_matix/features/mastery/domain/repositories/item_progress_rep
 import 'package:kid_matix/features/mastery/domain/services/mastery_service_impl.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_due_facts_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_review_overview_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/watch_mastery_changes_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/plan_quiz_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/record_answer_use_case.dart';
+import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/features/mastery/data/repositories/mastery_backup_part.dart';
 import 'package:kid_matix/features/mastery/data/repositories/mastery_reset_hook.dart';
 
 /// Registers the mastery feature in [sl]; Blocs are never registered.
@@ -38,13 +42,20 @@ void registerMasteryFeature(GetIt sl) {
       domains: sl(),
       questionTypes: sl(),
       random: sl(),
+      clock: sl(),
     ),
   );
   sl.registerLazySingleton<GetDueFactsUseCase>(
     () => GetDueFactsUseCase(repository: sl(), clock: sl()),
   );
+  sl.registerLazySingleton<GetReviewOverviewUseCase>(
+    () => GetReviewOverviewUseCase(repository: sl(), clock: sl()),
+  );
   sl.registerLazySingleton<GetMasteryGridUseCase>(
     () => GetMasteryGridUseCase(repository: sl(), domains: sl()),
+  );
+  sl.registerLazySingleton<GetMonstersUseCase>(
+    () => GetMonstersUseCase(repository: sl(), domains: sl()),
   );
   sl.registerLazySingleton<WatchMasteryChangesUseCase>(
     () => WatchMasteryChangesUseCase(repository: sl()),
@@ -54,7 +65,10 @@ void registerMasteryFeature(GetIt sl) {
       planQuiz: sl(),
       recordAnswer: sl(),
       getGrid: sl(),
+      getReviewOverview: sl(),
+      getMonsters: sl(),
     ),
   );
   sl<ProgressResetHooks>().add(const MasteryResetHook());
+  sl<ProfileBackupParts>().add(const MasteryBackupPart());
 }

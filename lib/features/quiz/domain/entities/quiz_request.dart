@@ -1,6 +1,8 @@
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
+import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
+import 'package:kid_matix/core/quiz/seeded_draw.dart';
 import 'package:meta/meta.dart';
 
 /// A quiz to play, as the screen that starts it describes it.
@@ -22,6 +24,9 @@ final class QuizRequest {
     this.isBossFight = false,
     this.totalTimeLimit,
     this.keepsTimer = false,
+    this.lives,
+    this.timeSchedule,
+    this.seededDraw,
   });
 
   /// Creates the request of [profileId] to play [spec].
@@ -44,6 +49,9 @@ final class QuizRequest {
       isBossFight: spec.isBossFight,
       totalTimeLimit: spec.totalTimeLimit,
       keepsTimer: spec.keepsTimer,
+      lives: spec.lives,
+      timeSchedule: spec.timeSchedule,
+      seededDraw: spec.seededDraw,
     );
   }
 
@@ -94,4 +102,15 @@ final class QuizRequest {
   /// Whether the player chose to play with [baseTimeLimit]: the timer then
   /// stays even when their setting turns it off.
   final bool keepsTimer;
+
+  /// Mistakes the player may make, or `null` for a quiz without lives.
+  final int? lives;
+
+  /// How the time per question shrinks with the right answers, or `null`
+  /// for a time that never changes; it starts at [baseTimeLimit].
+  final QuizTimeSchedule? timeSchedule;
+
+  /// The draw fixing the questions on every phone, or `null` to choose
+  /// them by [selection].
+  final SeededDraw? seededDraw;
 }

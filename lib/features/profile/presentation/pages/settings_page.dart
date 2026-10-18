@@ -14,15 +14,35 @@ import 'package:kid_matix/features/profile/presentation/widgets/nickname_confirm
 import 'package:kid_matix/features/profile/presentation/widgets/profile_error_message.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/settings_parts.dart';
 
-/// The settings of the player (mockup 13): sounds, game, and the actions
-/// on the player. The reminder, leaderboard and backup sections come with
-/// their lots.
+/// The settings of the player (mockup 13): sounds, game, reminder,
+/// language, backup and the actions on the player.
+/// Other features add rows to the game section, such as the leaderboard
+/// switch, and fill the reminder section.
 class SettingsPage extends StatelessWidget {
   /// Creates the page; the settings come from the enclosing Cubit.
-  const SettingsPage({required this.onBack, super.key});
+  const SettingsPage({
+    required this.onBack,
+    this.gameRows = const <Widget>[],
+    this.backupSection,
+    this.reminderRows = const <Widget>[],
+    this.languageRows = const <Widget>[],
+    super.key,
+  });
 
   /// Goes back to the Profile tab.
   final VoidCallback onBack;
+
+  /// Rows of other features, at the end of the game section.
+  final List<Widget> gameRows;
+
+  /// The "Sauvegarde" section, or `null`.
+  final Widget? backupSection;
+
+  /// Rows of the « Rappel » section, hidden when empty.
+  final List<Widget> reminderRows;
+
+  /// Rows of the « Langue » section, hidden when empty.
+  final List<Widget> languageRows;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +63,14 @@ class SettingsPage extends StatelessWidget {
                 SettingsFailure(:final errorCode) => Center(
                   child: Text(errorCode.toProfileMessage(context.l10n)),
                 ),
-                SettingsLoaded() => _SettingsView(state: state, onBack: onBack),
+                SettingsLoaded() => _SettingsView(
+                  state: state,
+                  onBack: onBack,
+                  gameRows: gameRows,
+                  backupSection: backupSection,
+                  reminderRows: reminderRows,
+                  languageRows: languageRows,
+                ),
               };
             },
           ),
@@ -65,12 +92,23 @@ class SettingsPage extends StatelessWidget {
 }
 
 class _SettingsView extends StatelessWidget {
-  const _SettingsView({required this.state, required this.onBack});
+  const _SettingsView({
+    required this.state,
+    required this.onBack,
+    required this.gameRows,
+    required this.backupSection,
+    required this.reminderRows,
+    required this.languageRows,
+  });
 
   static const double _gap = 20;
 
   final SettingsLoaded state;
   final VoidCallback onBack;
+  final List<Widget> gameRows;
+  final Widget? backupSection;
+  final List<Widget> reminderRows;
+  final List<Widget> languageRows;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -184,9 +222,28 @@ class _SettingsView extends StatelessWidget {
                     old.copyWith(isReducedMotionEnabled: isOn),
               ),
             ),
+            ...gameRows,
           ],
         ),
+        if (reminderRows.isNotEmpty) ...<Widget>[
+          const SizedBox(height: _gap),
+          SettingsSection(
+            title: context.l10n.settingsReminderSection,
+            rows: reminderRows,
+          ),
+        ],
+        if (languageRows.isNotEmpty) ...<Widget>[
+          const SizedBox(height: _gap),
+          SettingsSection(
+            title: context.l10n.settingsLanguageSection,
+            rows: languageRows,
+          ),
+        ],
         const SizedBox(height: _gap),
+        if (backupSection case final Widget section) ...<Widget>[
+          section,
+          const SizedBox(height: _gap),
+        ],
         SettingsSection(
           title: context.l10n.settingsPlayerSection,
           rows: <Widget>[

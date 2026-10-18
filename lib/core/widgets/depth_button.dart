@@ -12,11 +12,20 @@ class DepthButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.variant = DepthButtonVariant.primary,
+    this.caption,
+    this.icon,
     super.key,
   });
 
   /// Localized text of the button.
   final String label;
+
+  /// A smaller second line under [label], such as "10 questions", or
+  /// `null`.
+  final String? caption;
+
+  /// Icon before [label], or `null`.
+  final IconData? icon;
 
   /// Called when the player taps the button.
   final VoidCallback? onPressed;
@@ -38,6 +47,8 @@ class DepthButton extends StatelessWidget {
         ),
         child: _DepthButtonFace(
           label: label,
+          caption: caption,
+          icon: icon,
           onPressed: onPressed,
           faceColor: colors.face,
           labelColor: colors.label,
@@ -76,6 +87,12 @@ class DepthButton extends StatelessWidget {
         label: feedback.onFeedback,
         outline: null,
       ),
+      DepthButtonVariant.accent => (
+        face: colorScheme.secondary,
+        depth: palette.secondaryDepth,
+        label: colorScheme.onSecondary,
+        outline: null,
+      ),
     };
   }
 }
@@ -86,6 +103,8 @@ typedef _DepthColors = ({Color face, Color depth, Color label, Color? outline});
 class _DepthButtonFace extends StatelessWidget {
   const _DepthButtonFace({
     required this.label,
+    required this.caption,
+    required this.icon,
     required this.onPressed,
     required this.faceColor,
     required this.labelColor,
@@ -96,6 +115,8 @@ class _DepthButtonFace extends StatelessWidget {
       AppSizes.buttonHeight - AppSizes.buttonDepth;
 
   final String label;
+  final String? caption;
+  final IconData? icon;
   final VoidCallback? onPressed;
   final Color faceColor;
   final Color labelColor;
@@ -103,7 +124,8 @@ class _DepthButtonFace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? labelStyle = Theme.of(context).textTheme.titleLarge;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final String? caption = this.caption;
     final BorderRadius radius = BorderRadius.circular(AppSizes.radiusMedium);
     final Color? outline = outlineColor;
     final BorderSide side = outline == null
@@ -118,14 +140,59 @@ class _DepthButtonFace extends StatelessWidget {
         child: Container(
           constraints: const BoxConstraints(minHeight: _faceHeight),
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.space16),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: labelStyle?.copyWith(color: labelColor),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.space16,
+            vertical: AppSizes.space4,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _DepthButtonLabel(label: label, icon: icon, color: labelColor),
+              if (caption != null)
+                Text(
+                  caption,
+                  textAlign: TextAlign.center,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: labelColor,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The label of a [DepthButton], after its icon when it has one.
+class _DepthButtonLabel extends StatelessWidget {
+  const _DepthButtonLabel({
+    required this.label,
+    required this.icon,
+    required this.color,
+  });
+
+  final String label;
+  final IconData? icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget text = Text(
+      label,
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
+    );
+    final IconData? icon = this.icon;
+    if (icon == null) return text;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: AppSizes.space8,
+      children: <Widget>[
+        Icon(icon, color: color),
+        Flexible(child: text),
+      ],
     );
   }
 }

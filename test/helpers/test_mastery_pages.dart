@@ -4,6 +4,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/repositories/item_progress_repository.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/get_mastery_grid_use_case.dart';
+import 'package:kid_matix/features/mastery/domain/usecases/get_monsters_use_case.dart';
 import 'package:kid_matix/features/mastery/domain/usecases/watch_mastery_changes_use_case.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
 
@@ -77,6 +78,10 @@ MasteryPages buildTestMasteryPages({ItemProgressRepository? repository}) {
       repository ?? InMemoryItemProgressRepository();
   return MasteryPages(
     getGrid: GetMasteryGridUseCase(
+      repository: progress,
+      domains: buildDomainRegistry(),
+    ),
+    getMonsters: GetMonstersUseCase(
       repository: progress,
       domains: buildDomainRegistry(),
     ),

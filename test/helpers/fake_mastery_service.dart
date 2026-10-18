@@ -3,6 +3,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
+import 'package:kid_matix/core/quiz/review_overview.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 
 /// [MasteryService] that plans the items in the order given and keeps the
@@ -20,6 +21,18 @@ final class FakeMasteryService implements MasteryService {
   /// Items reported as mastered.
   final Set<String> masteredItems = <String>{};
 
+  /// Overview of the review reported for every player.
+  ReviewOverview reviewOverview = const ReviewOverview(
+    dueCount: 0,
+    seenCount: 0,
+  );
+
+  /// Monsters to tame reported for every player.
+  int monsterCount = 0;
+
+  /// Requests received by [planQuiz], in order.
+  final List<QuizPlanRequest> planRequests = <QuizPlanRequest>[];
+
   @override
   Future<DataState<Set<String>>> readMasteredItems({
     required String profileId,
@@ -36,6 +49,7 @@ final class FakeMasteryService implements MasteryService {
   }) async {
     final AppException? error = failure;
     if (error != null) return DataFailed<List<QuizItemPlan>>(error);
+    planRequests.add(request);
     if (request.itemKeys.isEmpty) {
       return const DataSuccess<List<QuizItemPlan>>(<QuizItemPlan>[]);
     }
@@ -54,5 +68,25 @@ final class FakeMasteryService implements MasteryService {
     if (error != null) return DataFailed<void>(error);
     recordedAnswers.add(answer);
     return const DataSuccess<void>(null);
+  }
+
+  @override
+  Future<DataState<ReviewOverview>> readReviewOverview({
+    required String profileId,
+    required String domainId,
+  }) async {
+    final AppException? error = failure;
+    if (error != null) return DataFailed<ReviewOverview>(error);
+    return DataSuccess<ReviewOverview>(reviewOverview);
+  }
+
+  @override
+  Future<DataState<int>> readMonsterCount({
+    required String profileId,
+    required String domainId,
+  }) async {
+    final AppException? error = failure;
+    if (error != null) return DataFailed<int>(error);
+    return DataSuccess<int>(monsterCount);
   }
 }

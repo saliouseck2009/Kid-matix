@@ -14,6 +14,7 @@ abstract interface class RecordRepository {
     required String sessionId,
   });
 
-  /// Emits an event each time a record may have changed.
+  /// Emits an event each time a record or a setting of the players may
+  /// have changed.
   Stream<void> watchChanges();
 }

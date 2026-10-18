@@ -9,18 +9,21 @@ SessionRewardInput _input({
   bool isCompleted = true,
   int correct = 9,
   bool isTimeAttack = false,
+  bool isSurvival = false,
 }) {
+  final bool isChallenge = isTimeAttack || isSurvival;
   return SessionRewardInput(
     isCompleted: isCompleted,
     correctCount: correct,
-    questionCount: isTimeAttack ? correct : 10,
+    questionCount: isChallenge ? correct : 10,
     lightningCount: 4,
-    isStage: !isTimeAttack,
-    crownedUnitKey: isTimeAttack ? null : 'mul:5',
+    isStage: !isChallenge,
+    crownedUnitKey: isChallenge ? null : 'mul:5',
     masteredItemCount: 0,
     itemCount: 120,
     now: DateTime(2026, 10, 10, 18),
     isTimeAttack: isTimeAttack,
+    isSurvival: isSurvival,
   );
 }
 
@@ -82,6 +85,35 @@ void main() {
       ];
       // Assert
       expect(actualBadges, <String>[BadgeKey.sprinter]);
+    });
+    test('unlocks Survivant with 30 right answers in a survival game', () {
+      // Act
+      final List<String> actualBadges = <String>[
+        for (final int inputScore in <int>[29, 30])
+          ...calculator
+              .calculate(
+                input: _input(correct: inputScore, isSurvival: true),
+                totalXp: 0,
+                streak: const StreakEntity.empty(),
+                lightningAnswers: 0,
+                unlocked: const <String>{},
+              )
+              .newBadges,
+      ];
+      // Assert
+      expect(actualBadges, <String>[BadgeKey.survivor]);
+    });
+    test('gives no Survivant for 30 right answers in a time attack', () {
+      // Act
+      final SessionRewardOutcome actualOutcome = calculator.calculate(
+        input: _input(correct: 30, isTimeAttack: true),
+        totalXp: 0,
+        streak: const StreakEntity.empty(),
+        lightningAnswers: 0,
+        unlocked: const <String>{},
+      );
+      // Assert
+      expect(actualOutcome.newBadges, <String>[BadgeKey.sprinter]);
     });
     test('gives no Sprinter for 20 right answers outside a time attack', () {
       // Act
