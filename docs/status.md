@@ -30,8 +30,10 @@ middle of one). Last update: 2026-10-18.
 | F20 · File backup | **Done** (closed 2026-10-12) |
 | F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
 | F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
-| F23 · Read aloud | **Next** — version 2.0 starts here |
-| F24 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (plan in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
+| F23 · Read aloud | **In review** (wave 1): PR #104, main merged in and review fixes in progress; F23-01 device check by the owner pending |
+| F24 · Numbers up to 100 | **Merged** (wave 1, #103 and #105); follow-up PR `refactor/f24-domain-pattern` in progress (final keys, `number/` folder, review fixes); F24-09 screens to validate |
+| F28 · Math words | F28-01 **done** (#102) and the guide part of F28-02; the owner fills the Wolof and records; the rest in wave 2 |
+| F25 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -591,6 +593,92 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 (no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
+
+## Version 2.0, wave 1 (in progress)
+
+Run on 2026-10-18 as planned in `docs/parallel-plan.md`: `lot-implementer`
+(Sonnet) for F23, `lot-implementer` (Opus) for F24, `content-writer`
+(Haiku) for the F28 content, each in its own worktree; every pull request
+reviewed by `code-reviewer` (Opus). One pull request per lot (two stacked
+for F24), targeted tests while coding, the full `tool/check.sh` before
+each push, no emulator in the agents. Decisions of the wave are in
+`docs/decisions.md` (owner's answers of 2026-10-18).
+
+Merged:
+
+- #102 (F28-01, guide part of F28-02): `docs/product/math-words.md` —
+  40 words in six families with stable keys, meanings, image ideas and
+  examples, empty Wolof columns, a consistency glossary and 20 « Quelle
+  opération ? » statements for F28-09, many with a misleading word — and
+  `docs/product/audio-recording.md`, the recording guide for the owner.
+  The review asked for fixes (wrong meaning of « donner », notes pairing a
+  word with an operation, OP-17 with two right answers, guide renaming
+  `.mp3` to `.m4a`); applied before the merge. After it: two audio files
+  per word and « acheter » instead of « manger » (owner).
+- #103 and #105 (F24-01 to F24-08, F24-10): the `numbers` feature (seven
+  units, 70 items, four question types with their drawings), the domain
+  switch on the home and in the Profile, the numbers path with its bosses,
+  tips and help cards, per-domain stars, crowns and mastery. No migration
+  (013 unused; the reserved numbers of later waves shift down by one).
+  Review: approve with nits. 1346 tests; an integration test covers the
+  "done when" (numbers stars won, multiplication stars and mastery
+  unchanged after a restart). Not checked on a device.
+
+Open:
+
+- #104 (F23-01 to F23-08), read aloud: `SpeechService` and the `speech`
+  feature over `flutter_tts` (iOS now also uses CocoaPods), the « Écouter »
+  button on every question surface, automatic reading, the timer that
+  waits for the voice, readings of instructions, tips and mascot messages,
+  the per-player setting (migration 012, schema 12). It conflicts with
+  F24; the agent merges `main` in and keeps one spoken-text mechanism
+  (`QuizLabels.speakQuestion` first). Review: changes requested — the timer
+  can stay held when the platform `stop()` never answers, overlapping
+  readings can end or cut the wrong one, `QuizBloc` is over the class size
+  limit, the creation offer is saved in a second write. Fixes and the
+  owner's timing rule are in progress. Merge it only once CI is green.
+- F24 follow-up `refactor/f24-domain-pattern`, after #104: keys
+  `num:compare:a:b` and `num:line:m:s`, folder `lib/features/number/`,
+  labels chosen by question type, unit names and tips by slug with a guard
+  test, numbers screens in the text-scale tests, smaller review findings.
+
+To check on a device (owner), short:
+
+- F23 "done when": airplane mode, low-end Android phone, a question read
+  in French and the timer waiting for the end; on the iPhone, voice and
+  sound effects together and the silent switch. The French voice data must
+  have been downloaded once on the phone.
+- F24 "done when": Accueil → « Nombres » → « Compter jusqu'à 10 », stages 1
+  to 3, then « Compter jusqu'à 20 »; back to « Multiplication », unchanged.
+
+Waiting for the owner:
+
+- The Wolof columns and glossary of `math-words.md`, then the 80
+  recordings (`wo_<key>.m4a` and `wo_<key>_exemple.m4a`, guide in
+  `docs/product/audio-recording.md`); the F28 keys, meanings and statements.
+- Screens without a mockup (F24-09 stays open until then): the listen
+  buttons and their places, the read-aloud offer at profile creation, the
+  domain switch on the home and in the Profile (the badges card moved
+  below the monsters), the numbers path and its marks (`10`, `20`, `100`,
+  `34`, `<>`, `123`, `±1`), the four numbers formats, the provisional
+  monsters with antennae.
+- New texts: F23 (« Lire les questions à voix haute », « Une voix lit
+  chaque question. Tu pourras changer ça dans les réglages. », « Écouter »,
+  « Arrêter la lecture », « … Vrai ou faux ? ») and F24 (unit names and
+  tips, « Combien de mangues ? », « Quel nombre manque ? », « Plus petit,
+  égal ou plus grand ? », « Mes nombres », « Boss · {unit} », « Dompteur
+  de « {unit} » »…), with their English and Spanish translations.
+- Time limits of the speed and boss stages for counting up to 20 objects.
+
+Known gaps: the placement test and the duel have no listen button (F27-04
+plugs the test in); challenges, little monsters, the monster hunt, the
+placement test and the daily review stay multiplication-only (F25 needs a
+daily review per domain); `flutter_tts` applies the Kotlin Gradle plugin
+(warning to revisit at the next Flutter bump); the privacy policy does not
+mention the system voice yet.
+
+Next: merge #104, then the F24 follow-up; device checks; close F23 and F24
+here; then wave 2 (F25, F26, the rest of F28 with migration 013).
 
 ## F21 closure
 
