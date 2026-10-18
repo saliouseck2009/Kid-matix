@@ -1,7 +1,7 @@
 # Project status
 
 Update this file at the end of every lot (and whenever work stops in the
-middle of one). Last update: 2026-10-13.
+middle of one). Last update: 2026-10-18.
 
 ## Where we are
 
@@ -29,6 +29,9 @@ middle of one). Last update: 2026-10-13.
 | F19 · Challenge by code | **Done** (closed 2026-10-12) |
 | F20 · File backup | **Done** (closed 2026-10-12) |
 | F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
+| F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
+| F23 · Read aloud | **Next** — version 2.0 starts here |
+| F24 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (plan in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.

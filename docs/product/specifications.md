@@ -666,3 +666,28 @@ Ces choix ont été faits par défaut dans ce document ; chacun est à confirmer
 - [ ] L'app sort en français uniquement.
 - [ ] Android et iOS sortent ensemble.
 - [ ] Le nom de l'app reste à définir (« Kid Matix » est provisoire ; « Mathimo » et « Numi » ont été proposés). L'univers graphique est posé par le design (`docs/design/`) ; la mascotte, les monstres et les avatars y sont des dessins provisoires.
+
+## 17. Version 2.0 : Kid Matix pour tous
+
+Ajouté le 18 octobre 2026, après la version 1.2. Le découpage en lots est dans `task-breakdown.md` (F23 à F32).
+
+**Pourquoi**
+
+L'app doit intéresser le plus d'enfants possible et les faire vraiment progresser en mathématiques, y compris ceux qui n'ont ni bon téléphone, ni Internet, ni lecture fluide du français. Elle doit pouvoir être proposée à des ONG et à des écoles qui accompagnent des enfants en Afrique. Elle reste gratuite, sans publicité ni achat.
+
+**Les six axes**
+
+1. **Partir du niveau réel de l'enfant.** Un test de positionnement par compétence place l'enfant selon ce qu'il sait faire, pas selon son âge, dans l'esprit de l'approche « Teaching at the Right Level » utilisée par de nombreuses ONG. Le parcours commence plus bas : nombres jusqu'à 100, dizaines et unités, comparer, additions et soustractions, puis multiplication, division et problèmes.
+2. **Ne laisser personne dehors.** Questions et consignes lues à voix haute ; aide audio en wolof, puis dans d'autres langues locales ; app légère, hors ligne, sur Android d'entrée de gamme.
+3. **Les mots des maths.** Beaucoup d'enfants ne bloquent pas sur le calcul mais sur l'énoncé, parce qu'ils comprennent mal le français. L'app leur apprend les mots et expressions des problèmes (« il reste », « de plus que », « chacun », « partager », « la moitié »…), chacun avec une image, sa lecture en français et une explication orale en wolof. Les mots sont suivis par la répétition espacée, comme les faits de calcul.
+4. **Comprendre les problèmes.** Des énoncés du quotidien (marché, francs CFA, mangues, car rapide, Tabaski), des schémas en barres (le tout et les parties) et une résolution guidée en étapes. L'app n'enseigne pas qu'un mot-clé impose une opération : « 3 de plus que » peut demander une soustraction, et le schéma sert à comprendre la situation.
+5. **Le mode classe, hors ligne.** Un mode enseignant protégé par un code : classe et élèves sur des appareils partagés, devoirs, tableau de bord (qui bloque, sur quels faits et quels mots), groupes de niveau, défi de classe coopératif sans classement individuel, transfert des résultats sans réseau.
+6. **Mesurer les progrès.** Évaluations datées en début et en fin de période, rapports de classe et d'école exportables en PDF et en CSV, versions anonymes ; c'est ce que les ONG présentent à leurs financeurs.
+
+**Le wolof**
+
+Le wolof est une aide orale, pas une langue d'interface : beaucoup d'enfants ne le lisent pas. Les explications sont enregistrées par de vraies voix (le propriétaire pour la première version), pas par une synthèse vocale, et rangées dans des packs audio, pour pouvoir ajouter d'autres langues sans toucher au code. Un glossaire fixe le mot wolof retenu pour chaque notion, pour que les enregistrements restent cohérents.
+
+**Ce qui est abandonné**
+
+Les achats intégrés (la boutique reste payée uniquement avec les pièces gagnées en jouant), les compétitions mondiales du week-end et toute discussion libre entre enfants.

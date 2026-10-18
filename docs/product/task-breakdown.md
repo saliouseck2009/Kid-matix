@@ -11,11 +11,11 @@
 > dessinées depuis sont référencées (`docs/design/`), et les deux points à
 > trancher sur les règles de code sont clos.
 
-L'application est découpée en 22 lots, de F0 à F21, à intégrer dans cet ordre ; chaque lot livre une fonctionnalité utilisable et testée. Le détail fonctionnel est dans les [spécifications](specifications.md), les écrans dans le [design](../design/README.md), les décisions dans [decisions.md](../decisions.md) et l'avancement dans [status.md](../status.md).
+L'application est découpée en lots, de F0 à F32, à intégrer dans cet ordre ; chaque lot livre une fonctionnalité utilisable et testée. Le détail fonctionnel est dans les [spécifications](specifications.md), les écrans dans le [design](../design/README.md), les décisions dans [decisions.md](../decisions.md) et l'avancement dans [status.md](../status.md).
 
 ## Vue d'ensemble
 
-Les lots F0 à F11 forment la version 1.0, F12 à F18 la version 1.1 et F19 à F21 la version 1.2. Un lot ne démarre que lorsque ceux dont il dépend sont terminés.
+Les lots F0 à F11 forment la version 1.0, F12 à F18 la version 1.1, F19 à F21 la version 1.2, et F23 à F32 la version 2.0 « Kid Matix pour tous ». F22 est un lot hors plan. Un lot ne démarre que lorsque ceux dont il dépend sont terminés.
 
 | Lot | Fonctionnalité | Version | Dépend de | Maquettes (`docs/design/screens/`) |
 | --- | --- | --- | --- | --- |
@@ -41,10 +41,21 @@ Les lots F0 à F11 forment la version 1.0, F12 à F18 la version 1.1 et F19 à F
 | F19 | Défi par code | 1.2 | F9 | 20, 21 |
 | F20 | Sauvegarde par fichier | 1.2 | F1 | 13 (section Sauvegarde) |
 | F21 | Autres langues et boutique | 1.2 | F7, F8 | 22 |
+| F22 | Services de jeux Google Play | Hors plan | F11 | Aucun |
+| F23 | Lecture à voix haute | 2.0 | F3, F10 | Aucun (bouton sur la carte de question) |
+| F24 | Domaine « Nombres jusqu'à 100 » | 2.0 | F5, F15, F23 | À dessiner |
+| F25 | Domaine « Additions et soustractions » | 2.0 | F24 | À dessiner |
+| F26 | Domaine « Division » | 2.0 | F24 | À dessiner |
+| F27 | Test de positionnement par compétence | 2.0 | F16, F24, F25, F26 | 18 (à adapter) |
+| F28 | Les mots des maths | 2.0 | F23, F24 | À dessiner |
+| F29 | Mode classe hors ligne | 2.0 | F20, F27 | À dessiner |
+| F30 | Résoudre des problèmes | 2.0 | F25, F26, F28 | À dessiner |
+| F31 | Mesure des progrès et outils de l'enseignant | 2.0 | F27, F28, F29 | À dessiner |
+| F32 | Autres langues d'aide et suite | 2.0 | F28, F29 | Aucun |
 
 Les numéros de la dernière colonne sont les préfixes des captures de `docs/design/screens/` (par exemple `01-who-is-playing.png`) ; l'index complet est dans `docs/design/README.md`.
 
-Les nouveaux domaines (la division en premier) et le mode en ligne viennent après la version 1.2 ; ils ne sont pas découpés ici.
+Les nouveaux domaines et l'ouverture aux ONG et aux écoles sont découpés dans la version 2.0 (F23 à F32), à la fin de ce fichier. Le mode en ligne n'est plus une priorité : seule une synchronisation facultative des résultats de classe est envisagée (F32-03).
 
 ## Règles communes à tous les lots
 
@@ -618,3 +629,169 @@ L'app s'ouvre à d'autres langues, et des pièces gagnées en jouant servent à 
 - [x] **F21-06** Tests : gain de pièces, achat, solde insuffisant, changement de langue.
 
 **Terminé quand :** l'app s'affiche dans une seconde langue, et un joueur achète un avatar avec ses pièces.
+
+## F22 · Services de jeux Google Play
+
+Lot ouvert hors plan pour publier Play Games sur un canal de test (voir `docs/decisions.md`). Les succès et le classement mondial ne sont pas planifiés : le mode en ligne n'est plus une priorité de la version 2.0.
+
+- [x] **F22-01** Connexion à Google Play Games Services au démarrage, sur Android seulement, sans effet sur le jeu hors ligne.
+
+## Version 2.0 · Kid Matix pour tous
+
+La version 2.0 ouvre l'app au plus grand nombre d'enfants, en particulier en Afrique et auprès des ONG et des écoles : partir du niveau réel de l'enfant, lever la barrière de la lecture et de la langue grâce à l'audio (français et wolof), élargir les mathématiques, apprendre les mots des problèmes, outiller l'enseignant avec un mode classe hors ligne, et mesurer les progrès. La vision est décrite dans la section 17 des [spécifications](specifications.md) ; les choix et les points ouverts sont dans `docs/decisions.md`.
+
+Règles propres à la version 2.0, en plus des règles communes :
+
+- Tout fonctionne hors ligne, sur un Android d'entrée de gamme ; aucune nouvelle donnée ne quitte l'appareil.
+- Aucun achat intégré, aucune publicité.
+- Chaque nouveau domaine est une fonctionnalité de `lib/features/` qui implémente `LearningDomain` et s'enregistre dans `DomainRegistry`, avec des clés d'items stables qui ne changent plus après publication.
+- Les écrans sans maquette sont proposés à partir des écrans existants et validés par le propriétaire avant d'être codés.
+- Les textes sont en français, anglais et espagnol, comme le reste de l'app. Le wolof est une **aide audio**, pas une langue d'interface.
+
+## F23 · Lecture à voix haute
+
+Les enfants qui lisent mal entendent chaque question et chaque consigne en français (ou dans la langue de l'app).
+
+- [ ] **F23-01** Choix technique, noté dans `docs/decisions.md` : synthèse vocale du système pour les textes générés (les questions changent à chaque partie). Vérifier qu'une voix française fonctionne hors ligne sur Android d'entrée de gamme et sur iOS ; prévoir le cas où aucune voix n'est installée.
+- [ ] **F23-02** Interface `SpeechService` dans `core/services/` (parler, arrêter, disponibilité, langue) et son implémentation dans une fonctionnalité dédiée ; service factice pour les tests.
+- [ ] **F23-03** Bouton « Écouter » (haut-parleur, avec `tooltip`) sur la carte de question de tous les formats ; il lit l'énoncé comme une phrase, en réutilisant `PromptReading` (« 5 fois 7 égale combien »).
+- [ ] **F23-04** Réglage par joueur « Lire les questions à voix haute » : lecture automatique de chaque nouvelle question. Désactivé par défaut, proposé à la création du profil.
+- [ ] **F23-05** Lecture des consignes principales (« Touche la bonne réponse »), des astuces de l'étape Découverte et des messages de la mascotte.
+- [ ] **F23-06** Le chrono ne démarre qu'à la fin de la lecture ; il se met en pause pendant une lecture demandée par l'enfant.
+- [ ] **F23-07** Le bouton est masqué, sans message d'erreur, quand aucune voix n'est disponible.
+- [ ] **F23-08** Tests : service factice, chrono en attente de la lecture, bouton masqué sans voix, réglage par joueur.
+
+**Terminé quand :** en mode avion, sur un téléphone d'entrée de gamme, une question est lue en français et le chrono attend la fin de la lecture.
+
+## F24 · Domaine « Nombres jusqu'à 100 »
+
+Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases : compter, lire un nombre, dizaines et unités, comparer.
+
+- [ ] **F24-01** Fonctionnalité `numbers` qui implémente `LearningDomain` : unités « compter jusqu'à 10 », « jusqu'à 20 », « jusqu'à 100 », « dizaines et unités », « comparer », « ranger », « avant et après » ; clés stables (`num:…`).
+- [ ] **F24-02** Nouveaux types de questions, enregistrés dans `QuestionTypeRegistry` : compter des objets, dizaines et unités (paquets de dix et bâtonnets), comparer (plus petit, égal, plus grand : 3 boutons), droite numérique.
+- [ ] **F24-03** Widgets visuels : groupes d'objets, paquets de dix, droite numérique ; chaque dessin a un libellé pour les lecteurs d'écran.
+- [ ] **F24-04** Parcours du domaine : étapes, étoiles et déblocage réutilisés de `learning_path`. Vérifier que `domainId` est bien pris en compte partout (`item_progress`, `stage_progress`, `quiz_session`, records), car il valait toujours « multiplication ».
+- [ ] **F24-05** Accueil : sélecteur de domaine dès que deux domaines existent, dernier domaine mémorisé par joueur. XP, niveau, série et mascotte restent globaux ; étoiles, couronnes, maîtrise et records sont tenus par domaine (spécifications, section 12).
+- [ ] **F24-06** Profil : grille de maîtrise et monstres par domaine, avec un choix du domaine.
+- [ ] **F24-07** Combat de boss à la fin de chaque unité, avec un monstre par unité (dessins provisoires).
+- [ ] **F24-08** Astuce et aide visuelle par unité (fiche d'aide après deux erreurs, comme en multiplication).
+- [ ] **F24-09** Maquettes à proposer et faire valider : sélecteur de domaine, carte du domaine, les quatre nouveaux formats.
+- [ ] **F24-10** Tests : clés uniques et stables, génération sans ambiguïté, validation de chaque type, progression de la multiplication intacte, test de widget de chaque format.
+
+**Terminé quand :** un nouveau joueur choisit « Nombres », réussit l'étape « compter jusqu'à 20 », gagne ses étoiles, et sa progression en multiplication n'a pas bougé.
+
+## F25 · Domaine « Additions et soustractions »
+
+- [ ] **F25-01** Fonctionnalité `addition` qui implémente `LearningDomain` : additions jusqu'à 10, jusqu'à 20, compléments à 10, soustractions jusqu'à 10, jusqu'à 20, puis additions et soustractions jusqu'à 100 sans et avec retenue ; clés stables (`add:7+8`, `sub:15-7`).
+- [ ] **F25-02** Mauvaises réponses plausibles : écart de 1, mauvaise opération, chiffres inversés, oubli de la retenue ; jamais de nombre négatif.
+- [ ] **F25-03** Familles de faits : 7 + 8, 8 + 7, 15 − 8 et 15 − 7 sont liés ; rappel après une erreur, comme le fait inversé de la multiplication (`mirrorOf`).
+- [ ] **F25-04** Aides visuelles : droite numérique, paquets de dix, « compléter jusqu'à 10 » ; une astuce par unité.
+- [ ] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
+- [ ] **F25-06** Tests : clés, génération, familles de faits, mauvaises réponses sans doublon pour tous les faits.
+
+**Terminé quand :** un joueur enchaîne les additions jusqu'à 20, une erreur sur 7 + 8 rappelle 8 + 7, et les faits ratés reviennent le lendemain.
+
+## F26 · Domaine « Division »
+
+- [ ] **F26-01** Fonctionnalité `division` qui implémente `LearningDomain`, calculée à partir des 120 faits de multiplication : clés `div:56/7`, une unité par table, même ordre que le parcours de multiplication.
+- [ ] **F26-02** Lien avec la multiplication : après une erreur sur 56 ÷ 7, rappel de 7 × 8 = 56.
+- [ ] **F26-03** Aide visuelle : partager des objets en groupes égaux ; astuce par table.
+- [ ] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
+- [ ] **F26-05** Tests : clés, génération, lien avec la multiplication.
+
+**Terminé quand :** un joueur fait le parcours de la division par 2 et voit le rappel de la multiplication après une erreur.
+
+## F27 · Test de positionnement par compétence
+
+Le test de départ (F16) devient un vrai positionnement : l'enfant est placé selon ce qu'il sait faire, pas selon son âge, dans l'esprit de l'approche « Teaching at the Right Level ».
+
+- [ ] **F27-01** Niveaux de compétence ordonnés : nombres, addition, soustraction, multiplication, division ; chaque niveau a quelques questions types.
+- [ ] **F27-02** Test adaptatif d'environ 5 minutes : il monte de niveau tant que l'enfant réussit et s'arrête au premier niveau non acquis.
+- [ ] **F27-03** Résultat : un niveau par domaine ; les unités acquises sont ouvertes, et le domaine et l'unité de départ sont recommandés sur l'accueil.
+- [ ] **F27-04** Le test se lit à voix haute (F23) et se repasse depuis le Profil.
+- [ ] **F27-05** Chaque résultat est conservé avec sa date (migration), pour comparer un début et une fin de période (F31).
+- [ ] **F27-06** Écran de bilan mis à jour (sur le modèle de `18-placement-test-result.png`).
+- [ ] **F27-07** Tests : arrêt au premier niveau non acquis, unités ouvertes, test abandonné, historique des résultats.
+
+**Terminé quand :** un enfant qui sait compter mais ne sait pas additionner démarre sur les additions jusqu'à 10, et son résultat daté apparaît dans le Profil.
+
+## F28 · Les mots des maths
+
+Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énoncé. Ce lot leur apprend les mots et expressions des problèmes, avec une explication audio en wolof enregistrée par le propriétaire.
+
+- [ ] **F28-01** Tableau de contenu `docs/product/math-words.md` : environ 40 mots et expressions en six familles (ajouter, enlever, comparer, grouper, partager, questions). Pour chacun : clé stable, mot en français, sens simple, idée d'image, phrase d'exemple, et des colonnes vides pour le propriétaire (explication en wolof, exemple en wolof, nom du fichier audio). Un glossaire de cohérence note le mot wolof retenu pour chaque notion.
+- [ ] **F28-02** Guide d'enregistrement `docs/product/audio-recording.md` (pièce calme, un fichier par mot, nommage `wo_<clé>.m4a`, ton lent, 2 s de silence avant et après) et un script dans `tool/` qui coupe les silences, égalise le volume, convertit en un format mono compressé et vérifie que chaque clé a son fichier.
+- [ ] **F28-03** Packs audio : `assets/audio/<langue>/` avec un manifeste ; le pack wolof est intégré à l'app ; un fichier manquant masque simplement le bouton. Le code ne dépend d'aucune langue en particulier.
+- [ ] **F28-04** Fonctionnalité `math_words` qui implémente `LearningDomain` : chaque mot est un item (`word:il_reste`) suivi par la répétition espacée.
+- [ ] **F28-05** Une illustration vectorielle simple par mot (provisoire, remplaçable sans changer le code).
+- [ ] **F28-06** Type de question « Écoute et touche » : on entend le mot (français, puis wolof à la demande), on touche la bonne image parmi 4.
+- [ ] **F28-07** Type de question « Mot et image » : relier des expressions à leurs dessins (réutiliser le widget de « Relier les paires »).
+- [ ] **F28-08** Type de question « Toucher pour comprendre » : dans une phrase, chaque mot important se touche pour l'entendre en français et en wolof et voir son image.
+- [ ] **F28-09** Type de question « Quelle opération ? » : un petit énoncé lu à voix haute, l'enfant choisit +, −, × ou ÷ sans calculer ; une vingtaine d'énoncés courts dans le tableau de contenu.
+- [ ] **F28-10** Bouton « Écouter en wolof » partout où un mot est présenté ; réglage par joueur « Aide audio : wolof / aucune ».
+- [ ] **F28-11** Parcours des mots : une unité par famille, dans le sélecteur de domaine.
+- [ ] **F28-12** Maquettes à proposer et faire valider : les quatre activités et le bouton wolof.
+- [ ] **F28-13** Tests : clés, manifeste du pack audio, fichier manquant, activités, répétition espacée des mots.
+
+**Terminé quand :** en mode avion, un enfant entend « il reste » en français puis en wolof, touche la bonne image, et un mot raté revient le lendemain ; « Quelle opération ? » fonctionne sur les énoncés du tableau.
+
+## F29 · Mode classe hors ligne
+
+L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, groupes de niveau et défi de classe.
+
+- [ ] **F29-01** Trancher avec le propriétaire, avant de coder, le contexte principal : tablettes partagées à l'école, ou téléphones des familles ; et la taille maximale d'une classe. Noter la réponse dans `docs/decisions.md`.
+- [ ] **F29-02** Entités `ClassroomEntity`, élève (un profil rattaché à une classe) et `AssignmentEntity` (domaine, unité, échéance) ; migration.
+- [ ] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
+- [ ] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
+- [ ] **F29-05** « Qui joue ? » en mode classe : choisir sa classe, puis son nom ou son avatar, avec recherche pour une classe nombreuse.
+- [ ] **F29-06** Devoirs : l'enseignant donne une unité à travailler ; l'élève voit « Le devoir de la classe » en tête de l'accueil.
+- [ ] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
+- [ ] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
+- [ ] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
+- [ ] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
+- [ ] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
+- [ ] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.
+
+**Terminé quand :** sur une tablette, un enseignant crée une classe de 30 élèves et donne un devoir sur les additions jusqu'à 20 ; trois élèves jouent, et le tableau de bord montre qui bloque et sur quels faits.
+
+## F30 · Résoudre des problèmes
+
+Les enfants apprennent à comprendre une situation, pas à réagir à un mot-clé : énoncés du quotidien, schémas en barres et résolution guidée.
+
+- [ ] **F30-01** Contenu `docs/product/problems.md` : une trentaine de problèmes en trois niveaux (avec images, phrase courte, énoncé complet), dans des contextes d'ici (marché, francs CFA, mangues, car rapide, Tabaski, thé) avec des prénoms d'ici ; colonnes pour l'audio wolof enregistré par le propriétaire.
+- [ ] **F30-02** Gabarits de problèmes avec des nombres tirés au sort, pour varier les énoncés ; clé stable par gabarit. Les versions enregistrées en wolof ont des nombres fixes ; les variantes générées sont lues en français par la synthèse vocale (F23).
+- [ ] **F30-03** Type « Schéma en barres » : placer les nombres sur le tout et les parties, choisir l'opération, puis calculer.
+- [ ] **F30-04** Résolution guidée en étapes : écouter, faire le schéma, choisir l'opération, calculer, vérifier.
+- [ ] **F30-05** Dans chaque énoncé, les mots des maths (F28) se touchent ; bouton « Écouter en wolof » sur les énoncés enregistrés.
+- [ ] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
+- [ ] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
+- [ ] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
+- [ ] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
+- [ ] **F30-10** Tests : gabarits sans ambiguïté, schéma, étapes, piège du mot-clé.
+
+**Terminé quand :** un enfant résout « Awa a 12 mangues, elle en donne 5 » avec le schéma en barres, en écoutant l'énoncé en wolof, puis réussit la version piège du même problème.
+
+## F31 · Mesure des progrès et outils de l'enseignant
+
+Ce que les ONG doivent pouvoir montrer : des progrès mesurés, des rapports simples, sans donnée personnelle.
+
+- [ ] **F31-01** Évaluation de début et de fin de période, lancée depuis le mode enseignant : positionnement (F27) et compréhension des mots (F28), datée et conservée.
+- [ ] **F31-02** Rapport de classe : progression entre deux évaluations, compétences acquises, temps de pratique, mots compris ; export en PDF et en CSV par la feuille de partage.
+- [ ] **F31-03** Rapport d'école ou de programme : un appareil coordinateur (celui de l'ONG) importe les fichiers de plusieurs classes et produit un rapport consolidé.
+- [ ] **F31-04** Exports anonymes : numéros à la place des pseudos ; aucune donnée personnelle dans les rapports.
+- [ ] **F31-05** Transfert de petits résultats par QR code, sans fichier.
+- [ ] **F31-06** L'enseignant enregistre lui-même l'explication d'un mot ou d'un énoncé dans sa langue, depuis le mode enseignant ; l'enregistrement remplace le pack audio sur cet appareil et s'exporte comme pack.
+- [ ] **F31-07** Fiches à imprimer générées en PDF : exercices et cartes de mots en français et en wolof.
+- [ ] **F31-08** Tests : calcul de progression, consolidation de plusieurs classes, anonymisation, QR code, enregistrement.
+
+**Terminé quand :** deux évaluations faites à un mois d'écart donnent un rapport PDF de la classe qui montre la progression, sans aucun pseudo dans la version anonyme.
+
+## F32 · Autres langues d'aide et suite
+
+À lancer avec des partenaires, quand le terrain le demande.
+
+- [ ] **F32-01** Nouveaux packs audio (pulaar, sérère, bambara, haoussa…) enregistrés avec des partenaires ; import d'un pack par fichier, sans mise à jour de l'app.
+- [ ] **F32-02** Guide de prise en main du mode classe pour les animateurs d'ONG (PDF et courte vidéo).
+- [ ] **F32-03** Synchronisation en ligne facultative des résultats de classe : choix du serveur, consentement et protection des données à trancher avec les partenaires avant toute tâche technique.
+
+**Terminé quand :** un pack audio d'une nouvelle langue s'importe par fichier et remplace l'aide wolof sur un appareil.
