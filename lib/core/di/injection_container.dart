@@ -33,6 +33,7 @@ import 'package:kid_matix/features/quiz/injection.dart';
 import 'package:kid_matix/features/reward/injection.dart';
 import 'package:kid_matix/features/setting/injection.dart';
 import 'package:kid_matix/features/shop/injection.dart';
+import 'package:kid_matix/features/speech/injection.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -58,6 +59,7 @@ Future<void> configureDependencies() async {
   registerChallengeFeature(sl);
   registerSettingFeature(sl);
   registerShopFeature(sl);
+  registerSpeechFeature(sl);
   registerQuizFeature(sl);
 }
 
