@@ -65,10 +65,21 @@ abstract final class ChallengeRules {
   /// Questions of the daily review.
   static const int dailyReviewQuestionCount = 10;
 
+  /// The formats of the numbers (lot F24): the daily review mixes every
+  /// domain, and some items of the numbers have no other format.
+  static const List<String> numberQuestionTypeIds = <String>[
+    QuestionTypeIds.countObjects,
+    QuestionTypeIds.tensAndOnes,
+    QuestionTypeIds.numberLine,
+    QuestionTypeIds.compare,
+  ];
+
   /// Question types of the daily review: the mastery engine picks among
-  /// them by box.
-  static const List<String> dailyReviewQuestionTypeIds =
-      versionOneQuestionTypeIds;
+  /// them by box, among those that fit each item.
+  static const List<String> dailyReviewQuestionTypeIds = <String>[
+    ...versionOneQuestionTypeIds,
+    ...numberQuestionTypeIds,
+  ];
 
   /// Questions of a monster hunt: each monster twice, completed like a
   /// daily review (owner's choice).

@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
@@ -69,7 +70,7 @@ class SubmitAnswerUseCase
     final QuestionType? type = turn == null
         ? null
         : _questionTypes.find(turn.question.questionTypeId);
-    final LearningDomain? domain = _domains.find(run.domainId);
+    final LearningDomain? domain = _domainOf(run, turn?.question.itemKey);
     if (turn == null || type == null || domain == null) {
       return const DataFailed<QuizSubmission>(
         ValidationException(message: 'No question to answer.'),
@@ -154,7 +155,7 @@ class SubmitAnswerUseCase
       final DataState<void> recorded = await _mastery.recordAnswer(
         answer: ItemAnswer(
           profileId: run.profileId,
-          domainId: run.domainId,
+          domainId: _domainOf(run, itemKey)?.id ?? run.domainId,
           itemKey: itemKey,
           questionTypeId: answer.questionTypeId,
           isCorrect: _isItemCorrect(question, itemKey, answer, given),
@@ -178,6 +179,15 @@ class SubmitAnswerUseCase
   ) {
     if (question.pairs.isEmpty) return answer.isCorrect;
     return given is PairsAnswer && !given.missedItemKeys.contains(itemKey);
+  }
+
+  /// The domain of the item [itemKey] in [run]: the domain of the run, or,
+  /// for a quiz that mixes domains, the one that teaches the item.
+  LearningDomain? _domainOf(QuizRun run, String? itemKey) {
+    if (run.domainId != LearningDomainIds.mixed) {
+      return _domains.find(run.domainId);
+    }
+    return itemKey == null ? null : _domains.findByItemKey(itemKey);
   }
 
   bool _needsRetry(QuizRun run, QuizTurn turn, QuizAnswerEntity answer) {

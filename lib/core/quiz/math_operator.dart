@@ -7,6 +7,10 @@ enum MathOperator {
   /// a number (version 2.0).
   add,
 
+  /// Subtraction, shown as "−": `15 − 7 = 8`. The result is never
+  /// negative (version 2.0).
+  subtract,
+
   /// "Is smaller than", shown as "<" (version 2.0).
   lessThan,
 
@@ -17,4 +21,7 @@ enum MathOperator {
   /// `15 = 15`; an operation's result follows the equals token instead
   /// (version 2.0).
   equalTo,
+
+  /// Division, shown as "÷": `56 ÷ 7 = 8` (version 2.0).
+  divide,
 }

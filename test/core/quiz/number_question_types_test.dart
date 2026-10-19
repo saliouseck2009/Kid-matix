@@ -52,7 +52,10 @@ void main() {
         AnswerNature.produced,
       );
       for (final QuestionType type in numberQuestionTypes) {
-        expect(type.timeFactor, 1);
+        final int expectedFactor = type.id == QuestionTypeIds.countObjects
+            ? 2
+            : 1;
+        expect(type.timeFactor, expectedFactor, reason: type.id);
       }
     });
     test('judge a comparison by its sign', () {
