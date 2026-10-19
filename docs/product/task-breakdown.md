@@ -652,7 +652,7 @@ Règles propres à la version 2.0, en plus des règles communes :
 
 Les enfants qui lisent mal entendent chaque question et chaque consigne en français (ou dans la langue de l'app).
 
-- [ ] **F23-01** Choix technique, noté dans `docs/decisions.md` : synthèse vocale du système pour les textes générés (les questions changent à chaque partie). Vérifier qu'une voix française fonctionne hors ligne sur Android d'entrée de gamme et sur iOS ; prévoir le cas où aucune voix n'est installée.
+- [x] **F23-01** Choix technique, noté dans `docs/decisions.md` : synthèse vocale du système pour les textes générés (les questions changent à chaque partie). Vérifier qu'une voix française fonctionne hors ligne sur Android d'entrée de gamme et sur iOS ; prévoir le cas où aucune voix n'est installée.
 - [x] **F23-02** Interface `SpeechService` dans `core/services/` (parler, arrêter, disponibilité, langue) et son implémentation dans une fonctionnalité dédiée ; service factice pour les tests.
 - [x] **F23-03** Bouton « Écouter » (haut-parleur, avec `tooltip`) sur la carte de question de tous les formats ; il lit l'énoncé comme une phrase, en réutilisant `PromptReading` (« 5 fois 7 égale combien »).
 - [x] **F23-04** Réglage par joueur « Lire les questions à voix haute » : lecture automatique de chaque nouvelle question. Désactivé par défaut, proposé à la création du profil.
@@ -675,7 +675,7 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 - [x] **F24-06** Profil : grille de maîtrise et monstres par domaine, avec un choix du domaine.
 - [x] **F24-07** Combat de boss à la fin de chaque unité, avec un monstre par unité (dessins provisoires).
 - [x] **F24-08** Astuce et aide visuelle par unité (fiche d'aide après deux erreurs, comme en multiplication).
-- [ ] **F24-09** Maquettes à proposer et faire valider : sélecteur de domaine, carte du domaine, les quatre nouveaux formats.
+- [x] **F24-09** Maquettes à proposer et faire valider : sélecteur de domaine, carte du domaine, les quatre nouveaux formats.
 - [x] **F24-10** Tests : clés uniques et stables, génération sans ambiguïté, validation de chaque type, progression de la multiplication intacte, test de widget de chaque format.
 
 **Terminé quand :** un nouveau joueur choisit « Nombres », réussit l'étape « compter jusqu'à 20 », gagne ses étoiles, et sa progression en multiplication n'a pas bougé.
