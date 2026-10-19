@@ -3,6 +3,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
@@ -56,6 +57,21 @@ void main() {
       // Assert
       expect(actualRun.timeFactors[QuestionTypeIds.matchPairs], 2);
       expect(actualRun.currentTimeLimit, const Duration(seconds: 20));
+    });
+    test('doubles the time of a count-objects question', () async {
+      // Arrange
+      final QuizRun inputRun = (await buildQuizUseCase()(
+        params: const BuildQuizParams(
+          profileId: 'profile-1',
+          domainId: 'numbers',
+          mode: QuizMode.freeTraining,
+          itemKeys: <String>['num:count:14'],
+          questionTypeIds: <String>[QuestionTypeIds.countObjects],
+          timeLimit: Duration(seconds: 10),
+        ),
+      )).requireData;
+      // Assert
+      expect(inputRun.currentTimeLimit, const Duration(seconds: 20));
     });
     test('keeps the time of a find-the-operation question', () async {
       // Act

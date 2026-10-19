@@ -61,6 +61,8 @@ class _MasteryGridCardState extends State<MasteryGridCard> {
         children: <Widget>[
           Semantics(
             header: true,
+            label: context.l10n.gridSpokenTitle(domain.id),
+            excludeSemantics: true,
             child: Text(
               context.l10n.gridTitle(domain.id),
               style: textTheme.titleMedium,

@@ -12,6 +12,9 @@ const List<QuestionType> numberQuestionTypes = <QuestionType>[
   ExpectedAnswerQuestionType(
     id: QuestionTypeIds.countObjects,
     answerNature: AnswerNature.recognized,
+    // Counting up to 20 objects takes longer than reading a fact: twice
+    // the time in the timed stages (owner's decision, 2026-10-18).
+    timeFactor: 2,
   ),
   ExpectedAnswerQuestionType(
     id: QuestionTypeIds.tensAndOnes,

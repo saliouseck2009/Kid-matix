@@ -682,22 +682,22 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 
 ## F25 · Domaine « Additions et soustractions »
 
-- [ ] **F25-01** Fonctionnalité `addition` qui implémente `LearningDomain` : additions jusqu'à 10, jusqu'à 20, compléments à 10, soustractions jusqu'à 10, jusqu'à 20, puis additions et soustractions jusqu'à 100 sans et avec retenue ; clés stables (`add:7+8`, `sub:15-7`).
-- [ ] **F25-02** Mauvaises réponses plausibles : écart de 1, mauvaise opération, chiffres inversés, oubli de la retenue ; jamais de nombre négatif.
-- [ ] **F25-03** Familles de faits : 7 + 8, 8 + 7, 15 − 8 et 15 − 7 sont liés ; rappel après une erreur, comme le fait inversé de la multiplication (`mirrorOf`).
-- [ ] **F25-04** Aides visuelles : droite numérique, paquets de dix, « compléter jusqu'à 10 » ; une astuce par unité.
-- [ ] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
-- [ ] **F25-06** Tests : clés, génération, familles de faits, mauvaises réponses sans doublon pour tous les faits.
+- [x] **F25-01** Fonctionnalité `addition` qui implémente `LearningDomain` : additions jusqu'à 10, jusqu'à 20, compléments à 10, soustractions jusqu'à 10, jusqu'à 20, puis additions et soustractions jusqu'à 100 sans et avec retenue ; clés stables (`add:7+8`, `sub:15-7`).
+- [x] **F25-02** Mauvaises réponses plausibles : écart de 1, mauvaise opération, chiffres inversés, oubli de la retenue ; jamais de nombre négatif.
+- [x] **F25-03** Familles de faits : 7 + 8, 8 + 7, 15 − 8 et 15 − 7 sont liés ; rappel après une erreur, comme le fait inversé de la multiplication (`mirrorOf`).
+- [x] **F25-04** Aides visuelles : droite numérique, paquets de dix, « compléter jusqu'à 10 » ; une astuce par unité.
+- [x] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
+- [x] **F25-06** Tests : clés, génération, familles de faits, mauvaises réponses sans doublon pour tous les faits.
 
 **Terminé quand :** un joueur enchaîne les additions jusqu'à 20, une erreur sur 7 + 8 rappelle 8 + 7, et les faits ratés reviennent le lendemain.
 
 ## F26 · Domaine « Division »
 
-- [ ] **F26-01** Fonctionnalité `division` qui implémente `LearningDomain`, calculée à partir des 120 faits de multiplication : clés `div:56/7`, une unité par table, même ordre que le parcours de multiplication.
-- [ ] **F26-02** Lien avec la multiplication : après une erreur sur 56 ÷ 7, rappel de 7 × 8 = 56.
-- [ ] **F26-03** Aide visuelle : partager des objets en groupes égaux ; astuce par table.
-- [ ] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
-- [ ] **F26-05** Tests : clés, génération, lien avec la multiplication.
+- [x] **F26-01** Fonctionnalité `division` qui implémente `LearningDomain`, calculée à partir des 120 faits de multiplication : clés `div:56/7`, une unité par table, même ordre que le parcours de multiplication.
+- [x] **F26-02** Lien avec la multiplication : après une erreur sur 56 ÷ 7, rappel de 7 × 8 = 56.
+- [x] **F26-03** Aide visuelle : partager des objets en groupes égaux ; astuce par table.
+- [x] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
+- [x] **F26-05** Tests : clés, génération, lien avec la multiplication.
 
 **Terminé quand :** un joueur fait le parcours de la division par 2 et voit le rappel de la multiplication après une erreur.
 

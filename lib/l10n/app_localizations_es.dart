@@ -40,6 +40,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numbersDomainName => 'Números';
 
   @override
+  String get divisionDomainName => 'División';
+
+  @override
+  String get additionDomainName => '+ y −';
+
+  @override
+  String get additionDomainSpokenName => 'Sumas y restas';
+
+  @override
   String get mathWordsDomainName => 'Palabras de mates';
 
   @override
@@ -215,6 +224,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get masteryGridTitleNumbers => 'Mis números';
+
+  @override
+  String get masteryGridTitleDivision => 'Mis divisiones';
+
+  @override
+  String get masteryGridTitleAddition => 'Mis + y −';
+
+  @override
+  String get masteryGridTitleAdditionSpoken => 'Mis sumas y restas';
 
   @override
   String get masteryGridTitleMathWords => 'Mis palabras';
@@ -573,6 +591,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizCompareLabel => '¿Menor, igual o mayor?';
 
   @override
+  String get quizMissingNumberLabel => 'Encuentra el número escondido';
+
+  @override
   String quizCompareSpoken(int first, int second) {
     return '¿$first es menor, igual o mayor que $second?';
   }
@@ -775,6 +796,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String quizHelpDotGridSharingLabel(int total, int groups, int each) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total puntos repartidos',
+      one: '1 punto repartido',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      groups,
+      locale: localeName,
+      other: '$groups grupos',
+      one: '1 grupo',
+    );
+    return '$_temp0 en $_temp1: $each en cada grupo';
+  }
+
+  @override
   String get quizContinue => 'Continuar';
 
   @override
@@ -808,10 +846,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizSpokenPlus => 'más';
 
   @override
-  String get quizSpokenMinus => 'menos';
+  String get quizSpokenDividedBy => 'entre';
 
   @override
-  String get quizSpokenDividedBy => 'dividido entre';
+  String get quizSpokenMinus => 'menos';
 
   @override
   String get quizSpokenLessThan => 'es menor que';
@@ -1207,6 +1245,92 @@ class AppLocalizationsEs extends AppLocalizations {
         'compare': 'Mira primero las decenas: el número que tiene más es el mayor. Si son iguales, mira las unidades.',
         'order': 'En la recta, los números van del menor al mayor. Descubre cuánto avanzan cada vez.',
         'beforeafter': 'El número siguiente es 1 más; el anterior, 1 menos. ¡Después del 39 viene el 40!',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String divisionUnitName(int number) {
+    return 'Dividir entre $number';
+  }
+
+  @override
+  String divisionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        '1': 'Dividir entre 1 no cambia nada: 7 ÷ 1 = 7.',
+        '2': 'Dividir entre 2 es repartir en dos partes iguales: 12 ÷ 2 = 6, la mitad de 12.',
+        '3': 'Dividir entre 3 es hacer 3 partes iguales: 12 ÷ 3 = 4, porque 3 × 4 = 12.',
+        '4': 'Dividir entre 4 es sacar la mitad de la mitad: 20 ÷ 4 = 5, porque la mitad de 20 es 10 y la mitad de 10 es 5.',
+        '5': 'Para 35 ÷ 5, cuenta de 5 en 5 hasta 35: 5, 10, 15, 20, 25, 30, 35. Son 7 saltos, así que 35 ÷ 5 = 7.',
+        '6': 'Para 42 ÷ 6, busca en la tabla del 6: 6 × 7 = 42, así que 42 ÷ 6 = 7.',
+        '7': 'Para 56 ÷ 7, piensa en 7 × 8 = 56: así que 56 ÷ 7 = 8.',
+        '8': 'Dividir entre 8 es sacar la mitad tres veces: para 48 ÷ 8, 48 → 24 → 12 → 6.',
+        '9': 'En la tabla del 9, las cifras suman 9 (36: 3 + 6 = 9). Y 36 ÷ 9 = 4, porque 9 × 4 = 36.',
+        '10': 'Dividir entre 10 es quitar el 0 de la derecha: 70 ÷ 10 = 7.',
+        '11': 'Hasta 99 ÷ 11, los números de la tabla del 11 tienen dos cifras iguales: 77 ÷ 11 = 7.',
+        '12': 'Para 36 ÷ 12, cuenta de 12 en 12: 12, 24, 36. Son 3 saltos, así que 36 ÷ 12 = 3.',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add5': 'Sumas hasta 5',
+        'sub5': 'Restas hasta 5',
+        'add7': 'Sumas hasta 7',
+        'add9': 'Sumas hasta 9',
+        'toten': 'Completar hasta 10',
+        'sub7': 'Restas hasta 7',
+        'sub9': 'Restas hasta 9',
+        'subten': 'Restas desde 10',
+        'add12': 'Sumas hasta 12',
+        'add14': 'Sumas hasta 14',
+        'add20': 'Sumas hasta 20',
+        'sub12': 'Restas hasta 12',
+        'sub14': 'Restas hasta 14',
+        'sub20': 'Restas hasta 20',
+        'add100': 'Sumas sin llevada',
+        'sub100': 'Restas sin llevada',
+        'carry': 'Sumas con llevada',
+        'borrow': 'Restas con llevada',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String additionUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add5': 'Para sumar, avanza por la recta: ¿2 + 3? Empieza en 2 y avanza 3: 3, 4, 5.',
+        'sub5': 'Restar es quitar. ¿5 − 2? Empieza en 5 y retrocede 2: 4, 3.',
+        'add7': 'Para sumar, empieza por el número más grande y avanza el más pequeño. ¿2 + 5? Empieza en 5 y avanza 2: 6, 7.',
+        'add9': 'Piensa en los dobles: 4 + 4 = 8, así que 4 + 5 = 9.',
+        'toten': 'Busca lo que falta para llegar a 10. A 7 le faltan 3, porque 7 + 3 = 10. Cuenta con los dedos si quieres.',
+        'sub7': 'Restar es quitar. ¿7 − 3? Empieza en 7 y retrocede 3: 6, 5, 4. O busca: 3 más cuánto es 7.',
+        'sub9': 'Para 9 − 4, busca lo que hay que sumar a 4 para llegar a 9: 4 + 5 = 9, así que 9 − 4 = 5.',
+        'subten': 'Para 10 − 3, piensa en el complemento: 3 + 7 = 10, así que 10 − 3 = 7.',
+        'add12': 'Para 9 + 2, ve primero hasta 10: 9 + 1 = 10. Queda 1 por sumar: 10 + 1 = 11.',
+        'add14': 'Para 8 + 5, ve primero hasta 10: 8 + 2 = 10. Quedan 3 por sumar: 10 + 3 = 13.',
+        'add20': 'Para 7 + 8, ve primero hasta 10: 7 + 3 = 10. Quedan 5 por sumar: 10 + 5 = 15.',
+        'sub12': 'Para 12 − 4, quita primero 2 para llegar a 10 y luego 2 más: 12 − 2 = 10 y 10 − 2 = 8.',
+        'sub14': 'Para 13 − 6, quita primero 3 para llegar a 10 y luego 3 más: 13 − 3 = 10 y 10 − 3 = 7.',
+        'sub20': 'Para 15 − 7, quita primero 5 para llegar a 10 y luego 2 más: 15 − 5 = 10 y 10 − 2 = 8.',
+        'add100': 'Suma las unidades y luego las decenas. Para 23 + 14: 3 + 4 = 7 y 20 + 10 = 30, así que 37.',
+        'sub100': 'Resta las unidades y luego las decenas. Para 47 − 23: 7 − 3 = 4 y 40 − 20 = 20, así que 24.',
+        'carry': 'Cuando las unidades suman 10 o más, te llevas una decena. Para 27 + 15, 7 + 5 = 12: escribes 2 y te llevas 1 decena. 20 + 10 + 10 = 40, y 40 + 2 = 42.',
+        'borrow': 'Si no puedes quitar las unidades, rompe una decena. Para 42 − 17: 42 se convierte en 30 y 12. 12 − 7 = 5 y 30 − 10 = 20, así que 25.',
         'other': '',
       },
     );

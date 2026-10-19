@@ -260,6 +260,24 @@ void main() {
       )(params: 'p1')).requireData;
       expect(actualBadges.single.badgeKey, BadgeKey.allFacts);
     });
+    test('unlocks Les 120 during a review that mixes the domains', () async {
+      // Arrange
+      mastery.masteredItems.addAll(<String>{
+        for (int table = 1; table <= 12; table++)
+          for (int multiplier = 1; multiplier <= 10; multiplier++)
+            'mul:${table}x$multiplier',
+      });
+      // Act
+      await save(_session('s1', sourceKey: 'dailyReview', domainId: 'mixed'));
+      // Assert
+      final List<BadgeUnlockEntity> actualBadges = (await GetBadgesUseCase(
+        repository: rewards,
+      )(params: 'p1')).requireData;
+      expect(
+        actualBadges.map((BadgeUnlockEntity badge) => badge.badgeKey),
+        contains(BadgeKey.allFacts),
+      );
+    });
     test('keeps Les 120 for the multiplication tables', () async {
       // Arrange
       mastery.masteredItems.addAll(<String>{

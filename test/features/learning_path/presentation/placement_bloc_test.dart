@@ -194,7 +194,7 @@ void main() {
     // Arrange
     await bloc.close();
     bloc = buildBloc(
-      params: const LearningPathParams(profileId: 'p1', domainId: 'division'),
+      params: const LearningPathParams(profileId: 'p1', domainId: 'unknown'),
     );
     // Act
     bloc.add(const PlacementStarted());

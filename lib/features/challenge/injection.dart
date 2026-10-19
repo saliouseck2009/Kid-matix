@@ -71,7 +71,7 @@ void registerChallengeFeature(GetIt sl) {
     () => GetSurvivalUseCase(openUnits: sl(), settings: sl()),
   );
   sl.registerLazySingleton<GetDailyReviewUseCase>(
-    () => GetDailyReviewUseCase(mastery: sl()),
+    () => GetDailyReviewUseCase(mastery: sl(), domains: sl()),
   );
   sl.registerLazySingleton<GetMonsterCountUseCase>(
     () => GetMonsterCountUseCase(mastery: sl()),

@@ -39,9 +39,9 @@ abstract interface class LearningDomain {
   /// easy outside their own unit get a lower weight.
   int drawWeightOf(LearningItem item);
 
-  /// The item with the same answer the other way round, such as 8 x 7 for
-  /// 7 x 8, recalled after a mistake; `null` when the item reads the same
-  /// both ways or the domain lacks its mirror.
+  /// A related fact recalled after a mistake, such as 8 x 7 for 7 x 8; it
+  /// is only described, never drawn as a question. `null` when the item
+  /// has none.
   LearningItem? mirrorOf(LearningItem item);
 
   /// The help card of [item], shown after two mistakes on it in a quiz.

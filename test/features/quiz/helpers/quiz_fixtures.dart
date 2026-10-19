@@ -7,7 +7,9 @@ import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
+import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/features/division/domain/services/division_domain.dart';
 import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -71,12 +73,15 @@ void registerQuizFallbacks() {
   );
 }
 
-/// Registry holding the domains of the app: the multiplication, then
-/// the numbers, then the math words.
+/// Registry holding the domains of the app: the multiplication, the
+/// numbers, the additions and subtractions, the divisions, then the
+/// math words.
 DomainRegistry buildDomainRegistry() {
   return DomainRegistry()
     ..register(MultiplicationDomain())
     ..register(NumbersDomain())
+    ..register(AdditionDomain())
+    ..register(DivisionDomain())
     ..register(buildMathWordDomain());
 }
 

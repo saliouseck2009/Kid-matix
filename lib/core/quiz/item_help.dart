@@ -32,11 +32,26 @@ final class ItemHelp {
   final MathPicture? picture;
 }
 
-/// A grid of dots: 7 rows of 8 dots pictures 7 x 8.
+/// How a grid of dots is read.
+enum DotGridReading {
+  /// Rows of dots, as for a multiplication: 7 rows of 8 dots.
+  rows,
+
+  /// Dots shared into equal groups, one row per group, as for a division:
+  /// 56 dots shared into 7 groups of 8.
+  sharing,
+}
+
+/// A grid of dots: 7 rows of 8 dots pictures 7 x 8, or 56 dots shared
+/// into 7 groups of 8.
 @immutable
 final class DotGrid {
-  /// Creates a grid of [rows] rows of [columns] dots.
-  const DotGrid({required this.rows, required this.columns});
+  /// Creates a grid of [rows] rows of [columns] dots, read as [reading].
+  const DotGrid({
+    required this.rows,
+    required this.columns,
+    this.reading = DotGridReading.rows,
+  });
 
   /// Number of rows.
   final int rows;
@@ -44,12 +59,18 @@ final class DotGrid {
   /// Dots per row.
   final int columns;
 
+  /// How the grid is captioned and framed.
+  final DotGridReading reading;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is DotGrid && other.rows == rows && other.columns == columns;
+        other is DotGrid &&
+            other.rows == rows &&
+            other.columns == columns &&
+            other.reading == reading;
   }
 
   @override
-  int get hashCode => Object.hash(rows, columns);
+  int get hashCode => Object.hash(rows, columns, reading);
 }

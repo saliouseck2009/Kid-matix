@@ -79,7 +79,7 @@ void main() {
       );
       // Act
       final AppException? actualException = (await inputUseCase(
-        params: 'division',
+        params: 'unknown',
       )).exceptionOrNull;
       // Assert
       expect(actualException, isA<ValidationException>());

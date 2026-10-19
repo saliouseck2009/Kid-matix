@@ -93,6 +93,25 @@ void main() {
         findsOneWidget,
       );
     });
+    testWidgets('shows the 12 units of the division with their marks', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      repository = InMemoryItemProgressRepository(<ItemProgressEntity>[
+        _progress('div:56/7', 1, domainId: 'division'),
+      ]);
+      // Act
+      await pumpGrid(tester, domainId: 'division');
+      // Assert
+      expect(find.text('Mes divisions'), findsOneWidget);
+      expect(find.text('×10'), findsNothing);
+      expect(find.text('÷7'), findsOneWidget);
+      expect(find.text('÷12'), findsOneWidget);
+      expect(
+        find.bySemanticsLabel('56 divisé par 7 égale 8, À revoir'),
+        findsOneWidget,
+      );
+    });
     testWidgets('reads each fact with its status', (
       WidgetTester tester,
     ) async {
