@@ -7,6 +7,7 @@ import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
+import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/division/domain/services/division_domain.dart';
@@ -16,6 +17,7 @@ import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart';
 import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_repository.dart';
+import 'package:kid_matix/features/quiz/domain/services/quiz_run_factory.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/submit_answer_use_case.dart';
@@ -103,12 +105,22 @@ List<String> tableKeys(int table) {
 /// [BuildQuizUseCase] over the real registries and a seeded draw; the
 /// mastery engine plans the items in the order given by default.
 BuildQuizUseCase buildQuizUseCase({int seed = 5, MasteryService? mastery}) {
+  final RandomSource random = DartRandomSource(seed: seed);
   return BuildQuizUseCase(
     domains: buildDomainRegistry(),
-    questionTypes: buildQuestionTypeRegistry(),
     mastery: mastery ?? FakeMasteryService(),
+    random: random,
+    runs: buildQuizRunFactory(random: random),
+  );
+}
+
+/// [QuizRunFactory] over the real registries, drawing with [random].
+QuizRunFactory buildQuizRunFactory({required RandomSource random}) {
+  return QuizRunFactory(
+    domains: buildDomainRegistry(),
+    questionTypes: buildQuestionTypeRegistry(),
     generator: const QuestionGenerator(),
-    random: DartRandomSource(seed: seed),
+    random: random,
     idGenerator: const FixedIdGenerator('session-1'),
     clock: FakeClock(quizStart),
   );
