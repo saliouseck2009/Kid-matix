@@ -6,6 +6,7 @@ import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/services/mastery_policy.dart';
 import 'package:kid_matix/features/mastery/domain/services/monster_hunt_selector.dart';
+import 'package:kid_matix/features/mastery/domain/services/question_format_picker.dart';
 import 'package:kid_matix/features/mastery/domain/services/review_item_selector.dart';
 
 /// Chooses the items of a quiz and the format of each question.
@@ -13,9 +14,8 @@ import 'package:kid_matix/features/mastery/domain/services/review_item_selector.
 /// Every item to review (box 1) is asked once first, so missed facts
 /// come back at the next quiz; the other questions are drawn with
 /// replacement, low boxes more often, and weighted by the domain. The
-/// order is then shuffled. Items in the first boxes are asked with
-/// answers to pick, the others with answers to write, always among the
-/// formats that fit the item (`LearningDomain.questionTypeIdsOf`).
+/// order is then shuffled. [QuestionFormatPicker] gives each question
+/// the formats of its box.
 ///
 /// A review asks instead the items [ReviewItemSelector] chooses, each
 /// once, and a monster hunt those [MonsterHuntSelector] chooses, with the
@@ -25,16 +25,15 @@ final class QuizItemPlanner {
   const QuizItemPlanner({
     this._selector = const ReviewItemSelector(),
     this._hunt = const MonsterHuntSelector(),
+    this._formats = const QuestionFormatPicker(),
   });
 
   final ReviewItemSelector _selector;
   final MonsterHuntSelector _hunt;
+  final QuestionFormatPicker _formats;
 
   /// Draw weight of an item by box: index 0 is box 0.
   static const List<int> boxDrawWeights = <int>[4, 5, 4, 3, 2, 1];
-
-  /// Highest box whose items are asked with answers to pick first.
-  static const int lastRecognizedBox = 2;
 
   /// Plans [count] questions among [items] of [domain]; none when
   /// [items] is empty.
@@ -70,16 +69,11 @@ final class QuizItemPlanner {
     return random
         .shuffled(chosen)
         .map(
-          (LearningItem item) => QuizItemPlan(
-            itemKey: item.key,
-            questionTypeIds: questionTypesFor(
-              box: _boxOf(progressByKey, item),
-              questionTypeNatures: _fitFor(
-                domain,
-                item,
-                questionTypeNatures,
-              ),
-            ),
+          (LearningItem item) => _formats.planFor(
+            domain: domain,
+            item: item,
+            box: _boxOf(progressByKey, item),
+            questionTypeNatures: questionTypeNatures,
           ),
         )
         .toList();
@@ -131,24 +125,6 @@ final class QuizItemPlanner {
     return _planEach(domain, chosen, questionTypeNatures);
   }
 
-  /// Question types fit for an item of [box]: answers to pick up to
-  /// [lastRecognizedBox], answers to write above; all of
-  /// [questionTypeNatures] when none fits.
-  List<String> questionTypesFor({
-    required int box,
-    required Map<String, AnswerNature> questionTypeNatures,
-  }) {
-    final AnswerNature preferred = box <= lastRecognizedBox
-        ? AnswerNature.recognized
-        : AnswerNature.produced;
-    final List<String> fit = <String>[
-      for (final MapEntry<String, AnswerNature> type
-          in questionTypeNatures.entries)
-        if (type.value == preferred) type.key,
-    ];
-    return fit.isEmpty ? questionTypeNatures.keys.toList() : fit;
-  }
-
   /// One question per item of [chosen], in order, with the formats of
   /// its box.
   List<QuizItemPlan> _planEach(
@@ -158,46 +134,13 @@ final class QuizItemPlanner {
   ) {
     return chosen
         .map(
-          (ItemProgressEntity progress) => planItem(
+          (ItemProgressEntity progress) => _formats.planItem(
             domain: domain,
             progress: progress,
             questionTypeNatures: questionTypeNatures,
           ),
         )
         .toList();
-  }
-
-  /// The question of the item of [progress] in [domain], with the formats
-  /// of its box among those of [questionTypeNatures] that fit the item.
-  QuizItemPlan planItem({
-    required LearningDomain domain,
-    required ItemProgressEntity progress,
-    required Map<String, AnswerNature> questionTypeNatures,
-  }) {
-    final LearningItem? item = domain.findItem(progress.itemKey);
-    return QuizItemPlan(
-      itemKey: progress.itemKey,
-      questionTypeIds: questionTypesFor(
-        box: progress.box.clamp(0, MasteryPolicy.lastBox),
-        questionTypeNatures: item == null
-            ? questionTypeNatures
-            : _fitFor(domain, item, questionTypeNatures),
-      ),
-    );
-  }
-
-  /// The types of [questionTypeNatures] fit for [item] in [domain].
-  Map<String, AnswerNature> _fitFor(
-    LearningDomain domain,
-    LearningItem item,
-    Map<String, AnswerNature> questionTypeNatures,
-  ) {
-    final List<String> itemTypeIds = domain.questionTypeIdsOf(item);
-    return <String, AnswerNature>{
-      for (final MapEntry<String, AnswerNature> type
-          in questionTypeNatures.entries)
-        if (itemTypeIds.contains(type.key)) type.key: type.value,
-    };
   }
 
   int _boxOf(Map<String, ItemProgressEntity> progressByKey, LearningItem item) {
