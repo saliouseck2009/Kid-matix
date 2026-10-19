@@ -1,27 +1,18 @@
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
-import 'package:kid_matix/core/quiz/frozen_question_generator.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
-import 'package:kid_matix/core/quiz/question.dart';
-import 'package:kid_matix/core/quiz/question_generator.dart';
-import 'package:kid_matix/core/quiz/question_type.dart';
-import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/quiz/quiz_plan_request.dart';
 import 'package:kid_matix/core/quiz/quiz_selection.dart';
-import 'package:kid_matix/core/quiz/quiz_time_schedule.dart';
 import 'package:kid_matix/core/quiz/seeded_draw.dart';
-import 'package:kid_matix/core/services/clock.dart';
-import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
-import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
-import 'package:kid_matix/features/quiz/domain/entities/quiz_turn.dart';
+import 'package:kid_matix/features/quiz/domain/services/quiz_run_factory.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 
 /// Builds a quiz ready to be played.
@@ -39,23 +30,15 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
   /// Creates the use case.
   const BuildQuizUseCase({
     required this._domains,
-    required this._questionTypes,
     required this._mastery,
-    required this._generator,
     required this._random,
-    required this._idGenerator,
-    required this._clock,
-    this._frozenGenerator = const FrozenQuestionGenerator(),
+    required this._runs,
   });
 
   final DomainRegistry _domains;
-  final QuestionTypeRegistry _questionTypes;
   final MasteryService _mastery;
-  final QuestionGenerator _generator;
   final RandomSource _random;
-  final IdGenerator _idGenerator;
-  final Clock _clock;
-  final FrozenQuestionGenerator _frozenGenerator;
+  final QuizRunFactory _runs;
 
   @override
   Future<DataState<QuizRun>> call({required BuildQuizParams params}) async {
@@ -70,7 +53,9 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       );
     }
     final SeededDraw? draw = params.seededDraw;
-    if (draw != null) return _generateSeeded(params, domain, draw);
+    if (draw != null) {
+      return _runs.generateSeeded(params: params, domain: domain, draw: draw);
+    }
     final DataState<List<QuizItemPlan>> main = await _plan(
       params,
       params.domainId,
@@ -80,20 +65,11 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         main is DataSuccess<List<QuizItemPlan>>
         ? await _addFollowUp(params, main.data)
         : main;
-    return switch (plans) {
-      DataSuccess<List<QuizItemPlan>>(:final data) when data.isEmpty =>
-        const DataFailed<QuizRun>(
-          NotFoundException(message: 'No question to ask.'),
-        ),
-      DataSuccess<List<QuizItemPlan>>(:final data) => _generate(
-        params,
-        domain,
-        data,
-      ),
-      DataFailed<List<QuizItemPlan>>(:final exception) => DataFailed<QuizRun>(
-        exception,
-      ),
-    };
+    return _toRun(
+      plans,
+      (List<QuizItemPlan> data) =>
+          _runs.generate(params: params, domain: domain, plans: data),
+    );
   }
 
   /// The items to ask with their types: drawn or picked for a review or a
@@ -147,29 +123,28 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
         selection: params.selection,
       ),
     );
-    switch (plans) {
-      case DataFailed<List<QuizItemPlan>>(:final exception):
-        return DataFailed<QuizRun>(exception);
-      case DataSuccess<List<QuizItemPlan>>(:final data) when data.isEmpty:
-        return const DataFailed<QuizRun>(
+    return _toRun(
+      plans,
+      (List<QuizItemPlan> data) =>
+          _runs.generateMixed(params: params, plans: data),
+    );
+  }
+
+  /// The run [generate] builds from [plans], or why there is none.
+  DataState<QuizRun> _toRun(
+    DataState<List<QuizItemPlan>> plans,
+    DataState<QuizRun> Function(List<QuizItemPlan> plans) generate,
+  ) {
+    return switch (plans) {
+      DataSuccess<List<QuizItemPlan>>(:final data) when data.isEmpty =>
+        const DataFailed<QuizRun>(
           NotFoundException(message: 'No question to ask.'),
-        );
-      case DataSuccess<List<QuizItemPlan>>(:final data):
-        try {
-          return DataSuccess<QuizRun>(
-            _createRun(params, <Question>[
-              for (final QuizItemPlan plan in data)
-                ..._generator.generatePlanned(
-                  domain: _domains.findByItemKey(plan.itemKey)!,
-                  plans: <QuizItemPlan>[plan],
-                  random: _random,
-                ),
-            ]),
-          );
-        } on ArgumentError catch (error) {
-          return DataFailed<QuizRun>(ValidationException(message: '$error'));
-        }
-    }
+        ),
+      DataSuccess<List<QuizItemPlan>>(:final data) => generate(data),
+      DataFailed<List<QuizItemPlan>>(:final exception) => DataFailed<QuizRun>(
+        exception,
+      ),
+    };
   }
 
   DataState<List<QuizItemPlan>> _askEach(
@@ -211,43 +186,6 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
     ]);
   }
 
-  DataState<QuizRun> _generate(
-    BuildQuizParams params,
-    LearningDomain domain,
-    List<QuizItemPlan> plans,
-  ) {
-    try {
-      final List<Question> questions = _generator.generatePlanned(
-        domain: domain,
-        plans: plans,
-        random: _random,
-      );
-      return DataSuccess<QuizRun>(_createRun(params, questions));
-    } on ArgumentError catch (error) {
-      return DataFailed<QuizRun>(ValidationException(message: '$error'));
-    }
-  }
-
-  /// The questions of [draw], drawn without the player's mastery.
-  DataState<QuizRun> _generateSeeded(
-    BuildQuizParams params,
-    LearningDomain domain,
-    SeededDraw draw,
-  ) {
-    try {
-      final List<Question> questions = _frozenGenerator.generate(
-        domain: domain,
-        itemKeys: params.itemKeys,
-        questionTypeIds: params.questionTypeIds,
-        questionCount: params.questionCount ?? params.itemKeys.length,
-        draw: draw,
-      );
-      return DataSuccess<QuizRun>(_createRun(params, questions));
-    } on ArgumentError catch (error) {
-      return DataFailed<QuizRun>(ValidationException(message: '$error'));
-    }
-  }
-
   List<LearningItem>? _findItems(LearningDomain domain, List<String> keys) {
     final List<LearningItem> items = <LearningItem>[];
     for (final String key in keys) {
@@ -256,35 +194,5 @@ class BuildQuizUseCase implements UseCase<DataState<QuizRun>, BuildQuizParams> {
       items.add(item);
     }
     return items;
-  }
-
-  QuizRun _createRun(BuildQuizParams params, List<Question> questions) {
-    final Duration? timeLimit = params.timeLimit;
-    final QuizTimeSchedule? schedule = timeLimit == null
-        ? null
-        : params.timeSchedule?.scaledTo(timeLimit);
-    return QuizRun(
-      sessionId: _idGenerator.generateId(),
-      profileId: params.profileId,
-      domainId: params.domainId,
-      mode: params.mode,
-      startedAt: _clock.now(),
-      scoredQuestionCount: questions.length,
-      questionTypeIds: params.questionTypeIds,
-      timeLimit: timeLimit,
-      totalTimeLimit: params.totalTimeLimit,
-      lives: params.lives,
-      timeSchedule: schedule,
-      timeFactors: <String, int>{
-        for (final String id in params.questionTypeIds)
-          if (_questionTypes.find(id) case final QuestionType type)
-            id: type.timeFactor,
-      },
-      sourceKey: params.sourceKey,
-      boss: params.isBossFight ? const BossFight() : null,
-      queue: questions
-          .map((Question question) => QuizTurn(question: question))
-          .toList(),
-    );
   }
 }
