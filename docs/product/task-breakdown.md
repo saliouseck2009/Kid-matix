@@ -682,22 +682,22 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 
 ## F25 · Domaine « Additions et soustractions »
 
-- [ ] **F25-01** Fonctionnalité `addition` qui implémente `LearningDomain` : additions jusqu'à 10, jusqu'à 20, compléments à 10, soustractions jusqu'à 10, jusqu'à 20, puis additions et soustractions jusqu'à 100 sans et avec retenue ; clés stables (`add:7+8`, `sub:15-7`).
-- [ ] **F25-02** Mauvaises réponses plausibles : écart de 1, mauvaise opération, chiffres inversés, oubli de la retenue ; jamais de nombre négatif.
-- [ ] **F25-03** Familles de faits : 7 + 8, 8 + 7, 15 − 8 et 15 − 7 sont liés ; rappel après une erreur, comme le fait inversé de la multiplication (`mirrorOf`).
-- [ ] **F25-04** Aides visuelles : droite numérique, paquets de dix, « compléter jusqu'à 10 » ; une astuce par unité.
-- [ ] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
-- [ ] **F25-06** Tests : clés, génération, familles de faits, mauvaises réponses sans doublon pour tous les faits.
+- [x] **F25-01** Fonctionnalité `addition` qui implémente `LearningDomain` : additions jusqu'à 10, jusqu'à 20, compléments à 10, soustractions jusqu'à 10, jusqu'à 20, puis additions et soustractions jusqu'à 100 sans et avec retenue ; clés stables (`add:7+8`, `sub:15-7`).
+- [x] **F25-02** Mauvaises réponses plausibles : écart de 1, mauvaise opération, chiffres inversés, oubli de la retenue ; jamais de nombre négatif.
+- [x] **F25-03** Familles de faits : 7 + 8, 8 + 7, 15 − 8 et 15 − 7 sont liés ; rappel après une erreur, comme le fait inversé de la multiplication (`mirrorOf`).
+- [x] **F25-04** Aides visuelles : droite numérique, paquets de dix, « compléter jusqu'à 10 » ; une astuce par unité.
+- [x] **F25-05** Parcours, étoiles, boss et maîtrise du domaine, sur le modèle de F24.
+- [x] **F25-06** Tests : clés, génération, familles de faits, mauvaises réponses sans doublon pour tous les faits.
 
 **Terminé quand :** un joueur enchaîne les additions jusqu'à 20, une erreur sur 7 + 8 rappelle 8 + 7, et les faits ratés reviennent le lendemain.
 
 ## F26 · Domaine « Division »
 
-- [ ] **F26-01** Fonctionnalité `division` qui implémente `LearningDomain`, calculée à partir des 120 faits de multiplication : clés `div:56/7`, une unité par table, même ordre que le parcours de multiplication.
-- [ ] **F26-02** Lien avec la multiplication : après une erreur sur 56 ÷ 7, rappel de 7 × 8 = 56.
-- [ ] **F26-03** Aide visuelle : partager des objets en groupes égaux ; astuce par table.
-- [ ] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
-- [ ] **F26-05** Tests : clés, génération, lien avec la multiplication.
+- [x] **F26-01** Fonctionnalité `division` qui implémente `LearningDomain`, calculée à partir des 120 faits de multiplication : clés `div:56/7`, une unité par table, même ordre que le parcours de multiplication.
+- [x] **F26-02** Lien avec la multiplication : après une erreur sur 56 ÷ 7, rappel de 7 × 8 = 56.
+- [x] **F26-03** Aide visuelle : partager des objets en groupes égaux ; astuce par table.
+- [x] **F26-04** Parcours, étoiles, boss et maîtrise du domaine.
+- [x] **F26-05** Tests : clés, génération, lien avec la multiplication.
 
 **Terminé quand :** un joueur fait le parcours de la division par 2 et voit le rappel de la multiplication après une erreur.
 
@@ -720,18 +720,18 @@ Le test de départ (F16) devient un vrai positionnement : l'enfant est placé se
 Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énoncé. Ce lot leur apprend les mots et expressions des problèmes, avec une explication audio en wolof enregistrée par le propriétaire.
 
 - [x] **F28-01** Tableau de contenu `docs/product/math-words.md` : environ 40 mots et expressions en six familles (ajouter, enlever, comparer, grouper, partager, questions). Pour chacun : clé stable, mot en français, sens simple, idée d'image, phrase d'exemple, et des colonnes vides pour le propriétaire (explication en wolof, exemple en wolof, nom du fichier audio). Un glossaire de cohérence note le mot wolof retenu pour chaque notion.
-- [ ] **F28-02** Guide d'enregistrement `docs/product/audio-recording.md` (pièce calme, deux fichiers par mot, `wo_<clé>.m4a` pour l'explication et `wo_<clé>_exemple.m4a` pour l'exemple, ton lent, 2 s de silence avant et après) et un script dans `tool/` qui coupe les silences, égalise le volume, convertit en un format mono compressé et vérifie que chaque clé a ses deux fichiers.
-- [ ] **F28-03** Packs audio : `assets/audio/<langue>/` avec un manifeste ; le pack wolof est intégré à l'app ; un fichier manquant masque simplement le bouton. Le code ne dépend d'aucune langue en particulier.
-- [ ] **F28-04** Fonctionnalité `math_words` qui implémente `LearningDomain` : chaque mot est un item (`word:il_reste`) suivi par la répétition espacée.
-- [ ] **F28-05** Une illustration vectorielle simple par mot (provisoire, remplaçable sans changer le code).
-- [ ] **F28-06** Type de question « Écoute et touche » : on entend le mot (français, puis wolof à la demande), on touche la bonne image parmi 4.
-- [ ] **F28-07** Type de question « Mot et image » : relier des expressions à leurs dessins (réutiliser le widget de « Relier les paires »).
-- [ ] **F28-08** Type de question « Toucher pour comprendre » : dans une phrase, chaque mot important se touche pour l'entendre en français et en wolof et voir son image.
-- [ ] **F28-09** Type de question « Quelle opération ? » : un petit énoncé lu à voix haute, l'enfant choisit +, −, × ou ÷ sans calculer ; une vingtaine d'énoncés courts dans le tableau de contenu.
-- [ ] **F28-10** Bouton « Écouter en wolof » partout où un mot est présenté ; réglage par joueur « Aide audio : wolof / aucune ».
-- [ ] **F28-11** Parcours des mots : une unité par famille, dans le sélecteur de domaine.
+- [x] **F28-02** Guide d'enregistrement `docs/product/audio-recording.md` (pièce calme, deux fichiers par mot, `wo_<clé>.m4a` pour l'explication et `wo_<clé>_exemple.m4a` pour l'exemple, ton lent, 2 s de silence avant et après) et un script dans `tool/` qui coupe les silences, égalise le volume, convertit en un format mono compressé et vérifie que chaque clé a ses deux fichiers.
+- [x] **F28-03** Packs audio : `assets/audio/<langue>/` avec un manifeste ; le pack wolof est intégré à l'app ; un fichier manquant masque simplement le bouton. Le code ne dépend d'aucune langue en particulier.
+- [x] **F28-04** Fonctionnalité `math_words` qui implémente `LearningDomain` : chaque mot est un item (`word:il_reste`) suivi par la répétition espacée.
+- [x] **F28-05** Une illustration vectorielle simple par mot (provisoire, remplaçable sans changer le code).
+- [x] **F28-06** Type de question « Écoute et touche » : on entend le mot (français, puis wolof à la demande), on touche la bonne image parmi 4.
+- [x] **F28-07** Type de question « Mot et image » : relier des expressions à leurs dessins (réutiliser le widget de « Relier les paires »).
+- [x] **F28-08** Type de question « Toucher pour comprendre » : dans une phrase, chaque mot important se touche pour l'entendre en français et en wolof et voir son image.
+- [x] **F28-09** Type de question « Quelle opération ? » : un petit énoncé lu à voix haute, l'enfant choisit +, −, × ou ÷ sans calculer ; une vingtaine d'énoncés courts dans le tableau de contenu.
+- [x] **F28-10** Bouton « Écouter en wolof » partout où un mot est présenté ; réglage par joueur « Aide audio : wolof / aucune ».
+- [x] **F28-11** Parcours des mots : une unité par famille, dans le sélecteur de domaine.
 - [ ] **F28-12** Maquettes à proposer et faire valider : les quatre activités et le bouton wolof.
-- [ ] **F28-13** Tests : clés, manifeste du pack audio, fichier manquant, activités, répétition espacée des mots.
+- [x] **F28-13** Tests : clés, manifeste du pack audio, fichier manquant, activités, répétition espacée des mots.
 
 **Terminé quand :** en mode avion, un enfant entend « il reste » en français puis en wolof, touche la bonne image, et un mot raté revient le lendemain ; « Quelle opération ? » fonctionne sur les énoncés du tableau.
 

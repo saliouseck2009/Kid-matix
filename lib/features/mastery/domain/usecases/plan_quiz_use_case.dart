@@ -3,6 +3,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer_nature.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
@@ -14,6 +15,7 @@ import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/repositories/item_progress_repository.dart';
+import 'package:kid_matix/features/mastery/domain/services/mixed_quiz_planner.dart';
 import 'package:kid_matix/features/mastery/domain/services/quiz_item_planner.dart';
 
 /// Chooses the items of a quiz from the player's progress, with the
@@ -45,6 +47,7 @@ class PlanQuizUseCase
   Future<DataState<List<QuizItemPlan>>> call({
     required QuizPlanRequest params,
   }) async {
+    if (params.domainId == LearningDomainIds.mixed) return _planMixed(params);
     final LearningDomain? domain = _domains.find(params.domainId);
     final List<LearningItem?> items = <LearningItem?>[
       for (final String key in params.itemKeys) domain?.findItem(key),
@@ -73,6 +76,45 @@ class PlanQuizUseCase
       DataFailed<List<ItemProgressEntity>>(:final exception) =>
         DataFailed<List<QuizItemPlan>>(exception),
     };
+  }
+
+  /// A review across every domain: the progress of all of them, the items
+  /// chosen once on the union. Only a review can mix domains.
+  Future<DataState<List<QuizItemPlan>>> _planMixed(
+    QuizPlanRequest params,
+  ) async {
+    final bool isKnown = params.itemKeys.every(
+      (String key) => _domains.findByItemKey(key) != null,
+    );
+    if (params.selection != QuizSelection.review || !isKnown) {
+      return const DataFailed<List<QuizItemPlan>>(
+        ValidationException(message: 'Unknown items or not a review.'),
+      );
+    }
+    final List<ItemProgressEntity> progress = <ItemProgressEntity>[];
+    final Map<String, Map<String, AnswerNature>> natures =
+        <String, Map<String, AnswerNature>>{};
+    for (final LearningDomain domain in _domains.domains) {
+      natures[domain.id] = _naturesOf(params, domain);
+      final DataState<List<ItemProgressEntity>> read = await _repository
+          .getProgress(profileId: params.profileId, domainId: domain.id);
+      switch (read) {
+        case DataSuccess<List<ItemProgressEntity>>(:final data):
+          progress.addAll(data);
+        case DataFailed<List<ItemProgressEntity>>(:final exception):
+          return DataFailed<List<QuizItemPlan>>(exception);
+      }
+    }
+    return DataSuccess<List<QuizItemPlan>>(
+      MixedQuizPlanner(domains: _domains).planReview(
+        itemKeys: params.itemKeys,
+        progress: progress,
+        natures: natures,
+        count: params.questionCount,
+        now: _clock.now(),
+        random: _random,
+      ),
+    );
   }
 
   List<QuizItemPlan> _planItems({

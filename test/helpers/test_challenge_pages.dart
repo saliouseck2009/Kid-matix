@@ -56,6 +56,7 @@ ChallengeUseCases buildTestChallengeUseCases({
     ),
     getDailyReview: GetDailyReviewUseCase(
       mastery: mastery ?? FakeMasteryService(),
+      domains: DomainRegistry()..register(MultiplicationDomain()),
     ),
     getMonsterCount: GetMonsterCountUseCase(
       mastery: mastery ?? FakeMasteryService(),

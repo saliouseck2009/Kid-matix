@@ -21,6 +21,7 @@ final class ProfileSettingsLocalModel {
     required this.isEverythingUnlocked,
     required this.updatedAt,
     this.isReadAloudEnabled = false,
+    this.helpAudioLanguage,
     this.deletedAt,
   });
 
@@ -38,6 +39,7 @@ final class ProfileSettingsLocalModel {
       isReducedMotionEnabled: settings.isReducedMotionEnabled,
       isEverythingUnlocked: settings.isEverythingUnlocked,
       isReadAloudEnabled: settings.isReadAloudEnabled,
+      helpAudioLanguage: settings.helpAudioLanguage,
       updatedAt: updatedAt.millisecondsSinceEpoch,
     );
   }
@@ -72,6 +74,11 @@ final class ProfileSettingsLocalModel {
   @JsonKey(defaultValue: false)
   final bool isReadAloudEnabled;
 
+  /// Language of the recorded help of the math words, or `null` for the
+  /// first pack. A backup made before schema version 13 has no such column
+  /// and reads as `null`.
+  final String? helpAudioLanguage;
+
   /// Last change of the row, in milliseconds since epoch.
   final int updatedAt;
 
@@ -97,6 +104,7 @@ final class ProfileSettingsLocalModel {
       isReducedMotionEnabled: isReducedMotionEnabled,
       isEverythingUnlocked: isEverythingUnlocked,
       isReadAloudEnabled: isReadAloudEnabled,
+      helpAudioLanguage: helpAudioLanguage,
     );
   }
 }

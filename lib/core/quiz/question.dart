@@ -2,6 +2,7 @@ import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question_pair.dart';
+import 'package:kid_matix/core/quiz/sentence_part.dart';
 import 'package:meta/meta.dart';
 
 /// One question of a quiz, ready to be shown and checked.
@@ -16,10 +17,12 @@ final class Question {
     required this.expectedAnswer,
     List<Answer> choices = const <Answer>[],
     List<QuestionPair> pairs = const <QuestionPair>[],
+    List<SentencePart> sentence = const <SentencePart>[],
     this.picture,
   }) : prompt = List<PromptToken>.unmodifiable(prompt),
        choices = List<Answer>.unmodifiable(choices),
-       pairs = List<QuestionPair>.unmodifiable(pairs);
+       pairs = List<QuestionPair>.unmodifiable(pairs),
+       sentence = List<SentencePart>.unmodifiable(sentence);
 
   /// Key of the item the question asks about, such as `mul:7x8`.
   final String itemKey;
@@ -40,6 +43,10 @@ final class Question {
   /// Pairs to match, in the display order of their operations; empty
   /// unless the question asks to match pairs. [itemKey] is one of them.
   final List<QuestionPair> pairs;
+
+  /// Sentence to read and touch, piece by piece, for a question that asks
+  /// to touch the math words of a sentence; empty otherwise.
+  final List<SentencePart> sentence;
 
   /// Keys of the items the question asks about: those of its [pairs], or
   /// [itemKey] alone.
@@ -63,6 +70,7 @@ final class Question {
             _haveSameElements(other.prompt, prompt) &&
             _haveSameElements(other.choices, choices) &&
             _haveSameElements(other.pairs, pairs) &&
+            _haveSameElements(other.sentence, sentence) &&
             other.expectedAnswer == expectedAnswer &&
             other.picture == picture;
   }
@@ -75,6 +83,7 @@ final class Question {
     Object.hashAll(prompt),
     Object.hashAll(choices),
     Object.hashAll(pairs),
+    Object.hashAll(sentence),
     expectedAnswer,
     picture,
   );

@@ -24,10 +24,20 @@ final class QuizLabels {
   /// Localized strings.
   final AppLocalizations l10n;
 
+  /// The domain of the item [itemKey] in a quiz of [runDomainId]: the
+  /// domain of the quiz, or, in a quiz that mixes domains (the daily
+  /// review), the one that teaches the item.
+  String _domainIdOf(String itemKey, String runDomainId) {
+    if (runDomainId != LearningDomainIds.mixed) return runDomainId;
+    return domains.findByItemKey(itemKey)?.id ?? runDomainId;
+  }
+
   /// Label above [question]: "Vrai ou faux ?", "Quelle multiplication
-  /// donne", what to do with its drawing or its two numbers, or the name
-  /// of its unit.
-  String describeQuestion(Question question, String domainId) {
+  /// donne", what to do with its drawing or its two numbers, "Trouve le
+  /// nombre caché" (the unit name would give the hidden number away), or
+  /// the name of its unit.
+  String describeQuestion(Question question, String runDomainId) {
+    final String domainId = _domainIdOf(question.itemKey, runDomainId);
     return switch (question.questionTypeId) {
       QuestionTypeIds.trueFalse => l10n.quizTrueFalseLabel,
       QuestionTypeIds.findOperation => switch (domainId) {
@@ -36,11 +46,15 @@ final class QuizLabels {
         _ => '',
       },
       QuestionTypeIds.compare => l10n.quizCompareLabel,
+      QuestionTypeIds.missingNumber => l10n.quizMissingNumberLabel,
+      QuestionTypeIds.listenAndTouch => l10n.quizWordListenLabel,
+      QuestionTypeIds.touchToUnderstand => l10n.quizWordTouchLabel,
+      QuestionTypeIds.whichOperation => l10n.quizWordOperationLabel,
       _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
         NumberLinePicture() => l10n.quizNumberLineLabel,
-        null => describeUnitOf(question, domainId),
+        WordPicture() || null => describeUnitOf(question, domainId),
       },
     };
   }
@@ -72,7 +86,8 @@ final class QuizLabels {
   /// words their type adds ("Vrai ou faux ?", "Quelle multiplication
   /// donne 24 ?"). A type with no case here reads as an operation, so a
   /// question is never silent.
-  String speakQuestion(Question question, String domainId) {
+  String speakQuestion(Question question, String runDomainId) {
+    final String domainId = _domainIdOf(question.itemKey, runDomainId);
     final String? numbers = _speakNumbersFormat(question);
     if (numbers != null) return numbers;
     final String operation = question.prompt.toSpokenText(l10n);
@@ -81,6 +96,7 @@ final class QuizLabels {
         _speakFindOperation(question, domainId) ?? operation,
       QuestionTypeIds.trueFalse => l10n.quizSpokenTrueFalse(operation),
       QuestionTypeIds.matchPairs => l10n.quizMatchPairsTitle,
+      QuestionTypeIds.wordAndImage => l10n.quizWordMatchTitle,
       _ => operation,
     };
   }
@@ -102,7 +118,7 @@ final class QuizLabels {
       final NumberLinePicture line => l10n.quizNumberLineSpoken(
         MathPictureLabels(l10n).listNumbers(line),
       ),
-      null => null,
+      WordPicture() || null => null,
     };
   }
 
@@ -115,6 +131,8 @@ final class QuizLabels {
       QuestionTypeIds.trueFalse => l10n.quizHintTrueFalse,
       QuestionTypeIds.findOperation => l10n.quizHintFindOperation,
       QuestionTypeIds.compare => l10n.quizHintCompare,
+      QuestionTypeIds.listenAndTouch => l10n.quizHintWordListen,
+      QuestionTypeIds.whichOperation => l10n.quizHintWordOperation,
       _ when question.choices.isNotEmpty => l10n.quizHintMultipleChoice,
       _ => null,
     };
@@ -134,21 +152,32 @@ final class QuizLabels {
     };
   }
 
+  /// Language the questions of [domainId] are written in, or `null` to
+  /// follow the interface.
+  String? contentLanguageOf(String domainId) {
+    return domains.find(domainId)?.contentLanguageCode;
+  }
+
   /// Name of the unit of [question], such as "Table de 5" or "Comparer";
   /// empty when its domain lacks it.
-  String describeUnitOf(Question question, String domainId) {
-    return l10n.unitName(domainId, question.unitKey);
+  String describeUnitOf(Question question, String runDomainId) {
+    return l10n.unitName(
+      _domainIdOf(question.itemKey, runDomainId),
+      question.unitKey,
+    );
   }
 
   /// Number of the unit of [question], such as 5, or `null` when its
   /// domain lacks it.
-  int? unitNumberOf(Question question, String domainId) {
+  int? unitNumberOf(Question question, String runDomainId) {
+    final String domainId = _domainIdOf(question.itemKey, runDomainId);
     return domains.find(domainId)?.findUnit(question.unitKey)?.number;
   }
 
   /// Title of the boss fight of the unit of [question], such as "Boss de
   /// la table de 5" or "Boss · Comparer".
-  String describeBoss(Question question, String domainId) {
+  String describeBoss(Question question, String runDomainId) {
+    final String domainId = _domainIdOf(question.itemKey, runDomainId);
     return switch (domainId) {
       LearningDomainIds.multiplication => l10n.quizBossTitleMultiplication(
         unitNumberOf(question, domainId) ?? 0,
@@ -173,8 +202,10 @@ final class QuizLabels {
 
   /// Whole fact of the mirror of [itemKey], such as "7 × 5 = 35" for
   /// 5 x 7, or `null` when it has none.
-  String? describeMirror(String itemKey, String domainId) {
-    final LearningDomain? domain = domains.find(domainId);
+  String? describeMirror(String itemKey, String runDomainId) {
+    final LearningDomain? domain = domains.find(
+      _domainIdOf(itemKey, runDomainId),
+    );
     final LearningItem? item = domain?.findItem(itemKey);
     final LearningItem? mirror = item == null ? null : domain?.mirrorOf(item);
     if (domain == null || mirror == null) return null;
@@ -182,15 +213,19 @@ final class QuizLabels {
   }
 
   /// Help card of [itemKey], or `null` when its domain lacks it.
-  ItemHelp? helpOf(String itemKey, String domainId) {
-    final LearningDomain? domain = domains.find(domainId);
+  ItemHelp? helpOf(String itemKey, String runDomainId) {
+    final LearningDomain? domain = domains.find(
+      _domainIdOf(itemKey, runDomainId),
+    );
     final LearningItem? item = domain?.findItem(itemKey);
     return item == null ? null : domain?.helpOf(item);
   }
 
   /// Whole fact of [itemKey] with its result, such as "5 × 7 = 35".
-  String describeItem(String itemKey, String domainId) {
-    final LearningDomain? domain = domains.find(domainId);
+  String describeItem(String itemKey, String runDomainId) {
+    final LearningDomain? domain = domains.find(
+      _domainIdOf(itemKey, runDomainId),
+    );
     final LearningItem? item = domain?.findItem(itemKey);
     if (domain == null || item == null) return '';
     return domain.describeItem(item).toDisplayText();

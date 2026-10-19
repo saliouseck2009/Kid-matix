@@ -39,9 +39,9 @@ abstract interface class LearningDomain {
   /// easy outside their own unit get a lower weight.
   int drawWeightOf(LearningItem item);
 
-  /// The item with the same answer the other way round, such as 8 x 7 for
-  /// 7 x 8, recalled after a mistake; `null` when the item reads the same
-  /// both ways or the domain lacks its mirror.
+  /// A related fact recalled after a mistake, such as 8 x 7 for 7 x 8; it
+  /// is only described, never drawn as a question. `null` when the item
+  /// has none.
   LearningItem? mirrorOf(LearningItem item);
 
   /// The help card of [item], shown after two mistakes on it in a quiz.
@@ -50,6 +50,16 @@ abstract interface class LearningDomain {
   /// The whole fact of [item] with its answer, such as `5 × 8 = 40`, shown
   /// in the results among the facts to review.
   List<PromptToken> describeItem(LearningItem item);
+
+  /// The name of the recordings of [item] in the audio packs, such as
+  /// `il_reste` for the word `word:il_reste`; `null` when the domain has
+  /// none, which is the case of every domain but the math words.
+  String? recordingKeyOf(LearningItem item);
+
+  /// The language the questions of the domain are written in, such as
+  /// `fr` for the math words, which the voice must speak whatever the
+  /// language of the interface; `null` to follow the interface.
+  String? get contentLanguageCode;
 
   /// Builds a question of type [questionTypeId] about [item], drawing
   /// choices and positions from [random].

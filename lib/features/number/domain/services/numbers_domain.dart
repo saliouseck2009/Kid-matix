@@ -93,6 +93,12 @@ final class NumbersDomain implements LearningDomain {
   }
 
   @override
+  String? recordingKeyOf(LearningItem item) => null;
+
+  @override
+  String? get contentLanguageCode => null;
+
+  @override
   ItemHelp helpOf(LearningItem item) {
     final NumberItem numberItem = _requireItem(item);
     final NumbersUnit unit = _unitsByItemKey[numberItem.key]!;

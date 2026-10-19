@@ -55,6 +55,9 @@ flutter:
 
   assets:
     - assets/sounds/
+    - assets/audio/
+    - assets/audio/wo/
+    - assets/math_words/
 
   fonts:
     - family: Fredoka

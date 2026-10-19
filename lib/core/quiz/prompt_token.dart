@@ -79,3 +79,24 @@ final class BlankToken extends PromptToken {
   @override
   String toString() => '?';
 }
+
+/// Words of the prompt (lot F28): a math word, or a short statement. They
+/// are French content of the domain, not interface text, so they travel as
+/// data and are read aloud as they are.
+final class TextToken extends PromptToken {
+  /// Creates the token of [text].
+  const TextToken(this.text);
+
+  /// Words shown and spoken.
+  final String text;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is TextToken && other.text == text;
+
+  @override
+  int get hashCode => text.hashCode;
+
+  @override
+  String toString() => text;
+}

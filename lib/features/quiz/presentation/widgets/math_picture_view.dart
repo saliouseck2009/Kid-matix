@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
+import 'package:kid_matix/core/widgets/word_picture/word_picture_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_labels.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/number_line_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/objects_painter.dart';
@@ -56,6 +57,9 @@ class MathPictureView extends StatelessWidget {
           line: line,
           blankText: blankText,
           blankColor: blankColor,
+        ),
+        WordPicture(:final String wordKey) => WordPictureView(
+          wordKey: wordKey,
         ),
       },
     );

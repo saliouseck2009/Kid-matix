@@ -23,6 +23,7 @@ import 'package:kid_matix/features/profile/presentation/pages/profile_tab_page.d
 import 'package:kid_matix/features/profile/presentation/pages/settings_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/who_is_playing_page.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/backup_settings_section.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/help_audio_bridge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/player_badge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/reduced_motion_scope.dart';
@@ -43,6 +44,7 @@ final class ProfilePages {
     required this._settingsUseCases,
     required this._backupUseCases,
     this._gateRandom,
+    this.helpAudioLanguages = const <String>[],
   });
 
   final GetProfilesUseCase _getProfiles;
@@ -56,6 +58,10 @@ final class ProfilePages {
 
   // Draws the numbers of the parental gate; seeded in tests.
   final Random? _gateRandom;
+
+  /// Codes of the help languages that have an audio pack, offered by the
+  /// "Aide audio" setting; none hides it.
+  final List<String> helpAudioLanguages;
 
   /// "Qui joue ?".
   Widget buildWhoIsPlayingPage({
@@ -151,6 +157,7 @@ final class ProfilePages {
         backupSection: BackupSettingsSection(random: _gateRandom),
         reminderRows: reminderRows,
         languageRows: languageRows,
+        helpAudioLanguages: helpAudioLanguages,
       ),
     );
   }
@@ -170,7 +177,10 @@ final class ProfilePages {
         getSettings: _settingsUseCases.getSettings,
         watchChanges: _tabUseCases.watchChanges,
       )..load(),
-      child: ReducedMotionScope(isPlayerActive: isPlayerActive, child: child),
+      child: ReducedMotionScope(
+        isPlayerActive: isPlayerActive,
+        child: HelpAudioBridge(isPlayerActive: isPlayerActive, child: child),
+      ),
     );
   }
 }

@@ -105,3 +105,28 @@ final class NumberLinePicture extends MathPicture {
   @override
   String toString() => 'NumberLinePicture($values, blank: $blankIndex)';
 }
+
+/// The drawing of a math word (lot F28), found by its key; [label] is the
+/// word as the child reads it, said by a screen reader in place of the
+/// drawing.
+final class WordPicture extends MathPicture {
+  /// Creates the picture of the word [wordKey].
+  const WordPicture({required this.wordKey, required this.label});
+
+  /// Key of the math word, such as `il_reste`.
+  final String wordKey;
+
+  /// The word written in French, such as "il reste".
+  final String label;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WordPicture && other.wordKey == wordKey;
+
+  @override
+  int get hashCode => wordKey.hashCode;
+
+  @override
+  String toString() => 'WordPicture($wordKey)';
+}

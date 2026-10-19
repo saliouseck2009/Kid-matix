@@ -1,4 +1,7 @@
+import 'package:kid_matix/core/extensions/domain_names/addition_names.dart';
+import 'package:kid_matix/core/extensions/domain_names/division_names.dart';
 import 'package:kid_matix/core/extensions/domain_names/domain_names.dart';
+import 'package:kid_matix/core/extensions/domain_names/math_word_names.dart';
 import 'package:kid_matix/core/extensions/domain_names/multiplication_names.dart';
 import 'package:kid_matix/core/extensions/domain_names/number_names.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
@@ -14,6 +17,9 @@ extension DomainNaming on AppLocalizations {
   static const Map<String, DomainNames> _names = <String, DomainNames>{
     LearningDomainIds.multiplication: MultiplicationNames(),
     LearningDomainIds.numbers: NumberNames(),
+    LearningDomainIds.addition: AdditionNames(),
+    LearningDomainIds.division: DivisionNames(),
+    LearningDomainIds.mathWords: MathWordNames(),
   };
 
   /// The names of [domainId], or `null` when the domain has none.
@@ -23,6 +29,23 @@ extension DomainNaming on AppLocalizations {
   /// no names.
   String domainName(String domainId) {
     return _names[domainId]?.domainName(this) ?? '';
+  }
+
+  /// What a screen reader says for the name of [domainId]: the written
+  /// name, except when it is made of signs ("+ et −").
+  String domainSpokenName(String domainId) {
+    return switch (domainId) {
+      LearningDomainIds.addition => additionDomainSpokenName,
+      _ => domainName(domainId),
+    };
+  }
+
+  /// What a screen reader says for the grid title of [domainId].
+  String gridSpokenTitle(String domainId) {
+    return switch (domainId) {
+      LearningDomainIds.addition => masteryGridTitleAdditionSpoken,
+      _ => gridTitle(domainId),
+    };
   }
 
   /// Name of the unit [unitKey] of [domainId], such as "Table de 5" or

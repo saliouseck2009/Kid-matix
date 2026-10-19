@@ -21,11 +21,14 @@ extension PromptReading on List<PromptToken> {
         NumberToken(:final int value) => '$value',
         OperatorToken(operator: MathOperator.multiply) => '×',
         OperatorToken(operator: MathOperator.add) => '+',
+        OperatorToken(operator: MathOperator.subtract) => '−',
+        OperatorToken(operator: MathOperator.divide) => '÷',
         OperatorToken(operator: MathOperator.lessThan) => '<',
         OperatorToken(operator: MathOperator.greaterThan) => '>',
         OperatorToken(operator: MathOperator.equalTo) => '=',
         EqualsToken() => '=',
         BlankToken() => blankText ?? '?',
+        TextToken(:final String text) => text,
       };
     }).toList();
   }
@@ -37,6 +40,9 @@ extension PromptReading on List<PromptToken> {
         NumberToken(:final int value) => '$value',
         OperatorToken(operator: MathOperator.multiply) => l10n.quizSpokenTimes,
         OperatorToken(operator: MathOperator.add) => l10n.quizSpokenPlus,
+        OperatorToken(operator: MathOperator.subtract) => l10n.quizSpokenMinus,
+        OperatorToken(operator: MathOperator.divide) =>
+          l10n.quizSpokenDividedBy,
         OperatorToken(operator: MathOperator.lessThan) =>
           l10n.quizSpokenLessThan,
         OperatorToken(operator: MathOperator.greaterThan) =>
@@ -44,6 +50,7 @@ extension PromptReading on List<PromptToken> {
         OperatorToken(operator: MathOperator.equalTo) => l10n.quizSpokenEqualTo,
         EqualsToken() => l10n.quizSpokenEquals,
         BlankToken() => l10n.quizSpokenBlank,
+        TextToken(:final String text) => text,
       };
     }).join(' ');
   }

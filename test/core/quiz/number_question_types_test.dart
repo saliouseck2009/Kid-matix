@@ -19,18 +19,21 @@ QuestionType _typeOf(String id) {
 
 void main() {
   group('question types of the numbers', () {
-    test('are registered last, with distinct identifiers', () {
+    test('are registered after version 1.1, with distinct identifiers', () {
       // Act
       final List<String> actualIds = appQuestionTypes
           .map((QuestionType type) => type.id)
           .toList();
       // Assert
-      expect(actualIds.sublist(actualIds.length - 4), <String>[
-        QuestionTypeIds.countObjects,
-        QuestionTypeIds.tensAndOnes,
-        QuestionTypeIds.compare,
-        QuestionTypeIds.numberLine,
-      ]);
+      expect(
+        actualIds.sublist(actualIds.length - 8, actualIds.length - 4),
+        <String>[
+          QuestionTypeIds.countObjects,
+          QuestionTypeIds.tensAndOnes,
+          QuestionTypeIds.compare,
+          QuestionTypeIds.numberLine,
+        ],
+      );
       expect(actualIds.toSet(), hasLength(actualIds.length));
     });
     test('pick the numbers, decide the comparison', () {
@@ -52,7 +55,10 @@ void main() {
         AnswerNature.produced,
       );
       for (final QuestionType type in numberQuestionTypes) {
-        expect(type.timeFactor, 1);
+        final int expectedFactor = type.id == QuestionTypeIds.countObjects
+            ? 2
+            : 1;
+        expect(type.timeFactor, expectedFactor, reason: type.id);
       }
     });
     test('judge a comparison by its sign', () {

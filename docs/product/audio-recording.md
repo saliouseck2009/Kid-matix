@@ -85,15 +85,25 @@ Avant de livrer, écoute chaque fichier au casque, dans l'ordre du tableau :
 
 ## 9. Ce qui se passe ensuite
 
-Après la livraison, tu n'as rien d'autre à faire. Le script de traitement (à venir) prépare les fichiers pour l'app. Un mot sans fichier audio n'affiche simplement pas le bouton « Écouter en wolof » : l'app continue de fonctionner.
+Après la livraison, tu n'as rien d'autre à faire. Le script de traitement (section 10) prépare les fichiers pour l'app. Un mot sans fichier audio n'affiche simplement pas le bouton « Écouter en wolof » : l'app continue de fonctionner.
 
-## 10. Script de traitement (à venir, F28-02)
+## 10. Script de traitement (pour le développeur)
 
-Cette partie n'est pas encore écrite. Elle sera ajoutée par un agent de code, dans `tool/`, avec la suite de F28-02. Le script devra :
+Le propriétaire ne lance rien : le développeur traite les fichiers reçus avec `tool/process_audio.py`.
 
-- couper les silences au début et à la fin, en gardant une marge ;
-- égaliser le volume entre les fichiers ;
-- convertir chaque fichier en un format mono compressé ;
-- vérifier que chaque mot du tableau a ses deux fichiers, `wo_<clé>.m4a` et `wo_<clé>_exemple.m4a`, et signaler les fichiers manquants.
+**Prérequis** : ffmpeg (avec ffprobe) installé sur la machine, par exemple `brew install ffmpeg`. Aucun paquet Dart n'est ajouté.
 
-Le format de sortie et le dossier de destination dans l'app (probablement `assets/audio/wo/`, à confirmer avec F28-03) restent à valider. Le propriétaire ne lance rien : le développeur traitera les fichiers reçus.
+```
+python3 tool/process_audio.py DOSSIER_RECU                # traite et écrit le pack
+python3 tool/process_audio.py DOSSIER_RECU --check        # vérifie seulement les noms
+python3 -m unittest tool/process_audio_test.py            # tests du script
+```
+
+Le script :
+
+- accepte tout format audio courant (`.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.opus`, `.flac`, `.amr`, `.3gp`, `.caf`, `.aiff`, `.webm`, `.wma`) : l'extension est celle de l'enregistreur, le nom seul compte (`wo_<clé>` ou `wo_<clé>_exemple`, majuscules acceptées) ;
+- coupe les silences au début et à la fin en gardant une marge de 0,25 seconde, égalise le volume (norme EBU R128, -16 LUFS) et convertit en mono AAC, 32 kHz, 48 kbit/s, au format `.m4a` (environ 6 Ko par seconde) ;
+- écrit les fichiers `wo_<clé>.m4a` et `wo_<clé>_exemple.m4a` et le manifeste `manifest.json` dans `assets/audio/wo/` (`--language` et `--output` changent la langue et le dossier) ;
+- vérifie que chaque clé de `assets/math_words/math_words.json` (dérivé du tableau par `tool/build_math_words.py`) a ses deux fichiers, liste ceux qui manquent, signale les fichiers non reconnus ou en double et les fichiers de plus de 15 secondes ; il se termine avec un code d'erreur tant qu'un fichier manque, mais le manifeste ne liste que les fichiers présents, donc un pack incomplet peut être livré : l'app masque le bouton des mots sans fichier.
+
+Format du pack (`assets/audio/<langue>/`) : `manifest.json` avec la langue, le format (`m4a`) et, pour chaque clé de mot, les noms de ses fichiers `explanation` et `example`. Pour ajouter une autre langue d'aide, on dépose un autre dossier avec son manifeste ; le code ne change pas.

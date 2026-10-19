@@ -4,6 +4,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_view.dart';
 
@@ -59,7 +60,15 @@ class QuizHelpCard extends StatelessWidget {
                     constraints: const BoxConstraints(
                       maxWidth: _pictureMaxWidth,
                     ),
-                    child: MathPictureView(picture: picture, isSolved: true),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: AppSizes.space8,
+                      children: <Widget>[
+                        MathPictureView(picture: picture, isSolved: true),
+                        if (picture is WordPicture)
+                          HelpAudioButton(wordKey: picture.wordKey),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -150,10 +159,14 @@ class _DotGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String label = context.l10n.quizHelpDotGridLabel(
-      grid.rows,
-      grid.columns,
-    );
+    final bool isSharing = grid.reading == DotGridReading.sharing;
+    final String label = isSharing
+        ? context.l10n.quizHelpDotGridSharingLabel(
+            grid.rows * grid.columns,
+            grid.rows,
+            grid.columns,
+          )
+        : context.l10n.quizHelpDotGridLabel(grid.rows, grid.columns);
     final Widget dot = Container(
       width: _dotSize,
       height: _dotSize,
@@ -172,9 +185,9 @@ class _DotGridView extends StatelessWidget {
             spacing: _gap,
             children: <Widget>[
               for (int row = 0; row < grid.rows; row++)
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: _gap,
+                _DotRow(
+                  isGroup: isSharing,
+                  gap: _gap,
                   children: List<Widget>.filled(grid.columns, dot),
                 ),
             ],
@@ -187,6 +200,39 @@ class _DotGridView extends StatelessWidget {
           ).textTheme.bodyMedium?.copyWith(color: context.palette.mutedText),
         ),
       ],
+    );
+  }
+}
+
+/// A row of dots; a group of a sharing is framed.
+class _DotRow extends StatelessWidget {
+  const _DotRow({
+    required this.isGroup,
+    required this.gap,
+    required this.children,
+  });
+
+  static const double _framePadding = 3;
+
+  final bool isGroup;
+  final double gap;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget row = Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: gap,
+      children: children,
+    );
+    if (!isGroup) return row;
+    return Container(
+      padding: const EdgeInsets.all(_framePadding),
+      decoration: BoxDecoration(
+        color: context.palette.tint,
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+      ),
+      child: row,
     );
   }
 }

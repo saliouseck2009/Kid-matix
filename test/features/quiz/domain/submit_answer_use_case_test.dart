@@ -2,6 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_params.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_submission.dart';
@@ -229,6 +232,37 @@ void main() {
       );
       // Assert
       expect(actualSubmission.run.answers, hasLength(1));
+    });
+  });
+
+  group('a sentence touched', () {
+    test(
+      'is reported to the mastery as a presentation, not an answer',
+      () async {
+        // Arrange
+        final QuizRun inputRun = (await buildQuizUseCase()(
+          params: const BuildQuizParams(
+            profileId: 'profile-1',
+            domainId: 'math_words',
+            mode: QuizMode.freeTraining,
+            itemKeys: <String>['word:il_reste'],
+            questionTypeIds: <String>[QuestionTypeIds.touchToUnderstand],
+            timeLimit: null,
+          ),
+        )).requireData;
+        // Act
+        await answer(inputRun, isRight: true);
+        // Assert
+        expect(mastery.recordedAnswers.single.isPresentation, isTrue);
+      },
+    );
+    test('does not make a normal answer a presentation', () async {
+      // Arrange
+      final QuizRun inputRun = await buildRun(tableKeys(5));
+      // Act
+      await answer(inputRun, isRight: true);
+      // Assert
+      expect(mastery.recordedAnswers.single.isPresentation, isFalse);
     });
   });
 }

@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/answer_nature.dart';
+import 'package:kid_matix/core/quiz/recognition_cap.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_answer.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
@@ -21,7 +22,7 @@ final class MasteryPolicy {
   static const int firstRightBox = 2;
 
   /// Highest box an answer picked among choices can reach.
-  static const int recognizedBoxCap = 3;
+  static const int recognizedBoxCap = defaultRecognizedBoxCap;
 
   /// First box of the « Acquis » status.
   static const int acquiredBox = 4;
@@ -61,6 +62,12 @@ final class MasteryPolicy {
     );
   }
 
+  /// Returns [progress] after the item was only presented, at [now]: seen
+  /// once more, with no answer, so no box and no review date moves.
+  ItemProgressEntity present({required ItemProgressEntity progress}) {
+    return progress.copyWith(presentationCount: progress.presentationCount + 1);
+  }
+
   /// First day an item of [box] answered at [now] is due again: the start
   /// of the day, [reviewDays] days later.
   DateTime reviewDateOf({required int box, required DateTime now}) {
@@ -90,7 +97,7 @@ final class MasteryPolicy {
     if (answer.isRetry) return box < firstBox ? firstBox : box;
     if (box == 0) return firstRightBox;
     final int cap = answer.answerNature == AnswerNature.recognized
-        ? recognizedBoxCap
+        ? answer.recognizedBoxCap
         : lastBox;
     if (box >= cap) return box;
     return box + 1;

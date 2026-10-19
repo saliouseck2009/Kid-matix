@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/comparison.dart';
+import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
@@ -126,4 +127,57 @@ final class PairsAnswer extends Answer {
 
   @override
   String toString() => 'PairsAnswer(missed: $missedItemKeys)';
+}
+
+/// A math word picked or paired (lot F28), told by its key; [text] is the
+/// word as the child reads it, such as "il reste". Two answers are the same
+/// when they have the same key.
+final class WordAnswer extends Answer {
+  /// Creates the answer of the word [wordKey].
+  const WordAnswer({required this.wordKey, required this.text});
+
+  /// Key of the math word, such as `il_reste`.
+  final String wordKey;
+
+  /// The word written in French, such as "il reste".
+  final String text;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is WordAnswer && other.wordKey == wordKey;
+
+  @override
+  int get hashCode => wordKey.hashCode;
+
+  @override
+  String toString() => 'WordAnswer($wordKey)';
+}
+
+/// The operator picked for a statement, among the four of the arithmetic
+/// (lot F28).
+final class OperatorAnswer extends Answer {
+  /// Creates the answer [operator].
+  const OperatorAnswer(this.operator);
+
+  /// Every answer, in the order of the buttons: + − × ÷.
+  static const List<OperatorAnswer> all = <OperatorAnswer>[
+    OperatorAnswer(MathOperator.add),
+    OperatorAnswer(MathOperator.subtract),
+    OperatorAnswer(MathOperator.multiply),
+    OperatorAnswer(MathOperator.divide),
+  ];
+
+  /// Operator picked.
+  final MathOperator operator;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OperatorAnswer && other.operator == operator;
+
+  @override
+  int get hashCode => operator.hashCode;
+
+  @override
+  String toString() => 'OperatorAnswer(${operator.name})';
 }

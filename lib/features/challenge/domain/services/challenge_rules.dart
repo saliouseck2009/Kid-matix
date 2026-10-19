@@ -65,10 +65,31 @@ abstract final class ChallengeRules {
   /// Questions of the daily review.
   static const int dailyReviewQuestionCount = 10;
 
+  /// The formats of the numbers (lot F24): the daily review mixes every
+  /// domain, and some items of the numbers have no other format.
+  static const List<String> numberQuestionTypeIds = <String>[
+    QuestionTypeIds.countObjects,
+    QuestionTypeIds.tensAndOnes,
+    QuestionTypeIds.numberLine,
+    QuestionTypeIds.compare,
+  ];
+
+  /// The formats of the math words (lot F28) that test a word: the daily
+  /// review mixes every domain, and every word has at least the first two.
+  /// Touching the words of a sentence is discovery only and is not asked.
+  static const List<String> wordQuestionTypeIds = <String>[
+    QuestionTypeIds.listenAndTouch,
+    QuestionTypeIds.wordAndImage,
+    QuestionTypeIds.whichOperation,
+  ];
+
   /// Question types of the daily review: the mastery engine picks among
-  /// them by box.
-  static const List<String> dailyReviewQuestionTypeIds =
-      versionOneQuestionTypeIds;
+  /// them by box, among those that fit each item.
+  static const List<String> dailyReviewQuestionTypeIds = <String>[
+    ...versionOneQuestionTypeIds,
+    ...numberQuestionTypeIds,
+    ...wordQuestionTypeIds,
+  ];
 
   /// Questions of a monster hunt: each monster twice, completed like a
   /// daily review (owner's choice).

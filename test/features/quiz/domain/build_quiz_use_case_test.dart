@@ -140,7 +140,7 @@ void main() {
         <String, BuildQuizParams>{
           'an unknown domain': const BuildQuizParams(
             profileId: 'p',
-            domainId: 'division',
+            domainId: 'unknown',
             mode: QuizMode.freeTraining,
             itemKeys: <String>['mul:7x8'],
             questionTypeIds: <String>[QuestionTypeIds.typedAnswer],

@@ -1,0 +1,49 @@
+import 'package:kid_matix/core/extensions/domain_names/domain_names.dart';
+import 'package:kid_matix/l10n/app_localizations.dart';
+
+/// Names of the units of the additions and subtractions, by slug.
+final class AdditionNames implements DomainNames {
+  /// Creates the names.
+  const AdditionNames();
+
+  /// Marks of the units: signs and digits, the same in every language.
+  static const Map<String, String> _marks = <String, String>{
+    'add5': '+5',
+    'sub5': '−5',
+    'add7': '+7',
+    'add9': '+9',
+    'toten': '10',
+    'sub7': '−7',
+    'sub9': '−9',
+    'subten': '−10',
+    'add12': '+12',
+    'add14': '+14',
+    'add20': '+20',
+    'sub12': '−12',
+    'sub14': '−14',
+    'sub20': '−20',
+    'add100': '+100',
+    'sub100': '−100',
+    'carry': '+100',
+    'borrow': '−100',
+  };
+
+  @override
+  String domainName(AppLocalizations l10n) => l10n.additionDomainName;
+
+  @override
+  String unitName(AppLocalizations l10n, String slug) {
+    return _marks.containsKey(slug) ? l10n.additionUnitName(slug) : '';
+  }
+
+  @override
+  String unitMark(String slug) => _marks[slug] ?? '';
+
+  @override
+  String unitTip(AppLocalizations l10n, String slug) {
+    return _marks.containsKey(slug) ? l10n.additionUnitTip(slug) : '';
+  }
+
+  @override
+  String gridTitle(AppLocalizations l10n) => l10n.masteryGridTitleAddition;
+}

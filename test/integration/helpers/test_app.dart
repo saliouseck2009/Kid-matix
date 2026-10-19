@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/di/injection_container.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
@@ -49,6 +50,8 @@ abstract final class TestApp {
     required String databasesPath,
     required LocalStorage storage,
   }) async {
+    // The bundled assets (math words, audio packs) are read at start.
+    TestWidgetsFlutterBinding.ensureInitialized();
     sqfliteFfiInit();
     databaseFactoryOrNull = databaseFactoryFfi;
     await databaseFactory.setDatabasesPath(databasesPath);

@@ -250,7 +250,7 @@ void main() {
       final AppException? actualDomain = (await planQuiz()(
         params: QuizPlanRequest(
           profileId: 'p1',
-          domainId: 'division',
+          domainId: 'unknown',
           itemKeys: const <String>[],
           questionTypeIds: const <String>[],
           questionCount: 1,
@@ -350,7 +350,7 @@ void main() {
               )(
                 params: const MasteryScope(
                   profileId: 'p1',
-                  domainId: 'division',
+                  domainId: 'unknown',
                 ),
               ))
               .exceptionOrNull;
@@ -435,7 +435,7 @@ void main() {
       )).requireData;
       final AppException? actualFailure = (await service.readMasteredItems(
         profileId: 'p1',
-        domainId: 'division',
+        domainId: 'unknown',
       )).exceptionOrNull;
       // Assert
       expect(actualMastered, <String>{'mul:7x8'});

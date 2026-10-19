@@ -73,6 +73,7 @@ void main() {
       expect(find.text('Nombres'), findsOneWidget);
       expect(find.bySemanticsLabel('Table de 1, en cours'), findsOneWidget);
       // Act
+      await tester.ensureVisible(find.text('Nombres'));
       await tester.tap(find.text('Nombres'));
       await tester.pumpAndSettle();
       // Assert

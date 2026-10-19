@@ -40,6 +40,12 @@ final class _FakeDomain implements LearningDomain {
   int drawWeightOf(LearningItem item) => 1;
 
   @override
+  String? recordingKeyOf(LearningItem item) => null;
+
+  @override
+  String? get contentLanguageCode => null;
+
+  @override
   LearningItem? mirrorOf(LearningItem item) => null;
 
   @override
@@ -88,7 +94,7 @@ void main() {
       registry.register(expectedDomain);
       // Assert
       expect(registry.find('multiplication'), expectedDomain);
-      expect(registry.find('division'), isNull);
+      expect(registry.find('unknown'), isNull);
       expect(registry.domains, <LearningDomain>[expectedDomain]);
     });
     test('refuses the same identifier twice', () {

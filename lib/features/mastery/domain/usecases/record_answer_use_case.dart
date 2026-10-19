@@ -1,6 +1,9 @@
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
+import 'package:kid_matix/core/quiz/learning_domain.dart';
+import 'package:kid_matix/core/quiz/recognition_cap.dart';
 import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/services/clock.dart';
@@ -21,12 +24,14 @@ class RecordAnswerUseCase
     required this._repository,
     required this._questionTypes,
     required this._clock,
+    this._domains,
     this._policy = const MasteryPolicy(),
   });
 
   final ItemProgressRepository _repository;
   final QuestionTypeRegistry _questionTypes;
   final Clock _clock;
+  final DomainRegistry? _domains;
   final MasteryPolicy _policy;
 
   @override
@@ -46,21 +51,34 @@ class RecordAnswerUseCase
           itemKey: params.itemKey,
         );
     if (stored is DataFailed<ItemProgressEntity>) return stored;
-    final ItemProgressEntity progress = _policy.apply(
-      progress: (stored as DataSuccess<ItemProgressEntity>).data,
-      answer: MasteryAnswer(
-        isCorrect: params.isCorrect,
-        answerNature: type.answerNature,
-        answerTime: params.answerTime,
-        isRetry: params.isRetry,
-      ),
-      now: _clock.now(),
-    );
+    final ItemProgressEntity before =
+        (stored as DataSuccess<ItemProgressEntity>).data;
+    final ItemProgressEntity progress = params.isPresentation
+        ? _policy.present(progress: before)
+        : _policy.apply(
+            progress: before,
+            answer: MasteryAnswer(
+              isCorrect: params.isCorrect,
+              answerNature: type.answerNature,
+              answerTime: params.answerTime,
+              isRetry: params.isRetry,
+              recognizedBoxCap: _capOf(params.domainId),
+            ),
+            now: _clock.now(),
+          );
     return switch (await _repository.saveProgress(progress: progress)) {
       DataSuccess<void>() => DataSuccess<ItemProgressEntity>(progress),
       DataFailed<void>(:final exception) => DataFailed<ItemProgressEntity>(
         exception,
       ),
     };
+  }
+
+  /// The highest box a recognized answer reaches in [domainId]: the one its
+  /// domain declares (none for the math words), or the default.
+  int _capOf(String domainId) {
+    final LearningDomain? domain = _domains?.find(domainId);
+    if (domain is! RecognitionCap) return defaultRecognizedBoxCap;
+    return (domain as RecognitionCap).recognizedBoxCap ?? MasteryPolicy.lastBox;
   }
 }

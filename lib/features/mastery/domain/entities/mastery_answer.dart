@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/quiz/answer_nature.dart';
+import 'package:kid_matix/core/quiz/recognition_cap.dart';
 import 'package:meta/meta.dart';
 
 /// An answer as the mastery engine weighs it.
@@ -10,6 +11,7 @@ final class MasteryAnswer {
     required this.answerNature,
     required this.answerTime,
     this.isRetry = false,
+    this.recognizedBoxCap = defaultRecognizedBoxCap,
   });
 
   /// Whether the answer was right; a timeout is a wrong answer.
@@ -23,4 +25,8 @@ final class MasteryAnswer {
 
   /// Whether it was the second chance of a fact missed in the same quiz.
   final bool isRetry;
+
+  /// Highest box an answer picked among choices can reach for the domain
+  /// of the item.
+  final int recognizedBoxCap;
 }

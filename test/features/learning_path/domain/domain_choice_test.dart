@@ -102,7 +102,7 @@ void main() {
     });
     test('falls back to the first domain for an unknown one', () async {
       // Arrange
-      await storage.writeString(key: 'path_domain.p1', value: 'division');
+      await storage.writeString(key: 'path_domain.p1', value: 'unknown');
       // Act
       final DomainChoiceEntity actual = (await getChoice(
         params: 'p1',
@@ -234,7 +234,7 @@ void main() {
       final DomainChoiceCubit cubit = buildCubit();
       await cubit.load();
       // Act
-      await cubit.select('division');
+      await cubit.select('unknown');
       // Assert
       expect(selectedOf(cubit), 'multiplication');
       expect(await storage.readString(key: 'path_domain.p1'), isNull);

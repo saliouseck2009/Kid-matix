@@ -68,7 +68,7 @@ final class RewardSessionHook implements SessionSavedHook {
         isBossDefeated: session.bossOutcome == bossDefeated,
       ),
       masteredItemCount: await _masteredCount(session),
-      itemCount: _itemCount(session.domainId),
+      itemCount: _itemCount(_countedDomainOf(session)),
       now: session.endedAt,
       isTimeAttack: session.mode == QuizMode.timeAttack,
       isSurvival: session.mode == QuizMode.survival,
@@ -149,9 +149,11 @@ final class RewardSessionHook implements SessionSavedHook {
   /// Facts of the domain mastered; 0 when they cannot be read, so the
   /// "Les 120" badge simply waits for the next quiz.
   Future<int> _masteredCount(SavedQuizSession session) async {
+    final String domainId = _countedDomainOf(session);
+    if (_itemCount(domainId) == 0) return 0;
     final DataState<Set<String>> mastered = await _mastery.readMasteredItems(
       profileId: session.profileId,
-      domainId: session.domainId,
+      domainId: domainId,
     );
     return switch (mastered) {
       DataSuccess<Set<String>>(:final data) => data.length,
@@ -160,6 +162,15 @@ final class RewardSessionHook implements SessionSavedHook {
         return 0;
       }(),
     };
+  }
+
+  /// The domain whose mastered items count for "Les 120": the
+  /// multiplication for a review that mixes the domains, so the badge still
+  /// comes during it; the domain of the session otherwise.
+  String _countedDomainOf(SavedQuizSession session) {
+    return session.domainId == LearningDomainIds.mixed
+        ? LearningDomainIds.multiplication
+        : session.domainId;
   }
 
   /// Items of [domainId] for "Les 120", the badge of the multiplication

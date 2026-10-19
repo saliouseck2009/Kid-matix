@@ -105,7 +105,8 @@ class QuizPage extends StatelessWidget {
     );
   }
 
-  /// The reading aloud of this quiz, in the language of the interface.
+  /// The reading aloud of this quiz: the questions in the language of their
+  /// domain, the instructions in the language of the interface.
   QuizReadAloud? _readAloudOf(BuildContext context) {
     final QuizReadAloudUseCases? cases = readAloud;
     if (cases == null) return null;
@@ -113,6 +114,7 @@ class QuizPage extends StatelessWidget {
     return QuizReadAloud(
       useCases: cases,
       languageCode: Localizations.localeOf(context).languageCode,
+      contentLanguageCode: domains.find(request.domainId)?.contentLanguageCode,
       speakQuestion: (Question question) =>
           labels.speakQuestion(question, request.domainId),
       speakInstruction: labels.describeHint,
