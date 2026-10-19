@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/core/extensions/problem_operation_reading.dart';
 import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_feedback.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/compare_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_answer_button.dart';
@@ -48,8 +48,9 @@ class MultipleChoiceAnswers extends StatelessWidget {
                     semanticLabel: switch (choice) {
                       OperationAnswer(:final operation) =>
                         operation.toSpokenText(context.l10n),
-                      ProblemOperationAnswer(:final operation) =>
-                        operation.spoken(context.l10n),
+                      OperatorAnswer(:final operator) => <PromptToken>[
+                        OperatorToken(operator),
+                      ].toSpokenText(context.l10n),
                       _ => null,
                     },
                     feedback: feedbackOf(choice),
@@ -68,7 +69,9 @@ class MultipleChoiceAnswers extends StatelessWidget {
       NumberAnswer(:final int value) => '$value',
       OperationAnswer(:final operation) => operation.toDisplayText(),
       ComparisonAnswer(:final comparison) => CompareAnswers.signOf(comparison),
-      ProblemOperationAnswer(:final operation) => operation.sign,
+      OperatorAnswer(:final operator) => <PromptToken>[
+        OperatorToken(operator),
+      ].toDisplayText(),
       WordAnswer(:final String text) => text,
       BooleanAnswer() || PairsAnswer() => '',
     };

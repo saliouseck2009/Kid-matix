@@ -11,6 +11,8 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_source.da
 import 'package:kid_matix/features/learning_path/domain/services/learning_path_builder.dart';
 import 'package:kid_matix/features/learning_path/domain/services/stage_quiz_specs.dart';
 import 'package:kid_matix/features/learning_path/domain/services/unit_domain_resolver.dart';
+import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
+import 'package:kid_matix/features/division/domain/services/division_domain.dart';
 import 'package:kid_matix/features/math_word/domain/services/math_word_domain.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
@@ -24,14 +26,22 @@ void main() {
   final DomainRegistry domains = DomainRegistry()
     ..register(MultiplicationDomain())
     ..register(NumbersDomain())
+    ..register(AdditionDomain())
+    ..register(DivisionDomain())
     ..register(words);
   const StageQuizSpecs specs = StageQuizSpecs();
 
-  test('is offered after the multiplication and the numbers', () {
+  test('is offered after the other domains', () {
     // Assert
     expect(
       domains.domains.map((domain) => domain.id).toList(),
-      <String>['multiplication', 'numbers', 'math_words'],
+      <String>[
+        'multiplication',
+        'numbers',
+        'addition',
+        'division',
+        'math_words',
+      ],
     );
   });
 

@@ -846,7 +846,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizSpokenPlus => 'más';
 
   @override
-  String get quizSpokenDividedBy => 'entre';
+  String get quizSpokenDividedBy => 'dividido entre';
 
   @override
   String get quizSpokenMinus => 'menos';

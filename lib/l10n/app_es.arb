@@ -202,7 +202,7 @@
   "quizSpokenBlank": "cuánto",
   "quizSpokenTrueFalse": "{statement}. ¿Verdadero o falso?",
   "quizSpokenPlus": "más",
-  "quizSpokenDividedBy": "entre",
+  "quizSpokenDividedBy": "dividido entre",
   "quizSpokenMinus": "menos",
   "quizSpokenLessThan": "es menor que",
   "quizSpokenGreaterThan": "es mayor que",

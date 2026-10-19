@@ -74,11 +74,21 @@ abstract final class ChallengeRules {
     QuestionTypeIds.compare,
   ];
 
+  /// The formats of the math words (lot F28) that test a word: the daily
+  /// review mixes every domain, and every word has at least the first two.
+  /// Touching the words of a sentence is discovery only and is not asked.
+  static const List<String> wordQuestionTypeIds = <String>[
+    QuestionTypeIds.listenAndTouch,
+    QuestionTypeIds.wordAndImage,
+    QuestionTypeIds.whichOperation,
+  ];
+
   /// Question types of the daily review: the mastery engine picks among
   /// them by box, among those that fit each item.
   static const List<String> dailyReviewQuestionTypeIds = <String>[
     ...versionOneQuestionTypeIds,
     ...numberQuestionTypeIds,
+    ...wordQuestionTypeIds,
   ];
 
   /// Questions of a monster hunt: each monster twice, completed like a

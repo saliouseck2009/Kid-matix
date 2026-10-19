@@ -242,7 +242,11 @@ void main() {
       await tester.tap(find.text('Profil'));
       await tester.pumpAndSettle();
       final Finder card = find.text('Classement');
-      await tester.scrollUntilVisible(card, 200);
+      await tester.scrollUntilVisible(
+        card,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       await tester.ensureVisible(card);
       await tester.pumpAndSettle();
       // Act
@@ -253,10 +257,18 @@ void main() {
       expect(find.text('Parcours'), findsNothing);
       await tester.tap(find.byTooltip('Retour'));
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(find.byTooltip('Réglages'), -200);
+      await tester.scrollUntilVisible(
+        find.byTooltip('Réglages'),
+        -200,
+        scrollable: find.byType(Scrollable).first,
+      );
       await tester.tap(find.byTooltip('Réglages'));
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(find.text('Afficher le classement'), 200);
+      await tester.scrollUntilVisible(
+        find.text('Afficher le classement'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       await tester.ensureVisible(find.text('Afficher le classement'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Afficher le classement'));
@@ -266,6 +278,7 @@ void main() {
       await tester.scrollUntilVisible(
         find.text('Voir mes petits monstres'),
         300,
+        scrollable: find.byType(Scrollable).first,
       );
       await tester.drag(
         find.text('Voir mes petits monstres'),

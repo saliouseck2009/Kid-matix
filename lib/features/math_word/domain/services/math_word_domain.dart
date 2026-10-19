@@ -234,8 +234,8 @@ final class MathWordDomain implements LearningDomain, RecognitionCap {
       unitKey: _unitKeyOf(word),
       questionTypeId: QuestionTypeIds.whichOperation,
       prompt: <PromptToken>[TextToken(statement.text)],
-      choices: ProblemOperationAnswer.all,
-      expectedAnswer: ProblemOperationAnswer(statement.operation),
+      choices: OperatorAnswer.all,
+      expectedAnswer: OperatorAnswer(statement.operation),
     );
   }
 

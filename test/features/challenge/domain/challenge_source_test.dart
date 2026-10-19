@@ -254,11 +254,12 @@ void main() {
           'add:7+8',
           'sub:15-7',
           'div:56/7',
+          'word:il_reste',
         ]),
       );
       expect(
         actualSpec.itemKeys.map((String key) => key.split(':').first).toSet(),
-        <String>{'mul', 'num', 'add', 'sub', 'div'},
+        <String>{'mul', 'num', 'add', 'sub', 'div', 'word'},
       );
       expect(actualSpec.sourceKey, 'dailyReview');
       expect(specs.dailyReviewOf(const <LearningDomain>[]), isNull);

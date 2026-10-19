@@ -1,5 +1,5 @@
 import 'package:kid_matix/core/quiz/comparison.dart';
-import 'package:kid_matix/core/quiz/problem_operation.dart';
+import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
@@ -153,30 +153,31 @@ final class WordAnswer extends Answer {
   String toString() => 'WordAnswer($wordKey)';
 }
 
-/// The operation picked for a statement, among the four (lot F28).
-final class ProblemOperationAnswer extends Answer {
-  /// Creates the answer [operation].
-  const ProblemOperationAnswer(this.operation);
+/// The operator picked for a statement, among the four of the arithmetic
+/// (lot F28).
+final class OperatorAnswer extends Answer {
+  /// Creates the answer [operator].
+  const OperatorAnswer(this.operator);
 
   /// Every answer, in the order of the buttons: + − × ÷.
-  static const List<ProblemOperationAnswer> all = <ProblemOperationAnswer>[
-    ProblemOperationAnswer(ProblemOperation.add),
-    ProblemOperationAnswer(ProblemOperation.subtract),
-    ProblemOperationAnswer(ProblemOperation.multiply),
-    ProblemOperationAnswer(ProblemOperation.divide),
+  static const List<OperatorAnswer> all = <OperatorAnswer>[
+    OperatorAnswer(MathOperator.add),
+    OperatorAnswer(MathOperator.subtract),
+    OperatorAnswer(MathOperator.multiply),
+    OperatorAnswer(MathOperator.divide),
   ];
 
-  /// Operation picked.
-  final ProblemOperation operation;
+  /// Operator picked.
+  final MathOperator operator;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProblemOperationAnswer && other.operation == operation;
+      other is OperatorAnswer && other.operator == operator;
 
   @override
-  int get hashCode => operation.hashCode;
+  int get hashCode => operator.hashCode;
 
   @override
-  String toString() => 'ProblemOperationAnswer(${operation.name})';
+  String toString() => 'OperatorAnswer(${operator.name})';
 }

@@ -91,7 +91,7 @@ String _answer(Answer answer) {
     PairsAnswer() => 'pairs',
     ComparisonAnswer(:final comparison) => comparison.name,
     WordAnswer(:final String wordKey) => wordKey,
-    ProblemOperationAnswer(:final operation) => operation.name,
+    OperatorAnswer(:final operator) => operator.name,
   };
 }
 

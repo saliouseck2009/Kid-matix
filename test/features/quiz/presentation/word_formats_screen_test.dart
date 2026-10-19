@@ -321,15 +321,13 @@ void main() {
       }
       expect(find.text("Touche l'opération"), findsOneWidget);
       // Act
-      final String sign = switch ((question.expectedAnswer
-              as ProblemOperationAnswer)
-          .operation
-          .name) {
-        'add' => '+',
-        'subtract' => '−',
-        'multiply' => '×',
-        _ => '÷',
-      };
+      final String sign =
+          switch ((question.expectedAnswer as OperatorAnswer).operator.name) {
+            'add' => '+',
+            'subtract' => '−',
+            'multiply' => '×',
+            _ => '÷',
+          };
       await tester.tap(find.text(sign));
       await tester.pumpAndSettle();
       // Assert
@@ -345,8 +343,7 @@ void main() {
       );
       final Question question = currentQuestion(tester);
       final String wrong =
-          (question.expectedAnswer as ProblemOperationAnswer).operation.name ==
-              'add'
+          (question.expectedAnswer as OperatorAnswer).operator.name == 'add'
           ? '−'
           : '+';
       // Act

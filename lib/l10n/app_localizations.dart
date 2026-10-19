@@ -1312,13 +1312,13 @@ abstract class AppLocalizations {
   /// **'plus'**
   String get quizSpokenPlus;
 
-  /// Words read by the screen reader for the division sign of a question ("divided by"), as in "56 divisé par 7 égale combien". Joined with the other words in the order of the operation. Never displayed.
+  /// Words read by the screen reader for the division sign of a question ("divided by"), as in "56 divisé par 7 égale combien", and for the division button of a "Which operation?" statement, where it is said alone. Joined with the other words in the order of the operation. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'divisé par'**
   String get quizSpokenDividedBy;
 
-  /// Word read by the screen reader for the minus sign of a subtraction ("minus"), as in "15 moins 7 égale 8". Joined with the other words in the order of the operation. Never displayed.
+  /// Word read by the screen reader for the minus sign of a subtraction ("minus"), as in "15 moins 7 égale 8", and for the minus button of a "Which operation?" statement, where it is said alone. Joined with the other words in the order of the operation. Never displayed.
   ///
   /// In fr, this message translates to:
   /// **'moins'**

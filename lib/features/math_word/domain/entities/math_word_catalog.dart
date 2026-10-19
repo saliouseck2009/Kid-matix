@@ -1,4 +1,4 @@
-import 'package:kid_matix/core/quiz/problem_operation.dart';
+import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/sentence_part.dart';
 import 'package:kid_matix/features/math_word/domain/entities/math_word.dart';
 import 'package:kid_matix/features/math_word/domain/entities/math_word_family.dart';
@@ -185,8 +185,10 @@ final class MathWordCatalog {
     return OperationStatement(
       id: _stringOf(json, 'id'),
       text: _stringOf(json, 'text'),
-      operation: ProblemOperation.values.firstWhere(
-        (ProblemOperation value) => value.name == operation,
+      operation: MathOperator.values.firstWhere(
+        (MathOperator value) =>
+            value.name == operation &&
+            OperationStatement.arithmetic.contains(value),
         orElse: () => throw FormatException('Unknown operation $operation'),
       ),
       wordKeys: keys.whereType<String>().toList(),

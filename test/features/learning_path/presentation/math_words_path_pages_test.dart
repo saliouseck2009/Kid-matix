@@ -41,6 +41,8 @@ void main() {
     );
     expect(find.text('Mots des maths'), findsOneWidget);
     // Act
+    await tester.ensureVisible(find.text('Mots des maths'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Mots des maths'));
     await tester.pumpAndSettle();
     // Assert

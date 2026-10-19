@@ -5,7 +5,7 @@ import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
-import 'package:kid_matix/core/quiz/problem_operation.dart';
+import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_pair.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
@@ -135,7 +135,7 @@ void main() {
         catalog.statements
             .map((OperationStatement statement) => statement.operation)
             .toSet(),
-        ProblemOperation.values.toSet(),
+        OperationStatement.arithmetic,
       );
       for (final OperationStatement statement in catalog.statements) {
         expect(statement.wordKeys, isNotEmpty, reason: statement.id);
@@ -173,13 +173,34 @@ void main() {
             OperationStatement(
               id: 'OP-1',
               text: 'Texte.',
-              operation: ProblemOperation.add,
+              operation: MathOperator.add,
               wordKeys: const <String>['b'],
             ),
           ],
         ),
         throwsFormatException,
       );
+    });
+
+    test('refuses a statement that asks for a comparison', () {
+      // Assert
+      for (final String operation in <String>['lessThan', 'equalTo', 'power']) {
+        expect(
+          () => MathWordCatalog.fromJson(<String, Object?>{
+            'words': <Object?>[],
+            'statements': <Object?>[
+              <String, Object?>{
+                'id': 'OP-1',
+                'text': 'Texte.',
+                'operation': operation,
+                'keys': <String>[],
+              },
+            ],
+          }),
+          throwsFormatException,
+          reason: operation,
+        );
+      }
     });
 
     test('refuses a data asset of the wrong shape', () {
@@ -462,7 +483,7 @@ void main() {
 
   group('Which operation', () {
     test('reads a statement of the word and expects its operation', () {
-      final Set<ProblemOperation> seen = <ProblemOperation>{};
+      final Set<MathOperator> seen = <MathOperator>{};
       for (final MathWord word in words) {
         if (!domain
             .questionTypeIdsOf(word)
@@ -484,13 +505,13 @@ void main() {
           expect(statement.wordKeys, contains(word.wordKey));
           expect(
             actualQuestion.expectedAnswer,
-            ProblemOperationAnswer(statement.operation),
+            OperatorAnswer(statement.operation),
           );
-          expect(actualQuestion.choices, ProblemOperationAnswer.all);
+          expect(actualQuestion.choices, OperatorAnswer.all);
           seen.add(statement.operation);
         }
       }
-      expect(seen, ProblemOperation.values.toSet());
+      expect(seen, OperationStatement.arithmetic);
     });
   });
 }
