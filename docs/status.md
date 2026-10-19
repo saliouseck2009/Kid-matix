@@ -32,8 +32,8 @@ middle of one). Last update: 2026-10-18.
 | F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
 | F23 · Read aloud | **Done** (closed 2026-10-18, wave 1) |
 | F24 · Numbers up to 100 | **Done** (closed 2026-10-18, wave 1) |
-| F25 · + et − | **Merged** (wave 2, #113); closes after the owner's device check |
-| F26 · Division | **Merged** (wave 2, #111); closes after the owner's device check |
+| F25 · + et − | **Done** (closed 2026-10-19, wave 2) |
+| F26 · Division | **Done** (closed 2026-10-19, wave 2) |
 | F28 · Math words | **Merged** (wave 1 #102, wave 2 #112 and #114); closes after the recordings, the device check and the validation of its screens (F28-12) |
 | F27, F29 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
@@ -596,7 +596,7 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Version 2.0, wave 2 (merged, device checks pending)
+## Version 2.0, wave 2 (F25 and F26 closed, F28 pending)
 
 Run on 2026-10-18 and 19: three `lot-implementer` (Sonnet) in their own
 worktrees for F25, F26 (a Claude subagent instead of Codex, owner) and the
@@ -630,10 +630,10 @@ after its fixes. Merged one after the other, each bringing `main` in:
 
 To check on a device (owner), short:
 
-- F25: additions up to 20, a mistake on 7 + 8 recalls 8 + 7, and the fact
-  missed comes back in the next day's daily review.
-- F26: the path « Diviser par 2 », and a wrong answer shows « Retiens
-  aussi : 2 × … ».
+- F25 and F26: checked by the owner on the phones on 2026-10-19, both
+  "done when" criteria OK (additions up to 20, 7 + 8 recalling 8 + 7, the
+  missed fact back the next day; the path « Diviser par 2 » with its
+  multiplication reminder). Both lots closed.
 - F28, once the recordings are delivered and processed: in airplane mode
   « il reste » heard in French then in Wolof, the right drawing touched,
   a missed word back the next day; « Quelle opération ? » on the table's
@@ -653,7 +653,8 @@ in a `refactor(quiz)` pull request; challenges, little monsters, the
 monster hunt, the duel and the placement test stay multiplication-only
 (F27 brings placement by skill).
 
-Next: the device checks, then F25, F26 and F28 close here; wave 3 (F27
+Next: F28 closes once the recordings are processed and checked on a
+phone and its screens are validated; wave 3 (F27
 with migration 014, F29 with migration 015 once the owner answers F29-01).
 
 ## Version 2.0, wave 1: F23 and F24 closure
