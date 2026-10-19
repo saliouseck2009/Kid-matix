@@ -32,8 +32,9 @@ middle of one). Last update: 2026-10-18.
 | F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
 | F23 · Read aloud | **Done** (closed 2026-10-18, wave 1) |
 | F24 · Numbers up to 100 | **Done** (closed 2026-10-18, wave 1) |
-| F28 · Math words | F28-01 **done** (#102) and the guide part of F28-02; the owner fills the Wolof and records; the rest in wave 2 |
-| F25, F26, rest of F28 · Wave 2 | **Next**: questions answered (decisions of 2026-10-18), plan in `docs/parallel-plan.md` |
+| F25 · + et − | **Merged** (wave 2, #113); closes after the owner's device check |
+| F26 · Division | **Merged** (wave 2, #111); closes after the owner's device check |
+| F28 · Math words | **Merged** (wave 1 #102, wave 2 #112 and #114); closes after the recordings, the device check and the validation of its screens (F28-12) |
 | F27, F29 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
@@ -594,6 +595,66 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 (no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
+
+## Version 2.0, wave 2 (merged, device checks pending)
+
+Run on 2026-10-18 and 19: three `lot-implementer` (Sonnet) in their own
+worktrees for F25, F26 (a Claude subagent instead of Codex, owner) and the
+rest of F28; every pull request reviewed by `code-reviewer`, re-reviewed
+after its fixes. Merged one after the other, each bringing `main` in:
+#113 (F25), #111 (F26), #112 and #114 (F28).
+
+- F25 · + et − (#113): 18 units, from sums up to 5 to carrying and
+  borrowing; every addition a + b with 1 ≤ a, b ≤ 9 and both subtractions
+  of its family taught exactly once (exhaustiveness test); keys `add:7+8`,
+  `sub:15-7`, units `addsub:<slug>`, reviews `review:addition:1..6`;
+  plausible wrong answers (never negative), fact families, help card with
+  number line, gap to ten and bundles. Also the daily review across every
+  domain (`MixedQuizPlanner`: due items first, over all domains at once)
+  and twice the time for counting questions. Guard tests: every item fits
+  a daily-review format; no item key shared by two domains.
+- F26 · Division (#111): 120 facts from the multiplication facts, 12 units
+  in the multiplication path order, keys `div:56/7`, units `div:7`; after a
+  mistake « Retiens aussi : 7 × 8 = 56 » with no feature importing another;
+  help card « 56 points partagés en 7 groupes : 8 dans chaque groupe »;
+  the title « Trouve le nombre caché » for every missing-number question,
+  in every domain.
+- F28 · Mots des maths (#112, #114): `tool/process_audio.py` (needs
+  ffmpeg) and `tool/build_math_words.py`, audio packs with a manifest
+  (`assets/audio/<language>/`, the Wolof pack ships empty), migration 013
+  (`profile_settings.help_audio_language`, NULL = first pack), the
+  `math_words` domain (40 words `word:<key>`, six units), « Écoute et
+  touche », « Mot et image », « Toucher pour comprendre » (discovery only),
+  « Quelle opération ? » on the shared `MathOperator`, the Wolof buttons,
+  words in the daily review. The domain switch scrolls from 4 domains.
+
+To check on a device (owner), short:
+
+- F25: additions up to 20, a mistake on 7 + 8 recalls 8 + 7, and the fact
+  missed comes back in the next day's daily review.
+- F26: the path « Diviser par 2 », and a wrong answer shows « Retiens
+  aussi : 2 × … ».
+- F28, once the recordings are delivered and processed: in airplane mode
+  « il reste » heard in French then in Wolof, the right drawing touched,
+  a missed word back the next day; « Quelle opération ? » on the table's
+  statements. Until then the Wolof buttons and the « Aide audio » row stay
+  hidden.
+
+Waiting for the owner: the Wolof columns and glossary of `math-words.md`
+and the 80 recordings (guide in `docs/product/audio-recording.md`, then
+`python3 tool/process_audio.py <folder>`); the screens of F28 without a
+mockup (F28-12 stays open); the new texts of F25, F26 and F28 (unit names
+and tips, « + et − », « Mots des maths », activity titles) in fr, en and
+es; the provisional monsters (round ears, wings, bubbles) and drawings.
+
+Known gaps: `build_quiz_use_case.dart` (about 290 lines) and
+`quiz_item_planner.dart` (216) are over the 200-line class limit, to split
+in a `refactor(quiz)` pull request; challenges, little monsters, the
+monster hunt, the duel and the placement test stay multiplication-only
+(F27 brings placement by skill).
+
+Next: the device checks, then F25, F26 and F28 close here; wave 3 (F27
+with migration 014, F29 with migration 015 once the owner answers F29-01).
 
 ## Version 2.0, wave 1: F23 and F24 closure
 
