@@ -6,6 +6,7 @@ import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
+import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_mastery_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_grid_entity.dart';
 import 'package:kid_matix/features/mastery/domain/entities/mastery_status.dart';
@@ -14,7 +15,10 @@ import 'package:kid_matix/features/mastery/presentation/widgets/mastery_status_s
 /// "Mes tables": one row per table, one cell per fact colored by its
 /// status, and the legend; a screen reader reads each fact with its
 /// status.
-class MasteryGridCard extends StatelessWidget {
+///
+/// For a domain with recordings (the math words), a cell can be touched: its
+/// word shows under the grid with its « Écouter en wolof » button.
+class MasteryGridCard extends StatefulWidget {
   /// Creates the card of [grid] in [domain].
   const MasteryGridCard({required this.grid, required this.domain, super.key});
 
@@ -31,13 +35,25 @@ class MasteryGridCard extends StatelessWidget {
   final LearningDomain domain;
 
   @override
+  State<MasteryGridCard> createState() => _MasteryGridCardState();
+}
+
+class _MasteryGridCardState extends State<MasteryGridCard> {
+  LearningItem? _touched;
+
+  @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final LearningDomain domain = widget.domain;
+    final LearningItem? touched = _touched;
+    final String? recordingKey = touched == null
+        ? null
+        : domain.recordingKeyOf(touched);
     return Container(
-      padding: _padding,
+      padding: MasteryGridCard._padding,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(_radius),
+        borderRadius: BorderRadius.circular(MasteryGridCard._radius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,30 +63,52 @@ class MasteryGridCard extends StatelessWidget {
             header: true,
             label: context.l10n.gridSpokenTitle(domain.id),
             excludeSemantics: true,
-            child: Text(_titleOf(context), style: textTheme.titleMedium),
+            child: Text(
+              context.l10n.gridTitle(domain.id),
+              style: textTheme.titleMedium,
+            ),
           ),
-          _Grid(grid: grid, domain: domain),
+          _Grid(
+            grid: widget.grid,
+            domain: domain,
+            onTouch: (LearningItem item) => setState(() => _touched = item),
+          ),
+          if (touched != null && recordingKey != null)
+            Row(
+              spacing: AppSizes.space8,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    domain.describeItem(touched).toDisplayText(),
+                    style: textTheme.titleMedium,
+                  ),
+                ),
+                HelpAudioButton(
+                  key: ValueKey<String>(recordingKey),
+                  wordKey: recordingKey,
+                ),
+              ],
+            ),
           const _Legend(),
         ],
       ),
     );
   }
-
-  /// "Mes tables" for the multiplication, "Mes nombres" for the numbers,
-  /// the name of another domain.
-  String _titleOf(BuildContext context) {
-    return context.l10n.gridTitle(domain.id);
-  }
 }
 
 class _Grid extends StatelessWidget {
-  const _Grid({required this.grid, required this.domain});
+  const _Grid({
+    required this.grid,
+    required this.domain,
+    required this.onTouch,
+  });
 
   static const double _labelWidth = 26;
   static const double _gap = 3;
 
   final MasteryGridEntity grid;
   final LearningDomain domain;
+  final ValueChanged<LearningItem> onTouch;
 
   /// Mark of the row of [unitKey]: the number of a table, the short mark
   /// of a unit of another domain, such as "<>".
@@ -135,7 +173,7 @@ class _Grid extends StatelessWidget {
               ),
               for (final ItemMasteryEntity cell in row.value)
                 Expanded(
-                  child: _Cell(cell: cell, domain: domain),
+                  child: _Cell(cell: cell, domain: domain, onTouch: onTouch),
                 ),
               for (int empty = row.value.length; empty < columns; empty++)
                 const Expanded(child: SizedBox.shrink()),
@@ -147,30 +185,41 @@ class _Grid extends StatelessWidget {
 }
 
 class _Cell extends StatelessWidget {
-  const _Cell({required this.cell, required this.domain});
+  const _Cell({
+    required this.cell,
+    required this.domain,
+    required this.onTouch,
+  });
 
   static const double _height = 18;
   static const double _radius = 5;
 
   final ItemMasteryEntity cell;
   final LearningDomain domain;
+  final ValueChanged<LearningItem> onTouch;
 
   @override
   Widget build(BuildContext context) {
     final LearningItem? item = domain.findItem(cell.itemKey);
     final String status = cell.status.nameIn(context.l10n);
+    final bool canTouch = item != null && domain.recordingKeyOf(item) != null;
     return Semantics(
+      button: canTouch,
+      onTap: canTouch ? () => onTouch(item) : null,
       label: item == null
           ? status
           : context.l10n.masteryCellSpoken(
               domain.describeItem(item).toSpokenText(context.l10n),
               status,
             ),
-      child: Container(
-        height: _height,
-        decoration: BoxDecoration(
-          color: cell.status.colorIn(context.palette),
-          borderRadius: BorderRadius.circular(_radius),
+      child: GestureDetector(
+        onTap: canTouch ? () => onTouch(item) : null,
+        child: Container(
+          height: _height,
+          decoration: BoxDecoration(
+            color: cell.status.colorIn(context.palette),
+            borderRadius: BorderRadius.circular(_radius),
+          ),
         ),
       ),
     );

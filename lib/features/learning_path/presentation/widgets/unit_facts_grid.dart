@@ -8,13 +8,17 @@ import 'package:kid_matix/core/quiz/prompt_token.dart';
 /// the left of each line, its result on the right.
 class UnitFactsGrid extends StatelessWidget {
   /// Creates the grid of [facts], each a whole fact with its result.
-  const UnitFactsGrid({required this.facts, super.key});
+  const UnitFactsGrid({required this.facts, this.trailingOf, super.key});
 
   static const double _columnGap = AppSizes.space16;
   static const double _rowGap = 10;
 
   /// Facts of the table, in order.
   final List<List<PromptToken>> facts;
+
+  /// A widget at the end of the line of the fact at an index, such as the
+  /// speaker of a recorded word, or `null` for none.
+  final Widget? Function(int index)? trailingOf;
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +33,19 @@ class UnitFactsGrid extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: _columnGap,
         children: <Widget>[
-          for (final List<List<PromptToken>> column
-              in <List<List<PromptToken>>>[
-                facts.take(half).toList(),
-                facts.skip(half).toList(),
-              ])
+          for (final (int start, int end) in <(int, int)>[
+            (0, half),
+            (half, facts.length),
+          ])
             Expanded(
               child: Column(
                 spacing: _rowGap,
                 children: <Widget>[
-                  for (final List<PromptToken> fact in column)
-                    _FactLine(fact: fact),
+                  for (int index = start; index < end; index++)
+                    _FactLine(
+                      fact: facts[index],
+                      trailing: trailingOf?.call(index),
+                    ),
                 ],
               ),
             ),
@@ -50,9 +56,10 @@ class UnitFactsGrid extends StatelessWidget {
 }
 
 class _FactLine extends StatelessWidget {
-  const _FactLine({required this.fact});
+  const _FactLine({required this.fact, this.trailing});
 
   final List<PromptToken> fact;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -66,33 +73,40 @@ class _FactLine extends StatelessWidget {
         ? const <PromptToken>[]
         : fact.sublist(equals + 1);
     final TextStyle? style = Theme.of(context).textTheme.titleLarge;
-    return Semantics(
-      label: fact.toSpokenText(context.l10n),
-      excludeSemantics: true,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.space12,
-          vertical: AppSizes.space8,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: FittedBox(
-                alignment: Alignment.centerLeft,
-                fit: BoxFit.scaleDown,
-                child: Text(operation.toDisplayText(), style: style),
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.space12,
+        vertical: AppSizes.space8,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Semantics(
+              label: fact.toSpokenText(context.l10n),
+              excludeSemantics: true,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: FittedBox(
+                      alignment: Alignment.centerLeft,
+                      fit: BoxFit.scaleDown,
+                      child: Text(operation.toDisplayText(), style: style),
+                    ),
+                  ),
+                  Text(
+                    result.toDisplayText(),
+                    style: style?.copyWith(color: context.palette.primaryText),
+                  ),
+                ],
               ),
             ),
-            Text(
-              result.toDisplayText(),
-              style: style?.copyWith(color: context.palette.primaryText),
-            ),
-          ],
-        ),
+          ),
+          ?trailing,
+        ],
       ),
     );
   }

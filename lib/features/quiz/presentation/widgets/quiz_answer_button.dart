@@ -14,6 +14,7 @@ class QuizAnswerButton extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.icon,
+    this.child,
     this.feedback = AnswerFeedback.none,
     this.height = defaultHeight,
     this.semanticLabel,
@@ -37,6 +38,10 @@ class QuizAnswerButton extends StatelessWidget {
 
   /// Icon shown before [label].
   final IconData? icon;
+
+  /// A drawing shown in place of [label] and [icon]; once judged, a check or
+  /// a cross shows in its corner.
+  final Widget? child;
 
   /// Look of the button once the answer is judged.
   final AnswerFeedback feedback;
@@ -78,11 +83,17 @@ class QuizAnswerButton extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             customBorder: RoundedRectangleBorder(borderRadius: radius),
-            child: _ButtonContent(
-              label: label,
-              icon: _resolveIcon(),
-              color: colors.content,
-            ),
+            child: child == null
+                ? _ButtonContent(
+                    label: label,
+                    icon: _resolveIcon(),
+                    color: colors.content,
+                  )
+                : _DrawingContent(
+                    icon: _resolveIcon(),
+                    color: colors.content,
+                    child: child!,
+                  ),
           ),
         ),
       ),
@@ -159,6 +170,40 @@ class _ButtonContent extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// A drawing that fills the button, its mark of judgment in the corner.
+class _DrawingContent extends StatelessWidget {
+  const _DrawingContent({
+    required this.icon,
+    required this.color,
+    required this.child,
+  });
+
+  final IconData? icon;
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final IconData? mark = icon;
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSizes.space8),
+            child: Center(child: child),
+          ),
+        ),
+        if (mark != null)
+          Positioned(
+            top: AppSizes.space4,
+            right: AppSizes.space4,
+            child: Icon(mark, size: QuizAnswerButton._iconSize, color: color),
+          ),
+      ],
     );
   }
 }

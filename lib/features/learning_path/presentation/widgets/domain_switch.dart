@@ -10,6 +10,9 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice
 /// "Multiplication" and "Nombres"; the choice comes from the enclosing
 /// [DomainChoiceCubit].
 class DomainSwitch extends StatelessWidget {
+  /// Most domains shown side by side; more scroll sideways.
+  static const int maxSideBySide = 3;
+
   /// Creates the switch of [choice].
   const DomainSwitch({required this.choice, super.key});
 
@@ -24,6 +27,8 @@ class DomainSwitch extends StatelessWidget {
       labelOf: context.l10n.domainName,
       semanticLabelOf: context.l10n.domainSpokenName,
       onSelected: context.read<DomainChoiceCubit>().select,
+      // Five domains do not fit side by side at a large text size.
+      isScrollable: choice.domainIds.length > maxSideBySide,
     );
   }
 }

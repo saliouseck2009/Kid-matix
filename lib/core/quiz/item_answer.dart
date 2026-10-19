@@ -13,6 +13,7 @@ final class ItemAnswer {
     required this.isCorrect,
     required this.answerTime,
     this.isRetry = false,
+    this.isPresentation = false,
   });
 
   /// Player who answered.
@@ -35,4 +36,8 @@ final class ItemAnswer {
 
   /// Whether it was the second chance of a fact missed in the same quiz.
   final bool isRetry;
+
+  /// Whether the item was only presented (a discovery question): it counts
+  /// as seen, never as answered, and moves no box.
+  final bool isPresentation;
 }

@@ -13,6 +13,7 @@ class ChoiceSegments<T> extends StatelessWidget {
     this.semanticLabelOf,
     this.labelStyle,
     this.backgroundColor,
+    this.isScrollable = false,
     super.key,
   });
 
@@ -41,6 +42,11 @@ class ChoiceSegments<T> extends StatelessWidget {
   /// Color of the band; the surface color by default.
   final Color? backgroundColor;
 
+  /// Whether the segments keep the width of their text and the band
+  /// scrolls sideways, for more segments than a small phone can hold at a
+  /// large text size; otherwise they share the width.
+  final bool isScrollable;
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
@@ -52,22 +58,36 @@ class ChoiceSegments<T> extends StatelessWidget {
         color: backgroundColor ?? scheme.surface,
         borderRadius: BorderRadius.circular(_radius),
       ),
-      child: Row(
-        spacing: AppSizes.space4,
-        children: <Widget>[
-          for (final T value in choices)
-            Expanded(
-              child: _Segment(
-                label: labelOf(value),
-                semanticLabel: semanticLabelOf?.call(value),
-                isSelected: value == selected,
-                style: style,
-                onTap: () => onSelected(value),
-                radius: _segmentRadius,
+      child: isScrollable
+          ? SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                spacing: AppSizes.space4,
+                children: <Widget>[
+                  for (final T value in choices) segmentOf(value, style),
+                ],
               ),
+            )
+          : Row(
+              spacing: AppSizes.space4,
+              children: <Widget>[
+                for (final T value in choices)
+                  Expanded(child: segmentOf(value, style)),
+              ],
             ),
-        ],
-      ),
+    );
+  }
+
+  /// The segment of [value].
+  Widget segmentOf(T value, TextStyle? style) {
+    return _Segment(
+      label: labelOf(value),
+      semanticLabel: semanticLabelOf?.call(value),
+      isSelected: value == selected,
+      style: style,
+      onTap: () => onSelected(value),
+      radius: _segmentRadius,
+      isCompactText: isScrollable,
     );
   }
 }
@@ -80,6 +100,7 @@ class _Segment extends StatelessWidget {
     required this.style,
     required this.onTap,
     required this.radius,
+    this.isCompactText = false,
   });
 
   final String label;
@@ -88,6 +109,7 @@ class _Segment extends StatelessWidget {
   final TextStyle? style;
   final VoidCallback onTap;
   final double radius;
+  final bool isCompactText;
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +130,9 @@ class _Segment extends StatelessWidget {
               minHeight: AppSizes.minTouchTarget,
             ),
             alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.space8),
+            padding: EdgeInsets.symmetric(
+              horizontal: isCompactText ? AppSizes.space16 : AppSizes.space8,
+            ),
             child: ExcludeSemantics(
               excluding: semanticLabel != null,
               child: Text(

@@ -48,7 +48,7 @@ final class QuizReading {
     _mode = await setup.useCases.getMode(
       params: ReadAloudModeParams(
         profileId: request.profileId,
-        languageCode: setup.languageCode,
+        languageCode: setup.questionLanguageCode,
       ),
     );
   }
@@ -90,7 +90,12 @@ final class QuizReading {
       asking.copyWith(isReading: true, isReadingInstruction: isInstruction),
     );
     final SpeechReading voice = setup.useCases.read(
-      params: ReadAloudParams(text: text, languageCode: setup.languageCode),
+      params: ReadAloudParams(
+        text: text,
+        languageCode: isInstruction
+            ? setup.languageCode
+            : setup.questionLanguageCode,
+      ),
     );
     _voice = voice;
     try {

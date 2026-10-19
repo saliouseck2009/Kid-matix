@@ -47,11 +47,14 @@ final class QuizLabels {
       },
       QuestionTypeIds.compare => l10n.quizCompareLabel,
       QuestionTypeIds.missingNumber => l10n.quizMissingNumberLabel,
+      QuestionTypeIds.listenAndTouch => l10n.quizWordListenLabel,
+      QuestionTypeIds.touchToUnderstand => l10n.quizWordTouchLabel,
+      QuestionTypeIds.whichOperation => l10n.quizWordOperationLabel,
       _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
         NumberLinePicture() => l10n.quizNumberLineLabel,
-        null => describeUnitOf(question, domainId),
+        WordPicture() || null => describeUnitOf(question, domainId),
       },
     };
   }
@@ -93,6 +96,7 @@ final class QuizLabels {
         _speakFindOperation(question, domainId) ?? operation,
       QuestionTypeIds.trueFalse => l10n.quizSpokenTrueFalse(operation),
       QuestionTypeIds.matchPairs => l10n.quizMatchPairsTitle,
+      QuestionTypeIds.wordAndImage => l10n.quizWordMatchTitle,
       _ => operation,
     };
   }
@@ -114,7 +118,7 @@ final class QuizLabels {
       final NumberLinePicture line => l10n.quizNumberLineSpoken(
         MathPictureLabels(l10n).listNumbers(line),
       ),
-      null => null,
+      WordPicture() || null => null,
     };
   }
 
@@ -127,6 +131,8 @@ final class QuizLabels {
       QuestionTypeIds.trueFalse => l10n.quizHintTrueFalse,
       QuestionTypeIds.findOperation => l10n.quizHintFindOperation,
       QuestionTypeIds.compare => l10n.quizHintCompare,
+      QuestionTypeIds.listenAndTouch => l10n.quizHintWordListen,
+      QuestionTypeIds.whichOperation => l10n.quizHintWordOperation,
       _ when question.choices.isNotEmpty => l10n.quizHintMultipleChoice,
       _ => null,
     };
@@ -144,6 +150,12 @@ final class QuizLabels {
         l10n.quizFindOperationSpokenMultiplication(numbers.last.value),
       _ => null,
     };
+  }
+
+  /// Language the questions of [domainId] are written in, or `null` to
+  /// follow the interface.
+  String? contentLanguageOf(String domainId) {
+    return domains.find(domainId)?.contentLanguageCode;
   }
 
   /// Name of the unit of [question], such as "Table de 5" or "Comparer";

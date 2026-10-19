@@ -49,6 +49,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get additionDomainSpokenName => 'Additions and subtractions';
 
   @override
+  String get mathWordsDomainName => 'Math words';
+
+  @override
   String get errorStorage => 'Oops, we couldn\'t read or save your data.';
 
   @override
@@ -232,6 +235,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get masteryGridTitleAdditionSpoken => 'My additions and subtractions';
 
   @override
+  String get masteryGridTitleMathWords => 'My words';
+
+  @override
   String get masteryStatusNotSeen => 'New';
 
   @override
@@ -352,6 +358,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String helpAudioListen(String language) {
     return 'Listen in $language';
+  }
+
+  @override
+  String helpAudioListenExample(String language) {
+    return 'Example in $language';
   }
 
   @override
@@ -652,6 +663,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizHintCompare => 'Tap the right sign';
+
+  @override
+  String get quizHintWordListen => 'Tap the right picture';
+
+  @override
+  String get quizHintWordOperation => 'Tap the operation';
+
+  @override
+  String get quizWordListenLabel => 'Listen and tap';
+
+  @override
+  String get quizWordTouchLabel => 'Tap to understand';
+
+  @override
+  String get quizWordOperationLabel => 'Which operation?';
+
+  @override
+  String get quizWordMatchTitle => 'Match each word with its picture';
+
+  @override
+  String get quizWordMatchHintStart => 'Tap a word, then its picture';
+
+  @override
+  String quizWordMatchHintPicture(String word) {
+    return 'Tap the picture of “$word”';
+  }
+
+  @override
+  String get quizWordMatchHintWord =>
+      'Tap the word that goes with this picture';
+
+  @override
+  String get quizWordUnderstood => 'I understand';
+
+  @override
+  String get quizWordTouchFirst => 'Tap the colored word';
 
   @override
   String get quizCompareLess => 'less';
@@ -1284,6 +1331,40 @@ class AppLocalizationsEn extends AppLocalizations {
         'sub100': 'Subtract the ones, then the tens. For 47 − 23: 7 − 3 = 4 and 40 − 20 = 20, so 24.',
         'carry': 'When the ones make 10 or more, you carry one ten. For 27 + 15, 7 + 5 = 12: write 2 and carry 1 ten. 20 + 10 + 10 = 40, and 40 + 2 = 42.',
         'borrow': 'If you cannot take away the ones, break a ten. For 42 − 17: 42 becomes 30 and 12. 12 − 7 = 5 and 30 − 10 = 20, so 25.',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Add',
+        'remove': 'Take away',
+        'compare': 'Compare',
+        'group': 'Group',
+        'share': 'Share',
+        'ask': 'The questions',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'When we add, we have more than before. Listen for “en plus”, “en tout”, “ensemble”: they say we put things together.',
+        'remove': 'When we take away, there is less left. The words “il reste”, “vendre”, “perdre” say the amount goes down.',
+        'compare': 'To compare, look at two amounts: one is bigger, the other smaller, or they are equal.',
+        'group': 'Packs of the same size are equal groups. The words “dans chaque” and “par paquets de” announce them.',
+        'share': 'To share is to make equal parts: everyone gets as much as the others.',
+        'ask': 'These words say what we look for (“combien”, “le total”) or when it happens (“au départ”, “à la fin”).',
         'other': '',
       },
     );

@@ -23,6 +23,7 @@ import 'package:kid_matix/features/profile/presentation/pages/profile_tab_page.d
 import 'package:kid_matix/features/profile/presentation/pages/settings_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/who_is_playing_page.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/backup_settings_section.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/help_audio_bridge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/player_badge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/reduced_motion_scope.dart';
@@ -176,7 +177,10 @@ final class ProfilePages {
         getSettings: _settingsUseCases.getSettings,
         watchChanges: _tabUseCases.watchChanges,
       )..load(),
-      child: ReducedMotionScope(isPlayerActive: isPlayerActive, child: child),
+      child: ReducedMotionScope(
+        isPlayerActive: isPlayerActive,
+        child: HelpAudioBridge(isPlayerActive: isPlayerActive, child: child),
+      ),
     );
   }
 }

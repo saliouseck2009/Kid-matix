@@ -78,7 +78,7 @@ void main() {
         allOf(startsWith('56 divisé par 7 égale '), contains('Vrai ou faux')),
       );
     });
-    test('says "divided by" in English and "entre" in Spanish', () {
+    test('says "divided by" in English and "dividido entre" in Spanish', () {
       // Arrange
       final Question inputQuestion = questionOf(QuestionTypeIds.typedAnswer);
       // Assert
@@ -94,7 +94,7 @@ void main() {
           domains: buildDomainRegistry(),
           l10n: AppLocalizationsEs(),
         ).speakQuestion(inputQuestion, 'division'),
-        '56 entre 7 es igual a cuánto',
+        '56 dividido entre 7 es igual a cuánto',
       );
     });
     test('gives the hint of the format', () {

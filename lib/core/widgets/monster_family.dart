@@ -19,7 +19,10 @@ enum MonsterFamily {
   eared(LearningDomainIds.addition),
 
   /// Small wings on the sides: the monsters of the division.
-  winged(LearningDomainIds.division);
+  winged(LearningDomainIds.division),
+
+  /// A speech bubble on the head: the monsters of the math words.
+  bubble(LearningDomainIds.mathWords);
 
   const MonsterFamily(this.domainId);
 

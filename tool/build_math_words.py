@@ -65,6 +65,7 @@ def parse(markdown):
                         "text": row[1],
                         "meaning": row[2],
                         "example": row[4],
+                        "surface": row[5],
                     }
                 )
             elif section.startswith("2.") and row[0] != "Notion":
@@ -104,6 +105,13 @@ def build(markdown):
         raise SystemExit("math-words.md is inconsistent:\n" + "\n".join(problems))
     for word in words:
         word["notion"] = notion_of[word["key"]]
+        if word["surface"].lower() not in word["example"].lower():
+            problems.append(
+                f"the example of {word['key']} does not contain "
+                f"'{word['surface']}' (column Forme dans l'exemple)"
+            )
+    if problems:
+        raise SystemExit("math-words.md is inconsistent:\n" + "\n".join(problems))
     return {"words": words, "statements": statements}
 
 

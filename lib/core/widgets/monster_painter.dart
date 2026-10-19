@@ -55,6 +55,8 @@ class MonsterPainter extends CustomPainter {
         _paintEars(canvas);
       case MonsterFamily.winged:
         _paintWings(canvas);
+      case MonsterFamily.bubble:
+        _paintBubble(canvas);
     }
     _paintArms(canvas);
     canvas.drawRRect(
@@ -124,6 +126,26 @@ class MonsterPainter extends CustomPainter {
         Rect.fromCenter(center: Offset(x, 58), width: 36, height: 20),
         wing,
       );
+    }
+  }
+
+  void _paintBubble(Canvas canvas) {
+    final Paint bubble = Paint()..color = _horn;
+    canvas.drawOval(
+      const Rect.fromLTWH(70, 2, 60, 36),
+      bubble,
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(92, 34)
+        ..lineTo(100, 48)
+        ..lineTo(108, 34)
+        ..close(),
+      bubble,
+    );
+    final Paint dot = Paint()..color = _ink;
+    for (final double x in <double>[88, 100, 112]) {
+      canvas.drawCircle(Offset(x, 20), 4, dot);
     }
   }
 

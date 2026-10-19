@@ -11,6 +11,7 @@ import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_generator.dart';
 import 'package:kid_matix/core/quiz/question_type.dart';
+import 'package:kid_matix/core/quiz/question_types/discovery_question_type.dart';
 import 'package:kid_matix/core/quiz/question_type_registry.dart';
 import 'package:kid_matix/core/services/mastery_service.dart';
 import 'package:kid_matix/core/services/random_source.dart';
@@ -77,7 +78,7 @@ class SubmitAnswerUseCase
       );
     }
     final QuizAnswerEntity answer = _judge(turn, type, params);
-    await _record(run, turn, answer, params.answer);
+    await _record(run, turn, answer, params.answer, type);
     final List<QuizAnswerEntity> answers = <QuizAnswerEntity>[
       ...run.answers,
       answer,
@@ -148,6 +149,7 @@ class SubmitAnswerUseCase
     QuizTurn turn,
     QuizAnswerEntity answer,
     Answer? given,
+    QuestionType type,
   ) async {
     final Question question = turn.question;
     final List<String> itemKeys = question.itemKeys;
@@ -161,6 +163,7 @@ class SubmitAnswerUseCase
           isCorrect: _isItemCorrect(question, itemKey, answer, given),
           answerTime: answer.answerTime ~/ itemKeys.length,
           isRetry: turn.isRetry && itemKey == question.itemKey,
+          isPresentation: type is DiscoveryQuestionType,
         ),
       );
       if (recorded case DataFailed<void>(:final exception)) {

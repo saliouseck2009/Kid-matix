@@ -49,6 +49,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get additionDomainSpokenName => 'Additions et soustractions';
 
   @override
+  String get mathWordsDomainName => 'Mots des maths';
+
+  @override
   String get errorStorage =>
       'Oups, on n\'a pas pu lire ou enregistrer tes données.';
 
@@ -234,6 +237,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get masteryGridTitleAdditionSpoken => 'Mes additions et soustractions';
 
   @override
+  String get masteryGridTitleMathWords => 'Mes mots';
+
+  @override
   String get masteryStatusNotSeen => 'Nouveau';
 
   @override
@@ -354,6 +360,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String helpAudioListen(String language) {
     return 'Écouter en $language';
+  }
+
+  @override
+  String helpAudioListenExample(String language) {
+    return 'Exemple en $language';
   }
 
   @override
@@ -655,6 +666,41 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizHintCompare => 'Touche le bon signe';
+
+  @override
+  String get quizHintWordListen => 'Touche le bon dessin';
+
+  @override
+  String get quizHintWordOperation => 'Touche l\'opération';
+
+  @override
+  String get quizWordListenLabel => 'Écoute et touche';
+
+  @override
+  String get quizWordTouchLabel => 'Touche pour comprendre';
+
+  @override
+  String get quizWordOperationLabel => 'Quelle opération ?';
+
+  @override
+  String get quizWordMatchTitle => 'Relie chaque mot à son dessin';
+
+  @override
+  String get quizWordMatchHintStart => 'Touche un mot, puis son dessin';
+
+  @override
+  String quizWordMatchHintPicture(String word) {
+    return 'Touche le dessin de « $word »';
+  }
+
+  @override
+  String get quizWordMatchHintWord => 'Touche le mot qui va avec ce dessin';
+
+  @override
+  String get quizWordUnderstood => 'J\'ai compris';
+
+  @override
+  String get quizWordTouchFirst => 'Touche le mot en couleur';
 
   @override
   String get quizCompareLess => 'plus petit';
@@ -1288,6 +1334,40 @@ class AppLocalizationsFr extends AppLocalizations {
         'sub100': 'Soustrais les unités, puis les dizaines. Pour 47 − 23 : 7 − 3 = 4 et 40 − 20 = 20, donc 24.',
         'carry': 'Quand les unités font 10 ou plus, tu retiens une dizaine. Pour 27 + 15, 7 + 5 = 12 : tu écris 2 et tu retiens 1 dizaine. 20 + 10 + 10 = 40, et 40 + 2 = 42.',
         'borrow': 'Si tu ne peux pas enlever les unités, casse une dizaine. Pour 42 − 17 : 42 devient 30 et 12. 12 − 7 = 5 et 30 − 10 = 20, donc 25.',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Ajouter',
+        'remove': 'Enlever',
+        'compare': 'Comparer',
+        'group': 'Grouper',
+        'share': 'Partager',
+        'ask': 'Les questions',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.',
+        'remove': 'Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.',
+        'compare': 'Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.',
+        'group': 'Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.',
+        'share': 'Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.',
+        'ask': 'Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).',
         'other': '',
       },
     );

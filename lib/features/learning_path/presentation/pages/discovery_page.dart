@@ -9,6 +9,7 @@ import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/app_progress_bar.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
+import 'package:kid_matix/core/widgets/help_audio_button.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/tip_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/unit_facts_grid.dart';
@@ -71,6 +72,16 @@ class DiscoveryPage extends StatelessWidget {
                         ),
                         UnitFactsGrid(
                           facts: unit.items.map(_describe).toList(),
+                          trailingOf: (int index) =>
+                              switch (domain.recordingKeyOf(
+                                unit.items[index],
+                              )) {
+                                final String key => HelpAudioButton(
+                                  wordKey: key,
+                                  isCompact: true,
+                                ),
+                                null => null,
+                              },
                         ),
                         TipCard(tip: labels.unitTip(unit.key)),
                       ],

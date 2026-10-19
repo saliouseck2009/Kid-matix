@@ -130,6 +130,7 @@ void main() {
               OperatorToken() => '÷',
               EqualsToken() => '=',
               BlankToken() => '?',
+              TextToken(:final String text) => text,
             },
           )
           .join(' ');

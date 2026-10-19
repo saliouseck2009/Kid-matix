@@ -6,6 +6,7 @@
       "text": "ajouter",
       "meaning": "Mettre quelque chose en plus de ce que tu as déjà.",
       "example": "Au marché, Awa a 4 mangues. Elle en ajoute 3 à son panier.",
+      "surface": "ajoute",
       "notion": "ajouter"
     },
     {
@@ -14,6 +15,7 @@
       "text": "en plus",
       "meaning": "Tu as déjà des choses, et on t'en donne encore.",
       "example": "Fatou a 6 mangues. Sa tante lui en donne 4 en plus.",
+      "surface": "en plus",
       "notion": "ajouter"
     },
     {
@@ -22,6 +24,7 @@
       "text": "en tout",
       "meaning": "Le nombre que tu obtiens en comptant toutes les parties.",
       "example": "Le matin, Ibrahima achète 3 mangues ; le soir, il en achète 4. Il en a 7 en tout.",
+      "surface": "en tout",
       "notion": "en_tout"
     },
     {
@@ -30,6 +33,7 @@
       "text": "ensemble",
       "meaning": "Réunir des choses au même endroit.",
       "example": "Aminata met ensemble 8 billes rouges et 6 billes bleues dans une boîte.",
+      "surface": "ensemble",
       "notion": "ajouter"
     },
     {
@@ -38,6 +42,7 @@
       "text": "gagner",
       "meaning": "Tu reçois de l'argent ou des points en plus de ce que tu avais.",
       "example": "Moussa lave une voiture et gagne 500 francs.",
+      "surface": "gagne",
       "notion": "ajouter"
     },
     {
@@ -46,6 +51,7 @@
       "text": "recevoir",
       "meaning": "Quelqu'un te donne quelque chose : tu en as plus qu'avant.",
       "example": "Mamadou reçoit 100 francs de son oncle pour acheter du thé.",
+      "surface": "reçoit",
       "notion": "ajouter"
     },
     {
@@ -54,6 +60,7 @@
       "text": "augmenter",
       "meaning": "Devenir plus grand ou plus cher : le nombre monte.",
       "example": "Le pain coûte 150 francs. Son prix augmente de 50 francs.",
+      "surface": "augmente",
       "notion": "ajouter"
     },
     {
@@ -62,6 +69,7 @@
       "text": "enlever",
       "meaning": "Prendre des choses et les sortir du groupe : il en reste moins.",
       "example": "Au marché, la vendeuse enlève 2 mangues abîmées du panier.",
+      "surface": "enlève",
       "notion": "enlever"
     },
     {
@@ -70,6 +78,7 @@
       "text": "il reste",
       "meaning": "Ce qui n'est pas parti : ce qui est encore là après avoir enlevé.",
       "example": "Aminata a 10 mangues. Elle en vend 4 au marché. Il lui reste 6 mangues.",
+      "surface": "reste",
       "notion": "il_reste"
     },
     {
@@ -78,6 +87,7 @@
       "text": "retirer",
       "meaning": "Prendre une partie et la mettre à part.",
       "example": "Ibrahima retire 150 francs de sa tirelire pour acheter un pain.",
+      "surface": "retire",
       "notion": "enlever"
     },
     {
@@ -86,6 +96,7 @@
       "text": "vendre",
       "meaning": "Donner quelque chose à quelqu'un qui te paie : ce n'est plus à toi, mais tu reçois de l'argent.",
       "example": "Aminata vend 5 sachets d'eau au marché.",
+      "surface": "vend",
       "notion": "enlever"
     },
     {
@@ -94,6 +105,7 @@
       "text": "donner",
       "meaning": "Passer quelque chose à quelqu'un : celui qui donne en a moins, celui qui reçoit en a plus.",
       "example": "Fatou donne 2 mangues à sa petite sœur.",
+      "surface": "donne",
       "notion": "enlever"
     },
     {
@@ -102,6 +114,7 @@
       "text": "perdre",
       "meaning": "Ne plus avoir quelque chose que tu avais.",
       "example": "Mamadou perd 3 billes pendant le jeu.",
+      "surface": "perd",
       "notion": "enlever"
     },
     {
@@ -110,6 +123,7 @@
       "text": "acheter",
       "meaning": "Donner de l'argent pour avoir quelque chose : tu as une chose de plus, mais moins d'argent.",
       "example": "Au marché, Moussa achète 3 mangues avec ses 500 francs. Il a 3 mangues de plus, mais moins d'argent.",
+      "surface": "achète",
       "notion": "enlever"
     },
     {
@@ -118,6 +132,7 @@
       "text": "de plus que",
       "meaning": "Une des deux quantités est plus grande que l'autre. Pour savoir quoi faire, lis bien la question.",
       "example": "Awa a 12 mangues. Moussa en a 9. Awa en a 3 de plus que lui.",
+      "surface": "de plus que",
       "notion": "de_plus_que"
     },
     {
@@ -126,6 +141,7 @@
       "text": "de moins que",
       "meaning": "Une des deux quantités est plus petite que l'autre. Pour savoir quoi faire, lis bien la question.",
       "example": "Fatou a 500 francs. Aminata en a 100 de moins que Fatou.",
+      "surface": "de moins que",
       "notion": "de_plus_que"
     },
     {
@@ -134,6 +150,7 @@
       "text": "autant que",
       "meaning": "Il y a la même quantité des deux côtés.",
       "example": "Ibrahima a autant de billes que Mamadou : ils en ont 7 chacun.",
+      "surface": "autant",
       "notion": "autant_que"
     },
     {
@@ -142,6 +159,7 @@
       "text": "le plus grand",
       "meaning": "Celui qui a la plus grande quantité, parmi tous.",
       "example": "Au jeu de billes, Mamadou a le plus grand tas : 9 billes.",
+      "surface": "le plus grand",
       "notion": "le_plus_grand"
     },
     {
@@ -150,6 +168,7 @@
       "text": "le plus petit",
       "meaning": "Celui qui a la plus petite quantité, parmi tous.",
       "example": "Parmi trois sacs de mangues, Aminata prend le plus petit : elle contient 3 mangues.",
+      "surface": "le plus petit",
       "notion": "le_plus_grand"
     },
     {
@@ -158,6 +177,7 @@
       "text": "la différence",
       "meaning": "Ce qui sépare deux quantités : la partie en plus de la plus grande.",
       "example": "Mamadou a 9 mangues dans son panier, et Moussa en a 4. Quelle est la différence entre leurs paniers ?",
+      "surface": "différence",
       "notion": "difference"
     },
     {
@@ -166,6 +186,7 @@
       "text": "égal",
       "meaning": "Les deux quantités sont les mêmes : rien ne dépasse.",
       "example": "Fatou a 5 mangues et Ibrahima en a 5 aussi : leurs tas sont égaux.",
+      "surface": "égaux",
       "notion": "autant_que"
     },
     {
@@ -174,6 +195,7 @@
       "text": "par paquets de",
       "meaning": "Des objets rangés en paquets, avec le même nombre dans chaque paquet.",
       "example": "Au marché, Aminata achète des biscuits par paquets de 3. Elle prend 5 paquets.",
+      "surface": "par paquets de",
       "notion": "par_paquets_de"
     },
     {
@@ -182,6 +204,7 @@
       "text": "chacun",
       "meaning": "Pour chaque personne ou chaque chose, la même quantité.",
       "example": "Pour la fête, les 4 enfants reçoivent chacun 3 billes.",
+      "surface": "chacun",
       "notion": "chacun"
     },
     {
@@ -190,6 +213,7 @@
       "text": "fois",
       "meaning": "Répéter le même nombre plusieurs fois : 4 fois 6, ce sont 4 groupes de 6.",
       "example": "Pour l'attaya, Mamadou prépare 4 théières et met 2 morceaux de sucre dans chaque théière : 4 fois 2 morceaux.",
+      "surface": "fois",
       "notion": "par_paquets_de"
     },
     {
@@ -198,6 +222,7 @@
       "text": "dans chaque",
       "meaning": "Le même nombre se répète dans chacun des groupes.",
       "example": "Dans chaque panier, Fatou range 6 mangues. Elle a 3 paniers.",
+      "surface": "Dans chaque",
       "notion": "par_paquets_de"
     },
     {
@@ -206,6 +231,7 @@
       "text": "une rangée de",
       "meaning": "Des objets alignés en ligne, avec le même nombre dans chaque ligne.",
       "example": "Pour la Tabaski, il y a 4 rangées de 6 chaises dans la cour.",
+      "surface": "rangées",
       "notion": "par_paquets_de"
     },
     {
@@ -214,6 +240,7 @@
       "text": "le double",
       "meaning": "Deux fois la même quantité.",
       "example": "Mamadou a 6 mangues. Moussa en a le double : 12 mangues.",
+      "surface": "le double",
       "notion": "par_paquets_de"
     },
     {
@@ -222,6 +249,7 @@
       "text": "partager",
       "meaning": "Couper une quantité en parts pour que chacun ait sa part.",
       "example": "Mamadou partage ses 12 mangues entre 3 amis.",
+      "surface": "partage",
       "notion": "partager"
     },
     {
@@ -230,6 +258,7 @@
       "text": "partager également",
       "meaning": "Donner à chacun la même part, sans en garder plus pour soi.",
       "example": "Mamadou partage également ses 12 mangues entre 3 amis : chacun en reçoit 4.",
+      "surface": "partage également",
       "notion": "partager"
     },
     {
@@ -238,6 +267,7 @@
       "text": "répartir",
       "meaning": "Mettre une quantité dans plusieurs endroits, en parts égales.",
       "example": "Ibrahima répartit 20 billes dans 4 sacs, le même nombre dans chaque sac.",
+      "surface": "répartit",
       "notion": "partager"
     },
     {
@@ -246,6 +276,7 @@
       "text": "par personne",
       "meaning": "Ce que reçoit chaque personne d'une même quantité.",
       "example": "Pour le goûter, il y a 12 mangues pour 4 enfants. Combien de mangues par personne ?",
+      "surface": "par personne",
       "notion": "partager"
     },
     {
@@ -254,6 +285,7 @@
       "text": "diviser",
       "meaning": "Partager en parts égales.",
       "example": "Aminata veut diviser ses 15 billes en 3 tas égaux.",
+      "surface": "diviser",
       "notion": "partager"
     },
     {
@@ -262,6 +294,7 @@
       "text": "la moitié",
       "meaning": "Une des deux parts égales d'un tout, si tu le coupes en deux.",
       "example": "Fatou a 14 mangues et en donne la moitié à Aminata.",
+      "surface": "la moitié",
       "notion": "moitie"
     },
     {
@@ -270,6 +303,7 @@
       "text": "un quart",
       "meaning": "Une des quatre parts égales d'un tout, si tu le coupes en quatre.",
       "example": "Moussa a 8 billes. Il en donne un quart à Ibrahima : 2 billes.",
+      "surface": "un quart",
       "notion": "moitie"
     },
     {
@@ -278,6 +312,7 @@
       "text": "combien",
       "meaning": "Tu demandes une quantité : tu cherches un nombre.",
       "example": "Au marché, une cliente demande : combien coûtent les mangues ?",
+      "surface": "combien",
       "notion": "combien"
     },
     {
@@ -286,6 +321,7 @@
       "text": "combien de fois",
       "meaning": "Chercher combien de paquets de même taille on peut faire avec un nombre donné.",
       "example": "Aminata a 12 billes. Combien de fois peut-elle faire un tas de 3 billes ?",
+      "surface": "Combien de fois",
       "notion": "combien"
     },
     {
@@ -294,6 +330,7 @@
       "text": "le total",
       "meaning": "Le résultat de tout ce qu'on a réuni ou compté.",
       "example": "Ibrahima a acheté 3 mangues le matin et 4 le soir. Quel est le total ?",
+      "surface": "le total",
       "notion": "en_tout"
     },
     {
@@ -302,6 +339,7 @@
       "text": "au départ",
       "meaning": "Au tout début, avant ce qui change.",
       "example": "Au départ, Mamadou a 500 francs.",
+      "surface": "Au départ",
       "notion": "au_depart"
     },
     {
@@ -310,6 +348,7 @@
       "text": "à la fin",
       "meaning": "Après tout ce qui s'est passé, à la dernière étape.",
       "example": "À la fin de la journée, Fatou a 9 mangues.",
+      "surface": "À la fin",
       "notion": "au_depart"
     },
     {
@@ -318,6 +357,7 @@
       "text": "après",
       "meaning": "Ce qui arrive plus tard, une fois qu'une chose est passée.",
       "example": "Après le marché, Awa rentre à la maison avec 3 mangues.",
+      "surface": "Après",
       "notion": "au_depart"
     }
   ],

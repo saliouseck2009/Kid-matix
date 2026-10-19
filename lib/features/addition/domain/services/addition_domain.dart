@@ -118,6 +118,12 @@ final class AdditionDomain implements LearningDomain {
   }
 
   @override
+  String? recordingKeyOf(LearningItem item) => null;
+
+  @override
+  String? get contentLanguageCode => null;
+
+  @override
   ItemHelp helpOf(LearningItem item) {
     final ArithmeticFact fact = _requireFact(item);
     final ArithmeticUnit unit = _unitsByFactKey[fact.key]!;

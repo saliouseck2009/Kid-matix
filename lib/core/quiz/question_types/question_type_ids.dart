@@ -32,4 +32,16 @@ abstract final class QuestionTypeIds {
 
   /// Find the number missing on a number line among four, version 2.0.
   static const String numberLine = 'numberLine';
+
+  /// Hear a math word and touch its drawing among four, version 2.0.
+  static const String listenAndTouch = 'listenAndTouch';
+
+  /// Match four expressions with their drawings, version 2.0.
+  static const String wordAndImage = 'wordAndImage';
+
+  /// Touch the math words of a sentence to hear and see them, version 2.0.
+  static const String touchToUnderstand = 'touchToUnderstand';
+
+  /// Pick +, −, × or ÷ for a short statement, version 2.0.
+  static const String whichOperation = 'whichOperation';
 }

@@ -127,6 +127,12 @@ final class DivisionDomain implements LearningDomain {
   /// dividend in as many equal rows as the divisor: 7 rows of 8 dots for
   /// 56 ÷ 7.
   @override
+  String? recordingKeyOf(LearningItem item) => null;
+
+  @override
+  String? get contentLanguageCode => null;
+
+  @override
   ItemHelp helpOf(LearningItem item) {
     final DivisionFact fact = _requireFact(item);
     return ItemHelp(

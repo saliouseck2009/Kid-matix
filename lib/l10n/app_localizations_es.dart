@@ -49,6 +49,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get additionDomainSpokenName => 'Sumas y restas';
 
   @override
+  String get mathWordsDomainName => 'Palabras de mates';
+
+  @override
   String get errorStorage => 'Uy, no pudimos leer o guardar tus datos.';
 
   @override
@@ -232,6 +235,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get masteryGridTitleAdditionSpoken => 'Mis sumas y restas';
 
   @override
+  String get masteryGridTitleMathWords => 'Mis palabras';
+
+  @override
   String get masteryStatusNotSeen => 'Nuevo';
 
   @override
@@ -352,6 +358,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String helpAudioListen(String language) {
     return 'Escuchar en $language';
+  }
+
+  @override
+  String helpAudioListenExample(String language) {
+    return 'Ejemplo en $language';
   }
 
   @override
@@ -656,6 +667,41 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizHintCompare => 'Toca el signo correcto';
 
   @override
+  String get quizHintWordListen => 'Toca el dibujo correcto';
+
+  @override
+  String get quizHintWordOperation => 'Toca la operación';
+
+  @override
+  String get quizWordListenLabel => 'Escucha y toca';
+
+  @override
+  String get quizWordTouchLabel => 'Toca para entender';
+
+  @override
+  String get quizWordOperationLabel => '¿Qué operación?';
+
+  @override
+  String get quizWordMatchTitle => 'Une cada palabra con su dibujo';
+
+  @override
+  String get quizWordMatchHintStart => 'Toca una palabra y luego su dibujo';
+
+  @override
+  String quizWordMatchHintPicture(String word) {
+    return 'Toca el dibujo de «$word»';
+  }
+
+  @override
+  String get quizWordMatchHintWord => 'Toca la palabra que va con este dibujo';
+
+  @override
+  String get quizWordUnderstood => 'Lo entiendo';
+
+  @override
+  String get quizWordTouchFirst => 'Toca la palabra de color';
+
+  @override
   String get quizCompareLess => 'menor';
 
   @override
@@ -800,7 +846,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizSpokenPlus => 'más';
 
   @override
-  String get quizSpokenDividedBy => 'entre';
+  String get quizSpokenDividedBy => 'dividido entre';
 
   @override
   String get quizSpokenMinus => 'menos';
@@ -1285,6 +1331,40 @@ class AppLocalizationsEs extends AppLocalizations {
         'sub100': 'Resta las unidades y luego las decenas. Para 47 − 23: 7 − 3 = 4 y 40 − 20 = 20, así que 24.',
         'carry': 'Cuando las unidades suman 10 o más, te llevas una decena. Para 27 + 15, 7 + 5 = 12: escribes 2 y te llevas 1 decena. 20 + 10 + 10 = 40, y 40 + 2 = 42.',
         'borrow': 'Si no puedes quitar las unidades, rompe una decena. Para 42 − 17: 42 se convierte en 30 y 12. 12 − 7 = 5 y 30 − 10 = 20, así que 25.',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitName(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Añadir',
+        'remove': 'Quitar',
+        'compare': 'Comparar',
+        'group': 'Agrupar',
+        'share': 'Repartir',
+        'ask': 'Las preguntas',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mathWordsUnitTip(String unit) {
+    String _temp0 = intl.Intl.selectLogic(
+      unit,
+      {
+        'add': 'Cuando añadimos, tenemos más que antes. Escucha «en plus», «en tout», «ensemble»: dicen que juntamos.',
+        'remove': 'Cuando quitamos, queda menos. Las palabras «il reste», «vendre», «perdre» dicen que la cantidad baja.',
+        'compare': 'Para comparar, mira dos cantidades: una es más grande, la otra más pequeña, o son iguales.',
+        'group': 'Los paquetes del mismo tamaño son grupos iguales. Las palabras «dans chaque» y «par paquets de» los anuncian.',
+        'share': 'Repartir es hacer partes iguales: cada uno recibe tanto como los demás.',
+        'ask': 'Estas palabras dicen qué buscamos («combien», «le total») o cuándo pasa («au départ», «à la fin»).',
         'other': '',
       },
     );

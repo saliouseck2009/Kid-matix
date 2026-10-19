@@ -26,6 +26,7 @@ final class MathPictureLabels {
       NumberLinePicture() => _l10n.quizNumberLinePictureLabel(
         listNumbers(picture, blankText: blankText),
       ),
+      WordPicture(:final String label) => label,
     };
   }
 

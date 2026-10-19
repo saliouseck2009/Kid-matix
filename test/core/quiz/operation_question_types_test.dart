@@ -10,6 +10,7 @@ import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/quiz/question_types/find_operation_question_type.dart';
 import 'package:kid_matix/core/quiz/question_types/match_pairs_question_type.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
+import 'package:kid_matix/core/quiz/question_types/word_question_types.dart';
 
 OperationAnswer _operation(int left, int right) {
   return OperationAnswer(<PromptToken>[
@@ -76,6 +77,7 @@ void main() {
       expect(const MatchPairsQuestionType().timeFactor, 2);
       expect(
         appQuestionTypes
+            .where((QuestionType type) => !wordQuestionTypes.contains(type))
             .where((QuestionType type) => type.timeFactor != 1)
             .map((QuestionType type) => type.id),
         <String>[QuestionTypeIds.matchPairs, QuestionTypeIds.countObjects],

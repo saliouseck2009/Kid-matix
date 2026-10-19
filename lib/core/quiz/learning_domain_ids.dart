@@ -19,4 +19,8 @@ abstract final class LearningDomainIds {
 
   /// The divisions of the multiplication tables (version 2.0).
   static const String division = 'division';
+
+  /// The words of mathematics: add, take away, compare, group, share
+  /// (version 2.0).
+  static const String mathWords = 'math_words';
 }
