@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
@@ -26,10 +27,14 @@ void main() {
     ).thenAnswer((_) async => const DataSuccess<void>(null));
   });
 
-  Future<void> pumpSettings(WidgetTester tester) async {
+  Future<void> pumpSettings(
+    WidgetTester tester, {
+    List<String> helpAudioLanguages = const <String>[],
+  }) async {
     tester.view.physicalSize = const Size(1080, 3000);
     addTearDown(tester.view.resetPhysicalSize);
     final ProfilePages pages = buildProfilePages(
+      helpAudioLanguages: helpAudioLanguages,
       settingsUseCases: buildSettingsUseCases(
         updateSettings: mockUpdate,
         resetProgress: mockReset,
@@ -69,6 +74,27 @@ void main() {
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
       }
+    });
+    testWidgets('hides the audio help while no pack exists', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(tester);
+      // Assert
+      expect(find.text('Aide audio'), findsNothing);
+    });
+    testWidgets('offers the audio help in Wolof or none, on Wolof first', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpSettings(tester, helpAudioLanguages: <String>['wo']);
+      // Act
+      await tester.tap(find.text('Aucune'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Aide audio'), findsOneWidget);
+      expect(find.text('Wolof'), findsOneWidget);
+      expect(lastSaved().helpAudioLanguage, HelpAudio.none);
     });
     testWidgets('saves the timer and the daily goal chosen', (
       WidgetTester tester,

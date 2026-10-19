@@ -43,6 +43,7 @@ final class ProfilePages {
     required this._settingsUseCases,
     required this._backupUseCases,
     this._gateRandom,
+    this.helpAudioLanguages = const <String>[],
   });
 
   final GetProfilesUseCase _getProfiles;
@@ -56,6 +57,10 @@ final class ProfilePages {
 
   // Draws the numbers of the parental gate; seeded in tests.
   final Random? _gateRandom;
+
+  /// Codes of the help languages that have an audio pack, offered by the
+  /// "Aide audio" setting; none hides it.
+  final List<String> helpAudioLanguages;
 
   /// "Qui joue ?".
   Widget buildWhoIsPlayingPage({
@@ -151,6 +156,7 @@ final class ProfilePages {
         backupSection: BackupSettingsSection(random: _gateRandom),
         reminderRows: reminderRows,
         languageRows: languageRows,
+        helpAudioLanguages: helpAudioLanguages,
       ),
     );
   }

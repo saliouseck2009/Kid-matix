@@ -25,4 +25,9 @@ abstract interface class PlayerSettingsService {
   /// to be read aloud by itself ("Lire les questions à voix haute"). Off by
   /// default; a reading can always be asked for with the listen button.
   Future<DataState<bool>> readReadAloudEnabled({required String profileId});
+
+  /// Returns the language of the recorded help the player [profileId]
+  /// chose for the math words ("Aide audio"): the code of an audio pack,
+  /// `HelpAudio.none`, or `null` when they never chose (the first pack).
+  Future<DataState<String?>> readHelpAudioLanguage({required String profileId});
 }

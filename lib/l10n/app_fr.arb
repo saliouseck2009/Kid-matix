@@ -440,6 +440,34 @@
   "@settingsReadAloud": {
     "description": "Switch that makes a voice read every new question of a quiz by itself (\"Read questions aloud\"), in the game section of the settings screen and as the offer at the end of the player creation. The child can always ask for a reading with the listen button, whatever the switch."
   },
+  "settingsHelpAudio": "Aide audio",
+  "@settingsHelpAudio": {
+    "description": "Name of the setting that chooses the language of the recorded help of the math words (\"Audio help\"), in the game section of the settings screen. Its choices are the languages of the audio packs and \"None\". Two words at most."
+  },
+  "helpAudioNone": "Aucune",
+  "@helpAudioNone": {
+    "description": "Choice of the audio help setting that turns the recorded help off (\"None\"). One word."
+  },
+  "helpAudioLanguageName": "{code, select, wo{wolof} other{{code}}}",
+  "@helpAudioLanguageName": {
+    "description": "Name of a help language, from the code of its audio pack: it fills the audio help setting and the \"Listen in...\" button. Lower case in French and Spanish (a language name), as it is used inside a sentence. A new language adds one choice here; an unknown code is shown as it is.",
+    "placeholders": {
+      "code": {
+        "type": "String",
+        "example": "wo"
+      }
+    }
+  },
+  "helpAudioListen": "Écouter en {language}",
+  "@helpAudioListen": {
+    "description": "Button that plays the recorded explanation of a math word in the help language of the player, such as \"Listen in Wolof\". {language} is the name from helpAudioLanguageName. Shown only when the recording exists.",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "wolof"
+      }
+    }
+  },
   "commonClose": "Fermer",
   "@commonClose": {
     "description": "Tooltip of the cross button that closes a full screen such as the parental gate (\"Close\"). Infinitive verb, one word."
