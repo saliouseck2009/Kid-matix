@@ -22,6 +22,7 @@ final class SettingsLoaded extends SettingsState {
     required this.settings,
     this.wasReset = false,
     this.errorCode,
+    this.isPupil = false,
   });
 
   /// Nickname of the player, to type again before resetting or deleting.
@@ -35,6 +36,10 @@ final class SettingsLoaded extends SettingsState {
 
   /// Why the last change failed, or `null`.
   final AppErrorCode? errorCode;
+
+  /// Whether the player is a pupil of a class: only the teacher area
+  /// resets or deletes a pupil, so the class keeps its results.
+  final bool isPupil;
 }
 
 /// The settings could not be read.
