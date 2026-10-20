@@ -14,6 +14,10 @@ abstract interface class PupilRosterService {
     required String classroomId,
   });
 
+  /// Returns the class of the player [profileId], or `null` for a free
+  /// player.
+  Future<DataState<String?>> readClassroomOf({required String profileId});
+
   /// Returns the nicknames of [nicknames] that cannot be used: those that
   /// break the nickname rules and those that repeat an earlier one of the
   /// list (ignoring case and accents), in their order.

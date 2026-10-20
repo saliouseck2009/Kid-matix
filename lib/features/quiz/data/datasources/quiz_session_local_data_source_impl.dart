@@ -72,6 +72,16 @@ final class QuizSessionLocalDataSourceImpl
                 (session.bossOutcome != null || !answer.isRetry),
           )
           .length,
+      duration: Duration(milliseconds: session.durationMs),
+      answers: <SavedAnswer>[
+        for (final QuizAnswerLocalModel answer in answers)
+          SavedAnswer(
+            position: answer.position,
+            itemKey: answer.itemKey,
+            isCorrect: answer.isCorrect,
+            isRetry: answer.isRetry,
+          ),
+      ],
     );
   }
 
