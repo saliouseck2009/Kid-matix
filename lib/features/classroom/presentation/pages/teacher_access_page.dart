@@ -5,6 +5,7 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
+import 'package:kid_matix/core/widgets/parental_gate.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_state.dart';
@@ -77,6 +78,12 @@ class _CodeFormState extends State<_CodeForm> {
     context.read<TeacherAccessCubit>().submit(code);
   }
 
+  // An adult answers the gate of the backups (F20) before a new code.
+  Future<void> _forget() async {
+    final TeacherAccessCubit cubit = context.read<TeacherAccessCubit>();
+    if (await askAnAdult(context)) await cubit.forgetCode();
+  }
+
   @override
   Widget build(BuildContext context) {
     final TeacherAccessReady state = widget.state;
@@ -136,6 +143,11 @@ class _CodeFormState extends State<_CodeForm> {
               : context.l10n.classroomCodeNext,
           onPressed: state.isBusy ? null : _submit,
         ),
+        if (state.step == TeacherCodeStep.enter)
+          TextButton(
+            onPressed: _forget,
+            child: Text(context.l10n.classroomCodeForgotten),
+          ),
       ],
     );
   }

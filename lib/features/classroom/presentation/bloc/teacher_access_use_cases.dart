@@ -1,5 +1,6 @@
 import 'package:kid_matix/features/classroom/domain/usecases/choose_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/close_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/forget_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
 import 'package:meta/meta.dart';
@@ -13,6 +14,7 @@ final class TeacherAccessUseCases {
     required this.chooseCode,
     required this.openArea,
     required this.closeArea,
+    required this.forgetCode,
   });
 
   /// Tells whether a code exists.
@@ -26,4 +28,7 @@ final class TeacherAccessUseCases {
 
   /// Closes the area.
   final CloseTeacherAreaUseCase closeArea;
+
+  /// Forgets the code, after the adult gate.
+  final ForgetTeacherCodeUseCase forgetCode;
 }

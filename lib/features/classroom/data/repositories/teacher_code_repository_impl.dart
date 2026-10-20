@@ -31,6 +31,11 @@ final class TeacherCodeRepositoryImpl implements TeacherCodeRepository {
     return _guard(() => _storage.writeString(key: codeKey, value: code));
   }
 
+  @override
+  Future<DataState<void>> clearCode() {
+    return _guard(() => _storage.remove(key: codeKey));
+  }
+
   Future<DataState<T>> _guard<T>(Future<T> Function() action) async {
     try {
       return DataSuccess<T>(await action());
