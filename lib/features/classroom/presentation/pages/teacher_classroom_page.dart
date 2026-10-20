@@ -100,7 +100,9 @@ class _OverviewView extends StatelessWidget {
       slivers: <Widget>[
         SliverPadding(
           padding: const EdgeInsets.all(AppSizes.space24),
-          sliver: SliverList.list(children: _cards(context)),
+          sliver: SliverToBoxAdapter(
+            child: _OverviewCards(overview: overview, page: page),
+          ),
         ),
         SliverPadding(
           padding: _padding,
@@ -118,69 +120,86 @@ class _OverviewView extends StatelessWidget {
         ),
         SliverPadding(
           padding: const EdgeInsets.all(AppSizes.space24),
-          sliver: SliverList.list(children: _actions(context)),
+          sliver: SliverToBoxAdapter(child: _PageActions(page: page)),
         ),
       ],
     );
   }
+}
 
-  List<Widget> _cards(BuildContext context) {
+/// The header and the cards of the class above its pupils.
+class _OverviewCards extends StatelessWidget {
+  const _OverviewCards({required this.overview, required this.page});
+
+  final ClassOverview overview;
+  final TeacherClassroomPage page;
+
+  @override
+  Widget build(BuildContext context) {
     final ClassOverviewCubit cubit = context.read<ClassOverviewCubit>();
-    const SizedBox gap = SizedBox(height: AppSizes.space16);
-    return <Widget>[
-      ClassroomPageHeader(
-        title: overview.roster.classroom.name,
-        subtitle: context.l10n.classroomPupilCount(
-          overview.roster.pupils.length,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: AppSizes.space16,
+      children: <Widget>[
+        ClassroomPageHeader(
+          title: overview.roster.classroom.name,
+          subtitle: context.l10n.classroomPupilCount(
+            overview.roster.pupils.length,
+          ),
+          onBack: page.onBack,
         ),
-        onBack: page.onBack,
-      ),
-      gap,
-      AssignmentCard(
-        assignment: overview.assignment,
-        pupils: overview.dashboard.pupils,
-        onGive: page.onGiveAssignment,
-      ),
-      gap,
-      ClassChallengeCard(
-        challenge: overview.challenge,
-        onGoalChanged: cubit.setWeeklyGoal,
-      ),
-      gap,
-      StrugglesCard(
-        struggles: overview.dashboard.struggles,
-        labels: page.labels,
-      ),
-      gap,
-      LevelGroupsCard(
-        groups: overview.groups,
-        domainId: overview.groupsDomainId,
-      ),
-      gap,
-      Semantics(
-        header: true,
-        child: Text(
-          context.l10n.classroomPupilsTitle,
-          style: Theme.of(context).textTheme.titleLarge,
+        AssignmentCard(
+          assignment: overview.assignment,
+          pupils: overview.dashboard.pupils,
+          onGive: page.onGiveAssignment,
         ),
-      ),
-      if (overview.roster.pupils.isEmpty)
-        Text(context.l10n.classroomPickerEmpty),
-    ];
-  }
-
-  List<Widget> _actions(BuildContext context) {
-    return <Widget>[
-      DepthButton(
-        label: context.l10n.classroomAddPupils,
-        icon: Icons.person_add_alt_1_rounded,
-        variant: DepthButtonVariant.secondary,
-        onPressed: page.onAddPupils,
-      ),
-      for (final Widget action in page.actions) ...<Widget>[
-        const SizedBox(height: AppSizes.space16),
-        action,
+        ClassChallengeCard(
+          challenge: overview.challenge,
+          onGoalChanged: cubit.setWeeklyGoal,
+        ),
+        StrugglesCard(
+          struggles: overview.dashboard.struggles,
+          labels: page.labels,
+        ),
+        LevelGroupsCard(
+          groups: overview.groups,
+          domainId: overview.groupsDomainId,
+        ),
+        Semantics(
+          header: true,
+          child: Text(
+            context.l10n.classroomPupilsTitle,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        if (overview.roster.pupils.isEmpty)
+          Text(context.l10n.classroomPickerEmpty),
       ],
-    ];
+    );
+  }
+}
+
+/// « Ajouter des élèves » and the buttons of the other parts of the class
+/// mode, at the bottom of the page.
+class _PageActions extends StatelessWidget {
+  const _PageActions({required this.page});
+
+  final TeacherClassroomPage page;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: AppSizes.space16,
+      children: <Widget>[
+        DepthButton(
+          label: context.l10n.classroomAddPupils,
+          icon: Icons.person_add_alt_1_rounded,
+          variant: DepthButtonVariant.secondary,
+          onPressed: page.onAddPupils,
+        ),
+        ...page.actions,
+      ],
+    );
   }
 }

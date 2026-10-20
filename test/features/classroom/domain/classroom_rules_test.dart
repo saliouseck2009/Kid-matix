@@ -177,6 +177,61 @@ void main() {
     });
   });
 
+  group('Edges', () {
+    PracticeSession sessionOf(String id, DateTime start, List<bool> results) {
+      return PracticeSession(
+        id: id,
+        pupilId: 'p',
+        classroomId: 'c',
+        domainId: 'multiplication',
+        startedAt: start,
+        duration: Duration.zero,
+        questionCount: results.length,
+        correctCount: results.where((bool r) => r).length,
+        answers: <PracticeAnswer>[
+          for (int index = 0; index < results.length; index++)
+            PracticeAnswer(
+              position: index + 1,
+              itemKey: 'k',
+              isCorrect: results[index],
+            ),
+        ],
+      );
+    }
+
+    test('a session on Sunday 23:59 counts for the week before', () {
+      // Act
+      final ClassChallenge actual = ClassChallengeRule.compute(
+        goal: 100,
+        sessions: <PracticeSession>[
+          sessionOf('sunday', DateTime(2026, 10, 25, 23, 59), <bool>[true]),
+          sessionOf('monday', DateTime(2026, 10, 26), <bool>[true, true]),
+        ],
+        now: DateTime(2026, 10, 26, 8),
+      );
+      // Assert
+      expect(actual.correctCount, 2);
+    });
+
+    test('two sessions started together keep the order of their ids', () {
+      // Arrange
+      final DateTime inputStart = DateTime(2026, 10, 21, 9);
+      final List<PracticeSession> input = <PracticeSession>[
+        sessionOf('b', inputStart, <bool>[true, true, true]),
+        sessionOf('a', inputStart, <bool>[false, false]),
+      ];
+      // Act
+      final Map<String, ItemStanding> actual = ItemStandingRule.standingsOf(
+        input,
+      );
+      final Map<String, ItemStanding> actualReversed =
+          ItemStandingRule.standingsOf(input.reversed);
+      // Assert
+      expect(actual, <String, ItemStanding>{'k': ItemStanding.acquired});
+      expect(actualReversed, actual);
+    });
+  });
+
   group('ClassChallenge', () {
     test('caps the gauge at the goal', () {
       // Arrange

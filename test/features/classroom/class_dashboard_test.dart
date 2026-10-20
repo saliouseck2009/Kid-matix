@@ -1,8 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/classroom/domain/entities/class_overview.dart';
+import 'package:kid_matix/features/classroom/domain/services/assigned_units_service_impl.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
@@ -31,6 +33,8 @@ SavedQuizSession _session(
   String profileId,
   List<String> answers, {
   required DateTime endedAt,
+  String domainId = 'addition',
+  bool isCompleted = true,
 }) {
   final List<SavedAnswer> saved = <SavedAnswer>[
     for (int index = 0; index < answers.length; index++)
@@ -43,9 +47,9 @@ SavedQuizSession _session(
   return SavedQuizSession(
     id: 'session-${++_sessionCount}',
     profileId: profileId,
-    domainId: 'addition',
+    domainId: domainId,
     mode: QuizMode.path,
-    isCompleted: true,
+    isCompleted: isCompleted,
     questionCount: saved.length,
     correctCount: saved.where((SavedAnswer a) => a.isCorrect).length,
     endedAt: endedAt,
@@ -176,6 +180,42 @@ void main() {
       expect(actual.single.answers.single.itemKey, unitItems.first);
     });
 
+    test('refuse a session whose player cannot be read', () async {
+      // Act
+      Future<void> actual() => tablet.play(
+        _session('ghost', <String>[unitItems.first], endedAt: DateTime(2026)),
+      );
+      // Assert
+      await expectLater(actual(), throwsA(isA<NotFoundException>()));
+    });
+
+    test('keep an abandoned session and a mixed daily review', () async {
+      // Act
+      await tablet.play(
+        _session(
+          pupil(0),
+          <String>['${unitItems.first}!'],
+          endedAt: DateTime(2026, 10, 20, 9),
+          isCompleted: false,
+        ),
+      );
+      await tablet.play(
+        _session(
+          pupil(0),
+          <String>['${unitItems.first}!', 'mul:7x8'],
+          endedAt: DateTime(2026, 10, 21, 9),
+          domainId: 'mixed',
+        ),
+      );
+      // Assert
+      final ClassOverview actual = (await tablet.getOverview(
+        params: classroom.id,
+      )).requireData;
+      expect(actual.dashboard.pupils.first.sessionCount, 2);
+      expect(actual.dashboard.struggles.single.itemKey, unitItems.first);
+      expect(actual.groupsDomainId, 'addition');
+    });
+
     test('count the challenge from Monday only', () async {
       // Arrange
       await tablet.play(
@@ -228,6 +268,40 @@ void main() {
       expect(actual?.assignmentProgress, 1 / unitItems.length);
       expect(actual?.challenge.correctCount, 3);
       expect(actualFree, isNull);
+    });
+
+    test('open the unit of the homework to the pupils only', () async {
+      // Arrange
+      final AssignedUnitsServiceImpl inputService = AssignedUnitsServiceImpl(
+        roster: tablet.roster,
+        assignments: tablet.assignments,
+      );
+      await tablet.giveAssignment(
+        params: GiveAssignmentParams(
+          classroomId: classroom.id,
+          domainId: 'addition',
+          unitKey: _additionsTo20,
+        ),
+      );
+      await tablet.profiles.createProfile(
+        profile: ProfileEntity.newPlayer(
+          id: 'free',
+          nickname: 'Libre',
+          avatar: ProfileAvatar.avatar1,
+          color: ProfileColor.violet,
+          createdAt: DateTime(2026),
+        ),
+      );
+      // Act
+      final Set<String> actualPupil = (await inputService.readAssignedUnitKeys(
+        profileId: pupil(0),
+      )).requireData;
+      final Set<String> actualFree = (await inputService.readAssignedUnitKeys(
+        profileId: 'free',
+      )).requireData;
+      // Assert
+      expect(actualPupil, <String>{_additionsTo20});
+      expect(actualFree, isEmpty);
     });
 
     test('propose level groups in the domain of the assignment', () async {

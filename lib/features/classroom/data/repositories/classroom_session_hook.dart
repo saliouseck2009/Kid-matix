@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
@@ -29,7 +32,7 @@ final class ClassroomSessionHook implements SessionSavedHook {
     );
     final String? classroomId = switch (classroom) {
       DataSuccess<String?>(:final data) => data,
-      DataFailed<String?>() => null,
+      DataFailed<String?>(:final exception) => _fail(exception),
     };
     if (classroomId == null || session.answers.isEmpty) return _nothing;
     final ClassSessionRows rows = ClassJournalRepositoryImpl.rowsOf(
@@ -66,6 +69,19 @@ final class ClassroomSessionHook implements SessionSavedHook {
           ),
       ],
     );
+  }
+
+  /// A pupil whose class cannot be read must not lose a session from
+  /// the class results: the save of the session fails instead.
+  static Never _fail(AppException exception) {
+    final StackTrace stackTrace = StackTrace.current;
+    log(
+      'Class of the player not read',
+      name: 'classroom',
+      error: exception,
+      stackTrace: stackTrace,
+    );
+    Error.throwWithStackTrace(exception, stackTrace);
   }
 
   static Future<List<String>> _nothing(Transaction transaction) async {
