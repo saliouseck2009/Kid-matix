@@ -1,12 +1,21 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/assignment_form_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/pupil_class_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/pages/assignment_page.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/class_challenge_header.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/class_home_banner.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/class_item_labels.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classrooms_cubit.dart';
-import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/classroom_form_page.dart';
@@ -29,6 +38,8 @@ final class ClassroomPages {
     required this._list,
     required this._form,
     required this._roster,
+    required this._work,
+    required this._domains,
     required this._avatarOf,
   });
 
@@ -36,6 +47,8 @@ final class ClassroomPages {
   final ClassroomListUseCases _list;
   final ClassroomFormUseCases _form;
   final ClassroomRosterUseCases _roster;
+  final ClassWorkUseCases _work;
+  final DomainRegistry _domains;
   final PupilAvatarBuilder _avatarOf;
 
   /// The discreet « Espace enseignant » of « Qui joue ? ».
@@ -90,20 +103,19 @@ final class ClassroomPages {
     );
   }
 
-  /// The page of the class [classroomId] in the teacher area.
+  /// The page of the class [classroomId] in the teacher area; [actions]
+  /// go at its bottom.
   Widget buildTeacherClassroomPage({
     required String classroomId,
     required VoidCallback onBack,
     required VoidCallback onAddPupils,
-    List<Widget> sections = const <Widget>[],
+    required VoidCallback onGiveAssignment,
+    List<Widget> actions = const <Widget>[],
   }) {
     return MultiBlocProvider(
       providers: <BlocProvider<Object?>>[
-        BlocProvider<ClassroomRosterCubit>(
-          create: (_) => ClassroomRosterCubit(
-            classroomId: classroomId,
-            useCases: _roster,
-          )..load(),
+        BlocProvider<ClassOverviewCubit>(
+          create: (_) => _overviewCubit(classroomId),
         ),
         BlocProvider<PupilActionsCubit>(
           create: (_) => PupilActionsCubit(
@@ -113,19 +125,60 @@ final class ClassroomPages {
         ),
       ],
       child: TeacherClassroomPage(
+        labels: ClassItemLabels(domains: _domains),
+        avatarOf: _avatarOf,
         onBack: onBack,
         onAddPupils: onAddPupils,
-        sections: sections,
+        onGiveAssignment: onGiveAssignment,
+        actions: actions,
       ),
     );
   }
 
-  /// « Qui es-tu ? » in the class [classroomId]; [header] above the
-  /// search.
+  /// « Donner un devoir » to the class [classroomId].
+  Widget buildAssignmentPage({
+    required String classroomId,
+    required VoidCallback onBack,
+  }) {
+    return BlocProvider<AssignmentFormCubit>(
+      create: (_) => AssignmentFormCubit(
+        classroomId: classroomId,
+        domainId: _domains.domains.first.id,
+        give: _work.giveAssignment,
+      ),
+      child: AssignmentPage(domains: _domains, onBack: onBack),
+    );
+  }
+
+  /// « Le devoir de la classe » and the class challenge at the top of the
+  /// home of [profileId]; nothing for a free player.
+  Widget buildHomeBanner({
+    required String profileId,
+    required ValueChanged<String> onOpenUnit,
+  }) {
+    return BlocProvider<PupilClassCubit>(
+      key: ValueKey<String>('class-$profileId'),
+      create: (_) => PupilClassCubit(
+        profileId: profileId,
+        getView: _work.getPupilView,
+        watchChanges: _work.overview.watchChanges,
+      )..load(),
+      child: ClassHomeBanner(onOpenUnit: onOpenUnit),
+    );
+  }
+
+  ClassOverviewCubit _overviewCubit(String classroomId) {
+    return ClassOverviewCubit(
+      classroomId: classroomId,
+      useCases: _work.overview,
+    )..load();
+  }
+
+  /// « Qui es-tu ? » in the class [classroomId], with the gauge of the
+  /// class challenge above the search.
   Widget buildPupilPickerPage({
     required String classroomId,
     required VoidCallback onBack,
-    Widget? header,
   }) {
     return BlocProvider<ClassroomRosterCubit>(
       create: (_) => ClassroomRosterCubit(
@@ -135,7 +188,10 @@ final class ClassroomPages {
       child: PupilPickerPage(
         avatarOf: _avatarOf,
         onBack: onBack,
-        header: header,
+        header: BlocProvider<ClassOverviewCubit>(
+          create: (_) => _overviewCubit(classroomId),
+          child: const ClassChallengeHeader(),
+        ),
       ),
     );
   }

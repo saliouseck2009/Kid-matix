@@ -47,6 +47,20 @@ final class PupilRosterServiceImpl implements PupilRosterService {
   }
 
   @override
+  Future<DataState<String?>> readClassroomOf({
+    required String profileId,
+  }) async {
+    return switch (await _repository.getProfile(profileId: profileId)) {
+      DataSuccess<ProfileEntity>(:final data) => DataSuccess<String?>(
+        data.classroomId,
+      ),
+      DataFailed<ProfileEntity>(:final exception) => DataFailed<String?>(
+        exception,
+      ),
+    };
+  }
+
+  @override
   List<String> findUnusableNicknames(List<String> nicknames) {
     final Set<String> seen = <String>{};
     return <String>[

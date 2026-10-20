@@ -27,6 +27,8 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/duel_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
@@ -306,6 +308,16 @@ ClassroomPages _createClassroomPages(ProfilePages profilePages) {
       resetPupil: sl(),
       removePupil: sl(),
     ),
+    work: ClassWorkUseCases(
+      overview: ClassOverviewUseCases(
+        getOverview: sl(),
+        setWeeklyGoal: sl(),
+        watchChanges: sl(),
+      ),
+      giveAssignment: sl(),
+      getPupilView: sl(),
+    ),
+    domains: sl(),
     avatarOf: (PlayerIdentity player, double size) =>
         profilePages.buildAvatar(player: player, size: size),
   );

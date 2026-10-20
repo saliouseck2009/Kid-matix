@@ -744,10 +744,10 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 - [x] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
 - [x] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
 - [x] **F29-05** « Qui joue ? » en mode classe : choisir sa classe, puis son nom ou son avatar, avec recherche pour une classe nombreuse.
-- [ ] **F29-06** Devoirs : l'enseignant donne une unité à travailler ; l'élève voit « Le devoir de la classe » en tête de l'accueil.
-- [ ] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
-- [ ] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
-- [ ] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
+- [x] **F29-06** Devoirs : l'enseignant donne une unité à travailler ; l'élève voit « Le devoir de la classe » en tête de l'accueil.
+- [x] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
+- [x] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
+- [x] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
 - [ ] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
 - [ ] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
 - [ ] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.

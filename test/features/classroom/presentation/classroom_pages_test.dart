@@ -13,7 +13,9 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_
 import 'package:kid_matix/features/classroom/presentation/pages/classroom_form_page.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/pupil_picker_page.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/teacher_classroom_page.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/class_item_labels.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/pupil_tile.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
@@ -149,14 +151,17 @@ void main() {
         nicknames: <String>['Awa', 'Moussa'],
       ),
     )).requireData;
+    tester.view.physicalSize = const Size(1200, 6000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
     await pumpLocalized(
       tester,
       MultiBlocProvider(
         providers: <BlocProvider<Object?>>[
-          BlocProvider<ClassroomRosterCubit>(
-            create: (_) => ClassroomRosterCubit(
+          BlocProvider<ClassOverviewCubit>(
+            create: (_) => ClassOverviewCubit(
               classroomId: inputClassroom.id,
-              useCases: stack.rosterUseCases,
+              useCases: stack.overviewUseCases,
             )..load(),
           ),
           BlocProvider<PupilActionsCubit>(
@@ -166,7 +171,13 @@ void main() {
             ),
           ),
         ],
-        child: TeacherClassroomPage(onBack: () {}, onAddPupils: () {}),
+        child: TeacherClassroomPage(
+          labels: ClassItemLabels(domains: stack.domains),
+          avatarOf: boxAvatar,
+          onBack: () {},
+          onAddPupils: () {},
+          onGiveAssignment: () {},
+        ),
       ),
     );
     await tester.pumpAndSettle();

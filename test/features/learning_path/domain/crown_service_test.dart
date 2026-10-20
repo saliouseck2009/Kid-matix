@@ -12,6 +12,7 @@ import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
 import '../../../helpers/test_path_pages.dart';
 import '../../../helpers/test_quiz_pages.dart';
+import '../../../helpers/no_assigned_units.dart';
 
 void main() {
   test('counts the crowned units of a player in every domain', () async {
@@ -38,6 +39,7 @@ void main() {
         ]);
     final CrownServiceImpl service = CrownServiceImpl(
       getPath: GetLearningPathUseCase(
+        assigned: const NoAssignedUnits(),
         repository: inputRepository,
         domains: inputDomains,
         settings: const FixedPlayerSettings(),

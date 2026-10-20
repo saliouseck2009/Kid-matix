@@ -5,8 +5,20 @@ import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/entities/pupil_draft.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/features/learning_path/domain/services/placement_result_service_impl.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
+import 'package:kid_matix/features/classroom/domain/services/class_item_catalog.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_class_overview_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/set_weekly_goal_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_use_cases.dart';
+import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_entity.dart';
+import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/class_journal_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/pupil_enrollment.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/add_pupils_use_case.dart';
@@ -32,9 +44,12 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_code_change_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 
 import '../../../helpers/in_memory_local_storage.dart';
+import '../../../helpers/test_path_pages.dart';
 import 'classroom_device.dart';
 
 /// [ClassroomRepository] kept in memory.
@@ -85,6 +100,67 @@ final class InMemoryClassrooms implements ClassroomRepository {
   Stream<void> watchChanges() => _changes.stream;
 }
 
+/// [AssignmentRepository] kept in memory.
+final class InMemoryAssignments implements AssignmentRepository {
+  /// The assignments, in the order they were saved.
+  final List<AssignmentEntity> rows = <AssignmentEntity>[];
+
+  @override
+  Future<DataState<List<AssignmentEntity>>> getAssignments({
+    required String classroomId,
+  }) async {
+    return DataSuccess<List<AssignmentEntity>>(
+      rows.where((AssignmentEntity a) => a.classroomId == classroomId).toList(),
+    );
+  }
+
+  @override
+  Future<DataState<void>> saveAssignment({
+    required AssignmentEntity assignment,
+  }) async {
+    rows
+      ..removeWhere((AssignmentEntity a) => a.id == assignment.id)
+      ..add(assignment);
+    return const DataSuccess<void>(null);
+  }
+
+  @override
+  Stream<void> watchChanges() => const Stream<void>.empty();
+}
+
+/// [ClassJournalRepository] kept in memory.
+final class InMemoryJournal implements ClassJournalRepository {
+  /// The sessions, by identifier.
+  final Map<String, PracticeSession> rows = <String, PracticeSession>{};
+
+  @override
+  Future<DataState<List<PracticeSession>>> getSessions({
+    required String classroomId,
+  }) async {
+    return DataSuccess<List<PracticeSession>>(
+      rows.values
+          .where((PracticeSession s) => s.classroomId == classroomId)
+          .toList(),
+    );
+  }
+
+  @override
+  Future<DataState<int>> addSessions({
+    required List<PracticeSession> sessions,
+  }) async {
+    int added = 0;
+    for (final PracticeSession session in sessions) {
+      if (rows.containsKey(session.id)) continue;
+      rows[session.id] = session;
+      added++;
+    }
+    return DataSuccess<int>(added);
+  }
+
+  @override
+  Stream<void> watchChanges() => const Stream<void>.empty();
+}
+
 /// [PupilRosterService] kept in memory; nicknames of one or two letters
 /// cannot be used.
 final class InMemoryRoster implements PupilRosterService {
@@ -102,6 +178,18 @@ final class InMemoryRoster implements PupilRosterService {
     return DataSuccess<List<PlayerIdentity>>(
       List<PlayerIdentity>.of(pupils[classroomId] ?? <PlayerIdentity>[]),
     );
+  }
+
+  @override
+  Future<DataState<String?>> readClassroomOf({
+    required String profileId,
+  }) async {
+    for (final MapEntry<String, List<PlayerIdentity>> entry in pupils.entries) {
+      if (entry.value.any((PlayerIdentity pupil) => pupil.id == profileId)) {
+        return DataSuccess<String?>(entry.key);
+      }
+    }
+    return const DataSuccess<String?>(null);
   }
 
   @override
@@ -174,6 +262,12 @@ final class FakeClassroomStack {
   /// The pupils.
   final InMemoryRoster roster = InMemoryRoster();
 
+  /// The assignments.
+  final InMemoryAssignments assignments = InMemoryAssignments();
+
+  /// The results.
+  final InMemoryJournal journal = InMemoryJournal();
+
   /// Identifiers.
   final CountingIds ids = CountingIds('id');
 
@@ -190,6 +284,8 @@ final class FakeClassroomStack {
   late final WatchClassroomChangesUseCase _watch = WatchClassroomChangesUseCase(
     repository: classrooms,
     roster: roster,
+    assignments: assignments,
+    journal: journal,
   );
 
   /// Creates classes.
@@ -215,6 +311,39 @@ final class FakeClassroomStack {
     watchChanges: _watch,
     resetPupil: ResetPupilUseCase(roster: roster),
     removePupil: RemovePupilUseCase(roster: roster),
+  );
+
+  /// The learning domains: multiplication only.
+  late final DomainRegistry domains = DomainRegistry()
+    ..register(MultiplicationDomain());
+
+  late final ClassItemCatalog _catalog = ClassItemCatalog(domains: domains);
+
+  /// The use cases of the page of a class.
+  late final ClassOverviewUseCases overviewUseCases = ClassOverviewUseCases(
+    getOverview: GetClassOverviewUseCase(
+      getRoster: _getRoster,
+      assignments: assignments,
+      journal: journal,
+      catalog: _catalog,
+      placements: PlacementResultServiceImpl(
+        results: InMemoryPlacementResultRepository(),
+      ),
+      clock: MovableClock(DateTime(2026, 10, 21, 9)),
+    ),
+    setWeeklyGoal: SetWeeklyGoalUseCase(
+      repository: classrooms,
+      clock: MovableClock(DateTime(2026, 10, 21, 9)),
+    ),
+    watchChanges: _watch,
+  );
+
+  /// Gives assignments.
+  late final GiveAssignmentUseCase giveAssignment = GiveAssignmentUseCase(
+    assignments: assignments,
+    catalog: _catalog,
+    ids: ids,
+    clock: MovableClock(DateTime(2026, 10, 21, 9)),
   );
 
   /// The use cases of the lists of classes.
@@ -288,6 +417,19 @@ ClassroomPages buildTestClassroomPages(
     list: stack.listUseCases(closeArea),
     form: stack.form,
     roster: stack.rosterUseCases,
+    work: ClassWorkUseCases(
+      overview: stack.overviewUseCases,
+      giveAssignment: stack.giveAssignment,
+      getPupilView: GetPupilClassViewUseCase(
+        roster: stack.roster,
+        classrooms: stack.classrooms,
+        assignments: stack.assignments,
+        journal: stack.journal,
+        catalog: ClassItemCatalog(domains: stack.domains),
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
+      ),
+    ),
+    domains: stack.domains,
     avatarOf: boxAvatar,
   );
 }

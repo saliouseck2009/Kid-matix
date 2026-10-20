@@ -130,6 +130,10 @@ abstract final class AppRoutes {
   static const String classroomPupilsAddition =
       '/players/teacher/classes/:$classroomIdParameter/pupils';
 
+  /// « Donner un devoir » to the class given as path parameter.
+  static const String classroomAssignment =
+      '/players/teacher/classes/:$classroomIdParameter/assignment';
+
   /// « Qui es-tu ? »: a pupil finds their name in the class given as path
   /// parameter, opened from [whoIsPlaying].
   static const String pupilPicker = '/players/class/:$classroomIdParameter';
@@ -145,6 +149,11 @@ abstract final class AppRoutes {
   /// Path of « Ajouter des élèves » to the class [classroomId].
   static String classroomPupilsAdditionOf(String classroomId) {
     return '${teacherClassroomOf(classroomId)}/pupils';
+  }
+
+  /// Path of « Donner un devoir » to the class [classroomId].
+  static String classroomAssignmentOf(String classroomId) {
+    return '${teacherClassroomOf(classroomId)}/assignment';
   }
 
   /// Path of « Qui es-tu ? » in the class [classroomId].

@@ -23,6 +23,25 @@ import 'package:kid_matix/core/storage/progress_resetter.dart';
 import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/reset_progress_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
+import 'package:kid_matix/core/services/placement_result_service.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/placement_result_local_data_source_impl.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_repository_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/services/placement_result_service_impl.dart';
+import 'package:kid_matix/core/storage/session_saved_hook.dart';
+import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
+import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source_impl.dart';
+import 'package:kid_matix/features/classroom/data/datasources/class_journal_local_data_source_impl.dart';
+import 'package:kid_matix/features/classroom/data/repositories/assignment_repository_impl.dart';
+import 'package:kid_matix/features/classroom/data/repositories/class_journal_repository_impl.dart';
+import 'package:kid_matix/features/classroom/data/repositories/classroom_session_hook.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/class_journal_repository.dart';
+import 'package:kid_matix/features/classroom/domain/services/class_item_catalog.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_class_overview_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
+import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../../../helpers/in_memory_local_storage.dart';
@@ -151,6 +170,82 @@ final class ClassroomDevice {
     repository: classrooms,
     roster: roster,
   );
+
+  /// The learning domains: multiplication and addition.
+  late final DomainRegistry domains = DomainRegistry()
+    ..register(MultiplicationDomain())
+    ..register(AdditionDomain());
+
+  /// The class results.
+  late final ClassJournalLocalDataSourceImpl journalRows =
+      ClassJournalLocalDataSourceImpl(database: database);
+
+  /// The class results, as the domain sees them.
+  late final ClassJournalRepository journal = ClassJournalRepositoryImpl(
+    journal: journalRows,
+    clock: clock,
+    changeBus: changeBus,
+  );
+
+  /// The assignments.
+  late final AssignmentRepository assignments = AssignmentRepositoryImpl(
+    assignments: AssignmentLocalDataSourceImpl(database: database),
+    changeBus: changeBus,
+  );
+
+  /// The items of the domains.
+  late final ClassItemCatalog catalog = ClassItemCatalog(domains: domains);
+
+  /// Gives an assignment.
+  late final GiveAssignmentUseCase giveAssignment = GiveAssignmentUseCase(
+    assignments: assignments,
+    catalog: catalog,
+    ids: ids,
+    clock: clock,
+  );
+
+  /// The dated placement results (F27), as the class mode reads them.
+  late final PlacementResultService placements = PlacementResultServiceImpl(
+    results: PlacementResultRepositoryImpl(
+      results: PlacementResultLocalDataSourceImpl(database: database),
+      changeBus: changeBus,
+      clock: clock,
+    ),
+  );
+
+  /// Reads the page of a class.
+  late final GetClassOverviewUseCase getOverview = GetClassOverviewUseCase(
+    getRoster: getRoster,
+    assignments: assignments,
+    journal: journal,
+    catalog: catalog,
+    placements: placements,
+    clock: clock,
+  );
+
+  /// Reads what a pupil sees of their class.
+  late final GetPupilClassViewUseCase getPupilView = GetPupilClassViewUseCase(
+    roster: roster,
+    classrooms: classrooms,
+    assignments: assignments,
+    journal: journal,
+    catalog: catalog,
+    clock: clock,
+  );
+
+  /// The hook that keeps the sessions of the pupils.
+  late final ClassroomSessionHook hook = ClassroomSessionHook(
+    roster: () => roster,
+    journal: journalRows,
+  );
+
+  /// Saves [session] as the quiz does: the hook prepares, then writes in
+  /// a transaction.
+  Future<void> play(SavedQuizSession session) async {
+    final SessionWrite write = await hook.prepare(session: session);
+    final Database db = await database.database;
+    await db.transaction(write);
+  }
 
   /// Closes the device.
   Future<void> close() async {

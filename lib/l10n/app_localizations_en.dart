@@ -291,6 +291,158 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get classroomAssignmentTitle => 'Class homework';
+
+  @override
+  String get classroomAssignmentNone =>
+      'No homework yet. Choose a unit for the whole class to work on.';
+
+  @override
+  String get classroomAssignmentGive => 'Give homework';
+
+  @override
+  String get classroomAssignmentPickHint =>
+      'Choose the unit the whole class will work on.';
+
+  @override
+  String classroomAssignmentDue(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Due $dateString';
+  }
+
+  @override
+  String get classroomAssignmentDueNone => 'No date';
+
+  @override
+  String get classroomAssignmentDueTomorrow => 'Tomorrow';
+
+  @override
+  String get classroomAssignmentDueWeek => 'In 7 days';
+
+  @override
+  String classroomAssignmentStarted(int started, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      started,
+      locale: localeName,
+      other: '$started pupils out of $total have started it.',
+      one: '1 pupil out of $total has started it.',
+      zero: 'Nobody has started it yet.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomAssignmentPlay => 'Let\'s go';
+
+  @override
+  String classroomAssignmentLearned(int percent) {
+    return '$percent% learned';
+  }
+
+  @override
+  String get classroomChallengeTitle => 'Class challenge';
+
+  @override
+  String classroomChallengeProgress(int count, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count right answers out of $goal this week',
+      one: '1 right answer out of $goal this week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomChallengeReached => 'Well done, class, goal reached!';
+
+  @override
+  String get classroomChallengeGoal => 'Goal of the week';
+
+  @override
+  String get classroomStrugglesTitle => 'Who is stuck, and on what?';
+
+  @override
+  String classroomStruggleLine(int count, String item) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pupils get $item wrong',
+      one: '1 pupil gets $item wrong',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomStrugglesNone => 'Nobody is stuck for now.';
+
+  @override
+  String classroomGroupsTitle(String domain) {
+    return 'Level groups · $domain';
+  }
+
+  @override
+  String get classroomGroupsHint =>
+      'Suggested from the placement test and the pupils\' answers.';
+
+  @override
+  String get classroomGroupsNone =>
+      'The groups will show up once the pupils have played.';
+
+  @override
+  String get classroomGroupFirstSteps => 'First steps';
+
+  @override
+  String get classroomGroupOnTheWay => 'On the way';
+
+  @override
+  String get classroomGroupConfident => 'Confident';
+
+  @override
+  String get classroomGroupNotYet => 'Not assessed yet';
+
+  @override
+  String get classroomPupilNeverPlayed => 'Hasn\'t played yet';
+
+  @override
+  String classroomPupilSummary(int sessions, String time, int percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions sessions',
+      one: '1 session',
+    );
+    return '$_temp0 · $time · $percent% right answers';
+  }
+
+  @override
+  String classroomPracticeMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String classroomPracticeSeconds(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String classroomPupilLastSession(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Last session: $dateString';
+  }
+
+  @override
+  String classroomPupilStuckOn(String items) {
+    return 'Stuck on: $items';
+  }
+
+  @override
   String get profileCreationTitle => 'New player';
 
   @override

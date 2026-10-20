@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/core/services/placement_result_service.dart';
+import 'package:kid_matix/features/learning_path/domain/services/placement_result_service_impl.dart';
 import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/services/crown_service.dart';
 import 'package:kid_matix/core/services/open_units_service.dart';
@@ -67,6 +69,7 @@ void registerLearningPathFeature(GetIt sl) {
       settings: sl(),
       mastery: sl(),
       placements: sl<PlacementResultRepository>(),
+      assigned: sl(),
     ),
   );
   sl.registerLazySingleton<BuildPlacementQuestionUseCase>(
@@ -93,6 +96,9 @@ void registerLearningPathFeature(GetIt sl) {
   );
   _registerDomainChoice(sl);
   sl.registerLazySingleton<LearningPathService>(LearningPathServiceImpl.new);
+  sl.registerLazySingleton<PlacementResultService>(
+    () => PlacementResultServiceImpl(results: sl()),
+  );
   sl.registerLazySingleton<CrownService>(
     () => CrownServiceImpl(getPath: sl(), watchChanges: sl(), domains: sl()),
   );
