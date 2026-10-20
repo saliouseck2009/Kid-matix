@@ -243,6 +243,10 @@ GoRouter createAppRouter({
                   ),
                 ],
               ),
+              pathPages.buildPlacementCard(
+                profileId: profileId,
+                onRetake: () => context.go(AppRoutes.placementTest),
+              ),
               rewardPages.buildBadgesCard(profileId: profileId),
               profilePages.buildForFreePlayer(
                 profileId: profileId,

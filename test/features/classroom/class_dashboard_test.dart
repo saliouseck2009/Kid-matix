@@ -304,6 +304,50 @@ void main() {
       expect(actualFree, isEmpty);
     });
 
+    test('place pupils in the groups from their latest placement', () async {
+      // Arrange
+      Future<void> place(String profileId, DateTime at, int? level) async {
+        final Database db = await tablet.database.database;
+        await db.insert('placement_result', <String, Object?>{
+          'profile_id': profileId,
+          'taken_at': at.millisecondsSinceEpoch,
+          'domain_id': 'addition',
+          'level': level,
+          'skill_count': 5,
+          'unit_count': 4,
+          'updated_at': at.millisecondsSinceEpoch,
+        });
+      }
+
+      await tablet.giveAssignment(
+        params: GiveAssignmentParams(
+          classroomId: classroom.id,
+          domainId: 'addition',
+          unitKey: _additionsTo20,
+        ),
+      );
+      await place(pupil(2), DateTime(2026, 10, 1), 1);
+      await place(pupil(2), DateTime(2026, 10, 15), 4);
+      await place(pupil(3), DateTime(2026, 10, 1), 5);
+      await place(pupil(3), DateTime(2026, 10, 15), null);
+      // Act
+      final ClassOverview actual = (await tablet.getOverview(
+        params: classroom.id,
+      )).requireData;
+      // Assert
+      final LevelGroup actualConfident = actual.groups.firstWhere(
+        (LevelGroup group) => group.kind == LevelGroupKind.confident,
+      );
+      expect(actualConfident.pupils.map((p) => p.id), <String>[pupil(2)]);
+      expect(
+        (await tablet.placements.readLatestLevel(
+          profileId: pupil(3),
+          domainId: 'addition',
+        )).requireData,
+        isNull,
+      );
+    });
+
     test('propose level groups in the domain of the assignment', () async {
       // Arrange
       await tablet.giveAssignment(

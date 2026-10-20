@@ -27,6 +27,9 @@ import 'package:kid_matix/features/profile/domain/usecases/reset_progress_use_ca
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/services/placement_result_service.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/placement_result_local_data_source_impl.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_repository_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/services/placement_result_service_impl.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source_impl.dart';
@@ -239,13 +242,22 @@ final class ClassroomDevice {
     clock: clock,
   );
 
+  /// The dated placement results (F27), as the class mode reads them.
+  late final PlacementResultService placements = PlacementResultServiceImpl(
+    results: PlacementResultRepositoryImpl(
+      results: PlacementResultLocalDataSourceImpl(database: database),
+      changeBus: changeBus,
+      clock: clock,
+    ),
+  );
+
   /// Reads the page of a class.
   late final GetClassOverviewUseCase getOverview = GetClassOverviewUseCase(
     getRoster: getRoster,
     assignments: assignments,
     journal: journal,
     catalog: catalog,
-    placements: const NoPlacementResultService(),
+    placements: placements,
     clock: clock,
   );
 

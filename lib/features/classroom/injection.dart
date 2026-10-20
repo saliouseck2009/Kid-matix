@@ -8,7 +8,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:kid_matix/core/services/teacher_area_lock.dart';
 import 'package:kid_matix/core/services/teacher_session_service.dart';
 import 'package:kid_matix/core/services/assigned_units_service.dart';
-import 'package:kid_matix/core/services/placement_result_service.dart';
 import 'package:kid_matix/features/classroom/domain/services/assigned_units_service_impl.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
@@ -51,9 +50,6 @@ import 'package:kid_matix/features/classroom/domain/usecases/watch_classroom_cha
 import 'package:kid_matix/features/classroom/presentation/session/teacher_session_service_impl.dart';
 
 /// Registers the class mode in [sl]; Blocs are never registered.
-///
-/// Until the placement test by skill (F27) registers its
-/// [PlacementResultService], nobody counts as placed.
 void registerClassroomFeature(GetIt sl) {
   _registerData(sl);
   _registerTeacherAccess(sl);
@@ -100,11 +96,6 @@ void _registerTransfer(GetIt sl) {
 }
 
 void _registerClassWork(GetIt sl) {
-  if (!sl.isRegistered<PlacementResultService>()) {
-    sl.registerLazySingleton<PlacementResultService>(
-      () => const NoPlacementResultService(),
-    );
-  }
   sl.registerLazySingleton<AssignedUnitsService>(
     () => AssignedUnitsServiceImpl(roster: sl(), assignments: sl()),
   );

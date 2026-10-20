@@ -6,7 +6,7 @@ import 'package:kid_matix/core/entities/pupil_draft.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
-import 'package:kid_matix/core/services/placement_result_service.dart';
+import 'package:kid_matix/features/learning_path/domain/services/placement_result_service_impl.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/features/classroom/domain/services/class_item_catalog.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_class_overview_use_case.dart';
@@ -53,6 +53,7 @@ import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_us
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 
 import '../../../helpers/in_memory_local_storage.dart';
+import '../../../helpers/test_path_pages.dart';
 import 'classroom_device.dart';
 
 /// [ClassroomRepository] kept in memory.
@@ -335,7 +336,9 @@ final class FakeClassroomStack {
       assignments: assignments,
       journal: journal,
       catalog: _catalog,
-      placements: const NoPlacementResultService(),
+      placements: PlacementResultServiceImpl(
+        results: InMemoryPlacementResultRepository(),
+      ),
       clock: MovableClock(DateTime(2026, 10, 21, 9)),
     ),
     setWeeklyGoal: SetWeeklyGoalUseCase(

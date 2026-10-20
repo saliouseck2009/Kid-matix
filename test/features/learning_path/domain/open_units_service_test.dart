@@ -20,6 +20,7 @@ void main() {
         domains: DomainRegistry()..register(MultiplicationDomain()),
         settings: const FixedPlayerSettings(),
         mastery: FakeMasteryService(),
+        placements: InMemoryPlacementResultRepository(),
       ),
       domainId: 'multiplication',
     );

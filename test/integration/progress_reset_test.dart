@@ -6,6 +6,7 @@ import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/core/storage/progress_resetter.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/challenge/data/repositories/record_reset_hook.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
 import 'package:kid_matix/features/mascot/data/repositories/mascot_reset_hook.dart';
 import 'package:kid_matix/features/mastery/data/repositories/mastery_reset_hook.dart';
@@ -24,6 +25,7 @@ const Map<String, String> _progressTables = <String, String>{
   'badge_unlock': 'profile_id',
   'reward_stats': 'profile_id',
   'record': 'profile_id',
+  'placement_result': 'profile_id',
 };
 
 Future<void> _seedPlayer(Database database, String id) async {
@@ -90,6 +92,13 @@ Future<void> _seedPlayer(Database database, String id) async {
       'best_score': 12,
       'completed_at': 0,
     },
+    'placement_result': <String, Object?>{
+      'taken_at': 0,
+      'domain_id': 'numbers',
+      'level': 1,
+      'skill_count': 1,
+      'unit_count': 2,
+    },
     'session_reward': <String, Object?>{
       'session_id': session,
       'xp_earned': 120,
@@ -153,6 +162,7 @@ void main() {
       ..add(const QuizResetHook())
       ..add(const MasteryResetHook())
       ..add(const StageProgressResetHook())
+      ..add(const PlacementResultResetHook())
       ..add(const RewardResetHook())
       ..add(const RecordResetHook())
       ..add(const MascotResetHook());
