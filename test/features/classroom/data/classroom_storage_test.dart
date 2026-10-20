@@ -260,5 +260,29 @@ void main() {
       expect(actual.pupils.map((pupil) => pupil.nickname), <String>['Moussa']);
       expect((await device.profiles.countProfiles()).requireData, 1);
     });
+
+    test('never reset or remove a free player', () async {
+      // Arrange
+      await device.profiles.createProfile(
+        profile: ProfileEntity.newPlayer(
+          id: 'free',
+          nickname: 'Libre',
+          avatar: ProfileAvatar.avatar1,
+          color: ProfileColor.violet,
+          createdAt: DateTime(2026),
+        ),
+      );
+      // Act
+      final AppErrorCode? actualRemove = (await device.roster.removePupil(
+        profileId: 'free',
+      )).exceptionOrNull?.code;
+      final AppErrorCode? actualReset = (await device.roster.resetPupil(
+        profileId: 'free',
+      )).exceptionOrNull?.code;
+      // Assert
+      expect(actualRemove, AppErrorCode.validation);
+      expect(actualReset, AppErrorCode.validation);
+      expect((await device.profiles.countProfiles()).requireData, 1);
+    });
   });
 }

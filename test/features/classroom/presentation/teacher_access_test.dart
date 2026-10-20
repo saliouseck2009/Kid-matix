@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/choose_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/close_teacher_area_use_case.dart';
@@ -25,16 +26,24 @@ void main() {
 
   setUp(() {
     players = FakeProfileSessionService();
-    session = TeacherSessionServiceImpl(session: players);
-    storage = InMemoryLocalStorage();
     clock = MovableClock(DateTime(2026, 10, 20, 9));
+    session = TeacherSessionServiceImpl(
+      session: players,
+      clock: clock,
+      followsAppLifecycle: false,
+    );
+    storage = InMemoryLocalStorage();
     final TeacherCodeAttempts attempts = TeacherCodeAttempts();
     final TeacherCodeRepositoryImpl codes = TeacherCodeRepositoryImpl(
       storage: storage,
     );
     useCases = TeacherAccessUseCases(
       getAccess: GetTeacherAccessUseCase(codes: codes, session: session),
-      chooseCode: ChooseTeacherCodeUseCase(codes: codes, session: session),
+      chooseCode: ChooseTeacherCodeUseCase(
+        codes: codes,
+        session: session,
+        clock: clock,
+      ),
       openArea: OpenTeacherAreaUseCase(
         codes: codes,
         lock: session,
@@ -166,6 +175,30 @@ void main() {
       await cubit.close();
     });
 
+    test('keep the door closed after a restart', () async {
+      // Arrange
+      await storage.writeString(
+        key: TeacherCodeRepositoryImpl.codeKey,
+        value: '2468',
+      );
+      for (int index = 0; index < 5; index++) {
+        await useCases.openArea(params: '0000');
+      }
+      final OpenTeacherAreaUseCase inputAfterRestart = OpenTeacherAreaUseCase(
+        codes: TeacherCodeRepositoryImpl(storage: storage),
+        lock: session,
+        attempts: TeacherCodeAttempts(),
+        clock: clock,
+      );
+      // Act
+      final AppErrorCode? actual = (await inputAfterRestart(
+        params: '2468',
+      )).exceptionOrNull?.code;
+      // Assert
+      expect(actual, AppErrorCode.limitReached);
+      expect(session.isUnlocked, isFalse);
+    });
+
     test('a forgotten code is chosen again, the classes kept', () async {
       // Arrange
       await storage.writeString(
@@ -186,6 +219,10 @@ void main() {
         '1357',
       );
       expect(await storage.readString(key: 'other'), 'kept');
+      expect(
+        await storage.readString(key: TeacherCodeRepositoryImpl.changedAtKey),
+        DateTime(2026, 10, 20, 9).toIso8601String(),
+      );
       await cubit.close();
     });
   });

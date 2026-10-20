@@ -41,6 +41,7 @@ import 'package:kid_matix/features/classroom/domain/services/teacher_code_attemp
 import 'package:kid_matix/features/classroom/domain/usecases/choose_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/forget_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_code_change_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
@@ -357,7 +358,10 @@ final class FakeClassroomStack {
   );
 
   /// The use cases of the lists of classes.
-  ClassroomListUseCases listUseCases(CloseTeacherAreaUseCase closeArea) {
+  ClassroomListUseCases listUseCases(
+    CloseTeacherAreaUseCase closeArea, {
+    InMemoryLocalStorage? codeStorage,
+  }) {
     return ClassroomListUseCases(
       getClassrooms: GetClassroomsUseCase(
         repository: classrooms,
@@ -365,6 +369,11 @@ final class FakeClassroomStack {
       ),
       watchChanges: _watch,
       closeArea: closeArea,
+      getCodeChange: GetTeacherCodeChangeUseCase(
+        codes: TeacherCodeRepositoryImpl(
+          storage: codeStorage ?? InMemoryLocalStorage(),
+        ),
+      ),
     );
   }
 }
@@ -402,7 +411,11 @@ ClassroomPages buildTestClassroomPages(
   return ClassroomPages(
     access: TeacherAccessUseCases(
       getAccess: GetTeacherAccessUseCase(codes: codes, session: session),
-      chooseCode: ChooseTeacherCodeUseCase(codes: codes, session: session),
+      chooseCode: ChooseTeacherCodeUseCase(
+        codes: codes,
+        session: session,
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
+      ),
       openArea: OpenTeacherAreaUseCase(
         codes: codes,
         lock: session,

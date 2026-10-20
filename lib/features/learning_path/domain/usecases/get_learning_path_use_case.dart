@@ -29,7 +29,7 @@ class GetLearningPathUseCase
     required this._settings,
     required this._mastery,
     required this._placements,
-    this._assigned,
+    required this._assigned,
     this._builder = const LearningPathBuilder(),
   });
 
@@ -38,7 +38,7 @@ class GetLearningPathUseCase
   final PlayerSettingsService _settings;
   final MasteryService _mastery;
   final PlacementResultRepository _placements;
-  final AssignedUnitsService? _assigned;
+  final AssignedUnitsService _assigned;
   final LearningPathBuilder _builder;
 
   @override
@@ -103,13 +103,7 @@ class GetLearningPathUseCase
   }
 
   Future<DataState<Set<String>>> _readAssigned(LearningPathParams params) {
-    final AssignedUnitsService? assigned = _assigned;
-    if (assigned == null) {
-      return Future<DataState<Set<String>>>.value(
-        const DataSuccess<Set<String>>(<String>{}),
-      );
-    }
-    return assigned.readAssignedUnitKeys(profileId: params.profileId);
+    return _assigned.readAssignedUnitKeys(profileId: params.profileId);
   }
 
   /// The unit the latest placement test of the player recommended in

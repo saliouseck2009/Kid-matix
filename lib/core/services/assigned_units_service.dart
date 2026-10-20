@@ -7,8 +7,8 @@ import 'package:kid_matix/core/error/data_state.dart';
 /// its unit for the pupils of the class even beyond their path; its stars
 /// are still to win.
 abstract interface class AssignedUnitsService {
-  /// Returns the keys of the units assigned to [profileId]: the current
-  /// assignment of their class, none for a free player.
+  /// Returns the keys of the units ever assigned to the class of
+  /// [profileId], none for a free player.
   Future<DataState<Set<String>>> readAssignedUnitKeys({
     required String profileId,
   });

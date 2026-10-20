@@ -239,6 +239,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomCodeForgotten => 'Forgot the code?';
 
   @override
+  String classroomCodeChanged(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Code changed on $dateString';
+  }
+
+  @override
   String classroomCodeLocked(int seconds) {
     String _temp0 = intl.Intl.pluralLogic(
       seconds,

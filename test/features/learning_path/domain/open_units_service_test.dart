@@ -11,6 +11,7 @@ import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
 import '../../../helpers/test_path_pages.dart';
 import '../../../helpers/test_quiz_pages.dart';
+import '../../../helpers/no_assigned_units.dart';
 
 void main() {
   OpenUnitsServiceImpl serviceOver(List<StageProgressEntity> progress) {
@@ -21,6 +22,7 @@ void main() {
         settings: const FixedPlayerSettings(),
         mastery: FakeMasteryService(),
         placements: InMemoryPlacementResultRepository(),
+        assigned: const NoAssignedUnits(),
       ),
       domainId: 'multiplication',
     );

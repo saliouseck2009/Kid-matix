@@ -283,6 +283,13 @@ void main() {
           unitKey: _additionsTo20,
         ),
       );
+      await tablet.giveAssignment(
+        params: GiveAssignmentParams(
+          classroomId: classroom.id,
+          domainId: 'multiplication',
+          unitKey: 'mul:7',
+        ),
+      );
       await tablet.profiles.createProfile(
         profile: ProfileEntity.newPlayer(
           id: 'free',
@@ -300,7 +307,7 @@ void main() {
         profileId: 'free',
       )).requireData;
       // Assert
-      expect(actualPupil, <String>{_additionsTo20});
+      expect(actualPupil, <String>{_additionsTo20, 'mul:7'});
       expect(actualFree, isEmpty);
     });
 

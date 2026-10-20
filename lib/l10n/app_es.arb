@@ -61,6 +61,7 @@
   "classroomPickerNoMatch": "Nadie en la clase se llama así.",
   "classroomPickerEmpty": "Esta clase todavía no tiene alumnos.",
   "classroomCodeForgotten": "¿Olvidaste el código?",
+  "classroomCodeChanged": "Código cambiado el {date}",
   "classroomCodeLocked": "{seconds, plural, =1{Demasiados intentos. Espera 1 segundo antes de volver a intentarlo.} other{Demasiados intentos. Espera {seconds} segundos antes de volver a intentarlo.}}",
   "classroomOneTabletHint": "Cada alumno juega siempre en la misma tableta: su progreso no pasa de una tableta a otra.",
   "classroomPupilManage": "Gestionar a {nickname}",

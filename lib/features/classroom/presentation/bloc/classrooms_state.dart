@@ -17,10 +17,14 @@ final class ClassroomsLoading extends ClassroomsState {
 /// The classes of the device, oldest first.
 final class ClassroomsLoaded extends ClassroomsState {
   /// Creates the state.
-  const ClassroomsLoaded({required this.classrooms});
+  const ClassroomsLoaded({required this.classrooms, this.codeChangedAt});
 
   /// Every class with its number of pupils.
   final List<ClassroomSummary> classrooms;
+
+  /// When the teacher code was replaced after « Code oublié ? », or
+  /// `null`.
+  final DateTime? codeChangedAt;
 }
 
 /// The classes could not be read.

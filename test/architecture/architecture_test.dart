@@ -190,7 +190,11 @@ void main() {
       final List<String> actualViolations = <String>[];
       final Iterable<_SourceFile> pureCoreFiles = sourceFiles.where(
         (_SourceFile file) =>
-            file.isInCore && _flutterFreeCoreFolders.contains(file.coreFolder),
+            file.isInCore &&
+            (_flutterFreeCoreFolders.contains(file.coreFolder) ||
+                _pureCoreFiles.any(
+                  (String pure) => file.path == 'lib/core/$pure',
+                )),
       );
       // Act
       for (final _SourceFile file in pureCoreFiles) {
