@@ -21,6 +21,9 @@ enum AppErrorCode {
   /// A file is damaged or is not what the app expects.
   invalidFile,
 
+  /// A file is too big to be read on this device.
+  fileTooBig,
+
   /// A file was written by a newer version of the app.
   unsupportedVersion,
 

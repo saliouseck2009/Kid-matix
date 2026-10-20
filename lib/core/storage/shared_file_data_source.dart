@@ -8,7 +8,7 @@ abstract interface class SharedFileDataSource {
   /// Opens the file picker and returns the text of the file chosen, or
   /// `null` when none was chosen.
   ///
-  /// Throws an `InvalidFileException` when the file is too big or is not
-  /// text.
+  /// Throws a `FileTooBigException` when the file is too big and an
+  /// `InvalidFileException` when it is not text.
   Future<String?> pickFile();
 }

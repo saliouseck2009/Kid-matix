@@ -44,7 +44,7 @@ final class SharedFileDataSourceImpl implements SharedFileDataSource {
     final XFile? file = await openFile();
     if (file == null) return null;
     if (await file.length() > _maxFileBytes) {
-      throw const InvalidFileException(message: 'File too big.');
+      throw const FileTooBigException(message: 'File too big.');
     }
     try {
       return utf8.decode(await file.readAsBytes());
