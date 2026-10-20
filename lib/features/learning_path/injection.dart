@@ -14,12 +14,21 @@ import 'package:kid_matix/features/learning_path/domain/repositories/stage_progr
 import 'package:kid_matix/features/learning_path/domain/services/learning_path_service_impl.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/answer_placement_question_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
-import 'package:kid_matix/features/learning_path/domain/usecases/run_placement_test_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/build_placement_question_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/get_placement_history_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/save_placement_result_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/watch_placement_results_use_case.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/placement_result_local_data_source.dart';
+import 'package:kid_matix/features/learning_path/data/datasources/placement_result_local_data_source_impl.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_repository_impl.dart';
+import 'package:kid_matix/features/learning_path/domain/repositories/placement_result_repository.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_learning_path_changes_use_case.dart';
 import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_backup_part.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_backup_part.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source_impl.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/path_domain_repository_impl.dart';
@@ -41,16 +50,40 @@ void registerLearningPathFeature(GetIt sl) {
       clock: sl(),
     ),
   );
+  sl.registerLazySingleton<PlacementResultLocalDataSource>(
+    () => PlacementResultLocalDataSourceImpl(database: sl()),
+  );
+  sl.registerLazySingleton<PlacementResultRepository>(
+    () => PlacementResultRepositoryImpl(
+      results: sl(),
+      changeBus: sl(),
+      clock: sl(),
+    ),
+  );
   sl.registerLazySingleton<GetLearningPathUseCase>(
     () => GetLearningPathUseCase(
       repository: sl(),
       domains: sl(),
       settings: sl(),
       mastery: sl(),
+      placements: sl<PlacementResultRepository>(),
     ),
   );
-  sl.registerLazySingleton<RunPlacementTestUseCase>(
-    () => RunPlacementTestUseCase(domains: sl(), random: sl()),
+  sl.registerLazySingleton<BuildPlacementQuestionUseCase>(
+    () => BuildPlacementQuestionUseCase(domains: sl(), random: sl()),
+  );
+  sl.registerLazySingleton<SavePlacementResultUseCase>(
+    () => SavePlacementResultUseCase(
+      results: sl(),
+      stages: sl(),
+      domains: sl(),
+    ),
+  );
+  sl.registerLazySingleton<GetPlacementHistoryUseCase>(
+    () => GetPlacementHistoryUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<WatchPlacementResultsUseCase>(
+    () => WatchPlacementResultsUseCase(repository: sl()),
   );
   sl.registerLazySingleton<AnswerPlacementQuestionUseCase>(
     () => AnswerPlacementQuestionUseCase(repository: sl(), mastery: sl()),
@@ -72,8 +105,12 @@ void registerLearningPathFeature(GetIt sl) {
   sl<SessionSavedHooks>().add(
     StageProgressSessionHook(progress: sl(), clock: sl()),
   );
-  sl<ProgressResetHooks>().add(const StageProgressResetHook());
-  sl<ProfileBackupParts>().add(const StageProgressBackupPart());
+  sl<ProgressResetHooks>()
+    ..add(const StageProgressResetHook())
+    ..add(const PlacementResultResetHook());
+  sl<ProfileBackupParts>()
+    ..add(const StageProgressBackupPart())
+    ..add(const PlacementResultBackupPart());
 }
 
 /// The domain each player last chose on the map, kept on the device.

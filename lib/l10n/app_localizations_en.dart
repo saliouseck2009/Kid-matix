@@ -1047,11 +1047,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pathCrownHint => 'Beat the boss to win the crown.';
 
   @override
-  String get placementOfferTitle => 'Do you already know some tables?';
+  String get placementOfferTitle => 'Let\'s see where you are!';
 
   @override
   String get placementOfferMessage =>
-      'Answer one question per table, no timer. Every table you know opens right away in your path.';
+      'Answer a few questions, no timer. You stop when it gets hard and your path starts in the right place.';
 
   @override
   String get placementOfferStart => 'Take the test';
@@ -1060,8 +1060,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get placementOfferSkip => 'Skip';
 
   @override
-  String placementQuestionProgress(int current, int total) {
-    return 'Question $current of $total';
+  String placementQuestionProgress(int current) {
+    return 'Question $current';
   }
 
   @override
@@ -1075,7 +1075,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get placementQuitMessage =>
-      'The tables you already found stay open in your path.';
+      'The units you already found stay open in your path.';
 
   @override
   String get placementQuitCancel => 'Keep going';
@@ -1088,9 +1088,9 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'You already know $count tables!',
-      one: 'You already know 1 table!',
-      zero: 'So much to discover!',
+      other: '$count levels passed!',
+      one: '1 level passed!',
+      zero: 'Your adventure begins!',
     );
     return '$_temp0';
   }
@@ -1100,31 +1100,86 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'They\'re open in your path. You can still win their stars.',
-      one: 'It\'s open in your path. You can still win its stars.',
-      zero: 'No worries, you\'ll learn them one by one. Your path starts with the 1 times table.',
+      other: 'What you already know is open in your path. You can still win the stars.',
+      zero: 'No worries, you\'ll learn one step at a time.',
     );
     return '$_temp0';
   }
 
   @override
-  String get placementLegendKnown => 'Already known';
+  String get placementSkillNumbers => 'Numbers';
 
   @override
-  String get placementLegendToDiscover => 'To discover';
+  String get placementSkillAddition => 'Addition';
 
   @override
-  String placementTableKnown(String name) {
-    return '$name, already known';
+  String get placementSkillSubtraction => 'Subtraction';
+
+  @override
+  String get placementSkillMultiplication => 'Multiplication';
+
+  @override
+  String get placementSkillDivision => 'Division';
+
+  @override
+  String get placementSkillAcquired => 'Got it';
+
+  @override
+  String get placementSkillToDiscover => 'To discover';
+
+  @override
+  String placementSkillSemantics(String skill, String state) {
+    return '$skill, $state';
   }
 
   @override
-  String placementTableToDiscover(String name) {
-    return '$name, to discover';
-  }
+  String get placementResultStartLabel => 'You start with';
+
+  @override
+  String get placementResultAllDone =>
+      'You know everything the test asks. Well done!';
 
   @override
   String get placementSeePath => 'See my path';
+
+  @override
+  String get placementCardTitle => 'My starting level';
+
+  @override
+  String get placementCardEmpty => 'You have not taken the level test yet.';
+
+  @override
+  String placementCardLatest(String date) {
+    return 'Test of $date';
+  }
+
+  @override
+  String placementCardLevelSemantics(String domain, String level) {
+    return '$domain, $level';
+  }
+
+  @override
+  String get placementCardNotChecked => 'not checked';
+
+  @override
+  String placementCardLevel(int level, int total) {
+    return 'level $level of $total';
+  }
+
+  @override
+  String placementCardPast(String date, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count levels',
+      one: '1 level',
+      zero: 'no level',
+    );
+    return '$date: $_temp0';
+  }
+
+  @override
+  String get placementCardRetake => 'Take the test again';
 
   @override
   String get pathTableBack => 'Back to the path';

@@ -151,7 +151,7 @@ void main() {
       session.update(hasProfiles: true, activeProfileId: 'profile-1');
       await tester.pumpAndSettle();
       // Assert
-      expect(find.text('Tu connais déjà des tables\u00a0?'), findsOneWidget);
+      expect(find.text('Voyons où tu en es\u00a0!'), findsOneWidget);
       // Act
       await tester.tap(find.text('Passer'));
       await tester.pumpAndSettle();

@@ -10,7 +10,7 @@ import 'package:kid_matix/features/learning_path/domain/usecases/placement_answe
 ///
 /// The answer counts in the mastery like a quiz answer: a right one moves
 /// the fact up a box, a wrong one or "Je ne sais pas" sends it back to
-/// "À revoir". A right answer opens the unit of the question on the
+/// "À revoir". A right answer opens the units of the question on the
 /// learning path, without any star; so a test left midway keeps the
 /// units already found.
 class AnswerPlacementQuestionUseCase
@@ -41,14 +41,19 @@ class AnswerPlacementQuestionUseCase
       return DataFailed<bool>(exception);
     }
     if (!isCorrect) return const DataSuccess<bool>(false);
-    final DataState<void> opened = await _repository.openUnit(
-      profileId: params.profileId,
-      domainId: params.domainId,
-      unitKey: params.question.unitKey,
-    );
-    return switch (opened) {
-      DataSuccess<void>() => const DataSuccess<bool>(true),
-      DataFailed<void>(:final exception) => DataFailed<bool>(exception),
-    };
+    for (final String unitKey
+        in params.unitKeysToOpen.isEmpty
+            ? <String>[params.question.unitKey]
+            : params.unitKeysToOpen) {
+      final DataState<void> opened = await _repository.openUnit(
+        profileId: params.profileId,
+        domainId: params.domainId,
+        unitKey: unitKey,
+      );
+      if (opened case DataFailed<void>(:final exception)) {
+        return DataFailed<bool>(exception);
+      }
+    }
+    return const DataSuccess<bool>(true);
   }
 }

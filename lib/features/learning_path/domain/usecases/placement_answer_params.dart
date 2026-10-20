@@ -13,6 +13,7 @@ final class PlacementAnswerParams {
     required this.question,
     required this.answer,
     required this.answerTime,
+    this.unitKeysToOpen = const <String>[],
   });
 
   /// Player.
@@ -29,4 +30,8 @@ final class PlacementAnswerParams {
 
   /// Time taken to answer.
   final Duration answerTime;
+
+  /// Units a right answer opens: the unit of the question and the easier
+  /// ones before it; only the unit of the question when empty.
+  final List<String> unitKeysToOpen;
 }
