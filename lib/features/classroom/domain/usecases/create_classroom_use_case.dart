@@ -13,7 +13,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_pa
 ///
 /// Fails with a `ValidationException` when the name is empty or too long
 /// or a nickname cannot be used, and with a `LimitReachedException` beyond
-/// [ClassroomRules.maxPupils] pupils. Nothing is written then.
+/// [ClassroomRules.maxPupils] pupils. Nothing is written then, nor when
+/// the pupils cannot be written.
 class CreateClassroomUseCase
     implements UseCase<DataState<ClassroomEntity>, CreateClassroomParams> {
   /// Creates the use case.
@@ -52,14 +53,16 @@ class CreateClassroomUseCase
     if (created case DataFailed<void>(:final exception)) {
       return DataFailed<ClassroomEntity>(exception);
     }
-    return switch (await _enrollment.enroll(
+    final DataState<int> enrolled = await _enrollment.enroll(
       classroomId: classroom.id,
       nicknames: params.nicknames,
-    )) {
-      DataSuccess<int>() => DataSuccess<ClassroomEntity>(classroom),
-      DataFailed<int>(:final exception) => DataFailed<ClassroomEntity>(
-        exception,
-      ),
-    };
+    );
+    if (enrolled case DataFailed<int>(:final exception)) {
+      // The pupils are written all or nothing: none was, so the class
+      // goes too, and the creation leaves nothing behind.
+      await _repository.deleteEmptyClassroom(classroomId: classroom.id);
+      return DataFailed<ClassroomEntity>(exception);
+    }
+    return DataSuccess<ClassroomEntity>(classroom);
   }
 }

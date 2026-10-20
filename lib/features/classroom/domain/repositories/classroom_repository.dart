@@ -29,6 +29,10 @@ abstract interface class ClassroomRepository {
   /// is newer, left alone otherwise.
   Future<DataState<void>> mergeClassroom({required ClassroomEntity classroom});
 
+  /// Deletes the class [classroomId] when it holds no pupil, such as a
+  /// class whose pupils could not be written at its creation.
+  Future<DataState<void>> deleteEmptyClassroom({required String classroomId});
+
   /// Emits an event after each change to the classes.
   Stream<void> watchChanges();
 }

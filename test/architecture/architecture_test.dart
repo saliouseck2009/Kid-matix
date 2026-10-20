@@ -15,6 +15,9 @@ const List<String> _pureCoreFolders = <String>[
   'usecases',
 ];
 
+/// Single pure-Dart files of `core/utils/` a domain layer may import.
+const List<String> _pureCoreFiles = <String>['utils/text_folding.dart'];
+
 /// Parts of `core/` that must not import Flutter at all.
 const List<String> _flutterFreeCoreFolders = <String>[
   'entities',
@@ -75,6 +78,9 @@ bool _isAllowedInDomain(String uri, String feature) {
   if (uri.startsWith('dart:')) return uri != 'dart:ui';
   if (uri.startsWith('package:meta/')) return true;
   if (uri.startsWith('$_featuresPrefix$feature/domain/')) return true;
+  if (_pureCoreFiles.any((String file) => uri == '$_corePrefix$file')) {
+    return true;
+  }
   return _pureCoreFolders.any(
     (String folder) => uri.startsWith('$_corePrefix$folder/'),
   );

@@ -16,13 +16,16 @@ final class PlayerDirectoryServiceImpl implements PlayerDirectoryService {
     return switch (await _getProfiles()) {
       DataSuccess<List<ProfileEntity>>(:final data) =>
         DataSuccess<List<PlayerIdentity>>(<PlayerIdentity>[
+          // The pupils of the classes play neither the duel nor the
+          // leaderboard of the phone.
           for (final ProfileEntity profile in data)
-            PlayerIdentity(
-              id: profile.id,
-              nickname: profile.nickname,
-              avatarKey: profile.avatar.name,
-              colorKey: profile.color.name,
-            ),
+            if (!profile.isPupil)
+              PlayerIdentity(
+                id: profile.id,
+                nickname: profile.nickname,
+                avatarKey: profile.avatar.name,
+                colorKey: profile.color.name,
+              ),
         ]),
       DataFailed<List<ProfileEntity>>(:final exception) =>
         DataFailed<List<PlayerIdentity>>(exception),

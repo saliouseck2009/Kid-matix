@@ -70,4 +70,14 @@ final class ClassroomLocalDataSourceImpl implements ClassroomLocalDataSource {
       whereArgs: <Object>[classroom.id],
     );
   }
+
+  @override
+  Future<int> deleteClassroom({required String classroomId}) async {
+    final Database database = await _database.database;
+    return database.delete(
+      ClassroomTables.classroom,
+      where: 'id = ?',
+      whereArgs: <Object>[classroomId],
+    );
+  }
 }

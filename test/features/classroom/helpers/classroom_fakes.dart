@@ -27,12 +27,32 @@ import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_us
 import 'package:kid_matix/features/classroom/domain/usecases/find_unusable_nicknames_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roster_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classrooms_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/remove_pupil_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/reset_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/select_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_classroom_changes_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
 
+import 'package:kid_matix/core/services/teacher_session_service.dart';
+import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/services/teacher_code_attempts.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/choose_teacher_code_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/forget_teacher_code_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
+import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
+import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+
+import '../../../helpers/in_memory_local_storage.dart';
 import 'classroom_device.dart';
 
 /// [ClassroomRepository] kept in memory.
@@ -75,6 +95,14 @@ final class InMemoryClassrooms implements ClassroomRepository {
   Future<DataState<void>> mergeClassroom({
     required ClassroomEntity classroom,
   }) => createClassroom(classroom: classroom);
+
+  @override
+  Future<DataState<void>> deleteEmptyClassroom({
+    required String classroomId,
+  }) async {
+    rows.remove(classroomId);
+    return const DataSuccess<void>(null);
+  }
 
   @override
   Stream<void> watchChanges() => _changes.stream;
@@ -177,11 +205,18 @@ final class InMemoryRoster implements PupilRosterService {
     return nicknames.where((String nickname) => nickname.length < 2).toList();
   }
 
+  /// Whether the next [addPupils] fails, like a database error.
+  bool failsNextAddition = false;
+
   @override
   Future<DataState<int>> addPupils({
     required String classroomId,
     required List<PupilDraft> pupils,
   }) async {
+    if (failsNextAddition) {
+      failsNextAddition = false;
+      return const DataFailed<int>(CacheException(message: 'Disk full.'));
+    }
     final List<PlayerIdentity> list = this.pupils.putIfAbsent(
       classroomId,
       () => <PlayerIdentity>[],
@@ -197,6 +232,23 @@ final class InMemoryRoster implements PupilRosterService {
       );
     }
     return DataSuccess<int>(pupils.length);
+  }
+
+  /// The pupils whose progress was reset.
+  final List<String> resetIds = <String>[];
+
+  @override
+  Future<DataState<void>> resetPupil({required String profileId}) async {
+    resetIds.add(profileId);
+    return const DataSuccess<void>(null);
+  }
+
+  @override
+  Future<DataState<void>> removePupil({required String profileId}) async {
+    for (final List<PlayerIdentity> list in pupils.values) {
+      list.removeWhere((PlayerIdentity pupil) => pupil.id == profileId);
+    }
+    return const DataSuccess<void>(null);
   }
 
   @override
@@ -265,6 +317,8 @@ final class FakeClassroomStack {
     getRoster: _getRoster,
     selectPupil: SelectPupilUseCase(roster: roster),
     watchChanges: _watch,
+    resetPupil: ResetPupilUseCase(roster: roster),
+    removePupil: RemovePupilUseCase(roster: roster),
   );
 
   /// The learning domains: multiplication only.
@@ -314,4 +368,95 @@ final class FakeClassroomStack {
 /// Draws an avatar as an empty box of [size].
 Widget boxAvatar(PlayerIdentity player, double size) {
   return SizedBox.square(dimension: size);
+}
+
+/// A teacher area lock the test opens by hand.
+final class OpenTeacherSession extends ChangeNotifier
+    implements TeacherSessionService {
+  @override
+  bool isUnlocked = true;
+
+  @override
+  void lock() => isUnlocked = false;
+
+  @override
+  void unlock() => isUnlocked = true;
+}
+
+/// The pages of the class mode over [stack], the teacher area open.
+ClassroomPages buildTestClassroomPages(
+  FakeClassroomStack stack,
+  TeacherSessionService session,
+) {
+  final TeacherCodeRepositoryImpl codes = TeacherCodeRepositoryImpl(
+    storage: InMemoryLocalStorage(),
+  );
+  final TeacherCodeAttempts attempts = TeacherCodeAttempts();
+  final CloseTeacherAreaUseCase closeArea = CloseTeacherAreaUseCase(
+    session: session,
+  );
+  return ClassroomPages(
+    access: TeacherAccessUseCases(
+      getAccess: GetTeacherAccessUseCase(codes: codes, session: session),
+      chooseCode: ChooseTeacherCodeUseCase(codes: codes, session: session),
+      openArea: OpenTeacherAreaUseCase(
+        codes: codes,
+        lock: session,
+        attempts: attempts,
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
+      ),
+      closeArea: closeArea,
+      forgetCode: ForgetTeacherCodeUseCase(codes: codes, attempts: attempts),
+    ),
+    list: stack.listUseCases(closeArea),
+    form: stack.form,
+    roster: stack.rosterUseCases,
+    work: ClassWorkUseCases(
+      overview: stack.overviewUseCases,
+      giveAssignment: stack.giveAssignment,
+      getPupilView: GetPupilClassViewUseCase(
+        roster: stack.roster,
+        classrooms: stack.classrooms,
+        assignments: stack.assignments,
+        journal: stack.journal,
+        catalog: ClassItemCatalog(domains: stack.domains),
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
+      ),
+      exportClassroom: ExportClassroomUseCase(
+        getRoster: GetClassroomRosterUseCase(
+          repository: stack.classrooms,
+          roster: stack.roster,
+        ),
+        assignments: stack.assignments,
+        journal: stack.journal,
+        transfers: const _NoTransfers(),
+      ),
+      importClassroom: ImportClassroomUseCase(
+        transfers: const _NoTransfers(),
+        merger: ClassroomMerger(
+          classrooms: stack.classrooms,
+          roster: stack.roster,
+          assignments: stack.assignments,
+          journal: stack.journal,
+        ),
+      ),
+    ),
+    domains: stack.domains,
+    avatarOf: boxAvatar,
+  );
+}
+
+/// Class files that go nowhere: shared, never picked.
+final class _NoTransfers implements ClassroomTransferRepository {
+  const _NoTransfers();
+
+  @override
+  Future<DataState<bool>> share({required ClassroomTransfer transfer}) async {
+    return const DataSuccess<bool>(true);
+  }
+
+  @override
+  Future<DataState<ClassroomTransfer?>> pick() async {
+    return const DataSuccess<ClassroomTransfer?>(null);
+  }
 }

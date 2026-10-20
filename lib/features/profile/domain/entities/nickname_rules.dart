@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/utils/text_folding.dart';
 import 'package:kid_matix/features/profile/domain/entities/nickname_error.dart';
 
 /// Rules of a player's nickname.
@@ -17,37 +18,6 @@ abstract final class NicknameRules {
     unicode: true,
   );
   static final RegExp _spaces = RegExp(r'\s+');
-  static const Map<String, String> _unaccentedLetters = <String, String>{
-    'à': 'a',
-    'á': 'a',
-    'â': 'a',
-    'ã': 'a',
-    'ä': 'a',
-    'å': 'a',
-    'æ': 'ae',
-    'ç': 'c',
-    'è': 'e',
-    'é': 'e',
-    'ê': 'e',
-    'ë': 'e',
-    'ì': 'i',
-    'í': 'i',
-    'î': 'i',
-    'ï': 'i',
-    'ñ': 'n',
-    'ò': 'o',
-    'ó': 'o',
-    'ô': 'o',
-    'õ': 'o',
-    'ö': 'o',
-    'œ': 'oe',
-    'ù': 'u',
-    'ú': 'u',
-    'û': 'u',
-    'ü': 'u',
-    'ý': 'y',
-    'ÿ': 'y',
-  };
 
   /// Returns [input] without leading or trailing spaces, with every run of
   /// spaces inside reduced to one: the form that is stored and displayed.
@@ -72,11 +42,6 @@ abstract final class NicknameRules {
   /// Returns the form of [input] used to check uniqueness: [clean]ed,
   /// lower case, and without accents.
   static String normalize(String input) {
-    final String lowerCase = clean(input).toLowerCase();
-    final StringBuffer buffer = StringBuffer();
-    for (final String character in lowerCase.split('')) {
-      buffer.write(_unaccentedLetters[character] ?? character);
-    }
-    return buffer.toString();
+    return TextFolding.fold(clean(input));
   }
 }

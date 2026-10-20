@@ -272,19 +272,22 @@ class _SettingsView extends StatelessWidget {
           section,
           const SizedBox(height: _gap),
         ],
-        SettingsSection(
-          title: context.l10n.settingsPlayerSection,
-          rows: <Widget>[
-            SettingsDangerRow(
-              label: context.l10n.resetProgressButton,
-              onTap: () => _reset(context),
-            ),
-            SettingsDangerRow(
-              label: context.l10n.deleteProfileButton,
-              onTap: () => _delete(context),
-            ),
-          ],
-        ),
+        // A pupil is reset or deleted by the teacher only, in the teacher
+        // area, so the class keeps its results.
+        if (!state.isPupil)
+          SettingsSection(
+            title: context.l10n.settingsPlayerSection,
+            rows: <Widget>[
+              SettingsDangerRow(
+                label: context.l10n.resetProgressButton,
+                onTap: () => _reset(context),
+              ),
+              SettingsDangerRow(
+                label: context.l10n.deleteProfileButton,
+                onTap: () => _delete(context),
+              ),
+            ],
+          ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/services/assigned_units_service.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
@@ -238,6 +239,29 @@ void main() {
       expect(actualOpen, <String>['mul:1', 'mul:10']);
       expect(actualPath.tables[2].totalStars, 0);
     });
+    test('opens the unit of the homework, its stars still to win', () async {
+      // Arrange
+      final GetLearningPathUseCase inputUseCase = GetLearningPathUseCase(
+        repository: mockRepository,
+        domains: DomainRegistry()..register(domain),
+        settings: mockSettings,
+        mastery: mastery,
+        assigned: const _Assigned(<String>{'mul:7'}),
+      );
+      // Act
+      final LearningPathEntity actualPath = (await inputUseCase(
+        params: _params,
+      )).requireData;
+      // Assert
+      final TablePathNode actualTable = actualPath.tables.firstWhere(
+        (TablePathNode table) => table.unitKey == 'mul:7',
+      );
+      expect(actualTable.status, isNot(TableStatus.locked));
+      expect(actualTable.stages.first.isUnlocked, isTrue);
+      expect(actualTable.stages[1].isUnlocked, isFalse);
+      expect(actualTable.totalStars, 0);
+      expect(actualPath.tables[5].status, TableStatus.locked);
+    });
     test('fails when the placed tables cannot be read', () async {
       // Arrange
       when(
@@ -318,4 +342,15 @@ void main() {
       expect(playable('mul:13', StageKind.discovery), isFalse);
     });
   });
+}
+
+final class _Assigned implements AssignedUnitsService {
+  const _Assigned(this.unitKeys);
+
+  final Set<String> unitKeys;
+
+  @override
+  Future<DataState<Set<String>>> readAssignedUnitKeys({
+    required String profileId,
+  }) async => DataSuccess<Set<String>>(unitKeys);
 }

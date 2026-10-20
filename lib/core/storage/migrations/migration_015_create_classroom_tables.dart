@@ -31,6 +31,9 @@ final class Migration015CreateClassroomTables implements DatabaseMigration {
       deleted_at INTEGER
     )
     ''',
+    // No ON DELETE on purpose: a class holding pupils cannot be deleted
+    // by the database; its pupils are removed first through the profile
+    // feature (preferences, active player), which owns them.
     '''
     ALTER TABLE profile
     ADD COLUMN classroom_id TEXT REFERENCES classroom (id)

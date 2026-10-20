@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/choose_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/close_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/services/teacher_code_attempts.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/forget_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_cubit.dart';
@@ -12,25 +14,35 @@ import 'package:kid_matix/features/classroom/presentation/session/teacher_sessio
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_profile_session_service.dart';
 import '../../../helpers/in_memory_local_storage.dart';
+import '../helpers/classroom_device.dart';
 
 void main() {
   late FakeProfileSessionService players;
   late TeacherSessionServiceImpl session;
   late InMemoryLocalStorage storage;
   late TeacherAccessUseCases useCases;
+  late MovableClock clock;
 
   setUp(() {
     players = FakeProfileSessionService();
     session = TeacherSessionServiceImpl(session: players);
     storage = InMemoryLocalStorage();
+    clock = MovableClock(DateTime(2026, 10, 20, 9));
+    final TeacherCodeAttempts attempts = TeacherCodeAttempts();
     final TeacherCodeRepositoryImpl codes = TeacherCodeRepositoryImpl(
       storage: storage,
     );
     useCases = TeacherAccessUseCases(
       getAccess: GetTeacherAccessUseCase(codes: codes, session: session),
       chooseCode: ChooseTeacherCodeUseCase(codes: codes, session: session),
-      openArea: OpenTeacherAreaUseCase(codes: codes, session: session),
+      openArea: OpenTeacherAreaUseCase(
+        codes: codes,
+        lock: session,
+        attempts: attempts,
+        clock: clock,
+      ),
       closeArea: CloseTeacherAreaUseCase(session: session),
+      forgetCode: ForgetTeacherCodeUseCase(codes: codes, attempts: attempts),
     );
   });
 
@@ -123,6 +135,58 @@ void main() {
         await storage.readString(key: TeacherCodeRepositoryImpl.codeKey),
         '2468',
       );
+    });
+  });
+
+  group('Wrong codes', () {
+    test('close the door 30 seconds after the fifth one', () async {
+      // Arrange
+      await storage.writeString(
+        key: TeacherCodeRepositoryImpl.codeKey,
+        value: '2468',
+      );
+      final TeacherAccessCubit cubit = TeacherAccessCubit(useCases: useCases);
+      await cubit.load();
+      // Act
+      for (int index = 0; index < 4; index++) {
+        await cubit.submit('0000');
+      }
+      final TeacherCodeError? actualFourth = readyOf(cubit).error;
+      await cubit.submit('0000');
+      final TeacherCodeError? actualFifth = readyOf(cubit).error;
+      await cubit.submit('2468');
+      final bool actualWhileLocked = session.isUnlocked;
+      clock.current = clock.current.add(const Duration(seconds: 30));
+      await cubit.submit('2468');
+      // Assert
+      expect(actualFourth, TeacherCodeError.wrong);
+      expect(actualFifth, TeacherCodeError.locked);
+      expect(actualWhileLocked, isFalse);
+      expect(session.isUnlocked, isTrue);
+      await cubit.close();
+    });
+
+    test('a forgotten code is chosen again, the classes kept', () async {
+      // Arrange
+      await storage.writeString(
+        key: TeacherCodeRepositoryImpl.codeKey,
+        value: '2468',
+      );
+      await storage.writeString(key: 'other', value: 'kept');
+      final TeacherAccessCubit cubit = TeacherAccessCubit(useCases: useCases);
+      await cubit.load();
+      // Act
+      await cubit.forgetCode();
+      await cubit.submit('1357');
+      await cubit.submit('1357');
+      // Assert
+      expect(session.isUnlocked, isTrue);
+      expect(
+        await storage.readString(key: TeacherCodeRepositoryImpl.codeKey),
+        '1357',
+      );
+      expect(await storage.readString(key: 'other'), 'kept');
+      await cubit.close();
     });
   });
 

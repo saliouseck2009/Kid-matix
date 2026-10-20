@@ -7,6 +7,7 @@ import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_ca
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_transfer_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/classroom_transfer_button.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/pupil_class_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/assignment_page.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/class_challenge_header.dart';
@@ -111,8 +112,18 @@ final class ClassroomPages {
     required VoidCallback onGiveAssignment,
     List<Widget> actions = const <Widget>[],
   }) {
-    return BlocProvider<ClassOverviewCubit>(
-      create: (_) => _overviewCubit(classroomId),
+    return MultiBlocProvider(
+      providers: <BlocProvider<Object?>>[
+        BlocProvider<ClassOverviewCubit>(
+          create: (_) => _overviewCubit(classroomId),
+        ),
+        BlocProvider<PupilActionsCubit>(
+          create: (_) => PupilActionsCubit(
+            reset: _roster.resetPupil,
+            remove: _roster.removePupil,
+          ),
+        ),
+      ],
       child: TeacherClassroomPage(
         labels: ClassItemLabels(domains: _domains),
         avatarOf: _avatarOf,

@@ -8,4 +8,7 @@ abstract interface class TeacherCodeRepository {
 
   /// Stores [code], replacing any previous one.
   Future<DataState<void>> saveCode({required String code});
+
+  /// Forgets the code: the next visit chooses a new one.
+  Future<DataState<void>> clearCode();
 }

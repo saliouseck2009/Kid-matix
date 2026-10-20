@@ -8,6 +8,7 @@ import 'package:kid_matix/features/classroom/domain/entities/practice_session.da
 import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_params.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/teacher_classroom_page.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/class_item_labels.dart';
 
@@ -65,11 +66,21 @@ void main() {
     // Act
     await pumpLocalized(
       tester,
-      BlocProvider<ClassOverviewCubit>(
-        create: (_) => ClassOverviewCubit(
-          classroomId: inputClassroom.id,
-          useCases: stack.overviewUseCases,
-        )..load(),
+      MultiBlocProvider(
+        providers: <BlocProvider<Object?>>[
+          BlocProvider<ClassOverviewCubit>(
+            create: (_) => ClassOverviewCubit(
+              classroomId: inputClassroom.id,
+              useCases: stack.overviewUseCases,
+            )..load(),
+          ),
+          BlocProvider<PupilActionsCubit>(
+            create: (_) => PupilActionsCubit(
+              reset: stack.rosterUseCases.resetPupil,
+              remove: stack.rosterUseCases.removePupil,
+            ),
+          ),
+        ],
         child: TeacherClassroomPage(
           labels: ClassItemLabels(domains: stack.domains),
           avatarOf: boxAvatar,
@@ -86,5 +97,9 @@ void main() {
     expect(find.text('2 élèves se trompent sur 7 × 8 = 56'), findsOneWidget);
     expect(find.text('Bloque sur : 7 × 8 = 56'), findsNWidgets(2));
     expect(find.text('N\'a pas encore joué'), findsOneWidget);
+    expect(
+      find.text('1 séance · 4\u00a0min · 0\u00a0% de bonnes réponses'),
+      findsNWidgets(2),
+    );
   });
 }

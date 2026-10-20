@@ -9,6 +9,9 @@ import 'package:kid_matix/core/error/data_state.dart';
 /// of free players does not apply to pupils, and a pupil's nickname is
 /// unique inside their class only.
 abstract interface class PupilRosterService {
+  /// Most pupils one class holds (owner, 2026-10-20).
+  static const int maxPupilsPerClass = 60;
+
   /// Returns the pupils of [classroomId], oldest first.
   Future<DataState<List<PlayerIdentity>>> readPupils({
     required String classroomId,
@@ -29,12 +32,21 @@ abstract interface class PupilRosterService {
   /// were added.
   ///
   /// Fails with a `ValidationException` when a nickname cannot be used
-  /// (see [findUnusableNicknames]) and with a `ConflictException` when a
-  /// nickname is taken in the class.
+  /// (see [findUnusableNicknames]), with a `ConflictException` when a
+  /// nickname is taken in the class, and with a `LimitReachedException`
+  /// when the class would hold more than [maxPupilsPerClass] pupils.
   Future<DataState<int>> addPupils({
     required String classroomId,
     required List<PupilDraft> pupils,
   });
+
+  /// Erases the progress of the pupil [profileId] (stars, crowns, XP,
+  /// mastery...), as « Réinitialiser » does; the class results stay.
+  Future<DataState<void>> resetPupil({required String profileId});
+
+  /// Deletes the pupil [profileId] and everything they own, their class
+  /// results included.
+  Future<DataState<void>> removePupil({required String profileId});
 
   /// Makes the pupil [profileId] the active player.
   Future<DataState<void>> selectPupil({required String profileId});

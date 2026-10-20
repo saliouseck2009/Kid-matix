@@ -6,8 +6,11 @@ import 'package:kid_matix/features/classroom/domain/services/classroom_merger.da
 import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:kid_matix/core/services/teacher_area_lock.dart';
 import 'package:kid_matix/core/services/teacher_session_service.dart';
+import 'package:kid_matix/core/services/assigned_units_service.dart';
 import 'package:kid_matix/core/services/placement_result_service.dart';
+import 'package:kid_matix/features/classroom/domain/services/assigned_units_service_impl.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source.dart';
@@ -24,6 +27,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_class_overview_
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/set_weekly_goal_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/services/teacher_code_attempts.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/forget_teacher_code_use_case.dart';
 import 'package:kid_matix/features/classroom/data/datasources/classroom_local_data_source.dart';
 import 'package:kid_matix/features/classroom/data/datasources/classroom_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/classroom_repository_impl.dart';
@@ -40,6 +45,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roste
 import 'package:kid_matix/features/classroom/domain/usecases/get_classrooms_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/remove_pupil_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/reset_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/select_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_classroom_changes_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/session/teacher_session_service_impl.dart';
@@ -98,6 +105,9 @@ void _registerClassWork(GetIt sl) {
       () => const NoPlacementResultService(),
     );
   }
+  sl.registerLazySingleton<AssignedUnitsService>(
+    () => AssignedUnitsServiceImpl(roster: sl(), assignments: sl()),
+  );
   sl.registerLazySingleton<ClassItemCatalog>(
     () => ClassItemCatalog(domains: sl()),
   );
@@ -163,6 +173,11 @@ void _registerData(GetIt sl) {
   sl.registerLazySingleton<TeacherSessionService>(
     () => TeacherSessionServiceImpl(session: sl()),
   );
+  // The use cases see the same object through its pure interface.
+  sl.registerLazySingleton<TeacherAreaLock>(
+    () => sl<TeacherSessionService>(),
+  );
+  sl.registerLazySingleton<TeacherCodeAttempts>(TeacherCodeAttempts.new);
 }
 
 void _registerTeacherAccess(GetIt sl) {
@@ -173,7 +188,15 @@ void _registerTeacherAccess(GetIt sl) {
     () => ChooseTeacherCodeUseCase(codes: sl(), session: sl()),
   );
   sl.registerLazySingleton<OpenTeacherAreaUseCase>(
-    () => OpenTeacherAreaUseCase(codes: sl(), session: sl()),
+    () => OpenTeacherAreaUseCase(
+      codes: sl(),
+      lock: sl(),
+      attempts: sl(),
+      clock: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ForgetTeacherCodeUseCase>(
+    () => ForgetTeacherCodeUseCase(codes: sl(), attempts: sl()),
   );
   sl.registerLazySingleton<CloseTeacherAreaUseCase>(
     () => CloseTeacherAreaUseCase(session: sl()),
@@ -206,6 +229,12 @@ void _registerClassrooms(GetIt sl) {
   );
   sl.registerLazySingleton<SelectPupilUseCase>(
     () => SelectPupilUseCase(roster: sl()),
+  );
+  sl.registerLazySingleton<ResetPupilUseCase>(
+    () => ResetPupilUseCase(roster: sl()),
+  );
+  sl.registerLazySingleton<RemovePupilUseCase>(
+    () => RemovePupilUseCase(roster: sl()),
   );
   sl.registerLazySingleton<WatchClassroomChangesUseCase>(
     () => WatchClassroomChangesUseCase(

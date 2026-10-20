@@ -1,4 +1,5 @@
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
+import 'package:kid_matix/features/classroom/domain/services/teacher_code_attempts.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_state.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_state.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
@@ -30,6 +31,9 @@ extension ClassroomMessages on AppLocalizations {
       TeacherCodeError.invalid => classroomCodeInvalid,
       TeacherCodeError.wrong => classroomCodeWrong,
       TeacherCodeError.mismatch => classroomCodeMismatch,
+      TeacherCodeError.locked => classroomCodeLocked(
+        TeacherCodeAttempts.lockout.inSeconds,
+      ),
     };
   }
 

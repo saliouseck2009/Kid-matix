@@ -58,6 +58,8 @@ void registerProfileFeature(GetIt sl) {
     () => PupilRosterServiceImpl(
       repository: sl(),
       selectProfile: sl(),
+      resetProgress: sl(),
+      deleteProfile: sl(),
       clock: sl(),
     ),
   );

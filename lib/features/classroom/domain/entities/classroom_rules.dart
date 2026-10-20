@@ -1,7 +1,9 @@
+import 'package:kid_matix/core/services/pupil_roster_service.dart';
+
 /// Rules of the class mode (lot F29, owner's answers of 2026-10-20).
 abstract final class ClassroomRules {
   /// Most pupils one class holds.
-  static const int maxPupils = 60;
+  static const int maxPupils = PupilRosterService.maxPupilsPerClass;
 
   /// Most characters of a class name.
   static const int maxNameLength = 24;

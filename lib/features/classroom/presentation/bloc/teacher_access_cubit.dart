@@ -34,6 +34,21 @@ final class TeacherAccessCubit extends Cubit<TeacherAccessState> {
     });
   }
 
+  /// « Code oublié ? », once an adult answered the gate: the code is
+  /// forgotten and the teacher chooses a new one.
+  Future<void> forgetCode() async {
+    final DataState<void> forgotten = await _useCases.forgetCode();
+    if (isClosed) return;
+    emit(switch (forgotten) {
+      DataSuccess<void>() => const TeacherAccessReady(
+        step: TeacherCodeStep.choose,
+      ),
+      DataFailed<void>(:final exception) => TeacherAccessFailure(
+        errorCode: exception.code,
+      ),
+    });
+  }
+
   /// Checks or records the [code] typed at the current step.
   Future<void> submit(String code) async {
     final TeacherAccessState current = state;
@@ -93,6 +108,9 @@ final class TeacherAccessCubit extends Cubit<TeacherAccessState> {
       case DataFailed<void>(:final exception)
           when exception.code == AppErrorCode.validation:
         emit(_refused(current, TeacherCodeError.wrong));
+      case DataFailed<void>(:final exception)
+          when exception.code == AppErrorCode.limitReached:
+        emit(_refused(current, TeacherCodeError.locked));
       case DataFailed<void>(:final exception):
         emit(TeacherAccessFailure(errorCode: exception.code));
     }

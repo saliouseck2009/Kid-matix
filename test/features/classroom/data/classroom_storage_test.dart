@@ -224,5 +224,41 @@ void main() {
       // Assert
       expect(actualAdded, 0);
     });
+
+    test('refuses through the roster too a class beyond 60', () async {
+      // Arrange
+      final ClassroomEntity inputClassroom = await _createClassroom(
+        device,
+        'CE1',
+        ClassroomRules.numberNicknames(count: 60),
+      );
+      // Act
+      final DataState<int> actual = await device.roster.addPupils(
+        classroomId: inputClassroom.id,
+        pupils: const <PupilDraft>[PupilDraft(id: 'extra', nickname: 'Awa')],
+      );
+      // Assert
+      expect(actual.exceptionOrNull?.code, AppErrorCode.limitReached);
+    });
+
+    test('are removed by the teacher with their profile', () async {
+      // Arrange
+      final ClassroomEntity inputClassroom = await _createClassroom(
+        device,
+        'CE1',
+        <String>['Awa', 'Moussa'],
+      );
+      final ClassroomRoster inputRoster = (await device.getRoster(
+        params: inputClassroom.id,
+      )).requireData;
+      // Act
+      await device.roster.removePupil(profileId: inputRoster.pupils.first.id);
+      // Assert
+      final ClassroomRoster actual = (await device.getRoster(
+        params: inputClassroom.id,
+      )).requireData;
+      expect(actual.pupils.map((pupil) => pupil.nickname), <String>['Moussa']);
+      expect((await device.profiles.countProfiles()).requireData, 1);
+    });
   });
 }

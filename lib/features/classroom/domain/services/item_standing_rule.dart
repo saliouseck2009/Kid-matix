@@ -33,10 +33,7 @@ abstract final class ItemStandingRule {
     Iterable<PracticeSession> sessions,
   ) {
     final List<PracticeSession> ordered = sessions.toList()
-      ..sort(
-        (PracticeSession a, PracticeSession b) =>
-            a.startedAt.compareTo(b.startedAt),
-      );
+      ..sort(_byStartThenId);
     final Map<String, List<bool>> results = <String, List<bool>>{};
     for (final PracticeSession session in ordered) {
       final List<PracticeAnswer> answers = session.answers.toList()
@@ -54,6 +51,13 @@ abstract final class ItemStandingRule {
       }
     }
     return results;
+  }
+
+  // Two sessions started at the same instant (merged from two tablets)
+  // keep one order on every tablet: by identifier.
+  static int _byStartThenId(PracticeSession a, PracticeSession b) {
+    final int byStart = a.startedAt.compareTo(b.startedAt);
+    return byStart != 0 ? byStart : a.id.compareTo(b.id);
   }
 
   /// The standing of every item [sessions] asked, one pupil's.
