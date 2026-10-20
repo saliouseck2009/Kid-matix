@@ -294,6 +294,17 @@
   "@classroomCodeForgotten": {
     "description": "Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short."
   },
+  "classroomCodeChanged": "Code changé le {date}",
+  "@classroomCodeChanged": {
+    "description": "Class mode, line under the title of « Mes classes » once the teacher chose a new code after « Code oublié ? », so a forgotten code cannot be replaced unnoticed (\"Code changed on 21 October\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMd",
+        "example": "2026-10-21"
+      }
+    }
+  },
   "classroomCodeLocked": "{seconds, plural, =1{Trop d'essais. Attends 1 seconde avant de réessayer.} other{Trop d'essais. Attends {seconds} secondes avant de réessayer.}}",
   "@classroomCodeLocked": {
     "description": "Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).",

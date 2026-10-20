@@ -18,6 +18,7 @@ import 'package:kid_matix/features/classroom/domain/usecases/find_unusable_nickn
 import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roster_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classrooms_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_code_change_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/remove_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/reset_pupil_use_case.dart';
@@ -57,7 +58,7 @@ void _registerTeacherAccess(GetIt sl) {
     () => GetTeacherAccessUseCase(codes: sl(), session: sl()),
   );
   sl.registerLazySingleton<ChooseTeacherCodeUseCase>(
-    () => ChooseTeacherCodeUseCase(codes: sl(), session: sl()),
+    () => ChooseTeacherCodeUseCase(codes: sl(), session: sl(), clock: sl()),
   );
   sl.registerLazySingleton<OpenTeacherAreaUseCase>(
     () => OpenTeacherAreaUseCase(
@@ -66,6 +67,9 @@ void _registerTeacherAccess(GetIt sl) {
       attempts: sl(),
       clock: sl(),
     ),
+  );
+  sl.registerLazySingleton<GetTeacherCodeChangeUseCase>(
+    () => GetTeacherCodeChangeUseCase(codes: sl()),
   );
   sl.registerLazySingleton<ForgetTeacherCodeUseCase>(
     () => ForgetTeacherCodeUseCase(codes: sl(), attempts: sl()),

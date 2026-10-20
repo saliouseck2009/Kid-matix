@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/services/teacher_area_lock.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
@@ -16,10 +17,12 @@ class ChooseTeacherCodeUseCase implements UseCase<DataState<void>, String> {
   const ChooseTeacherCodeUseCase({
     required this._codes,
     required this._session,
+    required this._clock,
   });
 
   final TeacherCodeRepository _codes;
   final TeacherAreaLock _session;
+  final Clock _clock;
 
   @override
   Future<DataState<void>> call({required String params}) async {
@@ -39,7 +42,10 @@ class ChooseTeacherCodeUseCase implements UseCase<DataState<void>, String> {
       case DataSuccess<String?>():
         break;
     }
-    final DataState<void> saved = await _codes.saveCode(code: params);
+    final DataState<void> saved = await _codes.saveCode(
+      code: params,
+      savedAt: _clock.now(),
+    );
     if (saved is DataSuccess<void>) _session.unlock();
     return saved;
   }

@@ -466,6 +466,12 @@ abstract class AppLocalizations {
   /// **'Code oublié ?'**
   String get classroomCodeForgotten;
 
+  /// Class mode, line under the title of « Mes classes » once the teacher chose a new code after « Code oublié ? », so a forgotten code cannot be replaced unnoticed ("Code changed on 21 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Code changé le {date}'**
+  String classroomCodeChanged(DateTime date);
+
   /// Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).
   ///
   /// In fr, this message translates to:

@@ -291,6 +291,7 @@ ClassroomPages _createClassroomPages(ProfilePages profilePages) {
       getClassrooms: sl(),
       watchChanges: sl(),
       closeArea: sl(),
+      getCodeChange: sl(),
     ),
     form: ClassroomFormUseCases(
       create: sl(),

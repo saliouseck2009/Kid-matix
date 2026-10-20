@@ -102,13 +102,28 @@ final class PupilRosterServiceImpl implements PupilRosterService {
   }
 
   @override
-  Future<DataState<void>> resetPupil({required String profileId}) {
+  Future<DataState<void>> resetPupil({required String profileId}) async {
+    final AppException? problem = await _findNonPupil(profileId);
+    if (problem != null) return DataFailed<void>(problem);
     return _resetProgress(params: profileId);
   }
 
   @override
-  Future<DataState<void>> removePupil({required String profileId}) {
+  Future<DataState<void>> removePupil({required String profileId}) async {
+    final AppException? problem = await _findNonPupil(profileId);
+    if (problem != null) return DataFailed<void>(problem);
     return _deleteProfile(params: profileId);
+  }
+
+  // The teacher area acts on pupils only, never on a free player.
+  Future<AppException?> _findNonPupil(String profileId) async {
+    return switch (await _repository.getProfile(profileId: profileId)) {
+      DataFailed<ProfileEntity>(:final exception) => exception,
+      DataSuccess<ProfileEntity>(:final data) when data.isPupil => null,
+      DataSuccess<ProfileEntity>() => const ValidationException(
+        message: 'Not a pupil.',
+      ),
+    };
   }
 
   @override

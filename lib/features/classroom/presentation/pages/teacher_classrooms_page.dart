@@ -54,6 +54,11 @@ class TeacherClassroomsPage extends StatelessWidget {
                 children: <Widget>[
                   ClassroomPageHeader(
                     title: context.l10n.classroomListTitle,
+                    subtitle: switch (state) {
+                      ClassroomsLoaded(:final DateTime codeChangedAt) =>
+                        context.l10n.classroomCodeChanged(codeChangedAt),
+                      _ => null,
+                    },
                     backIcon: Icons.logout_rounded,
                     backTooltip: context.l10n.classroomLeaveArea,
                     onBack: () => _leave(context),

@@ -1,5 +1,6 @@
 import 'package:kid_matix/features/classroom/domain/usecases/close_teacher_area_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classrooms_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_code_change_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_classroom_changes_use_case.dart';
 import 'package:meta/meta.dart';
 
@@ -11,6 +12,7 @@ final class ClassroomListUseCases {
     required this.getClassrooms,
     required this.watchChanges,
     required this.closeArea,
+    required this.getCodeChange,
   });
 
   /// Lists the classes.
@@ -21,4 +23,7 @@ final class ClassroomListUseCases {
 
   /// Closes the teacher area.
   final CloseTeacherAreaUseCase closeArea;
+
+  /// Tells when the teacher code was replaced.
+  final GetTeacherCodeChangeUseCase getCodeChange;
 }
