@@ -35,7 +35,11 @@ final class SettingsCubit extends Cubit<SettingsState> {
           data: final ProfileSettingsEntity values,
         ),
       ) =>
-        SettingsLoaded(nickname: player.nickname, settings: values),
+        SettingsLoaded(
+          nickname: player.nickname,
+          settings: values,
+          isPupil: player.isPupil,
+        ),
       (DataFailed<ProfileEntity>(:final exception), _) ||
       (
         _,
@@ -51,7 +55,13 @@ final class SettingsCubit extends Cubit<SettingsState> {
     final SettingsState current = state;
     if (current is! SettingsLoaded) return;
     final ProfileSettingsEntity next = change(current.settings);
-    emit(SettingsLoaded(nickname: current.nickname, settings: next));
+    emit(
+      SettingsLoaded(
+        nickname: current.nickname,
+        settings: next,
+        isPupil: current.isPupil,
+      ),
+    );
     final DataState<void> saved = await _useCases.updateSettings(params: next);
     if (isClosed) return;
     if (saved case DataFailed<void>(:final exception)) {
@@ -60,6 +70,7 @@ final class SettingsCubit extends Cubit<SettingsState> {
           nickname: current.nickname,
           settings: current.settings,
           errorCode: exception.code,
+          isPupil: current.isPupil,
         ),
       );
     }
@@ -77,6 +88,7 @@ final class SettingsCubit extends Cubit<SettingsState> {
       SettingsLoaded(
         nickname: current.nickname,
         settings: current.settings,
+        isPupil: current.isPupil,
         wasReset: reset is DataSuccess<void>,
         errorCode: switch (reset) {
           DataFailed<void>(:final exception) => exception.code,
@@ -101,6 +113,7 @@ final class SettingsCubit extends Cubit<SettingsState> {
           nickname: current.nickname,
           settings: current.settings,
           errorCode: exception.code,
+          isPupil: current.isPupil,
         ),
       );
     }

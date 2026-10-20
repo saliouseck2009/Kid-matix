@@ -9,6 +9,9 @@ abstract final class ProfileTable {
   /// Uniqueness key: the nickname without case or accents.
   static const String normalizedNickname = 'normalized_nickname';
 
+  /// Class of a pupil, `NULL` for a free player.
+  static const String classroomId = 'classroom_id';
+
   /// Creation date column, in milliseconds since epoch.
   static const String createdAt = 'created_at';
 }

@@ -98,6 +98,201 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get classroomTeacherArea => 'Espace enseignant';
+
+  @override
+  String get classroomCodeChooseHint =>
+      'Choisis un code à 4 chiffres. Il ferme l\'espace enseignant : ne le donne pas aux élèves.';
+
+  @override
+  String get classroomCodeConfirmHint => 'Tape le même code une deuxième fois.';
+
+  @override
+  String get classroomCodeEnterHint => 'Tape ton code à 4 chiffres.';
+
+  @override
+  String get classroomCodeLabel => 'Code';
+
+  @override
+  String get classroomCodeOpen => 'Ouvrir';
+
+  @override
+  String get classroomCodeNext => 'Continuer';
+
+  @override
+  String get classroomCodeWrong => 'Ce n\'est pas le bon code.';
+
+  @override
+  String get classroomCodeMismatch =>
+      'Les deux codes ne sont pas pareils. Recommence.';
+
+  @override
+  String get classroomCodeInvalid => 'Le code a 4 chiffres.';
+
+  @override
+  String get classroomLeaveArea => 'Quitter l\'espace enseignant';
+
+  @override
+  String get classroomListTitle => 'Mes classes';
+
+  @override
+  String get classroomListEmpty =>
+      'Aucune classe pour l\'instant. Crée une classe et ajoute tous ses élèves en une fois.';
+
+  @override
+  String get classroomNew => 'Nouvelle classe';
+
+  @override
+  String classroomPupilCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count élèves',
+      one: '1 élève',
+      zero: 'Aucun élève',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomNameLabel => 'Nom de la classe';
+
+  @override
+  String get classroomNameHint => 'Par exemple CE1 B';
+
+  @override
+  String get classroomPupilsTitle => 'Élèves';
+
+  @override
+  String get classroomPupilsByList => 'Des pseudos';
+
+  @override
+  String get classroomPupilsByNumber => 'Des numéros';
+
+  @override
+  String get classroomPupilsListLabel => 'Un pseudo par ligne';
+
+  @override
+  String get classroomPupilsPrivacyHint =>
+      'Mets des pseudos ou des numéros plutôt que les vrais noms des enfants.';
+
+  @override
+  String get classroomPupilsCountLabel => 'Nombre d\'élèves';
+
+  @override
+  String classroomPupilsPreview(int count, String first, String last) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count élèves à ajouter : $first à $last',
+      one: '1 élève à ajouter : $first',
+      zero: 'Aucun élève à ajouter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String classroomPupilsUnusable(String nicknames) {
+    return 'Ces pseudos ne vont pas : $nicknames. Un pseudo a 2 à 12 lettres ou chiffres, et chacun n\'apparaît qu\'une fois.';
+  }
+
+  @override
+  String get classroomCreate => 'Créer la classe';
+
+  @override
+  String get classroomErrorName =>
+      'Donne un nom à la classe (24 caractères au plus).';
+
+  @override
+  String get classroomErrorNoPupil => 'Ajoute au moins un élève.';
+
+  @override
+  String classroomErrorTooMany(int max) {
+    return 'Une classe a au plus $max élèves.';
+  }
+
+  @override
+  String get classroomErrorTaken =>
+      'Un de ces pseudos est déjà dans la classe.';
+
+  @override
+  String get classroomErrorGeneric => 'Oups, ça n\'a pas marché. Réessaie.';
+
+  @override
+  String get classroomAddPupils => 'Ajouter des élèves';
+
+  @override
+  String get classroomShelfTitle => 'Les classes';
+
+  @override
+  String get classroomPickerTitle => 'Qui es-tu ?';
+
+  @override
+  String get classroomPickerSearch => 'Cherche ton nom';
+
+  @override
+  String get classroomPickerNoMatch =>
+      'Personne ne s\'appelle comme ça dans la classe.';
+
+  @override
+  String get classroomPickerEmpty => 'Cette classe n\'a pas encore d\'élèves.';
+
+  @override
+  String get classroomCodeForgotten => 'Code oublié ?';
+
+  @override
+  String classroomCodeChanged(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Code changé le $dateString';
+  }
+
+  @override
+  String classroomCodeLocked(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: 'Trop d\'essais. Attends $seconds secondes avant de réessayer.',
+      one: 'Trop d\'essais. Attends 1 seconde avant de réessayer.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomOneTabletHint =>
+      'Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d\'une tablette à l\'autre.';
+
+  @override
+  String classroomPupilManage(String nickname) {
+    return 'Gérer $nickname';
+  }
+
+  @override
+  String get classroomPupilReset => 'Réinitialiser sa progression';
+
+  @override
+  String get classroomPupilResetMessage =>
+      'Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.';
+
+  @override
+  String get classroomPupilRemove => 'Retirer de la classe';
+
+  @override
+  String get classroomPupilRemoveMessage =>
+      'Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.';
+
+  @override
+  String classroomPupilResetDone(String nickname) {
+    return 'La progression de $nickname est remise à zéro.';
+  }
+
+  @override
+  String classroomPupilRemoved(String nickname) {
+    return '$nickname est retiré de la classe.';
+  }
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

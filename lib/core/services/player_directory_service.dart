@@ -5,6 +5,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 ///
 /// Implemented by the profile feature, which owns the players.
 abstract interface class PlayerDirectoryService {
-  /// Returns every player of the device, oldest first.
+  /// Returns every free player of the device, oldest first: the pupils of
+  /// the classes are left out of the duel and the leaderboard.
   Future<DataState<List<PlayerIdentity>>> readPlayers();
 }

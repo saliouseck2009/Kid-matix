@@ -238,6 +238,294 @@ abstract class AppLocalizations {
   /// **'{maxProfiles, plural, one{Il y a déjà {maxProfiles} joueur sur ce téléphone.} other{Il y a déjà {maxProfiles} joueurs sur ce téléphone.}}'**
   String profileLimitReached(int maxProfiles);
 
+  /// Class mode. Discreet text button at the bottom of « Qui joue ? » (and of the first player creation) that opens the teacher area, and title of the door of that area where the teacher types the code ("Teacher area"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Espace enseignant'**
+  String get classroomTeacherArea;
+
+  /// Class mode, door of the teacher area at the very first visit: the teacher chooses the 4-digit code that will protect the area. Speaks to the teacher with informal "tu", like the rest of the app.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis un code à 4 chiffres. Il ferme l\'espace enseignant : ne le donne pas aux élèves.'**
+  String get classroomCodeChooseHint;
+
+  /// Class mode, door of the teacher area at the first visit, second step: the teacher types the chosen code again to confirm it.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tape le même code une deuxième fois.'**
+  String get classroomCodeConfirmHint;
+
+  /// Class mode, door of the teacher area once a code exists: the teacher types it to open the area.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tape ton code à 4 chiffres.'**
+  String get classroomCodeEnterHint;
+
+  /// Class mode, label of the field of the 4-digit teacher code on the door of the teacher area. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code'**
+  String get classroomCodeLabel;
+
+  /// Class mode, button under the code field of the door of the teacher area ("Open", a verb). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir'**
+  String get classroomCodeOpen;
+
+  /// Class mode, button under the code field of the door of the teacher area at the first visit, while the teacher chooses and confirms the code ("Continue", a verb). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get classroomCodeNext;
+
+  /// Class mode, error under the code field when the teacher typed a wrong code.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce n\'est pas le bon code.'**
+  String get classroomCodeWrong;
+
+  /// Class mode, error when the code typed the second time differs from the first one; the teacher chooses again.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les deux codes ne sont pas pareils. Recommence.'**
+  String get classroomCodeMismatch;
+
+  /// Class mode, error when the teacher typed fewer than 4 digits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le code a 4 chiffres.'**
+  String get classroomCodeInvalid;
+
+  /// Class mode, tooltip of the icon button at the top of « Mes classes » that closes the teacher area and goes back to « Qui joue ? ».
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter l\'espace enseignant'**
+  String get classroomLeaveArea;
+
+  /// Class mode, title of the home of the teacher area listing the classes of the device ("My classes"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes classes'**
+  String get classroomListTitle;
+
+  /// Class mode, text of « Mes classes » when the device has no class yet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe pour l\'instant. Crée une classe et ajoute tous ses élèves en une fois.'**
+  String get classroomListEmpty;
+
+  /// Class mode, button of « Mes classes » that opens the creation of a class, and title of that creation screen ("New class"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouvelle classe'**
+  String get classroomNew;
+
+  /// Class mode, number of pupils of a class, under its name on the class cards of « Mes classes » and « Qui joue ? » and on the class page ("30 pupils").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun élève} =1{1 élève} other{{count} élèves}}'**
+  String classroomPupilCount(int count);
+
+  /// Class mode, label of the name field of the creation of a class. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de la classe'**
+  String get classroomNameLabel;
+
+  /// Class mode, placeholder inside the empty name field of the creation of a class: an example of class name in the school system of the language (CE1 is the second year of primary school in France and Senegal).
+  ///
+  /// In fr, this message translates to:
+  /// **'Par exemple CE1 B'**
+  String get classroomNameHint;
+
+  /// Class mode, title of the pupils part of the creation of a class and of the list of pupils of the class page ("Pupils"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élèves'**
+  String get classroomPupilsTitle;
+
+  /// Class mode, first choice of a two-segment switch of the class creation: the pupils are typed as a list of nicknames. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des pseudos'**
+  String get classroomPupilsByList;
+
+  /// Class mode, second choice of the two-segment switch of the class creation: the pupils are numbered 01, 02, 03... Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des numéros'**
+  String get classroomPupilsByNumber;
+
+  /// Class mode, label of the multi-line field where the teacher types the nicknames of the pupils, one per line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un pseudo par ligne'**
+  String get classroomPupilsListLabel;
+
+  /// Class mode, advice under the pupils field of the class creation: no real names of children, for their privacy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mets des pseudos ou des numéros plutôt que les vrais noms des enfants.'**
+  String get classroomPupilsPrivacyHint;
+
+  /// Class mode, label of the field where the teacher types how many numbered pupils to create. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre d\'élèves'**
+  String get classroomPupilsCountLabel;
+
+  /// Class mode, line under the pupils field of the class creation that sums up the pupils about to be created, with the first and last nicknames or numbers ("30 pupils to add: 01 to 30").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun élève à ajouter} =1{1 élève à ajouter : {first}} other{{count} élèves à ajouter : {first} à {last}}}'**
+  String classroomPupilsPreview(int count, String first, String last);
+
+  /// Class mode, error under the pupils field when some nicknames break the nickname rules or are repeated; {nicknames} lists them separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces pseudos ne vont pas : {nicknames}. Un pseudo a 2 à 12 lettres ou chiffres, et chacun n\'apparaît qu\'une fois.'**
+  String classroomPupilsUnusable(String nicknames);
+
+  /// Class mode, button at the bottom of the class creation ("Create the class"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer la classe'**
+  String get classroomCreate;
+
+  /// Class mode, error of the class creation when the name is empty or too long.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donne un nom à la classe (24 caractères au plus).'**
+  String get classroomErrorName;
+
+  /// Class mode, error of the class creation or of « Ajouter des élèves » when the list is empty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoute au moins un élève.'**
+  String get classroomErrorNoPupil;
+
+  /// Class mode, error when the class would have more pupils than the maximum (60).
+  ///
+  /// In fr, this message translates to:
+  /// **'Une classe a au plus {max} élèves.'**
+  String classroomErrorTooMany(int max);
+
+  /// Class mode, error of « Ajouter des élèves » when a nickname already belongs to a pupil of the class.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un de ces pseudos est déjà dans la classe.'**
+  String get classroomErrorTaken;
+
+  /// Class mode, generic error when the classes or their pupils could not be read or saved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, ça n\'a pas marché. Réessaie.'**
+  String get classroomErrorGeneric;
+
+  /// Class mode, button of the class page that opens the form to add pupils, title of that form, and its confirm button ("Add pupils"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter des élèves'**
+  String get classroomAddPupils;
+
+  /// Class mode, title above the class cards at the top of « Qui joue ? », shown only when the device has classes ("Classes"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les classes'**
+  String get classroomShelfTitle;
+
+  /// Class mode, title of the screen where a pupil finds their name or avatar in their class, opened from a class card of « Qui joue ? ». Speaks to the child, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui es-tu ?'**
+  String get classroomPickerTitle;
+
+  /// Class mode, placeholder of the search field at the top of « Qui es-tu ? » (a class of up to 60 pupils). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Cherche ton nom'**
+  String get classroomPickerSearch;
+
+  /// Class mode, text of « Qui es-tu ? » when the search matches no pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personne ne s\'appelle comme ça dans la classe.'**
+  String get classroomPickerNoMatch;
+
+  /// Class mode, text of « Qui es-tu ? » or of the class page when the class has no pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette classe n\'a pas encore d\'élèves.'**
+  String get classroomPickerEmpty;
+
+  /// Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code oublié ?'**
+  String get classroomCodeForgotten;
+
+  /// Class mode, line under the title of « Mes classes » once the teacher chose a new code after « Code oublié ? », so a forgotten code cannot be replaced unnoticed ("Code changed on 21 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Code changé le {date}'**
+  String classroomCodeChanged(DateTime date);
+
+  /// Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds, plural, =1{Trop d\'essais. Attends 1 seconde avant de réessayer.} other{Trop d\'essais. Attends {seconds} secondes avant de réessayer.}}'**
+  String classroomCodeLocked(int seconds);
+
+  /// Class mode, one-line hint of the class creation screen: a pupil keeps one tablet, because only the class results travel between tablets, not the progress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d\'une tablette à l\'autre.'**
+  String get classroomOneTabletHint;
+
+  /// Class mode, tooltip of the icon button next to a pupil on the class page of the teacher area, which offers to reset their progress or remove them.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gérer {nickname}'**
+  String classroomPupilManage(String nickname);
+
+  /// Class mode, teacher area: action of the menu of a pupil that erases their progress. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser sa progression'**
+  String get classroomPupilReset;
+
+  /// Class mode, teacher area: text of the confirmation before erasing the progress of a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.'**
+  String get classroomPupilResetMessage;
+
+  /// Class mode, teacher area: action of the menu of a pupil that deletes them. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer de la classe'**
+  String get classroomPupilRemove;
+
+  /// Class mode, teacher area: text of the confirmation before deleting a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.'**
+  String get classroomPupilRemoveMessage;
+
+  /// Class mode, snack bar after the teacher reset the progress of a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'La progression de {nickname} est remise à zéro.'**
+  String classroomPupilResetDone(String nickname);
+
+  /// Class mode, snack bar after the teacher removed a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname} est retiré de la classe.'**
+  String classroomPupilRemoved(String nickname);
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

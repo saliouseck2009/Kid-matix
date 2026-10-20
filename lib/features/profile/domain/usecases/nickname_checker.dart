@@ -16,10 +16,12 @@ class NicknameChecker {
   ///
   /// Fails with a `ValidationException` when the nickname breaks
   /// [NicknameRules], and with a `ConflictException` when another profile
-  /// than [excludedProfileId] already uses it.
+  /// than [excludedProfileId] already uses it in the same scope: the class
+  /// [classroomId], or the free players when it is `null`.
   Future<AppException?> findProblem({
     required String nickname,
     String? excludedProfileId,
+    String? classroomId,
   }) async {
     if (NicknameRules.validate(nickname) != null) {
       return const ValidationException(message: 'Invalid nickname.');
@@ -27,6 +29,7 @@ class NicknameChecker {
     final DataState<bool> takenState = await _repository.isNicknameTaken(
       nickname: nickname,
       excludedProfileId: excludedProfileId,
+      classroomId: classroomId,
     );
     return switch (takenState) {
       DataFailed<bool>(:final exception) => exception,

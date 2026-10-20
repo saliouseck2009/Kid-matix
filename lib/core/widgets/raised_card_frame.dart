@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 
-/// Raised white card of the player grid, tappable as one button.
-class ProfileCardFrame extends StatelessWidget {
+/// Raised white card, tappable as one button: the cards of the players
+/// and of the classes on « Qui joue ? ».
+class RaisedCardFrame extends StatelessWidget {
   /// Creates a raised card around [child] that calls [onTap].
-  const ProfileCardFrame({
+  const RaisedCardFrame({
     required this.child,
     required this.onTap,
     super.key,

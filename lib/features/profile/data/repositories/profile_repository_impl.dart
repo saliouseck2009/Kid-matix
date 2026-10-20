@@ -82,16 +82,56 @@ final class ProfileRepositoryImpl implements ProfileRepository {
   Future<DataState<int>> countProfiles() => _guard(_profiles.countProfiles);
 
   @override
+  Future<DataState<int>> countFreeProfiles() {
+    return _guard(_profiles.countFreeProfiles);
+  }
+
+  @override
+  Future<DataState<List<ProfileEntity>>> getPupils({
+    required String classroomId,
+  }) {
+    return _guard(() async {
+      final List<ProfileLocalModel> models = await _profiles.getPupils(
+        classroomId: classroomId,
+      );
+      return models.map((ProfileLocalModel model) => model.toEntity()).toList();
+    });
+  }
+
+  @override
   Future<DataState<bool>> isNicknameTaken({
     required String nickname,
     String? excludedProfileId,
+    String? classroomId,
   }) {
     return _guard(
       () => _profiles.hasNormalizedNickname(
         normalizedNickname: NicknameRules.normalize(nickname),
         excludedProfileId: excludedProfileId,
+        classroomId: classroomId,
       ),
     );
+  }
+
+  @override
+  Future<DataState<int>> createPupils({required List<ProfileEntity> pupils}) {
+    return _guard(() async {
+      final DateTime now = _clock.now();
+      final int insertedCount = await _profiles.insertPupils(
+        pupils: <(ProfileLocalModel, ProfileSettingsLocalModel)>[
+          for (final ProfileEntity pupil in pupils)
+            (
+              ProfileLocalModel.fromEntity(profile: pupil, updatedAt: now),
+              ProfileSettingsLocalModel.fromEntity(
+                settings: ProfileSettingsEntity.defaults(profileId: pupil.id),
+                updatedAt: now,
+              ),
+            ),
+        ],
+      );
+      if (insertedCount > 0) _notifyProfilesChanged();
+      return insertedCount;
+    });
   }
 
   @override

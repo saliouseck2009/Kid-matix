@@ -15,6 +15,7 @@ final class ProfileEntity {
     required this.level,
     required this.createdAt,
     this.lastPlayedAt,
+    this.classroomId,
   });
 
   /// Creates the profile of a new player: no XP yet, first level.
@@ -24,6 +25,7 @@ final class ProfileEntity {
     required this.avatar,
     required this.color,
     required this.createdAt,
+    this.classroomId,
   }) : totalXp = initialTotalXp,
        level = initialLevel,
        lastPlayedAt = null;
@@ -58,6 +60,13 @@ final class ProfileEntity {
   /// End of the last finished session, or `null` before the first one.
   final DateTime? lastPlayedAt;
 
+  /// Class the player belongs to as a pupil, or `null` for a free player
+  /// of the phone. A pupil's nickname is unique inside their class only.
+  final String? classroomId;
+
+  /// Whether the player is a pupil of a class.
+  bool get isPupil => classroomId != null;
+
   /// Returns a copy with the given fields replaced.
   ProfileEntity copyWith({
     String? id,
@@ -68,6 +77,7 @@ final class ProfileEntity {
     int? level,
     DateTime? createdAt,
     DateTime? lastPlayedAt,
+    String? classroomId,
   }) {
     return ProfileEntity(
       id: id ?? this.id,
@@ -78,6 +88,7 @@ final class ProfileEntity {
       level: level ?? this.level,
       createdAt: createdAt ?? this.createdAt,
       lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
+      classroomId: classroomId ?? this.classroomId,
     );
   }
 
@@ -92,7 +103,8 @@ final class ProfileEntity {
             other.totalXp == totalXp &&
             other.level == level &&
             other.createdAt == createdAt &&
-            other.lastPlayedAt == lastPlayedAt;
+            other.lastPlayedAt == lastPlayedAt &&
+            other.classroomId == classroomId;
   }
 
   @override
@@ -105,6 +117,7 @@ final class ProfileEntity {
     level,
     createdAt,
     lastPlayedAt,
+    classroomId,
   );
 
   @override

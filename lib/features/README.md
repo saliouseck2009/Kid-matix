@@ -18,6 +18,7 @@ the lot that delivers it; nothing is scaffolded ahead of time.
 | `speech`         | F23      | Reads texts aloud with the phone's voice     |
 | `number`         | F24      | The numbers up to 100 learning domain        |
 | `division`       | F26      | The division learning domain                 |
+| `classroom`      | F29      | Offline class mode: teacher area, classes, homework, dashboard, class files |
 
 Layout of a feature:
 

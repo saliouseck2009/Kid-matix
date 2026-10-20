@@ -42,7 +42,7 @@ void main() {
     final _MockClock mockClock = _MockClock();
     when(mockIdGenerator.generateId).thenReturn('new-id');
     when(mockClock.now).thenReturn(inputNow);
-    when(mockRepository.countProfiles).thenAnswer(
+    when(mockRepository.countFreeProfiles).thenAnswer(
       (_) async => const DataSuccess<int>(3),
     );
     when(
@@ -192,7 +192,7 @@ void main() {
     );
     test('refuses an eleventh profile', () async {
       // Arrange
-      when(mockRepository.countProfiles).thenAnswer(
+      when(mockRepository.countFreeProfiles).thenAnswer(
         (_) async => const DataSuccess<int>(ProfileLimits.maxProfiles),
       );
       // Act
@@ -210,7 +210,7 @@ void main() {
     });
     test('accepts the tenth profile', () async {
       // Arrange
-      when(mockRepository.countProfiles).thenAnswer(
+      when(mockRepository.countFreeProfiles).thenAnswer(
         (_) async => const DataSuccess<int>(ProfileLimits.maxProfiles - 1),
       );
       // Act
@@ -261,7 +261,7 @@ void main() {
     test('forwards a failure to count the profiles', () async {
       // Arrange
       const CacheException expectedException = CacheException();
-      when(mockRepository.countProfiles).thenAnswer(
+      when(mockRepository.countFreeProfiles).thenAnswer(
         (_) async => const DataFailed<int>(expectedException),
       );
       // Act

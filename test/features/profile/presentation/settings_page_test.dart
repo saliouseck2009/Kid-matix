@@ -4,7 +4,9 @@ import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
+import 'package:kid_matix/features/profile/domain/usecases/get_profile_use_case.dart';
 import 'package:kid_matix/features/profile/presentation/profile_pages.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -30,12 +32,14 @@ void main() {
   Future<void> pumpSettings(
     WidgetTester tester, {
     List<String> helpAudioLanguages = const <String>[],
+    GetProfileUseCase? getProfile,
   }) async {
     tester.view.physicalSize = const Size(1080, 3000);
     addTearDown(tester.view.resetPhysicalSize);
     final ProfilePages pages = buildProfilePages(
       helpAudioLanguages: helpAudioLanguages,
       settingsUseCases: buildSettingsUseCases(
+        getProfile: getProfile,
         updateSettings: mockUpdate,
         resetProgress: mockReset,
       ),
@@ -74,6 +78,23 @@ void main() {
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
       }
+    });
+    testWidgets('hides the reset and the deletion from a pupil', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final MockGetProfileUseCase mockGetProfile = MockGetProfileUseCase();
+      when(() => mockGetProfile.call(params: any(named: 'params'))).thenAnswer(
+        (_) async => DataSuccess<ProfileEntity>(
+          buildProfile().copyWith(classroomId: 'class-1'),
+        ),
+      );
+      // Act
+      await pumpSettings(tester, getProfile: mockGetProfile);
+      // Assert
+      expect(find.text('Réglages'), findsOneWidget);
+      expect(find.text('Réinitialiser ma progression'), findsNothing);
+      expect(find.text('Supprimer ce joueur'), findsNothing);
     });
     testWidgets('hides the audio help while no pack exists', (
       WidgetTester tester,

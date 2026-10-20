@@ -16,6 +16,7 @@ class ProfileCreationPage extends StatelessWidget {
     required this.createProfile,
     required this.selectProfile,
     required this.canGoBack,
+    this.footer,
     super.key,
   });
 
@@ -27,6 +28,11 @@ class ProfileCreationPage extends StatelessWidget {
 
   /// Whether other players exist to go back to.
   final bool canGoBack;
+
+  /// Shown under the button on the very first creation (no player to go
+  /// back to), such as the entry of the teacher area: a teacher setting
+  /// up a tablet creates classes, not a player.
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +46,7 @@ class ProfileCreationPage extends StatelessWidget {
         submitLabel: context.l10n.createProfileButton,
         onBack: canGoBack ? () => context.go(AppRoutes.whoIsPlaying) : null,
         offersReadAloud: true,
+        footer: canGoBack ? null : footer,
       ),
     );
   }

@@ -122,6 +122,9 @@ final class ProfileBackupLocalDataSourceImpl
       ),
       'remote_account_id': null,
       'deleted_at': null,
+      // A backup always comes back as a free player: the class of a pupil
+      // is not on every phone.
+      ProfileTable.classroomId: null,
     });
     final ProfileSettingsLocalModel settings =
         ProfileBackupSection.readSettings(sections) ??

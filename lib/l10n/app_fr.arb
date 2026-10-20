@@ -110,6 +110,261 @@
       }
     }
   },
+  "classroomTeacherArea": "Espace enseignant",
+  "@classroomTeacherArea": {
+    "description": "Class mode. Discreet text button at the bottom of « Qui joue ? » (and of the first player creation) that opens the teacher area, and title of the door of that area where the teacher types the code (\"Teacher area\"). One short line."
+  },
+  "classroomCodeChooseHint": "Choisis un code à 4 chiffres. Il ferme l'espace enseignant : ne le donne pas aux élèves.",
+  "@classroomCodeChooseHint": {
+    "description": "Class mode, door of the teacher area at the very first visit: the teacher chooses the 4-digit code that will protect the area. Speaks to the teacher with informal \"tu\", like the rest of the app."
+  },
+  "classroomCodeConfirmHint": "Tape le même code une deuxième fois.",
+  "@classroomCodeConfirmHint": {
+    "description": "Class mode, door of the teacher area at the first visit, second step: the teacher types the chosen code again to confirm it."
+  },
+  "classroomCodeEnterHint": "Tape ton code à 4 chiffres.",
+  "@classroomCodeEnterHint": {
+    "description": "Class mode, door of the teacher area once a code exists: the teacher types it to open the area."
+  },
+  "classroomCodeLabel": "Code",
+  "@classroomCodeLabel": {
+    "description": "Class mode, label of the field of the 4-digit teacher code on the door of the teacher area. One word."
+  },
+  "classroomCodeOpen": "Ouvrir",
+  "@classroomCodeOpen": {
+    "description": "Class mode, button under the code field of the door of the teacher area (\"Open\", a verb). One word."
+  },
+  "classroomCodeNext": "Continuer",
+  "@classroomCodeNext": {
+    "description": "Class mode, button under the code field of the door of the teacher area at the first visit, while the teacher chooses and confirms the code (\"Continue\", a verb). One word."
+  },
+  "classroomCodeWrong": "Ce n'est pas le bon code.",
+  "@classroomCodeWrong": {
+    "description": "Class mode, error under the code field when the teacher typed a wrong code."
+  },
+  "classroomCodeMismatch": "Les deux codes ne sont pas pareils. Recommence.",
+  "@classroomCodeMismatch": {
+    "description": "Class mode, error when the code typed the second time differs from the first one; the teacher chooses again."
+  },
+  "classroomCodeInvalid": "Le code a 4 chiffres.",
+  "@classroomCodeInvalid": {
+    "description": "Class mode, error when the teacher typed fewer than 4 digits."
+  },
+  "classroomLeaveArea": "Quitter l'espace enseignant",
+  "@classroomLeaveArea": {
+    "description": "Class mode, tooltip of the icon button at the top of « Mes classes » that closes the teacher area and goes back to « Qui joue ? »."
+  },
+  "classroomListTitle": "Mes classes",
+  "@classroomListTitle": {
+    "description": "Class mode, title of the home of the teacher area listing the classes of the device (\"My classes\"). One line."
+  },
+  "classroomListEmpty": "Aucune classe pour l'instant. Crée une classe et ajoute tous ses élèves en une fois.",
+  "@classroomListEmpty": {
+    "description": "Class mode, text of « Mes classes » when the device has no class yet."
+  },
+  "classroomNew": "Nouvelle classe",
+  "@classroomNew": {
+    "description": "Class mode, button of « Mes classes » that opens the creation of a class, and title of that creation screen (\"New class\"). One line."
+  },
+  "classroomPupilCount": "{count, plural, =0{Aucun élève} =1{1 élève} other{{count} élèves}}",
+  "@classroomPupilCount": {
+    "description": "Class mode, number of pupils of a class, under its name on the class cards of « Mes classes » and « Qui joue ? » and on the class page (\"30 pupils\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomNameLabel": "Nom de la classe",
+  "@classroomNameLabel": {
+    "description": "Class mode, label of the name field of the creation of a class. One line."
+  },
+  "classroomNameHint": "Par exemple CE1 B",
+  "@classroomNameHint": {
+    "description": "Class mode, placeholder inside the empty name field of the creation of a class: an example of class name in the school system of the language (CE1 is the second year of primary school in France and Senegal)."
+  },
+  "classroomPupilsTitle": "Élèves",
+  "@classroomPupilsTitle": {
+    "description": "Class mode, title of the pupils part of the creation of a class and of the list of pupils of the class page (\"Pupils\"). One word."
+  },
+  "classroomPupilsByList": "Des pseudos",
+  "@classroomPupilsByList": {
+    "description": "Class mode, first choice of a two-segment switch of the class creation: the pupils are typed as a list of nicknames. Short, a segment label."
+  },
+  "classroomPupilsByNumber": "Des numéros",
+  "@classroomPupilsByNumber": {
+    "description": "Class mode, second choice of the two-segment switch of the class creation: the pupils are numbered 01, 02, 03... Short, a segment label."
+  },
+  "classroomPupilsListLabel": "Un pseudo par ligne",
+  "@classroomPupilsListLabel": {
+    "description": "Class mode, label of the multi-line field where the teacher types the nicknames of the pupils, one per line."
+  },
+  "classroomPupilsPrivacyHint": "Mets des pseudos ou des numéros plutôt que les vrais noms des enfants.",
+  "@classroomPupilsPrivacyHint": {
+    "description": "Class mode, advice under the pupils field of the class creation: no real names of children, for their privacy."
+  },
+  "classroomPupilsCountLabel": "Nombre d'élèves",
+  "@classroomPupilsCountLabel": {
+    "description": "Class mode, label of the field where the teacher types how many numbered pupils to create. One line."
+  },
+  "classroomPupilsPreview": "{count, plural, =0{Aucun élève à ajouter} =1{1 élève à ajouter : {first}} other{{count} élèves à ajouter : {first} à {last}}}",
+  "@classroomPupilsPreview": {
+    "description": "Class mode, line under the pupils field of the class creation that sums up the pupils about to be created, with the first and last nicknames or numbers (\"30 pupils to add: 01 to 30\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "30"
+      },
+      "first": {
+        "type": "String",
+        "example": "01"
+      },
+      "last": {
+        "type": "String",
+        "example": "30"
+      }
+    }
+  },
+  "classroomPupilsUnusable": "Ces pseudos ne vont pas : {nicknames}. Un pseudo a 2 à 12 lettres ou chiffres, et chacun n'apparaît qu'une fois.",
+  "@classroomPupilsUnusable": {
+    "description": "Class mode, error under the pupils field when some nicknames break the nickname rules or are repeated; {nicknames} lists them separated by commas.",
+    "placeholders": {
+      "nicknames": {
+        "type": "String",
+        "example": "A, Moussa Diop Ndiaye"
+      }
+    }
+  },
+  "classroomCreate": "Créer la classe",
+  "@classroomCreate": {
+    "description": "Class mode, button at the bottom of the class creation (\"Create the class\"). One line."
+  },
+  "classroomErrorName": "Donne un nom à la classe (24 caractères au plus).",
+  "@classroomErrorName": {
+    "description": "Class mode, error of the class creation when the name is empty or too long."
+  },
+  "classroomErrorNoPupil": "Ajoute au moins un élève.",
+  "@classroomErrorNoPupil": {
+    "description": "Class mode, error of the class creation or of « Ajouter des élèves » when the list is empty."
+  },
+  "classroomErrorTooMany": "Une classe a au plus {max} élèves.",
+  "@classroomErrorTooMany": {
+    "description": "Class mode, error when the class would have more pupils than the maximum (60).",
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "classroomErrorTaken": "Un de ces pseudos est déjà dans la classe.",
+  "@classroomErrorTaken": {
+    "description": "Class mode, error of « Ajouter des élèves » when a nickname already belongs to a pupil of the class."
+  },
+  "classroomErrorGeneric": "Oups, ça n'a pas marché. Réessaie.",
+  "@classroomErrorGeneric": {
+    "description": "Class mode, generic error when the classes or their pupils could not be read or saved."
+  },
+  "classroomAddPupils": "Ajouter des élèves",
+  "@classroomAddPupils": {
+    "description": "Class mode, button of the class page that opens the form to add pupils, title of that form, and its confirm button (\"Add pupils\"). One line."
+  },
+  "classroomShelfTitle": "Les classes",
+  "@classroomShelfTitle": {
+    "description": "Class mode, title above the class cards at the top of « Qui joue ? », shown only when the device has classes (\"Classes\"). One line."
+  },
+  "classroomPickerTitle": "Qui es-tu ?",
+  "@classroomPickerTitle": {
+    "description": "Class mode, title of the screen where a pupil finds their name or avatar in their class, opened from a class card of « Qui joue ? ». Speaks to the child, informal \"tu\"."
+  },
+  "classroomPickerSearch": "Cherche ton nom",
+  "@classroomPickerSearch": {
+    "description": "Class mode, placeholder of the search field at the top of « Qui es-tu ? » (a class of up to 60 pupils). Informal \"tu\"."
+  },
+  "classroomPickerNoMatch": "Personne ne s'appelle comme ça dans la classe.",
+  "@classroomPickerNoMatch": {
+    "description": "Class mode, text of « Qui es-tu ? » when the search matches no pupil."
+  },
+  "classroomPickerEmpty": "Cette classe n'a pas encore d'élèves.",
+  "@classroomPickerEmpty": {
+    "description": "Class mode, text of « Qui es-tu ? » or of the class page when the class has no pupil."
+  },
+  "classroomCodeForgotten": "Code oublié ?",
+  "@classroomCodeForgotten": {
+    "description": "Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short."
+  },
+  "classroomCodeChanged": "Code changé le {date}",
+  "@classroomCodeChanged": {
+    "description": "Class mode, line under the title of « Mes classes » once the teacher chose a new code after « Code oublié ? », so a forgotten code cannot be replaced unnoticed (\"Code changed on 21 October\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMd",
+        "example": "2026-10-21"
+      }
+    }
+  },
+  "classroomCodeLocked": "{seconds, plural, =1{Trop d'essais. Attends 1 seconde avant de réessayer.} other{Trop d'essais. Attends {seconds} secondes avant de réessayer.}}",
+  "@classroomCodeLocked": {
+    "description": "Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomOneTabletHint": "Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d'une tablette à l'autre.",
+  "@classroomOneTabletHint": {
+    "description": "Class mode, one-line hint of the class creation screen: a pupil keeps one tablet, because only the class results travel between tablets, not the progress."
+  },
+  "classroomPupilManage": "Gérer {nickname}",
+  "@classroomPupilManage": {
+    "description": "Class mode, tooltip of the icon button next to a pupil on the class page of the teacher area, which offers to reset their progress or remove them.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomPupilReset": "Réinitialiser sa progression",
+  "@classroomPupilReset": {
+    "description": "Class mode, teacher area: action of the menu of a pupil that erases their progress. One line."
+  },
+  "classroomPupilResetMessage": "Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.",
+  "@classroomPupilResetMessage": {
+    "description": "Class mode, teacher area: text of the confirmation before erasing the progress of a pupil."
+  },
+  "classroomPupilRemove": "Retirer de la classe",
+  "@classroomPupilRemove": {
+    "description": "Class mode, teacher area: action of the menu of a pupil that deletes them. One line."
+  },
+  "classroomPupilRemoveMessage": "Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.",
+  "@classroomPupilRemoveMessage": {
+    "description": "Class mode, teacher area: text of the confirmation before deleting a pupil."
+  },
+  "classroomPupilResetDone": "La progression de {nickname} est remise à zéro.",
+  "@classroomPupilResetDone": {
+    "description": "Class mode, snack bar after the teacher reset the progress of a pupil.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomPupilRemoved": "{nickname} est retiré de la classe.",
+  "@classroomPupilRemoved": {
+    "description": "Class mode, snack bar after the teacher removed a pupil.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."
