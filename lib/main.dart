@@ -303,6 +303,8 @@ ClassroomPages _createClassroomPages(ProfilePages profilePages) {
       ),
       giveAssignment: sl(),
       getPupilView: sl(),
+      exportClassroom: sl(),
+      importClassroom: sl(),
     ),
     domains: sl(),
     avatarOf: (PlayerIdentity player, double size) =>

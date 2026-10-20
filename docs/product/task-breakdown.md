@@ -748,7 +748,7 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 - [x] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
 - [x] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
 - [x] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
-- [ ] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
+- [x] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
 - [ ] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
 - [ ] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.
 

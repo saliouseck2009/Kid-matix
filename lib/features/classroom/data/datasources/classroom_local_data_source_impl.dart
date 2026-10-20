@@ -46,6 +46,21 @@ final class ClassroomLocalDataSourceImpl implements ClassroomLocalDataSource {
   }
 
   @override
+  Future<bool> upsertClassroom({
+    required ClassroomLocalModel classroom,
+  }) async {
+    final ClassroomLocalModel? kept = await getClassroom(
+      classroomId: classroom.id,
+    );
+    if (kept == null) {
+      await insertClassroom(classroom: classroom);
+      return true;
+    }
+    if (kept.updatedAt >= classroom.updatedAt) return false;
+    return await updateClassroom(classroom: classroom) > 0;
+  }
+
+  @override
   Future<int> updateClassroom({required ClassroomLocalModel classroom}) async {
     final Database database = await _database.database;
     return database.update(

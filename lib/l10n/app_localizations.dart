@@ -634,6 +634,42 @@ abstract class AppLocalizations {
   /// **'Bloque sur : {items}'**
   String classroomPupilStuckOn(String items);
 
+  /// Class mode, button at the bottom of the class page: writes a file with the class, its pupils, its homework and their results, and opens the share sheet (to another tablet or to the teacher's, with no network). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer la classe et ses résultats'**
+  String get classroomExport;
+
+  /// Class mode, snack bar after the class file was handed to the share sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le fichier de la classe est prêt.'**
+  String get classroomExportDone;
+
+  /// Class mode, button of « Mes classes »: opens the file picker to merge a class file received from another tablet (a new class, or the results of its pupils). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir une classe ou des résultats'**
+  String get classroomImport;
+
+  /// Class mode, snack bar after a class file was merged: the name of the class, the pupils and the sessions that were new on this tablet (a file received twice adds nothing).
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : {pupils, plural, =0{aucun nouvel élève} =1{1 nouvel élève} other{{pupils} nouveaux élèves}}, {sessions, plural, =0{aucune nouvelle séance} =1{1 nouvelle séance} other{{sessions} nouvelles séances}}.'**
+  String classroomImportDone(String name, int pupils, int sessions);
+
+  /// Class mode, error snack bar when the file picked is not a class file or is damaged.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas un fichier de classe Kid Matix, ou il est abîmé.'**
+  String get classroomImportInvalid;
+
+  /// Class mode, error snack bar when the class file was written by a newer version of the app. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
+  String get classroomImportVersion;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

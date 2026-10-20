@@ -1,4 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/features/classroom/data/datasources/classroom_file_codec.dart';
+import 'package:kid_matix/features/classroom/data/repositories/classroom_transfer_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
+import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:kid_matix/core/services/teacher_session_service.dart';
 import 'package:kid_matix/core/services/placement_result_service.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
@@ -46,11 +53,42 @@ void registerClassroomFeature(GetIt sl) {
   _registerTeacherAccess(sl);
   _registerClassrooms(sl);
   _registerClassWork(sl);
+  _registerTransfer(sl);
   sl<SessionSavedHooks>().add(
     ClassroomSessionHook(
       roster: () => sl<PupilRosterService>(),
       journal: sl(),
     ),
+  );
+}
+
+void _registerTransfer(GetIt sl) {
+  sl.registerLazySingleton<ClassroomTransferRepository>(
+    () => ClassroomTransferRepositoryImpl(
+      files: sl(),
+      codec: const ClassroomFileCodec(),
+      clock: sl(),
+      readAppVersion: () async => (await PackageInfo.fromPlatform()).version,
+    ),
+  );
+  sl.registerLazySingleton<ClassroomMerger>(
+    () => ClassroomMerger(
+      classrooms: sl(),
+      roster: sl(),
+      assignments: sl(),
+      journal: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ExportClassroomUseCase>(
+    () => ExportClassroomUseCase(
+      getRoster: sl(),
+      assignments: sl(),
+      journal: sl(),
+      transfers: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ImportClassroomUseCase>(
+    () => ImportClassroomUseCase(transfers: sl(), merger: sl()),
   );
 }
 

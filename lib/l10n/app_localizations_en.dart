@@ -378,6 +378,42 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get classroomExport => 'Send the class and its results';
+
+  @override
+  String get classroomExportDone => 'The class file is ready.';
+
+  @override
+  String get classroomImport => 'Receive a class or results';
+
+  @override
+  String classroomImportDone(String name, int pupils, int sessions) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pupils,
+      locale: localeName,
+      other: '$pupils new pupils',
+      one: '1 new pupil',
+      zero: 'no new pupils',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions new sessions',
+      one: '1 new session',
+      zero: 'no new sessions',
+    );
+    return '$name: $_temp0, $_temp1.';
+  }
+
+  @override
+  String get classroomImportInvalid =>
+      'This file is not a Kid Matix class file, or it is damaged.';
+
+  @override
+  String get classroomImportVersion =>
+      'This file comes from a newer version of Kid Matix. Update the app, then try again.';
+
+  @override
   String get profileCreationTitle => 'New player';
 
   @override

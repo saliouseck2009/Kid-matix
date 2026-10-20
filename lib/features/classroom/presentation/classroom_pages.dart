@@ -5,6 +5,8 @@ import 'package:kid_matix/features/classroom/presentation/bloc/assignment_form_c
 import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/classroom_transfer_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/classroom_transfer_button.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/pupil_class_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/assignment_page.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/class_challenge_header.dart';
@@ -26,10 +28,8 @@ import 'package:kid_matix/features/classroom/presentation/widgets/classroom_shel
 import 'package:kid_matix/features/classroom/presentation/widgets/pupil_avatar_builder.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/teacher_entry_button.dart';
 
-/// Builds the pages and slots of the class mode for the router.
-///
-/// Created at the composition root with the use cases resolved there, so
-/// no widget ever reads the service locator.
+/// Builds the pages and slots of the class mode for the router, with the
+/// use cases resolved at the composition root.
 final class ClassroomPages {
   /// Creates the factory; [avatarOf] draws the avatars of the pupils.
   const ClassroomPages({
@@ -84,7 +84,7 @@ final class ClassroomPages {
         onOpenClassroom: onOpenClassroom,
         onCreate: onCreate,
         onLeave: onLeave,
-        actions: actions,
+        actions: <Widget>[_transferButton(null), ...actions],
       ),
     );
   }
@@ -119,7 +119,7 @@ final class ClassroomPages {
         onBack: onBack,
         onAddPupils: onAddPupils,
         onGiveAssignment: onGiveAssignment,
-        actions: actions,
+        actions: <Widget>[_transferButton(classroomId), ...actions],
       ),
     );
   }
@@ -153,6 +153,18 @@ final class ClassroomPages {
         watchChanges: _work.overview.watchChanges,
       )..load(),
       child: ClassHomeBanner(onOpenUnit: onOpenUnit),
+    );
+  }
+
+  /// Sends the class [classroomId], or receives a class file when it is
+  /// `null`.
+  Widget _transferButton(String? classroomId) {
+    return BlocProvider<ClassroomTransferCubit>(
+      create: (_) => ClassroomTransferCubit(
+        export: _work.exportClassroom,
+        import: _work.importClassroom,
+      ),
+      child: ClassroomTransferButton(classroomId: classroomId),
     );
   }
 

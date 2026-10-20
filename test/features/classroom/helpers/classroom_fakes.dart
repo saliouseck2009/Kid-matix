@@ -72,6 +72,11 @@ final class InMemoryClassrooms implements ClassroomRepository {
   }) => createClassroom(classroom: classroom);
 
   @override
+  Future<DataState<void>> mergeClassroom({
+    required ClassroomEntity classroom,
+  }) => createClassroom(classroom: classroom);
+
+  @override
   Stream<void> watchChanges() => _changes.stream;
 }
 
