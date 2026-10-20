@@ -1,25 +1,29 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/services/clock.dart';
-import 'package:kid_matix/features/learning_path/domain/entities/placement_test_entity.dart';
-import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/placement_journey.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/build_placement_question_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/placement_answer_params.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/save_placement_result_use_case.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 
-/// Drives the placement test of a new player: the offer, one question per
-/// table on the keypad, then the tables found.
+/// Drives the placement test of a player: the offer, then the typical
+/// questions of each skill on the keypad, climbing while the child has the
+/// skill, then the level found in each domain.
 ///
-/// Each answer is recorded as soon as it is given, so a test left midway
-/// keeps the tables already found. No timer and no feedback per question:
-/// the result screen tells what was found.
+/// Each answer is recorded as soon as it is given and opens its units, so
+/// a test left midway keeps the units already found; only a finished test
+/// is kept with its date. No timer and no feedback per question: the result
+/// screen tells what was found.
 final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
-  /// Creates the Bloc for the player and domain of [params]; [clock]
-  /// measures the time taken by each answer.
+  /// Creates the Bloc for the player [_profileId]; [clock] measures the
+  /// time taken by each answer.
   PlacementBloc({
-    required this._params,
+    required this._profileId,
     required this._useCases,
     required this._clock,
   }) : super(const PlacementOffered()) {
@@ -30,7 +34,7 @@ final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
     on<PlacementAnswerUnknown>(_onAnswerUnknown);
   }
 
-  final LearningPathParams _params;
+  final String _profileId;
   final PlacementUseCases _useCases;
   final Clock _clock;
 
@@ -40,19 +44,7 @@ final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
   ) async {
     if (state is! PlacementOffered) return;
     emit(const PlacementLoading());
-    final DataState<PlacementTestEntity> test = await _useCases.runTest(
-      params: _params.domainId,
-    );
-    emit(switch (test) {
-      DataSuccess<PlacementTestEntity>(:final data) => PlacementAsking(
-        test: data,
-        index: 0,
-        askedAt: _clock.now(),
-      ),
-      DataFailed<PlacementTestEntity>(:final exception) => PlacementFailure(
-        errorCode: exception.code,
-      ),
-    });
+    emit(await _ask(PlacementJourney.start()));
   }
 
   void _onDigitTyped(
@@ -100,34 +92,58 @@ final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
     emit(current.copyWith(isSubmitting: true));
     final DataState<bool> recorded = await _useCases.answerQuestion(
       params: PlacementAnswerParams(
-        profileId: _params.profileId,
-        domainId: _params.domainId,
-        question: current.question.question,
+        profileId: _profileId,
+        domainId: current.domainId,
+        question: current.question,
         answer: answer,
         answerTime: _clock.now().difference(current.askedAt),
+        unitKeysToOpen: current.journey.unitKeysToOpen,
       ),
     );
     switch (recorded) {
       case DataSuccess<bool>(:final data):
-        emit(_next(current, isCorrect: data));
+        final PlacementJourney next = current.journey.answered(
+          isCorrect: data,
+        );
+        emit(next.isOver ? await _finish(next) : await _ask(next));
       case DataFailed<bool>(:final exception):
         emit(PlacementFailure(errorCode: exception.code));
     }
   }
 
-  PlacementState _next(PlacementAsking current, {required bool isCorrect}) {
-    final Set<String> known = <String>{
-      ...current.knownUnitKeys,
-      if (isCorrect) current.question.unitKey,
-    };
-    if (current.isLast) {
-      return PlacementFinished(test: current.test, knownUnitKeys: known);
-    }
-    return PlacementAsking(
-      test: current.test,
-      index: current.index + 1,
-      askedAt: _clock.now(),
-      knownUnitKeys: known,
+  /// Builds the question [journey] asks next.
+  Future<PlacementState> _ask(PlacementJourney journey) async {
+    final DataState<Question> question = await _useCases.buildQuestion(
+      params: PlacementProbeParams(
+        domainId: journey.skill!.domainId,
+        unitKey: journey.probeUnitKey!,
+      ),
     );
+    return switch (question) {
+      DataSuccess<Question>(:final data) => PlacementAsking(
+        journey: journey,
+        question: data,
+        askedAt: _clock.now(),
+      ),
+      DataFailed<Question>(:final exception) => PlacementFailure(
+        errorCode: exception.code,
+      ),
+    };
+  }
+
+  /// Keeps the result of the finished [journey].
+  Future<PlacementState> _finish(PlacementJourney journey) async {
+    final DataState<void> saved = await _useCases.saveResult(
+      params: SavePlacementResultParams(
+        profileId: _profileId,
+        outcome: journey.outcome,
+      ),
+    );
+    return switch (saved) {
+      DataSuccess<void>() => PlacementFinished(outcome: journey.outcome),
+      DataFailed<void>(:final exception) => PlacementFailure(
+        errorCode: exception.code,
+      ),
+    };
   }
 }

@@ -56,9 +56,9 @@ void main() {
 
     tearDown(() => appDatabase.close());
 
-    test('is the last migration of the app', () {
+    test('is migration 15 of the app, after the placement results', () {
       // Assert
-      expect(appMigrations.last.version, 15);
+      expect(appMigrations[14].version, 15);
     });
 
     test('upgrades a version 13 database: players stay free', () async {

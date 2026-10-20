@@ -38,6 +38,7 @@ owner. Add a line here whenever a new decision is taken.
 | Division domain (F26): keys `div:<dividend>/<divisor>`, units `div:<divisor>`, in the multiplication path order; after a mistake the multiplication fact is recalled (« 7 × 8 = 56 »); the help card shows sharing (« 56 points partagés en 7 groupes : 8 dans chaque groupe ») | Owner (2026-10-18) chose the sharing caption over a new drawing |
 | Every missing-number question, in every domain, is titled « Trouve le nombre caché » instead of its unit name, which gave the answer away | Owner (2026-10-18) |
 | Math words (F28): a word is mastered by recognition (no box cap for this domain); « Toucher pour comprendre » is discovery only and never moves a box; in « Écoute et touche » the word is only said when a voice exists; the Wolof button is on every word, the pairs board and the « Mes mots » grid included; the « Aide audio » row shows only once a pack holds a recording; the help language is the first shipped pack unless the player chose | Owner (2026-10-18) |
+| Class mode (F29-01): the main context is tablets shared at school, a few per class, each used by several pupils, with the results carried to the teacher's tablet by file (F29-10); the families' phones are a secondary case served by the same file transfer. A class holds at most 60 pupils (« Qui joue ? » searches, the dashboard pages; tests take 40). A pupil is an ordinary player profile attached to a class, with the same progress, XP and mascot; « Qui joue ? » shows the classes of the device first, then the free profiles. A whole class may live on one tablet: the teacher's dashboard works without any transfer, and the file transfer (F29-10) serves when several tablets are used | Owner (2026-10-20) |
 
 ## Technical
 
@@ -189,7 +190,6 @@ Ask the owner when the lot that needs the answer starts.
 | Final illustrations for the mascot, the 12 monsters and the 12 avatars (current drawings are provisional) | Any time; code must not depend on the drawings |
 | Screens not drawn yet (see `docs/design/README.md`) | F4, F12, F14 |
 | Unconfirmed defaults of section 16 of the specifications (table order, no profile code, Android and iOS released together...) | Treated as valid until the owner says otherwise |
-| Main context of the class mode: tablets shared at school, or the families' phones; maximum class size | F29-01 |
 | Review of the Wolof glossary and recordings by a teacher before an NGO pilot | Before F29 is shown to a partner |
 | Publishing the code as open source (trust of NGOs, community translations) | Before presenting the project to NGOs |
 | Other audio help languages after Wolof, and the partners who record them | F32-01 |

@@ -20,6 +20,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
+import '../../../helpers/test_path_pages.dart';
 
 final class _MockRepository extends Mock implements StageProgressRepository {}
 
@@ -158,6 +159,7 @@ void main() {
         domains: DomainRegistry()..register(domain),
         settings: mockSettings,
         mastery: mastery,
+        placements: InMemoryPlacementResultRepository(),
       );
       when(
         () => mockSettings.readEverythingUnlocked(

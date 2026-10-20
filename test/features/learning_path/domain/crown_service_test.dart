@@ -42,6 +42,7 @@ void main() {
         domains: inputDomains,
         settings: const FixedPlayerSettings(),
         mastery: FakeMasteryService(),
+        placements: InMemoryPlacementResultRepository(),
       ),
       watchChanges: WatchLearningPathChangesUseCase(
         repository: inputRepository,

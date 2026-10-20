@@ -1678,13 +1678,13 @@
   "@pathCrownHint": {
     "description": "Hint under the stars of a table on its detail screen (\"Beat the boss to win the crown.\"). Talks to the child."
   },
-  "placementOfferTitle": "Tu connais déjà des tables ?",
+  "placementOfferTitle": "Voyons où tu en es !",
   "@placementOfferTitle": {
-    "description": "Header of the placement test offer, the full screen shown right after a new player is created (\"Do you already know some tables?\"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most."
+    "description": "Header of the placement test offer, the full screen shown right after a new player is created (\"Let's see where you are!\"). The test checks what the child can already do in maths, whatever their age. Talks to the child (informal tu). Two short lines at most."
   },
-  "placementOfferMessage": "Réponds à une question par table, sans chrono. Chaque table que tu connais s'ouvre tout de suite dans ton parcours.",
+  "placementOfferMessage": "Réponds à quelques questions, sans chrono. Tu t'arrêtes quand ça devient difficile et ton parcours commence au bon endroit.",
   "@placementOfferMessage": {
-    "description": "Text under the title of the placement test offer (\"Answer one question per table, no timer. Each table you know opens right away in your path.\"). The path is the map of tables the child plays through. Talks to the child (informal tu)."
+    "description": "Text under the title of the placement test offer (\"Answer a few questions, no timer. You stop when it gets hard and your path starts in the right place.\"). The path is the map of units the child plays through. Talks to the child (informal tu)."
   },
   "placementOfferStart": "Faire le test",
   "@placementOfferStart": {
@@ -1692,19 +1692,15 @@
   },
   "placementOfferSkip": "Passer",
   "@placementOfferSkip": {
-    "description": "Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
+    "description": "Secondary full-width button of the placement test offer that leaves the test with nothing changed: the path opens with the first unit of each domain only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
   },
-  "placementQuestionProgress": "Question {current} sur {total}",
+  "placementQuestionProgress": "Question {current}",
   "@placementQuestionProgress": {
-    "description": "What a screen reader says for the progress bar at the top of a placement test question (\"Question 3 of 12\"). Not shown on screen.",
+    "description": "What a screen reader says for the progress bar at the top of a placement test question (\"Question 3\"). The test is adaptive, so the number of questions is not known in advance. Not shown on screen.",
     "placeholders": {
       "current": {
         "type": "int",
         "example": "3"
-      },
-      "total": {
-        "type": "int",
-        "example": "12"
       }
     }
   },
@@ -1720,9 +1716,9 @@
   "@placementQuitTitle": {
     "description": "Title of the dialog confirming that the child leaves the placement test, shown by the cross or the system back (\"Stop the test?\"). Talks to the child. One line."
   },
-  "placementQuitMessage": "Les tables déjà trouvées restent ouvertes dans ton parcours.",
+  "placementQuitMessage": "Les unités déjà trouvées restent ouvertes dans ton parcours.",
   "@placementQuitMessage": {
-    "description": "Body of the dialog confirming that the child leaves the placement test (\"The tables already found stay open in your path.\"). Talks to the child (informal tu)."
+    "description": "Body of the dialog confirming that the child leaves the placement test (\"The units already found stay open in your path.\"). A unit is one lesson of the path, such as a multiplication table. Talks to the child (informal tu)."
   },
   "placementQuitCancel": "Continuer le test",
   "@placementQuitCancel": {
@@ -1732,9 +1728,9 @@
   "@placementQuitConfirm": {
     "description": "Dialog button that leaves the placement test for the path (\"Stop\"). \"Arrêter\" is an infinitive verb. One word if possible."
   },
-  "placementResultTitle": "{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}",
+  "placementResultTitle": "{count, plural, =0{Ton aventure commence !} =1{1 niveau réussi !} other{{count} niveaux réussis !}}",
   "@placementResultTitle": {
-    "description": "Header of the placement test result screen, with the number of tables the child already knows (\"You already know 3 tables!\"); with none, \"Everything is to discover!\". Talks to the child (informal tu). Two short lines at most.",
+    "description": "Header of the placement test result screen, with the number of skill levels the child passed (numbers, addition, subtraction, multiplication, division: \"3 levels passed!\"); with none, \"Your adventure begins!\". Talks to the child. Two short lines at most.",
     "placeholders": {
       "count": {
         "type": "int",
@@ -1742,9 +1738,9 @@
       }
     }
   },
-  "placementResultSubtitle": "{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}",
+  "placementResultSubtitle": "{count, plural, =0{Pas de souci, tu vas apprendre une étape à la fois.} other{Ce que tu sais déjà est ouvert dans ton parcours. Les étoiles restent à gagner.}}",
   "@placementResultSubtitle": {
-    "description": "Text under the title of the placement test result. With one table or more: \"It is / They are open in your path. Its / Their stars are still to win.\" (\"Elle\"/\"Elles\" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).",
+    "description": "Text under the title of the placement test result. With one level passed or more: \"What you already know is open in your path. You can still win the stars.\" (the units are open but hold no star yet). With none: a kind text saying the child will learn one step at a time. Talks to the child (informal tu).",
     "placeholders": {
       "count": {
         "type": "int",
@@ -1752,37 +1748,127 @@
       }
     }
   },
-  "placementLegendKnown": "Déjà connue",
-  "@placementLegendKnown": {
-    "description": "Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows (\"Already known\"; feminine in French because it agrees with \"table\"). One line, a few words."
+  "placementSkillNumbers": "Nombres",
+  "@placementSkillNumbers": {
+    "description": "Name of the numbers skill on the placement test result and in the Profile card: counting and reading numbers up to 100 (\"Numbers\"). One word."
   },
-  "placementLegendToDiscover": "À découvrir",
-  "@placementLegendToDiscover": {
-    "description": "Legend label under the grid of the placement test result, next to the light swatch: a table still to learn (\"To discover\"). One line, a few words."
+  "placementSkillAddition": "Additions",
+  "@placementSkillAddition": {
+    "description": "Name of the addition skill on the placement test result (\"Addition\"). One word."
   },
-  "placementTableKnown": "{name}, déjà connue",
-  "@placementTableKnown": {
-    "description": "What a screen reader says for a tile of the placement test result grid when the table was found (\"Table of 2, already known\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
+  "placementSkillSubtraction": "Soustractions",
+  "@placementSkillSubtraction": {
+    "description": "Name of the subtraction skill on the placement test result (\"Subtraction\"). One word."
+  },
+  "placementSkillMultiplication": "Multiplications",
+  "@placementSkillMultiplication": {
+    "description": "Name of the multiplication skill on the placement test result (\"Multiplication\"). One word."
+  },
+  "placementSkillDivision": "Divisions",
+  "@placementSkillDivision": {
+    "description": "Name of the division skill on the placement test result (\"Division\"). One word."
+  },
+  "placementSkillAcquired": "Acquis",
+  "@placementSkillAcquired": {
+    "description": "Label of a skill the child passed in the placement test result list, next to a check mark (\"Got it\"). One short word."
+  },
+  "placementSkillToDiscover": "À découvrir",
+  "@placementSkillToDiscover": {
+    "description": "Label of a skill the child did not pass, or that the test did not reach, in the placement test result list (\"To discover\"). One short word."
+  },
+  "placementSkillSemantics": "{skill}, {state}",
+  "@placementSkillSemantics": {
+    "description": "What a screen reader says for a row of the placement test result list (\"Addition, to discover\"). {skill} is the skill name, {state} one of the two labels above. Not shown on screen.",
     "placeholders": {
-      "name": {
+      "skill": {
         "type": "String",
-        "example": "Table de 2"
+        "example": "Additions"
+      },
+      "state": {
+        "type": "String",
+        "example": "À découvrir"
       }
     }
   },
-  "placementTableToDiscover": "{name}, à découvrir",
-  "@placementTableToDiscover": {
-    "description": "What a screen reader says for a tile of the placement test result grid when the table was not found (\"Table of 7, to discover\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Table de 7"
-      }
-    }
+  "placementResultStartLabel": "Tu commences par",
+  "@placementResultStartLabel": {
+    "description": "Small label above the unit the placement test recommends starting with, on the result screen (\"You start with\"). The unit name follows on the next line. Talks to the child."
+  },
+  "placementResultAllDone": "Tu connais tout ce que le test demande. Bravo !",
+  "@placementResultAllDone": {
+    "description": "Text of the placement test result card when the child passed every skill and no unit is recommended (\"You know everything the test asks. Well done!\"). Talks to the child (informal tu)."
   },
   "placementSeePath": "Voir mon parcours",
   "@placementSeePath": {
     "description": "Primary full-width button that leaves the placement test for the path (\"See my path\"): on the result screen, and on the error screen when the test cannot be built or saved. One line."
+  },
+  "placementCardTitle": "Mon niveau de départ",
+  "@placementCardTitle": {
+    "description": "Title of the Profile card that shows the result of the placement test (\"My starting level\"). One line."
+  },
+  "placementCardEmpty": "Tu n'as pas encore fait le test de niveau.",
+  "@placementCardEmpty": {
+    "description": "Text of the Profile placement card when the player never finished the placement test (\"You have not taken the level test yet.\"). Talks to the child (informal tu)."
+  },
+  "placementCardLatest": "Test du {date}",
+  "@placementCardLatest": {
+    "description": "Line above the levels of the latest placement test in the Profile card (\"Test of 12/10/2026\"). {date} is a short date in the language of the app.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12/10/2026"
+      }
+    }
+  },
+  "placementCardLevelSemantics": "{domain}, {level}",
+  "@placementCardLevelSemantics": {
+    "description": "What a screen reader says for a domain row of the Profile placement card (\"Numbers, level 1 of 1\"). {domain} is the spoken domain name, {level} the text of placementCardLevel or of placementCardNotChecked. Not shown on screen.",
+    "placeholders": {
+      "domain": {
+        "type": "String",
+        "example": "Nombres"
+      },
+      "level": {
+        "type": "String",
+        "example": "niveau 1 sur 1"
+      }
+    }
+  },
+  "placementCardNotChecked": "non évalué",
+  "@placementCardNotChecked": {
+    "description": "Shown instead of the level, in the Profile placement card, for a domain the test did not reach because it stopped before (\"not checked\"). Lower case, a few words."
+  },
+  "placementCardLevel": "niveau {level} sur {total}",
+  "@placementCardLevel": {
+    "description": "Level of the child in one domain, shown after the domain name in the Profile placement card (\"level 1 of 2\"). {level} is the number of skills passed, {total} the number checked.",
+    "placeholders": {
+      "level": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "placementCardPast": "{date} : {count, plural, =0{aucun niveau} =1{1 niveau} other{{count} niveaux}}",
+  "@placementCardPast": {
+    "description": "Line of an earlier placement test in the Profile card history (\"05/09/2026: 2 levels\"). {date} is a short date, {count} the number of skill levels passed that day.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "05/09/2026"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "placementCardRetake": "Refaire le test",
+  "@placementCardRetake": {
+    "description": "Button of the Profile placement card that starts the placement test again (\"Take the test again\"). \"Refaire\" is an infinitive verb. One line, short."
   },
   "pathTableBack": "Retour au parcours",
   "@pathTableBack": {
