@@ -76,7 +76,7 @@ class ImportBackupUseCase
   }
 
   Future<AppException?> _findLimitProblem() async {
-    final DataState<int> countState = await _profiles.countProfiles();
+    final DataState<int> countState = await _profiles.countFreeProfiles();
     return switch (countState) {
       DataFailed<int>(:final exception) => exception,
       DataSuccess<int>(:final int data)

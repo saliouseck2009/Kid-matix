@@ -18,7 +18,7 @@ final class ProfilesLoaded extends ProfilesState {
   /// Creates the state.
   const ProfilesLoaded({required this.profiles, required this.canAddProfile});
 
-  /// Every profile, oldest first.
+  /// Every free player (pupils excepted), oldest first.
   final List<ProfileEntity> profiles;
 
   /// Whether the device can hold one more profile.

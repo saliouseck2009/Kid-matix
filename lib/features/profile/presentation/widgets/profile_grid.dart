@@ -6,7 +6,7 @@ import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_limits.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/new_player_card.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_card.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/profile_card_frame.dart';
+import 'package:kid_matix/core/widgets/raised_card_frame.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/who_is_playing_header.dart';
 
 /// Scrolling content of "Qui joue ?": header, player cards and limit hint.
@@ -18,6 +18,8 @@ class ProfileGrid extends StatelessWidget {
     required this.onProfileTap,
     required this.onNewPlayerTap,
     this.footerOf,
+    this.header,
+    this.footer,
     super.key,
   });
 
@@ -46,6 +48,14 @@ class ProfileGrid extends StatelessWidget {
   /// Footer of the card of a player, such as their streak pill, or `null`.
   final Widget Function(String profileId)? footerOf;
 
+  /// Between the title and the players, such as the classes of the
+  /// device, or `null`.
+  final Widget? header;
+
+  /// Under the limit hint, such as the entry of the teacher area, or
+  /// `null`.
+  final Widget? footer;
+
   @override
   Widget build(BuildContext context) {
     final int cardCount = profiles.length + (canAddProfile ? 1 : 0);
@@ -55,6 +65,11 @@ class ProfileGrid extends StatelessWidget {
           padding: _screenPadding.copyWith(bottom: AppSizes.space24),
           sliver: const SliverToBoxAdapter(child: WhoIsPlayingHeader()),
         ),
+        if (header case final Widget above)
+          SliverPadding(
+            padding: _screenPadding.copyWith(top: 0, bottom: 0),
+            sliver: SliverToBoxAdapter(child: above),
+          ),
         SliverPadding(
           padding: _screenPadding.copyWith(top: 0, bottom: 0),
           sliver: SliverGrid.builder(
@@ -85,12 +100,18 @@ class ProfileGrid extends StatelessWidget {
             padding: _screenPadding.copyWith(top: AppSizes.space24),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: Text(
-                context.l10n.profileLimitHint(ProfileLimits.maxProfiles),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: context.palette.mutedText,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    context.l10n.profileLimitHint(ProfileLimits.maxProfiles),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: context.palette.mutedText,
+                    ),
+                  ),
+                  ?footer,
+                ],
               ),
             ),
           ),
@@ -104,7 +125,7 @@ class ProfileGrid extends StatelessWidget {
   double _measureCardHeight(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final TextScaler scaler = MediaQuery.textScalerOf(context);
-    return ProfileCardFrame.depth +
+    return RaisedCardFrame.depth +
         ProfileCard.padding.vertical +
         ProfileCard.avatarSize +
         ProfileCard.gap * 2 +

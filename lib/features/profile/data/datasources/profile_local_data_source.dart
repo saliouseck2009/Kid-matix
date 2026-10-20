@@ -18,14 +18,30 @@ abstract interface class ProfileLocalDataSource {
   /// Replaces the settings of their profile; returns the rows changed.
   Future<int> updateSettings({required ProfileSettingsLocalModel settings});
 
-  /// Returns how many live profiles exist.
+  /// Returns how many live profiles exist, pupils included.
   Future<int> countProfiles();
 
+  /// Returns how many live free profiles exist: the players that belong
+  /// to no class.
+  Future<int> countFreeProfiles();
+
+  /// Returns the live pupils of [classroomId], oldest first.
+  Future<List<ProfileLocalModel>> getPupils({required String classroomId});
+
   /// Whether a live profile other than [excludedProfileId] has the
-  /// [normalizedNickname].
+  /// [normalizedNickname] in the same scope: the class [classroomId], or
+  /// the free players when it is `null`.
   Future<bool> hasNormalizedNickname({
     required String normalizedNickname,
     String? excludedProfileId,
+    String? classroomId,
+  });
+
+  /// Inserts each pupil of [pupils] with its settings in one
+  /// transaction, all or nothing; a profile whose id already exists is
+  /// left as it is. Returns how many profiles were inserted.
+  Future<int> insertPupils({
+    required List<(ProfileLocalModel, ProfileSettingsLocalModel)> pupils,
   });
 
   /// Inserts [profile] and its [settings] in one transaction.

@@ -23,6 +23,7 @@ final class ProfileLocalModel {
     this.remoteAccountId,
     this.lastPlayedAt,
     this.deletedAt,
+    this.classroomId,
   });
 
   /// Builds the row of [profile], last changed at [updatedAt].
@@ -41,6 +42,7 @@ final class ProfileLocalModel {
       createdAt: profile.createdAt.millisecondsSinceEpoch,
       lastPlayedAt: profile.lastPlayedAt?.millisecondsSinceEpoch,
       updatedAt: updatedAt.millisecondsSinceEpoch,
+      classroomId: profile.classroomId,
     );
   }
 
@@ -84,6 +86,9 @@ final class ProfileLocalModel {
   /// Soft deletion date, or `null` for a live row.
   final int? deletedAt;
 
+  /// Class of a pupil, or `null` for a free player (schema version 15).
+  final String? classroomId;
+
   /// Returns the columns to write with `sqflite`.
   Map<String, Object?> toJson() => _$ProfileLocalModelToJson(this);
 
@@ -101,6 +106,7 @@ final class ProfileLocalModel {
       lastPlayedAt: lastPlayedAt == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(lastPlayedAt),
+      classroomId: classroomId,
     );
   }
 }

@@ -54,7 +54,7 @@ void main() {
     final _MockIdGenerator mockIds = _MockIdGenerator();
     when(mockIds.generateId).thenReturn('new-id');
     when(
-      mockProfiles.countProfiles,
+      mockProfiles.countFreeProfiles,
     ).thenAnswer((_) async => const DataSuccess<int>(2));
     when(
       () => mockProfiles.isNicknameTaken(
@@ -233,7 +233,7 @@ void main() {
           excludedProfileId: 'p2',
         ),
       ).called(1);
-      verifyNever(mockProfiles.countProfiles);
+      verifyNever(mockProfiles.countFreeProfiles);
     });
 
     test('imports under the nickname typed, cleaned', () async {
@@ -270,7 +270,7 @@ void main() {
           choice: const RenamePlayer(nickname: 'L!'),
         ),
       );
-      when(mockProfiles.countProfiles).thenAnswer(
+      when(mockProfiles.countFreeProfiles).thenAnswer(
         (_) async => const DataSuccess<int>(ProfileLimits.maxProfiles),
       );
       final DataState<String> actualFull = await importUseCase(
@@ -302,7 +302,7 @@ void main() {
         (_) async => const DataFailed<void>(InvalidFileException()),
       );
       when(
-        mockProfiles.countProfiles,
+        mockProfiles.countFreeProfiles,
       ).thenAnswer((_) async => const DataFailed<int>(CacheException()));
       // Act
       final DataState<String> actualCount = await importUseCase(
