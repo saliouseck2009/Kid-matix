@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
-import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_state.dart';
@@ -16,15 +16,16 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/placement_
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_result_view.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
 
-/// The placement test of a new player: the offer with « Passer », one
-/// question per table, then the tables found (mockup 18).
+/// The placement test of a player: the offer with « Passer », the typical
+/// questions of each skill while the child succeeds, then the level found
+/// (mockup 18, adapted).
 ///
 /// [onDone] opens the path, whether the test was skipped, left midway or
 /// finished.
 class PlacementTestPage extends StatelessWidget {
   /// Creates the page.
   const PlacementTestPage({
-    required this.params,
+    required this.profileId,
     required this.useCases,
     required this.clock,
     required this.slots,
@@ -32,8 +33,8 @@ class PlacementTestPage extends StatelessWidget {
     super.key,
   });
 
-  /// Player and domain of the test.
-  final LearningPathParams params;
+  /// Player of the test.
+  final String profileId;
 
   /// Use cases of the test.
   final PlacementUseCases useCases;
@@ -51,9 +52,13 @@ class PlacementTestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PlacementBloc>(
       create: (_) =>
-          PlacementBloc(params: params, useCases: useCases, clock: clock),
+          PlacementBloc(profileId: profileId, useCases: useCases, clock: clock),
       child: _PlacementScaffold(
-        labels: PathLabels(domainId: params.domainId, l10n: context.l10n),
+        profileId: profileId,
+        labels: PathLabels(
+          domainId: LearningDomainIds.multiplication,
+          l10n: context.l10n,
+        ),
         slots: slots,
         onDone: onDone,
       ),
@@ -63,11 +68,13 @@ class PlacementTestPage extends StatelessWidget {
 
 class _PlacementScaffold extends StatelessWidget {
   const _PlacementScaffold({
+    required this.profileId,
     required this.labels,
     required this.slots,
     required this.onDone,
   });
 
+  final String profileId;
   final PathLabels labels;
   final PlacementSlots slots;
   final VoidCallback onDone;
@@ -102,14 +109,13 @@ class _PlacementScaffold extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
                 PlacementAsking() => PlacementQuestionView(
+                  profileId: profileId,
                   state: state,
-                  labels: labels,
                   slots: slots,
                   onQuit: () => _leave(context),
                 ),
                 PlacementFinished() => PlacementResultView(
-                  units: state.units,
-                  labels: labels,
+                  outcome: state.outcome,
                   onSeePath: onDone,
                 ),
                 PlacementFailure(:final errorCode) => _PlacementError(

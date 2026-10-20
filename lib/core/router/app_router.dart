@@ -219,6 +219,10 @@ GoRouter createAppRouter({
                   ),
                 ],
               ),
+              pathPages.buildPlacementCard(
+                profileId: profileId,
+                onRetake: () => context.go(AppRoutes.placementTest),
+              ),
               rewardPages.buildBadgesCard(profileId: profileId),
               leaderboardPages.buildEntryCard(
                 onOpen: () => context.go(AppRoutes.leaderboard),

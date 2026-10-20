@@ -17,7 +17,15 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_
 import 'package:kid_matix/features/learning_path/domain/repositories/stage_progress_repository.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/answer_placement_question_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_path_use_case.dart';
-import 'package:kid_matix/features/learning_path/domain/usecases/run_placement_test_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/build_placement_question_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/save_placement_result_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/get_placement_history_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/watch_placement_results_use_case.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_use_cases.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/placement_outcome.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/placement_result_entity.dart';
+import 'package:kid_matix/features/learning_path/domain/repositories/placement_result_repository.dart';
+import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_learning_path_changes_use_case.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
@@ -86,10 +94,71 @@ final class InMemoryStageProgressRepository implements StageProgressRepository {
   Stream<void> watchChanges() => _changes.stream;
 }
 
+/// [PlacementResultRepository] over a list, dated by [clock].
+final class InMemoryPlacementResultRepository
+    implements PlacementResultRepository {
+  /// Creates the repository, which dates results with [clock].
+  InMemoryPlacementResultRepository({required this.clock});
+
+  /// Dates the results.
+  final Clock clock;
+
+  /// Results kept, oldest first.
+  final List<({String profileId, DateTime takenAt, PlacementOutcome outcome})>
+  saved = <({String profileId, DateTime takenAt, PlacementOutcome outcome})>[];
+
+  /// Failure of [save], or `null` for success.
+  AppException? saveFailure;
+
+  final StreamController<void> _changes = StreamController<void>.broadcast();
+
+  @override
+  Future<DataState<void>> save({
+    required String profileId,
+    required PlacementOutcome outcome,
+  }) async {
+    final AppException? failure = saveFailure;
+    if (failure != null) return DataFailed<void>(failure);
+    saved.add((profileId: profileId, takenAt: clock.now(), outcome: outcome));
+    _changes.add(null);
+    return const DataSuccess<void>(null);
+  }
+
+  @override
+  Future<DataState<List<PlacementResultEntity>>> getHistory({
+    required String profileId,
+  }) async {
+    return DataSuccess<List<PlacementResultEntity>>(<PlacementResultEntity>[
+      for (final result in saved.reversed)
+        if (result.profileId == profileId)
+          PlacementResultEntity(
+            takenAt: result.takenAt,
+            domains: <DomainResultEntity>[
+              for (final DomainLevel level in result.outcome.domains)
+                DomainResultEntity(
+                  domainId: level.domainId,
+                  level: level.level,
+                  skillCount: level.skillCount,
+                  unitCount: level.openedUnitKeys.length,
+                  startUnitKey:
+                      level.domainId == result.outcome.recommendedDomainId
+                      ? result.outcome.recommendedUnitKey
+                      : null,
+                ),
+            ],
+          ),
+    ]);
+  }
+
+  @override
+  Stream<void> watchChanges() => _changes.stream;
+}
+
 /// Use cases of the learning path over [repository] and [settings].
 LearningPathUseCases buildTestPathUseCases({
   StageProgressRepository? repository,
   PlayerSettingsService settings = const FixedPlayerSettings(),
+  PlacementResultRepository? placements,
 }) {
   final StageProgressRepository stages =
       repository ?? InMemoryStageProgressRepository();
@@ -99,26 +168,41 @@ LearningPathUseCases buildTestPathUseCases({
       domains: buildDomainRegistry(),
       settings: settings,
       mastery: FakeMasteryService(),
+      placements: placements,
     ),
     watchChanges: WatchLearningPathChangesUseCase(repository: stages),
   );
 }
 
-/// Use cases of the placement test over [repository] and [mastery], with
-/// questions drawn from [seed].
+/// Use cases of the placement test over [repository], [mastery] and
+/// [results], with questions drawn from [seed]; the domain recommended is
+/// chosen in [storage].
 PlacementUseCases buildTestPlacementUseCases({
   required StageProgressRepository repository,
   MasteryService? mastery,
+  PlacementResultRepository? results,
+  LocalStorage? storage,
   int seed = 1,
 }) {
   return PlacementUseCases(
-    runTest: RunPlacementTestUseCase(
+    buildQuestion: BuildPlacementQuestionUseCase(
       domains: buildDomainRegistry(),
       random: DartRandomSource(seed: seed),
     ),
     answerQuestion: AnswerPlacementQuestionUseCase(
       repository: repository,
       mastery: mastery ?? FakeMasteryService(),
+    ),
+    saveResult: SavePlacementResultUseCase(
+      stages: repository,
+      results:
+          results ??
+          InMemoryPlacementResultRepository(clock: FakeClock(quizStart)),
+      domains: PathDomainRepositoryImpl(
+        domains: PathDomainLocalDataSourceImpl(
+          storage: storage ?? InMemoryLocalStorage(),
+        ),
+      ),
     ),
   );
 }
@@ -148,16 +232,30 @@ LearningPathPages buildTestPathPages({
   PlayerSettingsService settings = const FixedPlayerSettings(),
   MasteryService? mastery,
   LocalStorage? storage,
+  PlacementResultRepository? results,
 }) {
   final StageProgressRepository stages =
       repository ?? InMemoryStageProgressRepository();
+  final LocalStorage domainStorage = storage ?? InMemoryLocalStorage();
+  final PlacementResultRepository placementResults =
+      results ?? InMemoryPlacementResultRepository(clock: FakeClock(quizStart));
   return LearningPathPages(
-    useCases: buildTestPathUseCases(repository: stages, settings: settings),
+    useCases: buildTestPathUseCases(
+      repository: stages,
+      settings: settings,
+      placements: placementResults,
+    ),
     placement: buildTestPlacementUseCases(
       repository: stages,
       mastery: mastery,
+      results: placementResults,
+      storage: domainStorage,
     ),
-    domainChoice: buildTestDomainChoiceUseCases(storage: storage),
+    placementHistory: PlacementHistoryUseCases(
+      getHistory: GetPlacementHistoryUseCase(repository: placementResults),
+      watchResults: WatchPlacementResultsUseCase(repository: placementResults),
+    ),
+    domainChoice: buildTestDomainChoiceUseCases(storage: domainStorage),
     domains: buildDomainRegistry(),
     clock: FakeClock(quizStart),
   );
