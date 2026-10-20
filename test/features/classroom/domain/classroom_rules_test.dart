@@ -137,8 +137,8 @@ void main() {
         progress: inputProgress,
         classItemKeys: const <String>{'a', 'b', 'c'},
         placement: PlacementLevel(
-          acquiredUnitCount: 9,
-          unitCount: 12,
+          level: 9,
+          skillCount: 12,
           takenAt: DateTime(2026, 10, 1),
         ),
       );

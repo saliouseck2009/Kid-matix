@@ -13,9 +13,10 @@ import 'package:kid_matix/features/learning_path/domain/entities/stage_progress_
 /// never stuck. A review follows every group of 3 tables and opens with
 /// the last table of its group; it never locks anything. "Tout
 /// débloquer" opens every table and stage. A table found in the placement
-/// test is open too, its stages still to play. Defeating the boss of a table
-/// crowns it; the crown is golden once every fact of the table is
-/// mastered.
+/// test is open too, its stages still to play. The unit the placement test
+/// recommended is the current one while it is open and not done.
+/// Defeating the boss of a table crowns it; the crown is golden once every
+/// fact of the table is mastered.
 final class LearningPathBuilder {
   /// Creates the builder.
   const LearningPathBuilder();
@@ -27,7 +28,8 @@ final class LearningPathBuilder {
   static const StageKind gateStage = StageKind.writing;
 
   /// Builds the path of [units], in path order, from [progress]; the units
-  /// of [placedUnitKeys] were opened by the placement test.
+  /// of [placedUnitKeys] were opened by the placement test and
+  /// [recommendedUnitKey] is the unit it advised starting with.
   LearningPathEntity build({
     required String domainId,
     required List<LearningUnit> units,
@@ -35,6 +37,7 @@ final class LearningPathBuilder {
     required bool isEverythingUnlocked,
     Set<String> masteredItemKeys = const <String>{},
     Set<String> placedUnitKeys = const <String>{},
+    String? recommendedUnitKey,
   }) {
     final Map<String, int> stars = <String, int>{
       for (final StageProgressEntity stage in progress)
@@ -42,20 +45,26 @@ final class LearningPathBuilder {
     };
     int starsOf(String unitKey, StageKind stage) =>
         stars[_key(unitKey, stage)] ?? 0;
+    final List<bool> unlocked = <bool>[
+      for (int index = 0; index < units.length; index++)
+        isEverythingUnlocked ||
+            index == 0 ||
+            placedUnitKeys.contains(units[index].key) ||
+            starsOf(units[index - 1].key, gateStage) > 0,
+    ];
+    final int currentIndex = _currentIndexOf(
+      units: units,
+      isUnlocked: unlocked,
+      isDone: (int index) =>
+          unlocked[index] && starsOf(units[index].key, gateStage) > 0,
+      recommendedUnitKey: recommendedUnitKey,
+    );
     final List<PathNode> nodes = <PathNode>[];
-    bool isCurrentFound = false;
     for (int index = 0; index < units.length; index++) {
       final LearningUnit unit = units[index];
-      final bool isUnlocked =
-          isEverythingUnlocked ||
-          index == 0 ||
-          placedUnitKeys.contains(unit.key) ||
-          starsOf(units[index - 1].key, gateStage) > 0;
+      final bool isUnlocked = unlocked[index];
       final bool isDone = isUnlocked && starsOf(unit.key, gateStage) > 0;
-      final bool isLast = index == units.length - 1;
-      final bool isCurrent =
-          isUnlocked && !isCurrentFound && (!isDone || isLast);
-      isCurrentFound = isCurrentFound || isCurrent;
+      final bool isCurrent = index == currentIndex;
       nodes.add(
         TablePathNode(
           unitKey: unit.key,
@@ -77,6 +86,28 @@ final class LearningPathBuilder {
       }
     }
     return LearningPathEntity(domainId: domainId, nodes: nodes);
+  }
+
+  /// The unit the map points at: the recommended one while it is open and
+  /// not done, else the first open unit not done, else the last one.
+  int _currentIndexOf({
+    required List<LearningUnit> units,
+    required List<bool> isUnlocked,
+    required bool Function(int index) isDone,
+    required String? recommendedUnitKey,
+  }) {
+    final int recommended = units.indexWhere(
+      (LearningUnit unit) => unit.key == recommendedUnitKey,
+    );
+    if (recommended >= 0 && isUnlocked[recommended] && !isDone(recommended)) {
+      return recommended;
+    }
+    for (int index = 0; index < units.length; index++) {
+      if (isUnlocked[index] && (!isDone(index) || index == units.length - 1)) {
+        return index;
+      }
+    }
+    return -1;
   }
 
   TableCrown _crownOf(

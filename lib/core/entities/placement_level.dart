@@ -1,37 +1,33 @@
 import 'package:meta/meta.dart';
 
-/// The result of a player's last placement test in one domain: how far
-/// along its path the test placed them.
+/// The result of a player's last placement test in one domain: the
+/// skills of the domain the test found acquired.
 @immutable
 final class PlacementLevel {
-  /// Creates the level: [acquiredUnitCount] of [unitCount] units.
+  /// Creates the level: [level] skills of [skillCount].
   const PlacementLevel({
-    required this.acquiredUnitCount,
-    required this.unitCount,
+    required this.level,
+    required this.skillCount,
     required this.takenAt,
   });
 
-  /// Units of the path the test found acquired.
-  final int acquiredUnitCount;
+  /// Skills of the domain the child had.
+  final int level;
 
-  /// Units of the path of the domain.
-  final int unitCount;
+  /// Skills the test checked in the domain.
+  final int skillCount;
 
   /// When the test was taken.
   final DateTime takenAt;
 
-  /// Share of the path acquired, from 0 to 1.
-  double get share => unitCount == 0 ? 0 : acquiredUnitCount / unitCount;
+  /// Share of the skills acquired, from 0 to 1.
+  double get share => skillCount == 0 ? 0 : level / skillCount;
 
   /// Returns a copy with the given fields replaced.
-  PlacementLevel copyWith({
-    int? acquiredUnitCount,
-    int? unitCount,
-    DateTime? takenAt,
-  }) {
+  PlacementLevel copyWith({int? level, int? skillCount, DateTime? takenAt}) {
     return PlacementLevel(
-      acquiredUnitCount: acquiredUnitCount ?? this.acquiredUnitCount,
-      unitCount: unitCount ?? this.unitCount,
+      level: level ?? this.level,
+      skillCount: skillCount ?? this.skillCount,
       takenAt: takenAt ?? this.takenAt,
     );
   }
@@ -40,11 +36,11 @@ final class PlacementLevel {
   bool operator ==(Object other) {
     return identical(this, other) ||
         other is PlacementLevel &&
-            other.acquiredUnitCount == acquiredUnitCount &&
-            other.unitCount == unitCount &&
+            other.level == level &&
+            other.skillCount == skillCount &&
             other.takenAt == takenAt;
   }
 
   @override
-  int get hashCode => Object.hash(acquiredUnitCount, unitCount, takenAt);
+  int get hashCode => Object.hash(level, skillCount, takenAt);
 }

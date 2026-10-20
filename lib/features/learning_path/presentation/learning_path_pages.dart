@@ -16,6 +16,8 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/discovery_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/pages/learning_path_page.dart';
@@ -25,6 +27,7 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/domain_sec
 import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/placement_card.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
@@ -40,6 +43,7 @@ final class LearningPathPages {
   const LearningPathPages({
     required this._useCases,
     required this._placement,
+    required this._placementHistory,
     required this._domainChoice,
     required this._domains,
     required this._clock,
@@ -47,11 +51,9 @@ final class LearningPathPages {
     this._resolver = const UnitDomainResolver(),
   });
 
-  /// Domain of the placement test of version 1.0.
-  static const String placementDomainId = LearningDomainIds.multiplication;
-
   final LearningPathUseCases _useCases;
   final PlacementUseCases _placement;
+  final PlacementHistoryUseCases _placementHistory;
   final DomainChoiceUseCases _domainChoice;
   final DomainRegistry _domains;
   final Clock _clock;
@@ -92,14 +94,28 @@ final class LearningPathPages {
   }) {
     return PlacementTestPage(
       key: ValueKey<String>('placement-$profileId'),
-      params: LearningPathParams(
-        profileId: profileId,
-        domainId: placementDomainId,
-      ),
+      profileId: profileId,
       useCases: _placement,
       clock: _clock,
       slots: slots,
       onDone: onDone,
+    );
+  }
+
+  /// "Mon niveau de départ" of [profileId], for the Profile tab: the
+  /// levels of their latest placement test with its date, the earlier
+  /// tests, and [onRetake] to take the test again.
+  Widget buildPlacementCard({
+    required String profileId,
+    required VoidCallback onRetake,
+  }) {
+    return BlocProvider<PlacementHistoryCubit>(
+      key: ValueKey<String>('placement-card-$profileId'),
+      create: (_) => PlacementHistoryCubit(
+        profileId: profileId,
+        useCases: _placementHistory,
+      )..load(),
+      child: PlacementCard(onRetake: onRetake),
     );
   }
 

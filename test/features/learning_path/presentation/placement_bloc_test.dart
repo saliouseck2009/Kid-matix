@@ -2,44 +2,49 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
+import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/skill_level.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/build_placement_question_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_state.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
 import '../../../helpers/test_path_pages.dart';
 import '../../quiz/helpers/quiz_fixtures.dart';
 
-const LearningPathParams _params = LearningPathParams(
-  profileId: 'p1',
-  domainId: 'multiplication',
-);
-
 void main() {
   late InMemoryStageProgressRepository repository;
+  late InMemoryPlacementResultRepository results;
   late FakeMasteryService mastery;
   late FakeClock clock;
   late PlacementBloc bloc;
 
-  PlacementBloc buildBloc({LearningPathParams params = _params}) {
+  PlacementBloc buildBloc({PlacementUseCases? useCases}) {
     return PlacementBloc(
-      params: params,
-      useCases: buildTestPlacementUseCases(
-        repository: repository,
-        mastery: mastery,
-      ),
+      profileId: 'p1',
+      useCases:
+          useCases ??
+          buildTestPlacementUseCases(
+            repository: repository,
+            mastery: mastery,
+            results: results,
+          ),
       clock: clock,
     );
   }
 
   setUp(() {
     repository = InMemoryStageProgressRepository();
-    mastery = FakeMasteryService();
     clock = FakeClock(quizStart);
+    results = InMemoryPlacementResultRepository(clock: clock);
+    mastery = FakeMasteryService();
     bloc = buildBloc();
   });
 
@@ -51,16 +56,16 @@ void main() {
     return bloc.state as PlacementAsking;
   }
 
-  /// Answers the question shown: right when its table is in [known], "Je
-  /// ne sais pas" otherwise.
-  Future<void> answerShown(Set<int> known) async {
+  /// Answers the question shown: right on the keypad when [isRight],
+  /// "Je ne sais pas" otherwise.
+  Future<void> answerShown({required bool isRight}) async {
     final PlacementAsking asking = bloc.state as PlacementAsking;
     clock.now_ = clock.now_.add(const Duration(seconds: 5));
-    if (!known.contains(asking.question.unitNumber)) {
+    if (!isRight) {
       bloc.add(const PlacementAnswerUnknown());
     } else {
       final NumberAnswer expected =
-          asking.question.question.expectedAnswer as NumberAnswer;
+          asking.question.expectedAnswer as NumberAnswer;
       for (final String digit in '${expected.value}'.split('')) {
         bloc.add(PlacementDigitTyped(digit: int.parse(digit)));
       }
@@ -69,93 +74,173 @@ void main() {
     await pumpEventQueue();
   }
 
-  Future<List<String>> readOpenTables() async {
-    final LearningPathEntity path = (await buildTestPathUseCases(
-      repository: repository,
-    ).getLearningPath(params: _params)).requireData;
+  Future<void> answerAll(List<bool> answers) async {
+    for (final bool isRight in answers) {
+      if (bloc.state is! PlacementAsking) break;
+      await answerShown(isRight: isRight);
+    }
+  }
+
+  Future<List<String>> readOpenUnits(String domainId) async {
+    final LearningPathEntity path =
+        (await buildTestPathUseCases(
+              repository: repository,
+            ).getLearningPath(
+              params: LearningPathParams(profileId: 'p1', domainId: domainId),
+            ))
+            .requireData;
     return <String>[
       for (final TablePathNode table in path.tables)
         if (table.status != TableStatus.locked) table.unitKey,
     ];
   }
 
-  test('offers the test first, then asks the table of 1', () async {
-    // Assert
-    expect(bloc.state, isA<PlacementOffered>());
-    // Act
-    final PlacementAsking actualAsking = await start();
-    // Assert
-    expect(actualAsking.index, 0);
-    expect(actualAsking.question.unitNumber, 1);
-    expect(actualAsking.test.questions, hasLength(12));
-    expect(actualAsking.askedAt, quizStart);
-  });
+  test(
+    'offers the test first, then asks the first question of the numbers',
+    () async {
+      // Assert
+      expect(bloc.state, isA<PlacementOffered>());
+      // Act
+      final PlacementAsking actualAsking = await start();
+      // Assert
+      expect(actualAsking.journey.skill!.id, SkillId.numbers);
+      expect(actualAsking.domainId, 'numbers');
+      expect(actualAsking.question.unitKey, 'num:count20');
+      expect(actualAsking.askedAt, quizStart);
+      expect(actualAsking.progress, 0);
+    },
+  );
 
-  test('opens the tables 1, 2 and 10 when the test is passed so', () async {
+  test('climbs through every skill while all the answers are right', () async {
     // Arrange
     await start();
     // Act
-    for (int index = 0; index < 12; index++) {
-      await answerShown(<int>{1, 2, 10});
-    }
+    await answerAll(List<bool>.filled(15, true));
     // Assert
     final PlacementFinished actualFinished = bloc.state as PlacementFinished;
-    expect(actualFinished.knownUnitKeys, <String>{'mul:1', 'mul:2', 'mul:10'});
-    expect(
-      actualFinished.units
-          .where(
-            (({int number, String unitKey, bool isKnown}) unit) => unit.isKnown,
-          )
-          .map(
-            (({int number, String unitKey, bool isKnown}) unit) => unit.number,
-          ),
-      <int>[1, 2, 10],
-    );
-    expect(actualFinished.units, hasLength(12));
-    expect(await readOpenTables(), <String>['mul:1', 'mul:2', 'mul:10']);
-    expect(mastery.recordedAnswers, hasLength(12));
-    expect(
-      mastery.recordedAnswers.where((ItemAnswer answer) => answer.isCorrect),
-      hasLength(3),
-    );
-    expect(
-      mastery.recordedAnswers.first.answerTime,
-      const Duration(seconds: 5),
-    );
+    expect(actualFinished.outcome.isEverythingAcquired, isTrue);
+    expect(mastery.recordedAnswers, hasLength(15));
+    expect(results.saved, hasLength(1));
+    expect(await readOpenUnits('multiplication'), contains('mul:8'));
+    expect(await readOpenUnits('division'), contains('div:9'));
   });
 
-  test('keeps only the table of 1 when the test is skipped', () async {
+  test(
+    'stops at the first level not acquired and starts on the first addition',
+    () async {
+      // Arrange
+      await start();
+      // Act: the numbers are right, the two first additions are wrong.
+      await answerAll(<bool>[true, true, true, false, false, true, true]);
+      // Assert
+      final PlacementFinished actualFinished = bloc.state as PlacementFinished;
+      expect(actualFinished.outcome.recommendedDomainId, 'addition');
+      expect(actualFinished.outcome.recommendedUnitKey, 'addsub:add5');
+      expect(mastery.recordedAnswers, hasLength(5));
+      expect(
+        mastery.recordedAnswers.where((ItemAnswer answer) => answer.isCorrect),
+        hasLength(3),
+      );
+      expect(
+        mastery.recordedAnswers.first.answerTime,
+        const Duration(seconds: 5),
+      );
+      expect(results.saved.single.profileId, 'p1');
+      expect(await readOpenUnits('addition'), <String>['addsub:add5']);
+      expect(
+        await readOpenUnits('numbers'),
+        containsAll(<String>['num:count10', 'num:count20', 'num:order']),
+      );
+      expect(await readOpenUnits('multiplication'), <String>['mul:1']);
+    },
+  );
+
+  test('opens the units found up to the hardest right answer', () async {
+    // Arrange
+    await start();
+    // Act: the numbers are right, then the easy and the medium additions.
+    await answerAll(<bool>[true, true, true, true, true, false, false, false]);
+    // Assert
+    expect(await readOpenUnits('addition'), <String>[
+      'addsub:add5',
+      'addsub:sub5',
+      'addsub:add7',
+      'addsub:add9',
+      'addsub:toten',
+    ]);
+  });
+
+  test('keeps only the first units when the test is skipped', () async {
     // Act: the player taps « Passer », the page opens the path.
     await bloc.close();
     // Assert
     expect(mastery.recordedAnswers, isEmpty);
-    expect(await readOpenTables(), <String>['mul:1']);
+    expect(results.saved, isEmpty);
+    expect(await readOpenUnits('multiplication'), <String>['mul:1']);
+    expect(await readOpenUnits('numbers'), <String>['num:count10']);
   });
 
-  test('keeps the tables found when the test is left midway', () async {
-    // Arrange
+  test(
+    'keeps the units found but no result when the test is abandoned',
+    () async {
+      // Arrange
+      await start();
+      // Act: two right answers, then the player leaves.
+      await answerAll(<bool>[true, true]);
+      await bloc.close();
+      // Assert
+      expect(await readOpenUnits('numbers'), <String>[
+        'num:count10',
+        'num:count20',
+        'num:count100',
+        'num:tensones',
+      ]);
+      expect(mastery.recordedAnswers, hasLength(2));
+      expect(results.saved, isEmpty);
+    },
+  );
+
+  test('a worse retake keeps the units of the first test open', () async {
+    // Arrange: a first test passed with every answer right.
     await start();
-    // Act: the tables of 1 to 4 are asked, then the player leaves.
-    for (int index = 0; index < 4; index++) {
-      await answerShown(<int>{2, 3, 7});
-    }
+    await answerAll(List<bool>.filled(15, true));
     await bloc.close();
+    final List<String> inputOpen = await readOpenUnits('multiplication');
+    // Act: the same player takes the test again and knows nothing.
+    bloc = buildBloc();
+    await start();
+    await answerAll(<bool>[false, false]);
     // Assert
-    expect(await readOpenTables(), <String>['mul:1', 'mul:2', 'mul:3']);
-    expect(mastery.recordedAnswers, hasLength(4));
+    expect(await readOpenUnits('multiplication'), inputOpen);
+    expect(results.saved, hasLength(2));
+    expect(
+      (bloc.state as PlacementFinished).outcome.recommendedUnitKey,
+      'num:count10',
+    );
   });
 
-  test('finds no table when none is known', () async {
+  test('finds no level when nothing is known', () async {
     // Arrange
     await start();
     // Act
-    for (int index = 0; index < 12; index++) {
-      await answerShown(const <int>{});
-    }
+    await answerAll(<bool>[false, false]);
     // Assert
     final PlacementFinished actualFinished = bloc.state as PlacementFinished;
-    expect(actualFinished.knownUnitKeys, isEmpty);
-    expect(await readOpenTables(), <String>['mul:1']);
+    expect(actualFinished.outcome.skills.single.isAcquired, isFalse);
+    expect(actualFinished.outcome.recommendedDomainId, 'numbers');
+    expect(actualFinished.outcome.recommendedUnitKey, 'num:count10');
+    expect(results.saved, hasLength(1));
+  });
+
+  test('fills the progress bar as the skills are climbed', () async {
+    // Arrange
+    await start();
+    // Act
+    await answerAll(<bool>[true, true, true]);
+    // Assert
+    final PlacementAsking actualAsking = bloc.state as PlacementAsking;
+    expect(actualAsking.journey.skill!.id, SkillId.addition);
+    expect(actualAsking.progress, 0.2);
   });
 
   test('types, erases and validates digits on the keypad', () async {
@@ -173,7 +258,7 @@ void main() {
     await pumpEventQueue();
     // Assert
     final PlacementAsking actualAsking = bloc.state as PlacementAsking;
-    expect(actualAsking.index, 0);
+    expect(actualAsking.journey.answeredCount, 0);
     expect(actualAsking.typedDigits, '45');
     expect(mastery.recordedAnswers, isEmpty);
   });
@@ -190,11 +275,22 @@ void main() {
     expect(bloc.state, isA<PlacementOffered>());
   });
 
-  test('fails when the test cannot be built', () async {
+  test('fails when a question cannot be built', () async {
     // Arrange
     await bloc.close();
     bloc = buildBloc(
-      params: const LearningPathParams(profileId: 'p1', domainId: 'unknown'),
+      useCases: PlacementUseCases(
+        buildQuestion: BuildPlacementQuestionUseCase(
+          domains: DomainRegistry(),
+          random: DartRandomSource(seed: 1),
+        ),
+        answerQuestion: buildTestPlacementUseCases(
+          repository: repository,
+        ).answerQuestion,
+        saveResult: buildTestPlacementUseCases(
+          repository: repository,
+        ).saveResult,
+      ),
     );
     // Act
     bloc.add(const PlacementStarted());
@@ -211,7 +307,17 @@ void main() {
     await start();
     mastery.failure = const CacheException();
     // Act
-    await answerShown(const <int>{});
+    await answerShown(isRight: false);
+    // Assert
+    expect((bloc.state as PlacementFailure).errorCode, AppErrorCode.cache);
+  });
+
+  test('fails when the result cannot be kept', () async {
+    // Arrange
+    await start();
+    results.saveFailure = const CacheException();
+    // Act
+    await answerAll(<bool>[false, false]);
     // Assert
     expect((bloc.state as PlacementFailure).errorCode, AppErrorCode.cache);
   });

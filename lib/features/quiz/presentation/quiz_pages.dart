@@ -1,17 +1,19 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
-import 'package:kid_matix/core/quiz/prompt_token.dart';
+import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
 import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/question_reading_cubit.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/results_page.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/answer_keypad.dart';
-import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/readable_question_card.dart';
 
 /// Builds the pages of the quiz feature for the router.
 ///
@@ -102,13 +104,30 @@ final class QuizPages {
     );
   }
 
-  /// The question card of the quiz, for a screen of another feature:
-  /// [label] above [prompt], with [typedDigits] in place of its blank.
+  /// The question card of the quiz, for a screen of another feature: the
+  /// label and the sentence of [question] in [domainId], its drawing, and
+  /// the « Écouter » button when a voice exists, with [typedDigits] in
+  /// place of its blank. [profileId] says whether the questions read
+  /// themselves.
   Widget buildQuestionCard({
-    required String label,
-    required List<PromptToken> prompt,
+    required String profileId,
+    required Question question,
+    required String domainId,
     String? typedDigits,
   }) {
-    return QuestionCard(label: label, prompt: prompt, blankText: typedDigits);
+    return BlocProvider<QuestionReadingCubit>(
+      key: ValueKey<String>('question-reading-$profileId-$domainId'),
+      create: (_) => QuestionReadingCubit(
+        useCases: _readAloud,
+        profileId: profileId,
+        contentLanguageCode: _domains.find(domainId)?.contentLanguageCode,
+      ),
+      child: ReadableQuestionCard(
+        question: question,
+        domainId: domainId,
+        domains: _domains,
+        typedDigits: typedDigits,
+      ),
+    );
   }
 }

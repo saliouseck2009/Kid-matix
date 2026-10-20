@@ -2062,16 +2062,16 @@ abstract class AppLocalizations {
   /// **'Bats le boss pour gagner la couronne.'**
   String get pathCrownHint;
 
-  /// Header of the placement test offer, the full screen shown right after a new player is created ("Do you already know some tables?"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most.
+  /// Header of the placement test offer, the full screen shown right after a new player is created ("Let's see where you are!"). The test checks what the child can already do in maths, whatever their age. Talks to the child (informal tu). Two short lines at most.
   ///
   /// In fr, this message translates to:
-  /// **'Tu connais déjà des tables ?'**
+  /// **'Voyons où tu en es !'**
   String get placementOfferTitle;
 
-  /// Text under the title of the placement test offer ("Answer one question per table, no timer. Each table you know opens right away in your path."). The path is the map of tables the child plays through. Talks to the child (informal tu).
+  /// Text under the title of the placement test offer ("Answer a few questions, no timer. You stop when it gets hard and your path starts in the right place."). The path is the map of units the child plays through. Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:
-  /// **'Réponds à une question par table, sans chrono. Chaque table que tu connais s\'ouvre tout de suite dans ton parcours.'**
+  /// **'Réponds à quelques questions, sans chrono. Tu t\'arrêtes quand ça devient difficile et ton parcours commence au bon endroit.'**
   String get placementOfferMessage;
 
   /// Primary full-width button of the placement test offer that starts the 12 questions ("Take the test"). One line, short.
@@ -2080,17 +2080,17 @@ abstract class AppLocalizations {
   /// **'Faire le test'**
   String get placementOfferStart;
 
-  /// Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
+  /// Secondary full-width button of the placement test offer that leaves the test with nothing changed: the path opens with the first unit of each domain only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
   ///
   /// In fr, this message translates to:
   /// **'Passer'**
   String get placementOfferSkip;
 
-  /// What a screen reader says for the progress bar at the top of a placement test question ("Question 3 of 12"). Not shown on screen.
+  /// What a screen reader says for the progress bar at the top of a placement test question ("Question 3"). The test is adaptive, so the number of questions is not known in advance. Not shown on screen.
   ///
   /// In fr, this message translates to:
-  /// **'Question {current} sur {total}'**
-  String placementQuestionProgress(int current, int total);
+  /// **'Question {current}'**
+  String placementQuestionProgress(int current);
 
   /// Text button under the keypad of a placement test question: the child does not know the answer and goes to the next question ("I don't know"). Said by the child (first person). One line.
   ///
@@ -2110,10 +2110,10 @@ abstract class AppLocalizations {
   /// **'Arrêter le test ?'**
   String get placementQuitTitle;
 
-  /// Body of the dialog confirming that the child leaves the placement test ("The tables already found stay open in your path."). Talks to the child (informal tu).
+  /// Body of the dialog confirming that the child leaves the placement test ("The units already found stay open in your path."). A unit is one lesson of the path, such as a multiplication table. Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:
-  /// **'Les tables déjà trouvées restent ouvertes dans ton parcours.'**
+  /// **'Les unités déjà trouvées restent ouvertes dans ton parcours.'**
   String get placementQuitMessage;
 
   /// Dialog button that stays in the placement test ("Go on with the test"). "Continuer" is an infinitive verb. Short, one line.
@@ -2128,47 +2128,131 @@ abstract class AppLocalizations {
   /// **'Arrêter'**
   String get placementQuitConfirm;
 
-  /// Header of the placement test result screen, with the number of tables the child already knows ("You already know 3 tables!"); with none, "Everything is to discover!". Talks to the child (informal tu). Two short lines at most.
+  /// Header of the placement test result screen, with the number of skill levels the child passed (numbers, addition, subtraction, multiplication, division: "3 levels passed!"); with none, "Your adventure begins!". Talks to the child. Two short lines at most.
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}'**
+  /// **'{count, plural, =0{Ton aventure commence !} =1{1 niveau réussi !} other{{count} niveaux réussis !}}'**
   String placementResultTitle(int count);
 
-  /// Text under the title of the placement test result. With one table or more: "It is / They are open in your path. Its / Their stars are still to win." ("Elle"/"Elles" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).
+  /// Text under the title of the placement test result. With one level passed or more: "What you already know is open in your path. You can still win the stars." (the units are open but hold no star yet). With none: a kind text saying the child will learn one step at a time. Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}'**
+  /// **'{count, plural, =0{Pas de souci, tu vas apprendre une étape à la fois.} other{Ce que tu sais déjà est ouvert dans ton parcours. Les étoiles restent à gagner.}}'**
   String placementResultSubtitle(int count);
 
-  /// Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows ("Already known"; feminine in French because it agrees with "table"). One line, a few words.
+  /// Name of the numbers skill on the placement test result and in the Profile card: counting and reading numbers up to 100 ("Numbers"). One word.
   ///
   /// In fr, this message translates to:
-  /// **'Déjà connue'**
-  String get placementLegendKnown;
+  /// **'Nombres'**
+  String get placementSkillNumbers;
 
-  /// Legend label under the grid of the placement test result, next to the light swatch: a table still to learn ("To discover"). One line, a few words.
+  /// Name of the addition skill on the placement test result ("Addition"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Additions'**
+  String get placementSkillAddition;
+
+  /// Name of the subtraction skill on the placement test result ("Subtraction"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Soustractions'**
+  String get placementSkillSubtraction;
+
+  /// Name of the multiplication skill on the placement test result ("Multiplication"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Multiplications'**
+  String get placementSkillMultiplication;
+
+  /// Name of the division skill on the placement test result ("Division"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Divisions'**
+  String get placementSkillDivision;
+
+  /// Label of a skill the child passed in the placement test result list, next to a check mark ("Got it"). One short word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acquis'**
+  String get placementSkillAcquired;
+
+  /// Label of a skill the child did not pass, or that the test did not reach, in the placement test result list ("To discover"). One short word.
   ///
   /// In fr, this message translates to:
   /// **'À découvrir'**
-  String get placementLegendToDiscover;
+  String get placementSkillToDiscover;
 
-  /// What a screen reader says for a tile of the placement test result grid when the table was found ("Table of 2, already known"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.
+  /// What a screen reader says for a row of the placement test result list ("Addition, to discover"). {skill} is the skill name, {state} one of the two labels above. Not shown on screen.
   ///
   /// In fr, this message translates to:
-  /// **'{name}, déjà connue'**
-  String placementTableKnown(String name);
+  /// **'{skill}, {state}'**
+  String placementSkillSemantics(String skill, String state);
 
-  /// What a screen reader says for a tile of the placement test result grid when the table was not found ("Table of 7, to discover"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.
+  /// Small label above the unit the placement test recommends starting with, on the result screen ("You start with"). The unit name follows on the next line. Talks to the child.
   ///
   /// In fr, this message translates to:
-  /// **'{name}, à découvrir'**
-  String placementTableToDiscover(String name);
+  /// **'Tu commences par'**
+  String get placementResultStartLabel;
+
+  /// Text of the placement test result card when the child passed every skill and no unit is recommended ("You know everything the test asks. Well done!"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu connais tout ce que le test demande. Bravo !'**
+  String get placementResultAllDone;
 
   /// Primary full-width button that leaves the placement test for the path ("See my path"): on the result screen, and on the error screen when the test cannot be built or saved. One line.
   ///
   /// In fr, this message translates to:
   /// **'Voir mon parcours'**
   String get placementSeePath;
+
+  /// Title of the Profile card that shows the result of the placement test ("My starting level"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon niveau de départ'**
+  String get placementCardTitle;
+
+  /// Text of the Profile placement card when the player never finished the placement test ("You have not taken the level test yet."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu n\'as pas encore fait le test de niveau.'**
+  String get placementCardEmpty;
+
+  /// Line above the levels of the latest placement test in the Profile card ("Test of 12/10/2026"). {date} is a short date in the language of the app.
+  ///
+  /// In fr, this message translates to:
+  /// **'Test du {date}'**
+  String placementCardLatest(String date);
+
+  /// What a screen reader says for a domain row of the Profile placement card ("Numbers, level 1 of 1"). {domain} is the spoken domain name, {level} the text of placementCardLevel or of placementCardNotChecked. Not shown on screen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{domain}, {level}'**
+  String placementCardLevelSemantics(String domain, String level);
+
+  /// Shown instead of the level, in the Profile placement card, for a domain the test did not reach because it stopped before ("not checked"). Lower case, a few words.
+  ///
+  /// In fr, this message translates to:
+  /// **'non évalué'**
+  String get placementCardNotChecked;
+
+  /// Level of the child in one domain, shown after the domain name in the Profile placement card ("level 1 of 2"). {level} is the number of skills passed, {total} the number checked.
+  ///
+  /// In fr, this message translates to:
+  /// **'niveau {level} sur {total}'**
+  String placementCardLevel(int level, int total);
+
+  /// Line of an earlier placement test in the Profile card history ("05/09/2026: 2 levels"). {date} is a short date, {count} the number of skill levels passed that day.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} : {count, plural, =0{aucun niveau} =1{1 niveau} other{{count} niveaux}}'**
+  String placementCardPast(String date, int count);
+
+  /// Button of the Profile placement card that starts the placement test again ("Take the test again"). "Refaire" is an infinitive verb. One line, short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Refaire le test'**
+  String get placementCardRetake;
 
   /// Tooltip and screen-reader label of the back arrow of the table detail ("Back to the learning path").
   ///
