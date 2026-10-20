@@ -22,15 +22,16 @@ final class ClassJournalLocalDataSourceImpl
   @override
   Future<List<ClassSessionRows>> getSessions({
     required String classroomId,
-    int? writtenAfterMs,
+    int? afterSequence,
+    int startedFromMs = 0,
   }) async {
     final Database database = await _database.database;
     final List<Map<String, Object?>> sessions = await database.query(
       ClassroomTables.session,
       where:
           'classroom_id = ? AND ${ClassroomTables.isLive} '
-          'AND updated_at > ?',
-      whereArgs: <Object>[classroomId, writtenAfterMs ?? -1],
+          'AND (rowid > ? OR started_at >= ?)',
+      whereArgs: <Object>[classroomId, afterSequence ?? -1, startedFromMs],
       orderBy: 'started_at, id',
     );
     final List<Map<String, Object?>> answers = await database.rawQuery(
@@ -49,6 +50,17 @@ final class ClassJournalLocalDataSourceImpl
       for (final Map<String, Object?> row in sessions)
         _rowsOf(ClassSessionLocalModel.fromJson(row), bySession),
     ];
+  }
+
+  @override
+  Future<int> getLatestSequence({required String classroomId}) async {
+    final Database database = await _database.database;
+    final List<Map<String, Object?>> rows = await database.rawQuery(
+      'SELECT MAX(rowid) AS sequence FROM ${ClassroomTables.session} '
+      'WHERE classroom_id = ?',
+      <Object>[classroomId],
+    );
+    return (rows.single['sequence'] as int?) ?? 0;
   }
 
   @override

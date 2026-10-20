@@ -1,4 +1,5 @@
 import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
@@ -16,6 +17,7 @@ final class ClassWorkUseCases {
     required this.getPupilView,
     required this.exportClassroom,
     required this.importClassroom,
+    required this.getExportMark,
   });
 
   /// The page of a class.
@@ -32,4 +34,7 @@ final class ClassWorkUseCases {
 
   /// Receives and merges a class file.
   final ImportClassroomUseCase importClassroom;
+
+  /// Tells when a class was last sent.
+  final GetExportMarkUseCase getExportMark;
 }

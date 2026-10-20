@@ -14,12 +14,18 @@ typedef ClassSessionRows = ({
 /// turns them into typed failures.
 abstract interface class ClassJournalLocalDataSource {
   /// Returns the live sessions of [classroomId] with their answers,
-  /// oldest first; only those written on this device after
-  /// [writtenAfterMs] (milliseconds since epoch) when it is given.
+  /// oldest first. With [afterSequence], only those written on this
+  /// device after that local sequence (the `rowid`) or started from
+  /// [startedFromMs] (milliseconds since epoch).
   Future<List<ClassSessionRows>> getSessions({
     required String classroomId,
-    int? writtenAfterMs,
+    int? afterSequence,
+    int startedFromMs = 0,
   });
+
+  /// Returns the highest local sequence of the sessions of [classroomId]
+  /// written on this device, or 0 when there is none.
+  Future<int> getLatestSequence({required String classroomId});
 
   /// Inserts [sessions] in one transaction; returns how many were new.
   Future<int> insertSessions({required List<ClassSessionRows> sessions});

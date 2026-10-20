@@ -3,6 +3,7 @@ import 'package:kid_matix/features/classroom/data/repositories/classroom_transfe
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:kid_matix/core/services/teacher_area_lock.dart';
@@ -90,6 +91,9 @@ void _registerTransfer(GetIt sl) {
       transfers: sl(),
       clock: sl(),
     ),
+  );
+  sl.registerLazySingleton<GetExportMarkUseCase>(
+    () => GetExportMarkUseCase(transfers: sl()),
   );
   sl.registerLazySingleton<ImportClassroomUseCase>(
     () => ImportClassroomUseCase(transfers: sl(), merger: sl()),

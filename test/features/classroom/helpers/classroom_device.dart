@@ -95,10 +95,15 @@ final class FakeSharedFiles implements SharedFileDataSource {
     required String fileName,
     required String content,
   }) async {
+    if (!isSharing) return false;
     sharedName = fileName;
     sharedContent = content;
     return true;
   }
+
+  /// Whether the share sheet sends the file; `false` as when it is
+  /// closed without choosing.
+  bool isSharing = true;
 
   @override
   Future<String?> pickFile() async => fileToPick;

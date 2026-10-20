@@ -4,6 +4,7 @@ import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/class_journal_repository.dart';
@@ -15,9 +16,11 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roste
 /// file gives the class to a new tablet and brings the results to the
 /// teacher's.
 ///
-/// A delta file by default: only the sessions written on this tablet
-/// since its last file of the class; `isFull` sends them all again.
-/// Resolves to whether the file was shared.
+/// A delta file by default: the sessions written on this tablet after
+/// the local sequence its last shared file reached, plus every session
+/// of the last [overlap] (resent on purpose: a second receiver or a lost
+/// file still gets them, and the merge ignores duplicates); `isFull`
+/// sends them all. The mark moves only once the share succeeded.
 class ExportClassroomUseCase
     implements UseCase<DataState<bool>, ({String classroomId, bool isFull})> {
   /// Creates the use case.
@@ -28,6 +31,9 @@ class ExportClassroomUseCase
     required this._transfers,
     required this._clock,
   });
+
+  /// Sessions always resent by a delta file.
+  static const Duration overlap = Duration(days: 14);
 
   final GetClassroomRosterUseCase _getRoster;
   final AssignmentRepository _assignments;
@@ -41,15 +47,23 @@ class ExportClassroomUseCase
   }) async {
     final String classroomId = params.classroomId;
     final DateTime now = _clock.now();
-    final DataState<DateTime?> since = params.isFull
-        ? const DataSuccess<DateTime?>(null)
-        : await _transfers.readLastExport(classroomId: classroomId);
-    if (since case DataFailed<DateTime?>(:final exception)) {
-      return DataFailed<bool>(exception);
+    final DataState<ExportMark?> mark = params.isFull
+        ? const DataSuccess<ExportMark?>(null)
+        : await _transfers.readExportMark(classroomId: classroomId);
+    final DataState<int> latest = await _journal.getLatestSequence(
+      classroomId: classroomId,
+    );
+    switch ((mark, latest)) {
+      case (DataFailed<ExportMark?>(:final exception), _) ||
+          (_, DataFailed<int>(:final exception)):
+        return DataFailed<bool>(exception);
+      case _:
+        break;
     }
     final DataState<ClassroomTransfer> transfer = await _transferOf(
       classroomId,
-      (since as DataSuccess<DateTime?>).data,
+      (mark as DataSuccess<ExportMark?>).data?.sequence,
+      now.subtract(overlap),
     );
     if (transfer case DataFailed<ClassroomTransfer>(:final exception)) {
       return DataFailed<bool>(exception);
@@ -58,9 +72,12 @@ class ExportClassroomUseCase
       transfer: (transfer as DataSuccess<ClassroomTransfer>).data,
     );
     if (shared case DataSuccess<bool>(data: true)) {
-      await _transfers.saveLastExport(
+      await _transfers.saveExportMark(
         classroomId: classroomId,
-        exportedAt: now,
+        mark: ExportMark(
+          sequence: (latest as DataSuccess<int>).data,
+          exportedAt: now,
+        ),
       );
     }
     return shared;
@@ -68,7 +85,8 @@ class ExportClassroomUseCase
 
   Future<DataState<ClassroomTransfer>> _transferOf(
     String classroomId,
-    DateTime? since,
+    int? afterSequence,
+    DateTime overlapStart,
   ) async {
     final DataState<ClassroomRoster> roster = await _getRoster(
       params: classroomId,
@@ -76,7 +94,11 @@ class ExportClassroomUseCase
     final DataState<List<AssignmentEntity>> assignments = await _assignments
         .getAssignments(classroomId: classroomId);
     final DataState<List<PracticeSession>> sessions = await _journal
-        .getSessions(classroomId: classroomId, writtenAfter: since);
+        .getSessions(
+          classroomId: classroomId,
+          afterSequence: afterSequence,
+          startedFrom: afterSequence == null ? null : overlapStart,
+        );
     return switch ((roster, assignments, sessions)) {
       (
         DataSuccess<ClassroomRoster>(data: final ClassroomRoster r),

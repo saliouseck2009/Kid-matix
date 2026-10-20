@@ -730,6 +730,12 @@ abstract class AppLocalizations {
   /// **'Les nouveaux résultats depuis le dernier envoi'**
   String get classroomExportNew;
 
+  /// Class mode, first choice after « Envoyer la classe et ses résultats » once the class was already sent from this tablet: a small file with the sessions since that day (and those of the last two weeks again). One line ("The new results since 21 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveaux résultats depuis le {date}'**
+  String classroomExportNewSince(DateTime date);
+
   /// Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line.
   ///
   /// In fr, this message translates to:

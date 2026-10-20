@@ -171,10 +171,15 @@ final class ClassroomPages {
   /// `null`.
   Widget _transferButton(String? classroomId) {
     return BlocProvider<ClassroomTransferCubit>(
-      create: (_) => ClassroomTransferCubit(
-        export: _work.exportClassroom,
-        import: _work.importClassroom,
-      ),
+      create: (_) {
+        final ClassroomTransferCubit cubit = ClassroomTransferCubit(
+          export: _work.exportClassroom,
+          import: _work.importClassroom,
+          getMark: _work.getExportMark,
+        );
+        if (classroomId != null) cubit.loadMark(classroomId);
+        return cubit;
+      },
       child: ClassroomTransferButton(classroomId: classroomId),
     );
   }

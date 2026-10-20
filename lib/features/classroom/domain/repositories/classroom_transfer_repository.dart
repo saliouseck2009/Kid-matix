@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
 
 /// The class files: written to the share sheet, read from the file
 /// picker; no network.
@@ -16,13 +17,16 @@ abstract interface class ClassroomTransferRepository {
   /// app wrote it.
   Future<DataState<ClassroomTransfer?>> pick();
 
-  /// Returns when the class [classroomId] was last sent from this tablet,
-  /// or `null` before its first file.
-  Future<DataState<DateTime?>> readLastExport({required String classroomId});
-
-  /// Remembers that the class [classroomId] was sent at [exportedAt].
-  Future<DataState<void>> saveLastExport({
+  /// Returns the mark of the last file of the class [classroomId] sent
+  /// from this tablet, or `null` before its first file.
+  Future<DataState<ExportMark?>> readExportMark({
     required String classroomId,
-    required DateTime exportedAt,
+  });
+
+  /// Remembers [mark] for the class [classroomId], once its file was
+  /// shared.
+  Future<DataState<void>> saveExportMark({
+    required String classroomId,
+    required ExportMark mark,
   });
 }

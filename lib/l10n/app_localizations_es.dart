@@ -455,6 +455,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los resultados nuevos desde el último envío';
 
   @override
+  String classroomExportNewSince(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Los resultados nuevos desde el $dateString';
+  }
+
+  @override
   String get classroomExportFull => 'Toda la clase y todos sus resultados';
 
   @override

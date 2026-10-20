@@ -10,8 +10,11 @@ sealed class ClassroomTransferState {
 
 /// Nothing is going on.
 final class ClassroomTransferIdle extends ClassroomTransferState {
-  /// Creates the state.
-  const ClassroomTransferIdle();
+  /// Creates the state; [lastExportAt] when the class was already sent.
+  const ClassroomTransferIdle({this.lastExportAt});
+
+  /// When the last file of the class left this tablet, or `null`.
+  final DateTime? lastExportAt;
 }
 
 /// A file is being written, shared, read or merged.

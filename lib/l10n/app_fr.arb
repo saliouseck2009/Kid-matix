@@ -589,6 +589,17 @@
   "@classroomExportNew": {
     "description": "Class mode, first choice after « Envoyer la classe et ses résultats »: a small file with the sessions played since the last file sent from this tablet. One line."
   },
+  "classroomExportNewSince": "Les nouveaux résultats depuis le {date}",
+  "@classroomExportNewSince": {
+    "description": "Class mode, first choice after « Envoyer la classe et ses résultats » once the class was already sent from this tablet: a small file with the sessions since that day (and those of the last two weeks again). One line (\"The new results since 21 October\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMd",
+        "example": "2026-10-21"
+      }
+    }
+  },
   "classroomExportFull": "Toute la classe et tous ses résultats",
   "@classroomExportFull": {
     "description": "Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line."

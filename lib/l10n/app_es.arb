@@ -105,6 +105,7 @@
   "classroomExport": "Enviar la clase y sus resultados",
   "classroomExportDone": "El archivo de la clase está listo.",
   "classroomExportNew": "Los resultados nuevos desde el último envío",
+  "classroomExportNewSince": "Los resultados nuevos desde el {date}",
   "classroomExportFull": "Toda la clase y todos sus resultados",
   "classroomImportTooBig": "Este archivo es demasiado grande para esta tableta.",
   "classroomImportRenamed": "{done} Apodos ya usados en la clase, alumnos renombrados: {nicknames}.",

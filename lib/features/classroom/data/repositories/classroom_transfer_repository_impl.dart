@@ -8,6 +8,7 @@ import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/classroom/data/datasources/classroom_file_codec.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
 
 /// [ClassroomTransferRepository] over the share sheet and the file
@@ -23,8 +24,13 @@ final class ClassroomTransferRepositoryImpl
     required this._readAppVersion,
   });
 
-  /// Preference key of the last export of a class, before its id.
+  /// Preference key of the date of the last export of a class, before
+  /// its id.
   static const String lastExportKeyPrefix = 'class_last_export_';
+
+  /// Preference key of the local sequence the last export of a class
+  /// reached, before its id.
+  static const String sequenceKeyPrefix = 'class_last_export_sequence_';
 
   /// Extension of the class files, the one of the backups.
   static const String fileExtension = 'kidmatix';
@@ -76,26 +82,38 @@ final class ClassroomTransferRepositoryImpl
   }
 
   @override
-  Future<DataState<DateTime?>> readLastExport({required String classroomId}) {
+  Future<DataState<ExportMark?>> readExportMark({
+    required String classroomId,
+  }) {
     return _guard(() async {
-      final String? stored = await _storage.readString(
+      final String? sequence = await _storage.readString(
+        key: '$sequenceKeyPrefix$classroomId',
+      );
+      final String? exportedAt = await _storage.readString(
         key: '$lastExportKeyPrefix$classroomId',
       );
-      return stored == null ? null : DateTime.tryParse(stored);
+      final int? parsedSequence = int.tryParse(sequence ?? '');
+      final DateTime? parsedAt = DateTime.tryParse(exportedAt ?? '');
+      if (parsedSequence == null || parsedAt == null) return null;
+      return ExportMark(sequence: parsedSequence, exportedAt: parsedAt);
     });
   }
 
   @override
-  Future<DataState<void>> saveLastExport({
+  Future<DataState<void>> saveExportMark({
     required String classroomId,
-    required DateTime exportedAt,
+    required ExportMark mark,
   }) {
-    return _guard(
-      () => _storage.writeString(
+    return _guard(() async {
+      await _storage.writeString(
+        key: '$sequenceKeyPrefix$classroomId',
+        value: '${mark.sequence}',
+      );
+      await _storage.writeString(
         key: '$lastExportKeyPrefix$classroomId',
-        value: exportedAt.toIso8601String(),
-      ),
-    );
+        value: mark.exportedAt.toIso8601String(),
+      );
+    });
   }
 
   Future<DataState<T>> _guard<T>(Future<T> Function() action) async {

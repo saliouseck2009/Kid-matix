@@ -44,6 +44,10 @@ class ClassroomTransferButton extends StatelessWidget {
   // The results since the last file, or all of them again.
   Future<void> _export(BuildContext context, String id) async {
     final ClassroomTransferCubit cubit = context.read<ClassroomTransferCubit>();
+    final DateTime? since = switch (cubit.state) {
+      ClassroomTransferIdle(:final lastExportAt) => lastExportAt,
+      _ => null,
+    };
     final bool? isFull = await showModalBottomSheet<bool>(
       context: context,
       builder: (BuildContext context) => SafeArea(
@@ -52,7 +56,11 @@ class ClassroomTransferButton extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: const Icon(Icons.update_rounded),
-              title: Text(context.l10n.classroomExportNew),
+              title: Text(
+                since == null
+                    ? context.l10n.classroomExportNew
+                    : context.l10n.classroomExportNewSince(since),
+              ),
               onTap: () => Navigator.of(context).pop(false),
             ),
             ListTile(

@@ -11,6 +11,7 @@ import 'package:kid_matix/features/classroom/domain/entities/classroom_merge_rep
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/add_pupils_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_params.dart';
@@ -79,6 +80,22 @@ void main() {
     await from.exportClassroom(
       params: (classroomId: classroom.id, isFull: true),
     );
+    to.files.fileToPick = from.files.sharedContent;
+    return (await to.importClassroom()).requireData!;
+  }
+
+  /// Sends a delta file from [from] to [to]; with [isNewFile] false,
+  /// [to] receives the last file again.
+  Future<ClassroomMergeReport> carryDelta(
+    ClassroomDevice from,
+    ClassroomDevice to, {
+    bool isNewFile = true,
+  }) async {
+    if (isNewFile) {
+      await from.exportClassroom(
+        params: (classroomId: classroom.id, isFull: false),
+      );
+    }
     to.files.fileToPick = from.files.sharedContent;
     return (await to.importClassroom()).requireData!;
   }
@@ -188,44 +205,96 @@ void main() {
   });
 
   group('Delta files and conflicts', () {
-    test(
-      'send only the sessions since the last file, or all of them',
-      () async {
-        // Arrange
-        await carry(teacher, pupils);
-        final ClassroomRoster roster = (await pupils.getRoster(
-          params: classroom.id,
-        )).requireData;
-        await pupils.play(_session('s1', roster.pupils[0].id, <bool>[true]));
-        pupils.clock.current = DateTime(2026, 10, 21, 11);
-        await pupils.exportClassroom(
-          params: (classroomId: classroom.id, isFull: false),
-        );
-        pupils.clock.current = DateTime(2026, 10, 22, 9);
-        await pupils.play(
-          _session('s2', roster.pupils[1].id, <bool>[true]).copyWithEnd(
-            DateTime(2026, 10, 22, 10),
-          ),
-        );
-        // Act
-        await pupils.exportClassroom(
-          params: (classroomId: classroom.id, isFull: false),
-        );
-        final ClassroomTransfer actualDelta = const ClassroomFileCodec().decode(
-          pupils.files.sharedContent!,
-        );
-        await pupils.exportClassroom(
-          params: (classroomId: classroom.id, isFull: true),
-        );
-        final ClassroomTransfer actualFull = const ClassroomFileCodec().decode(
-          pupils.files.sharedContent!,
-        );
-        // Assert
-        expect(actualDelta.sessions.map((s) => s.id), <String>['s2']);
-        expect(actualDelta.pupils, hasLength(40));
-        expect(actualFull.sessions.map((s) => s.id), <String>['s1', 's2']);
-      },
-    );
+    Future<List<String>> deltaIds(ClassroomDevice from) async {
+      await from.exportClassroom(
+        params: (classroomId: classroom.id, isFull: false),
+      );
+      return const ClassroomFileCodec()
+          .decode(from.files.sharedContent!)
+          .sessions
+          .map((PracticeSession session) => session.id)
+          .toList();
+    }
+
+    Future<ClassroomRoster> readyPupils() async {
+      await carry(teacher, pupils);
+      return (await pupils.getRoster(params: classroom.id)).requireData;
+    }
+
+    test('resend the last 14 days, not the sessions sent before', () async {
+      // Arrange
+      final ClassroomRoster roster = await readyPupils();
+      await pupils.play(
+        _session('old', roster.pupils[0].id, <bool>[true]).copyWithEnd(
+          DateTime(2026, 9, 1, 10),
+        ),
+      );
+      await pupils.play(_session('recent', roster.pupils[0].id, <bool>[true]));
+      pupils.clock.current = DateTime(2026, 10, 21, 11);
+      final List<String> actualFirst = await deltaIds(pupils);
+      await pupils.play(_session('new', roster.pupils[1].id, <bool>[true]));
+      // Act
+      final List<String> actualSecond = await deltaIds(pupils);
+      await pupils.exportClassroom(
+        params: (classroomId: classroom.id, isFull: true),
+      );
+      final List<String> actualFull = const ClassroomFileCodec()
+          .decode(pupils.files.sharedContent!)
+          .sessions
+          .map((PracticeSession session) => session.id)
+          .toList();
+      // Assert
+      expect(actualFirst, unorderedEquals(<String>['old', 'recent']));
+      expect(actualSecond, unorderedEquals(<String>['recent', 'new']));
+      expect(actualFull, unorderedEquals(<String>['old', 'recent', 'new']));
+    });
+
+    test('keep the mark when the share is cancelled', () async {
+      // Arrange
+      final ClassroomRoster roster = await readyPupils();
+      await pupils.play(
+        _session('old', roster.pupils[0].id, <bool>[true]).copyWithEnd(
+          DateTime(2026, 9, 1, 10),
+        ),
+      );
+      pupils.files.isSharing = false;
+      await pupils.exportClassroom(
+        params: (classroomId: classroom.id, isFull: false),
+      );
+      pupils.files.isSharing = true;
+      // Act
+      final List<String> actual = await deltaIds(pupils);
+      // Assert
+      expect(actual, <String>['old']);
+    });
+
+    test('merge the same delta twice once, and serve two receivers', () async {
+      // Arrange
+      final ClassroomRoster roster = await readyPupils();
+      final ClassroomDevice other = await ClassroomDevice.open('other');
+      await pupils.play(_session('s1', roster.pupils[0].id, <bool>[true]));
+      final ClassroomMergeReport actualFirst = await carryDelta(
+        pupils,
+        teacher,
+      );
+      final ClassroomMergeReport actualTwice = await carryDelta(
+        pupils,
+        teacher,
+        isNewFile: false,
+      );
+      await pupils.play(_session('s2', roster.pupils[1].id, <bool>[true]));
+      // Act
+      await carryDelta(pupils, other);
+      // Assert
+      expect(actualFirst.addedSessionCount, 1);
+      expect(actualTwice.addedSessionCount, 0);
+      expect(
+        (await other.journal.getSessions(classroomId: classroom.id)).requireData
+            .map((PracticeSession session) => session.id),
+        <String>['s1', 's2'],
+      );
+      await other.close();
+    });
 
     test('rename a new pupil whose nickname is taken in the class', () async {
       // Arrange

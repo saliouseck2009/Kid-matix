@@ -47,9 +47,11 @@ import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_us
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 
@@ -146,13 +148,21 @@ final class InMemoryJournal implements ClassJournalRepository {
   @override
   Future<DataState<List<PracticeSession>>> getSessions({
     required String classroomId,
-    DateTime? writtenAfter,
+    int? afterSequence,
+    DateTime? startedFrom,
   }) async {
     return DataSuccess<List<PracticeSession>>(
       rows.values
           .where((PracticeSession s) => s.classroomId == classroomId)
           .toList(),
     );
+  }
+
+  @override
+  Future<DataState<int>> getLatestSequence({
+    required String classroomId,
+  }) async {
+    return DataSuccess<int>(rows.length);
   }
 
   @override
@@ -449,6 +459,7 @@ ClassroomPages buildTestClassroomPages(
         transfers: const _NoTransfers(),
         clock: MovableClock(DateTime(2026, 10, 21, 9)),
       ),
+      getExportMark: const GetExportMarkUseCase(transfers: _NoTransfers()),
       importClassroom: ImportClassroomUseCase(
         transfers: const _NoTransfers(),
         merger: ClassroomMerger(
@@ -479,17 +490,13 @@ final class _NoTransfers implements ClassroomTransferRepository {
   }
 
   @override
-  Future<DataState<DateTime?>> readLastExport({
+  Future<DataState<ExportMark?>> readExportMark({
     required String classroomId,
-  }) async {
-    return const DataSuccess<DateTime?>(null);
-  }
+  }) async => const DataSuccess<ExportMark?>(null);
 
   @override
-  Future<DataState<void>> saveLastExport({
+  Future<DataState<void>> saveExportMark({
     required String classroomId,
-    required DateTime exportedAt,
-  }) async {
-    return const DataSuccess<void>(null);
-  }
+    required ExportMark mark,
+  }) async => const DataSuccess<void>(null);
 }

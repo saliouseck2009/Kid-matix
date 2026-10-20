@@ -4,10 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roster_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_transfer_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/classroom_transfer_button.dart';
@@ -226,6 +228,7 @@ void main() {
               transfers: const _TooBigFiles(),
               clock: MovableClock(DateTime(2026, 10, 21)),
             ),
+            getMark: const GetExportMarkUseCase(transfers: _TooBigFiles()),
             import: ImportClassroomUseCase(
               transfers: const _TooBigFiles(),
               merger: ClassroomMerger(
@@ -295,13 +298,13 @@ final class _TooBigFiles implements ClassroomTransferRepository {
   }
 
   @override
-  Future<DataState<DateTime?>> readLastExport({
+  Future<DataState<ExportMark?>> readExportMark({
     required String classroomId,
-  }) async => const DataSuccess<DateTime?>(null);
+  }) async => const DataSuccess<ExportMark?>(null);
 
   @override
-  Future<DataState<void>> saveLastExport({
+  Future<DataState<void>> saveExportMark({
     required String classroomId,
-    required DateTime exportedAt,
+    required ExportMark mark,
   }) async => const DataSuccess<void>(null);
 }
