@@ -739,7 +739,7 @@ Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énonc�
 
 L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, groupes de niveau et défi de classe.
 
-- [ ] **F29-01** Trancher avec le propriétaire, avant de coder, le contexte principal : tablettes partagées à l'école, ou téléphones des familles ; et la taille maximale d'une classe. Noter la réponse dans `docs/decisions.md`.
+- [x] **F29-01** Trancher avec le propriétaire, avant de coder, le contexte principal : tablettes partagées à l'école, ou téléphones des familles ; et la taille maximale d'une classe. Noter la réponse dans `docs/decisions.md`.
 - [ ] **F29-02** Entités `ClassroomEntity`, élève (un profil rattaché à une classe) et `AssignmentEntity` (domaine, unité, échéance) ; migration.
 - [ ] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
 - [ ] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
