@@ -25,6 +25,7 @@ import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/addition/injection.dart';
 import 'package:kid_matix/features/challenge/injection.dart';
+import 'package:kid_matix/features/classroom/injection.dart';
 import 'package:kid_matix/features/division/injection.dart';
 import 'package:kid_matix/features/learning_path/injection.dart';
 import 'package:kid_matix/features/mascot/injection.dart';
@@ -67,6 +68,7 @@ Future<void> configureDependencies() async {
   registerChallengeFeature(sl);
   registerSettingFeature(sl);
   registerShopFeature(sl);
+  registerClassroomFeature(sl);
   registerSpeechFeature(sl);
   registerQuizFeature(sl);
 }

@@ -111,4 +111,54 @@ abstract final class AppRoutes {
 
   /// Creation of a new player, opened from [whoIsPlaying].
   static const String profileCreation = '/players/new';
+
+  /// The door of the teacher area: the 4-digit code, opened discreetly
+  /// from [whoIsPlaying].
+  static const String teacherArea = '/players/teacher';
+
+  /// « Mes classes », the home of the teacher area.
+  static const String teacherClassrooms = '/players/teacher/classes';
+
+  /// Creation of a class with its pupils, in the teacher area.
+  static const String classroomCreation = '/players/teacher/classes/new';
+
+  /// Page of the class given as path parameter, in the teacher area.
+  static const String teacherClassroom =
+      '/players/teacher/classes/:$classroomIdParameter';
+
+  /// « Ajouter des élèves » to the class given as path parameter.
+  static const String classroomPupilsAddition =
+      '/players/teacher/classes/:$classroomIdParameter/pupils';
+
+  /// « Qui es-tu ? »: a pupil finds their name in the class given as path
+  /// parameter, opened from [whoIsPlaying].
+  static const String pupilPicker = '/players/class/:$classroomIdParameter';
+
+  /// Name of the class parameter of [teacherClassroom] and [pupilPicker].
+  static const String classroomIdParameter = 'classroomId';
+
+  /// Path of the page of the class [classroomId] in the teacher area.
+  static String teacherClassroomOf(String classroomId) {
+    return '$teacherClassrooms/${Uri.encodeComponent(classroomId)}';
+  }
+
+  /// Path of « Ajouter des élèves » to the class [classroomId].
+  static String classroomPupilsAdditionOf(String classroomId) {
+    return '${teacherClassroomOf(classroomId)}/pupils';
+  }
+
+  /// Path of « Qui es-tu ? » in the class [classroomId].
+  static String pupilPickerOf(String classroomId) {
+    return '/players/class/${Uri.encodeComponent(classroomId)}';
+  }
+
+  /// Whether [location] is in the teacher area, its door included.
+  static bool isTeacherArea(String location) {
+    return location == teacherArea || location.startsWith('$teacherArea/');
+  }
+
+  /// Whether [location] is « Qui es-tu ? » of a class.
+  static bool isPupilPicker(String location) {
+    return location.startsWith('/players/class/');
+  }
 }

@@ -741,9 +741,9 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 
 - [ ] **F29-01** Trancher avec le propriétaire, avant de coder, le contexte principal : tablettes partagées à l'école, ou téléphones des familles ; et la taille maximale d'une classe. Noter la réponse dans `docs/decisions.md`.
 - [x] **F29-02** Entités `ClassroomEntity`, élève (un profil rattaché à une classe) et `AssignmentEntity` (domaine, unité, échéance) ; migration.
-- [ ] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
-- [ ] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
-- [ ] **F29-05** « Qui joue ? » en mode classe : choisir sa classe, puis son nom ou son avatar, avec recherche pour une classe nombreuse.
+- [x] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
+- [x] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
+- [x] **F29-05** « Qui joue ? » en mode classe : choisir sa classe, puis son nom ou son avatar, avec recherche pour une classe nombreuse.
 - [ ] **F29-06** Devoirs : l'enseignant donne une unité à travailler ; l'élève voit « Le devoir de la classe » en tête de l'accueil.
 - [ ] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
 - [ ] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.

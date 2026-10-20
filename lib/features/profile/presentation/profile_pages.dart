@@ -63,14 +63,20 @@ final class ProfilePages {
   /// "Aide audio" setting; none hides it.
   final List<String> helpAudioLanguages;
 
-  /// "Qui joue ?".
+  /// "Qui joue ?"; [header] goes above the players, such as the classes
+  /// of the device, [footer] at the bottom, such as the entry of the
+  /// teacher area.
   Widget buildWhoIsPlayingPage({
     Widget Function(String profileId)? footerOf,
+    Widget? header,
+    Widget? footer,
   }) {
     return WhoIsPlayingPage(
       getProfiles: _getProfiles,
       selectProfile: _selectProfile,
       footerOf: footerOf,
+      header: header,
+      footer: footer,
     );
   }
 
@@ -99,12 +105,14 @@ final class ProfilePages {
     );
   }
 
-  /// Creation of a player; [canGoBack] when other players exist.
-  Widget buildProfileCreationPage({required bool canGoBack}) {
+  /// Creation of a player; [canGoBack] when other players exist;
+  /// [footer] shows under the button on the very first creation.
+  Widget buildProfileCreationPage({required bool canGoBack, Widget? footer}) {
     return ProfileCreationPage(
       createProfile: _createProfile,
       selectProfile: _selectProfile,
       canGoBack: canGoBack,
+      footer: footer,
     );
   }
 

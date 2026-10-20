@@ -5,12 +5,15 @@ import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
 import 'package:kid_matix/core/router/challenge_code_routes.dart';
+import 'package:kid_matix/core/router/classroom_routes.dart';
 import 'package:kid_matix/core/router/play_routes.dart';
 import 'package:kid_matix/core/router/profile_session_redirect.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
+import 'package:kid_matix/core/services/teacher_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
@@ -44,6 +47,8 @@ GoRouter createAppRouter({
   ReminderPages? reminderPages,
   ShopPages? shopPages,
   LanguagePages? languagePages,
+  ClassroomPages? classroomPages,
+  TeacherSessionService? teacherSession,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -56,12 +61,14 @@ GoRouter createAppRouter({
     navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.learningPath,
     debugLogDiagnostics: kDebugMode,
-    refreshListenable: session,
+    refreshListenable: Listenable.merge(<Listenable?>[
+      session,
+      teacherSession,
+    ]),
     redirect: (BuildContext context, GoRouterState state) {
-      return redirectForProfileSession(
-        session: session,
-        location: state.matchedLocation,
-      );
+      final String location = state.matchedLocation;
+      return redirectForProfileSession(session: session, location: location) ??
+          _redirectForTeacher(teacherSession, location);
     },
     routes: <RouteBase>[
       GoRoute(
@@ -70,6 +77,13 @@ GoRouter createAppRouter({
           return profilePages.buildWhoIsPlayingPage(
             footerOf: (String profileId) =>
                 rewardPages.buildStreakPill(profileId: profileId),
+            header: classroomPages?.buildClassroomShelf(
+              onOpen: (String classroomId) =>
+                  context.go(AppRoutes.pupilPickerOf(classroomId)),
+            ),
+            footer: classroomPages?.buildTeacherEntry(
+              onOpen: () => context.go(AppRoutes.teacherArea),
+            ),
           );
         },
       ),
@@ -78,6 +92,9 @@ GoRouter createAppRouter({
         builder: (BuildContext context, GoRouterState state) {
           return profilePages.buildProfileCreationPage(
             canGoBack: session.hasProfiles,
+            footer: classroomPages?.buildTeacherEntry(
+              onOpen: () => context.go(AppRoutes.teacherArea),
+            ),
           );
         },
       ),
@@ -96,6 +113,8 @@ GoRouter createAppRouter({
           );
         },
       ),
+      if (classroomPages != null)
+        ...createClassroomRoutes(pages: classroomPages),
       ...createPlayRoutes(
         session: session,
         pathPages: pathPages,
@@ -275,6 +294,12 @@ GoRouter createAppRouter({
       ),
     ],
   );
+}
+
+/// The redirect of the teacher area, when the app has one.
+String? _redirectForTeacher(TeacherSessionService? teacher, String location) {
+  if (teacher == null) return null;
+  return redirectForTeacherArea(teacher: teacher, location: location);
 }
 
 /// Profile tab, with the edition of the player opened over the tab bar.

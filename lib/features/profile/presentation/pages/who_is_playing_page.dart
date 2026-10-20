@@ -21,6 +21,8 @@ class WhoIsPlayingPage extends StatelessWidget {
     required this.getProfiles,
     required this.selectProfile,
     this.footerOf,
+    this.header,
+    this.footer,
     super.key,
   });
 
@@ -33,21 +35,37 @@ class WhoIsPlayingPage extends StatelessWidget {
   /// Footer of the card of a player, such as their streak pill, or `null`.
   final Widget Function(String profileId)? footerOf;
 
+  /// Above the players, such as the classes of the device, or `null`.
+  final Widget? header;
+
+  /// At the bottom, such as the entry of the teacher area, or `null`.
+  final Widget? footer;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfilesBloc>(
       create: (_) =>
           ProfilesBloc(getProfiles: getProfiles, selectProfile: selectProfile)
             ..add(const ProfilesRequested()),
-      child: _WhoIsPlayingView(footerOf: footerOf),
+      child: _WhoIsPlayingView(
+        footerOf: footerOf,
+        header: header,
+        footer: footer,
+      ),
     );
   }
 }
 
 class _WhoIsPlayingView extends StatelessWidget {
-  const _WhoIsPlayingView({required this.footerOf});
+  const _WhoIsPlayingView({
+    required this.footerOf,
+    required this.header,
+    required this.footer,
+  });
 
   final Widget Function(String profileId)? footerOf;
+  final Widget? header;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +86,8 @@ class _WhoIsPlayingView extends StatelessWidget {
                     .add(ProfileSelected(profileId: profile.id)),
                 onNewPlayerTap: () => context.go(AppRoutes.profileCreation),
                 footerOf: footerOf,
+                header: header,
+                footer: footer,
               ),
             };
           },

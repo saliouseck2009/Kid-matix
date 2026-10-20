@@ -97,6 +97,145 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get classroomTeacherArea => 'Espacio docente';
+
+  @override
+  String get classroomCodeChooseHint =>
+      'Elige un código de 4 cifras. Cierra el espacio docente: no se lo des a tus alumnos.';
+
+  @override
+  String get classroomCodeConfirmHint => 'Escribe el mismo código otra vez.';
+
+  @override
+  String get classroomCodeEnterHint => 'Escribe tu código de 4 cifras.';
+
+  @override
+  String get classroomCodeLabel => 'Código';
+
+  @override
+  String get classroomCodeOpen => 'Abrir';
+
+  @override
+  String get classroomCodeNext => 'Continuar';
+
+  @override
+  String get classroomCodeWrong => 'Ese no es el código correcto.';
+
+  @override
+  String get classroomCodeMismatch =>
+      'Los dos códigos son distintos. Empieza otra vez.';
+
+  @override
+  String get classroomCodeInvalid => 'El código tiene 4 cifras.';
+
+  @override
+  String get classroomLeaveArea => 'Salir del espacio docente';
+
+  @override
+  String get classroomListTitle => 'Mis clases';
+
+  @override
+  String get classroomListEmpty =>
+      'Todavía no hay ninguna clase. Crea una clase y añade a todos sus alumnos de una vez.';
+
+  @override
+  String get classroomNew => 'Nueva clase';
+
+  @override
+  String classroomPupilCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos',
+      one: '1 alumno',
+      zero: 'Ningún alumno',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomNameLabel => 'Nombre de la clase';
+
+  @override
+  String get classroomNameHint => 'Por ejemplo 2.º B';
+
+  @override
+  String get classroomPupilsTitle => 'Alumnos';
+
+  @override
+  String get classroomPupilsByList => 'Apodos';
+
+  @override
+  String get classroomPupilsByNumber => 'Números';
+
+  @override
+  String get classroomPupilsListLabel => 'Un apodo por línea';
+
+  @override
+  String get classroomPupilsPrivacyHint =>
+      'Pon apodos o números en lugar de los nombres reales de los niños.';
+
+  @override
+  String get classroomPupilsCountLabel => 'Número de alumnos';
+
+  @override
+  String classroomPupilsPreview(int count, String first, String last) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos que añadir: de $first a $last',
+      one: '1 alumno que añadir: $first',
+      zero: 'Ningún alumno que añadir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String classroomPupilsUnusable(String nicknames) {
+    return 'Estos apodos no sirven: $nicknames. Un apodo tiene de 2 a 12 letras o cifras, y cada uno aparece una sola vez.';
+  }
+
+  @override
+  String get classroomCreate => 'Crear la clase';
+
+  @override
+  String get classroomErrorName =>
+      'Ponle un nombre a la clase (24 caracteres como máximo).';
+
+  @override
+  String get classroomErrorNoPupil => 'Añade al menos un alumno.';
+
+  @override
+  String classroomErrorTooMany(int max) {
+    return 'Una clase tiene como máximo $max alumnos.';
+  }
+
+  @override
+  String get classroomErrorTaken => 'Uno de estos apodos ya está en la clase.';
+
+  @override
+  String get classroomErrorGeneric =>
+      'Uy, no ha funcionado. Inténtalo otra vez.';
+
+  @override
+  String get classroomAddPupils => 'Añadir alumnos';
+
+  @override
+  String get classroomShelfTitle => 'Las clases';
+
+  @override
+  String get classroomPickerTitle => '¿Quién eres?';
+
+  @override
+  String get classroomPickerSearch => 'Busca tu nombre';
+
+  @override
+  String get classroomPickerNoMatch => 'Nadie en la clase se llama así.';
+
+  @override
+  String get classroomPickerEmpty => 'Esta clase todavía no tiene alumnos.';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override
