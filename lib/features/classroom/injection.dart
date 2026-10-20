@@ -1,7 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:kid_matix/core/services/teacher_area_lock.dart';
 import 'package:kid_matix/core/services/teacher_session_service.dart';
+import 'package:kid_matix/core/services/assigned_units_service.dart';
 import 'package:kid_matix/core/services/placement_result_service.dart';
+import 'package:kid_matix/features/classroom/domain/services/assigned_units_service_impl.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source.dart';
@@ -65,6 +67,9 @@ void _registerClassWork(GetIt sl) {
       () => const NoPlacementResultService(),
     );
   }
+  sl.registerLazySingleton<AssignedUnitsService>(
+    () => AssignedUnitsServiceImpl(roster: sl(), assignments: sl()),
+  );
   sl.registerLazySingleton<ClassItemCatalog>(
     () => ClassItemCatalog(domains: sl()),
   );

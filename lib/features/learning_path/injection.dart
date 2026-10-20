@@ -47,6 +47,7 @@ void registerLearningPathFeature(GetIt sl) {
       domains: sl(),
       settings: sl(),
       mastery: sl(),
+      assigned: sl(),
     ),
   );
   sl.registerLazySingleton<RunPlacementTestUseCase>(
