@@ -16,6 +16,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roste
 import 'package:kid_matix/features/classroom/domain/usecases/get_classrooms_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/remove_pupil_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/reset_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/select_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_classroom_changes_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/session/teacher_session_service_impl.dart';
@@ -83,6 +85,12 @@ void _registerClassrooms(GetIt sl) {
   );
   sl.registerLazySingleton<SelectPupilUseCase>(
     () => SelectPupilUseCase(roster: sl()),
+  );
+  sl.registerLazySingleton<ResetPupilUseCase>(
+    () => ResetPupilUseCase(roster: sl()),
+  );
+  sl.registerLazySingleton<RemovePupilUseCase>(
+    () => RemovePupilUseCase(roster: sl()),
   );
   sl.registerLazySingleton<WatchClassroomChangesUseCase>(
     () => WatchClassroomChangesUseCase(repository: sl(), roster: sl()),

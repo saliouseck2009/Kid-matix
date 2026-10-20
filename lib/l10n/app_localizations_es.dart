@@ -236,6 +236,55 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomPickerEmpty => 'Esta clase todavía no tiene alumnos.';
 
   @override
+  String get classroomCodeForgotten => '¿Olvidaste el código?';
+
+  @override
+  String classroomCodeLocked(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other:
+          'Demasiados intentos. Espera $seconds segundos antes de volver a intentarlo.',
+      one:
+          'Demasiados intentos. Espera 1 segundo antes de volver a intentarlo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomOneTabletHint =>
+      'Cada alumno juega siempre en la misma tableta: su progreso no pasa de una tableta a otra.';
+
+  @override
+  String classroomPupilManage(String nickname) {
+    return 'Gestionar a $nickname';
+  }
+
+  @override
+  String get classroomPupilReset => 'Reiniciar su progreso';
+
+  @override
+  String get classroomPupilResetMessage =>
+      'Se borrarán sus estrellas, coronas, insignias, XP y récords. Sus resultados de clase se quedan.';
+
+  @override
+  String get classroomPupilRemove => 'Quitar de la clase';
+
+  @override
+  String get classroomPupilRemoveMessage =>
+      'Este alumno y todo su progreso se borrarán de esta tableta, también sus resultados de clase.';
+
+  @override
+  String classroomPupilResetDone(String nickname) {
+    return 'El progreso de $nickname se ha reiniciado.';
+  }
+
+  @override
+  String classroomPupilRemoved(String nickname) {
+    return '$nickname ya no está en la clase.';
+  }
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override

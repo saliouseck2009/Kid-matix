@@ -10,6 +10,7 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_state.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/classroom_page_header.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/classroom_pupils_card.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/pupil_actions_listener.dart';
 
 /// The page of a class in the teacher area: its pupils, « Ajouter des
 /// élèves », and the sections of the other parts of the class mode
@@ -37,25 +38,27 @@ class TeacherClassroomPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BackToParent(
       onBack: onBack,
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocBuilder<ClassroomRosterCubit, ClassroomRosterState>(
-            builder: (BuildContext context, ClassroomRosterState state) {
-              return switch (state) {
-                ClassroomRosterLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                ClassroomRosterFailure() => Center(
-                  child: Text(context.l10n.classroomErrorGeneric),
-                ),
-                ClassroomRosterLoaded(:final roster) => _ClassroomView(
-                  roster: roster,
-                  onBack: onBack,
-                  onAddPupils: onAddPupils,
-                  sections: sections,
-                ),
-              };
-            },
+      child: PupilActionsListener(
+        child: Scaffold(
+          body: SafeArea(
+            child: BlocBuilder<ClassroomRosterCubit, ClassroomRosterState>(
+              builder: (BuildContext context, ClassroomRosterState state) {
+                return switch (state) {
+                  ClassroomRosterLoading() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  ClassroomRosterFailure() => Center(
+                    child: Text(context.l10n.classroomErrorGeneric),
+                  ),
+                  ClassroomRosterLoaded(:final roster) => _ClassroomView(
+                    roster: roster,
+                    onBack: onBack,
+                    onAddPupils: onAddPupils,
+                    sections: sections,
+                  ),
+                };
+              },
+            ),
           ),
         ),
       ),

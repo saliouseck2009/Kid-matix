@@ -6,6 +6,7 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_us
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classrooms_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/classroom_form_page.dart';
@@ -96,11 +97,21 @@ final class ClassroomPages {
     required VoidCallback onAddPupils,
     List<Widget> sections = const <Widget>[],
   }) {
-    return BlocProvider<ClassroomRosterCubit>(
-      create: (_) => ClassroomRosterCubit(
-        classroomId: classroomId,
-        useCases: _roster,
-      )..load(),
+    return MultiBlocProvider(
+      providers: <BlocProvider<Object?>>[
+        BlocProvider<ClassroomRosterCubit>(
+          create: (_) => ClassroomRosterCubit(
+            classroomId: classroomId,
+            useCases: _roster,
+          )..load(),
+        ),
+        BlocProvider<PupilActionsCubit>(
+          create: (_) => PupilActionsCubit(
+            reset: _roster.resetPupil,
+            remove: _roster.removePupil,
+          ),
+        ),
+      ],
       child: TeacherClassroomPage(
         onBack: onBack,
         onAddPupils: onAddPupils,

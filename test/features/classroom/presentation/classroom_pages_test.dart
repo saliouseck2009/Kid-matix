@@ -8,6 +8,8 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_cu
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/classroom_form_page.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/pupil_picker_page.dart';
+import 'package:kid_matix/features/classroom/presentation/pages/teacher_classroom_page.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/pupil_actions_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/pupil_tile.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
@@ -130,5 +132,51 @@ void main() {
       expect(find.textContaining(': B.'), findsOneWidget);
       expect(stack.classrooms.rows, isEmpty);
     });
+  });
+
+  testWidgets('the teacher resets a pupil from the class page', (
+    WidgetTester tester,
+  ) async {
+    // Arrange
+    final ClassroomEntity inputClassroom = (await stack.create(
+      params: const CreateClassroomParams(
+        name: 'CE1',
+        nicknames: <String>['Awa', 'Moussa'],
+      ),
+    )).requireData;
+    await pumpLocalized(
+      tester,
+      MultiBlocProvider(
+        providers: <BlocProvider<Object?>>[
+          BlocProvider<ClassroomRosterCubit>(
+            create: (_) => ClassroomRosterCubit(
+              classroomId: inputClassroom.id,
+              useCases: stack.rosterUseCases,
+            )..load(),
+          ),
+          BlocProvider<PupilActionsCubit>(
+            create: (_) => PupilActionsCubit(
+              reset: stack.rosterUseCases.resetPupil,
+              remove: stack.rosterUseCases.removePupil,
+            ),
+          ),
+        ],
+        child: TeacherClassroomPage(onBack: () {}, onAddPupils: () {}),
+      ),
+    );
+    await tester.pumpAndSettle();
+    // Act
+    await tester.tap(find.byTooltip('Gérer Awa'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Réinitialiser sa progression'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Réinitialiser'));
+    await tester.pumpAndSettle();
+    // Assert
+    expect(stack.roster.resetIds, hasLength(1));
+    expect(
+      find.text('La progression de Awa est remise à zéro.'),
+      findsOneWidget,
+    );
   });
 }

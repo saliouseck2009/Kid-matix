@@ -238,6 +238,53 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomPickerEmpty => 'Cette classe n\'a pas encore d\'élèves.';
 
   @override
+  String get classroomCodeForgotten => 'Code oublié ?';
+
+  @override
+  String classroomCodeLocked(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: 'Trop d\'essais. Attends $seconds secondes avant de réessayer.',
+      one: 'Trop d\'essais. Attends 1 seconde avant de réessayer.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomOneTabletHint =>
+      'Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d\'une tablette à l\'autre.';
+
+  @override
+  String classroomPupilManage(String nickname) {
+    return 'Gérer $nickname';
+  }
+
+  @override
+  String get classroomPupilReset => 'Réinitialiser sa progression';
+
+  @override
+  String get classroomPupilResetMessage =>
+      'Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.';
+
+  @override
+  String get classroomPupilRemove => 'Retirer de la classe';
+
+  @override
+  String get classroomPupilRemoveMessage =>
+      'Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.';
+
+  @override
+  String classroomPupilResetDone(String nickname) {
+    return 'La progression de $nickname est remise à zéro.';
+  }
+
+  @override
+  String classroomPupilRemoved(String nickname) {
+    return '$nickname est retiré de la classe.';
+  }
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

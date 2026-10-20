@@ -15,6 +15,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_us
 import 'package:kid_matix/features/classroom/domain/usecases/find_unusable_nicknames_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roster_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_classrooms_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/remove_pupil_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/reset_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/select_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_classroom_changes_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
@@ -60,6 +62,14 @@ final class InMemoryClassrooms implements ClassroomRepository {
   }) => createClassroom(classroom: classroom);
 
   @override
+  Future<DataState<void>> deleteEmptyClassroom({
+    required String classroomId,
+  }) async {
+    rows.remove(classroomId);
+    return const DataSuccess<void>(null);
+  }
+
+  @override
   Stream<void> watchChanges() => _changes.stream;
 }
 
@@ -87,11 +97,18 @@ final class InMemoryRoster implements PupilRosterService {
     return nicknames.where((String nickname) => nickname.length < 2).toList();
   }
 
+  /// Whether the next [addPupils] fails, like a database error.
+  bool failsNextAddition = false;
+
   @override
   Future<DataState<int>> addPupils({
     required String classroomId,
     required List<PupilDraft> pupils,
   }) async {
+    if (failsNextAddition) {
+      failsNextAddition = false;
+      return const DataFailed<int>(CacheException(message: 'Disk full.'));
+    }
     final List<PlayerIdentity> list = this.pupils.putIfAbsent(
       classroomId,
       () => <PlayerIdentity>[],
@@ -107,6 +124,23 @@ final class InMemoryRoster implements PupilRosterService {
       );
     }
     return DataSuccess<int>(pupils.length);
+  }
+
+  /// The pupils whose progress was reset.
+  final List<String> resetIds = <String>[];
+
+  @override
+  Future<DataState<void>> resetPupil({required String profileId}) async {
+    resetIds.add(profileId);
+    return const DataSuccess<void>(null);
+  }
+
+  @override
+  Future<DataState<void>> removePupil({required String profileId}) async {
+    for (final List<PlayerIdentity> list in pupils.values) {
+      list.removeWhere((PlayerIdentity pupil) => pupil.id == profileId);
+    }
+    return const DataSuccess<void>(null);
   }
 
   @override
@@ -167,6 +201,8 @@ final class FakeClassroomStack {
     getRoster: _getRoster,
     selectPupil: SelectPupilUseCase(roster: roster),
     watchChanges: _watch,
+    resetPupil: ResetPupilUseCase(roster: roster),
+    removePupil: RemovePupilUseCase(roster: roster),
   );
 
   /// The use cases of the lists of classes.

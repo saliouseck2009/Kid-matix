@@ -236,6 +236,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomPickerEmpty => 'This class has no pupils yet.';
 
   @override
+  String get classroomCodeForgotten => 'Forgot the code?';
+
+  @override
+  String classroomCodeLocked(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: 'Too many tries. Wait $seconds seconds before trying again.',
+      one: 'Too many tries. Wait 1 second before trying again.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomOneTabletHint =>
+      'Each pupil always plays on the same tablet: their progress does not move from one tablet to another.';
+
+  @override
+  String classroomPupilManage(String nickname) {
+    return 'Manage $nickname';
+  }
+
+  @override
+  String get classroomPupilReset => 'Reset their progress';
+
+  @override
+  String get classroomPupilResetMessage =>
+      'Their stars, crowns, badges, XP and records will be erased. Their class results stay.';
+
+  @override
+  String get classroomPupilRemove => 'Remove from the class';
+
+  @override
+  String get classroomPupilRemoveMessage =>
+      'This pupil and all their progress will be erased from this tablet, their class results too.';
+
+  @override
+  String classroomPupilResetDone(String nickname) {
+    return '$nickname\'s progress is reset.';
+  }
+
+  @override
+  String classroomPupilRemoved(String nickname) {
+    return '$nickname is removed from the class.';
+  }
+
+  @override
   String get profileCreationTitle => 'New player';
 
   @override

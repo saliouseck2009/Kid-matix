@@ -9,6 +9,8 @@ import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
+import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/reset_progress_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 
 /// [PupilRosterService] over the stored profiles.
@@ -21,11 +23,15 @@ final class PupilRosterServiceImpl implements PupilRosterService {
   const PupilRosterServiceImpl({
     required this._repository,
     required this._selectProfile,
+    required this._resetProgress,
+    required this._deleteProfile,
     required this._clock,
   });
 
   final ProfileRepository _repository;
   final SelectProfileUseCase _selectProfile;
+  final ResetProgressUseCase _resetProgress;
+  final DeleteProfileUseCase _deleteProfile;
   final Clock _clock;
 
   @override
@@ -70,10 +76,13 @@ final class PupilRosterServiceImpl implements PupilRosterService {
     if (existing case DataFailed<List<ProfileEntity>>(:final exception)) {
       return DataFailed<int>(exception);
     }
-    final AppException? conflict = await _findConflict(classroomId, pupils);
-    if (conflict != null) return DataFailed<int>(conflict);
-    final int firstIndex =
-        (existing as DataSuccess<List<ProfileEntity>>).data.length;
+    final List<ProfileEntity> current =
+        (existing as DataSuccess<List<ProfileEntity>>).data;
+    final AppException? problem =
+        _findCapacityProblem(current, pupils) ??
+        await _findConflict(classroomId, pupils);
+    if (problem != null) return DataFailed<int>(problem);
+    final int firstIndex = current.length;
     return _repository.createPupils(
       pupils: <ProfileEntity>[
         for (int index = 0; index < pupils.length; index++)
@@ -93,7 +102,35 @@ final class PupilRosterServiceImpl implements PupilRosterService {
   }
 
   @override
+  Future<DataState<void>> resetPupil({required String profileId}) {
+    return _resetProgress(params: profileId);
+  }
+
+  @override
+  Future<DataState<void>> removePupil({required String profileId}) {
+    return _deleteProfile(params: profileId);
+  }
+
+  @override
   Stream<void> watchChanges() => _repository.watchProfileChanges();
+
+  /// A `LimitReachedException` when the new ones of [pupils] would take
+  /// the class beyond its maximum; pupils already there do not count.
+  static AppException? _findCapacityProblem(
+    List<ProfileEntity> current,
+    List<PupilDraft> pupils,
+  ) {
+    final Set<String> currentIds = <String>{
+      for (final ProfileEntity profile in current) profile.id,
+    };
+    final int newCount = pupils
+        .where((PupilDraft pupil) => !currentIds.contains(pupil.id))
+        .length;
+    if (current.length + newCount <= PupilRosterService.maxPupilsPerClass) {
+      return null;
+    }
+    return const LimitReachedException(message: 'Too many pupils.');
+  }
 
   Future<AppException?> _findConflict(
     String classroomId,

@@ -460,6 +460,66 @@ abstract class AppLocalizations {
   /// **'Cette classe n\'a pas encore d\'élèves.'**
   String get classroomPickerEmpty;
 
+  /// Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code oublié ?'**
+  String get classroomCodeForgotten;
+
+  /// Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds, plural, =1{Trop d\'essais. Attends 1 seconde avant de réessayer.} other{Trop d\'essais. Attends {seconds} secondes avant de réessayer.}}'**
+  String classroomCodeLocked(int seconds);
+
+  /// Class mode, one-line hint of the class creation screen: a pupil keeps one tablet, because only the class results travel between tablets, not the progress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d\'une tablette à l\'autre.'**
+  String get classroomOneTabletHint;
+
+  /// Class mode, tooltip of the icon button next to a pupil on the class page of the teacher area, which offers to reset their progress or remove them.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gérer {nickname}'**
+  String classroomPupilManage(String nickname);
+
+  /// Class mode, teacher area: action of the menu of a pupil that erases their progress. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser sa progression'**
+  String get classroomPupilReset;
+
+  /// Class mode, teacher area: text of the confirmation before erasing the progress of a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.'**
+  String get classroomPupilResetMessage;
+
+  /// Class mode, teacher area: action of the menu of a pupil that deletes them. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer de la classe'**
+  String get classroomPupilRemove;
+
+  /// Class mode, teacher area: text of the confirmation before deleting a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.'**
+  String get classroomPupilRemoveMessage;
+
+  /// Class mode, snack bar after the teacher reset the progress of a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'La progression de {nickname} est remise à zéro.'**
+  String classroomPupilResetDone(String nickname);
+
+  /// Class mode, snack bar after the teacher removed a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname} est retiré de la classe.'**
+  String classroomPupilRemoved(String nickname);
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

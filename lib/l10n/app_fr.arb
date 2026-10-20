@@ -290,6 +290,70 @@
   "@classroomPickerEmpty": {
     "description": "Class mode, text of « Qui es-tu ? » or of the class page when the class has no pupil."
   },
+  "classroomCodeForgotten": "Code oublié ?",
+  "@classroomCodeForgotten": {
+    "description": "Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short."
+  },
+  "classroomCodeLocked": "{seconds, plural, =1{Trop d'essais. Attends 1 seconde avant de réessayer.} other{Trop d'essais. Attends {seconds} secondes avant de réessayer.}}",
+  "@classroomCodeLocked": {
+    "description": "Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomOneTabletHint": "Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d'une tablette à l'autre.",
+  "@classroomOneTabletHint": {
+    "description": "Class mode, one-line hint of the class creation screen: a pupil keeps one tablet, because only the class results travel between tablets, not the progress."
+  },
+  "classroomPupilManage": "Gérer {nickname}",
+  "@classroomPupilManage": {
+    "description": "Class mode, tooltip of the icon button next to a pupil on the class page of the teacher area, which offers to reset their progress or remove them.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomPupilReset": "Réinitialiser sa progression",
+  "@classroomPupilReset": {
+    "description": "Class mode, teacher area: action of the menu of a pupil that erases their progress. One line."
+  },
+  "classroomPupilResetMessage": "Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.",
+  "@classroomPupilResetMessage": {
+    "description": "Class mode, teacher area: text of the confirmation before erasing the progress of a pupil."
+  },
+  "classroomPupilRemove": "Retirer de la classe",
+  "@classroomPupilRemove": {
+    "description": "Class mode, teacher area: action of the menu of a pupil that deletes them. One line."
+  },
+  "classroomPupilRemoveMessage": "Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.",
+  "@classroomPupilRemoveMessage": {
+    "description": "Class mode, teacher area: text of the confirmation before deleting a pupil."
+  },
+  "classroomPupilResetDone": "La progression de {nickname} est remise à zéro.",
+  "@classroomPupilResetDone": {
+    "description": "Class mode, snack bar after the teacher reset the progress of a pupil.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomPupilRemoved": "{nickname} est retiré de la classe.",
+  "@classroomPupilRemoved": {
+    "description": "Class mode, snack bar after the teacher removed a pupil.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."

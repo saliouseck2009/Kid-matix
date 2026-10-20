@@ -292,6 +292,8 @@ ClassroomPages _createClassroomPages(ProfilePages profilePages) {
       getRoster: sl(),
       selectPupil: sl(),
       watchChanges: sl(),
+      resetPupil: sl(),
+      removePupil: sl(),
     ),
     avatarOf: (PlayerIdentity player, double size) =>
         profilePages.buildAvatar(player: player, size: size),
