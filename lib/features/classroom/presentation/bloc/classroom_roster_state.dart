@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/error/app_error_code.dart';
+import 'package:kid_matix/core/utils/text_folding.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
 import 'package:kid_matix/features/classroom/domain/entities/pupil_entity.dart';
 import 'package:meta/meta.dart';
@@ -27,15 +28,17 @@ final class ClassroomRosterLoaded extends ClassroomRosterState {
   /// What the pupil typed in the search field.
   final String query;
 
-  /// The pupils whose nickname contains [query], ignoring case.
+  /// The pupils whose nickname contains [query], ignoring case and
+  /// accents.
   final List<PupilEntity> visiblePupils;
 
   static List<PupilEntity> _filter(List<PupilEntity> pupils, String query) {
-    final String needle = query.trim().toLowerCase();
+    final String needle = TextFolding.fold(query.trim());
     if (needle.isEmpty) return pupils;
     return pupils
         .where(
-          (PupilEntity pupil) => pupil.nickname.toLowerCase().contains(needle),
+          (PupilEntity pupil) =>
+              TextFolding.fold(pupil.nickname).contains(needle),
         )
         .toList();
   }
