@@ -4,12 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/entities/app_color_theme.dart';
+import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
+import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
 import 'package:kid_matix/main.dart';
 
+import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
+import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+
+import '../features/classroom/helpers/classroom_fakes.dart';
 import '../features/profile/helpers/profile_fixtures.dart';
+import '../helpers/data_state_test_extension.dart';
 import '../helpers/fake_profile_session_service.dart';
 import '../helpers/fake_speech_service.dart';
 import '../helpers/test_challenge_pages.dart';
@@ -39,6 +48,7 @@ void main() {
     double textScale = _largestTextScale,
     AppColorTheme theme = AppColorTheme.lavender,
     Locale locale = const Locale('fr'),
+    ClassroomPages? classroomPages,
   }) async {
     tester.view
       ..physicalSize = _phone
@@ -50,8 +60,12 @@ void main() {
     // A voice is installed: every listen button must fit at every size.
     final FakeSpeechService speech = FakeSpeechService();
     router = createAppRouter(
-      session: FakeProfileSessionService(activeProfileId: 'p-1'),
-      profilePages: buildProfilePages(),
+      session: FakeProfileSessionService(
+        activeProfileId: classroomPages == null ? 'p-1' : null,
+      ),
+      classroomPages: classroomPages,
+      teacherSession: classroomPages == null ? null : OpenTeacherSession(),
+      profilePages: buildProfilePages(getProfiles: _twoPlayers()),
       quizPages: buildTestQuizPages(speech: speech),
       pathPages: buildTestPathPages(),
       rewardPages: buildTestRewardPages(),
@@ -137,6 +151,41 @@ void main() {
           expect(find.byType(Scaffold), findsWidgets);
         });
       }
+    }
+  });
+
+  group('Class mode at 130 % on a small phone', () {
+    for (final String language in <String>['fr', 'en', 'es']) {
+      testWidgets('cuts no text on the class screens in $language', (
+        WidgetTester tester,
+      ) async {
+        // Arrange
+        final FakeClassroomStack stack = FakeClassroomStack();
+        final String classroomId = (await stack.create(
+          params: CreateClassroomParams(
+            name: 'CE1 B Bambey',
+            nicknames: ClassroomRules.numberNicknames(count: 40),
+          ),
+        )).requireData.id;
+        await pumpApp(
+          tester,
+          locale: Locale(language),
+          classroomPages: buildTestClassroomPages(stack, OpenTeacherSession()),
+        );
+        // Act and assert
+        for (final String location in <String>[
+          AppRoutes.whoIsPlaying,
+          AppRoutes.teacherClassrooms,
+          AppRoutes.classroomCreation,
+          AppRoutes.teacherClassroomOf(classroomId),
+          AppRoutes.classroomPupilsAdditionOf(classroomId),
+          AppRoutes.pupilPickerOf(classroomId),
+        ]) {
+          await visit(tester, location);
+          expect(tester.takeException(), isNull, reason: location);
+          expect(find.byType(Scaffold), findsWidgets, reason: location);
+        }
+      });
     }
   });
 
@@ -238,3 +287,15 @@ final List<(String, String)> _divisionScreens = <(String, String)>[
 /// of the screen, which once hung on a loaded machine; failing beats
 /// waiting forever.
 const Timeout _guidelineTimeout = Timeout(Duration(minutes: 2));
+
+/// Two free players on « Qui joue ? ».
+MockGetProfilesUseCase _twoPlayers() {
+  final MockGetProfilesUseCase mock = MockGetProfilesUseCase();
+  when(mock.call).thenAnswer(
+    (_) async => DataSuccess<List<ProfileEntity>>(<ProfileEntity>[
+      buildProfile(),
+      buildProfile(id: 'p-2', nickname: 'Moussa Diop'),
+    ]),
+  );
+  return mock;
+}

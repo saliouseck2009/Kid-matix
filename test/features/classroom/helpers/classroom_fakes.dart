@@ -23,6 +23,17 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_us
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
 
+import 'package:kid_matix/core/services/teacher_session_service.dart';
+import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/services/teacher_code_attempts.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/choose_teacher_code_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/forget_teacher_code_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_access_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+
+import '../../../helpers/in_memory_local_storage.dart';
 import 'classroom_device.dart';
 
 /// [ClassroomRepository] kept in memory.
@@ -221,4 +232,49 @@ final class FakeClassroomStack {
 /// Draws an avatar as an empty box of [size].
 Widget boxAvatar(PlayerIdentity player, double size) {
   return SizedBox.square(dimension: size);
+}
+
+/// A teacher area lock the test opens by hand.
+final class OpenTeacherSession extends ChangeNotifier
+    implements TeacherSessionService {
+  @override
+  bool isUnlocked = true;
+
+  @override
+  void lock() => isUnlocked = false;
+
+  @override
+  void unlock() => isUnlocked = true;
+}
+
+/// The pages of the class mode over [stack], the teacher area open.
+ClassroomPages buildTestClassroomPages(
+  FakeClassroomStack stack,
+  TeacherSessionService session,
+) {
+  final TeacherCodeRepositoryImpl codes = TeacherCodeRepositoryImpl(
+    storage: InMemoryLocalStorage(),
+  );
+  final TeacherCodeAttempts attempts = TeacherCodeAttempts();
+  final CloseTeacherAreaUseCase closeArea = CloseTeacherAreaUseCase(
+    session: session,
+  );
+  return ClassroomPages(
+    access: TeacherAccessUseCases(
+      getAccess: GetTeacherAccessUseCase(codes: codes, session: session),
+      chooseCode: ChooseTeacherCodeUseCase(codes: codes, session: session),
+      openArea: OpenTeacherAreaUseCase(
+        codes: codes,
+        lock: session,
+        attempts: attempts,
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
+      ),
+      closeArea: closeArea,
+      forgetCode: ForgetTeacherCodeUseCase(codes: codes, attempts: attempts),
+    ),
+    list: stack.listUseCases(closeArea),
+    form: stack.form,
+    roster: stack.rosterUseCases,
+    avatarOf: boxAvatar,
+  );
 }

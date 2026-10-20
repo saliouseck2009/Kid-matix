@@ -89,6 +89,41 @@ void main() {
       await databaseFactoryFfi.deleteDatabase(inputPath);
     });
 
+    test('upgraded from 13, lets a free and a pupil « Awa » coexist', () async {
+      // Arrange
+      final String inputPath =
+          '${await databaseFactoryFfi.getDatabasesPath()}'
+          '/migration_015_nickname_test.db';
+      await databaseFactoryFfi.deleteDatabase(inputPath);
+      final AppDatabase versionThirteen = _openDatabase(
+        appMigrations.take(13).toList(),
+        inputPath,
+      );
+      await (await versionThirteen.database).insert(
+        'profile',
+        _profileRow('p1', 'Awa'),
+      );
+      await versionThirteen.close();
+      final AppDatabase upgraded = _openDatabase(appMigrations, inputPath);
+      final Database upgradedDatabase = await upgraded.database;
+      await upgradedDatabase.insert('classroom', _classroomRow('c1'));
+      // Act
+      await upgradedDatabase.insert(
+        'profile',
+        _profileRow('p2', 'Awa', classroomId: 'c1'),
+      );
+      // Assert
+      final List<Map<String, Object?>> actualIndexes = await upgradedDatabase
+          .rawQuery(
+            "SELECT name FROM sqlite_master WHERE type = 'index' "
+            "AND name = 'profile_normalized_nickname_unique'",
+          );
+      expect(actualIndexes, isEmpty);
+      expect(await upgradedDatabase.query('profile'), hasLength(2));
+      await upgraded.close();
+      await databaseFactoryFfi.deleteDatabase(inputPath);
+    });
+
     test('keeps a nickname unique among the free players', () async {
       // Arrange
       await database.insert('profile', _profileRow('p1', 'Awa'));
