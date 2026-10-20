@@ -18,7 +18,8 @@ class ForgetTeacherCodeUseCase implements NoParamUseCase<DataState<void>> {
   @override
   Future<DataState<void>> call() async {
     final DataState<void> cleared = await _codes.clearCode();
-    if (cleared is DataSuccess<void>) _attempts.clear();
-    return cleared;
+    if (cleared is DataFailed<void>) return cleared;
+    _attempts.clear();
+    return _codes.saveLockedUntil(until: null);
   }
 }

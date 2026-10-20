@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/close_teacher_area_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/classrooms_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/pages/teacher_classrooms_page.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
@@ -16,6 +20,7 @@ import 'package:kid_matix/features/classroom/presentation/widgets/pupil_tile.dar
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/pump_localized.dart';
+import '../../../helpers/in_memory_local_storage.dart';
 import '../helpers/classroom_fakes.dart';
 
 void main() {
@@ -189,5 +194,35 @@ void main() {
       find.text('La progression de Awa est remise à zéro.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('« Mes classes » says when the code was changed', (
+    WidgetTester tester,
+  ) async {
+    // Arrange
+    final InMemoryLocalStorage inputStorage = InMemoryLocalStorage();
+    await inputStorage.writeString(
+      key: TeacherCodeRepositoryImpl.changedAtKey,
+      value: DateTime(2026, 10, 21).toIso8601String(),
+    );
+    await pumpLocalized(
+      tester,
+      BlocProvider<ClassroomsCubit>(
+        create: (_) => ClassroomsCubit(
+          useCases: stack.listUseCases(
+            CloseTeacherAreaUseCase(session: OpenTeacherSession()),
+            codeStorage: inputStorage,
+          ),
+        )..load(),
+        child: TeacherClassroomsPage(
+          onOpenClassroom: (_) {},
+          onCreate: () {},
+          onLeave: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    // Assert
+    expect(find.text('Code changé le 21 octobre'), findsOneWidget);
   });
 }

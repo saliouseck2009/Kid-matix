@@ -28,10 +28,15 @@ final class ClassroomsCubit extends Cubit<ClassroomsState> {
   Future<void> _read() async {
     final DataState<List<ClassroomSummary>> read = await _useCases
         .getClassrooms();
+    final DataState<DateTime?> codeChange = await _useCases.getCodeChange();
     if (isClosed) return;
     emit(switch (read) {
       DataSuccess<List<ClassroomSummary>>(:final data) => ClassroomsLoaded(
         classrooms: data,
+        codeChangedAt: switch (codeChange) {
+          DataSuccess<DateTime?>(:final data) => data,
+          DataFailed<DateTime?>() => null,
+        },
       ),
       DataFailed<List<ClassroomSummary>>(:final exception) => ClassroomsFailure(
         errorCode: exception.code,

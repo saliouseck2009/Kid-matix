@@ -11,7 +11,8 @@ import 'package:kid_matix/features/classroom/domain/services/teacher_code_attemp
 /// Fails with a `ValidationException` on a wrong code, with a
 /// `LimitReachedException` while the door is closed after
 /// [TeacherCodeAttempts.maxWrongCodes] wrong codes (the fifth one
-/// included), and with a `NotFoundException` when no code was chosen.
+/// included; the end of the lockout survives a restart), and with a
+/// `NotFoundException` when no code was chosen.
 class OpenTeacherAreaUseCase implements UseCase<DataState<void>, String> {
   /// Creates the use case.
   const OpenTeacherAreaUseCase({
@@ -29,26 +30,41 @@ class OpenTeacherAreaUseCase implements UseCase<DataState<void>, String> {
   @override
   Future<DataState<void>> call({required String params}) async {
     final DateTime now = _clock.now();
-    if (_attempts.isLockedAt(now)) return _lockedOut();
+    final DataState<DateTime?> lockedUntil = await _codes.readLockedUntil();
+    switch (lockedUntil) {
+      case DataFailed<DateTime?>(:final exception):
+        return DataFailed<void>(exception);
+      case DataSuccess<DateTime?>(:final DateTime data) when now.isBefore(data):
+        return _lockedOut();
+      case DataSuccess<DateTime?>():
+        break;
+    }
     return switch (await _codes.readCode()) {
       DataFailed<String?>(:final exception) => DataFailed<void>(exception),
       DataSuccess<String?>(data: null) => const DataFailed<void>(
         NotFoundException(message: 'No teacher code yet.'),
       ),
-      DataSuccess<String?>(:final String data) when data == params => _open(),
-      DataSuccess<String?>() =>
-        _attempts.recordWrongCode(now)
-            ? _lockedOut()
-            : const DataFailed<void>(
-                ValidationException(message: 'Wrong teacher code.'),
-              ),
+      DataSuccess<String?>(:final String data) when data == params =>
+        await _open(),
+      DataSuccess<String?>() => await _refuse(now),
     };
   }
 
-  DataState<void> _open() {
+  Future<DataState<void>> _open() async {
     _attempts.clear();
+    await _codes.saveLockedUntil(until: null);
     _lock.unlock();
     return const DataSuccess<void>(null);
+  }
+
+  Future<DataState<void>> _refuse(DateTime now) async {
+    if (!_attempts.recordWrongCode()) {
+      return const DataFailed<void>(
+        ValidationException(message: 'Wrong teacher code.'),
+      );
+    }
+    await _codes.saveLockedUntil(until: now.add(TeacherCodeAttempts.lockout));
+    return _lockedOut();
   }
 
   static DataState<void> _lockedOut() {

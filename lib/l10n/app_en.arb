@@ -61,6 +61,7 @@
   "classroomPickerNoMatch": "Nobody in the class has that name.",
   "classroomPickerEmpty": "This class has no pupils yet.",
   "classroomCodeForgotten": "Forgot the code?",
+  "classroomCodeChanged": "Code changed on {date}",
   "classroomCodeLocked": "{seconds, plural, =1{Too many tries. Wait 1 second before trying again.} other{Too many tries. Wait {seconds} seconds before trying again.}}",
   "classroomOneTabletHint": "Each pupil always plays on the same tablet: their progress does not move from one tablet to another.",
   "classroomPupilManage": "Manage {nickname}",
