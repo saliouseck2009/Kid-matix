@@ -709,7 +709,7 @@ Le test de départ (F16) devient un vrai positionnement : l'enfant est placé se
 - [ ] **F27-02** Test adaptatif d'environ 5 minutes : il monte de niveau tant que l'enfant réussit et s'arrête au premier niveau non acquis.
 - [ ] **F27-03** Résultat : un niveau par domaine ; les unités acquises sont ouvertes, et le domaine et l'unité de départ sont recommandés sur l'accueil.
 - [ ] **F27-04** Le test se lit à voix haute (F23) et se repasse depuis le Profil.
-- [ ] **F27-05** Chaque résultat est conservé avec sa date (migration), pour comparer un début et une fin de période (F31).
+- [x] **F27-05** Chaque résultat est conservé avec sa date (migration), pour comparer un début et une fin de période (F31).
 - [ ] **F27-06** Écran de bilan mis à jour (sur le modèle de `18-placement-test-result.png`).
 - [ ] **F27-07** Tests : arrêt au premier niveau non acquis, unités ouvertes, test abandonné, historique des résultats.
 

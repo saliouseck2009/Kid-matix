@@ -38,9 +38,9 @@ void main() {
   setUpAll(sqfliteFfiInit);
 
   group('Migration 13', () {
-    test('is the last migration of the app', () {
+    test('is the thirteenth migration of the app', () {
       // Assert
-      expect(appMigrations.last.version, 13);
+      expect(appMigrations[12].version, 13);
     });
 
     test(
