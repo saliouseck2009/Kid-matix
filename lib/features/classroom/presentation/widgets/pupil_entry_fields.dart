@@ -75,6 +75,12 @@ class PupilEntryFields extends StatelessWidget {
           ),
         ),
         Text(
+          context.l10n.classroomOneTabletHint,
+          style: textTheme.bodySmall?.copyWith(
+            color: context.palette.mutedText,
+          ),
+        ),
+        Text(
           context.l10n.classroomPupilsPreview(
             nicknames.length,
             nicknames.firstOrNull ?? '',

@@ -70,6 +70,16 @@ final class ClassroomRepositoryImpl implements ClassroomRepository {
   }
 
   @override
+  Future<DataState<void>> deleteEmptyClassroom({
+    required String classroomId,
+  }) {
+    return _guard(() async {
+      await _classrooms.deleteClassroom(classroomId: classroomId);
+      _notifyChanged();
+    });
+  }
+
+  @override
   Stream<void> watchChanges() {
     return _changeBus.watchTable(table: ClassroomTables.classroom);
   }

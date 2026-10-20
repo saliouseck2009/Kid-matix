@@ -1,6 +1,6 @@
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
-import 'package:kid_matix/core/services/teacher_session_service.dart';
+import 'package:kid_matix/core/services/teacher_area_lock.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/teacher_code_repository.dart';
@@ -19,7 +19,7 @@ class ChooseTeacherCodeUseCase implements UseCase<DataState<void>, String> {
   });
 
   final TeacherCodeRepository _codes;
-  final TeacherSessionService _session;
+  final TeacherAreaLock _session;
 
   @override
   Future<DataState<void>> call({required String params}) async {

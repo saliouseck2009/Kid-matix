@@ -236,6 +236,55 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomPickerEmpty => 'Esta clase todavía no tiene alumnos.';
 
   @override
+  String get classroomCodeForgotten => '¿Olvidaste el código?';
+
+  @override
+  String classroomCodeLocked(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other:
+          'Demasiados intentos. Espera $seconds segundos antes de volver a intentarlo.',
+      one:
+          'Demasiados intentos. Espera 1 segundo antes de volver a intentarlo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomOneTabletHint =>
+      'Cada alumno juega siempre en la misma tableta: su progreso no pasa de una tableta a otra.';
+
+  @override
+  String classroomPupilManage(String nickname) {
+    return 'Gestionar a $nickname';
+  }
+
+  @override
+  String get classroomPupilReset => 'Reiniciar su progreso';
+
+  @override
+  String get classroomPupilResetMessage =>
+      'Se borrarán sus estrellas, coronas, insignias, XP y récords. Sus resultados de clase se quedan.';
+
+  @override
+  String get classroomPupilRemove => 'Quitar de la clase';
+
+  @override
+  String get classroomPupilRemoveMessage =>
+      'Este alumno y todo su progreso se borrarán de esta tableta, también sus resultados de clase.';
+
+  @override
+  String classroomPupilResetDone(String nickname) {
+    return 'El progreso de $nickname se ha reiniciado.';
+  }
+
+  @override
+  String classroomPupilRemoved(String nickname) {
+    return '$nickname ya no está en la clase.';
+  }
+
+  @override
   String get classroomAssignmentTitle => 'La tarea de la clase';
 
   @override
@@ -354,14 +403,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomPupilNeverPlayed => 'Aún no ha jugado';
 
   @override
-  String classroomPupilSummary(int sessions, int minutes, int percent) {
+  String classroomPupilSummary(int sessions, String time, int percent) {
     String _temp0 = intl.Intl.pluralLogic(
       sessions,
       locale: localeName,
       other: '$sessions sesiones',
       one: '1 sesión',
     );
-    return '$_temp0 · $minutes min · $percent % de respuestas correctas';
+    return '$_temp0 · $time · $percent % de respuestas correctas';
+  }
+
+  @override
+  String classroomPracticeMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String classroomPracticeSeconds(int seconds) {
+    return '$seconds s';
   }
 
   @override

@@ -49,10 +49,6 @@ class TeacherClassroomsPage extends StatelessWidget {
         body: SafeArea(
           child: BlocBuilder<ClassroomsCubit, ClassroomsState>(
             builder: (BuildContext context, ClassroomsState state) {
-              final List<ClassroomSummary> classrooms = switch (state) {
-                ClassroomsLoaded(:final classrooms) => classrooms,
-                _ => const <ClassroomSummary>[],
-              };
               return ListView(
                 padding: const EdgeInsets.all(AppSizes.space24),
                 children: <Widget>[
@@ -63,7 +59,7 @@ class TeacherClassroomsPage extends StatelessWidget {
                     onBack: () => _leave(context),
                   ),
                   const SizedBox(height: AppSizes.space24),
-                  ..._content(context, state, classrooms),
+                  _ClassroomList(state: state, onOpen: onOpenClassroom),
                   const SizedBox(height: AppSizes.space24),
                   DepthButton(
                     label: context.l10n.classroomNew,
@@ -82,31 +78,35 @@ class TeacherClassroomsPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  List<Widget> _content(
-    BuildContext context,
-    ClassroomsState state,
-    List<ClassroomSummary> classrooms,
-  ) {
+/// The classes of « Mes classes », or why there is none.
+class _ClassroomList extends StatelessWidget {
+  const _ClassroomList({required this.state, required this.onOpen});
+
+  final ClassroomsState state;
+  final ValueChanged<String> onOpen;
+
+  @override
+  Widget build(BuildContext context) {
     return switch (state) {
-      ClassroomsLoading() => const <Widget>[
-        Center(child: CircularProgressIndicator()),
-      ],
-      ClassroomsFailure() => <Widget>[Text(context.l10n.classroomErrorGeneric)],
-      ClassroomsLoaded() when classrooms.isEmpty => <Widget>[
-        Text(context.l10n.classroomListEmpty),
-      ],
-      ClassroomsLoaded() => <Widget>[
-        for (final ClassroomSummary summary in classrooms)
-          Padding(
-            key: ValueKey<String>(summary.classroom.id),
-            padding: const EdgeInsets.only(bottom: AppSizes.space12),
-            child: ClassroomCard(
+      ClassroomsLoading() => const Center(child: CircularProgressIndicator()),
+      ClassroomsFailure() => Text(context.l10n.classroomErrorGeneric),
+      ClassroomsLoaded(:final classrooms) when classrooms.isEmpty => Text(
+        context.l10n.classroomListEmpty,
+      ),
+      ClassroomsLoaded(:final classrooms) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: AppSizes.space12,
+        children: <Widget>[
+          for (final ClassroomSummary summary in classrooms)
+            ClassroomCard(
+              key: ValueKey<String>(summary.classroom.id),
               summary: summary,
-              onTap: () => onOpenClassroom(summary.classroom.id),
+              onTap: () => onOpen(summary.classroom.id),
             ),
-          ),
-      ],
+        ],
+      ),
     };
   }
 }

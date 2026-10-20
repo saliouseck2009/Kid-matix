@@ -14,6 +14,7 @@ import 'package:kid_matix/features/classroom/presentation/widgets/class_challeng
 import 'package:kid_matix/features/classroom/presentation/widgets/class_item_labels.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/classroom_page_header.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/level_groups_card.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/pupil_actions_listener.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/pupil_avatar_builder.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/pupil_progress_tile.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/struggles_card.dart';
@@ -56,23 +57,25 @@ class TeacherClassroomPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BackToParent(
       onBack: onBack,
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocBuilder<ClassOverviewCubit, ClassOverviewState>(
-            builder: (BuildContext context, ClassOverviewState state) {
-              return switch (state) {
-                ClassOverviewLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                ClassOverviewFailure() => Center(
-                  child: Text(context.l10n.classroomErrorGeneric),
-                ),
-                ClassOverviewLoaded(:final overview) => _OverviewView(
-                  overview: overview,
-                  page: this,
-                ),
-              };
-            },
+      child: PupilActionsListener(
+        child: Scaffold(
+          body: SafeArea(
+            child: BlocBuilder<ClassOverviewCubit, ClassOverviewState>(
+              builder: (BuildContext context, ClassOverviewState state) {
+                return switch (state) {
+                  ClassOverviewLoading() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  ClassOverviewFailure() => Center(
+                    child: Text(context.l10n.classroomErrorGeneric),
+                  ),
+                  ClassOverviewLoaded(:final overview) => _OverviewView(
+                    overview: overview,
+                    page: this,
+                  ),
+                };
+              },
+            ),
           ),
         ),
       ),

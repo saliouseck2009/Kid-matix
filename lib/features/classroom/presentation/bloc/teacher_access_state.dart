@@ -23,6 +23,9 @@ enum TeacherCodeError {
 
   /// The second code typed at the first visit differs from the first.
   mismatch,
+
+  /// Too many wrong codes: the door stays closed for a while.
+  locked,
 }
 
 /// What the door of the teacher area shows.

@@ -16,4 +16,8 @@ abstract interface class ClassroomLocalDataSource {
 
   /// Overwrites the live row of [classroom]; returns the rows changed.
   Future<int> updateClassroom({required ClassroomLocalModel classroom});
+
+  /// Deletes the row of [classroomId]; the database refuses it while a
+  /// pupil points to it. Returns the rows deleted.
+  Future<int> deleteClassroom({required String classroomId});
 }

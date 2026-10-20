@@ -24,6 +24,10 @@ abstract interface class ClassroomRepository {
   /// Fails with a `NotFoundException` when it does not exist.
   Future<DataState<void>> updateClassroom({required ClassroomEntity classroom});
 
+  /// Deletes the class [classroomId] when it holds no pupil, such as a
+  /// class whose pupils could not be written at its creation.
+  Future<DataState<void>> deleteEmptyClassroom({required String classroomId});
+
   /// Emits an event after each change to the classes.
   Stream<void> watchChanges();
 }

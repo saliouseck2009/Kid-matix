@@ -244,8 +244,11 @@ GoRouter createAppRouter({
                 ],
               ),
               rewardPages.buildBadgesCard(profileId: profileId),
-              leaderboardPages.buildEntryCard(
-                onOpen: () => context.go(AppRoutes.leaderboard),
+              profilePages.buildForFreePlayer(
+                profileId: profileId,
+                child: leaderboardPages.buildEntryCard(
+                  onOpen: () => context.go(AppRoutes.leaderboard),
+                ),
               ),
             ],
             settingsGameRows: <Widget>[

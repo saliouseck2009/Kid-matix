@@ -18,6 +18,10 @@ import 'package:kid_matix/features/profile/data/datasources/profile_local_data_s
 import 'package:kid_matix/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
 import 'package:kid_matix/features/profile/domain/services/pupil_roster_service_impl.dart';
+import 'package:kid_matix/core/storage/progress_reset_hook.dart';
+import 'package:kid_matix/core/storage/progress_resetter.dart';
+import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
+import 'package:kid_matix/features/profile/domain/usecases/reset_progress_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/select_profile_use_case.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/services/placement_result_service.dart';
@@ -115,6 +119,14 @@ final class ClassroomDevice {
   late final PupilRosterService roster = PupilRosterServiceImpl(
     repository: profiles,
     selectProfile: SelectProfileUseCase(repository: profiles),
+    resetProgress: ResetProgressUseCase(
+      resetter: ProgressResetter(
+        database: database,
+        hooks: ProgressResetHooks(),
+        changeBus: changeBus,
+      ),
+    ),
+    deleteProfile: DeleteProfileUseCase(repository: profiles),
     clock: clock,
   );
 
