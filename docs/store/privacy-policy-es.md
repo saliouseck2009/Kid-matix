@@ -93,6 +93,10 @@ importarlo en otro dispositivo; un control parental protege la exportación y
 la importación. La aplicación no envía nada: el archivo va solo donde el
 usuario decide enviarlo.
 
+En el modo clase, los archivos de clase (apodos de los alumnos y sus
+resultados) solo salen del dispositivo cuando el docente los comparte él
+mismo desde el espacio docente, protegido por su código.
+
 La copia de seguridad automática del sistema (cuenta de Google o iCloud)
 está desactivada para Kid Matix: los datos del juego no se copian en ella.
 

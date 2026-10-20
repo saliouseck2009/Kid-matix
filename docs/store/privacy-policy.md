@@ -89,8 +89,8 @@ l'export et l'import. L'application n'envoie rien : le fichier va seulement
 où l'utilisateur choisit de l'envoyer.
 
 En mode classe, les fichiers de classe (pseudos des élèves et leurs
-résultats) ne quittent l'appareil que lorsque l'enseignant les partage lui-
-même depuis l'espace enseignant, protégé par son code.
+résultats) ne quittent l'appareil que lorsque l'enseignant les partage
+lui-même depuis l'espace enseignant, protégé par son code.
 
 La sauvegarde automatique du système (compte Google ou iCloud) est
 désactivée pour Kid Matix : les données du jeu n'y sont pas copiées.
