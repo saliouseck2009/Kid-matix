@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:kid_matix/features/classroom/data/datasources/classroom_file_codec.dart';
 import 'package:kid_matix/features/classroom/data/repositories/classroom_transfer_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
@@ -73,7 +72,7 @@ void _registerTransfer(GetIt sl) {
   sl.registerLazySingleton<ClassroomTransferRepository>(
     () => ClassroomTransferRepositoryImpl(
       files: sl(),
-      codec: const ClassroomFileCodec(),
+      storage: sl(),
       clock: sl(),
       readAppVersion: () async => (await PackageInfo.fromPlatform()).version,
     ),
@@ -92,6 +91,7 @@ void _registerTransfer(GetIt sl) {
       assignments: sl(),
       journal: sl(),
       transfers: sl(),
+      clock: sl(),
     ),
   );
   sl.registerLazySingleton<ImportClassroomUseCase>(

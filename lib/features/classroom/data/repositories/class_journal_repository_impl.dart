@@ -47,10 +47,12 @@ final class ClassJournalRepositoryImpl implements ClassJournalRepository {
   @override
   Future<DataState<List<PracticeSession>>> getSessions({
     required String classroomId,
+    DateTime? writtenAfter,
   }) {
     return guardClassroomStorage(() async {
       final List<ClassSessionRows> rows = await _journal.getSessions(
         classroomId: classroomId,
+        writtenAfterMs: writtenAfter?.millisecondsSinceEpoch,
       );
       return rows
           .map((ClassSessionRows row) => row.session.toEntity(row.answers))

@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/clock.dart';
+import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/classroom/data/datasources/classroom_file_codec.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
@@ -16,10 +18,13 @@ final class ClassroomTransferRepositoryImpl
   /// in the files.
   const ClassroomTransferRepositoryImpl({
     required this._files,
-    required this._codec,
+    required this._storage,
     required this._clock,
     required this._readAppVersion,
   });
+
+  /// Preference key of the last export of a class, before its id.
+  static const String lastExportKeyPrefix = 'class_last_export_';
 
   /// Extension of the class files, the one of the backups.
   static const String fileExtension = 'kidmatix';
@@ -32,7 +37,7 @@ final class ClassroomTransferRepositoryImpl
   );
 
   final SharedFileDataSource _files;
-  final ClassroomFileCodec _codec;
+  final LocalStorage _storage;
   final Clock _clock;
   final Future<String> Function() _readAppVersion;
 
@@ -51,11 +56,12 @@ final class ClassroomTransferRepositoryImpl
       final DateTime now = _clock.now();
       return _files.shareFile(
         fileName: fileNameOf(transfer.classroom.name, now),
-        content: _codec.encode(
-          transfer,
+        // Thousands of answers: written away from the screen's isolate.
+        content: await compute(ClassroomFileCodec.encodeContent, (
+          transfer: transfer,
           exportedAt: now,
           appVersion: await _readAppVersion(),
-        ),
+        )),
       );
     });
   }
@@ -64,8 +70,32 @@ final class ClassroomTransferRepositoryImpl
   Future<DataState<ClassroomTransfer?>> pick() {
     return _guard(() async {
       final String? text = await _files.pickFile();
-      return text == null ? null : _codec.decode(text);
+      if (text == null) return null;
+      return compute(ClassroomFileCodec.decodeText, text);
     });
+  }
+
+  @override
+  Future<DataState<DateTime?>> readLastExport({required String classroomId}) {
+    return _guard(() async {
+      final String? stored = await _storage.readString(
+        key: '$lastExportKeyPrefix$classroomId',
+      );
+      return stored == null ? null : DateTime.tryParse(stored);
+    });
+  }
+
+  @override
+  Future<DataState<void>> saveLastExport({
+    required String classroomId,
+    required DateTime exportedAt,
+  }) {
+    return _guard(
+      () => _storage.writeString(
+        key: '$lastExportKeyPrefix$classroomId',
+        value: exportedAt.toIso8601String(),
+      ),
+    );
   }
 
   Future<DataState<T>> _guard<T>(Future<T> Function() action) async {

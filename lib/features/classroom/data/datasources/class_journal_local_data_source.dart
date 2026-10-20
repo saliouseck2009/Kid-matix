@@ -14,8 +14,12 @@ typedef ClassSessionRows = ({
 /// turns them into typed failures.
 abstract interface class ClassJournalLocalDataSource {
   /// Returns the live sessions of [classroomId] with their answers,
-  /// oldest first.
-  Future<List<ClassSessionRows>> getSessions({required String classroomId});
+  /// oldest first; only those written on this device after
+  /// [writtenAfterMs] (milliseconds since epoch) when it is given.
+  Future<List<ClassSessionRows>> getSessions({
+    required String classroomId,
+    int? writtenAfterMs,
+  });
 
   /// Inserts [sessions] in one transaction; returns how many were new.
   Future<int> insertSessions({required List<ClassSessionRows> sessions});

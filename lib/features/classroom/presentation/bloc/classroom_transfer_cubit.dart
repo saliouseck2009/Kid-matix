@@ -16,11 +16,14 @@ final class ClassroomTransferCubit extends Cubit<ClassroomTransferState> {
   final ImportClassroomUseCase _import;
 
   /// Writes the file of the class [classroomId] and opens the share
-  /// sheet.
-  Future<void> export(String classroomId) async {
+  /// sheet: the results since the last file, or all of them when
+  /// [isFull].
+  Future<void> export(String classroomId, {bool isFull = false}) async {
     if (state is ClassroomTransferBusy) return;
     emit(const ClassroomTransferBusy());
-    final DataState<bool> shared = await _export(params: classroomId);
+    final DataState<bool> shared = await _export(
+      params: (classroomId: classroomId, isFull: isFull),
+    );
     if (isClosed) return;
     emit(switch (shared) {
       DataSuccess<bool>(data: true) => const ClassroomTransferShared(),

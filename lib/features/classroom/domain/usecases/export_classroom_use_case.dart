@@ -1,4 +1,5 @@
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
@@ -14,29 +15,68 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roste
 /// file gives the class to a new tablet and brings the results to the
 /// teacher's.
 ///
-/// Takes the identifier of the class; resolves to whether it was
-/// shared.
-class ExportClassroomUseCase implements UseCase<DataState<bool>, String> {
+/// A delta file by default: only the sessions written on this tablet
+/// since its last file of the class; `isFull` sends them all again.
+/// Resolves to whether the file was shared.
+class ExportClassroomUseCase
+    implements UseCase<DataState<bool>, ({String classroomId, bool isFull})> {
   /// Creates the use case.
   const ExportClassroomUseCase({
     required this._getRoster,
     required this._assignments,
     required this._journal,
     required this._transfers,
+    required this._clock,
   });
 
   final GetClassroomRosterUseCase _getRoster;
   final AssignmentRepository _assignments;
   final ClassJournalRepository _journal;
   final ClassroomTransferRepository _transfers;
+  final Clock _clock;
 
   @override
-  Future<DataState<bool>> call({required String params}) async {
-    final DataState<ClassroomRoster> roster = await _getRoster(params: params);
+  Future<DataState<bool>> call({
+    required ({String classroomId, bool isFull}) params,
+  }) async {
+    final String classroomId = params.classroomId;
+    final DateTime now = _clock.now();
+    final DataState<DateTime?> since = params.isFull
+        ? const DataSuccess<DateTime?>(null)
+        : await _transfers.readLastExport(classroomId: classroomId);
+    if (since case DataFailed<DateTime?>(:final exception)) {
+      return DataFailed<bool>(exception);
+    }
+    final DataState<ClassroomTransfer> transfer = await _transferOf(
+      classroomId,
+      (since as DataSuccess<DateTime?>).data,
+    );
+    if (transfer case DataFailed<ClassroomTransfer>(:final exception)) {
+      return DataFailed<bool>(exception);
+    }
+    final DataState<bool> shared = await _transfers.share(
+      transfer: (transfer as DataSuccess<ClassroomTransfer>).data,
+    );
+    if (shared case DataSuccess<bool>(data: true)) {
+      await _transfers.saveLastExport(
+        classroomId: classroomId,
+        exportedAt: now,
+      );
+    }
+    return shared;
+  }
+
+  Future<DataState<ClassroomTransfer>> _transferOf(
+    String classroomId,
+    DateTime? since,
+  ) async {
+    final DataState<ClassroomRoster> roster = await _getRoster(
+      params: classroomId,
+    );
     final DataState<List<AssignmentEntity>> assignments = await _assignments
-        .getAssignments(classroomId: params);
+        .getAssignments(classroomId: classroomId);
     final DataState<List<PracticeSession>> sessions = await _journal
-        .getSessions(classroomId: params);
+        .getSessions(classroomId: classroomId, writtenAfter: since);
     return switch ((roster, assignments, sessions)) {
       (
         DataSuccess<ClassroomRoster>(data: final ClassroomRoster r),
@@ -45,8 +85,8 @@ class ExportClassroomUseCase implements UseCase<DataState<bool>, String> {
         ),
         DataSuccess<List<PracticeSession>>(data: final List<PracticeSession> s),
       ) =>
-        await _transfers.share(
-          transfer: ClassroomTransfer(
+        DataSuccess<ClassroomTransfer>(
+          ClassroomTransfer(
             classroom: r.classroom,
             pupils: r.pupils,
             assignments: a,
@@ -59,7 +99,7 @@ class ExportClassroomUseCase implements UseCase<DataState<bool>, String> {
         _,
         _,
         DataFailed<List<PracticeSession>>(:final exception),
-      ) => DataFailed<bool>(exception),
+      ) => DataFailed<ClassroomTransfer>(exception),
     };
   }
 }

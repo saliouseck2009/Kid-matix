@@ -13,7 +13,7 @@ ClassSessionFileModel _$ClassSessionFileModelFromJson(
     json['session'] as Map<String, dynamic>,
   ),
   answers: (json['answers'] as List<dynamic>)
-      .map((e) => ClassAnswerLocalModel.fromJson(e as Map<String, dynamic>))
+      .map((e) => (e as List<dynamic>).map((e) => e as Object).toList())
       .toList(),
 );
 
@@ -21,5 +21,5 @@ Map<String, dynamic> _$ClassSessionFileModelToJson(
   ClassSessionFileModel instance,
 ) => <String, dynamic>{
   'session': instance.session.toJson(),
-  'answers': instance.answers.map((e) => e.toJson()).toList(),
+  'answers': instance.answers,
 };

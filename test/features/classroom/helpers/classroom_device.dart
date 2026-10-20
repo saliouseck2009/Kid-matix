@@ -42,7 +42,6 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_vie
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
-import 'package:kid_matix/features/classroom/data/datasources/classroom_file_codec.dart';
 import 'package:kid_matix/features/classroom/data/repositories/classroom_transfer_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
@@ -277,11 +276,14 @@ final class ClassroomDevice {
   /// The share sheet and the file picker.
   final FakeSharedFiles files = FakeSharedFiles();
 
+  /// The preferences of the class mode.
+  final InMemoryLocalStorage storage = InMemoryLocalStorage();
+
   /// The class files.
   late final ClassroomTransferRepository transfers =
       ClassroomTransferRepositoryImpl(
         files: files,
-        codec: const ClassroomFileCodec(),
+        storage: storage,
         clock: clock,
         readAppVersion: () async => '2.0.0',
       );
@@ -292,6 +294,7 @@ final class ClassroomDevice {
     assignments: assignments,
     journal: journal,
     transfers: transfers,
+    clock: clock,
   );
 
   /// Receives a class file.

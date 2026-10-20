@@ -15,4 +15,14 @@ abstract interface class ClassroomTransferRepository {
   /// or is damaged, and an `UnsupportedVersionException` when a newer
   /// app wrote it.
   Future<DataState<ClassroomTransfer?>> pick();
+
+  /// Returns when the class [classroomId] was last sent from this tablet,
+  /// or `null` before its first file.
+  Future<DataState<DateTime?>> readLastExport({required String classroomId});
+
+  /// Remembers that the class [classroomId] was sent at [exportedAt].
+  Future<DataState<void>> saveLastExport({
+    required String classroomId,
+    required DateTime exportedAt,
+  });
 }

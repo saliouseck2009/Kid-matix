@@ -144,6 +144,7 @@ final class InMemoryJournal implements ClassJournalRepository {
   @override
   Future<DataState<List<PracticeSession>>> getSessions({
     required String classroomId,
+    DateTime? writtenAfter,
   }) async {
     return DataSuccess<List<PracticeSession>>(
       rows.values
@@ -430,6 +431,7 @@ ClassroomPages buildTestClassroomPages(
         assignments: stack.assignments,
         journal: stack.journal,
         transfers: const _NoTransfers(),
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
       ),
       importClassroom: ImportClassroomUseCase(
         transfers: const _NoTransfers(),
@@ -458,5 +460,20 @@ final class _NoTransfers implements ClassroomTransferRepository {
   @override
   Future<DataState<ClassroomTransfer?>> pick() async {
     return const DataSuccess<ClassroomTransfer?>(null);
+  }
+
+  @override
+  Future<DataState<DateTime?>> readLastExport({
+    required String classroomId,
+  }) async {
+    return const DataSuccess<DateTime?>(null);
+  }
+
+  @override
+  Future<DataState<void>> saveLastExport({
+    required String classroomId,
+    required DateTime exportedAt,
+  }) async {
+    return const DataSuccess<void>(null);
   }
 }

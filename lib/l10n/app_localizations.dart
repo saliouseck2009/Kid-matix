@@ -718,6 +718,30 @@ abstract class AppLocalizations {
   /// **'Le fichier de la classe est prêt.'**
   String get classroomExportDone;
 
+  /// Class mode, first choice after « Envoyer la classe et ses résultats »: a small file with the sessions played since the last file sent from this tablet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveaux résultats depuis le dernier envoi'**
+  String get classroomExportNew;
+
+  /// Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toute la classe et tous ses résultats'**
+  String get classroomExportFull;
+
+  /// Class mode, error snack bar when the class file picked is too big to be read.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier est trop gros pour cette tablette.'**
+  String get classroomImportTooBig;
+
+  /// Class mode, snack bar after merging a class file when some new pupils had the nickname of another pupil of the class and were renamed (« Moussa 2 »); {done} is the sentence classroomImportDone, {nicknames} the new nicknames separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} Pseudos déjà pris dans la classe, élèves renommés : {nicknames}.'**
+  String classroomImportRenamed(String done, String nicknames);
+
   /// Class mode, button of « Mes classes »: opens the file picker to merge a class file received from another tablet (a new class, or the results of its pupils). One line.
   ///
   /// In fr, this message translates to:

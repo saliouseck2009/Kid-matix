@@ -443,6 +443,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomExportDone => 'El archivo de la clase está listo.';
 
   @override
+  String get classroomExportNew =>
+      'Los resultados nuevos desde el último envío';
+
+  @override
+  String get classroomExportFull => 'Toda la clase y todos sus resultados';
+
+  @override
+  String get classroomImportTooBig =>
+      'Este archivo es demasiado grande para esta tableta.';
+
+  @override
+  String classroomImportRenamed(String done, String nicknames) {
+    return '$done Apodos ya usados en la clase, alumnos renombrados: $nicknames.';
+  }
+
+  @override
   String get classroomImport => 'Recibir una clase o resultados';
 
   @override

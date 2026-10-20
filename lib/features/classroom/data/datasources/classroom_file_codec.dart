@@ -2,17 +2,21 @@ import 'dart:convert';
 
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/features/classroom/data/models/assignment_local_model.dart';
-import 'package:kid_matix/features/classroom/data/models/class_answer_local_model.dart';
 import 'package:kid_matix/features/classroom/data/models/class_pupil_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/class_session_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/classroom_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/classroom_local_model.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
-import 'package:kid_matix/features/classroom/domain/entities/practice_answer.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/entities/pupil_entity.dart';
-import 'package:kid_matix/features/classroom/data/models/class_session_local_model.dart';
+
+/// What [ClassroomFileCodec.encode] needs, in one object for `compute`.
+typedef ClassroomFileContent = ({
+  ClassroomTransfer transfer,
+  DateTime exportedAt,
+  String appVersion,
+});
 
 /// Turns a [ClassroomTransfer] into the text of a class file and back,
 /// refusing a file that is no class file, is damaged, or comes from a
@@ -20,6 +24,22 @@ import 'package:kid_matix/features/classroom/data/models/class_session_local_mod
 final class ClassroomFileCodec {
   /// Creates the codec.
   const ClassroomFileCodec();
+
+  /// The text of the file of [content]; a top-level-friendly signature,
+  /// so it runs in a background isolate with `compute`.
+  static String encodeContent(ClassroomFileContent content) {
+    return const ClassroomFileCodec().encode(
+      content.transfer,
+      exportedAt: content.exportedAt,
+      appVersion: content.appVersion,
+    );
+  }
+
+  /// The transfer of [text]; runs in a background isolate with
+  /// `compute`.
+  static ClassroomTransfer decodeText(String text) {
+    return const ClassroomFileCodec().decode(text);
+  }
 
   /// The text of the file of [transfer], written at [exportedAt] by the
   /// app [appVersion].
@@ -41,7 +61,7 @@ final class ClassroomFileCodec {
             .toList(),
         sessions: <ClassSessionFileModel>[
           for (final PracticeSession session in transfer.sessions)
-            _sessionModelOf(session, exportedAt),
+            ClassSessionFileModel.fromEntity(session, exportedAt: exportedAt),
         ],
       ).toJson(),
     );
@@ -67,6 +87,11 @@ final class ClassroomFileCodec {
       return _transferOf(ClassroomFileModel.fromJson(json));
     } on TypeError catch (error) {
       throw InvalidFileException(message: error.toString());
+    } on ArgumentError catch (error) {
+      // A date out of range or an unknown value.
+      throw InvalidFileException(message: error.toString());
+    } on FormatException catch (error) {
+      throw InvalidFileException(message: error.message);
     }
   }
 
@@ -83,27 +108,7 @@ final class ClassroomFileCodec {
       ],
       sessions: <PracticeSession>[
         for (final ClassSessionFileModel entry in file.sessions)
-          entry.session.toEntity(entry.answers),
-      ],
-    );
-  }
-
-  static ClassSessionFileModel _sessionModelOf(
-    PracticeSession session,
-    DateTime exportedAt,
-  ) {
-    return ClassSessionFileModel(
-      session: ClassSessionLocalModel.fromEntity(
-        session,
-        updatedAt: exportedAt,
-      ),
-      answers: <ClassAnswerLocalModel>[
-        for (final PracticeAnswer answer in session.answers)
-          ClassAnswerLocalModel.fromEntity(
-            answer,
-            sessionId: session.id,
-            updatedAt: exportedAt,
-          ),
+          entry.toEntity(),
       ],
     );
   }

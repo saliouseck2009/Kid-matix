@@ -8,9 +8,11 @@ import 'package:kid_matix/features/classroom/domain/entities/practice_session.da
 /// received from other tablets.
 abstract interface class ClassJournalRepository {
   /// Returns the sessions of the pupils of [classroomId], with their
-  /// answers, oldest first.
+  /// answers, oldest first; only those written on this device after
+  /// [writtenAfter] when it is given (played here, or merged here).
   Future<DataState<List<PracticeSession>>> getSessions({
     required String classroomId,
+    DateTime? writtenAfter,
   });
 
   /// Adds [sessions] with their answers, all or nothing; a session whose

@@ -11,6 +11,7 @@ import 'package:kid_matix/features/classroom/domain/entities/classroom_merge_rep
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/add_pupils_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_params.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -75,7 +76,9 @@ void main() {
     ClassroomDevice from,
     ClassroomDevice to,
   ) async {
-    await from.exportClassroom(params: classroom.id);
+    await from.exportClassroom(
+      params: (classroomId: classroom.id, isFull: true),
+    );
     to.files.fileToPick = from.files.sharedContent;
     return (await to.importClassroom()).requireData!;
   }
@@ -184,12 +187,115 @@ void main() {
     });
   });
 
+  group('Delta files and conflicts', () {
+    test(
+      'send only the sessions since the last file, or all of them',
+      () async {
+        // Arrange
+        await carry(teacher, pupils);
+        final ClassroomRoster roster = (await pupils.getRoster(
+          params: classroom.id,
+        )).requireData;
+        await pupils.play(_session('s1', roster.pupils[0].id, <bool>[true]));
+        pupils.clock.current = DateTime(2026, 10, 21, 11);
+        await pupils.exportClassroom(
+          params: (classroomId: classroom.id, isFull: false),
+        );
+        pupils.clock.current = DateTime(2026, 10, 22, 9);
+        await pupils.play(
+          _session('s2', roster.pupils[1].id, <bool>[true]).copyWithEnd(
+            DateTime(2026, 10, 22, 10),
+          ),
+        );
+        // Act
+        await pupils.exportClassroom(
+          params: (classroomId: classroom.id, isFull: false),
+        );
+        final ClassroomTransfer actualDelta = const ClassroomFileCodec().decode(
+          pupils.files.sharedContent!,
+        );
+        await pupils.exportClassroom(
+          params: (classroomId: classroom.id, isFull: true),
+        );
+        final ClassroomTransfer actualFull = const ClassroomFileCodec().decode(
+          pupils.files.sharedContent!,
+        );
+        // Assert
+        expect(actualDelta.sessions.map((s) => s.id), <String>['s2']);
+        expect(actualDelta.pupils, hasLength(40));
+        expect(actualFull.sessions.map((s) => s.id), <String>['s1', 's2']);
+      },
+    );
+
+    test('rename a new pupil whose nickname is taken in the class', () async {
+      // Arrange
+      await carry(teacher, pupils);
+      await pupils.addPupils(
+        params: AddPupilsParams(
+          classroomId: classroom.id,
+          nicknames: const <String>['Moussa'],
+        ),
+      );
+      await teacher.addPupils(
+        params: AddPupilsParams(
+          classroomId: classroom.id,
+          nicknames: const <String>['Moussa'],
+        ),
+      );
+      // Act
+      final ClassroomMergeReport actual = await carry(teacher, pupils);
+      final ClassroomMergeReport actualAgain = await carry(teacher, pupils);
+      // Assert
+      final ClassroomRoster actualRoster = (await pupils.getRoster(
+        params: classroom.id,
+      )).requireData;
+      expect(actual.addedPupilCount, 1);
+      expect(actual.renamedNicknames, <String>['Moussa 2']);
+      expect(actualAgain.addedPupilCount, 0);
+      expect(
+        actualRoster.pupils.map((pupil) => pupil.nickname),
+        containsAll(<String>['Moussa', 'Moussa 2']),
+      );
+    });
+
+    test('refuse a file that would take the class beyond 60', () async {
+      // Arrange
+      await carry(teacher, pupils);
+      await pupils.addPupils(
+        params: AddPupilsParams(
+          classroomId: classroom.id,
+          nicknames: ClassroomRules.numberNicknames(
+            count: 20,
+            existingCount: 40,
+          ),
+        ),
+      );
+      await teacher.addPupils(
+        params: AddPupilsParams(
+          classroomId: classroom.id,
+          nicknames: const <String>['Awa'],
+        ),
+      );
+      await teacher.exportClassroom(
+        params: (classroomId: classroom.id, isFull: true),
+      );
+      pupils.files.fileToPick = teacher.files.sharedContent;
+      // Act
+      final AppErrorCode? actual =
+          (await pupils.importClassroom()).exceptionOrNull?.code;
+      // Assert
+      expect(actual, AppErrorCode.limitReached);
+    });
+  });
+
   group('ClassroomFileCodec', () {
     const ClassroomFileCodec codec = ClassroomFileCodec();
 
     test('reads back what it writes', () async {
       // Arrange
-      await teacher.exportClassroom(params: classroom.id);
+      await teacher.exportClassroom(
+        params: (classroomId: classroom.id, isFull: true),
+      );
       final ClassroomTransfer input = codec.decode(
         teacher.files.sharedContent!,
       );
@@ -208,7 +314,9 @@ void main() {
 
     test('refuses damaged files, other files and newer versions', () async {
       // Arrange
-      await teacher.exportClassroom(params: classroom.id);
+      await teacher.exportClassroom(
+        params: (classroomId: classroom.id, isFull: true),
+      );
       final Map<String, Object?> input =
           jsonDecode(teacher.files.sharedContent!) as Map<String, Object?>;
       AppErrorCode? codeOf(String text) {
@@ -228,6 +336,17 @@ void main() {
       final AppErrorCode? actualNewer = codeOf(
         jsonEncode(<String, Object?>{...input, 'version': 2}),
       );
+      final Map<String, Object?> inputClassroom =
+          input['classroom']! as Map<String, Object?>;
+      final AppErrorCode? actualBadDate = codeOf(
+        jsonEncode(<String, Object?>{
+          ...input,
+          'classroom': <String, Object?>{
+            ...inputClassroom,
+            'created_at': 9007199254740991,
+          },
+        }),
+      );
       final AppErrorCode? actualMissing = codeOf(
         jsonEncode(<String, Object?>{...input, 'classroom': null}),
       );
@@ -236,6 +355,7 @@ void main() {
       expect(actualBackup, AppErrorCode.invalidFile);
       expect(actualNewer, AppErrorCode.unsupportedVersion);
       expect(actualMissing, AppErrorCode.invalidFile);
+      expect(actualBadDate, AppErrorCode.invalidFile);
     });
 
     test('refuses a file whose sessions point to an unknown pupil', () async {
@@ -244,7 +364,9 @@ void main() {
         params: classroom.id,
       )).requireData;
       await teacher.play(_session('s1', roster.pupils.first.id, <bool>[true]));
-      await teacher.exportClassroom(params: classroom.id);
+      await teacher.exportClassroom(
+        params: (classroomId: classroom.id, isFull: true),
+      );
       final Map<String, Object?> input =
           jsonDecode(teacher.files.sharedContent!) as Map<String, Object?>;
       pupils.files.fileToPick = jsonEncode(<String, Object?>{
@@ -259,4 +381,21 @@ void main() {
       expect((await pupils.getClassrooms()).requireData, isEmpty);
     });
   });
+}
+
+extension on SavedQuizSession {
+  SavedQuizSession copyWithEnd(DateTime endedAt) {
+    return SavedQuizSession(
+      id: id,
+      profileId: profileId,
+      domainId: domainId,
+      mode: mode,
+      isCompleted: isCompleted,
+      questionCount: questionCount,
+      correctCount: correctCount,
+      endedAt: endedAt,
+      duration: duration,
+      answers: answers,
+    );
+  }
 }

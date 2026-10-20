@@ -574,6 +574,32 @@
   "@classroomExportDone": {
     "description": "Class mode, snack bar after the class file was handed to the share sheet."
   },
+  "classroomExportNew": "Les nouveaux résultats depuis le dernier envoi",
+  "@classroomExportNew": {
+    "description": "Class mode, first choice after « Envoyer la classe et ses résultats »: a small file with the sessions played since the last file sent from this tablet. One line."
+  },
+  "classroomExportFull": "Toute la classe et tous ses résultats",
+  "@classroomExportFull": {
+    "description": "Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line."
+  },
+  "classroomImportTooBig": "Ce fichier est trop gros pour cette tablette.",
+  "@classroomImportTooBig": {
+    "description": "Class mode, error snack bar when the class file picked is too big to be read."
+  },
+  "classroomImportRenamed": "{done} Pseudos déjà pris dans la classe, élèves renommés : {nicknames}.",
+  "@classroomImportRenamed": {
+    "description": "Class mode, snack bar after merging a class file when some new pupils had the nickname of another pupil of the class and were renamed (« Moussa 2 »); {done} is the sentence classroomImportDone, {nicknames} the new nicknames separated by commas.",
+    "placeholders": {
+      "done": {
+        "type": "String",
+        "example": "CE1 B : 2 nouveaux élèves, 12 nouvelles séances."
+      },
+      "nicknames": {
+        "type": "String",
+        "example": "Moussa 2, Awa 2"
+      }
+    }
+  },
   "classroomImport": "Recevoir une classe ou des résultats",
   "@classroomImport": {
     "description": "Class mode, button of « Mes classes »: opens the file picker to merge a class file received from another tablet (a new class, or the results of its pupils). One line."

@@ -22,12 +22,15 @@ final class ClassJournalLocalDataSourceImpl
   @override
   Future<List<ClassSessionRows>> getSessions({
     required String classroomId,
+    int? writtenAfterMs,
   }) async {
     final Database database = await _database.database;
     final List<Map<String, Object?>> sessions = await database.query(
       ClassroomTables.session,
-      where: 'classroom_id = ? AND ${ClassroomTables.isLive}',
-      whereArgs: <Object>[classroomId],
+      where:
+          'classroom_id = ? AND ${ClassroomTables.isLive} '
+          'AND updated_at > ?',
+      whereArgs: <Object>[classroomId, writtenAfterMs ?? -1],
       orderBy: 'started_at, id',
     );
     final List<Map<String, Object?>> answers = await database.rawQuery(
