@@ -4,8 +4,9 @@ import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
 
-/// [AssignedUnitsService] over the assignments of the classes: the unit
-/// of the current assignment of the player's class.
+/// [AssignedUnitsService] over the assignments of the classes: every
+/// unit ever given to the player's class stays open, past homework
+/// included.
 final class AssignedUnitsServiceImpl implements AssignedUnitsService {
   /// Creates the service.
   const AssignedUnitsServiceImpl({
@@ -29,18 +30,20 @@ final class AssignedUnitsServiceImpl implements AssignedUnitsService {
       case DataSuccess<String?>(data: null):
         return const DataSuccess<Set<String>>(<String>{});
       case DataSuccess<String?>(:final String data):
-        return _currentUnitOf(data);
+        return _unitsOf(data);
     }
   }
 
-  Future<DataState<Set<String>>> _currentUnitOf(String classroomId) async {
+  Future<DataState<Set<String>>> _unitsOf(String classroomId) async {
     return switch (await _assignments.getAssignments(
       classroomId: classroomId,
     )) {
       DataFailed<List<AssignmentEntity>>(:final exception) =>
         DataFailed<Set<String>>(exception),
       DataSuccess<List<AssignmentEntity>>(:final data) =>
-        DataSuccess<Set<String>>(<String>{?data.lastOrNull?.unitKey}),
+        DataSuccess<Set<String>>(<String>{
+          for (final AssignmentEntity assignment in data) assignment.unitKey,
+        }),
     };
   }
 }

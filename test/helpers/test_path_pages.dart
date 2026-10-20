@@ -35,6 +35,7 @@ import '../features/quiz/helpers/quiz_fixtures.dart';
 import 'fake_mastery_service.dart';
 import 'in_memory_local_storage.dart';
 import 'test_quiz_pages.dart';
+import 'no_assigned_units.dart';
 
 /// [StageProgressRepository] over a list the test fills, which tells its
 /// watchers when [notifyChanged] is called.
@@ -166,6 +167,7 @@ LearningPathUseCases buildTestPathUseCases({
       repository ?? InMemoryStageProgressRepository();
   return LearningPathUseCases(
     getLearningPath: GetLearningPathUseCase(
+      assigned: const NoAssignedUnits(),
       repository: stages,
       domains: buildDomainRegistry(),
       settings: settings,

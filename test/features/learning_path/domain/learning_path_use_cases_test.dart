@@ -22,6 +22,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/fake_mastery_service.dart';
 import '../../../helpers/test_path_pages.dart';
+import '../../../helpers/no_assigned_units.dart';
 
 final class _MockRepository extends Mock implements StageProgressRepository {}
 
@@ -156,6 +157,7 @@ void main() {
       mockSettings = _MockSettings();
       mastery = FakeMasteryService();
       useCase = GetLearningPathUseCase(
+        assigned: const NoAssignedUnits(),
         repository: mockRepository,
         domains: DomainRegistry()..register(domain),
         settings: mockSettings,
