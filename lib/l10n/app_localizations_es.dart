@@ -236,6 +236,148 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomPickerEmpty => 'Esta clase todavía no tiene alumnos.';
 
   @override
+  String get classroomAssignmentTitle => 'La tarea de la clase';
+
+  @override
+  String get classroomAssignmentNone =>
+      'Todavía no hay tarea. Elige una unidad para que toda la clase la trabaje.';
+
+  @override
+  String get classroomAssignmentGive => 'Poner una tarea';
+
+  @override
+  String get classroomAssignmentPickHint =>
+      'Elige la unidad que va a trabajar toda la clase.';
+
+  @override
+  String classroomAssignmentDue(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Para el $dateString';
+  }
+
+  @override
+  String get classroomAssignmentDueNone => 'Sin fecha';
+
+  @override
+  String get classroomAssignmentDueTomorrow => 'Para mañana';
+
+  @override
+  String get classroomAssignmentDueWeek => 'En 7 días';
+
+  @override
+  String classroomAssignmentStarted(int started, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      started,
+      locale: localeName,
+      other: '$started alumnos de $total la han empezado.',
+      one: '1 alumno de $total la ha empezado.',
+      zero: 'Nadie la ha empezado todavía.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomAssignmentPlay => '¡Vamos!';
+
+  @override
+  String classroomAssignmentLearned(int percent) {
+    return '$percent % aprendido';
+  }
+
+  @override
+  String get classroomChallengeTitle => 'Reto de la clase';
+
+  @override
+  String classroomChallengeProgress(int count, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count respuestas correctas de $goal esta semana',
+      one: '1 respuesta correcta de $goal esta semana',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomChallengeReached => '¡Bravo, clase, objetivo cumplido!';
+
+  @override
+  String get classroomChallengeGoal => 'Objetivo de la semana';
+
+  @override
+  String get classroomStrugglesTitle => '¿Quién se atasca, y en qué?';
+
+  @override
+  String classroomStruggleLine(int count, String item) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos se equivocan en $item',
+      one: '1 alumno se equivoca en $item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomStrugglesNone => 'Nadie se atasca por ahora.';
+
+  @override
+  String classroomGroupsTitle(String domain) {
+    return 'Grupos de nivel · $domain';
+  }
+
+  @override
+  String get classroomGroupsHint =>
+      'Propuestos a partir de la prueba de nivel y de las respuestas de los alumnos.';
+
+  @override
+  String get classroomGroupsNone =>
+      'Los grupos aparecerán cuando los alumnos hayan jugado.';
+
+  @override
+  String get classroomGroupFirstSteps => 'Primeros pasos';
+
+  @override
+  String get classroomGroupOnTheWay => 'En camino';
+
+  @override
+  String get classroomGroupConfident => 'Con soltura';
+
+  @override
+  String get classroomGroupNotYet => 'Aún sin evaluar';
+
+  @override
+  String get classroomPupilNeverPlayed => 'Aún no ha jugado';
+
+  @override
+  String classroomPupilSummary(int sessions, int minutes, int percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions sesiones',
+      one: '1 sesión',
+    );
+    return '$_temp0 · $minutes min · $percent % de respuestas correctas';
+  }
+
+  @override
+  String classroomPupilLastSession(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Última sesión: $dateString';
+  }
+
+  @override
+  String classroomPupilStuckOn(String items) {
+    return 'Se atasca en: $items';
+  }
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override

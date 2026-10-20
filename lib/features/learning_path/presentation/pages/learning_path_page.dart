@@ -32,6 +32,7 @@ class LearningPathPage extends StatelessWidget {
     required this.onPlay,
     this.header,
     this.mascot,
+    this.banner,
     super.key,
   });
 
@@ -56,6 +57,10 @@ class LearningPathPage extends StatelessWidget {
   /// The mascot under the current table, or `null`.
   final Widget? mascot;
 
+  /// Above the map, such as « Le devoir de la classe » of a pupil, or
+  /// `null`.
+  final Widget? banner;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DomainChoiceCubit>(
@@ -64,43 +69,66 @@ class LearningPathPage extends StatelessWidget {
             ..load(),
       child: Scaffold(
         body: SafeArea(
-          child: BlocBuilder<DomainChoiceCubit, DomainChoiceState>(
-            builder: (BuildContext context, DomainChoiceState state) {
-              final DomainChoiceEntity choice;
-              switch (state) {
-                case DomainChoiceLoading():
-                  return const Center(child: CircularProgressIndicator());
-                case DomainChoiceFailure(:final errorCode):
-                  return Center(
-                    child: Text(
-                      PathLabels(
-                        domainId: LearningDomainIds.multiplication,
-                        l10n: context.l10n,
-                      ).describeError(errorCode),
-                    ),
-                  );
-                case DomainChoiceLoaded():
-                  choice = state.choice;
-              }
-              return _DomainPath(
-                key: ValueKey<String>(choice.selectedId),
-                params: LearningPathParams(
-                  profileId: profileId,
-                  domainId: choice.selectedId,
-                ),
-                useCases: useCases,
-                domainSwitch: choice.hasChoice
-                    ? DomainSwitch(choice: choice)
-                    : null,
-                onOpenTable: onOpenTable,
-                onPlay: onPlay,
-                header: header,
-                mascot: mascot,
-              );
-            },
+          child: _WithBanner(
+            banner: banner,
+            child: BlocBuilder<DomainChoiceCubit, DomainChoiceState>(
+              builder: (BuildContext context, DomainChoiceState state) {
+                final DomainChoiceEntity choice;
+                switch (state) {
+                  case DomainChoiceLoading():
+                    return const Center(child: CircularProgressIndicator());
+                  case DomainChoiceFailure(:final errorCode):
+                    return Center(
+                      child: Text(
+                        PathLabels(
+                          domainId: LearningDomainIds.multiplication,
+                          l10n: context.l10n,
+                        ).describeError(errorCode),
+                      ),
+                    );
+                  case DomainChoiceLoaded():
+                    choice = state.choice;
+                }
+                return _DomainPath(
+                  key: ValueKey<String>(choice.selectedId),
+                  params: LearningPathParams(
+                    profileId: profileId,
+                    domainId: choice.selectedId,
+                  ),
+                  useCases: useCases,
+                  domainSwitch: choice.hasChoice
+                      ? DomainSwitch(choice: choice)
+                      : null,
+                  onOpenTable: onOpenTable,
+                  onPlay: onPlay,
+                  header: header,
+                  mascot: mascot,
+                );
+              },
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// [child] under [banner], when there is one.
+class _WithBanner extends StatelessWidget {
+  const _WithBanner({required this.banner, required this.child});
+
+  final Widget? banner;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget? above = banner;
+    if (above == null) return child;
+    return Column(
+      children: <Widget>[
+        above,
+        Expanded(child: child),
+      ],
     );
   }
 }

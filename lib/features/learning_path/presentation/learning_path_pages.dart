@@ -59,13 +59,15 @@ final class LearningPathPages {
   final UnitDomainResolver _resolver;
 
   /// The map of the path of [profileId], in the domain they chose; a new
-  /// player gets a new map.
+  /// player gets a new map. [banner] goes above the map, such as « Le
+  /// devoir de la classe » of a pupil.
   Widget buildLearningPathPage({
     required String profileId,
     required ValueChanged<String> onOpenTable,
     required ValueChanged<StageSource> onPlay,
     PathHeaderSlots? header,
     Widget? mascot,
+    Widget? banner,
   }) {
     return LearningPathPage(
       key: ValueKey<String>(profileId),
@@ -76,6 +78,7 @@ final class LearningPathPages {
       onPlay: onPlay,
       header: header,
       mascot: mascot,
+      banner: banner,
     );
   }
 

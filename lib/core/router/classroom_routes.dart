@@ -64,9 +64,14 @@ GoRoute _classroomsRoute(ClassroomPages pages) {
             onAddPupils: () => context.go(
               AppRoutes.classroomPupilsAdditionOf(classroomId),
             ),
+            onGiveAssignment: () =>
+                context.go(AppRoutes.classroomAssignmentOf(classroomId)),
           );
         },
-        routes: <RouteBase>[_pupilsAdditionRoute(pages)],
+        routes: <RouteBase>[
+          _pupilsAdditionRoute(pages),
+          _assignmentRoute(pages),
+        ],
       ),
     ],
   );
@@ -85,6 +90,19 @@ GoRoute _pupilsAdditionRoute(ClassroomPages pages) {
         classroomId: classroomId,
         onBack: openClassroom,
         onSaved: (String _) => openClassroom(),
+      );
+    },
+  );
+}
+
+GoRoute _assignmentRoute(ClassroomPages pages) {
+  return GoRoute(
+    path: _lastSegment(AppRoutes.classroomAssignment),
+    builder: (BuildContext context, GoRouterState state) {
+      final String classroomId = _classroomIdOf(state);
+      return pages.buildAssignmentPage(
+        classroomId: classroomId,
+        onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
       );
     },
   );

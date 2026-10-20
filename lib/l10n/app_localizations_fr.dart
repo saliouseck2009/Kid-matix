@@ -238,6 +238,149 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomPickerEmpty => 'Cette classe n\'a pas encore d\'élèves.';
 
   @override
+  String get classroomAssignmentTitle => 'Le devoir de la classe';
+
+  @override
+  String get classroomAssignmentNone =>
+      'Pas encore de devoir. Choisis une unité à faire travailler à toute la classe.';
+
+  @override
+  String get classroomAssignmentGive => 'Donner un devoir';
+
+  @override
+  String get classroomAssignmentPickHint =>
+      'Choisis l\'unité que toute la classe va travailler.';
+
+  @override
+  String classroomAssignmentDue(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Pour le $dateString';
+  }
+
+  @override
+  String get classroomAssignmentDueNone => 'Sans date';
+
+  @override
+  String get classroomAssignmentDueTomorrow => 'Pour demain';
+
+  @override
+  String get classroomAssignmentDueWeek => 'Dans 7 jours';
+
+  @override
+  String classroomAssignmentStarted(int started, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      started,
+      locale: localeName,
+      other: '$started élèves sur $total l\'ont commencé.',
+      one: '1 élève sur $total l\'a commencé.',
+      zero: 'Personne ne l\'a encore commencé.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomAssignmentPlay => 'J\'y vais';
+
+  @override
+  String classroomAssignmentLearned(int percent) {
+    return '$percent % appris';
+  }
+
+  @override
+  String get classroomChallengeTitle => 'Défi de la classe';
+
+  @override
+  String classroomChallengeProgress(int count, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bonnes réponses sur $goal cette semaine',
+      one: '1 bonne réponse sur $goal cette semaine',
+      zero: '0 bonne réponse sur $goal cette semaine',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomChallengeReached => 'Bravo la classe, objectif atteint !';
+
+  @override
+  String get classroomChallengeGoal => 'Objectif de la semaine';
+
+  @override
+  String get classroomStrugglesTitle => 'Qui bloque, et sur quoi ?';
+
+  @override
+  String classroomStruggleLine(int count, String item) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count élèves se trompent sur $item',
+      one: '1 élève se trompe sur $item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomStrugglesNone => 'Personne ne bloque pour l\'instant.';
+
+  @override
+  String classroomGroupsTitle(String domain) {
+    return 'Groupes de niveau · $domain';
+  }
+
+  @override
+  String get classroomGroupsHint =>
+      'Proposés à partir du test de positionnement et des réponses des élèves.';
+
+  @override
+  String get classroomGroupsNone =>
+      'Les groupes apparaîtront quand les élèves auront joué.';
+
+  @override
+  String get classroomGroupFirstSteps => 'Premiers pas';
+
+  @override
+  String get classroomGroupOnTheWay => 'En route';
+
+  @override
+  String get classroomGroupConfident => 'À l\'aise';
+
+  @override
+  String get classroomGroupNotYet => 'Pas encore évalués';
+
+  @override
+  String get classroomPupilNeverPlayed => 'N\'a pas encore joué';
+
+  @override
+  String classroomPupilSummary(int sessions, int minutes, int percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions séances',
+      one: '1 séance',
+    );
+    return '$_temp0 · $minutes min · $percent % de bonnes réponses';
+  }
+
+  @override
+  String classroomPupilLastSession(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Dernière séance : $dateString';
+  }
+
+  @override
+  String classroomPupilStuckOn(String items) {
+    return 'Bloque sur : $items';
+  }
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

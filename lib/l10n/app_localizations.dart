@@ -460,6 +460,180 @@ abstract class AppLocalizations {
   /// **'Cette classe n\'a pas encore d\'élèves.'**
   String get classroomPickerEmpty;
 
+  /// Class mode, title of the card of the current assignment, on the class page of the teacher area and at the top of the home of a pupil ("The class's homework"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le devoir de la classe'**
+  String get classroomAssignmentTitle;
+
+  /// Class mode, class page of the teacher area: text of the assignment card when no assignment was given yet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de devoir. Choisis une unité à faire travailler à toute la classe.'**
+  String get classroomAssignmentNone;
+
+  /// Class mode, button of the assignment card of the class page, and title of the screen where the teacher picks the unit ("Give homework"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donner un devoir'**
+  String get classroomAssignmentGive;
+
+  /// Class mode, line under the title of the screen where the teacher picks the unit of the assignment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis l\'unité que toute la classe va travailler.'**
+  String get classroomAssignmentPickHint;
+
+  /// Class mode, due day of the assignment, under its unit name ("Due Monday 27 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour le {date}'**
+  String classroomAssignmentDue(DateTime date);
+
+  /// Class mode, first choice of the due day of an assignment: no due day. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans date'**
+  String get classroomAssignmentDueNone;
+
+  /// Class mode, second choice of the due day of an assignment: tomorrow. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour demain'**
+  String get classroomAssignmentDueTomorrow;
+
+  /// Class mode, third choice of the due day of an assignment: in a week. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans 7 jours'**
+  String get classroomAssignmentDueWeek;
+
+  /// Class mode, class page: how many pupils have started the assignment (acquired at least one of its items).
+  ///
+  /// In fr, this message translates to:
+  /// **'{started, plural, =0{Personne ne l\'a encore commencé.} =1{1 élève sur {total} l\'a commencé.} other{{started} élèves sur {total} l\'ont commencé.}}'**
+  String classroomAssignmentStarted(int started, int total);
+
+  /// Class mode, button of the card « Le devoir de la classe » at the top of the home of a pupil, which opens the assigned unit. Speaks as the child ("I'm going"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'y vais'**
+  String get classroomAssignmentPlay;
+
+  /// Class mode, part of the assigned unit a pupil has learned (right the last three times), next to the progress bar of the assignment card on the home and on each pupil row of the dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'{percent} % appris'**
+  String classroomAssignmentLearned(int percent);
+
+  /// Class mode, title of the gauge of the shared weekly goal of the class (no individual ranking), on the class page, on « Qui es-tu ? » and on the home of a pupil. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défi de la classe'**
+  String get classroomChallengeTitle;
+
+  /// Class mode, line under the gauge of the class challenge: right answers of the whole class since Monday, out of the goal.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{0 bonne réponse sur {goal} cette semaine} =1{1 bonne réponse sur {goal} cette semaine} other{{count} bonnes réponses sur {goal} cette semaine}}'**
+  String classroomChallengeProgress(int count, int goal);
+
+  /// Class mode, line under the gauge of the class challenge once the weekly goal is reached.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bravo la classe, objectif atteint !'**
+  String get classroomChallengeReached;
+
+  /// Class mode, class page: label above the choices of the weekly goal of right answers of the class challenge. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif de la semaine'**
+  String get classroomChallengeGoal;
+
+  /// Class mode, class page: title of the card that lists the facts and words the pupils keep missing. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui bloque, et sur quoi ?'**
+  String get classroomStrugglesTitle;
+
+  /// Class mode, one line of « Qui bloque, et sur quoi ? »: how many pupils keep missing a fact or a word ("8 pupils get 7 × 8 = 56 wrong"); {item} is the fact with its answer or the word.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 élève se trompe sur {item}} other{{count} élèves se trompent sur {item}}}'**
+  String classroomStruggleLine(int count, String item);
+
+  /// Class mode, text of « Qui bloque, et sur quoi ? » when no pupil keeps missing anything.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personne ne bloque pour l\'instant.'**
+  String get classroomStrugglesNone;
+
+  /// Class mode, class page: title of the card of the proposed level groups, with the name of the domain they are about ("Level groups · Multiplication").
+  ///
+  /// In fr, this message translates to:
+  /// **'Groupes de niveau · {domain}'**
+  String classroomGroupsTitle(String domain);
+
+  /// Class mode, line under the title of the level groups: where the proposal comes from.
+  ///
+  /// In fr, this message translates to:
+  /// **'Proposés à partir du test de positionnement et des réponses des élèves.'**
+  String get classroomGroupsHint;
+
+  /// Class mode, text of the level groups card before any pupil played.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les groupes apparaîtront quand les élèves auront joué.'**
+  String get classroomGroupsNone;
+
+  /// Class mode, name of the level group of the pupils who acquired less than a third of the items the class worked on. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Premiers pas'**
+  String get classroomGroupFirstSteps;
+
+  /// Class mode, name of the middle level group. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'En route'**
+  String get classroomGroupOnTheWay;
+
+  /// Class mode, name of the level group of the pupils who acquired two thirds or more. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'À l\'aise'**
+  String get classroomGroupConfident;
+
+  /// Class mode, name of the group of the pupils with no placement and no answer yet in the domain. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore évalués'**
+  String get classroomGroupNotYet;
+
+  /// Class mode, dashboard of the class page: line under the nickname of a pupil who never played.
+  ///
+  /// In fr, this message translates to:
+  /// **'N\'a pas encore joué'**
+  String get classroomPupilNeverPlayed;
+
+  /// Class mode, dashboard of the class page: practice of one pupil (sessions played, minutes of practice, share of right answers).
+  ///
+  /// In fr, this message translates to:
+  /// **'{sessions, plural, =1{1 séance} other{{sessions} séances}} · {minutes} min · {percent} % de bonnes réponses'**
+  String classroomPupilSummary(int sessions, int minutes, int percent);
+
+  /// Class mode, dashboard of the class page: day of the last session of a pupil ("Last session: 20 Oct").
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernière séance : {date}'**
+  String classroomPupilLastSession(DateTime date);
+
+  /// Class mode, dashboard of the class page: the facts or words a pupil keeps missing, separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bloque sur : {items}'**
+  String classroomPupilStuckOn(String items);
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

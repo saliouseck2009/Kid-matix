@@ -143,6 +143,11 @@ GoRouter createAppRouter({
                         context.go(AppRoutes.tableDetailOf(unitKey)),
                     onPlay: (StageSource source) =>
                         playStage(context, pathPages, source),
+                    banner: classroomPages?.buildHomeBanner(
+                      profileId: profileId,
+                      onOpenUnit: (String unitKey) =>
+                          context.go(AppRoutes.tableDetailOf(unitKey)),
+                    ),
                     mascot: mascotPages.buildMapMascot(
                       bubble: rewardPages.buildGoalReminder(
                         profileId: profileId,
