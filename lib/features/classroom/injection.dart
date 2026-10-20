@@ -43,7 +43,7 @@ void _registerData(GetIt sl) {
     () => TeacherCodeRepositoryImpl(storage: sl()),
   );
   sl.registerLazySingleton<TeacherSessionService>(
-    () => TeacherSessionServiceImpl(session: sl()),
+    () => TeacherSessionServiceImpl(session: sl(), clock: sl()),
   );
   // The use cases see the same object through its pure interface.
   sl.registerLazySingleton<TeacherAreaLock>(

@@ -83,12 +83,7 @@ Future<void> main() async {
   ]);
   // A voice installed in the settings of the phone counts as soon as the
   // parent comes back, with no restart.
-  // The teacher area closes as soon as the tablet goes to the background,
-  // so a pupil never finds it open.
-  AppLifecycleListener(
-    onResume: sl<SpeechService>().forgetMissingVoices,
-    onPause: sl<TeacherSessionService>().lock,
-  );
+  AppLifecycleListener(onResume: sl<SpeechService>().forgetMissingVoices);
   final ProfileSessionService session = sl<ProfileSessionService>();
   await session.restore();
   // The daily reminder is planned again at every launch, without delaying

@@ -25,9 +25,13 @@ void main() {
 
   setUp(() {
     players = FakeProfileSessionService();
-    session = TeacherSessionServiceImpl(session: players);
-    storage = InMemoryLocalStorage();
     clock = MovableClock(DateTime(2026, 10, 20, 9));
+    session = TeacherSessionServiceImpl(
+      session: players,
+      clock: clock,
+      followsAppLifecycle: false,
+    );
+    storage = InMemoryLocalStorage();
     final TeacherCodeAttempts attempts = TeacherCodeAttempts();
     final TeacherCodeRepositoryImpl codes = TeacherCodeRepositoryImpl(
       storage: storage,
