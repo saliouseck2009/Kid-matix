@@ -18,7 +18,7 @@ import 'package:kid_matix/features/learning_path/data/repositories/stage_progres
 import 'package:kid_matix/features/mascot/data/repositories/mascot_backup_part.dart';
 import 'package:kid_matix/features/mastery/data/repositories/mastery_backup_part.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source_impl.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
@@ -45,7 +45,7 @@ final class _Clock implements Clock {
 }
 
 /// The share sheet and the file picker of a phone.
-final class _FakeFiles implements BackupFileDataSource {
+final class _FakeFiles implements SharedFileDataSource {
   String? sharedName;
   String? sharedContent;
   String? fileToPick;

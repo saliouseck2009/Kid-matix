@@ -70,6 +70,18 @@ final class ClassroomRepositoryImpl implements ClassroomRepository {
   }
 
   @override
+  Future<DataState<void>> mergeClassroom({
+    required ClassroomEntity classroom,
+  }) {
+    return _guard(() async {
+      final bool isWritten = await _classrooms.upsertClassroom(
+        classroom: ClassroomLocalModel.fromEntity(classroom),
+      );
+      if (isWritten) _notifyChanged();
+    });
+  }
+
+  @override
   Future<DataState<void>> deleteEmptyClassroom({
     required String classroomId,
   }) {

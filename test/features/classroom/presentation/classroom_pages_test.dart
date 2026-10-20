@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/error/app_exception.dart';
+import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
+import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roster_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/classroom_transfer_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/classroom_transfer_button.dart';
 import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/close_teacher_area_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classrooms_cubit.dart';
@@ -20,6 +32,7 @@ import 'package:kid_matix/features/classroom/presentation/widgets/pupil_tile.dar
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/pump_localized.dart';
+import '../helpers/classroom_device.dart';
 import '../../../helpers/in_memory_local_storage.dart';
 import '../helpers/classroom_fakes.dart';
 
@@ -196,6 +209,50 @@ void main() {
     );
   });
 
+  testWidgets('says when a class file is too big', (
+    WidgetTester tester,
+  ) async {
+    // Arrange
+    await pumpLocalized(
+      tester,
+      Scaffold(
+        body: BlocProvider<ClassroomTransferCubit>(
+          create: (_) => ClassroomTransferCubit(
+            export: ExportClassroomUseCase(
+              getRoster: GetClassroomRosterUseCase(
+                repository: stack.classrooms,
+                roster: stack.roster,
+              ),
+              assignments: stack.assignments,
+              journal: stack.journal,
+              transfers: const _TooBigFiles(),
+              clock: MovableClock(DateTime(2026, 10, 21)),
+            ),
+            getMark: const GetExportMarkUseCase(transfers: _TooBigFiles()),
+            import: ImportClassroomUseCase(
+              transfers: const _TooBigFiles(),
+              merger: ClassroomMerger(
+                classrooms: stack.classrooms,
+                roster: stack.roster,
+                assignments: stack.assignments,
+                journal: stack.journal,
+              ),
+            ),
+          ),
+          child: const ClassroomTransferButton(),
+        ),
+      ),
+    );
+    // Act
+    await tester.tap(find.text('Recevoir une classe ou des résultats'));
+    await tester.pumpAndSettle();
+    // Assert
+    expect(
+      find.text('Ce fichier est trop gros pour cette tablette.'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('« Mes classes » says when the code was changed', (
     WidgetTester tester,
   ) async {
@@ -225,4 +282,29 @@ void main() {
     // Assert
     expect(find.text('Code changé le 21 octobre'), findsOneWidget);
   });
+}
+
+final class _TooBigFiles implements ClassroomTransferRepository {
+  const _TooBigFiles();
+
+  @override
+  Future<DataState<bool>> share({required ClassroomTransfer transfer}) async {
+    return const DataSuccess<bool>(false);
+  }
+
+  @override
+  Future<DataState<ClassroomTransfer?>> pick() async {
+    return const DataFailed<ClassroomTransfer?>(FileTooBigException());
+  }
+
+  @override
+  Future<DataState<ExportMark?>> readExportMark({
+    required String classroomId,
+  }) async => const DataSuccess<ExportMark?>(null);
+
+  @override
+  Future<DataState<void>> saveExportMark({
+    required String classroomId,
+    required ExportMark mark,
+  }) async => const DataSuccess<void>(null);
 }

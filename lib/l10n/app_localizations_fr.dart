@@ -446,6 +446,66 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get classroomExport => 'Envoyer la classe et ses résultats';
+
+  @override
+  String get classroomExportDone => 'Le fichier de la classe est prêt.';
+
+  @override
+  String get classroomExportNew =>
+      'Les nouveaux résultats depuis le dernier envoi';
+
+  @override
+  String classroomExportNewSince(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Les nouveaux résultats depuis le $dateString';
+  }
+
+  @override
+  String get classroomExportFull => 'Toute la classe et tous ses résultats';
+
+  @override
+  String get classroomImportTooBig =>
+      'Ce fichier est trop gros pour cette tablette.';
+
+  @override
+  String classroomImportRenamed(String done, String nicknames) {
+    return '$done Pseudos déjà pris dans la classe, élèves renommés : $nicknames.';
+  }
+
+  @override
+  String get classroomImport => 'Recevoir une classe ou des résultats';
+
+  @override
+  String classroomImportDone(String name, int pupils, int sessions) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pupils,
+      locale: localeName,
+      other: '$pupils nouveaux élèves',
+      one: '1 nouvel élève',
+      zero: 'aucun nouvel élève',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions nouvelles séances',
+      one: '1 nouvelle séance',
+      zero: 'aucune nouvelle séance',
+    );
+    return '$name : $_temp0, $_temp1.';
+  }
+
+  @override
+  String get classroomImportInvalid =>
+      'Ce fichier n\'est pas un fichier de classe Kid Matix, ou il est abîmé.';
+
+  @override
+  String get classroomImportVersion =>
+      'Ce fichier vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

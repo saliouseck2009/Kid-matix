@@ -712,6 +712,72 @@ abstract class AppLocalizations {
   /// **'Bloque sur : {items}'**
   String classroomPupilStuckOn(String items);
 
+  /// Class mode, button at the bottom of the class page: writes a file with the class, its pupils, its homework and their results, and opens the share sheet (to another tablet or to the teacher's, with no network). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer la classe et ses résultats'**
+  String get classroomExport;
+
+  /// Class mode, snack bar after the class file was handed to the share sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le fichier de la classe est prêt.'**
+  String get classroomExportDone;
+
+  /// Class mode, first choice after « Envoyer la classe et ses résultats »: a small file with the sessions played since the last file sent from this tablet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveaux résultats depuis le dernier envoi'**
+  String get classroomExportNew;
+
+  /// Class mode, first choice after « Envoyer la classe et ses résultats » once the class was already sent from this tablet: a small file with the sessions since that day (and those of the last two weeks again). One line ("The new results since 21 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveaux résultats depuis le {date}'**
+  String classroomExportNewSince(DateTime date);
+
+  /// Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toute la classe et tous ses résultats'**
+  String get classroomExportFull;
+
+  /// Class mode, error snack bar when the class file picked is too big to be read.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier est trop gros pour cette tablette.'**
+  String get classroomImportTooBig;
+
+  /// Class mode, snack bar after merging a class file when some new pupils had the nickname of another pupil of the class and were renamed (« Moussa 2 »); {done} is the sentence classroomImportDone, {nicknames} the new nicknames separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} Pseudos déjà pris dans la classe, élèves renommés : {nicknames}.'**
+  String classroomImportRenamed(String done, String nicknames);
+
+  /// Class mode, button of « Mes classes »: opens the file picker to merge a class file received from another tablet (a new class, or the results of its pupils). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir une classe ou des résultats'**
+  String get classroomImport;
+
+  /// Class mode, snack bar after a class file was merged: the name of the class, the pupils and the sessions that were new on this tablet (a file received twice adds nothing).
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : {pupils, plural, =0{aucun nouvel élève} =1{1 nouvel élève} other{{pupils} nouveaux élèves}}, {sessions, plural, =0{aucune nouvelle séance} =1{1 nouvelle séance} other{{sessions} nouvelles séances}}.'**
+  String classroomImportDone(String name, int pupils, int sessions);
+
+  /// Class mode, error snack bar when the file picked is not a class file or is damaged.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas un fichier de classe Kid Matix, ou il est abîmé.'**
+  String get classroomImportInvalid;
+
+  /// Class mode, error snack bar when the class file was written by a newer version of the app. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
+  String get classroomImportVersion;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

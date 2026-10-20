@@ -46,6 +46,13 @@ import 'package:kid_matix/features/classroom/domain/usecases/open_teacher_area_u
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
+import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
+import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
+import 'package:kid_matix/features/classroom/domain/services/classroom_merger.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 
 import '../../../helpers/in_memory_local_storage.dart';
@@ -85,6 +92,11 @@ final class InMemoryClassrooms implements ClassroomRepository {
 
   @override
   Future<DataState<void>> updateClassroom({
+    required ClassroomEntity classroom,
+  }) => createClassroom(classroom: classroom);
+
+  @override
+  Future<DataState<void>> mergeClassroom({
     required ClassroomEntity classroom,
   }) => createClassroom(classroom: classroom);
 
@@ -136,12 +148,21 @@ final class InMemoryJournal implements ClassJournalRepository {
   @override
   Future<DataState<List<PracticeSession>>> getSessions({
     required String classroomId,
+    int? afterSequence,
+    DateTime? startedFrom,
   }) async {
     return DataSuccess<List<PracticeSession>>(
       rows.values
           .where((PracticeSession s) => s.classroomId == classroomId)
           .toList(),
     );
+  }
+
+  @override
+  Future<DataState<int>> getLatestSequence({
+    required String classroomId,
+  }) async {
+    return DataSuccess<int>(rows.length);
   }
 
   @override
@@ -428,8 +449,54 @@ ClassroomPages buildTestClassroomPages(
         catalog: ClassItemCatalog(domains: stack.domains),
         clock: MovableClock(DateTime(2026, 10, 21, 9)),
       ),
+      exportClassroom: ExportClassroomUseCase(
+        getRoster: GetClassroomRosterUseCase(
+          repository: stack.classrooms,
+          roster: stack.roster,
+        ),
+        assignments: stack.assignments,
+        journal: stack.journal,
+        transfers: const _NoTransfers(),
+        clock: MovableClock(DateTime(2026, 10, 21, 9)),
+      ),
+      getExportMark: const GetExportMarkUseCase(transfers: _NoTransfers()),
+      importClassroom: ImportClassroomUseCase(
+        transfers: const _NoTransfers(),
+        merger: ClassroomMerger(
+          classrooms: stack.classrooms,
+          roster: stack.roster,
+          assignments: stack.assignments,
+          journal: stack.journal,
+        ),
+      ),
     ),
     domains: stack.domains,
     avatarOf: boxAvatar,
   );
+}
+
+/// Class files that go nowhere: shared, never picked.
+final class _NoTransfers implements ClassroomTransferRepository {
+  const _NoTransfers();
+
+  @override
+  Future<DataState<bool>> share({required ClassroomTransfer transfer}) async {
+    return const DataSuccess<bool>(true);
+  }
+
+  @override
+  Future<DataState<ClassroomTransfer?>> pick() async {
+    return const DataSuccess<ClassroomTransfer?>(null);
+  }
+
+  @override
+  Future<DataState<ExportMark?>> readExportMark({
+    required String classroomId,
+  }) async => const DataSuccess<ExportMark?>(null);
+
+  @override
+  Future<DataState<void>> saveExportMark({
+    required String classroomId,
+    required ExportMark mark,
+  }) async => const DataSuccess<void>(null);
 }

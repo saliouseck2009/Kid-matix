@@ -8,10 +8,18 @@ import 'package:kid_matix/features/classroom/domain/entities/practice_session.da
 /// received from other tablets.
 abstract interface class ClassJournalRepository {
   /// Returns the sessions of the pupils of [classroomId], with their
-  /// answers, oldest first.
+  /// answers, oldest first. With [afterSequence], only those written on
+  /// this device (played or merged here) after that local sequence, plus
+  /// those started from [startedFrom]: an overlap the merge ignores.
   Future<DataState<List<PracticeSession>>> getSessions({
     required String classroomId,
+    int? afterSequence,
+    DateTime? startedFrom,
   });
+
+  /// Returns the local sequence of the last session of [classroomId]
+  /// written on this device: the clock plays no part in it.
+  Future<DataState<int>> getLatestSequence({required String classroomId});
 
   /// Adds [sessions] with their answers, all or nothing; a session whose
   /// identifier is already kept is left as it is, so a file received

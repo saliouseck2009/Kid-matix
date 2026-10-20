@@ -10,8 +10,6 @@ import 'package:kid_matix/features/profile/data/datasources/active_profile_local
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source_impl.dart';
@@ -147,9 +145,6 @@ void _registerBackup(GetIt sl) {
       parts: sl(),
       idGenerator: sl(),
     ),
-  );
-  sl.registerLazySingleton<BackupFileDataSource>(
-    () => const BackupFileDataSourceImpl(),
   );
   sl.registerLazySingleton<ProfileBackupRepository>(
     () => ProfileBackupRepositoryImpl(

@@ -24,6 +24,11 @@ abstract interface class ClassroomRepository {
   /// Fails with a `NotFoundException` when it does not exist.
   Future<DataState<void>> updateClassroom({required ClassroomEntity classroom});
 
+  /// Stores [classroom] received in a class file: added when the device
+  /// does not have it, its name and goal replaced when the file's change
+  /// is newer, left alone otherwise.
+  Future<DataState<void>> mergeClassroom({required ClassroomEntity classroom});
+
   /// Deletes the class [classroomId] when it holds no pupil, such as a
   /// class whose pupils could not be written at its creation.
   Future<DataState<void>> deleteEmptyClassroom({required String classroomId});

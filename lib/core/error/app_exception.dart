@@ -54,6 +54,13 @@ final class InvalidFileException extends AppException {
     : super(code: AppErrorCode.invalidFile);
 }
 
+/// A file is too big to be read on this device.
+final class FileTooBigException extends AppException {
+  /// Creates a file-size failure.
+  const FileTooBigException({super.message})
+    : super(code: AppErrorCode.fileTooBig);
+}
+
 /// A file was written by a newer version of the app.
 final class UnsupportedVersionException extends AppException {
   /// Creates a file-version failure.

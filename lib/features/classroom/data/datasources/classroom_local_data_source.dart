@@ -14,6 +14,10 @@ abstract interface class ClassroomLocalDataSource {
   /// Inserts [classroom].
   Future<void> insertClassroom({required ClassroomLocalModel classroom});
 
+  /// Inserts [classroom], or overwrites the row with the same id when
+  /// [classroom] changed later; returns whether a row was written.
+  Future<bool> upsertClassroom({required ClassroomLocalModel classroom});
+
   /// Overwrites the live row of [classroom]; returns the rows changed.
   Future<int> updateClassroom({required ClassroomLocalModel classroom});
 

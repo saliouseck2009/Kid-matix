@@ -5,7 +5,7 @@ import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/repositories/profile_backup_repository_impl.dart';
@@ -18,7 +18,7 @@ import '../../../helpers/data_state_test_extension.dart';
 
 final class _MockLocal extends Mock implements ProfileBackupLocalDataSource {}
 
-final class _MockFiles extends Mock implements BackupFileDataSource {}
+final class _MockFiles extends Mock implements SharedFileDataSource {}
 
 final class _Clock implements Clock {
   @override
