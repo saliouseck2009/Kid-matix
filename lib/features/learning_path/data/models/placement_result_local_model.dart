@@ -33,8 +33,9 @@ final class PlacementResultLocalModel {
   /// Learning domain.
   final String domainId;
 
-  /// Skills of the domain the child had.
-  final int level;
+  /// Skills of the domain the child had; `null` when the test did not
+  /// reach the domain.
+  final int? level;
 
   /// Skills the test checked in the domain.
   final int skillCount;

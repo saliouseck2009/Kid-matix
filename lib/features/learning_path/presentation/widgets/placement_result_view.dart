@@ -83,7 +83,7 @@ class PlacementResultView extends StatelessWidget {
                       children: <Widget>[
                         for (final SkillLevel skill in SkillLevels.all)
                           PlacementSkillRow(
-                            key: ValueKey<String>(skill.id),
+                            key: ValueKey<SkillId>(skill.id),
                             skill: skill,
                             isAcquired: _isAcquired(skill),
                           ),

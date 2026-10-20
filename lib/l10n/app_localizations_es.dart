@@ -1118,10 +1118,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get placementSkillSubtraction => 'Restas';
 
   @override
-  String get placementSkillMultiplication => 'Multiplicación';
+  String get placementSkillMultiplication => 'Multiplicaciones';
 
   @override
-  String get placementSkillDivision => 'División';
+  String get placementSkillDivision => 'Divisiones';
 
   @override
   String get placementSkillAcquired => 'Conseguido';
@@ -1154,6 +1154,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String placementCardLatest(String date) {
     return 'Prueba del $date';
   }
+
+  @override
+  String placementCardLevelSemantics(String domain, String level) {
+    return '$domain, $level';
+  }
+
+  @override
+  String get placementCardNotChecked => 'sin evaluar';
 
   @override
   String placementCardLevel(int level, int total) {

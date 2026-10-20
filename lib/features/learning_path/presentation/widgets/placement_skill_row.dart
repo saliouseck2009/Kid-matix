@@ -6,15 +6,14 @@ import 'package:kid_matix/l10n/app_localizations.dart';
 
 /// Names of the skills of the placement test, such as "Additions".
 extension PlacementSkillNames on AppLocalizations {
-  /// Name of [skill]; empty for a skill the app does not name.
+  /// Name of [skill].
   String placementSkillName(SkillLevel skill) {
     return switch (skill.id) {
-      'numbers' => placementSkillNumbers,
-      'addition' => placementSkillAddition,
-      'subtraction' => placementSkillSubtraction,
-      'multiplication' => placementSkillMultiplication,
-      'division' => placementSkillDivision,
-      _ => '',
+      SkillId.numbers => placementSkillNumbers,
+      SkillId.addition => placementSkillAddition,
+      SkillId.subtraction => placementSkillSubtraction,
+      SkillId.multiplication => placementSkillMultiplication,
+      SkillId.division => placementSkillDivision,
     };
   }
 }
@@ -29,7 +28,7 @@ class PlacementSkillRow extends StatelessWidget {
     super.key,
   });
 
-  static const double _height = 56;
+  static const double _minHeight = 56;
   static const double _checkSize = 24;
 
   /// Skill shown.
@@ -53,7 +52,7 @@ class PlacementSkillRow extends StatelessWidget {
       label: context.l10n.placementSkillSemantics(name, state),
       excludeSemantics: true,
       child: Container(
-        height: _height,
+        constraints: const BoxConstraints(minHeight: _minHeight),
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.space16),
         decoration: BoxDecoration(
           color: isAcquired ? colors.primary : context.palette.lockedFace,

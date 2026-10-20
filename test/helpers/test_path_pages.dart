@@ -97,8 +97,10 @@ final class InMemoryStageProgressRepository implements StageProgressRepository {
 /// [PlacementResultRepository] over a list, dated by [clock].
 final class InMemoryPlacementResultRepository
     implements PlacementResultRepository {
-  /// Creates the repository, which dates results with [clock].
-  InMemoryPlacementResultRepository({required this.clock});
+  /// Creates the repository, which dates results with [clock], a stopped
+  /// clock by default.
+  InMemoryPlacementResultRepository({Clock? clock})
+    : clock = clock ?? FakeClock(quizStart);
 
   /// Dates the results.
   final Clock clock;
@@ -168,7 +170,7 @@ LearningPathUseCases buildTestPathUseCases({
       domains: buildDomainRegistry(),
       settings: settings,
       mastery: FakeMasteryService(),
-      placements: placements,
+      placements: placements ?? InMemoryPlacementResultRepository(),
     ),
     watchChanges: WatchLearningPathChangesUseCase(repository: stages),
   );

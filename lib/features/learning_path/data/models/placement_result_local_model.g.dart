@@ -12,7 +12,7 @@ PlacementResultLocalModel _$PlacementResultLocalModelFromJson(
   profileId: json['profile_id'] as String,
   takenAt: (json['taken_at'] as num).toInt(),
   domainId: json['domain_id'] as String,
-  level: (json['level'] as num).toInt(),
+  level: (json['level'] as num?)?.toInt(),
   skillCount: (json['skill_count'] as num).toInt(),
   unitCount: (json['unit_count'] as num).toInt(),
   updatedAt: (json['updated_at'] as num).toInt(),

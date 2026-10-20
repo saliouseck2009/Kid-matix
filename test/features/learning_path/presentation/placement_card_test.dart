@@ -78,6 +78,7 @@ void main() {
     expect(find.text('Nombres'), findsOneWidget);
     expect(find.text('niveau 1 sur 1'), findsNWidgets(1));
     expect(find.text('niveau 0 sur 2'), findsOneWidget);
+    expect(find.text('non évalué'), findsNWidgets(2));
     expect(find.text('Multiplication'), findsOneWidget);
     expect(find.text('+ et −'), findsOneWidget);
   });

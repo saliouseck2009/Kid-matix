@@ -13,7 +13,7 @@ import 'package:kid_matix/features/learning_path/domain/entities/skill_level.dar
 abstract final class SkillLevels {
   /// Counting and reading numbers up to 100.
   static final SkillLevel numbers = SkillLevel(
-    id: 'numbers',
+    id: SkillId.numbers,
     domainId: LearningDomainIds.numbers,
     unitKeys: const <String>[
       'num:count10',
@@ -29,7 +29,7 @@ abstract final class SkillLevels {
 
   /// Adding, from the sums up to 5 to the carrying.
   static final SkillLevel addition = SkillLevel(
-    id: 'addition',
+    id: SkillId.addition,
     domainId: LearningDomainIds.addition,
     unitKeys: const <String>[
       'addsub:add5',
@@ -51,7 +51,7 @@ abstract final class SkillLevels {
 
   /// Subtracting, from the wholes up to 5 to the borrowing.
   static final SkillLevel subtraction = SkillLevel(
-    id: 'subtraction',
+    id: SkillId.subtraction,
     domainId: LearningDomainIds.addition,
     unitKeys: const <String>[
       'addsub:sub5',
@@ -73,7 +73,7 @@ abstract final class SkillLevels {
 
   /// The multiplication tables, in the order of the learning path.
   static final SkillLevel multiplication = SkillLevel(
-    id: 'multiplication',
+    id: SkillId.multiplication,
     domainId: LearningDomainIds.multiplication,
     unitKeys: const <String>[
       'mul:1',
@@ -94,7 +94,7 @@ abstract final class SkillLevels {
 
   /// The divisions of the tables, in the order of the learning path.
   static final SkillLevel division = SkillLevel(
-    id: 'division',
+    id: SkillId.division,
     domainId: LearningDomainIds.division,
     unitKeys: const <String>[
       'div:1',

@@ -86,7 +86,7 @@ void main() {
       );
       expect(
         actualResult.domains.map((DomainResultEntity d) => d.level),
-        <int>[1, 0, 0, 0],
+        <int?>[1, 0, null, null],
       );
       expect(actualResult.domainOf('addition')!.skillCount, 2);
       expect(actualResult.domainOf('numbers')!.unitCount, 6);

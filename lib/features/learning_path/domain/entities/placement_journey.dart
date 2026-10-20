@@ -11,8 +11,8 @@ import 'package:meta/meta.dart';
 /// typical questions, and missed as soon as too many are wrong for that
 /// to be possible, so the child is not asked questions that are too hard
 /// for them. A right answer opens its unit and the easier units of the
-/// skill before it. The journey is immutable: [answered] returns the next
-/// one.
+/// skill before it, as long as no earlier question of the skill was wrong.
+/// The journey is immutable: [answered] returns the next one.
 @immutable
 final class PlacementJourney {
   const PlacementJourney._({
@@ -82,12 +82,16 @@ final class PlacementJourney {
     (int sum, SkillLevel skill) => sum + skill.probeUnitKeys.length,
   );
 
-  /// Units a right answer to the next question opens.
+  /// Units a right answer to the next question opens: the units up to its
+  /// own while every earlier question of the skill was right (a child who
+  /// gets the hard one right after the easy ones knows what is between),
+  /// else its own unit only (a right answer after a slip proves nothing
+  /// about the units before it).
   List<String> get unitKeysToOpen {
     final SkillLevel? current = skill;
     final String? probe = probeUnitKey;
     if (current == null || probe == null) return const <String>[];
-    return current.unitKeysUpTo(probe);
+    return wrongCount == 0 ? current.unitKeysUpTo(probe) : <String>[probe];
   }
 
   /// The journey after the answer to the question asked.

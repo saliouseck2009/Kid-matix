@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/placement_journey.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/placement_outcome.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/skill_level.dart';
 
 /// Answers each question of [journey] with the next value of [answers],
 /// right when `true`, until the answers or the journey run out.
@@ -23,7 +24,7 @@ void main() {
       // Act
       final PlacementJourney actualJourney = PlacementJourney.start();
       // Assert
-      expect(actualJourney.skill!.id, 'numbers');
+      expect(actualJourney.skill!.id, SkillId.numbers);
       expect(actualJourney.probeUnitKey, 'num:count20');
       expect(actualJourney.unitKeysToOpen, <String>[
         'num:count10',
@@ -68,13 +69,15 @@ void main() {
       expect(actualJourney.isOver, isTrue);
       expect(actualJourney.answeredCount, 5);
       final PlacementOutcome actualOutcome = actualJourney.outcome;
-      expect(actualOutcome.skills.map((SkillResult r) => r.skillId), <String>[
-        'numbers',
-        'addition',
+      expect(actualOutcome.skills.map((SkillResult r) => r.skillId), <SkillId>[
+        SkillId.numbers,
+        SkillId.addition,
       ]);
       expect(actualOutcome.skills.last.isAcquired, isFalse);
-      expect(levelOf(actualOutcome, 'multiplication').level, 0);
-      expect(levelOf(actualOutcome, 'division').level, 0);
+      expect(levelOf(actualOutcome, 'multiplication').level, isNull);
+      expect(levelOf(actualOutcome, 'division').level, isNull);
+      expect(levelOf(actualOutcome, 'multiplication').isChecked, isFalse);
+      expect(levelOf(actualOutcome, 'addition').isChecked, isTrue);
     });
 
     test('starts a child who counts but cannot add on the first addition', () {
@@ -121,7 +124,7 @@ void main() {
       );
       // Assert
       expect(actualJourney.isOver, isFalse);
-      expect(actualJourney.skill!.id, 'addition');
+      expect(actualJourney.skill!.id, SkillId.addition);
       expect(actualJourney.results.single.isAcquired, isTrue);
       expect(actualJourney.results.single.rightCount, 2);
       expect(actualJourney.results.single.wrongCount, 1);
@@ -154,7 +157,7 @@ void main() {
         <bool>[true, true, true, true, true, true, true, false, false],
       ).outcome;
       // Assert
-      expect(actualOutcome.skills.last.skillId, 'subtraction');
+      expect(actualOutcome.skills.last.skillId, SkillId.subtraction);
       expect(actualOutcome.recommendedDomainId, 'addition');
       expect(actualOutcome.recommendedUnitKey, 'addsub:sub7');
     });
@@ -173,6 +176,56 @@ void main() {
       expect(identical(actualJourney, inputJourney), isTrue);
       expect(inputJourney.unitKeysToOpen, isEmpty);
       expect(inputJourney.probeUnitKey, isNull);
+    });
+
+    test('right, wrong, wrong misses the skill and keeps the first units', () {
+      // Act
+      final PlacementJourney actualJourney = play(
+        PlacementJourney.start(),
+        <bool>[true, false, false],
+      );
+      // Assert
+      expect(actualJourney.isOver, isTrue);
+      expect(actualJourney.results.single.isAcquired, isFalse);
+      expect(actualJourney.openedUnitKeys, <String>[
+        'num:count10',
+        'num:count20',
+      ]);
+      expect(actualJourney.outcome.recommendedUnitKey, 'num:count100');
+    });
+
+    test('right, right still asks the third question', () {
+      // Act
+      final PlacementJourney actualJourney = play(
+        PlacementJourney.start(),
+        <bool>[true, true],
+      );
+      // Assert
+      expect(actualJourney.isOver, isFalse);
+      expect(actualJourney.probeUnitKey, 'num:order');
+      expect(actualJourney.unitKeysToOpen, <String>[
+        'num:count10',
+        'num:count20',
+        'num:count100',
+        'num:tensones',
+        'num:compare',
+        'num:order',
+      ]);
+    });
+
+    test('a right answer after a slip opens its own unit only', () {
+      // Act
+      final PlacementJourney actualJourney = play(
+        PlacementJourney.start(),
+        <bool>[false, true],
+      );
+      // Assert
+      expect(actualJourney.probeUnitKey, 'num:order');
+      expect(actualJourney.unitKeysToOpen, <String>['num:order']);
+      expect(
+        actualJourney.answered(isCorrect: true).openedUnitKeys,
+        <String>['num:tensones', 'num:order'],
+      );
     });
   });
 }

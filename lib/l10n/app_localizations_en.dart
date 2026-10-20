@@ -1154,6 +1154,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String placementCardLevelSemantics(String domain, String level) {
+    return '$domain, $level';
+  }
+
+  @override
+  String get placementCardNotChecked => 'not checked';
+
+  @override
   String placementCardLevel(int level, int total) {
     return 'level $level of $total';
   }

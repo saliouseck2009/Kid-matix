@@ -5,12 +5,13 @@ import 'package:sqflite/sqflite.dart';
 ///
 /// One row per player, test and domain: `taken_at` dates the test (every
 /// row of one test shares it), `level` counts the skills of the domain the
-/// child has out of `skill_count`, and `unit_count` the units the test
-/// opened. `start_unit_key` is filled on the row of the domain the test
-/// recommends starting with, and only there. A later test adds rows; none
-/// is rewritten, so a start and an end of period can be compared. Deleting
-/// a profile deletes its rows. The SQL is written out in full: a released
-/// migration never changes.
+/// child has out of `skill_count` (NULL when the test stopped before any
+/// skill of the domain: not reached is not the same as none), and
+/// `unit_count` the units the test opened. `start_unit_key` is filled on the
+/// row of the domain the test recommends starting with, and only there. A
+/// later test adds rows; none is rewritten, so a start and an end of
+/// period can be compared. Deleting a profile deletes its rows. The SQL is
+/// written out in full: a released migration never changes.
 final class Migration014CreatePlacementResultTable
     implements DatabaseMigration {
   /// Creates the migration.
@@ -26,7 +27,7 @@ final class Migration014CreatePlacementResultTable
         profile_id TEXT NOT NULL REFERENCES profile (id) ON DELETE CASCADE,
         taken_at INTEGER NOT NULL,
         domain_id TEXT NOT NULL,
-        level INTEGER NOT NULL,
+        level INTEGER,
         skill_count INTEGER NOT NULL,
         unit_count INTEGER NOT NULL,
         start_unit_key TEXT,
@@ -35,9 +36,5 @@ final class Migration014CreatePlacementResultTable
         PRIMARY KEY (profile_id, taken_at, domain_id)
       )
     ''');
-    await database.execute(
-      'CREATE INDEX placement_result_profile_taken '
-      'ON placement_result (profile_id, taken_at)',
-    );
   }
 }

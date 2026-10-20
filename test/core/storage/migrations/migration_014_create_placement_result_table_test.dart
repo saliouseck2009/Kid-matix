@@ -18,13 +18,14 @@ const Map<String, Object?> _profileRow = <String, Object?>{
 Map<String, Object?> _resultRow({
   int takenAt = 1000,
   String domainId = 'numbers',
+  int? level = 1,
   String? startUnitKey,
 }) {
   return <String, Object?>{
     'profile_id': 'p1',
     'taken_at': takenAt,
     'domain_id': domainId,
-    'level': 1,
+    'level': level,
     'skill_count': 1,
     'unit_count': 3,
     'start_unit_key': startUnitKey,
@@ -97,6 +98,35 @@ void main() {
         database.insert('placement_result', _resultRow()),
         throwsA(isA<DatabaseException>()),
       );
+      await appDatabase.close();
+    });
+
+    test('stores a domain the test did not reach apart from level 0', () async {
+      // Arrange
+      final AppDatabase appDatabase = _openDatabase(
+        appMigrations.take(14).toList(),
+        inMemoryDatabasePath,
+      );
+      final Database database = await appDatabase.database;
+      await database.insert('profile', _profileRow);
+      // Act
+      await database.insert(
+        'placement_result',
+        _resultRow(domainId: 'division', level: null),
+      );
+      await database.insert(
+        'placement_result',
+        _resultRow(domainId: 'addition', level: 0),
+      );
+      // Assert
+      final List<Map<String, Object?>> actualRows = await database.query(
+        'placement_result',
+        orderBy: 'domain_id',
+      );
+      expect(actualRows.map((Map<String, Object?> r) => r['level']), <int?>[
+        0,
+        null,
+      ]);
       await appDatabase.close();
     });
 

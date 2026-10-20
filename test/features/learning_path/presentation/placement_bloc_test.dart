@@ -6,6 +6,7 @@ import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/item_answer.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/learning_path_entity.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/skill_level.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/build_placement_question_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_bloc.dart';
@@ -102,7 +103,7 @@ void main() {
       // Act
       final PlacementAsking actualAsking = await start();
       // Assert
-      expect(actualAsking.journey.skill!.id, 'numbers');
+      expect(actualAsking.journey.skill!.id, SkillId.numbers);
       expect(actualAsking.domainId, 'numbers');
       expect(actualAsking.question.unitKey, 'num:count20');
       expect(actualAsking.askedAt, quizStart);
@@ -199,6 +200,25 @@ void main() {
     },
   );
 
+  test('a worse retake keeps the units of the first test open', () async {
+    // Arrange: a first test passed with every answer right.
+    await start();
+    await answerAll(List<bool>.filled(15, true));
+    await bloc.close();
+    final List<String> inputOpen = await readOpenUnits('multiplication');
+    // Act: the same player takes the test again and knows nothing.
+    bloc = buildBloc();
+    await start();
+    await answerAll(<bool>[false, false]);
+    // Assert
+    expect(await readOpenUnits('multiplication'), inputOpen);
+    expect(results.saved, hasLength(2));
+    expect(
+      (bloc.state as PlacementFinished).outcome.recommendedUnitKey,
+      'num:count10',
+    );
+  });
+
   test('finds no level when nothing is known', () async {
     // Arrange
     await start();
@@ -219,7 +239,7 @@ void main() {
     await answerAll(<bool>[true, true, true]);
     // Assert
     final PlacementAsking actualAsking = bloc.state as PlacementAsking;
-    expect(actualAsking.journey.skill!.id, 'addition');
+    expect(actualAsking.journey.skill!.id, SkillId.addition);
     expect(actualAsking.progress, 0.2);
   });
 

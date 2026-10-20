@@ -13,8 +13,8 @@ final class SkillResult {
     required this.isAcquired,
   });
 
-  /// Skill, such as `addition`.
-  final String skillId;
+  /// Skill checked.
+  final SkillId skillId;
 
   /// Learning domain of the skill.
   final String domainId;
@@ -47,8 +47,10 @@ final class DomainLevel {
   /// Learning domain.
   final String domainId;
 
-  /// Skills of the domain the child has, from 0.
-  final int level;
+  /// Skills of the domain the child has, from 0; `null` when the test did
+  /// not reach any skill of the domain (it stopped before), which is not
+  /// the same as having none.
+  final int? level;
 
   /// Skills the test checks in the domain.
   final int skillCount;
@@ -58,6 +60,9 @@ final class DomainLevel {
 
   /// Whether every skill of the domain is acquired.
   bool get isComplete => level == skillCount;
+
+  /// Whether the test reached a skill of the domain.
+  bool get isChecked => level != null;
 }
 
 /// The result of a placement test: a level per domain, the units opened
@@ -87,52 +92,12 @@ final class PlacementOutcome {
     required List<SkillResult> results,
     required List<String> openedUnitKeys,
   }) {
-    final Set<String> acquiredIds = <String>{
-      for (final SkillResult result in results)
-        if (result.isAcquired) result.skillId,
-    };
-    final List<String> domainIds = <String>[
-      ...<String>{for (final SkillLevel skill in skills) skill.domainId},
-    ];
-    final List<DomainLevel> domains = <DomainLevel>[
-      for (final String domainId in domainIds)
-        DomainLevel(
-          domainId: domainId,
-          level: skills
-              .where(
-                (SkillLevel skill) =>
-                    skill.domainId == domainId &&
-                    acquiredIds.contains(skill.id),
-              )
-              .length,
-          skillCount: skills
-              .where((SkillLevel skill) => skill.domainId == domainId)
-              .length,
-          openedUnitKeys: _unitsOfDomain(skills, domainId, openedUnitKeys),
-        ),
-    ];
-    SkillLevel? missed;
-    for (final SkillLevel skill in skills) {
-      if (!acquiredIds.contains(skill.id)) {
-        missed = skill;
-        break;
-      }
-    }
-    String? startUnitKey;
-    if (missed != null) {
-      for (final String key in missed.unitKeys) {
-        if (!openedUnitKeys.contains(key)) {
-          startUnitKey = key;
-          break;
-        }
-      }
-    }
     return PlacementOutcome(
       skills: results,
-      domains: domains,
+      domains: _levelsOf(skills, results, openedUnitKeys),
       openedUnitKeys: openedUnitKeys,
-      recommendedDomainId: missed?.domainId,
-      recommendedUnitKey: startUnitKey,
+      recommendedDomainId: _missedSkillOf(skills, results)?.domainId,
+      recommendedUnitKey: _startUnitOf(skills, results, openedUnitKeys),
     );
   }
 
@@ -154,18 +119,69 @@ final class PlacementOutcome {
   /// Whether the child has every skill of the test.
   bool get isEverythingAcquired => recommendedDomainId == null;
 
-  static List<String> _unitsOfDomain(
+  static List<DomainLevel> _levelsOf(
     List<SkillLevel> skills,
-    String domainId,
+    List<SkillResult> results,
     List<String> openedUnitKeys,
   ) {
-    final Set<String> domainUnits = <String>{
-      for (final SkillLevel skill in skills)
-        if (skill.domainId == domainId) ...skill.unitKeys,
+    final Set<SkillId> reachedIds = <SkillId>{
+      for (final SkillResult result in results) result.skillId,
     };
-    return <String>[
-      for (final String key in openedUnitKeys)
-        if (domainUnits.contains(key)) key,
+    final Set<SkillId> acquiredIds = <SkillId>{
+      for (final SkillResult result in results)
+        if (result.isAcquired) result.skillId,
+    };
+    final List<String> domainIds = <String>[
+      ...<String>{for (final SkillLevel skill in skills) skill.domainId},
     ];
+    return <DomainLevel>[
+      for (final String domainId in domainIds)
+        () {
+          final List<SkillLevel> own = skills
+              .where((SkillLevel skill) => skill.domainId == domainId)
+              .toList();
+          return DomainLevel(
+            domainId: domainId,
+            level: own.any((SkillLevel s) => reachedIds.contains(s.id))
+                ? own.where((SkillLevel s) => acquiredIds.contains(s.id)).length
+                : null,
+            skillCount: own.length,
+            openedUnitKeys: <String>[
+              for (final String key in openedUnitKeys)
+                if (own.any((SkillLevel skill) => skill.unitKeys.contains(key)))
+                  key,
+            ],
+          );
+        }(),
+    ];
+  }
+
+  /// The first skill the child does not have, asked or not.
+  static SkillLevel? _missedSkillOf(
+    List<SkillLevel> skills,
+    List<SkillResult> results,
+  ) {
+    final Set<SkillId> acquiredIds = <SkillId>{
+      for (final SkillResult result in results)
+        if (result.isAcquired) result.skillId,
+    };
+    for (final SkillLevel skill in skills) {
+      if (!acquiredIds.contains(skill.id)) return skill;
+    }
+    return null;
+  }
+
+  /// The first unit of the skill missed that the test did not open.
+  static String? _startUnitOf(
+    List<SkillLevel> skills,
+    List<SkillResult> results,
+    List<String> openedUnitKeys,
+  ) {
+    final SkillLevel? missed = _missedSkillOf(skills, results);
+    if (missed == null) return null;
+    for (final String key in missed.unitKeys) {
+      if (!openedUnitKeys.contains(key)) return key;
+    }
+    return null;
   }
 }

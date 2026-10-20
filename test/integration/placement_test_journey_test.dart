@@ -168,7 +168,7 @@ void main() {
     expect(actualHistory.first.recommended, isNull);
     expect(
       actualHistory.last.domains.map((DomainResultEntity d) => d.level),
-      <int>[0, 0, 0, 0],
+      <int?>[0, null, null, null],
     );
     expect(actualHistory.last.recommended!.startUnitKey, 'num:count10');
   });

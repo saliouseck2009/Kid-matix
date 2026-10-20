@@ -1,5 +1,23 @@
 import 'package:meta/meta.dart';
 
+/// The skills of the placement test, in the order the test climbs them.
+enum SkillId {
+  /// Counting and reading numbers.
+  numbers,
+
+  /// Adding.
+  addition,
+
+  /// Subtracting.
+  subtraction,
+
+  /// The multiplication tables.
+  multiplication,
+
+  /// The divisions of the tables.
+  division,
+}
+
 /// One skill of the placement test, such as adding: a few units of a
 /// learning domain and the typical questions that tell whether the child
 /// has the skill.
@@ -29,8 +47,8 @@ final class SkillLevel {
   /// one slip does not stop the climb.
   static const int passMark = 2;
 
-  /// Stable identifier, such as `addition`.
-  final String id;
+  /// Which skill this is.
+  final SkillId id;
 
   /// Learning domain that teaches the skill; the addition and the
   /// subtraction share one.

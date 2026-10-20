@@ -27,6 +27,8 @@ import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/progress_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_backup_part.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_reset_hook.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_backup_part.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_reset_hook.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source.dart';
 import 'package:kid_matix/features/learning_path/data/datasources/path_domain_local_data_source_impl.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/path_domain_repository_impl.dart';
@@ -103,8 +105,12 @@ void registerLearningPathFeature(GetIt sl) {
   sl<SessionSavedHooks>().add(
     StageProgressSessionHook(progress: sl(), clock: sl()),
   );
-  sl<ProgressResetHooks>().add(const StageProgressResetHook());
-  sl<ProfileBackupParts>().add(const StageProgressBackupPart());
+  sl<ProgressResetHooks>()
+    ..add(const StageProgressResetHook())
+    ..add(const PlacementResultResetHook());
+  sl<ProfileBackupParts>()
+    ..add(const StageProgressBackupPart())
+    ..add(const PlacementResultBackupPart());
 }
 
 /// The domain each player last chose on the map, kept on the device.

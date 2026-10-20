@@ -1612,7 +1612,7 @@ abstract class AppLocalizations {
   /// **'Faire le test'**
   String get placementOfferStart;
 
-  /// Secondary full-width button of the placement test offer that skips the test and opens the path with the first unit of each domain only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
+  /// Secondary full-width button of the placement test offer that leaves the test with nothing changed: the path opens with the first unit of each domain only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
   ///
   /// In fr, this message translates to:
   /// **'Passer'**
@@ -1755,6 +1755,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Test du {date}'**
   String placementCardLatest(String date);
+
+  /// What a screen reader says for a domain row of the Profile placement card ("Numbers, level 1 of 1"). {domain} is the spoken domain name, {level} the text of placementCardLevel or of placementCardNotChecked. Not shown on screen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{domain}, {level}'**
+  String placementCardLevelSemantics(String domain, String level);
+
+  /// Shown instead of the level, in the Profile placement card, for a domain the test did not reach because it stopped before ("not checked"). Lower case, a few words.
+  ///
+  /// In fr, this message translates to:
+  /// **'non évalué'**
+  String get placementCardNotChecked;
 
   /// Level of the child in one domain, shown after the domain name in the Profile placement card ("level 1 of 2"). {level} is the number of skills passed, {total} the number checked.
   ///

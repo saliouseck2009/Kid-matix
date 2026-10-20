@@ -16,8 +16,7 @@ import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_p
 /// Returns the tables, stages, stars, crowns and locks of a player, with
 /// the "Tout débloquer" setting and the tables opened by the placement
 /// test applied; the unit its latest result recommends starting with is
-/// the current one. A repository of placement results is optional: without
-/// it nothing is recommended.
+/// the current one.
 ///
 /// Fails with a `ValidationException` when the domain is unknown.
 class GetLearningPathUseCase
@@ -28,7 +27,7 @@ class GetLearningPathUseCase
     required this._domains,
     required this._settings,
     required this._mastery,
-    this._placements,
+    required this._placements,
     this._builder = const LearningPathBuilder(),
   });
 
@@ -36,7 +35,7 @@ class GetLearningPathUseCase
   final DomainRegistry _domains;
   final PlayerSettingsService _settings;
   final MasteryService _mastery;
-  final PlacementResultRepository? _placements;
+  final PlacementResultRepository _placements;
   final LearningPathBuilder _builder;
 
   @override
@@ -95,9 +94,7 @@ class GetLearningPathUseCase
   /// The unit the latest placement test of the player recommended in
   /// [domainId], or `null`.
   Future<String?> _recommendedUnitKey(String profileId, String domainId) async {
-    final PlacementResultRepository? placements = _placements;
-    if (placements == null) return null;
-    final DataState<List<PlacementResultEntity>> history = await placements
+    final DataState<List<PlacementResultEntity>> history = await _placements
         .getHistory(profileId: profileId);
     if (history is! DataSuccess<List<PlacementResultEntity>> ||
         history.data.isEmpty) {

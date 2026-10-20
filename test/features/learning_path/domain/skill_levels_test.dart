@@ -17,13 +17,7 @@ void main() {
       // Assert
       expect(
         SkillLevels.all.map((SkillLevel skill) => skill.id),
-        <String>[
-          'numbers',
-          'addition',
-          'subtraction',
-          'multiplication',
-          'division',
-        ],
+        SkillId.values,
       );
       expect(SkillLevels.domainIds, <String>[
         'numbers',
@@ -48,7 +42,7 @@ void main() {
           for (final String key in pathKeys)
             if (skill.unitKeys.contains(key)) key,
         ];
-        expect(skill.unitKeys, actualOrder, reason: skill.id);
+        expect(skill.unitKeys, actualOrder, reason: skill.id.name);
       }
     });
 
@@ -88,8 +82,12 @@ void main() {
             skill.unitKeys.indexOf(key),
         ];
         // Assert
-        expect(actualRanks, everyElement(isNonNegative), reason: skill.id);
-        expect(actualRanks, <int>[...actualRanks]..sort(), reason: skill.id);
+        expect(actualRanks, everyElement(isNonNegative), reason: skill.id.name);
+        expect(
+          actualRanks,
+          <int>[...actualRanks]..sort(),
+          reason: skill.id.name,
+        );
         expect(actualRanks.toSet(), hasLength(actualRanks.length));
       }
     });

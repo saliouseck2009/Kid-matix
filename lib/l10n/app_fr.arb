@@ -1448,7 +1448,7 @@
   },
   "placementOfferSkip": "Passer",
   "@placementOfferSkip": {
-    "description": "Secondary full-width button of the placement test offer that skips the test and opens the path with the first unit of each domain only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
+    "description": "Secondary full-width button of the placement test offer that leaves the test with nothing changed: the path opens with the first unit of each domain only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
   },
   "placementQuestionProgress": "Question {current}",
   "@placementQuestionProgress": {
@@ -1575,6 +1575,24 @@
         "example": "12/10/2026"
       }
     }
+  },
+  "placementCardLevelSemantics": "{domain}, {level}",
+  "@placementCardLevelSemantics": {
+    "description": "What a screen reader says for a domain row of the Profile placement card (\"Numbers, level 1 of 1\"). {domain} is the spoken domain name, {level} the text of placementCardLevel or of placementCardNotChecked. Not shown on screen.",
+    "placeholders": {
+      "domain": {
+        "type": "String",
+        "example": "Nombres"
+      },
+      "level": {
+        "type": "String",
+        "example": "niveau 1 sur 1"
+      }
+    }
+  },
+  "placementCardNotChecked": "non évalué",
+  "@placementCardNotChecked": {
+    "description": "Shown instead of the level, in the Profile placement card, for a domain the test did not reach because it stopped before (\"not checked\"). Lower case, a few words."
   },
   "placementCardLevel": "niveau {level} sur {total}",
   "@placementCardLevel": {

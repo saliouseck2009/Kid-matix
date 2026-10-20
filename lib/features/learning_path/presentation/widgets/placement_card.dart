@@ -87,33 +87,47 @@ class _LatestResult extends StatelessWidget {
           ),
         ),
         for (final DomainResultEntity domain in result.domains)
-          Semantics(
-            label: context.l10n.placementSkillSemantics(
-              context.l10n.domainSpokenName(domain.domainId),
-              context.l10n.placementCardLevel(domain.level, domain.skillCount),
-            ),
-            excludeSemantics: true,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    context.l10n.domainName(domain.domainId),
-                    style: textTheme.bodyLarge,
-                  ),
-                ),
-                Text(
-                  context.l10n.placementCardLevel(
-                    domain.level,
-                    domain.skillCount,
-                  ),
-                  style: textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
+          _DomainRow(domain: domain),
+      ],
+    );
+  }
+}
+
+class _DomainRow extends StatelessWidget {
+  const _DomainRow({required this.domain});
+
+  final DomainResultEntity domain;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final int? level = domain.level;
+    final String levelText = level == null
+        ? context.l10n.placementCardNotChecked
+        : context.l10n.placementCardLevel(level, domain.skillCount);
+    return Semantics(
+      label: context.l10n.placementCardLevelSemantics(
+        context.l10n.domainSpokenName(domain.domainId),
+        levelText,
+      ),
+      excludeSemantics: true,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              context.l10n.domainName(domain.domainId),
+              style: textTheme.bodyLarge,
             ),
           ),
-      ],
+          Text(
+            levelText,
+            style: textTheme.bodyLarge?.copyWith(
+              fontWeight: level == null ? FontWeight.w400 : FontWeight.w800,
+              color: level == null ? context.palette.mutedText : null,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -127,7 +141,7 @@ class _PastResult extends StatelessWidget {
   Widget build(BuildContext context) {
     final int levels = result.domains.fold(
       0,
-      (int sum, DomainResultEntity domain) => sum + domain.level,
+      (int sum, DomainResultEntity domain) => sum + (domain.level ?? 0),
     );
     return Text(
       context.l10n.placementCardPast(_dateOf(context, result.takenAt), levels),

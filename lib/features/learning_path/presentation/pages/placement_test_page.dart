@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/core/quiz/learning_domain_ids.dart';
+import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
-import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_offer_view.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_question_view.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_quit_dialog.dart';
@@ -55,10 +54,6 @@ class PlacementTestPage extends StatelessWidget {
           PlacementBloc(profileId: profileId, useCases: useCases, clock: clock),
       child: _PlacementScaffold(
         profileId: profileId,
-        labels: PathLabels(
-          domainId: LearningDomainIds.multiplication,
-          l10n: context.l10n,
-        ),
         slots: slots,
         onDone: onDone,
       ),
@@ -69,13 +64,11 @@ class PlacementTestPage extends StatelessWidget {
 class _PlacementScaffold extends StatelessWidget {
   const _PlacementScaffold({
     required this.profileId,
-    required this.labels,
     required this.slots,
     required this.onDone,
   });
 
   final String profileId;
-  final PathLabels labels;
   final PlacementSlots slots;
   final VoidCallback onDone;
 
@@ -119,7 +112,10 @@ class _PlacementScaffold extends StatelessWidget {
                   onSeePath: onDone,
                 ),
                 PlacementFailure(:final errorCode) => _PlacementError(
-                  message: labels.describeError(errorCode),
+                  message: switch (errorCode) {
+                    AppErrorCode.cache => context.l10n.errorStorage,
+                    _ => context.l10n.errorUnknown,
+                  },
                   onDone: onDone,
                 ),
               };

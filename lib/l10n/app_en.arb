@@ -276,6 +276,8 @@
   "placementCardTitle": "My starting level",
   "placementCardEmpty": "You have not taken the level test yet.",
   "placementCardLatest": "Test of {date}",
+  "placementCardLevelSemantics": "{domain}, {level}",
+  "placementCardNotChecked": "not checked",
   "placementCardLevel": "level {level} of {total}",
   "placementCardPast": "{date}: {count, plural, =0{no level} =1{1 level} other{{count} levels}}",
   "placementCardRetake": "Take the test again",

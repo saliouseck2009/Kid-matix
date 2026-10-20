@@ -48,8 +48,9 @@ final class DomainResultEntity {
   /// Learning domain.
   final String domainId;
 
-  /// Skills of the domain the child had.
-  final int level;
+  /// Skills of the domain the child had; `null` when the test stopped
+  /// before reaching the domain.
+  final int? level;
 
   /// Skills the test checked in the domain.
   final int skillCount;

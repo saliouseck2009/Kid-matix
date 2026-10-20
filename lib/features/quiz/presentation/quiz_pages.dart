@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/quiz_spec.dart';
@@ -6,6 +7,7 @@ import 'package:kid_matix/core/services/game_feedback_service.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/get_quiz_result_use_case.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/question_reading_cubit.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/pages/quiz_page.dart';
@@ -113,13 +115,19 @@ final class QuizPages {
     required String domainId,
     String? typedDigits,
   }) {
-    return ReadableQuestionCard(
-      profileId: profileId,
-      question: question,
-      domainId: domainId,
-      domains: _domains,
-      readAloud: _readAloud,
-      typedDigits: typedDigits,
+    return BlocProvider<QuestionReadingCubit>(
+      key: ValueKey<String>('question-reading-$profileId-$domainId'),
+      create: (_) => QuestionReadingCubit(
+        useCases: _readAloud,
+        profileId: profileId,
+        contentLanguageCode: _domains.find(domainId)?.contentLanguageCode,
+      ),
+      child: ReadableQuestionCard(
+        question: question,
+        domainId: domainId,
+        domains: _domains,
+        typedDigits: typedDigits,
+      ),
     );
   }
 }

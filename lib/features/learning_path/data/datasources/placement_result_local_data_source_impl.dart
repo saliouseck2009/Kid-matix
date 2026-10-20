@@ -20,7 +20,7 @@ final class PlacementResultLocalDataSourceImpl
         await transaction.insert(
           LearningPathTables.placementResult,
           row.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace,
+          conflictAlgorithm: ConflictAlgorithm.abort,
         );
       }
     });
