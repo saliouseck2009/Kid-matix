@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:file_selector/file_selector.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// [BackupFileDataSource] over `share_plus` and `file_selector`.
+/// [SharedFileDataSource] over `share_plus` and `file_selector`.
 ///
 /// The picker accepts any file: messaging apps and file managers do not
 /// keep a custom type, so the content is checked instead.
-final class BackupFileDataSourceImpl implements BackupFileDataSource {
+final class SharedFileDataSourceImpl implements SharedFileDataSource {
   /// Creates the data source.
-  const BackupFileDataSourceImpl();
+  const SharedFileDataSourceImpl();
 
   /// Media type of a backup file: JSON text.
   static const String mimeType = 'application/json';
