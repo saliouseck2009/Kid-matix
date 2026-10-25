@@ -21,10 +21,13 @@ import 'package:kid_matix/core/storage/app_migrations.dart';
 import 'package:kid_matix/core/storage/local_storage.dart';
 import 'package:kid_matix/core/storage/migration_runner.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source_impl.dart';
 import 'package:kid_matix/core/storage/shared_preferences_local_storage.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/addition/injection.dart';
 import 'package:kid_matix/features/challenge/injection.dart';
+import 'package:kid_matix/features/classroom/injection.dart';
 import 'package:kid_matix/features/division/injection.dart';
 import 'package:kid_matix/features/learning_path/injection.dart';
 import 'package:kid_matix/features/mascot/injection.dart';
@@ -69,6 +72,7 @@ Future<void> configureDependencies() async {
   registerChallengeFeature(sl);
   registerSettingFeature(sl);
   registerShopFeature(sl);
+  registerClassroomFeature(sl);
   registerSpeechFeature(sl);
   registerQuizFeature(sl);
 }
@@ -89,6 +93,9 @@ void _registerCoreStorage() {
   sl.registerLazySingleton<SessionSavedHooks>(SessionSavedHooks.new);
   sl.registerLazySingleton<ProgressResetHooks>(ProgressResetHooks.new);
   sl.registerLazySingleton<ProfileBackupParts>(ProfileBackupParts.new);
+  sl.registerLazySingleton<SharedFileDataSource>(
+    () => const SharedFileDataSourceImpl(),
+  );
   sl.registerLazySingleton<ProgressResetService>(
     () => ProgressResetter(database: sl(), hooks: sl(), changeBus: sl()),
   );

@@ -5,7 +5,7 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/profile/data/datasources/app_version_reader.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_section.dart';
@@ -39,7 +39,7 @@ final class ProfileBackupRepositoryImpl implements ProfileBackupRepository {
   static final RegExp _spaces = RegExp(r'\s+');
 
   final ProfileBackupLocalDataSource _local;
-  final BackupFileDataSource _files;
+  final SharedFileDataSource _files;
   final ProfileBackupCodec _codec;
   final Clock _clock;
   final AppVersionReader _readAppVersion;

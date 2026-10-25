@@ -13,11 +13,12 @@ import 'package:kid_matix/core/storage/profile_backup_part.dart';
 import 'package:kid_matix/core/storage/table_change_bus.dart';
 import 'package:kid_matix/features/challenge/data/datasources/training_choice_local_data_source_impl.dart';
 import 'package:kid_matix/features/challenge/data/repositories/challenge_backup_part.dart';
+import 'package:kid_matix/features/learning_path/data/repositories/placement_result_backup_part.dart';
 import 'package:kid_matix/features/learning_path/data/repositories/stage_progress_backup_part.dart';
 import 'package:kid_matix/features/mascot/data/repositories/mascot_backup_part.dart';
 import 'package:kid_matix/features/mastery/data/repositories/mastery_backup_part.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source_impl.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
+import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
@@ -44,7 +45,7 @@ final class _Clock implements Clock {
 }
 
 /// The share sheet and the file picker of a phone.
-final class _FakeFiles implements BackupFileDataSource {
+final class _FakeFiles implements SharedFileDataSource {
   String? sharedName;
   String? sharedContent;
   String? fileToPick;
@@ -69,6 +70,7 @@ final class _Phone {
     final ProfileBackupParts parts = ProfileBackupParts()
       ..add(const MasteryBackupPart())
       ..add(const StageProgressBackupPart())
+      ..add(const PlacementResultBackupPart())
       ..add(const RewardBackupPart())
       ..add(const MascotBackupPart())
       ..add(
@@ -182,6 +184,7 @@ const Map<String, String> _playerTables = <String, String>{
   'record': 'SELECT * FROM record WHERE profile_id = ?',
   'shop_purchase': 'SELECT * FROM shop_purchase WHERE profile_id = ?',
   'shop_choice': 'SELECT * FROM shop_choice WHERE profile_id = ?',
+  'placement_result': 'SELECT * FROM placement_result WHERE profile_id = ?',
 };
 
 /// Identifier columns, given new values on import.
@@ -354,6 +357,21 @@ Future<void> _seedProgress(
       'updated_at': 5000,
     });
   }
+  for (final (String domain, int? level) result in <(String, int?)>[
+    ('numbers', 1),
+    ('multiplication', null),
+  ]) {
+    await database.insert('placement_result', <String, Object?>{
+      'profile_id': profileId,
+      'taken_at': 8000,
+      'domain_id': result.$1,
+      'level': result.$2,
+      'skill_count': 1,
+      'unit_count': result.$2 == null ? 0 : 3,
+      'start_unit_key': result.$2 == null ? 'mul:1' : null,
+      'updated_at': 8000,
+    });
+  }
   await _seedRewards(database, profileId: profileId, boss: boss);
   await database.insert('mascot', <String, Object?>{
     'profile_id': profileId,
@@ -508,6 +526,7 @@ void main() {
           'quiz',
           'mastery',
           'learningPath',
+          'placementResults',
           'reward',
           'mascot',
           'challenge',
@@ -589,6 +608,20 @@ void main() {
         whereArgs: <Object>[id],
       );
       expect(choice.single['theme_id'], 'ocean');
+      final List<Map<String, Object?>> placements = await databaseB.query(
+        'placement_result',
+        where: 'profile_id = ?',
+        whereArgs: <Object>[id],
+        orderBy: 'domain_id',
+      );
+      expect(
+        placements.map((Map<String, Object?> row) => row['taken_at']),
+        <int>[8000, 8000],
+      );
+      expect(
+        placements.map((Map<String, Object?> row) => row['level']),
+        <int?>[null, 1],
+      );
     });
 
     test('reads a version 1 file, written before the shop', () async {

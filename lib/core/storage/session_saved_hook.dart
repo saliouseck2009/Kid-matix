@@ -18,6 +18,8 @@ final class SavedQuizSession {
     this.sourceKey,
     this.bossOutcome,
     this.lightningCount = 0,
+    this.duration = Duration.zero,
+    this.answers = const <SavedAnswer>[],
   });
 
   /// Identifier of the session.
@@ -53,6 +55,39 @@ final class SavedQuizSession {
 
   /// Lightning answers among the scored ones.
   final int lightningCount;
+
+  /// Time played, from the first question to the end.
+  final Duration duration;
+
+  /// Every answer of the session, second chances included, in order.
+  final List<SavedAnswer> answers;
+
+  /// When the session started.
+  DateTime get startedAt => endedAt.subtract(duration);
+}
+
+/// One answer of a [SavedQuizSession].
+@immutable
+final class SavedAnswer {
+  /// Creates the answer at [position] about [itemKey].
+  const SavedAnswer({
+    required this.position,
+    required this.itemKey,
+    required this.isCorrect,
+    this.isRetry = false,
+  });
+
+  /// Order of the answer in the session, from 1.
+  final int position;
+
+  /// Item asked, such as `mul:7x8`.
+  final String itemKey;
+
+  /// Whether the answer was right.
+  final bool isCorrect;
+
+  /// Whether it was a second chance, asked again after a mistake.
+  final bool isRetry;
 }
 
 /// What a hook writes inside the transaction that saves a session; it

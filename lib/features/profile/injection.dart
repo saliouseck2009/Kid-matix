@@ -5,12 +5,11 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:kid_matix/core/services/player_directory_service.dart';
 import 'package:kid_matix/core/services/player_settings_service.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
+import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_local_data_source_impl.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source.dart';
-import 'package:kid_matix/features/profile/data/datasources/backup_file_data_source_impl.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source_impl.dart';
@@ -23,6 +22,7 @@ import 'package:kid_matix/features/profile/domain/usecases/pick_backup_use_case.
 import 'package:kid_matix/features/profile/domain/repositories/profile_repository.dart';
 import 'package:kid_matix/features/profile/domain/services/player_directory_service_impl.dart';
 import 'package:kid_matix/features/profile/domain/services/player_settings_service_impl.dart';
+import 'package:kid_matix/features/profile/domain/services/pupil_roster_service_impl.dart';
 import 'package:kid_matix/features/profile/domain/usecases/clear_active_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/create_profile_use_case.dart';
 import 'package:kid_matix/features/profile/domain/usecases/delete_profile_use_case.dart';
@@ -53,6 +53,15 @@ void registerProfileFeature(GetIt sl) {
   );
   sl.registerLazySingleton<PlayerDirectoryService>(
     () => PlayerDirectoryServiceImpl(getProfiles: sl()),
+  );
+  sl.registerLazySingleton<PupilRosterService>(
+    () => PupilRosterServiceImpl(
+      repository: sl(),
+      selectProfile: sl(),
+      resetProgress: sl(),
+      deleteProfile: sl(),
+      clock: sl(),
+    ),
   );
   sl.registerLazySingleton<ProfileSessionService>(
     () => ProfileSessionServiceImpl(getSession: sl(), watchChanges: sl()),
@@ -136,9 +145,6 @@ void _registerBackup(GetIt sl) {
       parts: sl(),
       idGenerator: sl(),
     ),
-  );
-  sl.registerLazySingleton<BackupFileDataSource>(
-    () => const BackupFileDataSourceImpl(),
   );
   sl.registerLazySingleton<ProfileBackupRepository>(
     () => ProfileBackupRepositoryImpl(

@@ -60,7 +60,7 @@ class CreateProfileUseCase
   }
 
   Future<AppException?> _findLimitProblem() async {
-    final DataState<int> countState = await _repository.countProfiles();
+    final DataState<int> countState = await _repository.countFreeProfiles();
     return switch (countState) {
       DataFailed<int>(:final exception) => exception,
       DataSuccess<int>(:final int data)

@@ -31,14 +31,23 @@ final class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
     emit(const ProfilesLoading());
     final DataState<List<ProfileEntity>> state = await _getProfiles();
     emit(switch (state) {
-      DataSuccess<List<ProfileEntity>>(:final data) => ProfilesLoaded(
-        profiles: data,
-        canAddProfile: data.length < ProfileLimits.maxProfiles,
-      ),
+      DataSuccess<List<ProfileEntity>>(:final data) => _loadedOf(data),
       DataFailed<List<ProfileEntity>>(:final exception) => ProfilesFailure(
         errorCode: exception.code,
       ),
     });
+  }
+
+  // The pupils are chosen through their class: only the free players get
+  // a card, and only they count towards the limit.
+  static ProfilesLoaded _loadedOf(List<ProfileEntity> profiles) {
+    final List<ProfileEntity> freeProfiles = profiles
+        .where((ProfileEntity profile) => !profile.isPupil)
+        .toList();
+    return ProfilesLoaded(
+      profiles: freeProfiles,
+      canAddProfile: freeProfiles.length < ProfileLimits.maxProfiles,
+    );
   }
 
   Future<void> _onSelected(

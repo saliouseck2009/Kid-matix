@@ -7,7 +7,6 @@ import 'package:kid_matix/core/widgets/app_progress_bar.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_state.dart';
-import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
 
 /// One question of the placement test: the quit cross and the progress,
@@ -15,18 +14,18 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/placement_
 class PlacementQuestionView extends StatelessWidget {
   /// Creates the view of [state].
   const PlacementQuestionView({
+    required this.profileId,
     required this.state,
-    required this.labels,
     required this.slots,
     required this.onQuit,
     super.key,
   });
 
+  /// Player of the test.
+  final String profileId;
+
   /// Question asked.
   final PlacementAsking state;
-
-  /// Texts of the path.
-  final PathLabels labels;
 
   /// Question card and keypad of the quiz.
   final PlacementSlots slots;
@@ -37,7 +36,6 @@ class PlacementQuestionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlacementBloc bloc = context.read<PlacementBloc>();
-    final int total = state.test.questions.length;
     final String typed = state.typedDigits;
     return Padding(
       padding: const EdgeInsets.all(AppSizes.space16),
@@ -55,10 +53,9 @@ class PlacementQuestionView extends StatelessWidget {
               ),
               Expanded(
                 child: AppProgressBar(
-                  value: state.index / total,
+                  value: state.progress,
                   semanticLabel: context.l10n.placementQuestionProgress(
-                    state.index + 1,
-                    total,
+                    state.journey.answeredCount + 1,
                   ),
                 ),
               ),
@@ -66,8 +63,9 @@ class PlacementQuestionView extends StatelessWidget {
           ),
           Expanded(
             child: slots.questionCard(
-              label: labels.unitName(state.question.question.unitKey),
-              prompt: state.question.question.prompt,
+              profileId: profileId,
+              question: state.question,
+              domainId: state.domainId,
               typedDigits: typed.isEmpty ? null : typed,
             ),
           ),

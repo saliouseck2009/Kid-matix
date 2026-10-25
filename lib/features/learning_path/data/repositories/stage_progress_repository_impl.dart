@@ -40,6 +40,7 @@ final class StageProgressRepositoryImpl implements StageProgressRepository {
       onListen: () {
         for (final String table in <String>[
           LearningPathTables.stageProgress,
+          LearningPathTables.placementResult,
           LearningPathTables.profile,
         ]) {
           subscriptions.add(

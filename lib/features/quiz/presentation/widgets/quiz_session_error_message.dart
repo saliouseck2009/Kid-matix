@@ -13,6 +13,7 @@ extension QuizSessionErrorMessage on AppErrorCode {
       AppErrorCode.limitReached ||
       AppErrorCode.invalidFile ||
       AppErrorCode.unsupportedVersion ||
+      AppErrorCode.fileTooBig ||
       AppErrorCode.permissionDenied ||
       AppErrorCode.unknown => l10n.errorUnknown,
     };

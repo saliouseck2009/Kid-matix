@@ -66,6 +66,33 @@ void main() {
       ],
     );
     blocTest<ProfilesBloc, ProfilesState>(
+      'leaves the pupils of the classes out, and out of the limit',
+      setUp: () => stubProfiles(<ProfileEntity>[
+        ..._buildProfiles(9),
+        for (int index = 0; index < 40; index++)
+          buildProfile(
+            id: 'pupil-$index',
+            nickname: '$index',
+          ).copyWith(classroomId: 'class-1'),
+      ]),
+      build: buildBloc,
+      act: (ProfilesBloc bloc) => bloc.add(const ProfilesRequested()),
+      expect: () => <Matcher>[
+        isA<ProfilesLoading>(),
+        isA<ProfilesLoaded>()
+            .having(
+              (ProfilesLoaded state) => state.profiles.length,
+              'profiles',
+              9,
+            )
+            .having(
+              (ProfilesLoaded state) => state.canAddProfile,
+              'canAddProfile',
+              isTrue,
+            ),
+      ],
+    );
+    blocTest<ProfilesBloc, ProfilesState>(
       'forbids an eleventh player',
       setUp: () => stubProfiles(_buildProfiles(10)),
       build: buildBloc,

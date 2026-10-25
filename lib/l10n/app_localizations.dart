@@ -238,6 +238,546 @@ abstract class AppLocalizations {
   /// **'{maxProfiles, plural, one{Il y a déjà {maxProfiles} joueur sur ce téléphone.} other{Il y a déjà {maxProfiles} joueurs sur ce téléphone.}}'**
   String profileLimitReached(int maxProfiles);
 
+  /// Class mode. Discreet text button at the bottom of « Qui joue ? » (and of the first player creation) that opens the teacher area, and title of the door of that area where the teacher types the code ("Teacher area"). One short line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Espace enseignant'**
+  String get classroomTeacherArea;
+
+  /// Class mode, door of the teacher area at the very first visit: the teacher chooses the 4-digit code that will protect the area. Speaks to the teacher with informal "tu", like the rest of the app.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis un code à 4 chiffres. Il ferme l\'espace enseignant : ne le donne pas aux élèves.'**
+  String get classroomCodeChooseHint;
+
+  /// Class mode, door of the teacher area at the first visit, second step: the teacher types the chosen code again to confirm it.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tape le même code une deuxième fois.'**
+  String get classroomCodeConfirmHint;
+
+  /// Class mode, door of the teacher area once a code exists: the teacher types it to open the area.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tape ton code à 4 chiffres.'**
+  String get classroomCodeEnterHint;
+
+  /// Class mode, label of the field of the 4-digit teacher code on the door of the teacher area. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code'**
+  String get classroomCodeLabel;
+
+  /// Class mode, button under the code field of the door of the teacher area ("Open", a verb). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir'**
+  String get classroomCodeOpen;
+
+  /// Class mode, button under the code field of the door of the teacher area at the first visit, while the teacher chooses and confirms the code ("Continue", a verb). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get classroomCodeNext;
+
+  /// Class mode, error under the code field when the teacher typed a wrong code.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce n\'est pas le bon code.'**
+  String get classroomCodeWrong;
+
+  /// Class mode, error when the code typed the second time differs from the first one; the teacher chooses again.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les deux codes ne sont pas pareils. Recommence.'**
+  String get classroomCodeMismatch;
+
+  /// Class mode, error when the teacher typed fewer than 4 digits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le code a 4 chiffres.'**
+  String get classroomCodeInvalid;
+
+  /// Class mode, tooltip of the icon button at the top of « Mes classes » that closes the teacher area and goes back to « Qui joue ? ».
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter l\'espace enseignant'**
+  String get classroomLeaveArea;
+
+  /// Class mode, title of the home of the teacher area listing the classes of the device ("My classes"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes classes'**
+  String get classroomListTitle;
+
+  /// Class mode, text of « Mes classes » when the device has no class yet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe pour l\'instant. Crée une classe et ajoute tous ses élèves en une fois.'**
+  String get classroomListEmpty;
+
+  /// Class mode, button of « Mes classes » that opens the creation of a class, and title of that creation screen ("New class"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouvelle classe'**
+  String get classroomNew;
+
+  /// Class mode, number of pupils of a class, under its name on the class cards of « Mes classes » and « Qui joue ? » and on the class page ("30 pupils").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun élève} =1{1 élève} other{{count} élèves}}'**
+  String classroomPupilCount(int count);
+
+  /// Class mode, label of the name field of the creation of a class. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de la classe'**
+  String get classroomNameLabel;
+
+  /// Class mode, placeholder inside the empty name field of the creation of a class: an example of class name in the school system of the language (CE1 is the second year of primary school in France and Senegal).
+  ///
+  /// In fr, this message translates to:
+  /// **'Par exemple CE1 B'**
+  String get classroomNameHint;
+
+  /// Class mode, title of the pupils part of the creation of a class and of the list of pupils of the class page ("Pupils"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élèves'**
+  String get classroomPupilsTitle;
+
+  /// Class mode, first choice of a two-segment switch of the class creation: the pupils are typed as a list of nicknames. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des pseudos'**
+  String get classroomPupilsByList;
+
+  /// Class mode, second choice of the two-segment switch of the class creation: the pupils are numbered 01, 02, 03... Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des numéros'**
+  String get classroomPupilsByNumber;
+
+  /// Class mode, label of the multi-line field where the teacher types the nicknames of the pupils, one per line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un pseudo par ligne'**
+  String get classroomPupilsListLabel;
+
+  /// Class mode, advice under the pupils field of the class creation: no real names of children, for their privacy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mets des pseudos ou des numéros plutôt que les vrais noms des enfants.'**
+  String get classroomPupilsPrivacyHint;
+
+  /// Class mode, label of the field where the teacher types how many numbered pupils to create. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre d\'élèves'**
+  String get classroomPupilsCountLabel;
+
+  /// Class mode, line under the pupils field of the class creation that sums up the pupils about to be created, with the first and last nicknames or numbers ("30 pupils to add: 01 to 30").
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun élève à ajouter} =1{1 élève à ajouter : {first}} other{{count} élèves à ajouter : {first} à {last}}}'**
+  String classroomPupilsPreview(int count, String first, String last);
+
+  /// Class mode, error under the pupils field when some nicknames break the nickname rules or are repeated; {nicknames} lists them separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces pseudos ne vont pas : {nicknames}. Un pseudo a 2 à 12 lettres ou chiffres, et chacun n\'apparaît qu\'une fois.'**
+  String classroomPupilsUnusable(String nicknames);
+
+  /// Class mode, button at the bottom of the class creation ("Create the class"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer la classe'**
+  String get classroomCreate;
+
+  /// Class mode, error of the class creation when the name is empty or too long.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donne un nom à la classe (24 caractères au plus).'**
+  String get classroomErrorName;
+
+  /// Class mode, error of the class creation or of « Ajouter des élèves » when the list is empty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoute au moins un élève.'**
+  String get classroomErrorNoPupil;
+
+  /// Class mode, error when the class would have more pupils than the maximum (60).
+  ///
+  /// In fr, this message translates to:
+  /// **'Une classe a au plus {max} élèves.'**
+  String classroomErrorTooMany(int max);
+
+  /// Class mode, error of « Ajouter des élèves » when a nickname already belongs to a pupil of the class.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un de ces pseudos est déjà dans la classe.'**
+  String get classroomErrorTaken;
+
+  /// Class mode, generic error when the classes or their pupils could not be read or saved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, ça n\'a pas marché. Réessaie.'**
+  String get classroomErrorGeneric;
+
+  /// Class mode, button of the class page that opens the form to add pupils, title of that form, and its confirm button ("Add pupils"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter des élèves'**
+  String get classroomAddPupils;
+
+  /// Class mode, title above the class cards at the top of « Qui joue ? », shown only when the device has classes ("Classes"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les classes'**
+  String get classroomShelfTitle;
+
+  /// Class mode, title of the screen where a pupil finds their name or avatar in their class, opened from a class card of « Qui joue ? ». Speaks to the child, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui es-tu ?'**
+  String get classroomPickerTitle;
+
+  /// Class mode, placeholder of the search field at the top of « Qui es-tu ? » (a class of up to 60 pupils). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Cherche ton nom'**
+  String get classroomPickerSearch;
+
+  /// Class mode, text of « Qui es-tu ? » when the search matches no pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personne ne s\'appelle comme ça dans la classe.'**
+  String get classroomPickerNoMatch;
+
+  /// Class mode, text of « Qui es-tu ? » or of the class page when the class has no pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette classe n\'a pas encore d\'élèves.'**
+  String get classroomPickerEmpty;
+
+  /// Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code oublié ?'**
+  String get classroomCodeForgotten;
+
+  /// Class mode, line under the title of « Mes classes » once the teacher chose a new code after « Code oublié ? », so a forgotten code cannot be replaced unnoticed ("Code changed on 21 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Code changé le {date}'**
+  String classroomCodeChanged(DateTime date);
+
+  /// Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds, plural, =1{Trop d\'essais. Attends 1 seconde avant de réessayer.} other{Trop d\'essais. Attends {seconds} secondes avant de réessayer.}}'**
+  String classroomCodeLocked(int seconds);
+
+  /// Class mode, one-line hint of the class creation screen: a pupil keeps one tablet, because only the class results travel between tablets, not the progress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d\'une tablette à l\'autre.'**
+  String get classroomOneTabletHint;
+
+  /// Class mode, tooltip of the icon button next to a pupil on the class page of the teacher area, which offers to reset their progress or remove them.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gérer {nickname}'**
+  String classroomPupilManage(String nickname);
+
+  /// Class mode, teacher area: action of the menu of a pupil that erases their progress. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser sa progression'**
+  String get classroomPupilReset;
+
+  /// Class mode, teacher area: text of the confirmation before erasing the progress of a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.'**
+  String get classroomPupilResetMessage;
+
+  /// Class mode, teacher area: action of the menu of a pupil that deletes them. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer de la classe'**
+  String get classroomPupilRemove;
+
+  /// Class mode, teacher area: text of the confirmation before deleting a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.'**
+  String get classroomPupilRemoveMessage;
+
+  /// Class mode, snack bar after the teacher reset the progress of a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'La progression de {nickname} est remise à zéro.'**
+  String classroomPupilResetDone(String nickname);
+
+  /// Class mode, snack bar after the teacher removed a pupil.
+  ///
+  /// In fr, this message translates to:
+  /// **'{nickname} est retiré de la classe.'**
+  String classroomPupilRemoved(String nickname);
+
+  /// Class mode, title of the card of the current assignment, on the class page of the teacher area and at the top of the home of a pupil ("The class's homework"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le devoir de la classe'**
+  String get classroomAssignmentTitle;
+
+  /// Class mode, class page of the teacher area: text of the assignment card when no assignment was given yet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de devoir. Choisis une unité à faire travailler à toute la classe.'**
+  String get classroomAssignmentNone;
+
+  /// Class mode, button of the assignment card of the class page, and title of the screen where the teacher picks the unit ("Give homework"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donner un devoir'**
+  String get classroomAssignmentGive;
+
+  /// Class mode, line under the title of the screen where the teacher picks the unit of the assignment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis l\'unité que toute la classe va travailler.'**
+  String get classroomAssignmentPickHint;
+
+  /// Class mode, due day of the assignment, under its unit name ("Due Monday 27 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour le {date}'**
+  String classroomAssignmentDue(DateTime date);
+
+  /// Class mode, first choice of the due day of an assignment: no due day. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans date'**
+  String get classroomAssignmentDueNone;
+
+  /// Class mode, second choice of the due day of an assignment: tomorrow. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour demain'**
+  String get classroomAssignmentDueTomorrow;
+
+  /// Class mode, third choice of the due day of an assignment: in a week. Short, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans 7 jours'**
+  String get classroomAssignmentDueWeek;
+
+  /// Class mode, class page: how many pupils have started the assignment (acquired at least one of its items).
+  ///
+  /// In fr, this message translates to:
+  /// **'{started, plural, =0{Personne ne l\'a encore commencé.} =1{1 élève sur {total} l\'a commencé.} other{{started} élèves sur {total} l\'ont commencé.}}'**
+  String classroomAssignmentStarted(int started, int total);
+
+  /// Class mode, button of the card « Le devoir de la classe » at the top of the home of a pupil, which opens the assigned unit. Speaks as the child ("I'm going"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'y vais'**
+  String get classroomAssignmentPlay;
+
+  /// Class mode, part of the assigned unit a pupil has learned (right the last three times), next to the progress bar of the assignment card on the home and on each pupil row of the dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'{percent} % appris'**
+  String classroomAssignmentLearned(int percent);
+
+  /// Class mode, title of the gauge of the shared weekly goal of the class (no individual ranking), on the class page, on « Qui es-tu ? » and on the home of a pupil. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défi de la classe'**
+  String get classroomChallengeTitle;
+
+  /// Class mode, line under the gauge of the class challenge: right answers of the whole class since Monday, out of the goal.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{0 bonne réponse sur {goal} cette semaine} =1{1 bonne réponse sur {goal} cette semaine} other{{count} bonnes réponses sur {goal} cette semaine}}'**
+  String classroomChallengeProgress(int count, int goal);
+
+  /// Class mode, line under the gauge of the class challenge once the weekly goal is reached.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bravo la classe, objectif atteint !'**
+  String get classroomChallengeReached;
+
+  /// Class mode, class page: label above the choices of the weekly goal of right answers of the class challenge. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif de la semaine'**
+  String get classroomChallengeGoal;
+
+  /// Class mode, class page: title of the card that lists the facts and words the pupils keep missing. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui bloque, et sur quoi ?'**
+  String get classroomStrugglesTitle;
+
+  /// Class mode, one line of « Qui bloque, et sur quoi ? »: how many pupils keep missing a fact or a word ("8 pupils get 7 × 8 = 56 wrong"); {item} is the fact with its answer or the word.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 élève se trompe sur {item}} other{{count} élèves se trompent sur {item}}}'**
+  String classroomStruggleLine(int count, String item);
+
+  /// Class mode, text of « Qui bloque, et sur quoi ? » when no pupil keeps missing anything.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personne ne bloque pour l\'instant.'**
+  String get classroomStrugglesNone;
+
+  /// Class mode, class page: title of the card of the proposed level groups, with the name of the domain they are about ("Level groups · Multiplication").
+  ///
+  /// In fr, this message translates to:
+  /// **'Groupes de niveau · {domain}'**
+  String classroomGroupsTitle(String domain);
+
+  /// Class mode, line under the title of the level groups: where the proposal comes from.
+  ///
+  /// In fr, this message translates to:
+  /// **'Proposés à partir du test de positionnement et des réponses des élèves.'**
+  String get classroomGroupsHint;
+
+  /// Class mode, text of the level groups card before any pupil played.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les groupes apparaîtront quand les élèves auront joué.'**
+  String get classroomGroupsNone;
+
+  /// Class mode, name of the level group of the pupils who acquired less than a third of the items the class worked on. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Premiers pas'**
+  String get classroomGroupFirstSteps;
+
+  /// Class mode, name of the middle level group. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'En route'**
+  String get classroomGroupOnTheWay;
+
+  /// Class mode, name of the level group of the pupils who acquired two thirds or more. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'À l\'aise'**
+  String get classroomGroupConfident;
+
+  /// Class mode, name of the group of the pupils with no placement and no answer yet in the domain. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore évalués'**
+  String get classroomGroupNotYet;
+
+  /// Class mode, dashboard of the class page: line under the nickname of a pupil who never played.
+  ///
+  /// In fr, this message translates to:
+  /// **'N\'a pas encore joué'**
+  String get classroomPupilNeverPlayed;
+
+  /// Class mode, dashboard of the class page: practice of one pupil (sessions played, time of practice written by classroomPracticeMinutes or classroomPracticeSeconds, share of right answers).
+  ///
+  /// In fr, this message translates to:
+  /// **'{sessions, plural, =1{1 séance} other{{sessions} séances}} · {time} · {percent} % de bonnes réponses'**
+  String classroomPupilSummary(int sessions, String time, int percent);
+
+  /// Class mode, dashboard: time of practice of a pupil in minutes, inside classroomPupilSummary ("12 min").
+  ///
+  /// In fr, this message translates to:
+  /// **'{minutes} min'**
+  String classroomPracticeMinutes(int minutes);
+
+  /// Class mode, dashboard: time of practice of a pupil under one minute, in seconds, inside classroomPupilSummary ("45 s").
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds} s'**
+  String classroomPracticeSeconds(int seconds);
+
+  /// Class mode, dashboard of the class page: day of the last session of a pupil ("Last session: 20 Oct").
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernière séance : {date}'**
+  String classroomPupilLastSession(DateTime date);
+
+  /// Class mode, dashboard of the class page: the facts or words a pupil keeps missing, separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bloque sur : {items}'**
+  String classroomPupilStuckOn(String items);
+
+  /// Class mode, button at the bottom of the class page: writes a file with the class, its pupils, its homework and their results, and opens the share sheet (to another tablet or to the teacher's, with no network). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer la classe et ses résultats'**
+  String get classroomExport;
+
+  /// Class mode, snack bar after the class file was handed to the share sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le fichier de la classe est prêt.'**
+  String get classroomExportDone;
+
+  /// Class mode, first choice after « Envoyer la classe et ses résultats »: a small file with the sessions played since the last file sent from this tablet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveaux résultats depuis le dernier envoi'**
+  String get classroomExportNew;
+
+  /// Class mode, first choice after « Envoyer la classe et ses résultats » once the class was already sent from this tablet: a small file with the sessions since that day (and those of the last two weeks again). One line ("The new results since 21 October").
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveaux résultats depuis le {date}'**
+  String classroomExportNewSince(DateTime date);
+
+  /// Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toute la classe et tous ses résultats'**
+  String get classroomExportFull;
+
+  /// Class mode, error snack bar when the class file picked is too big to be read.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier est trop gros pour cette tablette.'**
+  String get classroomImportTooBig;
+
+  /// Class mode, snack bar after merging a class file when some new pupils had the nickname of another pupil of the class and were renamed (« Moussa 2 »); {done} is the sentence classroomImportDone, {nicknames} the new nicknames separated by commas.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} Pseudos déjà pris dans la classe, élèves renommés : {nicknames}.'**
+  String classroomImportRenamed(String done, String nicknames);
+
+  /// Class mode, button of « Mes classes »: opens the file picker to merge a class file received from another tablet (a new class, or the results of its pupils). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir une classe ou des résultats'**
+  String get classroomImport;
+
+  /// Class mode, snack bar after a class file was merged: the name of the class, the pupils and the sessions that were new on this tablet (a file received twice adds nothing).
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : {pupils, plural, =0{aucun nouvel élève} =1{1 nouvel élève} other{{pupils} nouveaux élèves}}, {sessions, plural, =0{aucune nouvelle séance} =1{1 nouvelle séance} other{{sessions} nouvelles séances}}.'**
+  String classroomImportDone(String name, int pupils, int sessions);
+
+  /// Class mode, error snack bar when the file picked is not a class file or is damaged.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas un fichier de classe Kid Matix, ou il est abîmé.'**
+  String get classroomImportInvalid;
+
+  /// Class mode, error snack bar when the class file was written by a newer version of the app. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
+  String get classroomImportVersion;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:
@@ -1594,16 +2134,16 @@ abstract class AppLocalizations {
   /// **'Bats le boss pour gagner la couronne.'**
   String get pathCrownHint;
 
-  /// Header of the placement test offer, the full screen shown right after a new player is created ("Do you already know some tables?"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most.
+  /// Header of the placement test offer, the full screen shown right after a new player is created ("Let's see where you are!"). The test checks what the child can already do in maths, whatever their age. Talks to the child (informal tu). Two short lines at most.
   ///
   /// In fr, this message translates to:
-  /// **'Tu connais déjà des tables ?'**
+  /// **'Voyons où tu en es !'**
   String get placementOfferTitle;
 
-  /// Text under the title of the placement test offer ("Answer one question per table, no timer. Each table you know opens right away in your path."). The path is the map of tables the child plays through. Talks to the child (informal tu).
+  /// Text under the title of the placement test offer ("Answer a few questions, no timer. You stop when it gets hard and your path starts in the right place."). The path is the map of units the child plays through. Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:
-  /// **'Réponds à une question par table, sans chrono. Chaque table que tu connais s\'ouvre tout de suite dans ton parcours.'**
+  /// **'Réponds à quelques questions, sans chrono. Tu t\'arrêtes quand ça devient difficile et ton parcours commence au bon endroit.'**
   String get placementOfferMessage;
 
   /// Primary full-width button of the placement test offer that starts the 12 questions ("Take the test"). One line, short.
@@ -1612,17 +2152,17 @@ abstract class AppLocalizations {
   /// **'Faire le test'**
   String get placementOfferStart;
 
-  /// Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
+  /// Secondary full-width button of the placement test offer that leaves the test with nothing changed: the path opens with the first unit of each domain only. "Passer" is an infinitive verb meaning "Skip", not "Pass". One line, short.
   ///
   /// In fr, this message translates to:
   /// **'Passer'**
   String get placementOfferSkip;
 
-  /// What a screen reader says for the progress bar at the top of a placement test question ("Question 3 of 12"). Not shown on screen.
+  /// What a screen reader says for the progress bar at the top of a placement test question ("Question 3"). The test is adaptive, so the number of questions is not known in advance. Not shown on screen.
   ///
   /// In fr, this message translates to:
-  /// **'Question {current} sur {total}'**
-  String placementQuestionProgress(int current, int total);
+  /// **'Question {current}'**
+  String placementQuestionProgress(int current);
 
   /// Text button under the keypad of a placement test question: the child does not know the answer and goes to the next question ("I don't know"). Said by the child (first person). One line.
   ///
@@ -1642,10 +2182,10 @@ abstract class AppLocalizations {
   /// **'Arrêter le test ?'**
   String get placementQuitTitle;
 
-  /// Body of the dialog confirming that the child leaves the placement test ("The tables already found stay open in your path."). Talks to the child (informal tu).
+  /// Body of the dialog confirming that the child leaves the placement test ("The units already found stay open in your path."). A unit is one lesson of the path, such as a multiplication table. Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:
-  /// **'Les tables déjà trouvées restent ouvertes dans ton parcours.'**
+  /// **'Les unités déjà trouvées restent ouvertes dans ton parcours.'**
   String get placementQuitMessage;
 
   /// Dialog button that stays in the placement test ("Go on with the test"). "Continuer" is an infinitive verb. Short, one line.
@@ -1660,47 +2200,131 @@ abstract class AppLocalizations {
   /// **'Arrêter'**
   String get placementQuitConfirm;
 
-  /// Header of the placement test result screen, with the number of tables the child already knows ("You already know 3 tables!"); with none, "Everything is to discover!". Talks to the child (informal tu). Two short lines at most.
+  /// Header of the placement test result screen, with the number of skill levels the child passed (numbers, addition, subtraction, multiplication, division: "3 levels passed!"); with none, "Your adventure begins!". Talks to the child. Two short lines at most.
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}'**
+  /// **'{count, plural, =0{Ton aventure commence !} =1{1 niveau réussi !} other{{count} niveaux réussis !}}'**
   String placementResultTitle(int count);
 
-  /// Text under the title of the placement test result. With one table or more: "It is / They are open in your path. Its / Their stars are still to win." ("Elle"/"Elles" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).
+  /// Text under the title of the placement test result. With one level passed or more: "What you already know is open in your path. You can still win the stars." (the units are open but hold no star yet). With none: a kind text saying the child will learn one step at a time. Talks to the child (informal tu).
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}'**
+  /// **'{count, plural, =0{Pas de souci, tu vas apprendre une étape à la fois.} other{Ce que tu sais déjà est ouvert dans ton parcours. Les étoiles restent à gagner.}}'**
   String placementResultSubtitle(int count);
 
-  /// Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows ("Already known"; feminine in French because it agrees with "table"). One line, a few words.
+  /// Name of the numbers skill on the placement test result and in the Profile card: counting and reading numbers up to 100 ("Numbers"). One word.
   ///
   /// In fr, this message translates to:
-  /// **'Déjà connue'**
-  String get placementLegendKnown;
+  /// **'Nombres'**
+  String get placementSkillNumbers;
 
-  /// Legend label under the grid of the placement test result, next to the light swatch: a table still to learn ("To discover"). One line, a few words.
+  /// Name of the addition skill on the placement test result ("Addition"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Additions'**
+  String get placementSkillAddition;
+
+  /// Name of the subtraction skill on the placement test result ("Subtraction"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Soustractions'**
+  String get placementSkillSubtraction;
+
+  /// Name of the multiplication skill on the placement test result ("Multiplication"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Multiplications'**
+  String get placementSkillMultiplication;
+
+  /// Name of the division skill on the placement test result ("Division"). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Divisions'**
+  String get placementSkillDivision;
+
+  /// Label of a skill the child passed in the placement test result list, next to a check mark ("Got it"). One short word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acquis'**
+  String get placementSkillAcquired;
+
+  /// Label of a skill the child did not pass, or that the test did not reach, in the placement test result list ("To discover"). One short word.
   ///
   /// In fr, this message translates to:
   /// **'À découvrir'**
-  String get placementLegendToDiscover;
+  String get placementSkillToDiscover;
 
-  /// What a screen reader says for a tile of the placement test result grid when the table was found ("Table of 2, already known"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.
+  /// What a screen reader says for a row of the placement test result list ("Addition, to discover"). {skill} is the skill name, {state} one of the two labels above. Not shown on screen.
   ///
   /// In fr, this message translates to:
-  /// **'{name}, déjà connue'**
-  String placementTableKnown(String name);
+  /// **'{skill}, {state}'**
+  String placementSkillSemantics(String skill, String state);
 
-  /// What a screen reader says for a tile of the placement test result grid when the table was not found ("Table of 7, to discover"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.
+  /// Small label above the unit the placement test recommends starting with, on the result screen ("You start with"). The unit name follows on the next line. Talks to the child.
   ///
   /// In fr, this message translates to:
-  /// **'{name}, à découvrir'**
-  String placementTableToDiscover(String name);
+  /// **'Tu commences par'**
+  String get placementResultStartLabel;
+
+  /// Text of the placement test result card when the child passed every skill and no unit is recommended ("You know everything the test asks. Well done!"). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu connais tout ce que le test demande. Bravo !'**
+  String get placementResultAllDone;
 
   /// Primary full-width button that leaves the placement test for the path ("See my path"): on the result screen, and on the error screen when the test cannot be built or saved. One line.
   ///
   /// In fr, this message translates to:
   /// **'Voir mon parcours'**
   String get placementSeePath;
+
+  /// Title of the Profile card that shows the result of the placement test ("My starting level"). One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon niveau de départ'**
+  String get placementCardTitle;
+
+  /// Text of the Profile placement card when the player never finished the placement test ("You have not taken the level test yet."). Talks to the child (informal tu).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu n\'as pas encore fait le test de niveau.'**
+  String get placementCardEmpty;
+
+  /// Line above the levels of the latest placement test in the Profile card ("Test of 12/10/2026"). {date} is a short date in the language of the app.
+  ///
+  /// In fr, this message translates to:
+  /// **'Test du {date}'**
+  String placementCardLatest(String date);
+
+  /// What a screen reader says for a domain row of the Profile placement card ("Numbers, level 1 of 1"). {domain} is the spoken domain name, {level} the text of placementCardLevel or of placementCardNotChecked. Not shown on screen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{domain}, {level}'**
+  String placementCardLevelSemantics(String domain, String level);
+
+  /// Shown instead of the level, in the Profile placement card, for a domain the test did not reach because it stopped before ("not checked"). Lower case, a few words.
+  ///
+  /// In fr, this message translates to:
+  /// **'non évalué'**
+  String get placementCardNotChecked;
+
+  /// Level of the child in one domain, shown after the domain name in the Profile placement card ("level 1 of 2"). {level} is the number of skills passed, {total} the number checked.
+  ///
+  /// In fr, this message translates to:
+  /// **'niveau {level} sur {total}'**
+  String placementCardLevel(int level, int total);
+
+  /// Line of an earlier placement test in the Profile card history ("05/09/2026: 2 levels"). {date} is a short date, {count} the number of skill levels passed that day.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} : {count, plural, =0{aucun niveau} =1{1 niveau} other{{count} niveaux}}'**
+  String placementCardPast(String date, int count);
+
+  /// Button of the Profile placement card that starts the placement test again ("Take the test again"). "Refaire" is an infinitive verb. One line, short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Refaire le test'**
+  String get placementCardRetake;
 
   /// Tooltip and screen-reader label of the back arrow of the table detail ("Back to the learning path").
   ///

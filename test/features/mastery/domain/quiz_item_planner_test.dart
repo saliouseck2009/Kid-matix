@@ -169,47 +169,4 @@ void main() {
       }
     });
   });
-
-  group('QuizItemPlanner.questionTypesFor', () {
-    test('picks answers up to box 2 and writes them from box 3', () {
-      // Act
-      final List<List<String>> actualTypes = <int>[0, 1, 2, 3, 5]
-          .map(
-            (int box) => _planner.questionTypesFor(
-              box: box,
-              questionTypeNatures: _allTypes,
-            ),
-          )
-          .toList();
-      // Assert
-      const List<String> expectedPicked = <String>[
-        QuestionTypeIds.multipleChoice,
-        QuestionTypeIds.trueFalse,
-      ];
-      const List<String> expectedWritten = <String>[
-        QuestionTypeIds.typedAnswer,
-        QuestionTypeIds.missingNumber,
-      ];
-      expect(actualTypes, <List<String>>[
-        expectedPicked,
-        expectedPicked,
-        expectedPicked,
-        expectedWritten,
-        expectedWritten,
-      ]);
-    });
-    test('falls back to every allowed type when none fits the box', () {
-      // Arrange
-      const Map<String, AnswerNature> inputTypes = <String, AnswerNature>{
-        QuestionTypeIds.multipleChoice: AnswerNature.recognized,
-      };
-      // Act
-      final List<String> actualTypes = _planner.questionTypesFor(
-        box: 4,
-        questionTypeNatures: inputTypes,
-      );
-      // Assert
-      expect(actualTypes, <String>[QuestionTypeIds.multipleChoice]);
-    });
-  });
 }

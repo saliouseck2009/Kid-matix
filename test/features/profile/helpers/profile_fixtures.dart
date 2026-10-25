@@ -103,6 +103,7 @@ final class MockResetProgressUseCase extends Mock
 /// Doubles of every use case of the settings screen: the player of
 /// [buildProfile] with the default settings, every write succeeding.
 SettingsUseCases buildSettingsUseCases({
+  GetProfileUseCase? getProfile,
   GetSettingsUseCase? getSettings,
   UpdateSettingsUseCase? updateSettings,
   ResetProgressUseCase? resetProgress,
@@ -130,7 +131,7 @@ SettingsUseCases buildSettingsUseCases({
     () => quietDelete.call(params: any(named: 'params')),
   ).thenAnswer((_) async => const DataSuccess<void>(null));
   return SettingsUseCases(
-    getProfile: _quietGetProfile(),
+    getProfile: getProfile ?? _quietGetProfile(),
     getSettings: getSettings ?? quietSettings,
     updateSettings: updateSettings ?? quietUpdate,
     resetProgress: resetProgress ?? quietReset,

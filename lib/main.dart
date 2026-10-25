@@ -9,9 +9,11 @@ import 'package:games_services/games_services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/di/injection_container.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/router/app_router.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
+import 'package:kid_matix/core/services/teacher_session_service.dart';
 import 'package:kid_matix/core/services/speech_service.dart';
 import 'package:kid_matix/core/services/word_audio_service.dart';
 import 'package:kid_matix/core/theme/app_theme.dart';
@@ -25,11 +27,19 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/duel_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/mascot_pages.dart';
 import 'package:kid_matix/features/mastery/presentation/mastery_pages.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/backup_use_cases.dart';
@@ -202,6 +212,8 @@ GoRouter _createRouter(
       ),
     ),
     languagePages: languagePages,
+    classroomPages: _createClassroomPages(profilePages),
+    teacherSession: sl<TeacherSessionService>(),
     leaderboardPages: LeaderboardPages(
       useCases: LeaderboardUseCases(
         getLeaderboard: sl(),
@@ -217,7 +229,15 @@ GoRouter _createRouter(
         getLearningPath: sl(),
         watchChanges: sl(),
       ),
-      placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
+      placementHistory: PlacementHistoryUseCases(
+        getHistory: sl(),
+        watchResults: sl(),
+      ),
+      placement: PlacementUseCases(
+        buildQuestion: sl(),
+        answerQuestion: sl(),
+        saveResult: sl(),
+      ),
       domainChoice: DomainChoiceUseCases(
         getChoice: sl(),
         selectDomain: sl(),
@@ -255,6 +275,54 @@ GoRouter _createRouter(
         stop: sl(),
       ),
     ),
+  );
+}
+
+/// The pages of the class mode, with their use cases; the avatars of the
+/// pupils are drawn by the profile feature.
+ClassroomPages _createClassroomPages(ProfilePages profilePages) {
+  return ClassroomPages(
+    access: TeacherAccessUseCases(
+      getAccess: sl(),
+      chooseCode: sl(),
+      openArea: sl(),
+      closeArea: sl(),
+      forgetCode: sl(),
+    ),
+    list: ClassroomListUseCases(
+      getClassrooms: sl(),
+      watchChanges: sl(),
+      closeArea: sl(),
+      getCodeChange: sl(),
+    ),
+    form: ClassroomFormUseCases(
+      create: sl(),
+      addPupils: sl(),
+      findUnusable: sl(),
+      getRoster: sl(),
+    ),
+    roster: ClassroomRosterUseCases(
+      getRoster: sl(),
+      selectPupil: sl(),
+      watchChanges: sl(),
+      resetPupil: sl(),
+      removePupil: sl(),
+    ),
+    work: ClassWorkUseCases(
+      overview: ClassOverviewUseCases(
+        getOverview: sl(),
+        setWeeklyGoal: sl(),
+        watchChanges: sl(),
+      ),
+      giveAssignment: sl(),
+      getPupilView: sl(),
+      exportClassroom: sl(),
+      importClassroom: sl(),
+      getExportMark: sl(),
+    ),
+    domains: sl(),
+    avatarOf: (PlayerIdentity player, double size) =>
+        profilePages.buildAvatar(player: player, size: size),
   );
 }
 

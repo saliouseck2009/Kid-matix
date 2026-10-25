@@ -705,13 +705,13 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 
 Le test de départ (F16) devient un vrai positionnement : l'enfant est placé selon ce qu'il sait faire, pas selon son âge, dans l'esprit de l'approche « Teaching at the Right Level ».
 
-- [ ] **F27-01** Niveaux de compétence ordonnés : nombres, addition, soustraction, multiplication, division ; chaque niveau a quelques questions types.
-- [ ] **F27-02** Test adaptatif d'environ 5 minutes : il monte de niveau tant que l'enfant réussit et s'arrête au premier niveau non acquis.
-- [ ] **F27-03** Résultat : un niveau par domaine ; les unités acquises sont ouvertes, et le domaine et l'unité de départ sont recommandés sur l'accueil.
-- [ ] **F27-04** Le test se lit à voix haute (F23) et se repasse depuis le Profil.
-- [ ] **F27-05** Chaque résultat est conservé avec sa date (migration), pour comparer un début et une fin de période (F31).
-- [ ] **F27-06** Écran de bilan mis à jour (sur le modèle de `18-placement-test-result.png`).
-- [ ] **F27-07** Tests : arrêt au premier niveau non acquis, unités ouvertes, test abandonné, historique des résultats.
+- [x] **F27-01** Niveaux de compétence ordonnés : nombres, addition, soustraction, multiplication, division ; chaque niveau a quelques questions types.
+- [x] **F27-02** Test adaptatif d'environ 5 minutes : il monte de niveau tant que l'enfant réussit et s'arrête au premier niveau non acquis.
+- [x] **F27-03** Résultat : un niveau par domaine ; les unités acquises sont ouvertes, et le domaine et l'unité de départ sont recommandés sur l'accueil.
+- [x] **F27-04** Le test se lit à voix haute (F23) et se repasse depuis le Profil.
+- [x] **F27-05** Chaque résultat est conservé avec sa date (migration), pour comparer un début et une fin de période (F31).
+- [x] **F27-06** Écran de bilan mis à jour (sur le modèle de `18-placement-test-result.png`).
+- [x] **F27-07** Tests : arrêt au premier niveau non acquis, unités ouvertes, test abandonné, historique des résultats.
 
 **Terminé quand :** un enfant qui sait compter mais ne sait pas additionner démarre sur les additions jusqu'à 10, et son résultat daté apparaît dans le Profil.
 
@@ -739,18 +739,18 @@ Beaucoup d'enfants ne bloquent pas sur le calcul, mais sur les mots de l'énonc�
 
 L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, groupes de niveau et défi de classe.
 
-- [ ] **F29-01** Trancher avec le propriétaire, avant de coder, le contexte principal : tablettes partagées à l'école, ou téléphones des familles ; et la taille maximale d'une classe. Noter la réponse dans `docs/decisions.md`.
-- [ ] **F29-02** Entités `ClassroomEntity`, élève (un profil rattaché à une classe) et `AssignmentEntity` (domaine, unité, échéance) ; migration.
-- [ ] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
-- [ ] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
-- [ ] **F29-05** « Qui joue ? » en mode classe : choisir sa classe, puis son nom ou son avatar, avec recherche pour une classe nombreuse.
-- [ ] **F29-06** Devoirs : l'enseignant donne une unité à travailler ; l'élève voit « Le devoir de la classe » en tête de l'accueil.
-- [ ] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
-- [ ] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
-- [ ] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
-- [ ] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
-- [ ] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
-- [ ] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.
+- [x] **F29-01** Trancher avec le propriétaire, avant de coder, le contexte principal : tablettes partagées à l'école, ou téléphones des familles ; et la taille maximale d'une classe. Noter la réponse dans `docs/decisions.md`.
+- [x] **F29-02** Entités `ClassroomEntity`, élève (un profil rattaché à une classe) et `AssignmentEntity` (domaine, unité, échéance) ; migration.
+- [x] **F29-03** Mode enseignant protégé par un code à 4 chiffres choisi par l'enseignant (aucun compte) ; entrée discrète depuis « Qui joue ? ».
+- [x] **F29-04** Créer une classe et ajouter ses élèves en une fois (une liste de pseudos ou de numéros, pas de vrais noms conseillés) ; la limite de 10 profils ne s'applique pas aux élèves d'une classe.
+- [x] **F29-05** « Qui joue ? » en mode classe : choisir sa classe, puis son nom ou son avatar, avec recherche pour une classe nombreuse.
+- [x] **F29-06** Devoirs : l'enseignant donne une unité à travailler ; l'élève voit « Le devoir de la classe » en tête de l'accueil.
+- [x] **F29-07** Tableau de bord : par élève (progression, temps de pratique, dernière séance) et par compétence (faits et mots les plus ratés, par exemple « 8 élèves se trompent sur 7 × 8 »).
+- [x] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
+- [x] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
+- [x] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
+- [x] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
+- [x] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.
 
 **Terminé quand :** sur une tablette, un enseignant crée une classe de 30 élèves et donne un devoir sur les additions jusqu'à 20 ; trois élèves jouent, et le tableau de bord montre qui bloque et sur quels faits.
 

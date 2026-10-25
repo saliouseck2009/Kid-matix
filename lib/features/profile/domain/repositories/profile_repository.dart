@@ -29,10 +29,20 @@ abstract interface class ProfileRepository {
     required ProfileSettingsEntity settings,
   });
 
-  /// Returns how many profiles exist.
+  /// Returns how many profiles exist, pupils included.
   Future<DataState<int>> countProfiles();
 
-  /// Whether another profile already uses [nickname].
+  /// Returns how many free profiles exist: the players of the phone that
+  /// belong to no class, the only ones the profile limit counts.
+  Future<DataState<int>> countFreeProfiles();
+
+  /// Returns the pupils of the class [classroomId], oldest first.
+  Future<DataState<List<ProfileEntity>>> getPupils({
+    required String classroomId,
+  });
+
+  /// Whether another profile of the same scope already uses [nickname]:
+  /// the class [classroomId], or the free players when it is `null`.
   ///
   /// Nicknames are compared ignoring case and accents. The profile
   /// [excludedProfileId], if given, is left out: a player renaming
@@ -40,7 +50,16 @@ abstract interface class ProfileRepository {
   Future<DataState<bool>> isNicknameTaken({
     required String nickname,
     String? excludedProfileId,
+    String? classroomId,
   });
+
+  /// Stores the new [pupils] with default settings, all or nothing; a
+  /// pupil whose id is already on the device is left as it is. Resolves
+  /// to how many pupils were added.
+  ///
+  /// Fails with a `ConflictException` when a nickname is already taken
+  /// in its class.
+  Future<DataState<int>> createPupils({required List<ProfileEntity> pupils});
 
   /// Stores the new [profile] with default settings, or with [settings]
   /// when the player chose some while being created; the profile and its

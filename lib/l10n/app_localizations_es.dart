@@ -97,6 +97,414 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get classroomTeacherArea => 'Espacio docente';
+
+  @override
+  String get classroomCodeChooseHint =>
+      'Elige un código de 4 cifras. Cierra el espacio docente: no se lo des a tus alumnos.';
+
+  @override
+  String get classroomCodeConfirmHint => 'Escribe el mismo código otra vez.';
+
+  @override
+  String get classroomCodeEnterHint => 'Escribe tu código de 4 cifras.';
+
+  @override
+  String get classroomCodeLabel => 'Código';
+
+  @override
+  String get classroomCodeOpen => 'Abrir';
+
+  @override
+  String get classroomCodeNext => 'Continuar';
+
+  @override
+  String get classroomCodeWrong => 'Ese no es el código correcto.';
+
+  @override
+  String get classroomCodeMismatch =>
+      'Los dos códigos son distintos. Empieza otra vez.';
+
+  @override
+  String get classroomCodeInvalid => 'El código tiene 4 cifras.';
+
+  @override
+  String get classroomLeaveArea => 'Salir del espacio docente';
+
+  @override
+  String get classroomListTitle => 'Mis clases';
+
+  @override
+  String get classroomListEmpty =>
+      'Todavía no hay ninguna clase. Crea una clase y añade a todos sus alumnos de una vez.';
+
+  @override
+  String get classroomNew => 'Nueva clase';
+
+  @override
+  String classroomPupilCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos',
+      one: '1 alumno',
+      zero: 'Ningún alumno',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomNameLabel => 'Nombre de la clase';
+
+  @override
+  String get classroomNameHint => 'Por ejemplo 2.º B';
+
+  @override
+  String get classroomPupilsTitle => 'Alumnos';
+
+  @override
+  String get classroomPupilsByList => 'Apodos';
+
+  @override
+  String get classroomPupilsByNumber => 'Números';
+
+  @override
+  String get classroomPupilsListLabel => 'Un apodo por línea';
+
+  @override
+  String get classroomPupilsPrivacyHint =>
+      'Pon apodos o números en lugar de los nombres reales de los niños.';
+
+  @override
+  String get classroomPupilsCountLabel => 'Número de alumnos';
+
+  @override
+  String classroomPupilsPreview(int count, String first, String last) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos que añadir: de $first a $last',
+      one: '1 alumno que añadir: $first',
+      zero: 'Ningún alumno que añadir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String classroomPupilsUnusable(String nicknames) {
+    return 'Estos apodos no sirven: $nicknames. Un apodo tiene de 2 a 12 letras o cifras, y cada uno aparece una sola vez.';
+  }
+
+  @override
+  String get classroomCreate => 'Crear la clase';
+
+  @override
+  String get classroomErrorName =>
+      'Ponle un nombre a la clase (24 caracteres como máximo).';
+
+  @override
+  String get classroomErrorNoPupil => 'Añade al menos un alumno.';
+
+  @override
+  String classroomErrorTooMany(int max) {
+    return 'Una clase tiene como máximo $max alumnos.';
+  }
+
+  @override
+  String get classroomErrorTaken => 'Uno de estos apodos ya está en la clase.';
+
+  @override
+  String get classroomErrorGeneric =>
+      'Uy, no ha funcionado. Inténtalo otra vez.';
+
+  @override
+  String get classroomAddPupils => 'Añadir alumnos';
+
+  @override
+  String get classroomShelfTitle => 'Las clases';
+
+  @override
+  String get classroomPickerTitle => '¿Quién eres?';
+
+  @override
+  String get classroomPickerSearch => 'Busca tu nombre';
+
+  @override
+  String get classroomPickerNoMatch => 'Nadie en la clase se llama así.';
+
+  @override
+  String get classroomPickerEmpty => 'Esta clase todavía no tiene alumnos.';
+
+  @override
+  String get classroomCodeForgotten => '¿Olvidaste el código?';
+
+  @override
+  String classroomCodeChanged(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Código cambiado el $dateString';
+  }
+
+  @override
+  String classroomCodeLocked(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other:
+          'Demasiados intentos. Espera $seconds segundos antes de volver a intentarlo.',
+      one:
+          'Demasiados intentos. Espera 1 segundo antes de volver a intentarlo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomOneTabletHint =>
+      'Cada alumno juega siempre en la misma tableta: su progreso no pasa de una tableta a otra.';
+
+  @override
+  String classroomPupilManage(String nickname) {
+    return 'Gestionar a $nickname';
+  }
+
+  @override
+  String get classroomPupilReset => 'Reiniciar su progreso';
+
+  @override
+  String get classroomPupilResetMessage =>
+      'Se borrarán sus estrellas, coronas, insignias, XP y récords. Sus resultados de clase se quedan.';
+
+  @override
+  String get classroomPupilRemove => 'Quitar de la clase';
+
+  @override
+  String get classroomPupilRemoveMessage =>
+      'Este alumno y todo su progreso se borrarán de esta tableta, también sus resultados de clase.';
+
+  @override
+  String classroomPupilResetDone(String nickname) {
+    return 'El progreso de $nickname se ha reiniciado.';
+  }
+
+  @override
+  String classroomPupilRemoved(String nickname) {
+    return '$nickname ya no está en la clase.';
+  }
+
+  @override
+  String get classroomAssignmentTitle => 'La tarea de la clase';
+
+  @override
+  String get classroomAssignmentNone =>
+      'Todavía no hay tarea. Elige una unidad para que toda la clase la trabaje.';
+
+  @override
+  String get classroomAssignmentGive => 'Poner una tarea';
+
+  @override
+  String get classroomAssignmentPickHint =>
+      'Elige la unidad que va a trabajar toda la clase.';
+
+  @override
+  String classroomAssignmentDue(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Para el $dateString';
+  }
+
+  @override
+  String get classroomAssignmentDueNone => 'Sin fecha';
+
+  @override
+  String get classroomAssignmentDueTomorrow => 'Para mañana';
+
+  @override
+  String get classroomAssignmentDueWeek => 'En 7 días';
+
+  @override
+  String classroomAssignmentStarted(int started, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      started,
+      locale: localeName,
+      other: '$started alumnos de $total la han empezado.',
+      one: '1 alumno de $total la ha empezado.',
+      zero: 'Nadie la ha empezado todavía.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomAssignmentPlay => '¡Vamos!';
+
+  @override
+  String classroomAssignmentLearned(int percent) {
+    return '$percent % aprendido';
+  }
+
+  @override
+  String get classroomChallengeTitle => 'Reto de la clase';
+
+  @override
+  String classroomChallengeProgress(int count, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count respuestas correctas de $goal esta semana',
+      one: '1 respuesta correcta de $goal esta semana',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomChallengeReached => '¡Bravo, clase, objetivo cumplido!';
+
+  @override
+  String get classroomChallengeGoal => 'Objetivo de la semana';
+
+  @override
+  String get classroomStrugglesTitle => '¿Quién se atasca, y en qué?';
+
+  @override
+  String classroomStruggleLine(int count, String item) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos se equivocan en $item',
+      one: '1 alumno se equivoca en $item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomStrugglesNone => 'Nadie se atasca por ahora.';
+
+  @override
+  String classroomGroupsTitle(String domain) {
+    return 'Grupos de nivel · $domain';
+  }
+
+  @override
+  String get classroomGroupsHint =>
+      'Propuestos a partir de la prueba de nivel y de las respuestas de los alumnos.';
+
+  @override
+  String get classroomGroupsNone =>
+      'Los grupos aparecerán cuando los alumnos hayan jugado.';
+
+  @override
+  String get classroomGroupFirstSteps => 'Primeros pasos';
+
+  @override
+  String get classroomGroupOnTheWay => 'En camino';
+
+  @override
+  String get classroomGroupConfident => 'Con soltura';
+
+  @override
+  String get classroomGroupNotYet => 'Aún sin evaluar';
+
+  @override
+  String get classroomPupilNeverPlayed => 'Aún no ha jugado';
+
+  @override
+  String classroomPupilSummary(int sessions, String time, int percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions sesiones',
+      one: '1 sesión',
+    );
+    return '$_temp0 · $time · $percent % de respuestas correctas';
+  }
+
+  @override
+  String classroomPracticeMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String classroomPracticeSeconds(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String classroomPupilLastSession(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Última sesión: $dateString';
+  }
+
+  @override
+  String classroomPupilStuckOn(String items) {
+    return 'Se atasca en: $items';
+  }
+
+  @override
+  String get classroomExport => 'Enviar la clase y sus resultados';
+
+  @override
+  String get classroomExportDone => 'El archivo de la clase está listo.';
+
+  @override
+  String get classroomExportNew =>
+      'Los resultados nuevos desde el último envío';
+
+  @override
+  String classroomExportNewSince(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Los resultados nuevos desde el $dateString';
+  }
+
+  @override
+  String get classroomExportFull => 'Toda la clase y todos sus resultados';
+
+  @override
+  String get classroomImportTooBig =>
+      'Este archivo es demasiado grande para esta tableta.';
+
+  @override
+  String classroomImportRenamed(String done, String nicknames) {
+    return '$done Apodos ya usados en la clase, alumnos renombrados: $nicknames.';
+  }
+
+  @override
+  String get classroomImport => 'Recibir una clase o resultados';
+
+  @override
+  String classroomImportDone(String name, int pupils, int sessions) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pupils,
+      locale: localeName,
+      other: '$pupils alumnos nuevos',
+      one: '1 alumno nuevo',
+      zero: 'ningún alumno nuevo',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions sesiones nuevas',
+      one: '1 sesión nueva',
+      zero: 'ninguna sesión nueva',
+    );
+    return '$name: $_temp0, $_temp1.';
+  }
+
+  @override
+  String get classroomImportInvalid =>
+      'Este archivo no es un archivo de clase de Kid Matix, o está dañado.';
+
+  @override
+  String get classroomImportVersion =>
+      'Este archivo viene de una versión más reciente de Kid Matix. Actualiza la app y vuelve a intentarlo.';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override
@@ -1049,11 +1457,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pathCrownHint => 'Vence al jefe para ganar la corona.';
 
   @override
-  String get placementOfferTitle => '¿Ya te sabes algunas tablas?';
+  String get placementOfferTitle => '¡Veamos cómo vas!';
 
   @override
   String get placementOfferMessage =>
-      'Responde una pregunta por tabla, sin cronómetro. Cada tabla que te sepas se abre enseguida en tu camino.';
+      'Responde unas preguntas, sin cronómetro. Paras cuando se pone difícil y tu camino empieza en el lugar justo.';
 
   @override
   String get placementOfferStart => 'Hacer la prueba';
@@ -1062,8 +1470,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get placementOfferSkip => 'Saltar';
 
   @override
-  String placementQuestionProgress(int current, int total) {
-    return 'Pregunta $current de $total';
+  String placementQuestionProgress(int current) {
+    return 'Pregunta $current';
   }
 
   @override
@@ -1077,7 +1485,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get placementQuitMessage =>
-      'Las tablas que ya encontraste siguen abiertas en tu camino.';
+      'Las unidades que ya encontraste siguen abiertas en tu camino.';
 
   @override
   String get placementQuitCancel => 'Seguir con la prueba';
@@ -1090,9 +1498,9 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '¡Ya te sabes $count tablas!',
-      one: '¡Ya te sabes 1 tabla!',
-      zero: '¡Todo por descubrir!',
+      other: '¡$count niveles superados!',
+      one: '¡1 nivel superado!',
+      zero: '¡Tu aventura empieza!',
     );
     return '$_temp0';
   }
@@ -1102,31 +1510,86 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Están abiertas en tu camino. Sus estrellas están por ganar.',
-      one: 'Está abierta en tu camino. Sus estrellas están por ganar.',
-      zero: 'No te preocupes, las aprenderás una por una. Tu camino empieza por la tabla del 1.',
+      other: 'Lo que ya sabes está abierto en tu camino. Las estrellas están por ganar.',
+      zero: 'No te preocupes, aprenderás paso a paso.',
     );
     return '$_temp0';
   }
 
   @override
-  String get placementLegendKnown => 'Ya conocida';
+  String get placementSkillNumbers => 'Números';
 
   @override
-  String get placementLegendToDiscover => 'Por descubrir';
+  String get placementSkillAddition => 'Sumas';
 
   @override
-  String placementTableKnown(String name) {
-    return '$name, ya conocida';
+  String get placementSkillSubtraction => 'Restas';
+
+  @override
+  String get placementSkillMultiplication => 'Multiplicaciones';
+
+  @override
+  String get placementSkillDivision => 'Divisiones';
+
+  @override
+  String get placementSkillAcquired => 'Conseguido';
+
+  @override
+  String get placementSkillToDiscover => 'Por descubrir';
+
+  @override
+  String placementSkillSemantics(String skill, String state) {
+    return '$skill, $state';
   }
 
   @override
-  String placementTableToDiscover(String name) {
-    return '$name, por descubrir';
-  }
+  String get placementResultStartLabel => 'Empiezas por';
+
+  @override
+  String get placementResultAllDone =>
+      'Sabes todo lo que pide la prueba. ¡Bravo!';
 
   @override
   String get placementSeePath => 'Ver mi camino';
+
+  @override
+  String get placementCardTitle => 'Mi nivel de partida';
+
+  @override
+  String get placementCardEmpty => 'Todavía no has hecho la prueba de nivel.';
+
+  @override
+  String placementCardLatest(String date) {
+    return 'Prueba del $date';
+  }
+
+  @override
+  String placementCardLevelSemantics(String domain, String level) {
+    return '$domain, $level';
+  }
+
+  @override
+  String get placementCardNotChecked => 'sin evaluar';
+
+  @override
+  String placementCardLevel(int level, int total) {
+    return 'nivel $level de $total';
+  }
+
+  @override
+  String placementCardPast(String date, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count niveles',
+      one: '1 nivel',
+      zero: 'ningún nivel',
+    );
+    return '$date: $_temp0';
+  }
+
+  @override
+  String get placementCardRetake => 'Repetir la prueba';
 
   @override
   String get pathTableBack => 'Volver al camino';

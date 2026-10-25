@@ -4,7 +4,7 @@ import 'package:kid_matix/core/quiz/learning_domain.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
-import 'package:kid_matix/features/mastery/domain/services/quiz_item_planner.dart';
+import 'package:kid_matix/features/mastery/domain/services/question_format_picker.dart';
 import 'package:kid_matix/features/mastery/domain/services/review_item_selector.dart';
 
 /// Plans a review that mixes the items of several domains, such as the
@@ -18,12 +18,12 @@ final class MixedQuizPlanner {
   const MixedQuizPlanner({
     required this._domains,
     this._selector = const ReviewItemSelector(),
-    this._planner = const QuizItemPlanner(),
+    this._formats = const QuestionFormatPicker(),
   });
 
   final DomainRegistry _domains;
   final ReviewItemSelector _selector;
-  final QuizItemPlanner _planner;
+  final QuestionFormatPicker _formats;
 
   /// At most [count] questions among the [progress] of the items of
   /// [itemKeys], due first, at [now]. [natures] gives, per domain id, the
@@ -50,7 +50,7 @@ final class MixedQuizPlanner {
     );
     return <QuizItemPlan>[
       for (final ItemProgressEntity item in random.shuffled(chosen))
-        _planner.planItem(
+        _formats.planItem(
           domain: _domains.findByItemKey(item.itemKey)!,
           progress: item,
           questionTypeNatures:

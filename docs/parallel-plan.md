@@ -67,8 +67,8 @@ each bringing `main` in before its merge.
 | 2 | F28 · Math words, the rest (script of F28-02, F28-03 to F28-13) | `lot-implementer` (Sonnet) | 013 (per-player audio help setting) | Needs the content table filled by the owner for the end-to-end check |
 | 3 | F27 · Placement by skill | `lot-implementer` (Sonnet) | 014 (dated placement results) | |
 | 3 | F29 · Class mode | `lot-implementer` (Opus) | 015 (classes, students, assignments) | Starts only after the owner answers F29-01 (shared tablets or families' phones, class size) |
-| 4 | F30 · Word problems | `lot-implementer` (Sonnet) | 016 (only if needed) | The content table `problems.md` (F30-01) can go to `content-writer` first |
-| 4 | F31 · Progress measurement | Codex | 017 | |
+| 4 | F30 · Word problems | `content-writer` (Haiku) for F30-01, then `lot-implementer` (Sonnet) | 016 (only if needed) | The code starts once `problems.md` is written, so templates and content agree |
+| 4 | F31 · Progress measurement | `lot-implementer` (Opus) | 017 | The owner chose a Claude subagent over Codex (2026-10-25); includes the teacher's own recordings (microphone) and QR codes (camera), both asked only from the teacher area |
 | 5 | F32 · Other help languages | To decide with the partners | 018 | F32-03 needs the owner's decision first |
 
 ## How to launch

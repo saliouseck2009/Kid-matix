@@ -20,6 +20,7 @@ ProfileLocalModel _$ProfileLocalModelFromJson(Map<String, dynamic> json) =>
       remoteAccountId: json['remote_account_id'] as String?,
       lastPlayedAt: (json['last_played_at'] as num?)?.toInt(),
       deletedAt: (json['deleted_at'] as num?)?.toInt(),
+      classroomId: json['classroom_id'] as String?,
     );
 
 Map<String, dynamic> _$ProfileLocalModelToJson(ProfileLocalModel instance) =>
@@ -36,6 +37,7 @@ Map<String, dynamic> _$ProfileLocalModelToJson(ProfileLocalModel instance) =>
       'last_played_at': instance.lastPlayedAt,
       'updated_at': instance.updatedAt,
       'deleted_at': instance.deletedAt,
+      'classroom_id': instance.classroomId,
     };
 
 const _$ProfileAvatarEnumMap = {

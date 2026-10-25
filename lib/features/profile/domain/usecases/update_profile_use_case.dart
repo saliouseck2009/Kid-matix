@@ -29,6 +29,7 @@ class UpdateProfileUseCase
     final AppException? problem = await _nicknameChecker.findProblem(
       nickname: params.nickname,
       excludedProfileId: params.id,
+      classroomId: params.classroomId,
     );
     if (problem != null) return DataFailed<ProfileEntity>(problem);
     return _repository.updateProfile(

@@ -24,6 +24,7 @@ class ProfileFormView extends StatelessWidget {
     required this.submitLabel,
     this.onBack,
     this.offersReadAloud = false,
+    this.footer,
     super.key,
   });
 
@@ -42,6 +43,10 @@ class ProfileFormView extends StatelessWidget {
   /// Whether the form offers to have every question read aloud; only the
   /// creation does, the settings screen holds the switch afterwards.
   final bool offersReadAloud;
+
+  /// Shown under the button, such as the entry of the teacher area on
+  /// the very first creation, or `null`.
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +104,10 @@ class ProfileFormView extends StatelessWidget {
                     submitLabel: submitLabel,
                     onSubmit: cubit.submit,
                   ),
+                  if (footer case final Widget below) ...<Widget>[
+                    const SizedBox(height: AppSizes.space16),
+                    Center(child: below),
+                  ],
                 ],
               ),
             );

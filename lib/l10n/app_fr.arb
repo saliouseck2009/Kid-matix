@@ -110,6 +110,548 @@
       }
     }
   },
+  "classroomTeacherArea": "Espace enseignant",
+  "@classroomTeacherArea": {
+    "description": "Class mode. Discreet text button at the bottom of « Qui joue ? » (and of the first player creation) that opens the teacher area, and title of the door of that area where the teacher types the code (\"Teacher area\"). One short line."
+  },
+  "classroomCodeChooseHint": "Choisis un code à 4 chiffres. Il ferme l'espace enseignant : ne le donne pas aux élèves.",
+  "@classroomCodeChooseHint": {
+    "description": "Class mode, door of the teacher area at the very first visit: the teacher chooses the 4-digit code that will protect the area. Speaks to the teacher with informal \"tu\", like the rest of the app."
+  },
+  "classroomCodeConfirmHint": "Tape le même code une deuxième fois.",
+  "@classroomCodeConfirmHint": {
+    "description": "Class mode, door of the teacher area at the first visit, second step: the teacher types the chosen code again to confirm it."
+  },
+  "classroomCodeEnterHint": "Tape ton code à 4 chiffres.",
+  "@classroomCodeEnterHint": {
+    "description": "Class mode, door of the teacher area once a code exists: the teacher types it to open the area."
+  },
+  "classroomCodeLabel": "Code",
+  "@classroomCodeLabel": {
+    "description": "Class mode, label of the field of the 4-digit teacher code on the door of the teacher area. One word."
+  },
+  "classroomCodeOpen": "Ouvrir",
+  "@classroomCodeOpen": {
+    "description": "Class mode, button under the code field of the door of the teacher area (\"Open\", a verb). One word."
+  },
+  "classroomCodeNext": "Continuer",
+  "@classroomCodeNext": {
+    "description": "Class mode, button under the code field of the door of the teacher area at the first visit, while the teacher chooses and confirms the code (\"Continue\", a verb). One word."
+  },
+  "classroomCodeWrong": "Ce n'est pas le bon code.",
+  "@classroomCodeWrong": {
+    "description": "Class mode, error under the code field when the teacher typed a wrong code."
+  },
+  "classroomCodeMismatch": "Les deux codes ne sont pas pareils. Recommence.",
+  "@classroomCodeMismatch": {
+    "description": "Class mode, error when the code typed the second time differs from the first one; the teacher chooses again."
+  },
+  "classroomCodeInvalid": "Le code a 4 chiffres.",
+  "@classroomCodeInvalid": {
+    "description": "Class mode, error when the teacher typed fewer than 4 digits."
+  },
+  "classroomLeaveArea": "Quitter l'espace enseignant",
+  "@classroomLeaveArea": {
+    "description": "Class mode, tooltip of the icon button at the top of « Mes classes » that closes the teacher area and goes back to « Qui joue ? »."
+  },
+  "classroomListTitle": "Mes classes",
+  "@classroomListTitle": {
+    "description": "Class mode, title of the home of the teacher area listing the classes of the device (\"My classes\"). One line."
+  },
+  "classroomListEmpty": "Aucune classe pour l'instant. Crée une classe et ajoute tous ses élèves en une fois.",
+  "@classroomListEmpty": {
+    "description": "Class mode, text of « Mes classes » when the device has no class yet."
+  },
+  "classroomNew": "Nouvelle classe",
+  "@classroomNew": {
+    "description": "Class mode, button of « Mes classes » that opens the creation of a class, and title of that creation screen (\"New class\"). One line."
+  },
+  "classroomPupilCount": "{count, plural, =0{Aucun élève} =1{1 élève} other{{count} élèves}}",
+  "@classroomPupilCount": {
+    "description": "Class mode, number of pupils of a class, under its name on the class cards of « Mes classes » and « Qui joue ? » and on the class page (\"30 pupils\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomNameLabel": "Nom de la classe",
+  "@classroomNameLabel": {
+    "description": "Class mode, label of the name field of the creation of a class. One line."
+  },
+  "classroomNameHint": "Par exemple CE1 B",
+  "@classroomNameHint": {
+    "description": "Class mode, placeholder inside the empty name field of the creation of a class: an example of class name in the school system of the language (CE1 is the second year of primary school in France and Senegal)."
+  },
+  "classroomPupilsTitle": "Élèves",
+  "@classroomPupilsTitle": {
+    "description": "Class mode, title of the pupils part of the creation of a class and of the list of pupils of the class page (\"Pupils\"). One word."
+  },
+  "classroomPupilsByList": "Des pseudos",
+  "@classroomPupilsByList": {
+    "description": "Class mode, first choice of a two-segment switch of the class creation: the pupils are typed as a list of nicknames. Short, a segment label."
+  },
+  "classroomPupilsByNumber": "Des numéros",
+  "@classroomPupilsByNumber": {
+    "description": "Class mode, second choice of the two-segment switch of the class creation: the pupils are numbered 01, 02, 03... Short, a segment label."
+  },
+  "classroomPupilsListLabel": "Un pseudo par ligne",
+  "@classroomPupilsListLabel": {
+    "description": "Class mode, label of the multi-line field where the teacher types the nicknames of the pupils, one per line."
+  },
+  "classroomPupilsPrivacyHint": "Mets des pseudos ou des numéros plutôt que les vrais noms des enfants.",
+  "@classroomPupilsPrivacyHint": {
+    "description": "Class mode, advice under the pupils field of the class creation: no real names of children, for their privacy."
+  },
+  "classroomPupilsCountLabel": "Nombre d'élèves",
+  "@classroomPupilsCountLabel": {
+    "description": "Class mode, label of the field where the teacher types how many numbered pupils to create. One line."
+  },
+  "classroomPupilsPreview": "{count, plural, =0{Aucun élève à ajouter} =1{1 élève à ajouter : {first}} other{{count} élèves à ajouter : {first} à {last}}}",
+  "@classroomPupilsPreview": {
+    "description": "Class mode, line under the pupils field of the class creation that sums up the pupils about to be created, with the first and last nicknames or numbers (\"30 pupils to add: 01 to 30\").",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "30"
+      },
+      "first": {
+        "type": "String",
+        "example": "01"
+      },
+      "last": {
+        "type": "String",
+        "example": "30"
+      }
+    }
+  },
+  "classroomPupilsUnusable": "Ces pseudos ne vont pas : {nicknames}. Un pseudo a 2 à 12 lettres ou chiffres, et chacun n'apparaît qu'une fois.",
+  "@classroomPupilsUnusable": {
+    "description": "Class mode, error under the pupils field when some nicknames break the nickname rules or are repeated; {nicknames} lists them separated by commas.",
+    "placeholders": {
+      "nicknames": {
+        "type": "String",
+        "example": "A, Moussa Diop Ndiaye"
+      }
+    }
+  },
+  "classroomCreate": "Créer la classe",
+  "@classroomCreate": {
+    "description": "Class mode, button at the bottom of the class creation (\"Create the class\"). One line."
+  },
+  "classroomErrorName": "Donne un nom à la classe (24 caractères au plus).",
+  "@classroomErrorName": {
+    "description": "Class mode, error of the class creation when the name is empty or too long."
+  },
+  "classroomErrorNoPupil": "Ajoute au moins un élève.",
+  "@classroomErrorNoPupil": {
+    "description": "Class mode, error of the class creation or of « Ajouter des élèves » when the list is empty."
+  },
+  "classroomErrorTooMany": "Une classe a au plus {max} élèves.",
+  "@classroomErrorTooMany": {
+    "description": "Class mode, error when the class would have more pupils than the maximum (60).",
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "classroomErrorTaken": "Un de ces pseudos est déjà dans la classe.",
+  "@classroomErrorTaken": {
+    "description": "Class mode, error of « Ajouter des élèves » when a nickname already belongs to a pupil of the class."
+  },
+  "classroomErrorGeneric": "Oups, ça n'a pas marché. Réessaie.",
+  "@classroomErrorGeneric": {
+    "description": "Class mode, generic error when the classes or their pupils could not be read or saved."
+  },
+  "classroomAddPupils": "Ajouter des élèves",
+  "@classroomAddPupils": {
+    "description": "Class mode, button of the class page that opens the form to add pupils, title of that form, and its confirm button (\"Add pupils\"). One line."
+  },
+  "classroomShelfTitle": "Les classes",
+  "@classroomShelfTitle": {
+    "description": "Class mode, title above the class cards at the top of « Qui joue ? », shown only when the device has classes (\"Classes\"). One line."
+  },
+  "classroomPickerTitle": "Qui es-tu ?",
+  "@classroomPickerTitle": {
+    "description": "Class mode, title of the screen where a pupil finds their name or avatar in their class, opened from a class card of « Qui joue ? ». Speaks to the child, informal \"tu\"."
+  },
+  "classroomPickerSearch": "Cherche ton nom",
+  "@classroomPickerSearch": {
+    "description": "Class mode, placeholder of the search field at the top of « Qui es-tu ? » (a class of up to 60 pupils). Informal \"tu\"."
+  },
+  "classroomPickerNoMatch": "Personne ne s'appelle comme ça dans la classe.",
+  "@classroomPickerNoMatch": {
+    "description": "Class mode, text of « Qui es-tu ? » when the search matches no pupil."
+  },
+  "classroomPickerEmpty": "Cette classe n'a pas encore d'élèves.",
+  "@classroomPickerEmpty": {
+    "description": "Class mode, text of « Qui es-tu ? » or of the class page when the class has no pupil."
+  },
+  "classroomCodeForgotten": "Code oublié ?",
+  "@classroomCodeForgotten": {
+    "description": "Class mode, small text button under the code field of the door of the teacher area: after the adult gate, the teacher chooses a new code; classes and results are kept. Short."
+  },
+  "classroomCodeChanged": "Code changé le {date}",
+  "@classroomCodeChanged": {
+    "description": "Class mode, line under the title of « Mes classes » once the teacher chose a new code after « Code oublié ? », so a forgotten code cannot be replaced unnoticed (\"Code changed on 21 October\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMd",
+        "example": "2026-10-21"
+      }
+    }
+  },
+  "classroomCodeLocked": "{seconds, plural, =1{Trop d'essais. Attends 1 seconde avant de réessayer.} other{Trop d'essais. Attends {seconds} secondes avant de réessayer.}}",
+  "@classroomCodeLocked": {
+    "description": "Class mode, error under the code field after 5 wrong codes: the door stays closed for a while (30 seconds).",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomOneTabletHint": "Chaque élève joue toujours sur la même tablette : sa progression ne passe pas d'une tablette à l'autre.",
+  "@classroomOneTabletHint": {
+    "description": "Class mode, one-line hint of the class creation screen: a pupil keeps one tablet, because only the class results travel between tablets, not the progress."
+  },
+  "classroomPupilManage": "Gérer {nickname}",
+  "@classroomPupilManage": {
+    "description": "Class mode, tooltip of the icon button next to a pupil on the class page of the teacher area, which offers to reset their progress or remove them.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomPupilReset": "Réinitialiser sa progression",
+  "@classroomPupilReset": {
+    "description": "Class mode, teacher area: action of the menu of a pupil that erases their progress. One line."
+  },
+  "classroomPupilResetMessage": "Ses étoiles, couronnes, badges, XP et records seront effacés. Ses résultats de classe restent.",
+  "@classroomPupilResetMessage": {
+    "description": "Class mode, teacher area: text of the confirmation before erasing the progress of a pupil."
+  },
+  "classroomPupilRemove": "Retirer de la classe",
+  "@classroomPupilRemove": {
+    "description": "Class mode, teacher area: action of the menu of a pupil that deletes them. One line."
+  },
+  "classroomPupilRemoveMessage": "Cet élève et toute sa progression seront effacés de cette tablette, ses résultats de classe aussi.",
+  "@classroomPupilRemoveMessage": {
+    "description": "Class mode, teacher area: text of the confirmation before deleting a pupil."
+  },
+  "classroomPupilResetDone": "La progression de {nickname} est remise à zéro.",
+  "@classroomPupilResetDone": {
+    "description": "Class mode, snack bar after the teacher reset the progress of a pupil.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomPupilRemoved": "{nickname} est retiré de la classe.",
+  "@classroomPupilRemoved": {
+    "description": "Class mode, snack bar after the teacher removed a pupil.",
+    "placeholders": {
+      "nickname": {
+        "type": "String",
+        "example": "Awa"
+      }
+    }
+  },
+  "classroomAssignmentTitle": "Le devoir de la classe",
+  "@classroomAssignmentTitle": {
+    "description": "Class mode, title of the card of the current assignment, on the class page of the teacher area and at the top of the home of a pupil (\"The class's homework\"). One line."
+  },
+  "classroomAssignmentNone": "Pas encore de devoir. Choisis une unité à faire travailler à toute la classe.",
+  "@classroomAssignmentNone": {
+    "description": "Class mode, class page of the teacher area: text of the assignment card when no assignment was given yet."
+  },
+  "classroomAssignmentGive": "Donner un devoir",
+  "@classroomAssignmentGive": {
+    "description": "Class mode, button of the assignment card of the class page, and title of the screen where the teacher picks the unit (\"Give homework\"). One line."
+  },
+  "classroomAssignmentPickHint": "Choisis l'unité que toute la classe va travailler.",
+  "@classroomAssignmentPickHint": {
+    "description": "Class mode, line under the title of the screen where the teacher picks the unit of the assignment."
+  },
+  "classroomAssignmentDue": "Pour le {date}",
+  "@classroomAssignmentDue": {
+    "description": "Class mode, due day of the assignment, under its unit name (\"Due Monday 27 October\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "2026-10-27"
+      }
+    }
+  },
+  "classroomAssignmentDueNone": "Sans date",
+  "@classroomAssignmentDueNone": {
+    "description": "Class mode, first choice of the due day of an assignment: no due day. Short, a segment label."
+  },
+  "classroomAssignmentDueTomorrow": "Pour demain",
+  "@classroomAssignmentDueTomorrow": {
+    "description": "Class mode, second choice of the due day of an assignment: tomorrow. Short, a segment label."
+  },
+  "classroomAssignmentDueWeek": "Dans 7 jours",
+  "@classroomAssignmentDueWeek": {
+    "description": "Class mode, third choice of the due day of an assignment: in a week. Short, a segment label."
+  },
+  "classroomAssignmentStarted": "{started, plural, =0{Personne ne l'a encore commencé.} =1{1 élève sur {total} l'a commencé.} other{{started} élèves sur {total} l'ont commencé.}}",
+  "@classroomAssignmentStarted": {
+    "description": "Class mode, class page: how many pupils have started the assignment (acquired at least one of its items).",
+    "placeholders": {
+      "started": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomAssignmentPlay": "J'y vais",
+  "@classroomAssignmentPlay": {
+    "description": "Class mode, button of the card « Le devoir de la classe » at the top of the home of a pupil, which opens the assigned unit. Speaks as the child (\"I'm going\"). Short."
+  },
+  "classroomAssignmentLearned": "{percent} % appris",
+  "@classroomAssignmentLearned": {
+    "description": "Class mode, part of the assigned unit a pupil has learned (right the last three times), next to the progress bar of the assignment card on the home and on each pupil row of the dashboard.",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "classroomChallengeTitle": "Défi de la classe",
+  "@classroomChallengeTitle": {
+    "description": "Class mode, title of the gauge of the shared weekly goal of the class (no individual ranking), on the class page, on « Qui es-tu ? » and on the home of a pupil. One line."
+  },
+  "classroomChallengeProgress": "{count, plural, =0{0 bonne réponse sur {goal} cette semaine} =1{1 bonne réponse sur {goal} cette semaine} other{{count} bonnes réponses sur {goal} cette semaine}}",
+  "@classroomChallengeProgress": {
+    "description": "Class mode, line under the gauge of the class challenge: right answers of the whole class since Monday, out of the goal.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "420"
+      },
+      "goal": {
+        "type": "int",
+        "example": "1000"
+      }
+    }
+  },
+  "classroomChallengeReached": "Bravo la classe, objectif atteint !",
+  "@classroomChallengeReached": {
+    "description": "Class mode, line under the gauge of the class challenge once the weekly goal is reached."
+  },
+  "classroomChallengeGoal": "Objectif de la semaine",
+  "@classroomChallengeGoal": {
+    "description": "Class mode, class page: label above the choices of the weekly goal of right answers of the class challenge. One line."
+  },
+  "classroomStrugglesTitle": "Qui bloque, et sur quoi ?",
+  "@classroomStrugglesTitle": {
+    "description": "Class mode, class page: title of the card that lists the facts and words the pupils keep missing. One line."
+  },
+  "classroomStruggleLine": "{count, plural, =1{1 élève se trompe sur {item}} other{{count} élèves se trompent sur {item}}}",
+  "@classroomStruggleLine": {
+    "description": "Class mode, one line of « Qui bloque, et sur quoi ? »: how many pupils keep missing a fact or a word (\"8 pupils get 7 × 8 = 56 wrong\"); {item} is the fact with its answer or the word.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      },
+      "item": {
+        "type": "String",
+        "example": "7 × 8 = 56"
+      }
+    }
+  },
+  "classroomStrugglesNone": "Personne ne bloque pour l'instant.",
+  "@classroomStrugglesNone": {
+    "description": "Class mode, text of « Qui bloque, et sur quoi ? » when no pupil keeps missing anything."
+  },
+  "classroomGroupsTitle": "Groupes de niveau · {domain}",
+  "@classroomGroupsTitle": {
+    "description": "Class mode, class page: title of the card of the proposed level groups, with the name of the domain they are about (\"Level groups · Multiplication\").",
+    "placeholders": {
+      "domain": {
+        "type": "String",
+        "example": "+ et −"
+      }
+    }
+  },
+  "classroomGroupsHint": "Proposés à partir du test de positionnement et des réponses des élèves.",
+  "@classroomGroupsHint": {
+    "description": "Class mode, line under the title of the level groups: where the proposal comes from."
+  },
+  "classroomGroupsNone": "Les groupes apparaîtront quand les élèves auront joué.",
+  "@classroomGroupsNone": {
+    "description": "Class mode, text of the level groups card before any pupil played."
+  },
+  "classroomGroupFirstSteps": "Premiers pas",
+  "@classroomGroupFirstSteps": {
+    "description": "Class mode, name of the level group of the pupils who acquired less than a third of the items the class worked on. Short."
+  },
+  "classroomGroupOnTheWay": "En route",
+  "@classroomGroupOnTheWay": {
+    "description": "Class mode, name of the middle level group. Short."
+  },
+  "classroomGroupConfident": "À l'aise",
+  "@classroomGroupConfident": {
+    "description": "Class mode, name of the level group of the pupils who acquired two thirds or more. Short."
+  },
+  "classroomGroupNotYet": "Pas encore évalués",
+  "@classroomGroupNotYet": {
+    "description": "Class mode, name of the group of the pupils with no placement and no answer yet in the domain. Short."
+  },
+  "classroomPupilNeverPlayed": "N'a pas encore joué",
+  "@classroomPupilNeverPlayed": {
+    "description": "Class mode, dashboard of the class page: line under the nickname of a pupil who never played."
+  },
+  "classroomPupilSummary": "{sessions, plural, =1{1 séance} other{{sessions} séances}} · {time} · {percent} % de bonnes réponses",
+  "@classroomPupilSummary": {
+    "description": "Class mode, dashboard of the class page: practice of one pupil (sessions played, time of practice written by classroomPracticeMinutes or classroomPracticeSeconds, share of right answers).",
+    "placeholders": {
+      "sessions": {
+        "type": "int",
+        "example": "4"
+      },
+      "time": {
+        "type": "String",
+        "example": "12 min"
+      },
+      "percent": {
+        "type": "int",
+        "example": "75"
+      }
+    }
+  },
+  "classroomPracticeMinutes": "{minutes} min",
+  "@classroomPracticeMinutes": {
+    "description": "Class mode, dashboard: time of practice of a pupil in minutes, inside classroomPupilSummary (\"12 min\").",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "classroomPracticeSeconds": "{seconds} s",
+  "@classroomPracticeSeconds": {
+    "description": "Class mode, dashboard: time of practice of a pupil under one minute, in seconds, inside classroomPupilSummary (\"45 s\").",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "45"
+      }
+    }
+  },
+  "classroomPupilLastSession": "Dernière séance : {date}",
+  "@classroomPupilLastSession": {
+    "description": "Class mode, dashboard of the class page: day of the last session of a pupil (\"Last session: 20 Oct\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMd",
+        "example": "2026-10-20"
+      }
+    }
+  },
+  "classroomPupilStuckOn": "Bloque sur : {items}",
+  "@classroomPupilStuckOn": {
+    "description": "Class mode, dashboard of the class page: the facts or words a pupil keeps missing, separated by commas.",
+    "placeholders": {
+      "items": {
+        "type": "String",
+        "example": "7 × 8 = 56, 6 × 9 = 54"
+      }
+    }
+  },
+  "classroomExport": "Envoyer la classe et ses résultats",
+  "@classroomExport": {
+    "description": "Class mode, button at the bottom of the class page: writes a file with the class, its pupils, its homework and their results, and opens the share sheet (to another tablet or to the teacher's, with no network). One line."
+  },
+  "classroomExportDone": "Le fichier de la classe est prêt.",
+  "@classroomExportDone": {
+    "description": "Class mode, snack bar after the class file was handed to the share sheet."
+  },
+  "classroomExportNew": "Les nouveaux résultats depuis le dernier envoi",
+  "@classroomExportNew": {
+    "description": "Class mode, first choice after « Envoyer la classe et ses résultats »: a small file with the sessions played since the last file sent from this tablet. One line."
+  },
+  "classroomExportNewSince": "Les nouveaux résultats depuis le {date}",
+  "@classroomExportNewSince": {
+    "description": "Class mode, first choice after « Envoyer la classe et ses résultats » once the class was already sent from this tablet: a small file with the sessions since that day (and those of the last two weeks again). One line (\"The new results since 21 October\").",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMd",
+        "example": "2026-10-21"
+      }
+    }
+  },
+  "classroomExportFull": "Toute la classe et tous ses résultats",
+  "@classroomExportFull": {
+    "description": "Class mode, second choice after « Envoyer la classe et ses résultats »: a file with every session again, for a new tablet or a lost file. One line."
+  },
+  "classroomImportTooBig": "Ce fichier est trop gros pour cette tablette.",
+  "@classroomImportTooBig": {
+    "description": "Class mode, error snack bar when the class file picked is too big to be read."
+  },
+  "classroomImportRenamed": "{done} Pseudos déjà pris dans la classe, élèves renommés : {nicknames}.",
+  "@classroomImportRenamed": {
+    "description": "Class mode, snack bar after merging a class file when some new pupils had the nickname of another pupil of the class and were renamed (« Moussa 2 »); {done} is the sentence classroomImportDone, {nicknames} the new nicknames separated by commas.",
+    "placeholders": {
+      "done": {
+        "type": "String",
+        "example": "CE1 B : 2 nouveaux élèves, 12 nouvelles séances."
+      },
+      "nicknames": {
+        "type": "String",
+        "example": "Moussa 2, Awa 2"
+      }
+    }
+  },
+  "classroomImport": "Recevoir une classe ou des résultats",
+  "@classroomImport": {
+    "description": "Class mode, button of « Mes classes »: opens the file picker to merge a class file received from another tablet (a new class, or the results of its pupils). One line."
+  },
+  "classroomImportDone": "{name} : {pupils, plural, =0{aucun nouvel élève} =1{1 nouvel élève} other{{pupils} nouveaux élèves}}, {sessions, plural, =0{aucune nouvelle séance} =1{1 nouvelle séance} other{{sessions} nouvelles séances}}.",
+  "@classroomImportDone": {
+    "description": "Class mode, snack bar after a class file was merged: the name of the class, the pupils and the sessions that were new on this tablet (a file received twice adds nothing).",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "CE1 B"
+      },
+      "pupils": {
+        "type": "int",
+        "example": "0"
+      },
+      "sessions": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "classroomImportInvalid": "Ce fichier n'est pas un fichier de classe Kid Matix, ou il est abîmé.",
+  "@classroomImportInvalid": {
+    "description": "Class mode, error snack bar when the file picked is not a class file or is damaged."
+  },
+  "classroomImportVersion": "Ce fichier vient d'une version plus récente de Kid Matix. Mets l'app à jour, puis réessaie.",
+  "@classroomImportVersion": {
+    "description": "Class mode, error snack bar when the class file was written by a newer version of the app. Informal \"tu\"."
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."
@@ -1434,13 +1976,13 @@
   "@pathCrownHint": {
     "description": "Hint under the stars of a table on its detail screen (\"Beat the boss to win the crown.\"). Talks to the child."
   },
-  "placementOfferTitle": "Tu connais déjà des tables ?",
+  "placementOfferTitle": "Voyons où tu en es !",
   "@placementOfferTitle": {
-    "description": "Header of the placement test offer, the full screen shown right after a new player is created (\"Do you already know some tables?\"). A table is a multiplication table. Talks to the child (informal tu). Two short lines at most."
+    "description": "Header of the placement test offer, the full screen shown right after a new player is created (\"Let's see where you are!\"). The test checks what the child can already do in maths, whatever their age. Talks to the child (informal tu). Two short lines at most."
   },
-  "placementOfferMessage": "Réponds à une question par table, sans chrono. Chaque table que tu connais s'ouvre tout de suite dans ton parcours.",
+  "placementOfferMessage": "Réponds à quelques questions, sans chrono. Tu t'arrêtes quand ça devient difficile et ton parcours commence au bon endroit.",
   "@placementOfferMessage": {
-    "description": "Text under the title of the placement test offer (\"Answer one question per table, no timer. Each table you know opens right away in your path.\"). The path is the map of tables the child plays through. Talks to the child (informal tu)."
+    "description": "Text under the title of the placement test offer (\"Answer a few questions, no timer. You stop when it gets hard and your path starts in the right place.\"). The path is the map of units the child plays through. Talks to the child (informal tu)."
   },
   "placementOfferStart": "Faire le test",
   "@placementOfferStart": {
@@ -1448,19 +1990,15 @@
   },
   "placementOfferSkip": "Passer",
   "@placementOfferSkip": {
-    "description": "Secondary full-width button of the placement test offer that skips the test and opens the path with the table of 1 only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
+    "description": "Secondary full-width button of the placement test offer that leaves the test with nothing changed: the path opens with the first unit of each domain only. \"Passer\" is an infinitive verb meaning \"Skip\", not \"Pass\". One line, short."
   },
-  "placementQuestionProgress": "Question {current} sur {total}",
+  "placementQuestionProgress": "Question {current}",
   "@placementQuestionProgress": {
-    "description": "What a screen reader says for the progress bar at the top of a placement test question (\"Question 3 of 12\"). Not shown on screen.",
+    "description": "What a screen reader says for the progress bar at the top of a placement test question (\"Question 3\"). The test is adaptive, so the number of questions is not known in advance. Not shown on screen.",
     "placeholders": {
       "current": {
         "type": "int",
         "example": "3"
-      },
-      "total": {
-        "type": "int",
-        "example": "12"
       }
     }
   },
@@ -1476,9 +2014,9 @@
   "@placementQuitTitle": {
     "description": "Title of the dialog confirming that the child leaves the placement test, shown by the cross or the system back (\"Stop the test?\"). Talks to the child. One line."
   },
-  "placementQuitMessage": "Les tables déjà trouvées restent ouvertes dans ton parcours.",
+  "placementQuitMessage": "Les unités déjà trouvées restent ouvertes dans ton parcours.",
   "@placementQuitMessage": {
-    "description": "Body of the dialog confirming that the child leaves the placement test (\"The tables already found stay open in your path.\"). Talks to the child (informal tu)."
+    "description": "Body of the dialog confirming that the child leaves the placement test (\"The units already found stay open in your path.\"). A unit is one lesson of the path, such as a multiplication table. Talks to the child (informal tu)."
   },
   "placementQuitCancel": "Continuer le test",
   "@placementQuitCancel": {
@@ -1488,9 +2026,9 @@
   "@placementQuitConfirm": {
     "description": "Dialog button that leaves the placement test for the path (\"Stop\"). \"Arrêter\" is an infinitive verb. One word if possible."
   },
-  "placementResultTitle": "{count, plural, =0{Tout est à découvrir !} =1{Tu connais déjà 1 table !} other{Tu connais déjà {count} tables !}}",
+  "placementResultTitle": "{count, plural, =0{Ton aventure commence !} =1{1 niveau réussi !} other{{count} niveaux réussis !}}",
   "@placementResultTitle": {
-    "description": "Header of the placement test result screen, with the number of tables the child already knows (\"You already know 3 tables!\"); with none, \"Everything is to discover!\". Talks to the child (informal tu). Two short lines at most.",
+    "description": "Header of the placement test result screen, with the number of skill levels the child passed (numbers, addition, subtraction, multiplication, division: \"3 levels passed!\"); with none, \"Your adventure begins!\". Talks to the child. Two short lines at most.",
     "placeholders": {
       "count": {
         "type": "int",
@@ -1498,9 +2036,9 @@
       }
     }
   },
-  "placementResultSubtitle": "{count, plural, =0{Pas de souci, tu vas les apprendre une par une. Ton parcours commence par la table de 1.} =1{Elle est ouverte dans ton parcours. Ses étoiles restent à gagner.} other{Elles sont ouvertes dans ton parcours. Leurs étoiles restent à gagner.}}",
+  "placementResultSubtitle": "{count, plural, =0{Pas de souci, tu vas apprendre une étape à la fois.} other{Ce que tu sais déjà est ouvert dans ton parcours. Les étoiles restent à gagner.}}",
   "@placementResultSubtitle": {
-    "description": "Text under the title of the placement test result. With one table or more: \"It is / They are open in your path. Its / Their stars are still to win.\" (\"Elle\"/\"Elles\" stands for the tables found; their stages are open but hold no star yet). With none: a kind text saying the child will learn them one by one and the path starts with the table of 1. Talks to the child (informal tu).",
+    "description": "Text under the title of the placement test result. With one level passed or more: \"What you already know is open in your path. You can still win the stars.\" (the units are open but hold no star yet). With none: a kind text saying the child will learn one step at a time. Talks to the child (informal tu).",
     "placeholders": {
       "count": {
         "type": "int",
@@ -1508,37 +2046,127 @@
       }
     }
   },
-  "placementLegendKnown": "Déjà connue",
-  "@placementLegendKnown": {
-    "description": "Legend label under the grid of the placement test result, next to the violet swatch: a table the child already knows (\"Already known\"; feminine in French because it agrees with \"table\"). One line, a few words."
+  "placementSkillNumbers": "Nombres",
+  "@placementSkillNumbers": {
+    "description": "Name of the numbers skill on the placement test result and in the Profile card: counting and reading numbers up to 100 (\"Numbers\"). One word."
   },
-  "placementLegendToDiscover": "À découvrir",
-  "@placementLegendToDiscover": {
-    "description": "Legend label under the grid of the placement test result, next to the light swatch: a table still to learn (\"To discover\"). One line, a few words."
+  "placementSkillAddition": "Additions",
+  "@placementSkillAddition": {
+    "description": "Name of the addition skill on the placement test result (\"Addition\"). One word."
   },
-  "placementTableKnown": "{name}, déjà connue",
-  "@placementTableKnown": {
-    "description": "What a screen reader says for a tile of the placement test result grid when the table was found (\"Table of 2, already known\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
+  "placementSkillSubtraction": "Soustractions",
+  "@placementSkillSubtraction": {
+    "description": "Name of the subtraction skill on the placement test result (\"Subtraction\"). One word."
+  },
+  "placementSkillMultiplication": "Multiplications",
+  "@placementSkillMultiplication": {
+    "description": "Name of the multiplication skill on the placement test result (\"Multiplication\"). One word."
+  },
+  "placementSkillDivision": "Divisions",
+  "@placementSkillDivision": {
+    "description": "Name of the division skill on the placement test result (\"Division\"). One word."
+  },
+  "placementSkillAcquired": "Acquis",
+  "@placementSkillAcquired": {
+    "description": "Label of a skill the child passed in the placement test result list, next to a check mark (\"Got it\"). One short word."
+  },
+  "placementSkillToDiscover": "À découvrir",
+  "@placementSkillToDiscover": {
+    "description": "Label of a skill the child did not pass, or that the test did not reach, in the placement test result list (\"To discover\"). One short word."
+  },
+  "placementSkillSemantics": "{skill}, {state}",
+  "@placementSkillSemantics": {
+    "description": "What a screen reader says for a row of the placement test result list (\"Addition, to discover\"). {skill} is the skill name, {state} one of the two labels above. Not shown on screen.",
     "placeholders": {
-      "name": {
+      "skill": {
         "type": "String",
-        "example": "Table de 2"
+        "example": "Additions"
+      },
+      "state": {
+        "type": "String",
+        "example": "À découvrir"
       }
     }
   },
-  "placementTableToDiscover": "{name}, à découvrir",
-  "@placementTableToDiscover": {
-    "description": "What a screen reader says for a tile of the placement test result grid when the table was not found (\"Table of 7, to discover\"). {name} is the table name of quizMultiplicationUnit. Not shown on screen.",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Table de 7"
-      }
-    }
+  "placementResultStartLabel": "Tu commences par",
+  "@placementResultStartLabel": {
+    "description": "Small label above the unit the placement test recommends starting with, on the result screen (\"You start with\"). The unit name follows on the next line. Talks to the child."
+  },
+  "placementResultAllDone": "Tu connais tout ce que le test demande. Bravo !",
+  "@placementResultAllDone": {
+    "description": "Text of the placement test result card when the child passed every skill and no unit is recommended (\"You know everything the test asks. Well done!\"). Talks to the child (informal tu)."
   },
   "placementSeePath": "Voir mon parcours",
   "@placementSeePath": {
     "description": "Primary full-width button that leaves the placement test for the path (\"See my path\"): on the result screen, and on the error screen when the test cannot be built or saved. One line."
+  },
+  "placementCardTitle": "Mon niveau de départ",
+  "@placementCardTitle": {
+    "description": "Title of the Profile card that shows the result of the placement test (\"My starting level\"). One line."
+  },
+  "placementCardEmpty": "Tu n'as pas encore fait le test de niveau.",
+  "@placementCardEmpty": {
+    "description": "Text of the Profile placement card when the player never finished the placement test (\"You have not taken the level test yet.\"). Talks to the child (informal tu)."
+  },
+  "placementCardLatest": "Test du {date}",
+  "@placementCardLatest": {
+    "description": "Line above the levels of the latest placement test in the Profile card (\"Test of 12/10/2026\"). {date} is a short date in the language of the app.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12/10/2026"
+      }
+    }
+  },
+  "placementCardLevelSemantics": "{domain}, {level}",
+  "@placementCardLevelSemantics": {
+    "description": "What a screen reader says for a domain row of the Profile placement card (\"Numbers, level 1 of 1\"). {domain} is the spoken domain name, {level} the text of placementCardLevel or of placementCardNotChecked. Not shown on screen.",
+    "placeholders": {
+      "domain": {
+        "type": "String",
+        "example": "Nombres"
+      },
+      "level": {
+        "type": "String",
+        "example": "niveau 1 sur 1"
+      }
+    }
+  },
+  "placementCardNotChecked": "non évalué",
+  "@placementCardNotChecked": {
+    "description": "Shown instead of the level, in the Profile placement card, for a domain the test did not reach because it stopped before (\"not checked\"). Lower case, a few words."
+  },
+  "placementCardLevel": "niveau {level} sur {total}",
+  "@placementCardLevel": {
+    "description": "Level of the child in one domain, shown after the domain name in the Profile placement card (\"level 1 of 2\"). {level} is the number of skills passed, {total} the number checked.",
+    "placeholders": {
+      "level": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "placementCardPast": "{date} : {count, plural, =0{aucun niveau} =1{1 niveau} other{{count} niveaux}}",
+  "@placementCardPast": {
+    "description": "Line of an earlier placement test in the Profile card history (\"05/09/2026: 2 levels\"). {date} is a short date, {count} the number of skill levels passed that day.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "05/09/2026"
+      },
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "placementCardRetake": "Refaire le test",
+  "@placementCardRetake": {
+    "description": "Button of the Profile placement card that starts the placement test again (\"Take the test again\"). \"Refaire\" is an infinitive verb. One line, short."
   },
   "pathTableBack": "Retour au parcours",
   "@pathTableBack": {

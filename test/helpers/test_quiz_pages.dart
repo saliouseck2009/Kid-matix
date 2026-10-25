@@ -127,6 +127,7 @@ QuizPages buildTestQuizPages({
   PlayerSettingsService settings = const FixedPlayerSettings(),
   GameFeedbackService? feedback,
   SpeechService? speech,
+  bool readsByItself = false,
 }) {
   final QuizSessionRepository sessions =
       repository ?? MockQuizSessionRepository();
@@ -139,6 +140,8 @@ QuizPages buildTestQuizPages({
     ticker: ticker,
     domains: buildDomainRegistry(),
     feedback: feedback ?? RecordingGameFeedback(),
-    readAloud: speech == null ? null : buildReadAloudUseCases(speech: speech),
+    readAloud: speech == null
+        ? null
+        : buildReadAloudUseCases(speech: speech, readsByItself: readsByItself),
   );
 }

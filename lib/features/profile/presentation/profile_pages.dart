@@ -23,6 +23,7 @@ import 'package:kid_matix/features/profile/presentation/pages/profile_tab_page.d
 import 'package:kid_matix/features/profile/presentation/pages/settings_page.dart';
 import 'package:kid_matix/features/profile/presentation/pages/who_is_playing_page.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/backup_settings_section.dart';
+import 'package:kid_matix/features/profile/presentation/widgets/free_player_only.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/help_audio_bridge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/player_badge.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
@@ -63,14 +64,20 @@ final class ProfilePages {
   /// "Aide audio" setting; none hides it.
   final List<String> helpAudioLanguages;
 
-  /// "Qui joue ?".
+  /// "Qui joue ?"; [header] goes above the players, such as the classes
+  /// of the device, [footer] at the bottom, such as the entry of the
+  /// teacher area.
   Widget buildWhoIsPlayingPage({
     Widget Function(String profileId)? footerOf,
+    Widget? header,
+    Widget? footer,
   }) {
     return WhoIsPlayingPage(
       getProfiles: _getProfiles,
       selectProfile: _selectProfile,
       footerOf: footerOf,
+      header: header,
+      footer: footer,
     );
   }
 
@@ -82,6 +89,19 @@ final class ProfilePages {
       create: (_) =>
           ProfileTabCubit(profileId: profileId, useCases: _tabUseCases)..load(),
       child: const PlayerBadge(),
+    );
+  }
+
+  /// [child] for a free player only, nothing for a pupil of a class.
+  Widget buildForFreePlayer({
+    required String profileId,
+    required Widget child,
+  }) {
+    return BlocProvider<ProfileTabCubit>(
+      key: ValueKey<String>('free-$profileId'),
+      create: (_) =>
+          ProfileTabCubit(profileId: profileId, useCases: _tabUseCases)..load(),
+      child: FreePlayerOnly(child: child),
     );
   }
 
@@ -99,12 +119,14 @@ final class ProfilePages {
     );
   }
 
-  /// Creation of a player; [canGoBack] when other players exist.
-  Widget buildProfileCreationPage({required bool canGoBack}) {
+  /// Creation of a player; [canGoBack] when other players exist;
+  /// [footer] shows under the button on the very first creation.
+  Widget buildProfileCreationPage({required bool canGoBack, Widget? footer}) {
     return ProfileCreationPage(
       createProfile: _createProfile,
       selectProfile: _selectProfile,
       canGoBack: canGoBack,
+      footer: footer,
     );
   }
 

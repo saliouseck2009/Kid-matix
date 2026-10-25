@@ -4,6 +4,7 @@ import 'package:kid_matix/features/quiz/data/datasources/quiz_session_local_data
 import 'package:kid_matix/features/quiz/data/datasources/quiz_session_local_data_source_impl.dart';
 import 'package:kid_matix/features/quiz/data/repositories/quiz_session_repository_impl.dart';
 import 'package:kid_matix/features/quiz/domain/repositories/quiz_session_repository.dart';
+import 'package:kid_matix/features/quiz/domain/services/quiz_run_factory.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/abandon_session_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/build_quiz_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/complete_session_use_case.dart';
@@ -38,15 +39,22 @@ void _registerUseCases(GetIt sl) {
   sl.registerLazySingleton<GetTimeLimitUseCase>(
     () => GetTimeLimitUseCase(settings: sl()),
   );
-  sl.registerLazySingleton<BuildQuizUseCase>(
-    () => BuildQuizUseCase(
+  sl.registerLazySingleton<QuizRunFactory>(
+    () => QuizRunFactory(
       domains: sl(),
       questionTypes: sl(),
-      mastery: sl(),
       generator: sl(),
       random: sl(),
       idGenerator: sl(),
       clock: sl(),
+    ),
+  );
+  sl.registerLazySingleton<BuildQuizUseCase>(
+    () => BuildQuizUseCase(
+      domains: sl(),
+      mastery: sl(),
+      random: sl(),
+      runs: sl(),
     ),
   );
   sl.registerLazySingleton<SubmitAnswerUseCase>(

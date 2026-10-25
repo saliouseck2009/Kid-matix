@@ -8,7 +8,7 @@ import 'package:kid_matix/core/quiz/question_types/app_question_types.dart';
 import 'package:kid_matix/core/quiz/quiz_item_plan.dart';
 import 'package:kid_matix/features/challenge/domain/services/challenge_rules.dart';
 import 'package:kid_matix/features/mastery/domain/entities/item_progress_entity.dart';
-import 'package:kid_matix/features/mastery/domain/services/quiz_item_planner.dart';
+import 'package:kid_matix/features/mastery/domain/services/question_format_picker.dart';
 
 import '../../quiz/helpers/quiz_fixtures.dart';
 
@@ -43,8 +43,8 @@ void main() {
           };
           expect(fit, isNotEmpty, reason: item.key);
           for (int box = 1; box <= 5; box++) {
-            const QuizItemPlanner planner = QuizItemPlanner();
-            final QuizItemPlan plan = planner.planItem(
+            const QuestionFormatPicker formats = QuestionFormatPicker();
+            final QuizItemPlan plan = formats.planItem(
               domain: domain,
               progress: ItemProgressEntity(
                 profileId: 'p1',

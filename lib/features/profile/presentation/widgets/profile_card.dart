@@ -3,7 +3,7 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_entity.dart';
 import 'package:kid_matix/features/profile/presentation/widgets/profile_avatar_view.dart';
-import 'package:kid_matix/features/profile/presentation/widgets/profile_card_frame.dart';
+import 'package:kid_matix/core/widgets/raised_card_frame.dart';
 
 /// Card of one player on "Qui joue ?": avatar, nickname, level and an
 /// optional footer, the streak pill.
@@ -42,7 +42,7 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    return ProfileCardFrame(
+    return RaisedCardFrame(
       onTap: onTap,
       child: Padding(
         padding: padding,

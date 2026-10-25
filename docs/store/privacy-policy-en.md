@@ -84,6 +84,10 @@ it themselves with the tools of the phone, for example to import it on
 another device; a parental check protects the export and the import. The app
 sends nothing: the file goes only where the user chooses to send it.
 
+In class mode, the class files (the pupils' nicknames and their results)
+leave the device only when the teacher shares them from the teacher area,
+which is protected by their code.
+
 The automatic backup of the system (Google account or iCloud) is turned off
 for Kid Matix: the data of the game is not copied there.
 

@@ -1,5 +1,7 @@
 import 'package:kid_matix/core/error/app_error_code.dart';
-import 'package:kid_matix/features/learning_path/domain/entities/placement_test_entity.dart';
+import 'package:kid_matix/core/quiz/question.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/placement_journey.dart';
+import 'package:kid_matix/features/learning_path/domain/entities/placement_outcome.dart';
 import 'package:meta/meta.dart';
 
 /// State of the placement test screen.
@@ -14,7 +16,7 @@ final class PlacementOffered extends PlacementState {
   const PlacementOffered();
 }
 
-/// The test is being built.
+/// A question is being built.
 final class PlacementLoading extends PlacementState {
   /// Creates the state.
   const PlacementLoading();
@@ -22,12 +24,11 @@ final class PlacementLoading extends PlacementState {
 
 /// A question is asked.
 final class PlacementAsking extends PlacementState {
-  /// Creates the state of question [index] of [test].
+  /// Creates the state of [question], the next one of [journey].
   const PlacementAsking({
-    required this.test,
-    required this.index,
+    required this.journey,
+    required this.question,
     required this.askedAt,
-    this.knownUnitKeys = const <String>{},
     this.typedDigits = '',
     this.isSubmitting = false,
   });
@@ -35,17 +36,14 @@ final class PlacementAsking extends PlacementState {
   /// Most digits the keypad accepts; every answer of the test fits.
   static const int maxTypedDigits = 3;
 
-  /// The test.
-  final PlacementTestEntity test;
+  /// Where the test stands: the skill and the typical question asked.
+  final PlacementJourney journey;
 
-  /// Rank of the question asked, from 0.
-  final int index;
+  /// Question asked.
+  final Question question;
 
   /// When the question was shown.
   final DateTime askedAt;
-
-  /// Units found so far.
-  final Set<String> knownUnitKeys;
 
   /// Digits typed so far.
   final String typedDigits;
@@ -53,11 +51,16 @@ final class PlacementAsking extends PlacementState {
   /// Whether the answer is being recorded; the keys wait meanwhile.
   final bool isSubmitting;
 
-  /// Question asked.
-  PlacementQuestionEntity get question => test.questions[index];
+  /// Learning domain of the question.
+  String get domainId => journey.skill!.domainId;
 
-  /// Whether this is the last question.
-  bool get isLast => index == test.questions.length - 1;
+  /// Fraction of the skills climbed, for the progress bar: the skill being
+  /// asked, and how far in it.
+  double get progress {
+    final int skillCount = journey.skills.length;
+    final int probeCount = journey.skill!.probeUnitKeys.length;
+    return (journey.skillIndex + journey.probeIndex / probeCount) / skillCount;
+  }
 
   /// Returns the state with [digit] typed after the others; a leading 0
   /// is replaced, and digits past [maxTypedDigits] are ignored.
@@ -76,48 +79,24 @@ final class PlacementAsking extends PlacementState {
   }
 
   /// Returns a copy with the given fields replaced.
-  PlacementAsking copyWith({
-    int? index,
-    DateTime? askedAt,
-    Set<String>? knownUnitKeys,
-    String? typedDigits,
-    bool? isSubmitting,
-  }) {
+  PlacementAsking copyWith({String? typedDigits, bool? isSubmitting}) {
     return PlacementAsking(
-      test: test,
-      index: index ?? this.index,
-      askedAt: askedAt ?? this.askedAt,
-      knownUnitKeys: knownUnitKeys ?? this.knownUnitKeys,
+      journey: journey,
+      question: question,
+      askedAt: askedAt,
       typedDigits: typedDigits ?? this.typedDigits,
       isSubmitting: isSubmitting ?? this.isSubmitting,
     );
   }
 }
 
-/// Every question was answered: the tables found are open.
+/// The test is over: its result is kept and the units found are open.
 final class PlacementFinished extends PlacementState {
-  /// Creates the state of [test], where the units of [knownUnitKeys] were
-  /// found.
-  const PlacementFinished({required this.test, required this.knownUnitKeys});
+  /// Creates the state of the [outcome].
+  const PlacementFinished({required this.outcome});
 
-  /// The test.
-  final PlacementTestEntity test;
-
-  /// Units found, now open on the path.
-  final Set<String> knownUnitKeys;
-
-  /// Numbers and keys of the units of the test, each with whether it
-  /// was found.
-  List<({int number, String unitKey, bool isKnown})> get units {
-    return <({int number, String unitKey, bool isKnown})>[
-      for (final PlacementQuestionEntity question in test.questions)
-        (
-          number: question.unitNumber,
-          unitKey: question.unitKey,
-          isKnown: knownUnitKeys.contains(question.unitKey),
-        ),
-    ];
-  }
+  /// What the test found.
+  final PlacementOutcome outcome;
 }
 
 /// The test could not be built or an answer not recorded.

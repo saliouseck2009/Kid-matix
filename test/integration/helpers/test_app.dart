@@ -17,6 +17,7 @@ import 'package:kid_matix/features/learning_path/domain/usecases/get_learning_pa
 import 'package:kid_matix/features/learning_path/domain/usecases/learning_path_params.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
@@ -109,7 +110,15 @@ abstract final class TestApp {
   }) {
     final LearningPathPages pages = LearningPathPages(
       useCases: LearningPathUseCases(getLearningPath: sl(), watchChanges: sl()),
-      placement: PlacementUseCases(runTest: sl(), answerQuestion: sl()),
+      placementHistory: PlacementHistoryUseCases(
+        getHistory: sl(),
+        watchResults: sl(),
+      ),
+      placement: PlacementUseCases(
+        buildQuestion: sl(),
+        answerQuestion: sl(),
+        saveResult: sl(),
+      ),
       domainChoice: DomainChoiceUseCases(
         getChoice: sl(),
         selectDomain: sl(),
