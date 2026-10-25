@@ -778,7 +778,7 @@
   "@classroomReportCardTitle": {
     "description": "Class mode, title of the card that exports the progress report of the class between two assessment periods. One line."
   },
-  "classroomReportCardHint": "Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.",
+  "classroomReportCardHint": "Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Partage la version anonyme ; garde la version nominative pour toi.",
   "@classroomReportCardHint": {
     "description": "Class mode, explanation of the class report card, addressed to the teacher. Two or three lines."
   },
@@ -797,6 +797,14 @@
   "classroomReportNone": "Aucune",
   "@classroomReportNone": {
     "description": "Class mode, choice of no first period in the report (a report of one period only). Feminine in French (« aucune évaluation »). One word."
+  },
+  "classroomReportAnonymousVersion": "Version anonyme (à partager)",
+  "@classroomReportAnonymousVersion": {
+    "description": "Class report card, first choice of the version to export, selected by default: pupils as numbers, the one to share with others. Short segment label."
+  },
+  "classroomReportNamedVersion": "Version nominative (pour moi)",
+  "@classroomReportNamedVersion": {
+    "description": "Class report card, second choice of the version to export: with the pupils' nicknames, for the teacher only. Short segment label."
   },
   "classroomReportPdf": "Exporter en PDF",
   "@classroomReportPdf": {

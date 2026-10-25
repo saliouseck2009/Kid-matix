@@ -47,6 +47,12 @@ final class ReportExportCubit<R> extends Cubit<ReportExportState> {
     );
   }
 
+  /// Exports the named version next time when [isNamed], else the
+  /// anonymous one.
+  void chooseVersion({required bool isNamed}) {
+    emit(state.withVersion(isNamed: isNamed));
+  }
+
   /// Computes the report, makes its files with [render] and opens the
   /// share sheet.
   Future<void> export(ReportRenderer<R> render) async {

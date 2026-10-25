@@ -925,7 +925,7 @@ abstract class AppLocalizations {
   /// Class mode, explanation of the class report card, addressed to the teacher. Two or three lines.
   ///
   /// In fr, this message translates to:
-  /// **'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.'**
+  /// **'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Partage la version anonyme ; garde la version nominative pour toi.'**
   String get classroomReportCardHint;
 
   /// Class mode, class report card when the class has no assessment yet.
@@ -951,6 +951,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune'**
   String get classroomReportNone;
+
+  /// Class report card, first choice of the version to export, selected by default: pupils as numbers, the one to share with others. Short segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version anonyme (à partager)'**
+  String get classroomReportAnonymousVersion;
+
+  /// Class report card, second choice of the version to export: with the pupils' nicknames, for the teacher only. Short segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version nominative (pour moi)'**
+  String get classroomReportNamedVersion;
 
   /// Class mode, button that makes the report as PDF files (named and anonymous) and opens the share sheet. One line.
   ///

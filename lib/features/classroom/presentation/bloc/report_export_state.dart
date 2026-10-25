@@ -17,6 +17,7 @@ final class ReportExportState {
   const ReportExportState({
     required this.toKey,
     this.fromKey,
+    this.isNamed = false,
     this.isBusy = false,
     this.outcome,
     this.errorCode,
@@ -27,6 +28,11 @@ final class ReportExportState {
 
   /// Key of the second period compared.
   final String toKey;
+
+  /// Whether the next export is the named version, for the teacher only;
+  /// the anonymous version, to share, by default. The two are never
+  /// shared together.
+  final bool isNamed;
 
   /// Whether files are being made or shared.
   final bool isBusy;
@@ -42,18 +48,28 @@ final class ReportExportState {
     required String? fromKey,
     required String toKey,
   }) {
-    return ReportExportState(fromKey: fromKey, toKey: toKey);
+    return ReportExportState(fromKey: fromKey, toKey: toKey, isNamed: isNamed);
+  }
+
+  /// Returns a copy exporting the named version when [isNamed].
+  ReportExportState withVersion({required bool isNamed}) {
+    return ReportExportState(fromKey: fromKey, toKey: toKey, isNamed: isNamed);
   }
 
   /// Returns a copy while files are made.
-  ReportExportState get busy =>
-      ReportExportState(fromKey: fromKey, toKey: toKey, isBusy: true);
+  ReportExportState get busy => ReportExportState(
+    fromKey: fromKey,
+    toKey: toKey,
+    isNamed: isNamed,
+    isBusy: true,
+  );
 
   /// Returns a copy after an export.
   ReportExportState done(ReportExportOutcome outcome, {AppErrorCode? code}) {
     return ReportExportState(
       fromKey: fromKey,
       toKey: toKey,
+      isNamed: isNamed,
       outcome: outcome,
       errorCode: code,
     );

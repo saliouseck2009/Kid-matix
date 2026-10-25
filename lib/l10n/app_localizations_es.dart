@@ -604,7 +604,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get classroomReportCardHint =>
-      'Compara dos evaluaciones: niveles, palabras entendidas, tiempo de práctica y hechos aprendidos. Cada exportación da también una versión anónima.';
+      'Compara dos evaluaciones: niveles, palabras entendidas, tiempo de práctica y hechos aprendidos. Comparte la versión anónima; guarda la versión con nombres para ti.';
 
   @override
   String get classroomReportNeedsAssessment =>
@@ -618,6 +618,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get classroomReportNone => 'Ninguna';
+
+  @override
+  String get classroomReportAnonymousVersion =>
+      'Versión anónima (para compartir)';
+
+  @override
+  String get classroomReportNamedVersion => 'Versión con nombres (para mí)';
 
   @override
   String get classroomReportPdf => 'Exportar en PDF';

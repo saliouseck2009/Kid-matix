@@ -37,19 +37,23 @@ final class ClassReportFiles {
   final Future<ReportFonts> Function() _loadFonts;
   Future<ReportFonts>? _fonts;
 
-  /// The files of [report] of [kind]: the named version, and always the
-  /// anonymous one next to it.
+  /// The file of [report] of [kind]: its anonymous version (to share),
+  /// or the named one when [isNamed] (for the teacher only). The two are
+  /// never made together, so they are never shared together.
   Future<List<SharedFile>> filesOf(
     ClassProgressReport report,
-    ReportFileKind kind,
-  ) async {
+    ReportFileKind kind, {
+    bool isNamed = false,
+  }) async {
     return <SharedFile>[
-      await fileOf(report, kind),
-      await fileOf(
-        ReportAnonymizer.anonymize(report),
-        kind,
-        suffix: l10n.classroomReportFileAnonymous,
-      ),
+      if (isNamed)
+        await fileOf(report, kind)
+      else
+        await fileOf(
+          ReportAnonymizer.anonymize(report),
+          kind,
+          suffix: l10n.classroomReportFileAnonymous,
+        ),
     ];
   }
 

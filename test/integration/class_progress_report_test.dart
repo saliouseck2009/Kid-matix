@@ -129,12 +129,28 @@ void main() {
         toKey: periods.last.key,
       ),
     )) as DataSuccess<ClassProgressReport>).data;
-    final List<SharedFile> actualFiles = await ClassReportFiles(
-      l10n: lookupAppLocalizations(const Locale('fr')),
-    ).filesOf(actual, ReportFileKind.pdf);
-    final List<SharedFile> actualTables = await ClassReportFiles(
-      l10n: lookupAppLocalizations(const Locale('fr')),
-    ).filesOf(actual, ReportFileKind.csv);
+    Future<SharedFile> exported(
+      ReportFileKind kind, {
+      bool isNamed = false,
+      bool compress = true,
+    }) async {
+      final List<SharedFile> files = await ClassReportFiles(
+        l10n: lookupAppLocalizations(const Locale('fr')),
+        compress: compress,
+      ).filesOf(actual, kind, isNamed: isNamed);
+      // Never both versions in one share.
+      expect(files, hasLength(1));
+      return files.single;
+    }
+
+    final List<SharedFile> actualFiles = <SharedFile>[
+      await exported(ReportFileKind.pdf, isNamed: true),
+      await exported(ReportFileKind.pdf),
+    ];
+    final List<SharedFile> actualTables = <SharedFile>[
+      await exported(ReportFileKind.csv, isNamed: true),
+      await exported(ReportFileKind.csv),
+    ];
     // Assert: the progress between the two periods, a month apart.
     expect(actual.from?.label, 'Début de période');
     expect(actual.to.label, 'Fin de période');
@@ -178,10 +194,10 @@ void main() {
     }
     expect(actualAnonymousTable, contains('Élève 1;'));
     // Assert: the text the PDFs print, read back (streams uncompressed).
-    final List<SharedFile> actualReadable = await ClassReportFiles(
-      l10n: lookupAppLocalizations(const Locale('fr')),
-      compress: false,
-    ).filesOf(actual, ReportFileKind.pdf);
+    final List<SharedFile> actualReadable = <SharedFile>[
+      await exported(ReportFileKind.pdf, isNamed: true, compress: false),
+      await exported(ReportFileKind.pdf, compress: false),
+    ];
     final String actualNamedText = pdfTextOf(actualReadable.first.bytes);
     final String actualAnonymousText = pdfTextOf(actualReadable.last.bytes);
     expect(actualNamedText, contains('Awa'));
@@ -253,8 +269,11 @@ void main() {
     )) as DataSuccess<ProgramReport>).data;
     // Assert
     expect(
-      actual.classes.map((ProgramReportRow row) => row.isSecondPeriodOnly),
-      <bool>[false, true],
+      <String?, bool>{
+        for (final ProgramReportRow row in actual.classes)
+          row.name: row.isSecondPeriodOnly,
+      },
+      <String, bool>{'A': false, 'B': true},
     );
   });
 }

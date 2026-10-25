@@ -60,13 +60,15 @@ final class ReportPages {
               title: context.l10n.classroomReportCardTitle,
               hint: context.l10n.classroomReportCardHint,
               periods: periods,
-              rendererOf: (BuildContext context, ReportFileKind kind) {
-                final ClassReportFiles files = ClassReportFiles(
-                  l10n: context.l10n,
-                );
-                return (ClassProgressReport report) =>
-                    files.filesOf(report, kind);
-              },
+              hasNamedVersion: true,
+              rendererOf:
+                  (BuildContext context, ReportFileKind kind, bool isNamed) {
+                    final ClassReportFiles files = ClassReportFiles(
+                      l10n: context.l10n,
+                    );
+                    return (ClassProgressReport report) =>
+                        files.filesOf(report, kind, isNamed: isNamed);
+                  },
             ),
       ),
     );
@@ -107,7 +109,7 @@ final class ReportPages {
           title: context.l10n.classroomProgramOpen,
           hint: context.l10n.classroomProgramHint,
           periods: periods,
-          rendererOf: (BuildContext context, ReportFileKind kind) {
+          rendererOf: (BuildContext context, ReportFileKind kind, bool _) {
             final ProgramReportFiles files = ProgramReportFiles(
               l10n: context.l10n,
             );
