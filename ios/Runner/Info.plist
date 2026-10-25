@@ -20,6 +20,10 @@
 		<string>en</string>
 		<string>es</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Dans l'espace enseignant, la caméra lit le QR code des résultats d'une autre tablette. Rien ne quitte l'appareil.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Dans l'espace enseignant, le micro enregistre ta propre explication d'un mot des maths. L'enregistrement reste sur cet appareil.</string>
 	<key>CFBundleName</key>
 	<string>kid_matix</string>
 	<key>CFBundlePackageType</key>

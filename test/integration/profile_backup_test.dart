@@ -65,6 +65,9 @@ final class _FakeFiles implements SharedFileDataSource {
   Future<String?> pickFile() async => fileToPick;
 
   @override
+  Future<List<int>?> pickBytes() async => null;
+
+  @override
   Future<bool> shareFiles({required List<SharedFile> files}) async => false;
 }
 

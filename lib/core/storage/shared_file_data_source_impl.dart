@@ -62,6 +62,16 @@ final class SharedFileDataSourceImpl implements SharedFileDataSource {
   }
 
   @override
+  Future<List<int>?> pickBytes() async {
+    final XFile? file = await openFile();
+    if (file == null) return null;
+    if (await file.length() > _maxFileBytes) {
+      throw const FileTooBigException(message: 'File too big.');
+    }
+    return file.readAsBytes();
+  }
+
+  @override
   Future<String?> pickFile() async {
     final XFile? file = await openFile();
     if (file == null) return null;

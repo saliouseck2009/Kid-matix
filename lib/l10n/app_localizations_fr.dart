@@ -797,6 +797,158 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomProgramFileName => 'Programme';
 
   @override
+  String get classroomQrSend => 'Envoyer par QR code';
+
+  @override
+  String get classroomQrSendHint =>
+      'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.';
+
+  @override
+  String classroomQrSessions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nouvelles séances',
+      one: '1 nouvelle séance',
+      zero: 'Seulement des résultats d\'évaluation',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomQrImageLabel => 'QR code des nouveaux résultats';
+
+  @override
+  String get classroomQrDone => 'C\'est reçu';
+
+  @override
+  String get classroomQrSent => 'Ces résultats ne seront plus renvoyés.';
+
+  @override
+  String get classroomQrNothing =>
+      'Rien de nouveau à envoyer depuis le dernier envoi.';
+
+  @override
+  String get classroomQrTooBig =>
+      'Trop de résultats pour un QR code : envoie plutôt le fichier de la classe.';
+
+  @override
+  String get classroomQrReceive => 'Recevoir par QR code';
+
+  @override
+  String get classroomQrScanHint =>
+      'Vise le QR code affiché sur l\'autre tablette. La caméra ne sert qu\'à lire ce code.';
+
+  @override
+  String get classroomQrScanAgain => 'Lire un autre code';
+
+  @override
+  String get classroomQrInvalid =>
+      'Ce QR code ne vient pas de Kid Matix, ou il est abîmé.';
+
+  @override
+  String get classroomQrVersion =>
+      'Ce QR code vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
+
+  @override
+  String get classroomQrUnknown =>
+      'Cette tablette n\'a pas encore la classe, ses élèves ou son évaluation : reçois d\'abord le fichier de la classe.';
+
+  @override
+  String get classroomQrCameraError =>
+      'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.';
+
+  @override
+  String get classroomRecordingsOpen => 'Enregistrer les explications';
+
+  @override
+  String get classroomRecordingsHint =>
+      'Enregistre l\'explication de chaque mot dans ta langue. Sur cette tablette, ta voix remplace celle du pack : les élèves l\'entendent avec le bouton de la langue.';
+
+  @override
+  String get classroomRecordingsNoPack =>
+      'L\'app n\'a pas encore de langue d\'aide.';
+
+  @override
+  String get classroomRecordingsLanguage => 'Langue';
+
+  @override
+  String get classroomRecordingsExplanation => 'Explication';
+
+  @override
+  String get classroomRecordingsExample => 'Exemple';
+
+  @override
+  String get classroomRecordingsTeacher => 'Ta voix';
+
+  @override
+  String get classroomRecordingsPack => 'Voix du pack';
+
+  @override
+  String get classroomRecordingsNone => 'Pas encore enregistré';
+
+  @override
+  String classroomRecordingsRecord(String word) {
+    return 'Enregistrer « $word »';
+  }
+
+  @override
+  String classroomRecordingsListen(String word) {
+    return 'Écouter « $word »';
+  }
+
+  @override
+  String classroomRecordingsDelete(String word) {
+    return 'Effacer ta voix pour « $word »';
+  }
+
+  @override
+  String classroomRecordingsRecording(String word) {
+    return 'Enregistrement de « $word »…';
+  }
+
+  @override
+  String get classroomRecordingsKeep => 'Arrêter et garder';
+
+  @override
+  String get classroomRecordingsCancel => 'Recommencer plus tard';
+
+  @override
+  String get classroomRecordingsDenied =>
+      'Sans le micro, tu ne peux pas enregistrer. Autorise-le dans les réglages de la tablette.';
+
+  @override
+  String get classroomRecordingsSaved => 'C\'est enregistré.';
+
+  @override
+  String get classroomRecordingsExport => 'Exporter mes enregistrements';
+
+  @override
+  String get classroomRecordingsImport => 'Importer un pack';
+
+  @override
+  String get classroomRecordingsExported => 'Le pack est prêt.';
+
+  @override
+  String classroomRecordingsImported(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count enregistrements ajoutés.',
+      one: '1 enregistrement ajouté.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomRecordingsInvalid =>
+      'Ce fichier n\'est pas un pack audio Kid Matix, ou il est abîmé.';
+
+  @override
+  String get classroomRecordingsNothing =>
+      'Enregistre au moins un mot avant d\'exporter.';
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

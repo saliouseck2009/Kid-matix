@@ -1179,6 +1179,234 @@ abstract class AppLocalizations {
   /// **'Programme'**
   String get classroomProgramFileName;
 
+  /// Teacher area, button of the page of a class that shows its new results as a QR code for the teacher's tablet. Also the title of that page. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer par QR code'**
+  String get classroomQrSend;
+
+  /// Teacher area, explanation under the QR code of the results (informal "tu").
+  ///
+  /// In fr, this message translates to:
+  /// **'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.'**
+  String get classroomQrSendHint;
+
+  /// Teacher area, what the QR code of the results carries, above the code.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Seulement des résultats d\'évaluation} =1{1 nouvelle séance} other{{count} nouvelles séances}}'**
+  String classroomQrSessions(int count);
+
+  /// Screen-reader label of the QR code image of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'QR code des nouveaux résultats'**
+  String get classroomQrImageLabel;
+
+  /// Teacher area, button under the QR code of the results, to press once the teacher's tablet has read it (the next code starts after these results). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est reçu'**
+  String get classroomQrDone;
+
+  /// Teacher area, message once the teacher said the QR code was received.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces résultats ne seront plus renvoyés.'**
+  String get classroomQrSent;
+
+  /// Teacher area, QR code page when there is no new result to send.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien de nouveau à envoyer depuis le dernier envoi.'**
+  String get classroomQrNothing;
+
+  /// Teacher area, QR code page when the results are too big for a code (the class file is the fallback). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop de résultats pour un QR code : envoie plutôt le fichier de la classe.'**
+  String get classroomQrTooBig;
+
+  /// Teacher area, button of « Mes classes » that opens the camera to read the QR code of results shown by another tablet. Also the title of that page. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir par QR code'**
+  String get classroomQrReceive;
+
+  /// Teacher area, explanation above the camera view that reads a QR code of results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vise le QR code affiché sur l\'autre tablette. La caméra ne sert qu\'à lire ce code.'**
+  String get classroomQrScanHint;
+
+  /// Teacher area, button to read another QR code after one was merged or refused. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lire un autre code'**
+  String get classroomQrScanAgain;
+
+  /// Teacher area, error when the QR code read is not a results code.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce QR code ne vient pas de Kid Matix, ou il est abîmé.'**
+  String get classroomQrInvalid;
+
+  /// Teacher area, error when the QR code was made by a newer version of the app. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce QR code vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
+  String get classroomQrVersion;
+
+  /// Teacher area, error when the QR code read refers to a class, pupil or assessment this tablet does not have.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette tablette n\'a pas encore la classe, ses élèves ou son évaluation : reçois d\'abord le fichier de la classe.'**
+  String get classroomQrUnknown;
+
+  /// Teacher area, message in place of the camera view when the camera is refused or missing.
+  ///
+  /// In fr, this message translates to:
+  /// **'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.'**
+  String get classroomQrCameraError;
+
+  /// Teacher area, button of « Mes classes » that opens the page where the teacher records their own explanation of each maths word in the help language. Also the title of that page. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer les explications'**
+  String get classroomRecordingsOpen;
+
+  /// Teacher area, explanation at the top of the recordings page (informal "tu"). Three lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistre l\'explication de chaque mot dans ta langue. Sur cette tablette, ta voix remplace celle du pack : les élèves l\'entendent avec le bouton de la langue.'**
+  String get classroomRecordingsHint;
+
+  /// Teacher area, recordings page when the app ships no audio pack.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'app n\'a pas encore de langue d\'aide.'**
+  String get classroomRecordingsNoPack;
+
+  /// Teacher area, label of the choice of the help language recorded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get classroomRecordingsLanguage;
+
+  /// Teacher area, segment of the recordings page: the explanation of each word (a noun). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Explication'**
+  String get classroomRecordingsExplanation;
+
+  /// Teacher area, segment of the recordings page: the example of each word (a noun). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exemple'**
+  String get classroomRecordingsExample;
+
+  /// Teacher area, status of a word the teacher recorded on this device. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta voix'**
+  String get classroomRecordingsTeacher;
+
+  /// Teacher area, status of a word whose only recording is the one shipped with the app. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voix du pack'**
+  String get classroomRecordingsPack;
+
+  /// Teacher area, status of a word with no recording at all. Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore enregistré'**
+  String get classroomRecordingsNone;
+
+  /// Teacher area, tooltip of the microphone button of a word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer « {word} »'**
+  String classroomRecordingsRecord(String word);
+
+  /// Teacher area, tooltip of the play button of a word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écouter « {word} »'**
+  String classroomRecordingsListen(String word);
+
+  /// Teacher area, tooltip of the button that deletes the teacher's recording of a word (the pack's comes back).
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer ta voix pour « {word} »'**
+  String classroomRecordingsDelete(String word);
+
+  /// Teacher area, banner while a word is being recorded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrement de « {word} »…'**
+  String classroomRecordingsRecording(String word);
+
+  /// Teacher area, button that stops the recording and keeps it for the word. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arrêter et garder'**
+  String get classroomRecordingsKeep;
+
+  /// Teacher area, button that stops the recording and throws it away. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommencer plus tard'**
+  String get classroomRecordingsCancel;
+
+  /// Teacher area, message when the microphone permission is refused. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans le micro, tu ne peux pas enregistrer. Autorise-le dans les réglages de la tablette.'**
+  String get classroomRecordingsDenied;
+
+  /// Teacher area, snack bar once a recording is kept.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est enregistré.'**
+  String get classroomRecordingsSaved;
+
+  /// Teacher area, button that shares the teacher's recordings as a pack file for another tablet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter mes enregistrements'**
+  String get classroomRecordingsExport;
+
+  /// Teacher area, button that picks a pack file of recordings made on another tablet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importer un pack'**
+  String get classroomRecordingsImport;
+
+  /// Teacher area, snack bar once the pack file went to the share sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le pack est prêt.'**
+  String get classroomRecordingsExported;
+
+  /// Teacher area, snack bar once a pack file was imported.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 enregistrement ajouté.} other{{count} enregistrements ajoutés.}}'**
+  String classroomRecordingsImported(int count);
+
+  /// Teacher area, error when the file picked is not a pack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas un pack audio Kid Matix, ou il est abîmé.'**
+  String get classroomRecordingsInvalid;
+
+  /// Teacher area, error when the teacher exports with no recording.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistre au moins un mot avant d\'exporter.'**
+  String get classroomRecordingsNothing;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

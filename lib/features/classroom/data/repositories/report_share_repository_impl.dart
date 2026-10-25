@@ -27,4 +27,23 @@ final class ReportShareRepositoryImpl implements ReportShareRepository {
       return DataFailed<bool>(UnknownException(message: error.toString()));
     }
   }
+
+  @override
+  Future<DataState<List<int>?>> pick() async {
+    try {
+      return DataSuccess<List<int>?>(await _files.pickBytes());
+    } on AppException catch (exception) {
+      return DataFailed<List<int>?>(exception);
+    } on Exception catch (error, stackTrace) {
+      log(
+        'File not picked',
+        name: 'classroom',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return DataFailed<List<int>?>(
+        UnknownException(message: error.toString()),
+      );
+    }
+  }
 }

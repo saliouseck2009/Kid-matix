@@ -18,4 +18,10 @@ abstract interface class SharedFileDataSource {
   /// Throws a `FileTooBigException` when the file is too big and an
   /// `InvalidFileException` when it is not text.
   Future<String?> pickFile();
+
+  /// Opens the file picker and returns the bytes of the file chosen, such
+  /// as an audio pack, or `null` when none was chosen.
+  ///
+  /// Throws a `FileTooBigException` when the file is too big.
+  Future<List<int>?> pickBytes();
 }

@@ -125,6 +125,12 @@ abstract final class AppRoutes {
   /// « Rapport d'école ou de programme »: every class of the device.
   static const String programReport = '/players/teacher/classes/report';
 
+  /// « Enregistrer les explications »: the teacher's own recordings.
+  static const String teacherRecordings = '/players/teacher/classes/audio';
+
+  /// « Recevoir par QR code »: the camera reads the results of a tablet.
+  static const String resultsQrScan = '/players/teacher/classes/scan';
+
   /// Page of the class given as path parameter, in the teacher area.
   static const String teacherClassroom =
       '/players/teacher/classes/:$classroomIdParameter';
@@ -140,6 +146,11 @@ abstract final class AppRoutes {
   /// « Évaluations et rapports » of the class given as path parameter.
   static const String classroomAssessments =
       '/players/teacher/classes/:$classroomIdParameter/assessments';
+
+  /// « Envoyer par QR code »: the new results of the class given as path
+  /// parameter.
+  static const String resultsQr =
+      '/players/teacher/classes/:$classroomIdParameter/qr';
 
   /// The assessment given as path parameter, taken by the active pupil:
   /// the placement test, then the word check.
@@ -173,6 +184,11 @@ abstract final class AppRoutes {
   /// Path of « Évaluations et rapports » of the class [classroomId].
   static String classroomAssessmentsOf(String classroomId) {
     return '${teacherClassroomOf(classroomId)}/assessments';
+  }
+
+  /// Path of « Envoyer par QR code » of the class [classroomId].
+  static String resultsQrOf(String classroomId) {
+    return '${teacherClassroomOf(classroomId)}/qr';
   }
 
   /// Path of the assessment [assessmentId], taken by the active pupil.

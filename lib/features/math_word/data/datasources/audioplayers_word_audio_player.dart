@@ -22,7 +22,12 @@ final class AudioplayersWordAudioPlayer implements WordAudioPlayer {
   Completer<void>? _pending;
 
   @override
-  Future<void> play(String assetPath) async {
+  Future<void> play(String assetPath) => _playSource(AssetSource(assetPath));
+
+  @override
+  Future<void> playFile(String path) => _playSource(DeviceFileSource(path));
+
+  Future<void> _playSource(Source source) async {
     _finishPending();
     final Completer<void> done = Completer<void>();
     _pending = done;
@@ -31,7 +36,7 @@ final class AudioplayersWordAudioPlayer implements WordAudioPlayer {
       final AudioPlayer player = _player ??= AudioPlayer();
       await player.stop();
       subscription = player.onPlayerComplete.listen((_) => _finish(done));
-      await player.play(AssetSource(assetPath));
+      await player.play(source);
       await done.future.timeout(_giveUp, onTimeout: () {});
     } on Exception catch (error, stackTrace) {
       log(

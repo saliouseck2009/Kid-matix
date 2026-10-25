@@ -10,6 +10,7 @@ environment:
 # Third-party packages are added by tool/setup.sh with `flutter pub add`, so
 # that each one is pinned to the latest version compatible with this SDK.
 dependencies:
+  archive: ^4.5.2
   audioplayers: ^6.8.1
   file_selector: ^1.1.0
   flutter:
@@ -25,9 +26,13 @@ dependencies:
   intl: any
   json_annotation: ^4.12.0
   meta: ^1.19.0
+  mobile_scanner: ^7.4.2
   package_info_plus: ^10.2.2
   path: ^1.9.1
+  path_provider: ^2.1.6
   pdf: ^3.13.1
+  qr_flutter: ^4.1.0
+  record: ^7.1.2
   share_plus: ^13.3.1
   shared_preferences: ^2.5.6
   sqflite: ^2.4.4+1

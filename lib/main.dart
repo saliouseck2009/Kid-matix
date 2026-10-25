@@ -38,6 +38,8 @@ import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_us
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/report_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/teacher_audio_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
@@ -218,6 +220,13 @@ GoRouter _createRouter(
     languagePages: languagePages,
     classroomPages: _createClassroomPages(profilePages),
     assessmentPages: _createAssessmentPages(),
+    audioPages: TeacherAudioPages(
+      useCases: (get: sl(), record: sl(), packs: sl()),
+      domains: sl(),
+    ),
+    qrPages: ResultsQrPages(
+      useCases: (make: sl(), confirm: sl(), receive: sl()),
+    ),
     teacherSession: sl<TeacherSessionService>(),
     leaderboardPages: LeaderboardPages(
       useCases: LeaderboardUseCases(

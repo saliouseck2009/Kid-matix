@@ -6,7 +6,7 @@ lang: es
 
 [Français](privacy-policy.html) · [English](privacy-policy-en.html) · **Español**
 
-Última actualización: 11 de octubre de 2026
+Última actualización: 25 de octubre de 2026
 
 Kid Matix es una aplicación que ayuda a los niños a aprender las tablas de
 multiplicar jugando. Está pensada para niños: funciona por completo en el
@@ -52,10 +52,17 @@ recompensas.
 
 ## Lo que la aplicación no hace
 
-- Pide un único permiso, y solo si se activa el recordatorio diario en los
-  ajustes: mostrar notificaciones. El recordatorio se programa en el
-  teléfono, sin conexión. No pide ni Internet, ni cámara, ni micrófono, ni
-  ubicación, ni contactos, ni fotos.
+- Del lado de los niños, pide un único permiso, y solo si se activa el
+  recordatorio diario en los ajustes: mostrar notificaciones. El
+  recordatorio se programa en el teléfono, sin conexión.
+- Solo en el espacio docente (protegido por el código del docente) pueden
+  pedirse dos permisos, en su primer uso y nunca en una pantalla de niño:
+  la cámara, para leer el código QR de los resultados de otra tableta de
+  la clase; el micrófono, para que el docente grabe su propia explicación
+  de una palabra de las mates. La imagen de la cámara no se guarda ni se
+  envía; la grabación se queda en el dispositivo y solo sale si el docente
+  la exporta con la hoja de compartir.
+- No pide ni Internet, ni ubicación, ni contactos, ni fotos.
 - No envía ningún dato, ni a nosotros ni a nadie. No tenemos acceso a
   ninguna información sobre los jugadores.
 - No muestra ninguna publicidad ni ofrece ninguna compra.

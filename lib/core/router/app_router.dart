@@ -16,6 +16,8 @@ import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.d
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/teacher_audio_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_slots.dart';
@@ -51,6 +53,8 @@ GoRouter createAppRouter({
   LanguagePages? languagePages,
   ClassroomPages? classroomPages,
   ClassAssessmentPages? assessmentPages,
+  ResultsQrPages? qrPages,
+  TeacherAudioPages? audioPages,
   TeacherSessionService? teacherSession,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -120,6 +124,8 @@ GoRouter createAppRouter({
         ...createClassroomRoutes(
           pages: classroomPages,
           assessmentPages: assessmentPages,
+          qrPages: qrPages,
+          audioPages: audioPages,
         ),
       if (assessmentPages != null)
         createAssessmentRoute(

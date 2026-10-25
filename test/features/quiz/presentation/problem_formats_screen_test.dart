@@ -461,5 +461,8 @@ final class _RecordingPlayer implements WordAudioPlayer {
   Future<void> play(String assetPath) async => played.add(assetPath);
 
   @override
+  Future<void> playFile(String path) async => played.add(path);
+
+  @override
   Future<void> stop() async {}
 }

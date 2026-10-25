@@ -4,6 +4,15 @@
          switched on; the boot permission brings the scheduled reminders
          back after a restart. Inexact alarms: no exact alarm permission. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Teacher area only (F31, owner 2026-10-25): the camera reads the QR
+         codes of class results, the microphone records the teacher's own
+         explanations of the math words. Each is asked at its first use
+         there, never on a child's screen; nothing leaves the device. Not
+         required: the app works on a device without them. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false"/>
     <!-- allowBackup is off: nothing leaves the phone, not even to the
          player's Google account (specifications, section 16). -->
     <application

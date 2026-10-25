@@ -65,4 +65,70 @@ final class AudioPackManifest {
   /// Name of the file of the recording [kind] of [wordKey], or `null` when
   /// the pack has none.
   String? fileOf(String wordKey, WordAudioKind kind) => _files[wordKey]?[kind];
+
+  /// Format of the recordings of every pack.
+  static const String format = 'm4a';
+
+  /// The name of the recording [kind] of [wordKey] in a pack of
+  /// [language], as `tool/process_audio.py` names it: `wo_il_reste.m4a`,
+  /// `wo_il_reste_exemple.m4a`.
+  static String fileNameOf(
+    String language,
+    String wordKey,
+    WordAudioKind kind,
+  ) {
+    final String end = kind == WordAudioKind.example ? '_exemple' : '';
+    return '${language}_$wordKey$end.$format';
+  }
+
+  /// The manifest with [file] as the recording [kind] of [wordKey].
+  AudioPackManifest withFile(String wordKey, WordAudioKind kind, String file) {
+    return AudioPackManifest(
+      language: language,
+      files: <String, Map<WordAudioKind, String>>{
+        ..._files,
+        wordKey: <WordAudioKind, String>{...?_files[wordKey], kind: file},
+      },
+    );
+  }
+
+  /// The manifest without the recording [kind] of [wordKey].
+  AudioPackManifest withoutFile(String wordKey, WordAudioKind kind) {
+    return AudioPackManifest(
+      language: language,
+      files: <String, Map<WordAudioKind, String>>{
+        for (final MapEntry<String, Map<WordAudioKind, String>> entry
+            in _files.entries)
+          entry.key: <WordAudioKind, String>{
+            for (final MapEntry<WordAudioKind, String> file
+                in entry.value.entries)
+              if (entry.key != wordKey || file.key != kind)
+                file.key: file.value,
+          },
+      },
+    );
+  }
+
+  /// The manifest as `manifest.json` holds it.
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'language': language,
+      'format': format,
+      'words': <String, Object?>{
+        for (final MapEntry<String, Map<WordAudioKind, String>> entry
+            in _files.entries)
+          if (entry.value.isNotEmpty)
+            entry.key: <String, String>{
+              for (final MapEntry<WordAudioKind, String> file
+                  in entry.value.entries)
+                file.key.name: file.value,
+            },
+      },
+    };
+  }
+
+  /// Every file the manifest names.
+  Iterable<String> get fileNames => _files.values.expand(
+    (Map<WordAudioKind, String> kinds) => kinds.values,
+  );
 }
