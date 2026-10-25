@@ -795,7 +795,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomQrSendHint =>
-      'On the teacher\'s tablet, open “Receive a QR code” and point the camera at this code.';
+      'On the teacher\'s tablet, open “Receive a QR code” and point the camera at this code. Tap “It\'s received” only once the other tablet has shown the new sessions: otherwise they would not be sent again.';
 
   @override
   String classroomQrSessions(int count) {

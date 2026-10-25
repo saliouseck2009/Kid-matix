@@ -180,7 +180,7 @@
   "classroomProgramTotal": "All classes",
   "classroomProgramFileName": "Programme",
   "classroomQrSend": "Send as a QR code",
-  "classroomQrSendHint": "On the teacher's tablet, open “Receive a QR code” and point the camera at this code.",
+  "classroomQrSendHint": "On the teacher's tablet, open “Receive a QR code” and point the camera at this code. Tap “It's received” only once the other tablet has shown the new sessions: otherwise they would not be sent again.",
   "classroomQrSessions": "{count, plural, =0{Only assessment results} =1{1 new session} other{{count} new sessions}}",
   "classroomQrImageLabel": "QR code of the new results",
   "classroomQrDone": "It's received",

@@ -77,8 +77,6 @@ class ResultsQrPage extends StatelessWidget {
 class _ShownCode extends StatelessWidget {
   const _ShownCode({required this.state, required this.onDone});
 
-  static const double _codeSize = 280;
-
   final ResultsQrShown state;
   final VoidCallback onDone;
 
@@ -92,15 +90,17 @@ class _ShownCode extends StatelessWidget {
           context.l10n.classroomQrSessions(state.sessionCount),
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        Center(
-          child: QrImageView(
-            data: state.text,
-            size: _codeSize,
-            // Dark modules on a white ground, whatever the color theme:
-            // the cameras read nothing else.
-            backgroundColor: Colors.white,
-            semanticsLabel: context.l10n.classroomQrImageLabel,
-          ),
+        LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) =>
+              QrImageView(
+                data: state.text,
+                // As wide as the screen: the camera reads it from afar.
+                size: constraints.maxWidth,
+                // Dark modules on a white ground, whatever the color theme:
+                // the cameras read nothing else.
+                backgroundColor: Colors.white,
+                semanticsLabel: context.l10n.classroomQrImageLabel,
+              ),
         ),
         Text(context.l10n.classroomQrSendHint),
         DepthButton(

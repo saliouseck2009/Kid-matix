@@ -800,7 +800,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get classroomQrSendHint =>
-      'En la tableta del docente, abre «Recibir con código QR» y apunta a este código.';
+      'En la tableta del docente, abre «Recibir con código QR» y apunta a este código. Toca «Ya está recibido» solo cuando la otra tableta haya mostrado las nuevas sesiones: si no, ya no se volverían a enviar.';
 
   @override
   String classroomQrSessions(int count) {

@@ -13,6 +13,8 @@ import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.da
 import 'package:kid_matix/features/classroom/domain/entities/practice_answer.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/entities/qr_results.dart';
+import 'package:kid_matix/features/classroom/domain/entities/pupil_entity.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/add_pupils_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/make_results_qr_use_case.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -221,6 +223,32 @@ void main() {
       )).requireData;
       // Act
       final AppErrorCode? actual = (await stranger.receiveQr(
+        params: inputQr.text,
+      )).exceptionOrNull?.code;
+      // Assert
+      expect(actual, AppErrorCode.notFound);
+    });
+
+    test('asks for the class file when a pupil is unknown', () async {
+      // Arrange: a pupil added on the tablet only plays.
+      await tablet.addPupils(
+        params: AddPupilsParams(
+          classroomId: classroom.id,
+          nicknames: const <String>['Fatou'],
+        ),
+      );
+      final ClassroomRoster tabletRoster = (await tablet.getRoster(
+        params: classroom.id,
+      )).requireData;
+      final String newcomer = tabletRoster.pupils
+          .firstWhere((PupilEntity p) => p.nickname == 'Fatou')
+          .id;
+      await tablet.play(_session('s1', newcomer, 3));
+      final ResultsQr inputQr = (await tablet.makeQr(
+        params: classroom.id,
+      )).requireData;
+      // Act
+      final AppErrorCode? actual = (await teacher.receiveQr(
         params: inputQr.text,
       )).exceptionOrNull?.code;
       // Assert

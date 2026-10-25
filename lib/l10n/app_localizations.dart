@@ -1188,7 +1188,7 @@ abstract class AppLocalizations {
   /// Teacher area, explanation under the QR code of the results (informal "tu").
   ///
   /// In fr, this message translates to:
-  /// **'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.'**
+  /// **'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code. Touche « C\'est reçu » seulement quand l\'autre tablette a affiché les nouvelles séances : sinon, elles ne seraient plus renvoyées.'**
   String get classroomQrSendHint;
 
   /// Teacher area, what the QR code of the results carries, above the code.

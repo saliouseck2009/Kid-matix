@@ -1070,7 +1070,7 @@
   "@classroomQrSend": {
     "description": "Teacher area, button of the page of a class that shows its new results as a QR code for the teacher's tablet. Also the title of that page. One line."
   },
-  "classroomQrSendHint": "Sur la tablette de l'enseignant, ouvre « Recevoir par QR code » et vise ce code.",
+  "classroomQrSendHint": "Sur la tablette de l'enseignant, ouvre « Recevoir par QR code » et vise ce code. Touche « C'est reçu » seulement quand l'autre tablette a affiché les nouvelles séances : sinon, elles ne seraient plus renvoyées.",
   "@classroomQrSendHint": {
     "description": "Teacher area, explanation under the QR code of the results (informal \"tu\")."
   },

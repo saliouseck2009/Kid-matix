@@ -46,9 +46,11 @@ class MakeResultsQrUseCase implements UseCase<DataState<ResultsQr>, String> {
     final DataState<int> latest = await _journal.getLatestSequence(
       classroomId: params,
     );
-    final ExportMark? since = mark is DataSuccess<ExportMark?>
-        ? mark.data
-        : null;
+    // Without the mark, everything would be sent again: fail instead.
+    if (mark case DataFailed<ExportMark?>(:final exception)) {
+      return DataFailed<ResultsQr>(exception);
+    }
+    final ExportMark? since = (mark as DataSuccess<ExportMark?>).data;
     final DataState<List<PracticeSession>> sessions = await _journal
         .getSessions(
           classroomId: params,

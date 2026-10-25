@@ -67,6 +67,7 @@ void main() {
     // Act
     expect(find.byType(QrImageView), findsOneWidget);
     expect(find.text('3 nouvelles séances'), findsOneWidget);
+    await tester.ensureVisible(find.text("C'est reçu"));
     await tester.tap(find.text("C'est reçu"));
     await tester.pump();
     // Assert

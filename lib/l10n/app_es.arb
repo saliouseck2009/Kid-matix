@@ -180,7 +180,7 @@
   "classroomProgramTotal": "Todas las clases",
   "classroomProgramFileName": "Programa",
   "classroomQrSend": "Enviar con código QR",
-  "classroomQrSendHint": "En la tableta del docente, abre «Recibir con código QR» y apunta a este código.",
+  "classroomQrSendHint": "En la tableta del docente, abre «Recibir con código QR» y apunta a este código. Toca «Ya está recibido» solo cuando la otra tableta haya mostrado las nuevas sesiones: si no, ya no se volverían a enviar.",
   "classroomQrSessions": "{count, plural, =0{Solo resultados de evaluación} =1{1 sesión nueva} other{{count} sesiones nuevas}}",
   "classroomQrImageLabel": "Código QR de los nuevos resultados",
   "classroomQrDone": "Ya está recibido",

@@ -16,9 +16,9 @@ final class QrResults {
   }) : sessions = List<PracticeSession>.unmodifiable(sessions),
        results = List<AssessmentResult>.unmodifiable(results);
 
-  /// Most characters of a QR code text: above, a phone camera reads it
-  /// badly, and the class file is used instead.
-  static const int maxTextLength = 1800;
+  /// Most characters of a QR code text: above, the code is too dense for
+  /// the camera of a low-end tablet, and the class file is used instead.
+  static const int maxTextLength = 1000;
 
   /// Class of the results.
   final String classroomId;
