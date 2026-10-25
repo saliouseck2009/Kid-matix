@@ -16,6 +16,8 @@ final class MathWordCatalog {
   factory MathWordCatalog({
     required List<MathWord> words,
     required List<OperationStatement> statements,
+    Map<String, Map<String, String>> helpExplanations =
+        const <String, Map<String, String>>{},
   }) {
     final Set<String> keys = words.map((MathWord word) => word.wordKey).toSet();
     if (keys.length != words.length) {
@@ -28,7 +30,7 @@ final class MathWordCatalog {
         }
       }
     }
-    return MathWordCatalog._(words, statements);
+    return MathWordCatalog._(words, statements, helpExplanations);
   }
 
   /// Reads the decoded data asset.
@@ -39,6 +41,10 @@ final class MathWordCatalog {
       throw const FormatException('Not a math words catalog');
     }
     return MathWordCatalog(
+      helpExplanations: <String, Map<String, String>>{
+        for (final Object? entry in words)
+          _stringOf(_objectOf(entry), 'key'): _helpOf(_objectOf(entry)),
+      },
       words: <MathWord>[
         for (final Object? entry in words) _wordOf(_objectOf(entry)),
       ],
@@ -48,8 +54,12 @@ final class MathWordCatalog {
     );
   }
 
-  MathWordCatalog._(List<MathWord> words, List<OperationStatement> statements)
-    : words = List<MathWord>.unmodifiable(words),
+  MathWordCatalog._(
+    List<MathWord> words,
+    List<OperationStatement> statements,
+    Map<String, Map<String, String>> helpExplanations,
+  ) : _helpExplanations = helpExplanations,
+      words = List<MathWord>.unmodifiable(words),
       statements = List<OperationStatement>.unmodifiable(statements),
       families = List<MathWordFamily>.unmodifiable(_familiesOf(words));
 
@@ -61,6 +71,15 @@ final class MathWordCatalog {
 
   /// The families, in the order of the path.
   final List<MathWordFamily> families;
+
+  final Map<String, Map<String, String>> _helpExplanations;
+
+  /// The explanation of [wordKey] written in each help language, by
+  /// language code (`"help": {"wo": {"explanation": …}}` in the asset);
+  /// empty until the owner writes them.
+  Map<String, String> helpExplanationsOf(String wordKey) {
+    return _helpExplanations[wordKey] ?? const <String, String>{};
+  }
 
   late final Map<String, MathWord> _wordsByKey = <String, MathWord>{
     for (final MathWord word in words) word.wordKey: word,
@@ -230,6 +249,18 @@ final class MathWordCatalog {
       example: _stringOf(json, 'example'),
       surface: _stringOf(json, 'surface'),
     );
+  }
+
+  /// The explanations of a word entry by help language.
+  static Map<String, String> _helpOf(Map<String, Object?> json) {
+    final Object? help = json['help'];
+    if (help is! Map) return const <String, String>{};
+    return <String, String>{
+      for (final MapEntry<Object?, Object?> language in help.entries)
+        if (language.key case final String code)
+          if (language.value case {'explanation': final String text})
+            code: text,
+    };
   }
 
   static OperationStatement _statementOf(Map<String, Object?> json) {

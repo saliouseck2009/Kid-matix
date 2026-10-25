@@ -128,6 +128,9 @@ abstract final class AppRoutes {
   /// « Enregistrer les explications »: the teacher's own recordings.
   static const String teacherRecordings = '/players/teacher/classes/audio';
 
+  /// « Fiches à imprimer »: exercises and word cards as PDF.
+  static const String printables = '/players/teacher/classes/print';
+
   /// « Recevoir par QR code »: the camera reads the results of a tablet.
   static const String resultsQrScan = '/players/teacher/classes/scan';
 

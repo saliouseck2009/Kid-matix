@@ -1407,6 +1407,120 @@ abstract class AppLocalizations {
   /// **'Enregistre au moins un mot avant d\'exporter.'**
   String get classroomRecordingsNothing;
 
+  /// Teacher area, button of « Mes classes » that opens the printable sheets (exercises and word cards as PDF). Also the title of that page. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiches à imprimer'**
+  String get classroomPrintablesOpen;
+
+  /// Teacher area, explanation at the top of the printable sheets page (informal "tu"). Three lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des exercices et des cartes de mots à imprimer, en français et dans la langue d\'aide. Les lignes de la langue d\'aide restent vides tant que leur texte n\'est pas écrit : complète-les à la main.'**
+  String get classroomPrintablesHint;
+
+  /// Teacher area, title of the card that prints the exercises of a unit. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche d\'exercices'**
+  String get classroomPrintablesExercisesTitle;
+
+  /// Teacher area, label of the choice of the learning domain of an exercise sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Domaine'**
+  String get classroomPrintablesDomain;
+
+  /// Teacher area, label of the choice of the unit of an exercise sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Unité'**
+  String get classroomPrintablesUnit;
+
+  /// Teacher area, button that makes the exercise sheet of the unit chosen as a PDF and opens the share sheet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Imprimer les exercices (PDF)'**
+  String get classroomPrintablesExercises;
+
+  /// Teacher area, title of the card that prints the cards of the maths words. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cartes des mots'**
+  String get classroomPrintablesWordsTitle;
+
+  /// Teacher area, button that makes the word cards as a PDF and opens the share sheet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Imprimer les cartes (PDF)'**
+  String get classroomPrintablesWords;
+
+  /// Teacher area, error when the unit chosen has no exercise that can be printed (its questions are pictures). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette unité se joue avec des images : choisis-en une autre pour une fiche.'**
+  String get classroomPrintablesNotPrintable;
+
+  /// Teacher area, snack bar once a printable sheet went to the share sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'La fiche est prête.'**
+  String get classroomPrintablesShared;
+
+  /// Title of a printed exercise sheet, with the name of the unit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exercices · {unit}'**
+  String printExercisesTitle(String unit);
+
+  /// Line at the top of a printed sheet where the child writes their name and the date. Keep the underscores.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom : ____________________   Date : ____________'**
+  String get printNameLine;
+
+  /// Instruction of a printed exercise sheet, addressed to a child (informal "tu").
+  ///
+  /// In fr, this message translates to:
+  /// **'Calcule et écris le résultat.'**
+  String get printExercisesInstruction;
+
+  /// Start of the help-language line of a printed sheet or card ("In Wolof:"), followed by its text or a blank line to fill in by hand.
+  ///
+  /// In fr, this message translates to:
+  /// **'En {language} :'**
+  String printHelpLine(String language);
+
+  /// Title of the answer page of a printed exercise sheet, for the teacher, with the name of the unit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Corrigé · {unit}'**
+  String printAnswersTitle(String unit);
+
+  /// Title of the printed word cards.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les mots des maths'**
+  String get printWordsTitle;
+
+  /// Line of a printed word card: an everyday sentence using the word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exemple : {example}'**
+  String printWordExample(String example);
+
+  /// Word in the name of a printed exercise file, such as KidMatix-Exercices-Table-de-7-2026-11-01.pdf. One word, no accents preferred.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exercices'**
+  String get printExercisesFileName;
+
+  /// Word in the name of the printed word cards file, such as KidMatix-Mots-2026-11-01.pdf. One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mots'**
+  String get printWordsFileName;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

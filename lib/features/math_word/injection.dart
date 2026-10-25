@@ -8,6 +8,7 @@ import 'package:kid_matix/core/services/crash_reporter.dart';
 import 'package:kid_matix/core/services/sentence_splitter.dart';
 import 'package:kid_matix/core/services/teacher_audio_service.dart';
 import 'package:kid_matix/core/services/word_audio_service.dart';
+import 'package:kid_matix/core/services/word_card_service.dart';
 import 'package:kid_matix/features/math_word/data/datasources/audio_pack_loader.dart';
 import 'package:kid_matix/features/math_word/data/datasources/audio_recorder_data_source.dart';
 import 'package:kid_matix/features/math_word/data/datasources/teacher_audio_store.dart';
@@ -19,6 +20,7 @@ import 'package:kid_matix/features/math_word/domain/entities/math_word_catalog.d
 import 'package:kid_matix/features/math_word/domain/services/catalog_sentence_splitter.dart';
 import 'package:kid_matix/features/math_word/domain/services/math_word_domain.dart';
 import 'package:kid_matix/features/math_word/domain/services/word_audio_service_impl.dart';
+import 'package:kid_matix/features/math_word/domain/services/word_card_service_impl.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// Registers the math word feature in [sl]: the audio packs and the
@@ -57,10 +59,19 @@ Future<void> registerMathWordFeature(GetIt sl, {AssetBundle? bundle}) async {
       CatalogSentenceSplitter(catalog: catalog),
     );
     sl<DomainRegistry>().register(MathWordDomain(catalog: catalog));
+    sl.registerSingleton<WordCardService>(
+      WordCardServiceImpl(catalog: catalog),
+    );
   } on Object catch (error, stackTrace) {
     if (sl.isRegistered<CrashReporter>()) {
       sl<CrashReporter>().recordError(error, stackTrace);
     }
+    // No word cards to print without the content.
+    sl.registerSingleton<WordCardService>(
+      WordCardServiceImpl(
+        catalog: MathWordCatalog(words: const [], statements: const []),
+      ),
+    );
   }
 }
 

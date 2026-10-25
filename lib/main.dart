@@ -37,6 +37,7 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/printable_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/report_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/teacher_audio_pages.dart';
@@ -307,6 +308,11 @@ ClassAssessmentPages _createAssessmentPages() {
         getClassReport: sl(),
         getProgramReport: sl(),
         share: sl(),
+      ),
+      printables: PrintablePages(
+        useCases: (exercises: sl(), words: sl(), share: sl()),
+        domains: sl(),
+        clock: sl(),
       ),
     ),
     domains: sl(),

@@ -948,6 +948,74 @@ class AppLocalizationsEs extends AppLocalizations {
       'Graba al menos una palabra antes de exportar.';
 
   @override
+  String get classroomPrintablesOpen => 'Fichas para imprimir';
+
+  @override
+  String get classroomPrintablesHint =>
+      'Ejercicios y tarjetas de palabras para imprimir, en francés y en el idioma de ayuda. Las líneas del idioma de ayuda quedan vacías mientras su texto no esté escrito: complétalas a mano.';
+
+  @override
+  String get classroomPrintablesExercisesTitle => 'Ficha de ejercicios';
+
+  @override
+  String get classroomPrintablesDomain => 'Ámbito';
+
+  @override
+  String get classroomPrintablesUnit => 'Unidad';
+
+  @override
+  String get classroomPrintablesExercises => 'Imprimir los ejercicios (PDF)';
+
+  @override
+  String get classroomPrintablesWordsTitle => 'Tarjetas de palabras';
+
+  @override
+  String get classroomPrintablesWords => 'Imprimir las tarjetas (PDF)';
+
+  @override
+  String get classroomPrintablesNotPrintable =>
+      'Esta unidad se juega con imágenes: elige otra para una ficha.';
+
+  @override
+  String get classroomPrintablesShared => 'La ficha está lista.';
+
+  @override
+  String printExercisesTitle(String unit) {
+    return 'Ejercicios · $unit';
+  }
+
+  @override
+  String get printNameLine =>
+      'Nombre: ____________________   Fecha: ____________';
+
+  @override
+  String get printExercisesInstruction => 'Calcula y escribe el resultado.';
+
+  @override
+  String printHelpLine(String language) {
+    return 'En $language:';
+  }
+
+  @override
+  String printAnswersTitle(String unit) {
+    return 'Soluciones · $unit';
+  }
+
+  @override
+  String get printWordsTitle => 'Las palabras de las mates';
+
+  @override
+  String printWordExample(String example) {
+    return 'Ejemplo: $example';
+  }
+
+  @override
+  String get printExercisesFileName => 'Ejercicios';
+
+  @override
+  String get printWordsFileName => 'Palabras';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override

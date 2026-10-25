@@ -1254,6 +1254,106 @@
   "@classroomRecordingsNothing": {
     "description": "Teacher area, error when the teacher exports with no recording."
   },
+  "classroomPrintablesOpen": "Fiches à imprimer",
+  "@classroomPrintablesOpen": {
+    "description": "Teacher area, button of « Mes classes » that opens the printable sheets (exercises and word cards as PDF). Also the title of that page. One line."
+  },
+  "classroomPrintablesHint": "Des exercices et des cartes de mots à imprimer, en français et dans la langue d'aide. Les lignes de la langue d'aide restent vides tant que leur texte n'est pas écrit : complète-les à la main.",
+  "@classroomPrintablesHint": {
+    "description": "Teacher area, explanation at the top of the printable sheets page (informal \"tu\"). Three lines at most."
+  },
+  "classroomPrintablesExercisesTitle": "Fiche d'exercices",
+  "@classroomPrintablesExercisesTitle": {
+    "description": "Teacher area, title of the card that prints the exercises of a unit. One line."
+  },
+  "classroomPrintablesDomain": "Domaine",
+  "@classroomPrintablesDomain": {
+    "description": "Teacher area, label of the choice of the learning domain of an exercise sheet."
+  },
+  "classroomPrintablesUnit": "Unité",
+  "@classroomPrintablesUnit": {
+    "description": "Teacher area, label of the choice of the unit of an exercise sheet."
+  },
+  "classroomPrintablesExercises": "Imprimer les exercices (PDF)",
+  "@classroomPrintablesExercises": {
+    "description": "Teacher area, button that makes the exercise sheet of the unit chosen as a PDF and opens the share sheet. One line."
+  },
+  "classroomPrintablesWordsTitle": "Cartes des mots",
+  "@classroomPrintablesWordsTitle": {
+    "description": "Teacher area, title of the card that prints the cards of the maths words. One line."
+  },
+  "classroomPrintablesWords": "Imprimer les cartes (PDF)",
+  "@classroomPrintablesWords": {
+    "description": "Teacher area, button that makes the word cards as a PDF and opens the share sheet. One line."
+  },
+  "classroomPrintablesNotPrintable": "Cette unité se joue avec des images : choisis-en une autre pour une fiche.",
+  "@classroomPrintablesNotPrintable": {
+    "description": "Teacher area, error when the unit chosen has no exercise that can be printed (its questions are pictures). Informal \"tu\"."
+  },
+  "classroomPrintablesShared": "La fiche est prête.",
+  "@classroomPrintablesShared": {
+    "description": "Teacher area, snack bar once a printable sheet went to the share sheet."
+  },
+  "printExercisesTitle": "Exercices · {unit}",
+  "@printExercisesTitle": {
+    "description": "Title of a printed exercise sheet, with the name of the unit.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "Table de 7"
+      }
+    }
+  },
+  "printNameLine": "Nom : ____________________   Date : ____________",
+  "@printNameLine": {
+    "description": "Line at the top of a printed sheet where the child writes their name and the date. Keep the underscores."
+  },
+  "printExercisesInstruction": "Calcule et écris le résultat.",
+  "@printExercisesInstruction": {
+    "description": "Instruction of a printed exercise sheet, addressed to a child (informal \"tu\")."
+  },
+  "printHelpLine": "En {language} :",
+  "@printHelpLine": {
+    "description": "Start of the help-language line of a printed sheet or card (\"In Wolof:\"), followed by its text or a blank line to fill in by hand.",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "wolof"
+      }
+    }
+  },
+  "printAnswersTitle": "Corrigé · {unit}",
+  "@printAnswersTitle": {
+    "description": "Title of the answer page of a printed exercise sheet, for the teacher, with the name of the unit.",
+    "placeholders": {
+      "unit": {
+        "type": "String",
+        "example": "Table de 7"
+      }
+    }
+  },
+  "printWordsTitle": "Les mots des maths",
+  "@printWordsTitle": {
+    "description": "Title of the printed word cards."
+  },
+  "printWordExample": "Exemple : {example}",
+  "@printWordExample": {
+    "description": "Line of a printed word card: an everyday sentence using the word.",
+    "placeholders": {
+      "example": {
+        "type": "String",
+        "example": "Fatou a 6 mangues. Sa tante lui en donne 4 en plus."
+      }
+    }
+  },
+  "printExercisesFileName": "Exercices",
+  "@printExercisesFileName": {
+    "description": "Word in the name of a printed exercise file, such as KidMatix-Exercices-Table-de-7-2026-11-01.pdf. One word, no accents preferred."
+  },
+  "printWordsFileName": "Mots",
+  "@printWordsFileName": {
+    "description": "Word in the name of the printed word cards file, such as KidMatix-Mots-2026-11-01.pdf. One word."
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."
