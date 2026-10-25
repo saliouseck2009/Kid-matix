@@ -87,7 +87,7 @@ jobs:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
-      - name: Debug APK
+      - name: Android APKs and permissions
         run: bash tool/check.sh build-android
       - name: Upload log
         if: failure()

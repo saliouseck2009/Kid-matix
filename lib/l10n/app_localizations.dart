@@ -1272,7 +1272,7 @@ abstract class AppLocalizations {
   /// Teacher area, in place of the camera view when the camera permission was refused: how to allow it in the system settings (informal "tu").
   ///
   /// In fr, this message translates to:
-  /// **'La caméra est refusée. Pour l\'autoriser : Réglages de la tablette, puis Applications, Kid Matix, Autorisations, Caméra. Sinon, utilise le fichier de la classe.'**
+  /// **'La caméra est refusée. Pour l\'autoriser, ouvre les réglages du téléphone, puis les autorisations de Kid Matix. Sinon, utilise le fichier de la classe.'**
   String get classroomQrCameraDenied;
 
   /// Teacher area, in place of the camera view when the device has no usable camera.

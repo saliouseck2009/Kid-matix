@@ -860,7 +860,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get classroomQrCameraDenied =>
-      'La caméra est refusée. Pour l\'autoriser : Réglages de la tablette, puis Applications, Kid Matix, Autorisations, Caméra. Sinon, utilise le fichier de la classe.';
+      'La caméra est refusée. Pour l\'autoriser, ouvre les réglages du téléphone, puis les autorisations de Kid Matix. Sinon, utilise le fichier de la classe.';
 
   @override
   String get classroomQrNoCamera =>

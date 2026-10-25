@@ -124,7 +124,7 @@ void main() {
           String,
         )
       >[
-        (MobileScannerErrorCode.permissionDenied, 'Réglages de la tablette'),
+        (MobileScannerErrorCode.permissionDenied, 'réglages du téléphone'),
         (MobileScannerErrorCode.unsupported, "n'a pas de caméra"),
         (MobileScannerErrorCode.genericError, "n'est pas disponible"),
       ]) {
