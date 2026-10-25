@@ -194,6 +194,8 @@
   "classroomQrVersion": "This QR code comes from a newer version of Kid Matix. Update the app, then try again.",
   "classroomQrUnknown": "This tablet does not have the class, its pupils or its assessment yet: first receive the class file.",
   "classroomQrCameraError": "The camera is not available. Allow it in the settings, or use the class file.",
+  "classroomQrCameraDenied": "The camera is refused. To allow it: tablet Settings, then Apps, Kid Matix, Permissions, Camera. Otherwise, use the class file.",
+  "classroomQrNoCamera": "This tablet has no camera: use the class file.",
   "classroomRecordingsOpen": "Record the explanations",
   "classroomRecordingsHint": "Record the explanation of each word in your language. On this tablet, your voice replaces the pack's: pupils hear it with the language button.",
   "classroomRecordingsNoPack": "The app has no help language yet.",

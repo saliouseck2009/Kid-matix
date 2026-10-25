@@ -858,6 +858,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'La cámara no está disponible. Permítela en los ajustes o usa el archivo de la clase.';
 
   @override
+  String get classroomQrCameraDenied =>
+      'La cámara está denegada. Para permitirla: Ajustes de la tableta, luego Aplicaciones, Kid Matix, Permisos, Cámara. Si no, usa el archivo de la clase.';
+
+  @override
+  String get classroomQrNoCamera =>
+      'Esta tableta no tiene cámara: usa el archivo de la clase.';
+
+  @override
   String get classroomRecordingsOpen => 'Grabar las explicaciones';
 
   @override

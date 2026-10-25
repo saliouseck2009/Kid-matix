@@ -7,6 +7,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/confirm_results_qr_
 import 'package:kid_matix/features/classroom/domain/usecases/make_results_qr_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/receive_results_qr_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/camera_qr_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -113,4 +115,31 @@ void main() {
     expect(find.textContaining('2 nouvelles séances'), findsOneWidget);
     expect(find.text('Lire un autre code'), findsOneWidget);
   });
+
+  for (final (MobileScannerErrorCode code, String expected)
+      in <
+        (
+          MobileScannerErrorCode,
+          String,
+        )
+      >[
+        (MobileScannerErrorCode.permissionDenied, 'Réglages de la tablette'),
+        (MobileScannerErrorCode.unsupported, "n'a pas de caméra"),
+        (MobileScannerErrorCode.genericError, "n'est pas disponible"),
+      ]) {
+    testWidgets('says what to do when the camera fails: ${code.name}', (
+      WidgetTester tester,
+    ) async {
+      // Arrange: a camera that fails as mobile_scanner reports it.
+      final ResultsQrPages inputPages = ResultsQrPages(
+        useCases: (make: make, confirm: confirm, receive: receive),
+        scanner: (BuildContext context, ValueChanged<String> onRead) =>
+            QrCameraErrorView(errorCode: code),
+      );
+      // Act
+      await pumpLocalized(tester, inputPages.buildReceivePage(onBack: () {}));
+      // Assert
+      expect(find.textContaining(expected), findsOneWidget);
+    });
+  }
 }

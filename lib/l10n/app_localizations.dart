@@ -1269,6 +1269,18 @@ abstract class AppLocalizations {
   /// **'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.'**
   String get classroomQrCameraError;
 
+  /// Teacher area, in place of the camera view when the camera permission was refused: how to allow it in the system settings (informal "tu").
+  ///
+  /// In fr, this message translates to:
+  /// **'La caméra est refusée. Pour l\'autoriser : Réglages de la tablette, puis Applications, Kid Matix, Autorisations, Caméra. Sinon, utilise le fichier de la classe.'**
+  String get classroomQrCameraDenied;
+
+  /// Teacher area, in place of the camera view when the device has no usable camera.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette tablette n\'a pas de caméra : utilise le fichier de la classe.'**
+  String get classroomQrNoCamera;
+
   /// Teacher area, button of « Mes classes » that opens the page where the teacher records their own explanation of each maths word in the help language. Also the title of that page. One line.
   ///
   /// In fr, this message translates to:
