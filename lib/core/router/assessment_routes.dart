@@ -8,8 +8,10 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/placement_
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
 
 /// The route of an assessment taken by the active pupil (lot F31): the
-/// placement test of the learning path, then the word check of the class
-/// mode, a quiz whose end keeps the result of the assessment.
+/// placement test of the learning path, in its assessment variant (no
+/// « Passer »; owner: it opens units and changes the home domain like a
+/// retake), then the word check of the class mode, a quiz whose end keeps
+/// the result of the assessment.
 GoRoute createAssessmentRoute({
   required ProfileSessionService session,
   required LearningPathPages pathPages,
@@ -29,9 +31,12 @@ GoRoute createAssessmentRoute({
           keypad: quizPages.buildKeypad,
           questionCard: quizPages.buildQuestionCard,
         ),
+        isAssessment: true,
         onDone: () => context.go(
           AppRoutes.playOf(assessmentPages.wordCheckSourceKeyOf(assessmentId)),
         ),
+        // Left midway: back home, the assessment still waits there.
+        onLeave: () => context.go(AppRoutes.learningPath),
       );
     },
   );

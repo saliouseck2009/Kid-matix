@@ -498,6 +498,8 @@
   "placementQuitTooltip": "Stop the test",
   "placementQuitTitle": "Stop the test?",
   "placementQuitMessage": "The units you already found stay open in your path.",
+  "placementQuitAssessmentMessage": "Your assessment is still to do: you can start it again from the home screen.",
+  "placementAssessmentContinue": "Continue",
   "placementQuitCancel": "Keep going",
   "placementQuitConfirm": "Stop",
   "placementResultTitle": "{count, plural, =0{Your adventure begins!} =1{1 level passed!} other{{count} levels passed!}}",

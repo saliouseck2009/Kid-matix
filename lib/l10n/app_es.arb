@@ -498,6 +498,8 @@
   "placementQuitTooltip": "Dejar la prueba",
   "placementQuitTitle": "¿Dejar la prueba?",
   "placementQuitMessage": "Las unidades que ya encontraste siguen abiertas en tu camino.",
+  "placementQuitAssessmentMessage": "Tu evaluación sigue pendiente: podrás retomarla desde el inicio.",
+  "placementAssessmentContinue": "Continuar",
   "placementQuitCancel": "Seguir con la prueba",
   "placementQuitConfirm": "Dejar",
   "placementResultTitle": "{count, plural, =0{¡Tu aventura empieza!} =1{¡1 nivel superado!} other{¡{count} niveles superados!}}",

@@ -2117,6 +2117,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Las unidades que ya encontraste siguen abiertas en tu camino.';
 
   @override
+  String get placementQuitAssessmentMessage =>
+      'Tu evaluación sigue pendiente: podrás retomarla desde el inicio.';
+
+  @override
+  String get placementAssessmentContinue => 'Continuar';
+
+  @override
   String get placementQuitCancel => 'Seguir con la prueba';
 
   @override

@@ -2886,6 +2886,14 @@
   "@placementQuitMessage": {
     "description": "Body of the dialog confirming that the child leaves the placement test (\"The units already found stay open in your path.\"). A unit is one lesson of the path, such as a multiplication table. Talks to the child (informal tu)."
   },
+  "placementQuitAssessmentMessage": "Ton évaluation reste à faire : tu pourras la reprendre depuis l'accueil.",
+  "@placementQuitAssessmentMessage": {
+    "description": "Message of the dialog confirming that a pupil leaves the placement test of a class assessment: the assessment stays pending on the home. Speaks to a child, informal \"tu\"."
+  },
+  "placementAssessmentContinue": "Continuer",
+  "@placementAssessmentContinue": {
+    "description": "Button of the result of the placement test during a class assessment: goes on to the word check (\"Continue\", infinitive verb). One word."
+  },
   "placementQuitCancel": "Continuer le test",
   "@placementQuitCancel": {
     "description": "Dialog button that stays in the placement test (\"Go on with the test\"). \"Continuer\" is an infinitive verb. Short, one line."

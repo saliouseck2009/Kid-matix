@@ -22,6 +22,7 @@ class PlacementResultView extends StatelessWidget {
   const PlacementResultView({
     required this.outcome,
     required this.onSeePath,
+    this.isAssessment = false,
     super.key,
   });
 
@@ -30,8 +31,12 @@ class PlacementResultView extends StatelessWidget {
   /// What the test found.
   final PlacementOutcome outcome;
 
-  /// Opens the path.
+  /// Opens the path, or goes on with a class assessment.
   final VoidCallback onSeePath;
+
+  /// Whether the test is part of a class assessment: its button then
+  /// reads « Continuer ».
+  final bool isAssessment;
 
   bool _isAcquired(SkillLevel skill) {
     return outcome.skills.any(
@@ -96,7 +101,9 @@ class PlacementResultView extends StatelessWidget {
             ),
           ),
           DepthButton(
-            label: context.l10n.placementSeePath,
+            label: isAssessment
+                ? context.l10n.placementAssessmentContinue
+                : context.l10n.placementSeePath,
             onPressed: onSeePath,
           ),
         ],

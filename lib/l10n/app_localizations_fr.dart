@@ -2115,6 +2115,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les unités déjà trouvées restent ouvertes dans ton parcours.';
 
   @override
+  String get placementQuitAssessmentMessage =>
+      'Ton évaluation reste à faire : tu pourras la reprendre depuis l\'accueil.';
+
+  @override
+  String get placementAssessmentContinue => 'Continuer';
+
+  @override
   String get placementQuitCancel => 'Continuer le test';
 
   @override

@@ -2105,6 +2105,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'The units you already found stay open in your path.';
 
   @override
+  String get placementQuitAssessmentMessage =>
+      'Your assessment is still to do: you can start it again from the home screen.';
+
+  @override
+  String get placementAssessmentContinue => 'Continue';
+
+  @override
   String get placementQuitCancel => 'Keep going';
 
   @override

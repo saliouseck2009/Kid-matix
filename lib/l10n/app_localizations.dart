@@ -3093,6 +3093,18 @@ abstract class AppLocalizations {
   /// **'Les unités déjà trouvées restent ouvertes dans ton parcours.'**
   String get placementQuitMessage;
 
+  /// Message of the dialog confirming that a pupil leaves the placement test of a class assessment: the assessment stays pending on the home. Speaks to a child, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton évaluation reste à faire : tu pourras la reprendre depuis l\'accueil.'**
+  String get placementQuitAssessmentMessage;
+
+  /// Button of the result of the placement test during a class assessment: goes on to the word check ("Continue", infinitive verb). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get placementAssessmentContinue;
+
   /// Dialog button that stays in the placement test ("Go on with the test"). "Continuer" is an infinitive verb. Short, one line.
   ///
   /// In fr, this message translates to:

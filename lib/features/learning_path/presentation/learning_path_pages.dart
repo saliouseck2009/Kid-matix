@@ -86,19 +86,25 @@ final class LearningPathPages {
 
   /// The placement test offered to [profileId] once created; [slots] give
   /// the question card and the keypad of the quiz, [onDone] opens the
-  /// path.
+  /// path. In a class assessment ([isAssessment]) the test cannot be
+  /// skipped, [onDone] goes on with the assessment and [onLeave] leaves
+  /// it pending.
   Widget buildPlacementTestPage({
     required String profileId,
     required PlacementSlots slots,
     required VoidCallback onDone,
+    bool isAssessment = false,
+    VoidCallback? onLeave,
   }) {
     return PlacementTestPage(
-      key: ValueKey<String>('placement-$profileId'),
+      key: ValueKey<String>('placement-$profileId-$isAssessment'),
       profileId: profileId,
       useCases: _placement,
       clock: _clock,
       slots: slots,
       onDone: onDone,
+      isAssessment: isAssessment,
+      onLeave: onLeave,
     );
   }
 
