@@ -134,15 +134,20 @@ final class MathWordCatalog {
     final String lower = text.toLowerCase();
     final List<({int start, int end, String key})> spans =
         <({int start, int end, String key})>[];
-    final List<MathWord> longestFirst = <MathWord>[...words]
-      ..sort(
-        (MathWord a, MathWord b) =>
-            b.surface.length.compareTo(a.surface.length),
-      );
-    for (final MathWord word in longestFirst) {
-      final int at = _findWhole(lower, word.surface.toLowerCase());
+    // Each word is found by its form in the example or by its own text:
+    // « partager » is touchable in « les partager » as « partage » is in
+    // « Il partage ».
+    final List<(MathWord, String)> expressions = <(MathWord, String)>[
+      for (final MathWord word in words) ...<(MathWord, String)>[
+        (word, word.surface),
+        if (word.text.toLowerCase() != word.surface.toLowerCase())
+          (word, word.text),
+      ],
+    ]..sort((a, b) => b.$2.length.compareTo(a.$2.length));
+    for (final (MathWord word, String expression) in expressions) {
+      final int at = _findWhole(lower, expression.toLowerCase());
       if (at < 0) continue;
-      final int end = at + word.surface.length;
+      final int end = at + expression.length;
       final bool overlaps = spans.any(
         (({int start, int end, String key}) span) =>
             at < span.end && end > span.start,

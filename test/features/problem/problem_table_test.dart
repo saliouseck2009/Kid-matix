@@ -69,26 +69,6 @@ void main() {
   };
   final String unit = Currency.cfaFranc.unitName;
 
-  /// Differences between the column « Mots des maths » of the table and
-  /// the words the rule finds in the statement (first whole-word match of
-  /// the word or its form): to report to the table, then to delete here.
-  const Map<String, ({Set<String> add, Set<String> remove})> tableGaps =
-      <String, ({Set<String> add, Set<String> remove})>{
-        'mangues_donnees_piege': (add: <String>{'combien'}, remove: <String>{}),
-        'mangues_partagees': (
-          add: <String>{'combien', 'recevoir'},
-          remove: <String>{},
-        ),
-        'billes_chacun_piege': (add: <String>{'combien'}, remove: <String>{}),
-        'fatou_sachets': (add: <String>{'combien'}, remove: <String>{}),
-        'biscuits_range': (add: <String>{'combien'}, remove: <String>{}),
-        'biscuits_partages_piege': (
-          add: <String>{},
-          remove: <String>{'partager'},
-        ),
-        'achat_sachet_eau': (add: <String>{'combien'}, remove: <String>{}),
-      };
-
   test('has the 30 problems of the table, in its order, ten per level', () {
     // Assert
     expect(rows, hasLength(30));
@@ -201,9 +181,7 @@ void main() {
         // Assert
         expect(
           parts.map((SentencePart p) => p.wordKey).nonNulls.toSet(),
-          row.wordKeys
-              .union(tableGaps[row.key]?.add ?? <String>{})
-              .difference(tableGaps[row.key]?.remove ?? <String>{}),
+          row.wordKeys,
         );
       });
     });
