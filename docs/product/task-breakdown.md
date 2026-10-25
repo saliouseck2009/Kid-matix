@@ -765,7 +765,7 @@ Les enfants apprennent à comprendre une situation, pas à réagir à un mot-cl�
 - [ ] **F30-05** Dans chaque énoncé, les mots des maths (F28) se touchent ; bouton « Écouter en wolof » sur les énoncés enregistrés.
 - [ ] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
 - [ ] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
-- [ ] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
+- [x] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
 - [ ] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
 - [ ] **F30-10** Tests : gabarits sans ambiguïté, schéma, étapes, piège du mot-clé.
 
