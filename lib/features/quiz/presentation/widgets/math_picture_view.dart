@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/widgets/word_picture/word_picture_view.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/bar_model_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/math_picture_labels.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/number_line_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/objects_painter.dart';
@@ -61,7 +62,10 @@ class MathPictureView extends StatelessWidget {
         WordPicture(:final String wordKey) => WordPictureView(
           wordKey: wordKey,
         ),
-        BarModelPicture() => const SizedBox.shrink(),
+        final BarModelPicture model => BarModelView(
+          picture: model,
+          showsAnswer: isSolved,
+        ),
       },
     );
   }

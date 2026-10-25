@@ -1105,6 +1105,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizWordTouchFirst => 'Tap the colored word';
 
   @override
+  String get quizBarModelLabel => 'Bar model of the story';
+
+  @override
+  String quizBarRoleName(String role) {
+    String _temp0 = intl.Intl.selectLogic(
+      role,
+      {
+        'whole': 'the whole',
+        'partA': 'a part',
+        'partB': 'the other part',
+        'big': 'the biggest',
+        'small': 'the smallest',
+        'gap': 'the gap',
+        'total': 'the total',
+        'groups': 'how many groups',
+        'each': 'in each group',
+        'times': 'how many times',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBarSlotEmpty(String name) {
+    return '$name: to fill in';
+  }
+
+  @override
+  String quizBarSlotUnknown(String name) {
+    return '$name: to find';
+  }
+
+  @override
+  String quizBarSlotValue(String name, String value) {
+    return '$name: $value';
+  }
+
+  @override
+  String get quizProblemSolveLabel => 'Solve the problem';
+
+  @override
+  String get quizBarModelQuestionLabel => 'Draw the model';
+
+  @override
+  String quizProblemStepCounter(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get quizProblemStepListen =>
+      'Listen to the story and touch the colored words';
+
+  @override
+  String get quizProblemStepModel =>
+      'Put the numbers of the story on the model';
+
+  @override
+  String get quizProblemStepOperation => 'Which operation finds the answer?';
+
+  @override
+  String get quizProblemStepCompute => 'Work out the answer';
+
+  @override
+  String get quizProblemStepCheck => 'Check your answer';
+
+  @override
+  String get quizProblemListened => 'I listened';
+
+  @override
+  String get quizProblemChecked => 'I checked';
+
+  @override
+  String get quizProblemPickNumberFirst =>
+      'Touch a number, then its place on the model';
+
+  @override
+  String get quizProblemTryAgain =>
+      'Not there. Read the story again and look at the model.';
+
+  @override
+  String get quizProblemRecapTitle => 'The model of the story';
+
+  @override
   String get quizCompareLess => 'less';
 
   @override

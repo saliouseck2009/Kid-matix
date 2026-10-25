@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/quiz/bar_model.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
 /// A drawing that goes with a question or a help card, such as objects to
@@ -183,6 +184,23 @@ final class BarModelPicture extends MathPicture {
     for (final BarRole role in shape.roles)
       if (role != unknown) role,
   ];
+
+  /// The calculation that finds the answer as a prompt: `12 − 5 = 7`. The
+  /// known numbers come in the order of the places of the model, which is
+  /// the order of the operation (the whole before the part, the total
+  /// before the group).
+  List<PromptToken> get calculation {
+    final List<int> known = <int>[
+      for (final BarRole role in knownRoles) values[role]!,
+    ];
+    return <PromptToken>[
+      NumberToken(known[0]),
+      OperatorToken(operator),
+      NumberToken(known[1]),
+      const EqualsToken(),
+      NumberToken(answer),
+    ];
+  }
 
   /// Whether the two known places can be filled in either order: the two
   /// parts of a whole whose total is the question.

@@ -49,7 +49,10 @@ final class QuizLabels {
       QuestionTypeIds.missingNumber => l10n.quizMissingNumberLabel,
       QuestionTypeIds.listenAndTouch => l10n.quizWordListenLabel,
       QuestionTypeIds.touchToUnderstand => l10n.quizWordTouchLabel,
-      QuestionTypeIds.whichOperation => l10n.quizWordOperationLabel,
+      QuestionTypeIds.whichOperation ||
+      QuestionTypeIds.problemOperation => l10n.quizWordOperationLabel,
+      QuestionTypeIds.solveProblem => l10n.quizProblemSolveLabel,
+      QuestionTypeIds.barModel => l10n.quizBarModelQuestionLabel,
       _ => switch (_askedDrawing(question)) {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
@@ -135,7 +138,8 @@ final class QuizLabels {
       QuestionTypeIds.findOperation => l10n.quizHintFindOperation,
       QuestionTypeIds.compare => l10n.quizHintCompare,
       QuestionTypeIds.listenAndTouch => l10n.quizHintWordListen,
-      QuestionTypeIds.whichOperation => l10n.quizHintWordOperation,
+      QuestionTypeIds.whichOperation ||
+      QuestionTypeIds.problemOperation => l10n.quizHintWordOperation,
       _ when question.choices.isNotEmpty => l10n.quizHintMultipleChoice,
       _ => null,
     };

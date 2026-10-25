@@ -1111,6 +1111,90 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizWordTouchFirst => 'Touche le mot en couleur';
 
   @override
+  String get quizBarModelLabel => 'Schéma en barres de l\'histoire';
+
+  @override
+  String quizBarRoleName(String role) {
+    String _temp0 = intl.Intl.selectLogic(
+      role,
+      {
+        'whole': 'le tout',
+        'partA': 'une partie',
+        'partB': 'l\'autre partie',
+        'big': 'le plus grand',
+        'small': 'le plus petit',
+        'gap': 'l\'écart',
+        'total': 'le total',
+        'groups': 'combien de groupes',
+        'each': 'dans chaque groupe',
+        'times': 'combien de fois',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBarSlotEmpty(String name) {
+    return '$name : à remplir';
+  }
+
+  @override
+  String quizBarSlotUnknown(String name) {
+    return '$name : à trouver';
+  }
+
+  @override
+  String quizBarSlotValue(String name, String value) {
+    return '$name : $value';
+  }
+
+  @override
+  String get quizProblemSolveLabel => 'Résous le problème';
+
+  @override
+  String get quizBarModelQuestionLabel => 'Fais le schéma';
+
+  @override
+  String quizProblemStepCounter(int current, int total) {
+    return 'Étape $current sur $total';
+  }
+
+  @override
+  String get quizProblemStepListen =>
+      'Écoute l\'histoire et touche les mots en couleur';
+
+  @override
+  String get quizProblemStepModel =>
+      'Pose les nombres de l\'histoire sur le schéma';
+
+  @override
+  String get quizProblemStepOperation => 'Quelle opération trouve la réponse ?';
+
+  @override
+  String get quizProblemStepCompute => 'Calcule la réponse';
+
+  @override
+  String get quizProblemStepCheck => 'Vérifie ta réponse';
+
+  @override
+  String get quizProblemListened => 'J\'ai écouté';
+
+  @override
+  String get quizProblemChecked => 'J\'ai vérifié';
+
+  @override
+  String get quizProblemPickNumberFirst =>
+      'Touche un nombre, puis sa place sur le schéma';
+
+  @override
+  String get quizProblemTryAgain =>
+      'Pas là. Relis l\'histoire et regarde le schéma.';
+
+  @override
+  String get quizProblemRecapTitle => 'Le schéma de l\'histoire';
+
+  @override
   String get quizCompareLess => 'plus petit';
 
   @override
