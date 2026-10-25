@@ -782,7 +782,7 @@ Ce que les ONG doivent pouvoir montrer : des progrès mesurés, des rapports sim
 - [x] **F31-05** Transfert de petits résultats par QR code, sans fichier.
 - [x] **F31-06** L'enseignant enregistre lui-même l'explication d'un mot ou d'un énoncé dans sa langue, depuis le mode enseignant ; l'enregistrement remplace le pack audio sur cet appareil et s'exporte comme pack.
 - [x] **F31-07** Fiches à imprimer générées en PDF : exercices et cartes de mots en français et en wolof.
-- [ ] **F31-08** Tests : calcul de progression, consolidation de plusieurs classes, anonymisation, QR code, enregistrement.
+- [x] **F31-08** Tests : calcul de progression, consolidation de plusieurs classes, anonymisation, QR code, enregistrement.
 
 **Terminé quand :** deux évaluations faites à un mois d'écart donnent un rapport PDF de la classe qui montre la progression, sans aucun pseudo dans la version anonyme.
 
