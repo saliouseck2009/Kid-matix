@@ -1,0 +1,3 @@
+/* Teacher area only (F31): asked at the first use, never on a child screen. */
+"NSCameraUsageDescription" = "En el espacio docente, la cámara lee el código QR de los resultados de otra tableta. Nada sale del dispositivo.";
+"NSMicrophoneUsageDescription" = "En el espacio docente, el micrófono graba tu propia explicación de una palabra de las mates. La grabación se queda en este dispositivo.";

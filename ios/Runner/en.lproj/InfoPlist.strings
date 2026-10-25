@@ -1,0 +1,3 @@
+/* Teacher area only (F31): asked at the first use, never on a child screen. */
+"NSCameraUsageDescription" = "In the teacher area, the camera reads the QR code of the results of another tablet. Nothing leaves the device.";
+"NSMicrophoneUsageDescription" = "In the teacher area, the microphone records your own explanation of a maths word. The recording stays on this device.";

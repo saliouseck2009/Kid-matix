@@ -64,8 +64,10 @@ Future<void> registerMathWordFeature(GetIt sl, {AssetBundle? bundle}) async {
   }
 }
 
-/// The folder of the teacher's recordings, in the app's private storage.
+/// The folder of the teacher's recordings, in the app's private storage:
+/// under Documents, which the app keeps out of the iCloud backup
+/// (AppDelegate.swift); Android backups are off (allowBackup false).
 Future<Directory> _teacherAudioFolder() async {
-  final Directory support = await getApplicationSupportDirectory();
-  return Directory('${support.path}/teacher_audio');
+  final Directory documents = await getApplicationDocumentsDirectory();
+  return Directory('${documents.path}/teacher_audio');
 }
