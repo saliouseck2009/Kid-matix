@@ -24,7 +24,7 @@ final class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     final List<Map<String, Object?>> rows = await database.query(
       ProfileTable.name,
       where: _isLive,
-      orderBy: ProfileTable.createdAt,
+      orderBy: '${ProfileTable.createdAt}, ${ProfileTable.id}',
     );
     return rows.map(ProfileLocalModel.fromJson).toList();
   }
@@ -97,7 +97,7 @@ final class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
       ProfileTable.name,
       where: '${ProfileTable.classroomId} = ? AND $_isLive',
       whereArgs: <Object>[classroomId],
-      orderBy: ProfileTable.createdAt,
+      orderBy: '${ProfileTable.createdAt}, ${ProfileTable.id}',
     );
     return rows.map(ProfileLocalModel.fromJson).toList();
   }

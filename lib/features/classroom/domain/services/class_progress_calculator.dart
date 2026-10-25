@@ -23,6 +23,7 @@ typedef ClassProgressInput = ({
   List<AssessmentResult> results,
   List<PracticeSession> sessions,
   DateTime generatedAt,
+  Map<String, int> numbers,
 });
 
 /// Computes the progress report of a class between two periods from its
@@ -30,6 +31,9 @@ typedef ClassProgressInput = ({
 /// assessment, and, through [ClassDashboardCalculator] run on the
 /// sessions of each period, the practice between the two periods and the
 /// items acquired during it.
+///
+/// Each pupil keeps the number of the class list stored at enrolment
+/// (`numbers`), what the anonymous version shows.
 ///
 /// The practice counts the sessions started from the opening of the
 /// first period to the opening of the second; an item is acquired during
@@ -63,7 +67,7 @@ abstract final class ClassProgressCalculator {
     final List<PupilReportRow> rows = <PupilReportRow>[
       for (int index = 0; index < input.pupils.length; index++)
         _rowOf(
-          number: index + 1,
+          number: input.numbers[input.pupils[index].id] ?? index + 1,
           pupil: input.pupils[index],
           from: fromResults[input.pupils[index].id],
           to: toResults[input.pupils[index].id],

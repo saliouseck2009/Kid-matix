@@ -26,6 +26,8 @@ import 'package:kid_matix/features/classroom/domain/services/teacher_code_attemp
 import 'package:kid_matix/features/classroom/data/datasources/classroom_local_data_source.dart';
 import 'package:kid_matix/features/classroom/data/datasources/classroom_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/classroom_repository_impl.dart';
+import 'package:kid_matix/features/classroom/data/repositories/pupil_number_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/pupil_number_repository.dart';
 import 'package:kid_matix/features/classroom/data/repositories/teacher_code_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/teacher_code_repository.dart';
@@ -120,6 +122,9 @@ void _registerData(GetIt sl) {
       changeBus: sl(),
     ),
   );
+  sl.registerLazySingleton<PupilNumberRepository>(
+    () => PupilNumberRepositoryImpl(database: sl(), clock: sl()),
+  );
   sl.registerLazySingleton<TeacherCodeRepository>(
     () => TeacherCodeRepositoryImpl(storage: sl()),
   );
@@ -135,7 +140,7 @@ void _registerData(GetIt sl) {
 
 void _registerClassrooms(GetIt sl) {
   sl.registerLazySingleton<PupilEnrollment>(
-    () => PupilEnrollment(roster: sl(), ids: sl()),
+    () => PupilEnrollment(roster: sl(), ids: sl(), numbers: sl()),
   );
   sl.registerLazySingleton<GetClassroomsUseCase>(
     () => GetClassroomsUseCase(repository: sl(), roster: sl()),

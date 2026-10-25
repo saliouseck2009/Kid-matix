@@ -238,6 +238,7 @@ void main() {
                 assignments: stack.assignments,
                 journal: stack.journal,
                 assessments: stack.assessments,
+                numbers: stack.numbers,
               ),
             ),
           ),
