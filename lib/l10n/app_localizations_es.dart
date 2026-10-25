@@ -1553,6 +1553,91 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizWordTouchFirst => 'Toca la palabra de color';
 
   @override
+  String get quizBarModelLabel => 'Esquema de barras de la historia';
+
+  @override
+  String quizBarRoleName(String role) {
+    String _temp0 = intl.Intl.selectLogic(
+      role,
+      {
+        'whole': 'el todo',
+        'partA': 'una parte',
+        'partB': 'la otra parte',
+        'big': 'el más grande',
+        'small': 'el más pequeño',
+        'gap': 'la diferencia',
+        'total': 'el total',
+        'groups': 'cuántos grupos',
+        'each': 'en cada grupo',
+        'times': 'cuántas veces',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBarSlotEmpty(String name) {
+    return '$name: por completar';
+  }
+
+  @override
+  String quizBarSlotUnknown(String name) {
+    return '$name: por encontrar';
+  }
+
+  @override
+  String quizBarSlotValue(String name, String value) {
+    return '$name: $value';
+  }
+
+  @override
+  String get quizProblemSolveLabel => 'Resuelve el problema';
+
+  @override
+  String get quizBarModelQuestionLabel => 'Haz el esquema';
+
+  @override
+  String quizProblemStepCounter(int current, int total) {
+    return 'Paso $current de $total';
+  }
+
+  @override
+  String get quizProblemStepListen =>
+      'Escucha la historia y toca las palabras de color';
+
+  @override
+  String get quizProblemStepModel =>
+      'Pon los números de la historia en el esquema';
+
+  @override
+  String get quizProblemStepOperation =>
+      '¿Qué operación encuentra la respuesta?';
+
+  @override
+  String get quizProblemStepCompute => 'Calcula la respuesta';
+
+  @override
+  String get quizProblemStepCheck => 'Comprueba tu respuesta';
+
+  @override
+  String get quizProblemListened => 'Ya escuché';
+
+  @override
+  String get quizProblemChecked => 'Ya comprobé';
+
+  @override
+  String get quizProblemPickNumberFirst =>
+      'Toca un número y luego su lugar en el esquema';
+
+  @override
+  String get quizProblemTryAgain =>
+      'Ahí no. Lee la historia otra vez y mira el esquema.';
+
+  @override
+  String get quizProblemRecapTitle => 'El esquema de la historia';
+
+  @override
   String get quizCompareLess => 'menor';
 
   @override
@@ -2274,6 +2359,53 @@ class AppLocalizationsEs extends AppLocalizations {
         'group': 'Los paquetes del mismo tamaño son grupos iguales. Las palabras «dans chaque» y «par paquets de» los anuncian.',
         'share': 'Repartir es hacer partes iguales: cada uno recibe tanto como los demás.',
         'ask': 'Estas palabras dicen qué buscamos («combien», «le total») o cuándo pasa («au départ», «à la fin»).',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get problemsDomainName => 'Problemas';
+
+  @override
+  String get masteryGridTitleProblems => 'Mis problemas';
+
+  @override
+  String problemsUnitName(String operation, String level) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Sumar',
+        'subtract': 'Quitar',
+        'multiply': 'Agrupar',
+        'divide': 'Repartir',
+        'trap': 'Las trampas',
+        'other': '',
+      },
+    );
+    String _temp1 = intl.Intl.selectLogic(
+      level,
+      {
+        '1': 'con dibujos',
+        '2': 'frases cortas',
+        '3': 'enunciados',
+        'other': '',
+      },
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String problemsUnitTip(String operation) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Cuando juntamos cantidades, tenemos más que antes. Dibuja el todo y sus partes.',
+        'subtract': 'Cuando quitamos, queda menos. Dibuja el todo, la parte que se va y la que queda.',
+        'multiply': 'Grupos iguales: dibuja los grupos, todos del mismo tamaño, y halla el total.',
+        'divide': 'Repartir en partes iguales, o buscar cuántas partes: dibuja el todo cortado en partes.',
+        'trap': 'Cuidado: una palabra de la historia puede engañarte. Dibuja el esquema para ver qué pasa de verdad.',
         'other': '',
       },
     );

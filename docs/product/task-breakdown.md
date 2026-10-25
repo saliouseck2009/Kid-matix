@@ -749,7 +749,7 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 - [x] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
 - [x] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
 - [x] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
-- [ ] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
+- [x] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
 - [x] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.
 
 **Terminé quand :** sur une tablette, un enseignant crée une classe de 30 élèves et donne un devoir sur les additions jusqu'à 20 ; trois élèves jouent, et le tableau de bord montre qui bloque et sur quels faits.
@@ -758,16 +758,16 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 
 Les enfants apprennent à comprendre une situation, pas à réagir à un mot-clé : énoncés du quotidien, schémas en barres et résolution guidée.
 
-- [ ] **F30-01** Contenu `docs/product/problems.md` : une trentaine de problèmes en trois niveaux (avec images, phrase courte, énoncé complet), dans des contextes d'ici (marché, francs CFA, mangues, car rapide, Tabaski, thé) avec des prénoms d'ici ; colonnes pour l'audio wolof enregistré par le propriétaire.
-- [ ] **F30-02** Gabarits de problèmes avec des nombres tirés au sort, pour varier les énoncés ; clé stable par gabarit. Les versions enregistrées en wolof ont des nombres fixes ; les variantes générées sont lues en français par la synthèse vocale (F23).
-- [ ] **F30-03** Type « Schéma en barres » : placer les nombres sur le tout et les parties, choisir l'opération, puis calculer.
-- [ ] **F30-04** Résolution guidée en étapes : écouter, faire le schéma, choisir l'opération, calculer, vérifier.
-- [ ] **F30-05** Dans chaque énoncé, les mots des maths (F28) se touchent ; bouton « Écouter en wolof » sur les énoncés enregistrés.
-- [ ] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
-- [ ] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
-- [ ] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
+- [x] **F30-01** Contenu `docs/product/problems.md` : une trentaine de problèmes en trois niveaux (avec images, phrase courte, énoncé complet), dans des contextes d'ici (marché, francs CFA, mangues, car rapide, Tabaski, thé) avec des prénoms d'ici ; colonnes pour l'audio wolof enregistré par le propriétaire.
+- [x] **F30-02** Gabarits de problèmes avec des nombres tirés au sort, pour varier les énoncés ; clé stable par gabarit. Les versions enregistrées en wolof ont des nombres fixes ; les variantes générées sont lues en français par la synthèse vocale (F23).
+- [x] **F30-03** Type « Schéma en barres » : placer les nombres sur le tout et les parties, choisir l'opération, puis calculer.
+- [x] **F30-04** Résolution guidée en étapes : écouter, faire le schéma, choisir l'opération, calculer, vérifier.
+- [x] **F30-05** Dans chaque énoncé, les mots des maths (F28) se touchent ; bouton « Écouter en wolof » sur les énoncés enregistrés.
+- [x] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
+- [x] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
+- [x] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
 - [ ] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
-- [ ] **F30-10** Tests : gabarits sans ambiguïté, schéma, étapes, piège du mot-clé.
+- [x] **F30-10** Tests : gabarits sans ambiguïté, schéma, étapes, piège du mot-clé.
 
 **Terminé quand :** un enfant résout « Awa a 12 mangues, elle en donne 5 » avec le schéma en barres, en écoutant l'énoncé en wolof, puis réussit la version piège du même problème.
 

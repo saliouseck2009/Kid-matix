@@ -40,6 +40,7 @@ final class StageDefinition {
         ..._numberTypes,
         QuestionTypeIds.touchToUnderstand,
         QuestionTypeIds.listenAndTouch,
+        QuestionTypeIds.solveProblem,
       ],
       selection: QuizSelection.inOrder,
     ),
@@ -50,6 +51,7 @@ final class StageDefinition {
         QuestionTypeIds.trueFalse,
         ..._numberTypes,
         ..._wordTypes,
+        ..._problemTypes,
       ],
       selection: QuizSelection.shuffled,
     ),
@@ -62,6 +64,7 @@ final class StageDefinition {
         QuestionTypeIds.whichOperation,
         QuestionTypeIds.wordAndImage,
         QuestionTypeIds.listenAndTouch,
+        ..._problemTypes,
       ],
       selection: QuizSelection.shuffled,
     ),
@@ -86,6 +89,7 @@ final class StageDefinition {
       ..._versionOneTypes,
       ..._numberTypes,
       ..._wordTypes,
+      ..._problemTypes,
     ],
     selection: QuizSelection.mastery,
     questionCount: reviewQuestionCount,
@@ -125,6 +129,14 @@ final class StageDefinition {
     QuestionTypeIds.whichOperation,
   ];
 
+  /// The formats of the word problems (lot F30) other than the guided
+  /// solving, which is the lesson of the Discovery stage: the bar model
+  /// and the choice of the operation of a statement.
+  static const List<String> _problemTypes = <String>[
+    QuestionTypeIds.barModel,
+    QuestionTypeIds.problemOperation,
+  ];
+
   /// The formats of the math words that suit a timed stage: a sentence to
   /// explore or a long statement does not fit the speed stage nor the
   /// boss arena.
@@ -141,6 +153,7 @@ final class StageDefinition {
     QuestionTypeIds.matchPairs,
     ..._numberTypes,
     ..._timedWordTypes,
+    QuestionTypeIds.problemOperation,
   ];
 
   /// Which stage it is.

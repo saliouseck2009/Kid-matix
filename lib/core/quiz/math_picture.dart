@@ -1,3 +1,6 @@
+import 'package:kid_matix/core/quiz/bar_model.dart';
+import 'package:kid_matix/core/quiz/math_operator.dart';
+import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:meta/meta.dart';
 
 /// A drawing that goes with a question or a help card, such as objects to
@@ -129,4 +132,107 @@ final class WordPicture extends MathPicture {
 
   @override
   String toString() => 'WordPicture($wordKey)';
+}
+
+/// The bar model of a word problem (lot F30): the numbers of the story on
+/// a whole and its parts, two bars to compare or equal groups.
+///
+/// It holds every number of the drawing, the one to find included
+/// ([unknown]); the screens hide that one while the child works and show
+/// it in the correction. It is also the data of the interactive board:
+/// the places to fill, the operation and the check sentence.
+final class BarModelPicture extends MathPicture {
+  /// Creates the model of [shape] holding [values].
+  BarModelPicture({
+    required this.shape,
+    required Map<BarRole, int> values,
+    required this.unknown,
+    required this.operator,
+    required this.check,
+    this.isRemoval = false,
+  }) : assert(
+         shape.roles.every(values.containsKey),
+         'every place holds a number',
+       ),
+       assert(values.length == shape.roles.length, 'no place of another shape'),
+       values = Map<BarRole, int>.unmodifiable(values);
+
+  /// Which drawing it is.
+  final BarModelShape shape;
+
+  /// The number of each place, by role.
+  final Map<BarRole, int> values;
+
+  /// The place whose number the child looks for.
+  final BarRole unknown;
+
+  /// The operation that finds it.
+  final MathOperator operator;
+
+  /// The sentence of the last step, in French, such as « Vérifie : 5 + 7 =
+  /// 12 ».
+  final String check;
+
+  /// Whether the story takes a part away: the part is drawn cut out.
+  final bool isRemoval;
+
+  /// The number the child looks for.
+  int get answer => values[unknown]!;
+
+  /// The places the story gives, in the order they are shown.
+  List<BarRole> get knownRoles => <BarRole>[
+    for (final BarRole role in shape.roles)
+      if (role != unknown) role,
+  ];
+
+  /// The calculation that finds the answer as a prompt: `12 − 5 = 7`. The
+  /// known numbers come in the order of the places of the model, which is
+  /// the order of the operation (the whole before the part, the total
+  /// before the group).
+  List<PromptToken> get calculation {
+    final List<int> known = <int>[
+      for (final BarRole role in knownRoles) values[role]!,
+    ];
+    return <PromptToken>[
+      NumberToken(known[0]),
+      OperatorToken(operator),
+      NumberToken(known[1]),
+      const EqualsToken(),
+      NumberToken(answer),
+    ];
+  }
+
+  /// Whether the two known places can be filled in either order: the two
+  /// parts of a whole whose total is the question.
+  bool get hasInterchangeableParts =>
+      shape == BarModelShape.partWhole && unknown == BarRole.whole;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! BarModelPicture) return false;
+    if (other.shape != shape ||
+        other.unknown != unknown ||
+        other.operator != operator ||
+        other.check != check ||
+        other.isRemoval != isRemoval) {
+      return false;
+    }
+    return shape.roles.every(
+      (BarRole role) => other.values[role] == values[role],
+    );
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shape,
+    unknown,
+    operator,
+    check,
+    isRemoval,
+    Object.hashAll(shape.roles.map((BarRole role) => values[role])),
+  );
+
+  @override
+  String toString() => 'BarModelPicture($shape, $values, ?$unknown)';
 }

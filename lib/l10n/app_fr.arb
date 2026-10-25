@@ -2104,6 +2104,116 @@
   "@quizWordTouchFirst": {
     "description": "Reminder shown on a \"Tap to understand\" question until the child has touched the main word of the sentence (\"Tap the colored word\")."
   },
+  "quizBarModelLabel": "Schéma en barres de l'histoire",
+  "@quizBarModelLabel": {
+    "description": "What a screen reader says for the bar model drawing of a word problem (bars that show the whole and its parts, or equal groups). Short noun phrase."
+  },
+  "quizBarRoleName": "{role, select, whole{le tout} partA{une partie} partB{l'autre partie} big{le plus grand} small{le plus petit} gap{l'écart} total{le total} groups{combien de groupes} each{dans chaque groupe} times{combien de fois} other{}}",
+  "@quizBarRoleName": {
+    "description": "Small name written in a place of the bar model of a word problem (\"the whole\", \"a part\", \"the other part\", \"the biggest\", \"the smallest\", \"the gap\", \"the total\", \"how many groups\", \"in each group\", \"how many times\"). Lowercase, a few words, no final punctuation. {role} is the place: whole, partA, partB, big, small, gap, total, groups, each or times, never shown.",
+    "placeholders": {
+      "role": {
+        "type": "String",
+        "example": "whole"
+      }
+    }
+  },
+  "quizBarSlotEmpty": "{name} : à remplir",
+  "@quizBarSlotEmpty": {
+    "description": "What a screen reader says for an empty place of the bar model (\"the whole: to fill in\"). {name} is the name of the place.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "le tout"
+      }
+    }
+  },
+  "quizBarSlotUnknown": "{name} : à trouver",
+  "@quizBarSlotUnknown": {
+    "description": "What a screen reader says for the place of the bar model whose number is the answer to find (\"the whole: to find\"). {name} is the name of the place.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "le tout"
+      }
+    }
+  },
+  "quizBarSlotValue": "{name} : {value}",
+  "@quizBarSlotValue": {
+    "description": "What a screen reader says for a filled place of the bar model (\"the whole: 12\"). {name} is the name of the place, {value} its number.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "le tout"
+      },
+      "value": {
+        "type": "String",
+        "example": "12"
+      }
+    }
+  },
+  "quizProblemSolveLabel": "Résous le problème",
+  "@quizProblemSolveLabel": {
+    "description": "Label of a question where the child solves a word problem step by step (\"Solve the problem\"). Short, imperative."
+  },
+  "quizBarModelQuestionLabel": "Fais le schéma",
+  "@quizBarModelQuestionLabel": {
+    "description": "Label of a question where the child fills the bar model of a word problem, picks the operation and computes (\"Draw the model\"). Short, imperative."
+  },
+  "quizProblemStepCounter": "Étape {current} sur {total}",
+  "@quizProblemStepCounter": {
+    "description": "Small line above the step of a word problem being solved (\"Step 2 of 5\").",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "quizProblemStepListen": "Écoute l'histoire et touche les mots en couleur",
+  "@quizProblemStepListen": {
+    "description": "Instruction of the first step of a guided word problem: listen to the statement and touch the colored math words. Imperative, informal \"tu\"."
+  },
+  "quizProblemStepModel": "Pose les nombres de l'histoire sur le schéma",
+  "@quizProblemStepModel": {
+    "description": "Instruction of the step where the child puts the numbers of a word problem on the places of the bar model. Imperative, informal \"tu\"."
+  },
+  "quizProblemStepOperation": "Quelle opération trouve la réponse ?",
+  "@quizProblemStepOperation": {
+    "description": "Instruction of the step where the child picks +, −, × or ÷ for a word problem. Question, informal."
+  },
+  "quizProblemStepCompute": "Calcule la réponse",
+  "@quizProblemStepCompute": {
+    "description": "Instruction of the step where the child picks the result of the calculation of a word problem among four numbers (\"Work out the answer\"). Imperative, informal \"tu\"."
+  },
+  "quizProblemStepCheck": "Vérifie ta réponse",
+  "@quizProblemStepCheck": {
+    "description": "Title of the last step of a guided word problem, above the check sentence (\"Check your answer\"). Imperative, informal \"tu\"."
+  },
+  "quizProblemListened": "J'ai écouté",
+  "@quizProblemListened": {
+    "description": "Button that ends the listening step of a guided word problem (\"I listened\"). Short."
+  },
+  "quizProblemChecked": "J'ai vérifié",
+  "@quizProblemChecked": {
+    "description": "Button that ends the check step of a guided word problem (\"I checked\"). Short."
+  },
+  "quizProblemPickNumberFirst": "Touche un nombre, puis sa place sur le schéma",
+  "@quizProblemPickNumberFirst": {
+    "description": "Hint under the numbers to place on the bar model: touch a number, then the place it goes. Imperative, informal \"tu\"."
+  },
+  "quizProblemTryAgain": "Pas là. Relis l'histoire et regarde le schéma.",
+  "@quizProblemTryAgain": {
+    "description": "Kind message after a wrong touch on a step of a word problem. Never says that a word means an operation: it sends the child back to the story and the drawing. Informal \"tu\"."
+  },
+  "quizProblemRecapTitle": "Le schéma de l'histoire",
+  "@quizProblemRecapTitle": {
+    "description": "Title above the finished bar model shown with the correction of a word problem (\"The model of the story\")."
+  },
   "quizCompareLess": "plus petit",
   "@quizCompareLess": {
     "description": "Caption under the button < of a comparison question, also what a screen reader says for it (\"less\"): the first number is smaller than the second. Two short words at most, lowercase."
@@ -2957,6 +3067,38 @@
     "description": "Tip of a unit of the math words domain, shown on its Discovery page under all its words. One or two short sentences for a child of 6 to 9, informal \"tu\". The French words in « » are the math words themselves, kept in French in every language, since the child learns them in French. {unit} is the slug of the unit, never shown: add, remove, compare, group, share, ask.",
     "placeholders": {
       "unit": {
+        "type": "String",
+        "example": "add"
+      }
+    }
+  },
+  "problemsDomainName": "Problèmes",
+  "@problemsDomainName": {
+    "description": "Name of the word problems domain in the switch of the domains above the map and above the Profile progress cards (\"Problems\"). One word, a segment label."
+  },
+  "masteryGridTitleProblems": "Mes problèmes",
+  "@masteryGridTitleProblems": {
+    "description": "Title of the mastery grid card of the Profile tab when the word problems domain is chosen above it (\"My problems\"): one row per unit, one cell per problem colored by how well it is known. Short title."
+  },
+  "problemsUnitName": "{operation, select, add{Ajouter} subtract{Enlever} multiply{Grouper} divide{Partager} trap{Les pièges} other{}} · {level, select, 1{avec images} 2{phrases courtes} 3{énoncés} other{}}",
+  "@problemsUnitName": {
+    "description": "Name of a unit of the word problems path, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile (\"Add · with images\", \"Take away · short sentences\", \"The traps · full statements\"). {operation} is add, subtract, multiply or divide (the real operation of the problems of the unit), or trap for the unit of the trap problems whose keyword suggests another operation; {level} is 1 (problems told with images), 2 (short sentences) or 3 (full statements). Both are slugs, never shown. Short title.",
+    "placeholders": {
+      "operation": {
+        "type": "String",
+        "example": "add"
+      },
+      "level": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  },
+  "problemsUnitTip": "{operation, select, add{Quand on réunit des quantités, on en a plus qu'avant. Dessine le tout et ses parties.} subtract{Quand on enlève, il en reste moins. Dessine le tout, la partie qui s'en va et celle qui reste.} multiply{Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.} divide{Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.} trap{Attention : un mot de l'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.} other{}}",
+  "@problemsUnitTip": {
+    "description": "Tip of a unit of the word problems path, shown at its Discovery stage, by operation. Never says that a word means an operation: it asks to draw the story. {operation} is the slug add, subtract, multiply, divide or trap (the unit of the traps), never shown.",
+    "placeholders": {
+      "operation": {
         "type": "String",
         "example": "add"
       }

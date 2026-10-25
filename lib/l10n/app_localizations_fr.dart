@@ -1554,6 +1554,90 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizWordTouchFirst => 'Touche le mot en couleur';
 
   @override
+  String get quizBarModelLabel => 'Schéma en barres de l\'histoire';
+
+  @override
+  String quizBarRoleName(String role) {
+    String _temp0 = intl.Intl.selectLogic(
+      role,
+      {
+        'whole': 'le tout',
+        'partA': 'une partie',
+        'partB': 'l\'autre partie',
+        'big': 'le plus grand',
+        'small': 'le plus petit',
+        'gap': 'l\'écart',
+        'total': 'le total',
+        'groups': 'combien de groupes',
+        'each': 'dans chaque groupe',
+        'times': 'combien de fois',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBarSlotEmpty(String name) {
+    return '$name : à remplir';
+  }
+
+  @override
+  String quizBarSlotUnknown(String name) {
+    return '$name : à trouver';
+  }
+
+  @override
+  String quizBarSlotValue(String name, String value) {
+    return '$name : $value';
+  }
+
+  @override
+  String get quizProblemSolveLabel => 'Résous le problème';
+
+  @override
+  String get quizBarModelQuestionLabel => 'Fais le schéma';
+
+  @override
+  String quizProblemStepCounter(int current, int total) {
+    return 'Étape $current sur $total';
+  }
+
+  @override
+  String get quizProblemStepListen =>
+      'Écoute l\'histoire et touche les mots en couleur';
+
+  @override
+  String get quizProblemStepModel =>
+      'Pose les nombres de l\'histoire sur le schéma';
+
+  @override
+  String get quizProblemStepOperation => 'Quelle opération trouve la réponse ?';
+
+  @override
+  String get quizProblemStepCompute => 'Calcule la réponse';
+
+  @override
+  String get quizProblemStepCheck => 'Vérifie ta réponse';
+
+  @override
+  String get quizProblemListened => 'J\'ai écouté';
+
+  @override
+  String get quizProblemChecked => 'J\'ai vérifié';
+
+  @override
+  String get quizProblemPickNumberFirst =>
+      'Touche un nombre, puis sa place sur le schéma';
+
+  @override
+  String get quizProblemTryAgain =>
+      'Pas là. Relis l\'histoire et regarde le schéma.';
+
+  @override
+  String get quizProblemRecapTitle => 'Le schéma de l\'histoire';
+
+  @override
   String get quizCompareLess => 'plus petit';
 
   @override
@@ -2278,6 +2362,53 @@ class AppLocalizationsFr extends AppLocalizations {
         'group': 'Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.',
         'share': 'Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.',
         'ask': 'Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get problemsDomainName => 'Problèmes';
+
+  @override
+  String get masteryGridTitleProblems => 'Mes problèmes';
+
+  @override
+  String problemsUnitName(String operation, String level) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Ajouter',
+        'subtract': 'Enlever',
+        'multiply': 'Grouper',
+        'divide': 'Partager',
+        'trap': 'Les pièges',
+        'other': '',
+      },
+    );
+    String _temp1 = intl.Intl.selectLogic(
+      level,
+      {
+        '1': 'avec images',
+        '2': 'phrases courtes',
+        '3': 'énoncés',
+        'other': '',
+      },
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String problemsUnitTip(String operation) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Quand on réunit des quantités, on en a plus qu\'avant. Dessine le tout et ses parties.',
+        'subtract': 'Quand on enlève, il en reste moins. Dessine le tout, la partie qui s\'en va et celle qui reste.',
+        'multiply': 'Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.',
+        'divide': 'Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.',
+        'trap': 'Attention : un mot de l\'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.',
         'other': '',
       },
     );

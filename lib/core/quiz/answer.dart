@@ -181,3 +181,25 @@ final class OperatorAnswer extends Answer {
   @override
   String toString() => 'OperatorAnswer(${operator.name})';
 }
+
+/// A word problem solved on its board (lot F30): the steps done, with the
+/// number of mistakes made on the way. The right answer is the one with no
+/// mistake, as for the pairs.
+final class ProblemAnswer extends Answer {
+  /// Creates the answer of a board solved with [mistakeCount] mistakes.
+  const ProblemAnswer({this.mistakeCount = 0});
+
+  /// Wrong touches made on the way.
+  final int mistakeCount;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProblemAnswer && other.mistakeCount == mistakeCount;
+
+  @override
+  int get hashCode => mistakeCount.hashCode;
+
+  @override
+  String toString() => 'ProblemAnswer($mistakeCount)';
+}

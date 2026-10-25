@@ -1545,6 +1545,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizWordTouchFirst => 'Tap the colored word';
 
   @override
+  String get quizBarModelLabel => 'Bar model of the story';
+
+  @override
+  String quizBarRoleName(String role) {
+    String _temp0 = intl.Intl.selectLogic(
+      role,
+      {
+        'whole': 'the whole',
+        'partA': 'a part',
+        'partB': 'the other part',
+        'big': 'the biggest',
+        'small': 'the smallest',
+        'gap': 'the gap',
+        'total': 'the total',
+        'groups': 'how many groups',
+        'each': 'in each group',
+        'times': 'how many times',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizBarSlotEmpty(String name) {
+    return '$name: to fill in';
+  }
+
+  @override
+  String quizBarSlotUnknown(String name) {
+    return '$name: to find';
+  }
+
+  @override
+  String quizBarSlotValue(String name, String value) {
+    return '$name: $value';
+  }
+
+  @override
+  String get quizProblemSolveLabel => 'Solve the problem';
+
+  @override
+  String get quizBarModelQuestionLabel => 'Draw the model';
+
+  @override
+  String quizProblemStepCounter(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get quizProblemStepListen =>
+      'Listen to the story and touch the colored words';
+
+  @override
+  String get quizProblemStepModel =>
+      'Put the numbers of the story on the model';
+
+  @override
+  String get quizProblemStepOperation => 'Which operation finds the answer?';
+
+  @override
+  String get quizProblemStepCompute => 'Work out the answer';
+
+  @override
+  String get quizProblemStepCheck => 'Check your answer';
+
+  @override
+  String get quizProblemListened => 'I listened';
+
+  @override
+  String get quizProblemChecked => 'I checked';
+
+  @override
+  String get quizProblemPickNumberFirst =>
+      'Touch a number, then its place on the model';
+
+  @override
+  String get quizProblemTryAgain =>
+      'Not there. Read the story again and look at the model.';
+
+  @override
+  String get quizProblemRecapTitle => 'The model of the story';
+
+  @override
   String get quizCompareLess => 'less';
 
   @override
@@ -2267,6 +2351,53 @@ class AppLocalizationsEn extends AppLocalizations {
         'group': 'Packs of the same size are equal groups. The words “dans chaque” and “par paquets de” announce them.',
         'share': 'To share is to make equal parts: everyone gets as much as the others.',
         'ask': 'These words say what we look for (“combien”, “le total”) or when it happens (“au départ”, “à la fin”).',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get problemsDomainName => 'Problems';
+
+  @override
+  String get masteryGridTitleProblems => 'My problems';
+
+  @override
+  String problemsUnitName(String operation, String level) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Add',
+        'subtract': 'Take away',
+        'multiply': 'Group',
+        'divide': 'Share',
+        'trap': 'The traps',
+        'other': '',
+      },
+    );
+    String _temp1 = intl.Intl.selectLogic(
+      level,
+      {
+        '1': 'with pictures',
+        '2': 'short sentences',
+        '3': 'full statements',
+        'other': '',
+      },
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String problemsUnitTip(String operation) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'When we put quantities together, we have more than before. Draw the whole and its parts.',
+        'subtract': 'When we take away, less is left. Draw the whole, the part that goes and the part that stays.',
+        'multiply': 'Equal groups: draw the groups, all the same size, and find the total.',
+        'divide': 'Sharing into equal parts, or finding how many parts: draw the whole cut into parts.',
+        'trap': 'Careful: a word in the story can fool you. Draw the model to see what really happens.',
         'other': '',
       },
     );

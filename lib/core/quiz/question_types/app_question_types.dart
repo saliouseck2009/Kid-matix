@@ -2,6 +2,7 @@ import 'package:kid_matix/core/quiz/question_type.dart';
 import 'package:kid_matix/core/quiz/question_types/find_operation_question_type.dart';
 import 'package:kid_matix/core/quiz/question_types/match_pairs_question_type.dart';
 import 'package:kid_matix/core/quiz/question_types/number_question_types.dart';
+import 'package:kid_matix/core/quiz/question_types/problem_question_types.dart';
 import 'package:kid_matix/core/quiz/question_types/version_one_question_types.dart';
 import 'package:kid_matix/core/quiz/question_types/word_question_types.dart';
 
@@ -14,4 +15,5 @@ const List<QuestionType> appQuestionTypes = <QuestionType>[
   MatchPairsQuestionType(),
   ...numberQuestionTypes,
   ...wordQuestionTypes,
+  ...problemQuestionTypes,
 ];

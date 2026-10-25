@@ -2295,6 +2295,114 @@ abstract class AppLocalizations {
   /// **'Touche le mot en couleur'**
   String get quizWordTouchFirst;
 
+  /// What a screen reader says for the bar model drawing of a word problem (bars that show the whole and its parts, or equal groups). Short noun phrase.
+  ///
+  /// In fr, this message translates to:
+  /// **'Schéma en barres de l\'histoire'**
+  String get quizBarModelLabel;
+
+  /// Small name written in a place of the bar model of a word problem ("the whole", "a part", "the other part", "the biggest", "the smallest", "the gap", "the total", "how many groups", "in each group", "how many times"). Lowercase, a few words, no final punctuation. {role} is the place: whole, partA, partB, big, small, gap, total, groups, each or times, never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{role, select, whole{le tout} partA{une partie} partB{l\'autre partie} big{le plus grand} small{le plus petit} gap{l\'écart} total{le total} groups{combien de groupes} each{dans chaque groupe} times{combien de fois} other{}}'**
+  String quizBarRoleName(String role);
+
+  /// What a screen reader says for an empty place of the bar model ("the whole: to fill in"). {name} is the name of the place.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : à remplir'**
+  String quizBarSlotEmpty(String name);
+
+  /// What a screen reader says for the place of the bar model whose number is the answer to find ("the whole: to find"). {name} is the name of the place.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : à trouver'**
+  String quizBarSlotUnknown(String name);
+
+  /// What a screen reader says for a filled place of the bar model ("the whole: 12"). {name} is the name of the place, {value} its number.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : {value}'**
+  String quizBarSlotValue(String name, String value);
+
+  /// Label of a question where the child solves a word problem step by step ("Solve the problem"). Short, imperative.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résous le problème'**
+  String get quizProblemSolveLabel;
+
+  /// Label of a question where the child fills the bar model of a word problem, picks the operation and computes ("Draw the model"). Short, imperative.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fais le schéma'**
+  String get quizBarModelQuestionLabel;
+
+  /// Small line above the step of a word problem being solved ("Step 2 of 5").
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {current} sur {total}'**
+  String quizProblemStepCounter(int current, int total);
+
+  /// Instruction of the first step of a guided word problem: listen to the statement and touch the colored math words. Imperative, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Écoute l\'histoire et touche les mots en couleur'**
+  String get quizProblemStepListen;
+
+  /// Instruction of the step where the child puts the numbers of a word problem on the places of the bar model. Imperative, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Pose les nombres de l\'histoire sur le schéma'**
+  String get quizProblemStepModel;
+
+  /// Instruction of the step where the child picks +, −, × or ÷ for a word problem. Question, informal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle opération trouve la réponse ?'**
+  String get quizProblemStepOperation;
+
+  /// Instruction of the step where the child picks the result of the calculation of a word problem among four numbers ("Work out the answer"). Imperative, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Calcule la réponse'**
+  String get quizProblemStepCompute;
+
+  /// Title of the last step of a guided word problem, above the check sentence ("Check your answer"). Imperative, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifie ta réponse'**
+  String get quizProblemStepCheck;
+
+  /// Button that ends the listening step of a guided word problem ("I listened"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai écouté'**
+  String get quizProblemListened;
+
+  /// Button that ends the check step of a guided word problem ("I checked"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai vérifié'**
+  String get quizProblemChecked;
+
+  /// Hint under the numbers to place on the bar model: touch a number, then the place it goes. Imperative, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche un nombre, puis sa place sur le schéma'**
+  String get quizProblemPickNumberFirst;
+
+  /// Kind message after a wrong touch on a step of a word problem. Never says that a word means an operation: it sends the child back to the story and the drawing. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas là. Relis l\'histoire et regarde le schéma.'**
+  String get quizProblemTryAgain;
+
+  /// Title above the finished bar model shown with the correction of a word problem ("The model of the story").
+  ///
+  /// In fr, this message translates to:
+  /// **'Le schéma de l\'histoire'**
+  String get quizProblemRecapTitle;
+
   /// Caption under the button < of a comparison question, also what a screen reader says for it ("less"): the first number is smaller than the second. Two short words at most, lowercase.
   ///
   /// In fr, this message translates to:
@@ -3086,6 +3194,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{unit, select, add{Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.} remove{Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.} compare{Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.} group{Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.} share{Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.} ask{Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).} other{}}'**
   String mathWordsUnitTip(String unit);
+
+  /// Name of the word problems domain in the switch of the domains above the map and above the Profile progress cards ("Problems"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problèmes'**
+  String get problemsDomainName;
+
+  /// Title of the mastery grid card of the Profile tab when the word problems domain is chosen above it ("My problems"): one row per unit, one cell per problem colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes problèmes'**
+  String get masteryGridTitleProblems;
+
+  /// Name of a unit of the word problems path, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Add · with images", "Take away · short sentences", "The traps · full statements"). {operation} is add, subtract, multiply or divide (the real operation of the problems of the unit), or trap for the unit of the trap problems whose keyword suggests another operation; {level} is 1 (problems told with images), 2 (short sentences) or 3 (full statements). Both are slugs, never shown. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'{operation, select, add{Ajouter} subtract{Enlever} multiply{Grouper} divide{Partager} trap{Les pièges} other{}} · {level, select, 1{avec images} 2{phrases courtes} 3{énoncés} other{}}'**
+  String problemsUnitName(String operation, String level);
+
+  /// Tip of a unit of the word problems path, shown at its Discovery stage, by operation. Never says that a word means an operation: it asks to draw the story. {operation} is the slug add, subtract, multiply, divide or trap (the unit of the traps), never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{operation, select, add{Quand on réunit des quantités, on en a plus qu\'avant. Dessine le tout et ses parties.} subtract{Quand on enlève, il en reste moins. Dessine le tout, la partie qui s\'en va et celle qui reste.} multiply{Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.} divide{Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.} trap{Attention : un mot de l\'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.} other{}}'**
+  String problemsUnitTip(String operation);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///
