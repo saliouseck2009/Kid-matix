@@ -4,8 +4,9 @@ import 'package:kid_matix/features/problem/domain/entities/problem_unit.dart';
 
 /// The problems of the domain and the units of their path.
 ///
-/// The path goes level by level; inside a level, one unit per operation
-/// (+, −, ×, ÷) that has problems, then the traps of the level.
+/// The path goes level by level; inside a level, two units of plain
+/// problems (additions and subtractions, then multiplications and
+/// divisions), then the traps of the level.
 final class ProblemCatalog {
   /// Creates the catalog of [problems], in the order of the content table;
   /// throws a [FormatException] when two share a key or a trap names a twin

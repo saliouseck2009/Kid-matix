@@ -53,29 +53,43 @@ class BarModelView extends StatelessWidget {
           picture: picture,
           top: BarRole.whole,
           bottom: const <BarRole>[BarRole.partA, BarRole.partB],
-          slotOf: _slot,
+          slotOf: _place,
         ),
         BarModelShape.compare => PartWholeModel(
           picture: picture,
           top: BarRole.big,
           bottom: const <BarRole>[BarRole.small, BarRole.gap],
-          slotOf: _slot,
+          slotOf: _place,
         ),
         BarModelShape.groups => GroupsModel(
           picture: picture,
           showsAnswer: showsAnswer,
-          slotOf: _slot,
+          slotOf: _place,
         ),
-        BarModelShape.ratio => RatioModel(picture: picture, slotOf: _slot),
+        BarModelShape.ratio => RatioModel(picture: picture, slotOf: _place),
       },
     );
   }
 
-  Widget _slot(BarRole role) {
+  Widget _place(BarRole role) => _ViewSlot(view: this, role: role);
+}
+
+/// The place [role] of the model drawn by [view].
+class _ViewSlot extends StatelessWidget {
+  const _ViewSlot({required this.view, required this.role});
+
+  final BarModelView view;
+  final BarRole role;
+
+  @override
+  Widget build(BuildContext context) {
+    final BarModelPicture picture = view.picture;
+    final Map<BarRole, int>? placed = view.placed;
     final bool isUnknown = role == picture.unknown;
-    final bool isFilled = placed == null || placed!.containsKey(role);
-    final bool isShown = isUnknown ? showsAnswer : isFilled;
+    final bool isFilled = placed == null || placed.containsKey(role);
+    final bool isShown = isUnknown ? view.showsAnswer : isFilled;
     final int? number = isUnknown ? picture.values[role] : placed?[role];
+    final ValueChanged<BarRole>? onSlotTap = view.onSlotTap;
     return BarModelSlot(
       key: ValueKey<String>('slot-${role.name}'),
       role: role,
@@ -83,14 +97,14 @@ class BarModelView extends StatelessWidget {
           ? '${number ?? picture.values[role]}'
           : (isUnknown ? '?' : ''),
       state: isUnknown
-          ? (showsAnswer ? BarSlotState.answer : BarSlotState.unknown)
+          ? (view.showsAnswer ? BarSlotState.answer : BarSlotState.unknown)
           : (isFilled ? BarSlotState.filled : BarSlotState.empty),
-      isWrong: wrongRole == role,
-      wrongCount: wrongCount,
+      isWrong: view.wrongRole == role,
+      wrongCount: view.wrongCount,
       isDashed:
           role == BarRole.gap || (picture.isRemoval && role == BarRole.partA),
       onTap: !isUnknown && !isFilled && onSlotTap != null
-          ? () => onSlotTap!(role)
+          ? () => onSlotTap(role)
           : null,
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/bar_model.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/question.dart';
@@ -86,7 +87,15 @@ class _ProblemBoardState extends State<ProblemBoard> {
             ?widget.listenButton,
           ],
         ),
-        Expanded(child: _page(context, step)),
+        Expanded(
+          child: _ProblemPage(
+            question: widget.question,
+            languageCode: widget.languageCode,
+            progress: _progress,
+            onPlace: (BarRole role) =>
+                _update(() => _progress.placeSelected(role)),
+          ),
+        ),
         ProblemStepChoices(
           progress: _progress,
           results: widget.question.choices,
@@ -105,10 +114,26 @@ class _ProblemBoardState extends State<ProblemBoard> {
       ],
     );
   }
+}
 
-  /// The statement, the instruction of the step and the model.
-  Widget _page(BuildContext context, ProblemStep step) {
+/// The statement, the instruction of the step and the model.
+class _ProblemPage extends StatelessWidget {
+  const _ProblemPage({
+    required this.question,
+    required this.languageCode,
+    required this.progress,
+    required this.onPlace,
+  });
+
+  final Question question;
+  final String languageCode;
+  final ProblemBoardProgress progress;
+  final ValueChanged<BarRole> onPlace;
+
+  @override
+  Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final ProblemStep step = progress.step;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -121,15 +146,15 @@ class _ProblemBoardState extends State<ProblemBoard> {
           spacing: AppSizes.space16,
           children: <Widget>[
             ProblemStatement(
-              sentence: widget.question.sentence,
-              languageCode: widget.languageCode,
-              recordingKey: widget.question.recordingKey,
+              sentence: question.sentence,
+              languageCode: languageCode,
+              recordingKey: question.recordingKey,
               isCompact: step != ProblemStep.listen,
             ),
             Text(
               context.l10n.quizProblemStepCounter(
-                _progress.stepIndex + 1,
-                _progress.steps.length,
+                progress.stepIndex + 1,
+                progress.steps.length,
               ),
               style: textTheme.labelLarge?.copyWith(
                 color: context.palette.mutedText,
@@ -138,16 +163,14 @@ class _ProblemBoardState extends State<ProblemBoard> {
             Text(_instruction(context, step), style: textTheme.titleMedium),
             if (step != ProblemStep.listen)
               BarModelView(
-                picture: _progress.model,
-                placed: _progress.placed,
-                showsAnswer: _progress.isComputed || step == ProblemStep.check,
-                wrongRole: _progress.wrongRole,
-                wrongCount: _progress.mistakeCount,
-                onSlotTap: step == ProblemStep.model
-                    ? (role) => _update(() => _progress.placeSelected(role))
-                    : null,
+                picture: progress.model,
+                placed: progress.placed,
+                showsAnswer: progress.isComputed || step == ProblemStep.check,
+                wrongRole: progress.wrongRole,
+                wrongCount: progress.mistakeCount,
+                onSlotTap: step == ProblemStep.model ? onPlace : null,
               ),
-            if (_progress.lastTouchWasWrong)
+            if (progress.lastTouchWasWrong)
               Semantics(
                 liveRegion: true,
                 child: Text(
@@ -160,7 +183,7 @@ class _ProblemBoardState extends State<ProblemBoard> {
                 ),
               ),
             if (step == ProblemStep.check)
-              Text(_progress.model.check, style: textTheme.titleLarge),
+              Text(progress.model.check, style: textTheme.titleLarge),
           ],
         ),
       ),

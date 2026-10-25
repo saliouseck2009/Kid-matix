@@ -38,23 +38,38 @@ class ProblemStepChoices extends StatelessWidget {
   /// Called with a result.
   final ValueChanged<int> onNumber;
 
-  /// Part of the calculation shown before its result: `12 − 5 =`.
-  static const int calculationStart = 4;
-
   @override
   Widget build(BuildContext context) {
     return switch (progress.step) {
-      ProblemStep.model => _tiles(context),
-      ProblemStep.operation => _wrap(<Widget>[
-        for (final OperatorAnswer answer in OperatorAnswer.all)
-          _operator(context, answer.operator),
-      ]),
-      ProblemStep.compute => _compute(context),
+      ProblemStep.model => _TileChoices(progress: progress, onTile: onTile),
+      ProblemStep.operation => _ChoiceWrap(
+        children: <Widget>[
+          for (final OperatorAnswer answer in OperatorAnswer.all)
+            _OperatorChoice(
+              progress: progress,
+              operator: answer.operator,
+              onOperator: onOperator,
+            ),
+        ],
+      ),
+      ProblemStep.compute => _ComputeChoices(
+        progress: progress,
+        results: results,
+        onNumber: onNumber,
+      ),
       ProblemStep.listen || ProblemStep.check => const SizedBox.shrink(),
     };
   }
+}
 
-  Widget _wrap(List<Widget> children) {
+/// Choices side by side, wrapping on a narrow screen.
+class _ChoiceWrap extends StatelessWidget {
+  const _ChoiceWrap({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.center,
       spacing: AppSizes.space12,
@@ -62,25 +77,36 @@ class ProblemStepChoices extends StatelessWidget {
       children: children,
     );
   }
+}
 
-  Widget _tiles(BuildContext context) {
+/// The numbers of the story still to put on the model.
+class _TileChoices extends StatelessWidget {
+  const _TileChoices({required this.progress, required this.onTile});
+
+  final ProblemBoardProgress progress;
+  final ValueChanged<int> onTile;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       spacing: AppSizes.space12,
       children: <Widget>[
-        _wrap(<Widget>[
-          for (int index = 0; index < progress.tiles.length; index++)
-            if (!progress.usedTiles.contains(index))
-              ProblemChoiceButton(
-                key: ValueKey<String>('tile-$index'),
-                label: '${progress.tiles[index]}',
-                semanticLabel: '${progress.tiles[index]}',
-                state: progress.selectedTile == index
-                    ? ProblemChoiceState.selected
-                    : ProblemChoiceState.none,
-                onTap: () => onTile(index),
-              ),
-        ]),
+        _ChoiceWrap(
+          children: <Widget>[
+            for (int index = 0; index < progress.tiles.length; index++)
+              if (!progress.usedTiles.contains(index))
+                ProblemChoiceButton(
+                  key: ValueKey<String>('tile-$index'),
+                  label: '${progress.tiles[index]}',
+                  semanticLabel: '${progress.tiles[index]}',
+                  state: progress.selectedTile == index
+                      ? ProblemChoiceState.selected
+                      : ProblemChoiceState.none,
+                  onTap: () => onTile(index),
+                ),
+          ],
+        ),
         Text(
           context.l10n.quizProblemPickNumberFirst,
           textAlign: TextAlign.center,
@@ -91,8 +117,22 @@ class ProblemStepChoices extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _operator(BuildContext context, MathOperator operator) {
+/// One of the four signs.
+class _OperatorChoice extends StatelessWidget {
+  const _OperatorChoice({
+    required this.progress,
+    required this.operator,
+    required this.onOperator,
+  });
+
+  final ProblemBoardProgress progress;
+  final MathOperator operator;
+  final ValueChanged<MathOperator> onOperator;
+
+  @override
+  Widget build(BuildContext context) {
     final List<PromptToken> sign = <PromptToken>[OperatorToken(operator)];
     final bool isWrong = progress.wrongOperators.contains(operator);
     return ProblemChoiceButton(
@@ -103,8 +143,25 @@ class ProblemStepChoices extends StatelessWidget {
       onTap: isWrong ? null : () => onOperator(operator),
     );
   }
+}
 
-  Widget _compute(BuildContext context) {
+/// The calculation to finish and the results to pick from.
+class _ComputeChoices extends StatelessWidget {
+  const _ComputeChoices({
+    required this.progress,
+    required this.results,
+    required this.onNumber,
+  });
+
+  /// Part of the calculation shown before its result: `12 − 5 =`.
+  static const int calculationStart = 4;
+
+  final ProblemBoardProgress progress;
+  final List<Answer> results;
+  final ValueChanged<int> onNumber;
+
+  @override
+  Widget build(BuildContext context) {
     final List<PromptToken> start = progress.model.calculation
         .take(calculationStart)
         .toList();
@@ -117,21 +174,23 @@ class ProblemStepChoices extends StatelessWidget {
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        _wrap(<Widget>[
-          for (final Answer choice in results)
-            if (choice is NumberAnswer)
-              ProblemChoiceButton(
-                key: ValueKey<String>('number-${choice.value}'),
-                label: '${choice.value}',
-                semanticLabel: '${choice.value}',
-                state: progress.wrongNumbers.contains(choice.value)
-                    ? ProblemChoiceState.wrong
-                    : ProblemChoiceState.none,
-                onTap: progress.wrongNumbers.contains(choice.value)
-                    ? null
-                    : () => onNumber(choice.value),
-              ),
-        ]),
+        _ChoiceWrap(
+          children: <Widget>[
+            for (final Answer choice in results)
+              if (choice is NumberAnswer)
+                ProblemChoiceButton(
+                  key: ValueKey<String>('number-${choice.value}'),
+                  label: '${choice.value}',
+                  semanticLabel: '${choice.value}',
+                  state: progress.wrongNumbers.contains(choice.value)
+                      ? ProblemChoiceState.wrong
+                      : ProblemChoiceState.none,
+                  onTap: progress.wrongNumbers.contains(choice.value)
+                      ? null
+                      : () => onNumber(choice.value),
+                ),
+          ],
+        ),
       ],
     );
   }

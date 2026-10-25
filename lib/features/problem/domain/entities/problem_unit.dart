@@ -31,7 +31,7 @@ final class ProblemUnit implements LearningUnit {
   /// The problems of the unit, in the order of the content table.
   final List<ProblemTemplate> problems;
 
-  /// Stable key, such as `probs:add1`; never changes once released.
+  /// Stable key, such as `probs:img1`; never changes once released.
   @override
   String get key => '$keyPrefix:$slug';
 
