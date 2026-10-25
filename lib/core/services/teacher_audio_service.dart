@@ -10,7 +10,8 @@ import 'package:kid_matix/core/error/data_state.dart';
 /// bundled assets are never changed.
 abstract interface class TeacherAudioService {
   /// Codes of the help languages of the app (`assets/audio/packs.json`),
-  /// even those whose pack is still empty.
+  /// even those whose pack is still empty, then those that arrived on
+  /// this device by pack file only.
   List<String> get packLanguages;
 
   /// Whether the bundled pack of [languageCode] holds the recording

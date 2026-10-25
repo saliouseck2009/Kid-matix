@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:archive/archive.dart';
 import 'package:kid_matix/core/entities/word_audio_kind.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
+import 'package:kid_matix/features/math_word/data/datasources/audio_pack_zip.dart';
 import 'package:kid_matix/features/math_word/domain/entities/audio_pack_manifest.dart';
 import 'package:kid_matix/features/math_word/domain/services/word_audio_overrides.dart';
 
@@ -18,13 +18,8 @@ final class TeacherAudioStore implements WordAudioOverrides {
   /// Creates the store in the folder [root] gives.
   TeacherAudioStore({required this._root});
 
-  /// Most bytes of one recording in a pack file (a recording lasts 15 s).
-  static const int maxFileBytes = 2 * 1024 * 1024;
-
-  static const String _manifestName = 'manifest.json';
+  static const String _manifestName = AudioPackZip.manifestName;
   static const String _logName = 'math_word';
-  static final RegExp _language = RegExp(r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})?$');
-  static final RegExp _fileName = RegExp(r'^[A-Za-z0-9_-]+\.m4a$');
 
   final Future<Directory> Function() _root;
   final Map<String, AudioPackManifest> _manifests =
@@ -120,89 +115,59 @@ final class TeacherAudioStore implements WordAudioOverrides {
       throw const NotFoundException(message: 'No recording to export.');
     }
     final Directory folder = await _languageFolder(language);
-    final Archive archive = Archive()
-      ..add(
-        ArchiveFile.bytes(
-          '$language/$_manifestName',
-          utf8.encode(jsonEncode(manifest.toJson())),
-        ),
-      );
-    for (final String name in manifest.fileNames) {
-      archive.add(
-        ArchiveFile.bytes(
-          '$language/$name',
-          await File('${folder.path}/$name').readAsBytes(),
-        ),
-      );
-    }
-    return ZipEncoder().encodeBytes(archive);
+    return AudioPackZip.encode((
+      manifest: manifest,
+      files: <String, List<int>>{
+        for (final String name in manifest.fileNames)
+          name: await File('${folder.path}/$name').readAsBytes(),
+      },
+    ));
   }
 
-  /// Adds the recordings of the zip [bytes]; resolves to how many it
-  /// held. Throws an [InvalidFileException] on anything else than a pack.
+  /// Adds the recordings of the zip [bytes], all or nothing: the whole
+  /// file is checked, then written to a temporary folder, then moved in
+  /// place. Resolves to how many recordings it held; throws an
+  /// [InvalidFileException] on anything else than a pack.
   Future<int> unzip(List<int> bytes) async {
-    final Archive archive = _archiveOf(bytes);
-    int count = 0;
-    for (final ArchiveFile entry in archive.files) {
-      final List<String> parts = entry.name.split('/');
-      if (parts.length != 2 || parts.last != _manifestName) continue;
-      count += await _importLanguage(archive, parts.first, entry);
+    final List<AudioPackContent> packs = AudioPackZip.decode(bytes);
+    final Directory root = await _folderOf();
+    final Directory staging = Directory('${root.path}/.import');
+    if (staging.existsSync()) await staging.delete(recursive: true);
+    await staging.create(recursive: true);
+    try {
+      for (final AudioPackContent pack in packs) {
+        for (final MapEntry<String, List<int>> file in pack.files.entries) {
+          await File('${staging.path}/${pack.manifest.language}_${file.key}')
+              .writeAsBytes(file.value, flush: true);
+        }
+      }
+      int count = 0;
+      for (final AudioPackContent pack in packs) {
+        count += await _moveIn(pack.manifest, staging);
+      }
+      return count;
+    } finally {
+      if (staging.existsSync()) await staging.delete(recursive: true);
     }
-    if (count == 0) {
-      throw const InvalidFileException(message: 'No recording in the pack.');
-    }
-    return count;
   }
 
-  Future<int> _importLanguage(
-    Archive archive,
-    String language,
-    ArchiveFile manifestEntry,
-  ) async {
-    final AudioPackManifest pack = _validManifestOf(language, manifestEntry);
-    final Directory folder = await _languageFolder(language);
-    AudioPackManifest kept = _manifestOf(language);
+  Future<int> _moveIn(AudioPackManifest pack, Directory staging) async {
+    final Directory folder = await _languageFolder(pack.language);
+    AudioPackManifest kept = _manifestOf(pack.language);
     int count = 0;
     for (final String wordKey in pack.wordKeys) {
       for (final WordAudioKind kind in WordAudioKind.values) {
         final String? name = pack.fileOf(wordKey, kind);
         if (name == null) continue;
-        final ArchiveFile? file = archive.findFile('$language/$name');
-        if (file == null || file.size > maxFileBytes) {
-          throw const InvalidFileException(message: 'Bad recording.');
-        }
-        await File('${folder.path}/$name').writeAsBytes(file.content);
+        await File(
+          '${staging.path}/${pack.language}_$name',
+        ).rename('${folder.path}/$name');
         kept = kept.withFile(wordKey, kind, name);
         count++;
       }
     }
     await _save(kept);
     return count;
-  }
-
-  AudioPackManifest _validManifestOf(String language, ArchiveFile entry) {
-    final AudioPackManifest pack;
-    try {
-      pack = AudioPackManifest.fromJson(
-        jsonDecode(utf8.decode(entry.content)) as Map<String, Object?>,
-      );
-    } on Object catch (error) {
-      throw InvalidFileException(message: error.toString());
-    }
-    final bool isSafe =
-        pack.language == language &&
-        _language.hasMatch(language) &&
-        pack.fileNames.every(_fileName.hasMatch);
-    if (!isSafe) throw const InvalidFileException(message: 'Bad manifest.');
-    return pack;
-  }
-
-  static Archive _archiveOf(List<int> bytes) {
-    try {
-      return ZipDecoder().decodeBytes(bytes);
-    } on Object catch (error) {
-      throw InvalidFileException(message: error.toString());
-    }
   }
 
   AudioPackManifest _manifestOf(String language) {
@@ -222,7 +187,7 @@ final class TeacherAudioStore implements WordAudioOverrides {
   }
 
   Future<Directory> _languageFolder(String language) async {
-    if (!_language.hasMatch(language)) {
+    if (!AudioPackZip.language.hasMatch(language)) {
       throw const InvalidFileException(message: 'Bad language code.');
     }
     final Directory folder = Directory('${(await _folderOf()).path}/$language');
