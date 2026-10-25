@@ -72,7 +72,6 @@ void main() {
     final SharedFile actual = await PrintableFiles(l10n: l10n).exerciseSheetOf(
       inputSheet,
       day: DateTime(2026, 11, 2),
-      helpLanguage: 'wo',
     );
     // Assert
     expect(actual.name, 'KidMatix-Exercices-Table-de-7-2026-11-02.pdf');
@@ -87,7 +86,10 @@ void main() {
     final Map<String, Object?> inputFirst =
         (inputJson['words']! as List<Object?>).first! as Map<String, Object?>
           ..['help'] = <String, Object?>{
-            'wo': <String, Object?>{'explanation': '(texte du propriétaire)'},
+            'wo': <String, Object?>{
+              'explanation': '(texte du propriétaire)',
+              'example': '(exemple du propriétaire)',
+            },
           };
     final List<WordCard> actualCards = WordCardServiceImpl(
       catalog: MathWordCatalog.fromJson(inputJson),
@@ -100,6 +102,7 @@ void main() {
     // Assert
     expect(inputFirst['key'], actualCards.first.wordKey);
     expect(actualCards.first.helpExplanations['wo'], '(texte du propriétaire)');
+    expect(actualCards.first.helpExamples['wo'], '(exemple du propriétaire)');
     expect(actualCards[1].helpExplanations, isEmpty);
     expect(
       WordCardServiceImpl(catalog: loadMathWordCatalog())

@@ -17,11 +17,10 @@ typedef PrintableUseCases = ({
   ShareFilesUseCase share,
 });
 
-/// Makes the PDF of [sheet] made on [day] in [helpLanguage].
+/// Makes the PDF of [sheet] made on [day].
 typedef ExerciseRenderer = Future<SharedFile> Function(
   ExerciseSheet sheet,
   DateTime day,
-  String? helpLanguage,
 );
 
 /// Makes the PDF of the word cards [sheet] made on [day].
@@ -60,11 +59,7 @@ final class PrintablesCubit extends Cubit<PrintablesState> {
       return;
     }
     await _share(
-      () => render(
-        (sheet as DataSuccess<ExerciseSheet>).data,
-        _clock.now(),
-        _useCases.words().helpLanguage,
-      ),
+      () => render((sheet as DataSuccess<ExerciseSheet>).data, _clock.now()),
     );
   }
 
