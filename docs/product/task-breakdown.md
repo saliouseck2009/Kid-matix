@@ -758,7 +758,7 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 
 Les enfants apprennent à comprendre une situation, pas à réagir à un mot-clé : énoncés du quotidien, schémas en barres et résolution guidée.
 
-- [ ] **F30-01** Contenu `docs/product/problems.md` : une trentaine de problèmes en trois niveaux (avec images, phrase courte, énoncé complet), dans des contextes d'ici (marché, francs CFA, mangues, car rapide, Tabaski, thé) avec des prénoms d'ici ; colonnes pour l'audio wolof enregistré par le propriétaire.
+- [x] **F30-01** Contenu `docs/product/problems.md` : une trentaine de problèmes en trois niveaux (avec images, phrase courte, énoncé complet), dans des contextes d'ici (marché, francs CFA, mangues, car rapide, Tabaski, thé) avec des prénoms d'ici ; colonnes pour l'audio wolof enregistré par le propriétaire.
 - [ ] **F30-02** Gabarits de problèmes avec des nombres tirés au sort, pour varier les énoncés ; clé stable par gabarit. Les versions enregistrées en wolof ont des nombres fixes ; les variantes générées sont lues en français par la synthèse vocale (F23).
 - [ ] **F30-03** Type « Schéma en barres » : placer les nombres sur le tout et les parties, choisir l'opération, puis calculer.
 - [ ] **F30-04** Résolution guidée en étapes : écouter, faire le schéma, choisir l'opération, calculer, vérifier.
