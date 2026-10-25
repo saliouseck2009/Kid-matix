@@ -44,4 +44,15 @@ abstract final class QuestionTypeIds {
 
   /// Pick +, −, × or ÷ for a short statement, version 2.0.
   static const String whichOperation = 'whichOperation';
+
+  /// Solve a word problem step by step: listen, draw the bar model, pick
+  /// the operation, compute, check, version 2.0.
+  static const String solveProblem = 'solveProblem';
+
+  /// Fill the bar model of a word problem, pick the operation, then
+  /// compute, version 2.0.
+  static const String barModel = 'barModel';
+
+  /// Pick +, −, × or ÷ for a word problem, version 2.0.
+  static const String problemOperation = 'problemOperation';
 }

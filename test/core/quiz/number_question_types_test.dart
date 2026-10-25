@@ -26,7 +26,7 @@ void main() {
           .toList();
       // Assert
       expect(
-        actualIds.sublist(actualIds.length - 8, actualIds.length - 4),
+        actualIds.sublist(actualIds.length - 11, actualIds.length - 7),
         <String>[
           QuestionTypeIds.countObjects,
           QuestionTypeIds.tensAndOnes,

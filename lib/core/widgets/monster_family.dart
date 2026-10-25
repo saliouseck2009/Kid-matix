@@ -22,7 +22,11 @@ enum MonsterFamily {
   winged(LearningDomainIds.division),
 
   /// A speech bubble on the head: the monsters of the math words.
-  bubble(LearningDomainIds.mathWords);
+  bubble(LearningDomainIds.mathWords),
+
+  /// Stacked bars on the head, like a bar model: the monsters of the word
+  /// problems.
+  barred(LearningDomainIds.problems);
 
   const MonsterFamily(this.domainId);
 

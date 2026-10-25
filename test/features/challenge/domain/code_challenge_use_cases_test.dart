@@ -89,6 +89,7 @@ String _answer(Answer answer) {
     BooleanAnswer(:final bool value) => '$value',
     OperationAnswer(:final List<PromptToken> operation) => _tokens(operation),
     PairsAnswer() => 'pairs',
+    ProblemAnswer() => 'problem',
     ComparisonAnswer(:final comparison) => comparison.name,
     WordAnswer(:final String wordKey) => wordKey,
     OperatorAnswer(:final operator) => operator.name,

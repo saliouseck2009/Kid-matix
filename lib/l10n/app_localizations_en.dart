@@ -1831,6 +1831,53 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get problemsDomainName => 'Problems';
+
+  @override
+  String get masteryGridTitleProblems => 'My problems';
+
+  @override
+  String problemsUnitName(String operation, String level) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Add',
+        'subtract': 'Take away',
+        'multiply': 'Group',
+        'divide': 'Share',
+        'trap': 'The traps',
+        'other': '',
+      },
+    );
+    String _temp1 = intl.Intl.selectLogic(
+      level,
+      {
+        '1': 'with pictures',
+        '2': 'short sentences',
+        '3': 'full statements',
+        'other': '',
+      },
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String problemsUnitTip(String operation) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'When we put quantities together, we have more than before. Draw the whole and its parts.',
+        'subtract': 'When we take away, less is left. Draw the whole, the part that goes and the part that stays.',
+        'multiply': 'Equal groups: draw the groups, all the same size, and find the total.',
+        'divide': 'Sharing into equal parts, or finding how many parts: draw the whole cut into parts.',
+        'trap': 'Careful: a word in the story can fool you. Draw the model to see what really happens.',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsStageTitle => 'Stage complete!';
 
   @override

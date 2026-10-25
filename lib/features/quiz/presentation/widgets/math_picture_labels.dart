@@ -27,6 +27,7 @@ final class MathPictureLabels {
         listNumbers(picture, blankText: blankText),
       ),
       WordPicture(:final String label) => label,
+      BarModelPicture() => '',
     };
   }
 

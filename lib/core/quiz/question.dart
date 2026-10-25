@@ -19,6 +19,7 @@ final class Question {
     List<QuestionPair> pairs = const <QuestionPair>[],
     List<SentencePart> sentence = const <SentencePart>[],
     this.picture,
+    this.recordingKey,
   }) : prompt = List<PromptToken>.unmodifiable(prompt),
        choices = List<Answer>.unmodifiable(choices),
        pairs = List<QuestionPair>.unmodifiable(pairs),
@@ -60,6 +61,12 @@ final class Question {
   /// Drawing shown above [prompt], such as objects to count, or `null`.
   final MathPicture? picture;
 
+  /// Key of the recording that reads the statement in the help language
+  /// (`problem_mangues_donnees`), or `null` when nothing is recorded for
+  /// this question: a statement with drawn numbers is only read by the
+  /// voice of the phone.
+  final String? recordingKey;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -72,7 +79,8 @@ final class Question {
             _haveSameElements(other.pairs, pairs) &&
             _haveSameElements(other.sentence, sentence) &&
             other.expectedAnswer == expectedAnswer &&
-            other.picture == picture;
+            other.picture == picture &&
+            other.recordingKey == recordingKey;
   }
 
   @override
@@ -86,6 +94,7 @@ final class Question {
     Object.hashAll(sentence),
     expectedAnswer,
     picture,
+    recordingKey,
   );
 
   @override
