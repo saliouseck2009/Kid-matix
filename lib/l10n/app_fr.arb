@@ -1132,6 +1132,128 @@
   "@classroomQrCameraError": {
     "description": "Teacher area, message in place of the camera view when the camera is refused or missing."
   },
+  "classroomRecordingsOpen": "Enregistrer les explications",
+  "@classroomRecordingsOpen": {
+    "description": "Teacher area, button of « Mes classes » that opens the page where the teacher records their own explanation of each maths word in the help language. Also the title of that page. One line."
+  },
+  "classroomRecordingsHint": "Enregistre l'explication de chaque mot dans ta langue. Sur cette tablette, ta voix remplace celle du pack : les élèves l'entendent avec le bouton de la langue.",
+  "@classroomRecordingsHint": {
+    "description": "Teacher area, explanation at the top of the recordings page (informal \"tu\"). Three lines at most."
+  },
+  "classroomRecordingsNoPack": "L'app n'a pas encore de langue d'aide.",
+  "@classroomRecordingsNoPack": {
+    "description": "Teacher area, recordings page when the app ships no audio pack."
+  },
+  "classroomRecordingsLanguage": "Langue",
+  "@classroomRecordingsLanguage": {
+    "description": "Teacher area, label of the choice of the help language recorded."
+  },
+  "classroomRecordingsExplanation": "Explication",
+  "@classroomRecordingsExplanation": {
+    "description": "Teacher area, segment of the recordings page: the explanation of each word (a noun). Short."
+  },
+  "classroomRecordingsExample": "Exemple",
+  "@classroomRecordingsExample": {
+    "description": "Teacher area, segment of the recordings page: the example of each word (a noun). Short."
+  },
+  "classroomRecordingsTeacher": "Ta voix",
+  "@classroomRecordingsTeacher": {
+    "description": "Teacher area, status of a word the teacher recorded on this device. Short."
+  },
+  "classroomRecordingsPack": "Voix du pack",
+  "@classroomRecordingsPack": {
+    "description": "Teacher area, status of a word whose only recording is the one shipped with the app. Short."
+  },
+  "classroomRecordingsNone": "Pas encore enregistré",
+  "@classroomRecordingsNone": {
+    "description": "Teacher area, status of a word with no recording at all. Short."
+  },
+  "classroomRecordingsRecord": "Enregistrer « {word} »",
+  "@classroomRecordingsRecord": {
+    "description": "Teacher area, tooltip of the microphone button of a word.",
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "il reste"
+      }
+    }
+  },
+  "classroomRecordingsListen": "Écouter « {word} »",
+  "@classroomRecordingsListen": {
+    "description": "Teacher area, tooltip of the play button of a word.",
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "il reste"
+      }
+    }
+  },
+  "classroomRecordingsDelete": "Effacer ta voix pour « {word} »",
+  "@classroomRecordingsDelete": {
+    "description": "Teacher area, tooltip of the button that deletes the teacher's recording of a word (the pack's comes back).",
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "il reste"
+      }
+    }
+  },
+  "classroomRecordingsRecording": "Enregistrement de « {word} »…",
+  "@classroomRecordingsRecording": {
+    "description": "Teacher area, banner while a word is being recorded.",
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "il reste"
+      }
+    }
+  },
+  "classroomRecordingsKeep": "Arrêter et garder",
+  "@classroomRecordingsKeep": {
+    "description": "Teacher area, button that stops the recording and keeps it for the word. One line."
+  },
+  "classroomRecordingsCancel": "Recommencer plus tard",
+  "@classroomRecordingsCancel": {
+    "description": "Teacher area, button that stops the recording and throws it away. One line."
+  },
+  "classroomRecordingsDenied": "Sans le micro, tu ne peux pas enregistrer. Autorise-le dans les réglages de la tablette.",
+  "@classroomRecordingsDenied": {
+    "description": "Teacher area, message when the microphone permission is refused. Informal \"tu\"."
+  },
+  "classroomRecordingsSaved": "C'est enregistré.",
+  "@classroomRecordingsSaved": {
+    "description": "Teacher area, snack bar once a recording is kept."
+  },
+  "classroomRecordingsExport": "Exporter mes enregistrements",
+  "@classroomRecordingsExport": {
+    "description": "Teacher area, button that shares the teacher's recordings as a pack file for another tablet. One line."
+  },
+  "classroomRecordingsImport": "Importer un pack",
+  "@classroomRecordingsImport": {
+    "description": "Teacher area, button that picks a pack file of recordings made on another tablet. One line."
+  },
+  "classroomRecordingsExported": "Le pack est prêt.",
+  "@classroomRecordingsExported": {
+    "description": "Teacher area, snack bar once the pack file went to the share sheet."
+  },
+  "classroomRecordingsImported": "{count, plural, =1{1 enregistrement ajouté.} other{{count} enregistrements ajoutés.}}",
+  "@classroomRecordingsImported": {
+    "description": "Teacher area, snack bar once a pack file was imported.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "classroomRecordingsInvalid": "Ce fichier n'est pas un pack audio Kid Matix, ou il est abîmé.",
+  "@classroomRecordingsInvalid": {
+    "description": "Teacher area, error when the file picked is not a pack."
+  },
+  "classroomRecordingsNothing": "Enregistre au moins un mot avant d'exporter.",
+  "@classroomRecordingsNothing": {
+    "description": "Teacher area, error when the teacher exports with no recording."
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."

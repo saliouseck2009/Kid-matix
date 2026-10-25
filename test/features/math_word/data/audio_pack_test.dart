@@ -34,6 +34,9 @@ final class _FakePlayer implements WordAudioPlayer {
   Future<void> play(String assetPath) async => played.add(assetPath);
 
   @override
+  Future<void> playFile(String path) async => played.add('file:$path');
+
+  @override
   Future<void> stop() async => stopCount++;
 }
 

@@ -640,6 +640,11 @@ final class _NoReportShare implements ReportShareRepository {
   Future<DataState<bool>> share({required List<SharedFile> files}) async {
     return const DataSuccess<bool>(false);
   }
+
+  @override
+  Future<DataState<List<int>?>> pick() async {
+    return const DataSuccess<List<int>?>(null);
+  }
 }
 
 /// Class files that go nowhere: shared, never picked.

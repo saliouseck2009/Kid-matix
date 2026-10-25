@@ -7,6 +7,10 @@ abstract interface class WordAudioPlayer {
   /// or could not play; never throws.
   Future<void> play(String assetPath);
 
+  /// Plays the device file [path], such as a teacher's recording. Same
+  /// contract as [play].
+  Future<void> playFile(String path);
+
   /// Stops the sound in progress, if any.
   Future<void> stop();
 }

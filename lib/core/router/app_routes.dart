@@ -125,6 +125,9 @@ abstract final class AppRoutes {
   /// « Rapport d'école ou de programme »: every class of the device.
   static const String programReport = '/players/teacher/classes/report';
 
+  /// « Enregistrer les explications »: the teacher's own recordings.
+  static const String teacherRecordings = '/players/teacher/classes/audio';
+
   /// « Recevoir par QR code »: the camera reads the results of a tablet.
   static const String resultsQrScan = '/players/teacher/classes/scan';
 

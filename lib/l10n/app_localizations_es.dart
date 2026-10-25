@@ -858,6 +858,96 @@ class AppLocalizationsEs extends AppLocalizations {
       'La cámara no está disponible. Permítela en los ajustes o usa el archivo de la clase.';
 
   @override
+  String get classroomRecordingsOpen => 'Grabar las explicaciones';
+
+  @override
+  String get classroomRecordingsHint =>
+      'Graba la explicación de cada palabra en tu idioma. En esta tableta, tu voz sustituye a la del paquete: los alumnos la oyen con el botón del idioma.';
+
+  @override
+  String get classroomRecordingsNoPack =>
+      'La app todavía no tiene idioma de ayuda.';
+
+  @override
+  String get classroomRecordingsLanguage => 'Idioma';
+
+  @override
+  String get classroomRecordingsExplanation => 'Explicación';
+
+  @override
+  String get classroomRecordingsExample => 'Ejemplo';
+
+  @override
+  String get classroomRecordingsTeacher => 'Tu voz';
+
+  @override
+  String get classroomRecordingsPack => 'Voz del paquete';
+
+  @override
+  String get classroomRecordingsNone => 'Aún sin grabar';
+
+  @override
+  String classroomRecordingsRecord(String word) {
+    return 'Grabar «$word»';
+  }
+
+  @override
+  String classroomRecordingsListen(String word) {
+    return 'Escuchar «$word»';
+  }
+
+  @override
+  String classroomRecordingsDelete(String word) {
+    return 'Borrar tu voz para «$word»';
+  }
+
+  @override
+  String classroomRecordingsRecording(String word) {
+    return 'Grabando «$word»…';
+  }
+
+  @override
+  String get classroomRecordingsKeep => 'Parar y guardar';
+
+  @override
+  String get classroomRecordingsCancel => 'Descartar';
+
+  @override
+  String get classroomRecordingsDenied =>
+      'Sin el micrófono no puedes grabar. Permítelo en los ajustes de la tableta.';
+
+  @override
+  String get classroomRecordingsSaved => 'Grabado.';
+
+  @override
+  String get classroomRecordingsExport => 'Exportar mis grabaciones';
+
+  @override
+  String get classroomRecordingsImport => 'Importar un paquete';
+
+  @override
+  String get classroomRecordingsExported => 'El paquete está listo.';
+
+  @override
+  String classroomRecordingsImported(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count grabaciones añadidas.',
+      one: '1 grabación añadida.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomRecordingsInvalid =>
+      'Este archivo no es un paquete de audio de Kid Matix o está dañado.';
+
+  @override
+  String get classroomRecordingsNothing =>
+      'Graba al menos una palabra antes de exportar.';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override

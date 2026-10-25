@@ -1,25 +1,48 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kid_matix/core/quiz/domain_registry.dart';
 import 'package:kid_matix/core/services/crash_reporter.dart';
+import 'package:kid_matix/core/services/teacher_audio_service.dart';
 import 'package:kid_matix/core/services/word_audio_service.dart';
 import 'package:kid_matix/features/math_word/data/datasources/audio_pack_loader.dart';
+import 'package:kid_matix/features/math_word/data/datasources/audio_recorder_data_source.dart';
+import 'package:kid_matix/features/math_word/data/datasources/teacher_audio_store.dart';
+import 'package:kid_matix/features/math_word/data/repositories/teacher_audio_repository_impl.dart';
+import 'package:kid_matix/features/math_word/domain/entities/audio_pack_manifest.dart';
 import 'package:kid_matix/features/math_word/data/datasources/audioplayers_word_audio_player.dart';
 import 'package:kid_matix/features/math_word/data/datasources/math_word_asset_source.dart';
 import 'package:kid_matix/features/math_word/domain/entities/math_word_catalog.dart';
 import 'package:kid_matix/features/math_word/domain/services/math_word_domain.dart';
 import 'package:kid_matix/features/math_word/domain/services/word_audio_service_impl.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// Registers the math word feature in [sl]: the audio packs and the
 /// domain (left out when its content is unreadable), after the numbers,
 /// since the domains are offered in their registration order. It reads its
-/// bundled assets once, from [bundle] (the app bundle by default).
+/// bundled assets once, from [bundle] (the app bundle by default), and the
+/// teacher's recordings of the device in the background (F31-06).
 Future<void> registerMathWordFeature(GetIt sl, {AssetBundle? bundle}) async {
   final AssetBundle assets = bundle ?? rootBundle;
+  final List<AudioPackManifest> packs = await AudioPackLoader(
+    bundle: assets,
+  ).load();
+  final TeacherAudioStore store = TeacherAudioStore(root: _teacherAudioFolder);
+  unawaited(store.load());
   sl.registerSingleton<WordAudioService>(
     WordAudioServiceImpl(
-      packs: await AudioPackLoader(bundle: assets).load(),
+      packs: packs,
       player: AudioplayersWordAudioPlayer(),
+      overrides: store,
+    ),
+  );
+  sl.registerLazySingleton<TeacherAudioService>(
+    () => TeacherAudioRepositoryImpl(
+      packs: packs,
+      store: store,
+      recorder: RecordAudioRecorder(),
     ),
   );
   // A broken content asset must never stop the app from starting: the
@@ -34,4 +57,10 @@ Future<void> registerMathWordFeature(GetIt sl, {AssetBundle? bundle}) async {
       sl<CrashReporter>().recordError(error, stackTrace);
     }
   }
+}
+
+/// The folder of the teacher's recordings, in the app's private storage.
+Future<Directory> _teacherAudioFolder() async {
+  final Directory support = await getApplicationSupportDirectory();
+  return Directory('${support.path}/teacher_audio');
 }

@@ -4,6 +4,7 @@ import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/teacher_audio_pages.dart';
 
 /// The routes of the class mode, outside the tabs: the teacher area
 /// (its door, « Mes classes », the creation of a class, the page of a
@@ -16,6 +17,7 @@ List<RouteBase> createClassroomRoutes({
   required ClassroomPages pages,
   ClassAssessmentPages? assessmentPages,
   ResultsQrPages? qrPages,
+  TeacherAudioPages? audioPages,
 }) {
   return <RouteBase>[
     GoRoute(
@@ -25,7 +27,12 @@ List<RouteBase> createClassroomRoutes({
           onBack: () => context.go(AppRoutes.whoIsPlaying),
         );
       },
-      routes: <RouteBase>[_classroomsRoute(pages, assessmentPages, qrPages)],
+      routes: <RouteBase>[
+        _classroomsRoute(
+          pages,
+          (assessments: assessmentPages, qr: qrPages, audio: audioPages),
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutes.pupilPicker,
@@ -39,11 +46,17 @@ List<RouteBase> createClassroomRoutes({
   ];
 }
 
-GoRoute _classroomsRoute(
-  ClassroomPages pages,
-  ClassAssessmentPages? assessmentPages,
-  ResultsQrPages? qrPages,
-) {
+/// The pages of the tools of F31 in the teacher area, each optional.
+typedef _ToolPages = ({
+  ClassAssessmentPages? assessments,
+  ResultsQrPages? qr,
+  TeacherAudioPages? audio,
+});
+
+GoRoute _classroomsRoute(ClassroomPages pages, _ToolPages tools) {
+  final ClassAssessmentPages? assessmentPages = tools.assessments;
+  final ResultsQrPages? qrPages = tools.qr;
+  final TeacherAudioPages? audioPages = tools.audio;
   return GoRoute(
     path: _lastSegment(AppRoutes.teacherClassrooms),
     builder: (BuildContext context, GoRouterState state) {
@@ -59,12 +72,16 @@ GoRoute _classroomsRoute(
           ?assessmentPages?.reports.buildProgramReportButton(
             onOpen: () => context.go(AppRoutes.programReport),
           ),
+          ?audioPages?.buildOpenButton(
+            onOpen: () => context.go(AppRoutes.teacherRecordings),
+          ),
         ],
       );
     },
     routes: <RouteBase>[
       ?_programReportRoute(assessmentPages),
       ?_qrScanRoute(qrPages),
+      ?_recordingsRoute(audioPages),
       GoRoute(
         path: _lastSegment(AppRoutes.classroomCreation),
         builder: (BuildContext context, GoRouterState state) {
@@ -135,6 +152,18 @@ GoRoute _assignmentRoute(ClassroomPages pages) {
       return pages.buildAssignmentPage(
         classroomId: classroomId,
         onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
+      );
+    },
+  );
+}
+
+GoRoute? _recordingsRoute(TeacherAudioPages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.teacherRecordings),
+    builder: (BuildContext context, GoRouterState state) {
+      return pages.buildPage(
+        onBack: () => context.go(AppRoutes.teacherClassrooms),
       );
     },
   );

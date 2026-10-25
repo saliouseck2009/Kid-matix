@@ -9,12 +9,15 @@ import 'package:kid_matix/features/classroom/data/repositories/assessment_sessio
 import 'package:kid_matix/features/classroom/data/repositories/report_share_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/report_share_repository.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/audio_pack_file_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/close_assessment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_class_assessments_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_class_report_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_pending_assessment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_program_report_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_teacher_recordings_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_assessment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/record_explanation_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/share_files_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_assessment_changes_use_case.dart';
 
@@ -48,6 +51,7 @@ void registerClassAssessments(GetIt sl) {
     () => WatchAssessmentChangesUseCase(classroom: sl(), assessments: sl()),
   );
   _registerReports(sl);
+  _registerRecordings(sl);
   sl<SessionSavedHooks>().add(
     AssessmentSessionHook(
       roster: () => sl<PupilRosterService>(),
@@ -79,5 +83,17 @@ void _registerReports(GetIt sl) {
       getClassReport: sl(),
       clock: sl(),
     ),
+  );
+}
+
+void _registerRecordings(GetIt sl) {
+  sl.registerLazySingleton<GetTeacherRecordingsUseCase>(
+    () => GetTeacherRecordingsUseCase(audio: sl(), domains: sl()),
+  );
+  sl.registerLazySingleton<RecordExplanationUseCase>(
+    () => RecordExplanationUseCase(audio: sl(), words: sl()),
+  );
+  sl.registerLazySingleton<AudioPackFileUseCase>(
+    () => AudioPackFileUseCase(audio: sl(), files: sl(), clock: sl()),
   );
 }
