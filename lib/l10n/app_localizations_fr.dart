@@ -949,6 +949,74 @@ class AppLocalizationsFr extends AppLocalizations {
       'Enregistre au moins un mot avant d\'exporter.';
 
   @override
+  String get classroomPrintablesOpen => 'Fiches à imprimer';
+
+  @override
+  String get classroomPrintablesHint =>
+      'Des exercices et des cartes de mots à imprimer, en français et dans la langue d\'aide. Les lignes de la langue d\'aide restent vides tant que leur texte n\'est pas écrit : complète-les à la main.';
+
+  @override
+  String get classroomPrintablesExercisesTitle => 'Fiche d\'exercices';
+
+  @override
+  String get classroomPrintablesDomain => 'Domaine';
+
+  @override
+  String get classroomPrintablesUnit => 'Unité';
+
+  @override
+  String get classroomPrintablesExercises => 'Imprimer les exercices (PDF)';
+
+  @override
+  String get classroomPrintablesWordsTitle => 'Cartes des mots';
+
+  @override
+  String get classroomPrintablesWords => 'Imprimer les cartes (PDF)';
+
+  @override
+  String get classroomPrintablesNotPrintable =>
+      'Cette unité se joue avec des images : choisis-en une autre pour une fiche.';
+
+  @override
+  String get classroomPrintablesShared => 'La fiche est prête.';
+
+  @override
+  String printExercisesTitle(String unit) {
+    return 'Exercices · $unit';
+  }
+
+  @override
+  String get printNameLine =>
+      'Nom : ____________________   Date : ____________';
+
+  @override
+  String get printExercisesInstruction => 'Calcule et écris le résultat.';
+
+  @override
+  String printHelpLine(String language) {
+    return 'En $language :';
+  }
+
+  @override
+  String printAnswersTitle(String unit) {
+    return 'Corrigé · $unit';
+  }
+
+  @override
+  String get printWordsTitle => 'Les mots des maths';
+
+  @override
+  String printWordExample(String example) {
+    return 'Exemple : $example';
+  }
+
+  @override
+  String get printExercisesFileName => 'Exercices';
+
+  @override
+  String get printWordsFileName => 'Mots';
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

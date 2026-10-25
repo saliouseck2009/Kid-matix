@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/printable_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/teacher_audio_pages.dart';
 
@@ -75,6 +76,9 @@ GoRoute _classroomsRoute(ClassroomPages pages, _ToolPages tools) {
           ?audioPages?.buildOpenButton(
             onOpen: () => context.go(AppRoutes.teacherRecordings),
           ),
+          ?assessmentPages?.reports.printables?.buildOpenButton(
+            onOpen: () => context.go(AppRoutes.printables),
+          ),
         ],
       );
     },
@@ -82,6 +86,7 @@ GoRoute _classroomsRoute(ClassroomPages pages, _ToolPages tools) {
       ?_programReportRoute(assessmentPages),
       ?_qrScanRoute(qrPages),
       ?_recordingsRoute(audioPages),
+      ?_printablesRoute(assessmentPages?.reports.printables),
       GoRoute(
         path: _lastSegment(AppRoutes.classroomCreation),
         builder: (BuildContext context, GoRouterState state) {
@@ -152,6 +157,18 @@ GoRoute _assignmentRoute(ClassroomPages pages) {
       return pages.buildAssignmentPage(
         classroomId: classroomId,
         onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
+      );
+    },
+  );
+}
+
+GoRoute? _printablesRoute(PrintablePages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.printables),
+    builder: (BuildContext context, GoRouterState state) {
+      return pages.buildPage(
+        onBack: () => context.go(AppRoutes.teacherClassrooms),
       );
     },
   );

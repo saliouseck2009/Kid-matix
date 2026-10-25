@@ -32,18 +32,21 @@ import 'test_app.dart';
 /// What a pupil does in an assessment, played over the real wiring of
 /// [TestApp]: the placement test, then the word check.
 abstract final class AssessmentJourney {
-  /// Creates the class [name] of [pupilCount] pupils « Élève 1 »... and
-  /// returns it with its pupils.
+  /// Creates the class [name] of [pupilCount] pupils « Élève 1 »..., or
+  /// of [nicknames], and returns it with its pupils.
   static Future<ClassroomRoster> createClass(
     String name,
-    int pupilCount,
-  ) async {
+    int pupilCount, {
+    List<String>? nicknames,
+  }) async {
     final ClassroomEntity classroom = ((await sl<CreateClassroomUseCase>()(
       params: CreateClassroomParams(
         name: name,
-        nicknames: <String>[
-          for (int index = 1; index <= pupilCount; index++) 'Élève $index',
-        ],
+        nicknames:
+            nicknames ??
+            <String>[
+              for (int index = 1; index <= pupilCount; index++) 'Élève $index',
+            ],
       ),
     )) as DataSuccess<ClassroomEntity>).data;
     return ((await sl<GetClassroomRosterUseCase>()(

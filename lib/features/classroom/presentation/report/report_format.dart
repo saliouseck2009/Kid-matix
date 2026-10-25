@@ -57,19 +57,21 @@ final class ReportFormat {
 
   /// The name of a report file of [subject] made on [day]:
   /// `KidMatix-Rapport-CE1-B-2026-11-01.pdf`, with « -anonyme » for the
-  /// anonymous version.
+  /// anonymous version; [stem] replaces « Rapport » for other files.
   String fileNameOf({
     required String subject,
     required DateTime day,
     required String extension,
     String? suffix,
+    String? stem,
   }) {
     final String name = subject
         .replaceAll(RegExp(r'[^\p{L}\p{N}]+', unicode: true), '-')
         .replaceAll(RegExp(r'^-+|-+$'), '');
     final String date = day.toIso8601String().substring(0, 10);
     final String end = suffix == null ? '' : '-$suffix';
-    return 'KidMatix-${l10n.classroomReportFileName}-$name-$date$end'
-        '.$extension';
+    final String start = stem ?? l10n.classroomReportFileName;
+    final String middle = name.isEmpty ? '' : '-$name';
+    return 'KidMatix-$start$middle-$date$end.$extension';
   }
 }

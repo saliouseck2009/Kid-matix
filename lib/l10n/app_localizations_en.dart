@@ -941,6 +941,73 @@ class AppLocalizationsEn extends AppLocalizations {
       'Record at least one word before exporting.';
 
   @override
+  String get classroomPrintablesOpen => 'Printable sheets';
+
+  @override
+  String get classroomPrintablesHint =>
+      'Exercises and word cards to print, in French and in the help language. The help-language lines stay blank until their text is written: fill them in by hand.';
+
+  @override
+  String get classroomPrintablesExercisesTitle => 'Exercise sheet';
+
+  @override
+  String get classroomPrintablesDomain => 'Domain';
+
+  @override
+  String get classroomPrintablesUnit => 'Unit';
+
+  @override
+  String get classroomPrintablesExercises => 'Print the exercises (PDF)';
+
+  @override
+  String get classroomPrintablesWordsTitle => 'Word cards';
+
+  @override
+  String get classroomPrintablesWords => 'Print the cards (PDF)';
+
+  @override
+  String get classroomPrintablesNotPrintable =>
+      'This unit is played with pictures: choose another one for a sheet.';
+
+  @override
+  String get classroomPrintablesShared => 'The sheet is ready.';
+
+  @override
+  String printExercisesTitle(String unit) {
+    return 'Exercises · $unit';
+  }
+
+  @override
+  String get printNameLine => 'Name: ____________________   Date: ____________';
+
+  @override
+  String get printExercisesInstruction => 'Work it out and write the result.';
+
+  @override
+  String printHelpLine(String language) {
+    return 'In $language:';
+  }
+
+  @override
+  String printAnswersTitle(String unit) {
+    return 'Answers · $unit';
+  }
+
+  @override
+  String get printWordsTitle => 'Maths words';
+
+  @override
+  String printWordExample(String example) {
+    return 'Example: $example';
+  }
+
+  @override
+  String get printExercisesFileName => 'Exercises';
+
+  @override
+  String get printWordsFileName => 'Words';
+
+  @override
   String get profileCreationTitle => 'New player';
 
   @override

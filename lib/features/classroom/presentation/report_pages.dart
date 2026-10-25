@@ -10,18 +10,22 @@ import 'package:kid_matix/features/classroom/presentation/bloc/class_report_use_
 import 'package:kid_matix/features/classroom/presentation/bloc/program_periods_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/report_export_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/program_report_page.dart';
+import 'package:kid_matix/features/classroom/presentation/printable_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/report/class_report_files.dart';
 import 'package:kid_matix/features/classroom/presentation/report/program_report_files.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/report_export_card.dart';
 
 /// Builds the reports of the teacher area (F31-02 to F31-04): the report
-/// of a class, named and anonymous, and the report of a school or a
-/// program, anonymous only.
+/// of a class, named and anonymous, the report of a school or a program,
+/// anonymous only, and the printable sheets (F31-07).
 final class ReportPages {
   /// Creates the factory.
-  const ReportPages({required this._useCases});
+  const ReportPages({required this._useCases, this.printables});
 
   final ClassReportUseCases _useCases;
+
+  /// The printable sheets (F31-07), or `null`.
+  final PrintablePages? printables;
 
   /// « Rapport de la classe » over the [periods] of [classroomId].
   Widget buildClassReportCard({

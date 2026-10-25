@@ -3,8 +3,10 @@
 The content table is the source of truth: the owner edits it, this script
 derives assets/math_words/math_words.json, which the app reads (the words,
 their family and notion, the « Quelle opération ? » statements). The
-Wolof columns are never copied: the app plays recordings, not Wolof text.
-Keys never change once published.
+app plays recordings, not Wolof text: the Wolof columns are copied only
+once the owner writes them, under "help" -> "wo", for the printable word
+cards of the teacher (F31-07); an empty column adds nothing. Keys never
+change once published.
 
 Run: python3 tool/build_math_words.py
 Check without writing: python3 tool/build_math_words.py --check
@@ -36,6 +38,16 @@ def cells(line):
     return [cell.strip() for cell in line.strip().strip("|").split("|")]
 
 
+def help_of(row):
+    """The Wolof texts of a word row (explanation, example) the owner wrote;
+    an empty column is left out."""
+    texts = {}
+    for name, index in (("explanation", 6), ("example", 7)):
+        if len(row) > index and row[index]:
+            texts[name] = row[index]
+    return texts
+
+
 def keys_of(text):
     """The keys written between backticks in a cell."""
     return re.findall(r"`([a-z_]+)`", text)
@@ -58,16 +70,18 @@ def parse(markdown):
             if section.startswith("1.") and family and len(row) >= 5:
                 if row[0] == "Clé":
                     continue
-                words.append(
-                    {
-                        "key": row[0].strip("`"),
-                        "family": family,
-                        "text": row[1],
-                        "meaning": row[2],
-                        "example": row[4],
-                        "surface": row[5],
-                    }
-                )
+                word = {
+                    "key": row[0].strip("`"),
+                    "family": family,
+                    "text": row[1],
+                    "meaning": row[2],
+                    "example": row[4],
+                    "surface": row[5],
+                }
+                help_texts = help_of(row)
+                if help_texts:
+                    word["help"] = {"wo": help_texts}
+                words.append(word)
             elif section.startswith("2.") and row[0] != "Notion":
                 glossary.append(keys_of(row[2]))
             elif section.startswith("3.") and row[0] != "Id":
