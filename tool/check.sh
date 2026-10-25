@@ -10,7 +10,7 @@
 #   bash tool/check.sh build      build-android, plus build-ios on macOS;
 #                                 slow, run it before a pull request that
 #                                 touches android/, ios/ or dependencies
-#   bash tool/check.sh build-android   debug APK
+#   bash tool/check.sh build-android   debug APK, release APK without network
 #   bash tool/check.sh build-ios       debug iOS app without signing (macOS)
 #   bash tool/check.sh all        analyze + test + build
 #
@@ -82,6 +82,9 @@ run_test() {
 
 run_build_android() {
   run_step "build android" flutter build apk --debug
+  # The release APK must ask for no network permission (privacy policy).
+  run_step "build android release" flutter build apk --release
+  run_step "android permissions" bash tool/check_android_permissions.sh
 }
 
 run_build_ios() {
