@@ -113,3 +113,26 @@ Map<String, String> readTrapTwins() {
   }
   return twins;
 }
+
+/// Real and suggested operation (`+`, `−`, `×`, `÷`) of each trap, from the
+/// table « Les pièges du mot-clé ».
+Map<String, ({String real, String suggested})> readTrapOperations() {
+  final Map<String, ({String real, String suggested})> operations =
+      <String, ({String real, String suggested})>{};
+  bool inside = false;
+  for (final String line in File(
+    'docs/product/problems.md',
+  ).readAsLinesSync()) {
+    if (line.startsWith('## ')) inside = line.contains('pièges du mot-clé');
+    if (!inside || !line.startsWith('|')) continue;
+    final List<String> cells = _cells(line);
+    if (cells.first == 'Clé du piège' || cells.first.startsWith('---')) {
+      continue;
+    }
+    operations[cells[0].replaceAll('`', '')] = (
+      real: cells[3],
+      suggested: cells[4],
+    );
+  }
+  return operations;
+}

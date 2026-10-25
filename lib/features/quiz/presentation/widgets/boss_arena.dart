@@ -28,6 +28,7 @@ class BossArena extends StatelessWidget {
     this.listenButton,
     this.picture,
     this.spokenText,
+    this.wrapsPrompt = false,
     super.key,
   });
 
@@ -68,6 +69,10 @@ class BossArena extends StatelessWidget {
   /// The whole question as one sentence for a screen reader, or `null` to
   /// read [prompt] token by token.
   final String? spokenText;
+
+  /// Whether the prompt is a statement that wraps on several lines in a
+  /// card, instead of an operation on one line.
+  final bool wrapsPrompt;
 
   @override
   Widget build(BuildContext context) {
@@ -128,15 +133,17 @@ class BossArena extends StatelessWidget {
           Flexible(
             child: SpokenAs(
               sentence: spokenText ?? prompt.toSpokenText(context.l10n),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: _BossPrompt(
-                  prompt: prompt,
-                  blankText: blankText,
-                  blankColor: blankColor,
-                  fontSize: _promptFontSize,
-                ),
-              ),
+              child: wrapsPrompt
+                  ? _StatementCard(text: prompt.toDisplayText())
+                  : FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: _BossPrompt(
+                        prompt: prompt,
+                        blankText: blankText,
+                        blankColor: blankColor,
+                        fontSize: _promptFontSize,
+                      ),
+                    ),
             ),
           ),
       ],
@@ -245,6 +252,33 @@ class _BossPrompt extends StatelessWidget {
           else
             Text(parts[index], style: style),
       ],
+    );
+  }
+}
+
+/// A statement of a word problem in the boss arena: several lines in a
+/// card that scrolls when a large text leaves it too little room.
+class _StatementCard extends StatelessWidget {
+  const _StatementCard({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppSizes.space12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
+      ),
+      child: SingleChildScrollView(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
     );
   }
 }

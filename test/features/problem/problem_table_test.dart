@@ -68,6 +68,7 @@ void main() {
     '÷': MathOperator.divide,
   };
   final String unit = Currency.cfaFranc.unitName;
+  final Map<String, String> twinsOf = readTrapTwins();
 
   test('has the 30 problems of the table, in its order, ten per level', () {
     // Assert
@@ -196,5 +197,27 @@ void main() {
       for (final ProblemTemplate p in ProblemTemplates.all)
         if (p.trapOf != null) p.problemKey: p.trapOf!,
     }, twins);
+  });
+
+  test('asks a trap for an operation other than the one its word suggests', () {
+    // Arrange
+    final Map<String, ({String real, String suggested})> traps =
+        readTrapOperations();
+    // Assert
+    expect(traps.keys.toSet(), twinsOf.keys.toSet());
+    for (final MapEntry<String, ({String real, String suggested})> trap
+        in traps.entries) {
+      expect(
+        templates[trap.key]!.operation,
+        signs[trap.value.real],
+        reason: trap.key,
+      );
+      expect(trap.value.suggested, isNot(trap.value.real), reason: trap.key);
+      expect(
+        templates[twinsOf[trap.key]!],
+        isNotNull,
+        reason: 'the twin of ${trap.key} exists',
+      );
+    }
   });
 }

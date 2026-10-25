@@ -14,22 +14,8 @@ final class ProblemCalculation {
   /// Answers offered for the calculation.
   static const int choiceCount = 4;
 
-  /// The calculation of [picture] as a prompt: `12 − 5 = 7`. The known
-  /// numbers come in the order of the places of the model, which is the
-  /// order of the operation (the whole before the part, the total before
-  /// the group).
-  List<PromptToken> tokensOf(BarModelPicture picture) {
-    final List<int> known = <int>[
-      for (final BarRole role in picture.knownRoles) picture.values[role]!,
-    ];
-    return <PromptToken>[
-      NumberToken(known[0]),
-      OperatorToken(picture.operator),
-      NumberToken(known[1]),
-      const EqualsToken(),
-      NumberToken(picture.answer),
-    ];
-  }
+  /// The calculation of [picture] as a prompt: `12 − 5 = 7`.
+  List<PromptToken> tokensOf(BarModelPicture picture) => picture.calculation;
 
   /// [choiceCount] different numbers to pick the result from, the right
   /// one among them: what the other operations give with the same two

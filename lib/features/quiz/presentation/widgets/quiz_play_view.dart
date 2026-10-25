@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/extensions/prompt_reading.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/quiz/item_help.dart';
+import 'package:kid_matix/core/quiz/math_picture.dart';
 import 'package:kid_matix/core/quiz/prompt_token.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
@@ -28,6 +30,9 @@ import 'package:kid_matix/features/quiz/presentation/widgets/compare_answers.dar
 import 'package:kid_matix/features/quiz/presentation/widgets/lives_header.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/match_pairs_answers.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_answers.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/problem_board.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/problem_recap.dart';
+import 'package:kid_matix/features/quiz/presentation/widgets/problem_statement.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/question_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_feedback_panel.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_header.dart';
@@ -139,11 +144,30 @@ class QuizPlayView extends StatelessWidget {
                 data,
                 listenButton,
               ),
+              null when data.asksProblem && data.feedback == null =>
+                ProblemBoard(
+                  key: ValueKey<int>(data.run.answers.length),
+                  question: data.question,
+                  isGuided:
+                      data.question.questionTypeId ==
+                      QuestionTypeIds.solveProblem,
+                  languageCode: _languageOf(context, data),
+                  onSolved: (Answer answer) => context.read<QuizBloc>().add(
+                    AnswerSubmitted(answer: answer),
+                  ),
+                  listenButton: listenButton,
+                ),
+              null when data.isProblemQuestion && data.feedback != null =>
+                ProblemRecap(
+                  question: data.question,
+                  languageCode: _languageOf(context, data),
+                ),
               null when boss != null => BossArena(
                 monsterNumber: _monsterNumberOf(data),
                 monsterFamily: MonsterIllustration.familyOf(data.run.domainId),
                 prompt: data.visiblePrompt,
-                picture: data.question.picture,
+                picture: data.isProblemQuestion ? null : data.question.picture,
+                wrapsPrompt: data.wrapsPrompt,
                 spokenText: labels.speakQuestion(
                   data.question,
                   data.run.domainId,
@@ -170,8 +194,10 @@ class QuizPlayView extends StatelessWidget {
                 asksOperation:
                     data.question.questionTypeId ==
                     QuestionTypeIds.findOperation,
-                prompt: data.visiblePrompt,
-                picture: data.question.picture,
+                prompt: data.isProblemQuestion
+                    ? const <PromptToken>[]
+                    : data.visiblePrompt,
+                picture: data.isProblemQuestion ? null : data.question.picture,
                 spokenText: labels.speakQuestion(
                   data.question,
                   data.run.domainId,
@@ -181,10 +207,16 @@ class QuizPlayView extends StatelessWidget {
                 mascotMood: _moodOf(data),
                 mascotMessage: _mascotMessage(context, data),
                 listenButton: listenButton,
-                wrapsPrompt:
-                    data.question.questionTypeId ==
-                    QuestionTypeIds.whichOperation,
+                wrapsPrompt: data.wrapsPrompt,
                 extra: switch (data.question) {
+                  Question(
+                    questionTypeId: QuestionTypeIds.problemOperation,
+                  ) =>
+                    ProblemStatement(
+                      sentence: data.question.sentence,
+                      languageCode: _languageOf(context, data),
+                      recordingKey: data.question.recordingKey,
+                    ),
                   Question(
                     questionTypeId: QuestionTypeIds.listenAndTouch,
                     expectedAnswer: WordAnswer(:final String wordKey),
@@ -235,6 +267,12 @@ class QuizPlayView extends StatelessWidget {
           : null,
       listenButton: listenButton,
     );
+  }
+
+  /// Language of the statements of the quiz.
+  String _languageOf(BuildContext context, _PlayData data) {
+    return labels.contentLanguageOf(data.run.domainId) ??
+        Localizations.localeOf(context).languageCode;
   }
 
   /// Face of the mascot: happy after a right answer, encouraging after a
@@ -364,10 +402,27 @@ final class _PlayData {
 
   /// Whether the question asks to touch the words of a sentence: its board
   /// takes the room of the question card and of the answers.
-  bool get asksTouch => question.sentence.isNotEmpty;
+  bool get asksTouch =>
+      question.questionTypeId == QuestionTypeIds.touchToUnderstand;
+
+  /// Whether the question is a word problem solved on its board: the board
+  /// takes the room of the question card and of the answers.
+  bool get asksProblem =>
+      question.questionTypeId == QuestionTypeIds.solveProblem ||
+      question.questionTypeId == QuestionTypeIds.barModel;
+
+  /// Whether the question is about a word problem, on a board or not.
+  bool get isProblemQuestion =>
+      asksProblem ||
+      question.questionTypeId == QuestionTypeIds.problemOperation;
+
+  /// Whether the prompt is a statement that wraps on several lines.
+  bool get wrapsPrompt =>
+      question.questionTypeId == QuestionTypeIds.whichOperation ||
+      question.questionTypeId == QuestionTypeIds.problemOperation;
 
   /// Whether a board of its own replaces the card and the answers.
-  bool get hasBoard => asksPairs || asksTouch;
+  bool get hasBoard => asksPairs || asksTouch || asksProblem;
 
   /// Whether the word of a "Listen and tap" question is only said, not
   /// written: while it waits for its answer and a voice can say it. Without
@@ -436,7 +491,10 @@ class _AnswerZone extends StatelessWidget {
             feedbackOf: data.feedbackOf,
             onPicked: onPicked,
           )
-        else if (!data.isWritten && !data.asksPairs && !data.asksTouch)
+        else if (!data.isWritten &&
+            !data.asksPairs &&
+            !data.asksTouch &&
+            !data.asksProblem)
           MultipleChoiceAnswers(
             choices: question.choices,
             feedbackOf: data.feedbackOf,
@@ -493,7 +551,10 @@ class _Feedback extends StatelessWidget {
           : context.l10n.quizFeedbackWrong,
       detail: isRight
           ? _rightDetail(context, feedback, isLightning)
-          : labels.describeItem(data.answeredItemKey, data.run.domainId),
+          : switch (data.question.picture) {
+              final BarModelPicture model => model.calculation.toDisplayText(),
+              _ => labels.describeItem(data.answeredItemKey, data.run.domainId),
+            },
       reminder: mirror == null ? null : context.l10n.quizMirrorReminder(mirror),
       onContinue: data.run.isNonStop
           ? null
