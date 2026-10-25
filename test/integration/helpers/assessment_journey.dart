@@ -14,6 +14,7 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roste
 import 'package:kid_matix/features/classroom/domain/usecases/open_assessment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/select_pupil_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_assessment_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_report_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/placement_journey.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/answer_placement_question_use_case.dart';
@@ -66,6 +67,7 @@ abstract final class AssessmentJourney {
         getPending: sl(),
         watchChanges: sl(),
       ),
+      reports: ClassReportUseCases(getClassReport: sl(), share: sl()),
       domains: sl(),
     );
   }

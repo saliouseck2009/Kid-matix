@@ -28,6 +28,7 @@ import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.d
 import 'package:kid_matix/features/challenge/presentation/bloc/duel_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_assessment_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_report_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
@@ -291,6 +292,7 @@ ClassAssessmentPages _createAssessmentPages() {
       getPending: sl(),
       watchChanges: sl(),
     ),
+    reports: ClassReportUseCases(getClassReport: sl(), share: sl()),
     domains: sl(),
   );
 }

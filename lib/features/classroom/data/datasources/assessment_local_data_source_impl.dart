@@ -89,7 +89,8 @@ final class AssessmentLocalDataSourceImpl implements AssessmentLocalDataSource {
       ClassroomTables.assessmentLevel,
       where: _ofClass,
       whereArgs: arguments,
-      orderBy: 'domain_id',
+      // The order of the placement test, kept from the insertion.
+      orderBy: 'rowid',
     );
     final List<Map<String, Object?>> words = await database.query(
       ClassroomTables.assessmentWord,

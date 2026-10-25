@@ -588,6 +588,175 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomAssessmentBannerStart => 'Commencer';
 
   @override
+  String get classroomReportCardTitle => 'Rapport de la classe';
+
+  @override
+  String get classroomReportCardHint =>
+      'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.';
+
+  @override
+  String get classroomReportNeedsAssessment =>
+      'Le rapport apparaîtra après la première évaluation.';
+
+  @override
+  String get classroomReportFrom => 'Début';
+
+  @override
+  String get classroomReportTo => 'Fin';
+
+  @override
+  String get classroomReportNone => 'Aucune';
+
+  @override
+  String get classroomReportPdf => 'Exporter en PDF';
+
+  @override
+  String get classroomReportCsv => 'Exporter en CSV';
+
+  @override
+  String get classroomReportShared => 'Le rapport est prêt.';
+
+  @override
+  String classroomReportTitle(String name) {
+    return 'Rapport de la classe $name';
+  }
+
+  @override
+  String classroomReportPeriods(
+    String from,
+    DateTime fromDate,
+    String to,
+    DateTime toDate,
+  ) {
+    final intl.DateFormat fromDateDateFormat = intl.DateFormat.yMMMMd(
+      localeName,
+    );
+    final String fromDateString = fromDateDateFormat.format(fromDate);
+    final intl.DateFormat toDateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String toDateString = toDateDateFormat.format(toDate);
+
+    return 'De « $from » ($fromDateString) à « $to » ($toDateString)';
+  }
+
+  @override
+  String classroomReportOnePeriod(String label, DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '« $label » ($dateString)';
+  }
+
+  @override
+  String classroomReportGenerated(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Fait le $dateString avec Kid Matix, sans réseau.';
+  }
+
+  @override
+  String get classroomReportClassTitle => 'La classe';
+
+  @override
+  String get classroomReportDomain => 'Domaine';
+
+  @override
+  String get classroomReportProgressed => 'Élèves en progrès';
+
+  @override
+  String classroomReportCount(int count, int total) {
+    return '$count sur $total';
+  }
+
+  @override
+  String classroomReportPercent(int percent) {
+    return '$percent %';
+  }
+
+  @override
+  String get classroomReportNoValue => '–';
+
+  @override
+  String get classroomReportWords => 'Mots des maths compris';
+
+  @override
+  String classroomReportPractice(int sessions, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other:
+          'Temps de pratique entre les deux évaluations : $time en $sessions séances.',
+      one: 'Temps de pratique entre les deux évaluations : $time en 1 séance.',
+      zero: 'Aucune séance entre les deux évaluations.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String classroomReportHours(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String classroomReportAcquired(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count faits et mots acquis entre les deux évaluations (justes les 3 dernières fois).',
+      one: '1 fait ou mot acquis entre les deux évaluations (juste les 3 dernières fois).',
+      zero: 'Aucun fait ou mot acquis entre les deux évaluations.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomReportPupilsTitle => 'Les élèves';
+
+  @override
+  String get classroomReportPupil => 'Élève';
+
+  @override
+  String classroomReportPupilNumber(int number) {
+    return 'Élève $number';
+  }
+
+  @override
+  String classroomReportColumnStart(String name) {
+    return '$name début';
+  }
+
+  @override
+  String classroomReportColumnEnd(String name) {
+    return '$name fin';
+  }
+
+  @override
+  String get classroomReportWordsShort => 'Mots';
+
+  @override
+  String get classroomReportPracticeShort => 'Pratique';
+
+  @override
+  String get classroomReportPracticeMinutes => 'Pratique (min)';
+
+  @override
+  String get classroomReportSessions => 'Séances';
+
+  @override
+  String get classroomReportAcquiredShort => 'Acquis';
+
+  @override
+  String get classroomReportFileName => 'Rapport';
+
+  @override
+  String get classroomReportAnonymousNote =>
+      'Version anonyme : chaque élève est désigné par son numéro dans la liste de la classe.';
+
+  @override
+  String get classroomReportFileAnonymous => 'anonyme';
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

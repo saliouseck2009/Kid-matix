@@ -892,6 +892,227 @@ abstract class AppLocalizations {
   /// **'Commencer'**
   String get classroomAssessmentBannerStart;
 
+  /// Class mode, title of the card that exports the progress report of the class between two assessment periods. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport de la classe'**
+  String get classroomReportCardTitle;
+
+  /// Class mode, explanation of the class report card, addressed to the teacher. Two or three lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.'**
+  String get classroomReportCardHint;
+
+  /// Class mode, class report card when the class has no assessment yet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le rapport apparaîtra après la première évaluation.'**
+  String get classroomReportNeedsAssessment;
+
+  /// Class mode, label of the choice of the first assessment period compared by the report (a noun: the start). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Début'**
+  String get classroomReportFrom;
+
+  /// Class mode, label of the choice of the second assessment period compared by the report (a noun: the end). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin'**
+  String get classroomReportTo;
+
+  /// Class mode, choice of no first period in the report (a report of one period only). Feminine in French (« aucune évaluation »). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune'**
+  String get classroomReportNone;
+
+  /// Class mode, button that makes the report as PDF files (named and anonymous) and opens the share sheet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter en PDF'**
+  String get classroomReportPdf;
+
+  /// Class mode, button that makes the report as CSV tables (named and anonymous) and opens the share sheet. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter en CSV'**
+  String get classroomReportCsv;
+
+  /// Class mode, snack bar once the report files went to the share sheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le rapport est prêt.'**
+  String get classroomReportShared;
+
+  /// Title of the PDF report of a class.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport de la classe {name}'**
+  String classroomReportTitle(String name);
+
+  /// Subtitle of the PDF report: the two assessment periods compared, with the day each opened.
+  ///
+  /// In fr, this message translates to:
+  /// **'De « {from} » ({fromDate}) à « {to} » ({toDate})'**
+  String classroomReportPeriods(
+    String from,
+    DateTime fromDate,
+    String to,
+    DateTime toDate,
+  );
+
+  /// Subtitle of the PDF report of a single assessment period, with the day it opened.
+  ///
+  /// In fr, this message translates to:
+  /// **'« {label} » ({date})'**
+  String classroomReportOnePeriod(String label, DateTime date);
+
+  /// Footer line of a PDF report: the day it was made.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fait le {date} avec Kid Matix, sans réseau.'**
+  String classroomReportGenerated(DateTime date);
+
+  /// Heading of the class summary in the PDF report.
+  ///
+  /// In fr, this message translates to:
+  /// **'La classe'**
+  String get classroomReportClassTitle;
+
+  /// Column header of the class summary of the PDF report: the learning domain (numbers, additions...).
+  ///
+  /// In fr, this message translates to:
+  /// **'Domaine'**
+  String get classroomReportDomain;
+
+  /// Column header of the class summary of the PDF report: how many pupils assessed twice went up.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élèves en progrès'**
+  String get classroomReportProgressed;
+
+  /// Cell of the PDF report: a number of pupils out of those assessed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} sur {total}'**
+  String classroomReportCount(int count, int total);
+
+  /// Cell of a report: a share as a whole percentage.
+  ///
+  /// In fr, this message translates to:
+  /// **'{percent} %'**
+  String classroomReportPercent(int percent);
+
+  /// Cell of a report when there is no value (pupil not assessed). A dash, keep as is.
+  ///
+  /// In fr, this message translates to:
+  /// **'–'**
+  String get classroomReportNoValue;
+
+  /// Row of the class summary of the PDF report: share of the words of the word check understood.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mots des maths compris'**
+  String get classroomReportWords;
+
+  /// Line of the PDF report: the time the class played between the two assessments (time written by classroomReportHours or classroomPracticeMinutes) and its sessions.
+  ///
+  /// In fr, this message translates to:
+  /// **'{sessions, plural, =0{Aucune séance entre les deux évaluations.} =1{Temps de pratique entre les deux évaluations : {time} en 1 séance.} other{Temps de pratique entre les deux évaluations : {time} en {sessions} séances.}}'**
+  String classroomReportPractice(int sessions, String time);
+
+  /// A practice time of an hour or more in a report.
+  ///
+  /// In fr, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String classroomReportHours(int hours, int minutes);
+
+  /// Line of the PDF report: facts and words the class acquired between the two assessments.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun fait ou mot acquis entre les deux évaluations.} =1{1 fait ou mot acquis entre les deux évaluations (juste les 3 dernières fois).} other{{count} faits et mots acquis entre les deux évaluations (justes les 3 dernières fois).}}'**
+  String classroomReportAcquired(int count);
+
+  /// Heading of the table of the pupils in the PDF report.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les élèves'**
+  String get classroomReportPupilsTitle;
+
+  /// Column header of the pupils table of a report: the pupil (nickname, or number in the anonymous version).
+  ///
+  /// In fr, this message translates to:
+  /// **'Élève'**
+  String get classroomReportPupil;
+
+  /// A pupil in the anonymous version of a report: their rank in the class list instead of their nickname.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élève {number}'**
+  String classroomReportPupilNumber(int number);
+
+  /// Column header of the pupils table of a report: a measure (a domain name or the words) at the first assessment.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} début'**
+  String classroomReportColumnStart(String name);
+
+  /// Column header of the pupils table of a report: a measure (a domain name or the words) at the second assessment.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} fin'**
+  String classroomReportColumnEnd(String name);
+
+  /// Short name of the maths words of the word check, in the column headers of the pupils table of a report.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mots'**
+  String get classroomReportWordsShort;
+
+  /// Column header of the pupils table of the PDF report: time played between the two assessments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pratique'**
+  String get classroomReportPracticeShort;
+
+  /// Column header of the CSV report: minutes played between the two assessments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pratique (min)'**
+  String get classroomReportPracticeMinutes;
+
+  /// Column header of the CSV report: sessions played between the two assessments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Séances'**
+  String get classroomReportSessions;
+
+  /// Column header of the pupils table of a report: facts and words acquired between the two assessments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acquis'**
+  String get classroomReportAcquiredShort;
+
+  /// Word in the name of a report file, such as KidMatix-Rapport-CE1-B-2026-11-01.pdf. One word, no spaces or accents preferred.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport'**
+  String get classroomReportFileName;
+
+  /// Line under the title of the anonymous version of a PDF report: nicknames are replaced by numbers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version anonyme : chaque élève est désigné par son numéro dans la liste de la classe.'**
+  String get classroomReportAnonymousNote;
+
+  /// Last word of the name of the anonymous version of a report file, such as KidMatix-Rapport-CE1-B-2026-11-01-anonyme.pdf. One word, lowercase, no accents.
+  ///
+  /// In fr, this message translates to:
+  /// **'anonyme'**
+  String get classroomReportFileAnonymous;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

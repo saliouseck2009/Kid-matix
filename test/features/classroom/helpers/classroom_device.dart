@@ -44,6 +44,7 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_class_overview_
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/core/entities/shared_file.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/classroom/data/repositories/classroom_transfer_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
@@ -107,6 +108,16 @@ final class FakeSharedFiles implements SharedFileDataSource {
 
   @override
   Future<String?> pickFile() async => fileToPick;
+
+  /// The files of the last multi-file share, such as a report.
+  List<SharedFile> sharedFiles = <SharedFile>[];
+
+  @override
+  Future<bool> shareFiles({required List<SharedFile> files}) async {
+    if (!isSharing) return false;
+    sharedFiles = files;
+    return true;
+  }
 }
 
 /// One tablet of a class: a real in-memory database with the profile and

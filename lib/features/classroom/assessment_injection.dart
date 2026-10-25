@@ -6,16 +6,20 @@ import 'package:kid_matix/features/classroom/data/datasources/assessment_local_d
 import 'package:kid_matix/features/classroom/data/datasources/assessment_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/assessment_repository_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/assessment_session_hook.dart';
+import 'package:kid_matix/features/classroom/data/repositories/report_share_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/report_share_repository.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/close_assessment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_class_assessments_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_class_report_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_pending_assessment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_assessment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/share_files_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_assessment_changes_use_case.dart';
 
 /// Registers the class assessments (lot F31) in [sl]: their storage, the
-/// hook that keeps a pupil's result at the end of the word check, and
-/// their use cases.
+/// hook that keeps a pupil's result at the end of the word check, their
+/// use cases and the reports.
 void registerClassAssessments(GetIt sl) {
   sl.registerLazySingleton<AssessmentLocalDataSource>(
     () => AssessmentLocalDataSourceImpl(database: sl()),
@@ -42,11 +46,29 @@ void registerClassAssessments(GetIt sl) {
   sl.registerLazySingleton<WatchAssessmentChangesUseCase>(
     () => WatchAssessmentChangesUseCase(classroom: sl(), assessments: sl()),
   );
+  _registerReports(sl);
   sl<SessionSavedHooks>().add(
     AssessmentSessionHook(
       roster: () => sl<PupilRosterService>(),
       placements: () => sl<PlacementResultService>(),
       assessments: sl(),
+    ),
+  );
+}
+
+void _registerReports(GetIt sl) {
+  sl.registerLazySingleton<ReportShareRepository>(
+    () => ReportShareRepositoryImpl(files: sl()),
+  );
+  sl.registerLazySingleton<ShareFilesUseCase>(
+    () => ShareFilesUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<GetClassReportUseCase>(
+    () => GetClassReportUseCase(
+      getRoster: sl(),
+      assessments: sl(),
+      journal: sl(),
+      clock: sl(),
     ),
   );
 }

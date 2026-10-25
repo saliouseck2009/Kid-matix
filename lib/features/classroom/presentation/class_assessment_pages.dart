@@ -12,10 +12,15 @@ import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assessment_rules.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_assessment_use_cases.dart';
+import 'package:kid_matix/features/classroom/domain/entities/assessment_period.dart';
+import 'package:kid_matix/features/classroom/domain/entities/class_assessments_overview.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_assessments_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_report_cubit.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_report_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/pending_assessment_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/pages/class_assessments_page.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/assessment_home_banner.dart';
+import 'package:kid_matix/features/classroom/presentation/widgets/class_report_card.dart';
 
 /// Builds the pages and slots of the class assessments (lot F31) for the
 /// router: the teacher opens and closes them, each pupil takes the
@@ -24,13 +29,13 @@ final class ClassAssessmentPages {
   /// Creates the factory.
   const ClassAssessmentPages({
     required this._useCases,
+    required this._reports,
     required this._domains,
-    this._reportOf,
   });
 
   final ClassAssessmentUseCases _useCases;
+  final ClassReportUseCases _reports;
   final DomainRegistry _domains;
-  final AssessmentReportBuilder? _reportOf;
 
   /// « Évaluation de la classe » at the top of the home of [profileId],
   /// while they have one to take.
@@ -69,7 +74,28 @@ final class ClassAssessmentPages {
         classroomId: classroomId,
         useCases: _useCases,
       )..load(),
-      child: ClassAssessmentsPage(onBack: onBack, reportOf: _reportOf),
+      child: ClassAssessmentsPage(
+        onBack: onBack,
+        reportOf: (ClassAssessmentsOverview overview) =>
+            _buildReportCard(classroomId, overview.periods),
+      ),
+    );
+  }
+
+  /// « Rapport de la classe » over the [periods] of [classroomId].
+  Widget _buildReportCard(String classroomId, List<AssessmentPeriod> periods) {
+    if (periods.isEmpty) return const ClassReportPlaceholder();
+    return BlocProvider<ClassReportCubit>(
+      key: ValueKey<String>(
+        periods.map((AssessmentPeriod period) => period.key).join('|'),
+      ),
+      create: (_) => ClassReportCubit(
+        classroomId: classroomId,
+        periods: periods,
+        getReport: _reports.getClassReport,
+        share: _reports.share,
+      ),
+      child: ClassReportCard(periods: periods),
     );
   }
 

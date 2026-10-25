@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:file_selector/file_selector.dart';
+import 'package:kid_matix/core/entities/shared_file.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:share_plus/share_plus.dart';
@@ -34,6 +36,26 @@ final class SharedFileDataSourceImpl implements SharedFileDataSource {
           ),
         ],
         fileNameOverrides: <String>[fileName],
+      ),
+    );
+    return result.status == ShareResultStatus.success;
+  }
+
+  @override
+  Future<bool> shareFiles({required List<SharedFile> files}) async {
+    final ShareResult result = await SharePlus.instance.share(
+      ShareParams(
+        files: <XFile>[
+          for (final SharedFile file in files)
+            XFile.fromData(
+              Uint8List.fromList(file.bytes),
+              name: file.name,
+              mimeType: file.mimeType,
+            ),
+        ],
+        fileNameOverrides: <String>[
+          for (final SharedFile file in files) file.name,
+        ],
       ),
     );
     return result.status == ShareResultStatus.success;

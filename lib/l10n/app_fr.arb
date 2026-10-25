@@ -758,6 +758,254 @@
   "@classroomAssessmentBannerStart": {
     "description": "Home of a pupil, button of the assessment card that starts the level test then the word check. A verb, one word."
   },
+  "classroomReportCardTitle": "Rapport de la classe",
+  "@classroomReportCardTitle": {
+    "description": "Class mode, title of the card that exports the progress report of the class between two assessment periods. One line."
+  },
+  "classroomReportCardHint": "Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.",
+  "@classroomReportCardHint": {
+    "description": "Class mode, explanation of the class report card, addressed to the teacher. Two or three lines."
+  },
+  "classroomReportNeedsAssessment": "Le rapport apparaîtra après la première évaluation.",
+  "@classroomReportNeedsAssessment": {
+    "description": "Class mode, class report card when the class has no assessment yet."
+  },
+  "classroomReportFrom": "Début",
+  "@classroomReportFrom": {
+    "description": "Class mode, label of the choice of the first assessment period compared by the report (a noun: the start). Short."
+  },
+  "classroomReportTo": "Fin",
+  "@classroomReportTo": {
+    "description": "Class mode, label of the choice of the second assessment period compared by the report (a noun: the end). Short."
+  },
+  "classroomReportNone": "Aucune",
+  "@classroomReportNone": {
+    "description": "Class mode, choice of no first period in the report (a report of one period only). Feminine in French (« aucune évaluation »). One word."
+  },
+  "classroomReportPdf": "Exporter en PDF",
+  "@classroomReportPdf": {
+    "description": "Class mode, button that makes the report as PDF files (named and anonymous) and opens the share sheet. One line."
+  },
+  "classroomReportCsv": "Exporter en CSV",
+  "@classroomReportCsv": {
+    "description": "Class mode, button that makes the report as CSV tables (named and anonymous) and opens the share sheet. One line."
+  },
+  "classroomReportShared": "Le rapport est prêt.",
+  "@classroomReportShared": {
+    "description": "Class mode, snack bar once the report files went to the share sheet."
+  },
+  "classroomReportTitle": "Rapport de la classe {name}",
+  "@classroomReportTitle": {
+    "description": "Title of the PDF report of a class.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "CE1 B"
+      }
+    }
+  },
+  "classroomReportPeriods": "De « {from} » ({fromDate}) à « {to} » ({toDate})",
+  "@classroomReportPeriods": {
+    "description": "Subtitle of the PDF report: the two assessment periods compared, with the day each opened.",
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Début d'année"
+      },
+      "fromDate": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "2026-10-01"
+      },
+      "to": {
+        "type": "String",
+        "example": "Fin de trimestre"
+      },
+      "toDate": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "2026-11-01"
+      }
+    }
+  },
+  "classroomReportOnePeriod": "« {label} » ({date})",
+  "@classroomReportOnePeriod": {
+    "description": "Subtitle of the PDF report of a single assessment period, with the day it opened.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Début d'année"
+      },
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "2026-10-01"
+      }
+    }
+  },
+  "classroomReportGenerated": "Fait le {date} avec Kid Matix, sans réseau.",
+  "@classroomReportGenerated": {
+    "description": "Footer line of a PDF report: the day it was made.",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "2026-11-01"
+      }
+    }
+  },
+  "classroomReportClassTitle": "La classe",
+  "@classroomReportClassTitle": {
+    "description": "Heading of the class summary in the PDF report."
+  },
+  "classroomReportDomain": "Domaine",
+  "@classroomReportDomain": {
+    "description": "Column header of the class summary of the PDF report: the learning domain (numbers, additions...)."
+  },
+  "classroomReportProgressed": "Élèves en progrès",
+  "@classroomReportProgressed": {
+    "description": "Column header of the class summary of the PDF report: how many pupils assessed twice went up."
+  },
+  "classroomReportCount": "{count} sur {total}",
+  "@classroomReportCount": {
+    "description": "Cell of the PDF report: a number of pupils out of those assessed.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      },
+      "total": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "classroomReportPercent": "{percent} %",
+  "@classroomReportPercent": {
+    "description": "Cell of a report: a share as a whole percentage.",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "classroomReportNoValue": "–",
+  "@classroomReportNoValue": {
+    "description": "Cell of a report when there is no value (pupil not assessed). A dash, keep as is."
+  },
+  "classroomReportWords": "Mots des maths compris",
+  "@classroomReportWords": {
+    "description": "Row of the class summary of the PDF report: share of the words of the word check understood."
+  },
+  "classroomReportPractice": "{sessions, plural, =0{Aucune séance entre les deux évaluations.} =1{Temps de pratique entre les deux évaluations : {time} en 1 séance.} other{Temps de pratique entre les deux évaluations : {time} en {sessions} séances.}}",
+  "@classroomReportPractice": {
+    "description": "Line of the PDF report: the time the class played between the two assessments (time written by classroomReportHours or classroomPracticeMinutes) and its sessions.",
+    "placeholders": {
+      "sessions": {
+        "type": "int",
+        "example": "140"
+      },
+      "time": {
+        "type": "String",
+        "example": "12 h 30 min"
+      }
+    }
+  },
+  "classroomReportHours": "{hours} h {minutes} min",
+  "@classroomReportHours": {
+    "description": "A practice time of an hour or more in a report.",
+    "placeholders": {
+      "hours": {
+        "type": "int",
+        "example": "12"
+      },
+      "minutes": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomReportAcquired": "{count, plural, =0{Aucun fait ou mot acquis entre les deux évaluations.} =1{1 fait ou mot acquis entre les deux évaluations (juste les 3 dernières fois).} other{{count} faits et mots acquis entre les deux évaluations (justes les 3 dernières fois).}}",
+  "@classroomReportAcquired": {
+    "description": "Line of the PDF report: facts and words the class acquired between the two assessments.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "120"
+      }
+    }
+  },
+  "classroomReportPupilsTitle": "Les élèves",
+  "@classroomReportPupilsTitle": {
+    "description": "Heading of the table of the pupils in the PDF report."
+  },
+  "classroomReportPupil": "Élève",
+  "@classroomReportPupil": {
+    "description": "Column header of the pupils table of a report: the pupil (nickname, or number in the anonymous version)."
+  },
+  "classroomReportPupilNumber": "Élève {number}",
+  "@classroomReportPupilNumber": {
+    "description": "A pupil in the anonymous version of a report: their rank in the class list instead of their nickname.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "classroomReportColumnStart": "{name} début",
+  "@classroomReportColumnStart": {
+    "description": "Column header of the pupils table of a report: a measure (a domain name or the words) at the first assessment.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Nombres"
+      }
+    }
+  },
+  "classroomReportColumnEnd": "{name} fin",
+  "@classroomReportColumnEnd": {
+    "description": "Column header of the pupils table of a report: a measure (a domain name or the words) at the second assessment.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Nombres"
+      }
+    }
+  },
+  "classroomReportWordsShort": "Mots",
+  "@classroomReportWordsShort": {
+    "description": "Short name of the maths words of the word check, in the column headers of the pupils table of a report."
+  },
+  "classroomReportPracticeShort": "Pratique",
+  "@classroomReportPracticeShort": {
+    "description": "Column header of the pupils table of the PDF report: time played between the two assessments."
+  },
+  "classroomReportPracticeMinutes": "Pratique (min)",
+  "@classroomReportPracticeMinutes": {
+    "description": "Column header of the CSV report: minutes played between the two assessments."
+  },
+  "classroomReportSessions": "Séances",
+  "@classroomReportSessions": {
+    "description": "Column header of the CSV report: sessions played between the two assessments."
+  },
+  "classroomReportAcquiredShort": "Acquis",
+  "@classroomReportAcquiredShort": {
+    "description": "Column header of the pupils table of a report: facts and words acquired between the two assessments."
+  },
+  "classroomReportFileName": "Rapport",
+  "@classroomReportFileName": {
+    "description": "Word in the name of a report file, such as KidMatix-Rapport-CE1-B-2026-11-01.pdf. One word, no spaces or accents preferred."
+  },
+  "classroomReportAnonymousNote": "Version anonyme : chaque élève est désigné par son numéro dans la liste de la classe.",
+  "@classroomReportAnonymousNote": {
+    "description": "Line under the title of the anonymous version of a PDF report: nicknames are replaced by numbers."
+  },
+  "classroomReportFileAnonymous": "anonyme",
+  "@classroomReportFileAnonymous": {
+    "description": "Last word of the name of the anonymous version of a report file, such as KidMatix-Rapport-CE1-B-2026-11-01-anonyme.pdf. One word, lowercase, no accents."
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."
