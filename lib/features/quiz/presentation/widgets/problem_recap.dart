@@ -24,15 +24,13 @@ class ProblemRecap extends StatelessWidget {
   /// Language of the statement.
   final String languageCode;
 
-  static const double _radius = 28;
-
   @override
   Widget build(BuildContext context) {
     final MathPicture? picture = question.picture;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(_radius),
+        borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
       ),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.space16),

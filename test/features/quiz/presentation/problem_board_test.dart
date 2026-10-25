@@ -83,7 +83,7 @@ void main() {
     final BarModelPicture model = asked.picture! as BarModelPicture;
     if (isGuided) await tester.tap(find.text("J'ai écouté"));
     await tester.pumpAndSettle();
-    final List<BarRole> known = model.knownRoles;
+    final List<BarRole> known = model.placeableRoles;
     for (int index = 0; index < known.length; index++) {
       await tapKey(tester, 'tile-$index');
       await tapKey(tester, 'slot-${known[index].name}');
@@ -190,4 +190,30 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets(
+    'fills « la moitié » with its 2: the child places only the story',
+    (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      final Question asked = question(
+        problemTemplate('mangues_moitie_piege'),
+        QuestionTypeIds.barModel,
+        1,
+      );
+      // Act
+      await pumpBoard(tester, asked, isGuided: false);
+      // Assert: one number to place, and the times place already says 2.
+      expect(find.byKey(const ValueKey<String>('tile-0')), findsOneWidget);
+      expect(find.byKey(const ValueKey<String>('tile-1')), findsNothing);
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey<String>('slot-times')),
+          matching: find.text('2'),
+        ),
+        findsOneWidget,
+      );
+    },
+  );
 }
