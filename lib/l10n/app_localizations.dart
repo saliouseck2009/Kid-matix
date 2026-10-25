@@ -1347,6 +1347,12 @@ abstract class AppLocalizations {
   /// **'Enregistrement de « {word} »…'**
   String classroomRecordingsRecording(String word);
 
+  /// Teacher area, timer under the recording banner: seconds recorded out of the longest recording; it then stops and is kept automatically.
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds} s sur {max} s : l\'enregistrement s\'arrête tout seul à la fin.'**
+  String classroomRecordingsTime(int seconds, int max);
+
   /// Teacher area, button that stops the recording and keeps it for the word. One line.
   ///
   /// In fr, this message translates to:

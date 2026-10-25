@@ -207,6 +207,7 @@
   "classroomRecordingsListen": "Escuchar «{word}»",
   "classroomRecordingsDelete": "Borrar tu voz para «{word}»",
   "classroomRecordingsRecording": "Grabando «{word}»…",
+  "classroomRecordingsTime": "{seconds} s de {max} s: la grabación se para sola al final.",
   "classroomRecordingsKeep": "Parar y guardar",
   "classroomRecordingsCancel": "Descartar",
   "classroomRecordingsDenied": "Sin el micrófono no puedes grabar. Permítelo en los ajustes de la tableta.",

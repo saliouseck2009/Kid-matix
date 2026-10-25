@@ -907,6 +907,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String classroomRecordingsTime(int seconds, int max) {
+    return '$seconds s de $max s: la grabación se para sola al final.';
+  }
+
+  @override
   String get classroomRecordingsKeep => 'Parar y guardar';
 
   @override

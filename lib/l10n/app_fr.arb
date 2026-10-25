@@ -1208,6 +1208,20 @@
       }
     }
   },
+  "classroomRecordingsTime": "{seconds} s sur {max} s : l'enregistrement s'arrête tout seul à la fin.",
+  "@classroomRecordingsTime": {
+    "description": "Teacher area, timer under the recording banner: seconds recorded out of the longest recording; it then stops and is kept automatically.",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
   "classroomRecordingsKeep": "Arrêter et garder",
   "@classroomRecordingsKeep": {
     "description": "Teacher area, button that stops the recording and keeps it for the word. One line."

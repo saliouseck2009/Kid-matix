@@ -908,6 +908,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String classroomRecordingsTime(int seconds, int max) {
+    return '$seconds s sur $max s : l\'enregistrement s\'arrête tout seul à la fin.';
+  }
+
+  @override
   String get classroomRecordingsKeep => 'Arrêter et garder';
 
   @override

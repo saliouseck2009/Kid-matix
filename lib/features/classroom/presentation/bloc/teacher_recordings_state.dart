@@ -21,6 +21,7 @@ final class TeacherRecordingsState {
   const TeacherRecordingsState({
     this.page,
     this.recordingWordKey,
+    this.recordedSeconds = 0,
     this.isBusy = false,
     this.notice,
     this.importedCount = 0,
@@ -32,6 +33,9 @@ final class TeacherRecordingsState {
 
   /// The word being recorded, or `null`.
   final String? recordingWordKey;
+
+  /// Seconds recorded so far.
+  final int recordedSeconds;
 
   /// Whether an action is going on.
   final bool isBusy;
@@ -50,9 +54,13 @@ final class TeacherRecordingsState {
     return TeacherRecordingsState(page: page);
   }
 
-  /// Returns a copy recording [wordKey], or none.
-  TeacherRecordingsState recording(String? wordKey) {
-    return TeacherRecordingsState(page: page, recordingWordKey: wordKey);
+  /// Returns a copy recording [wordKey] for [seconds], or none.
+  TeacherRecordingsState recording(String? wordKey, {int seconds = 0}) {
+    return TeacherRecordingsState(
+      page: page,
+      recordingWordKey: wordKey,
+      recordedSeconds: seconds,
+    );
   }
 
   /// Returns a copy while an action goes on.

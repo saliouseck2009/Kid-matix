@@ -223,6 +223,7 @@ GoRouter _createRouter(
     audioPages: TeacherAudioPages(
       useCases: (get: sl(), record: sl(), packs: sl()),
       domains: sl(),
+      ticker: sl(),
     ),
     qrPages: ResultsQrPages(
       useCases: (make: sl(), confirm: sl(), receive: sl()),
