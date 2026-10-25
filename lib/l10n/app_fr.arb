@@ -684,6 +684,18 @@
   "@classroomAssessmentLabelError": {
     "description": "Class mode, error under the period name field when it is empty or too long. Informal \"tu\"."
   },
+  "classroomAssessmentPresetStart": "Début d'année",
+  "@classroomAssessmentPresetStart": {
+    "description": "Class mode, suggested name of an assessment period, a chip that fills the period name field. Use the same words every time: periods are grouped by name."
+  },
+  "classroomAssessmentPresetMiddle": "Milieu d'année",
+  "@classroomAssessmentPresetMiddle": {
+    "description": "Class mode, suggested name of an assessment period, a chip that fills the period name field."
+  },
+  "classroomAssessmentPresetEnd": "Fin d'année",
+  "@classroomAssessmentPresetEnd": {
+    "description": "Class mode, suggested name of an assessment period, a chip that fills the period name field."
+  },
   "classroomAssessmentStart": "Lancer",
   "@classroomAssessmentStart": {
     "description": "Class mode, confirm button of the dialog that opens a new assessment. A verb, one word."

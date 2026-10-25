@@ -532,6 +532,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Donne un nom à la période (30 caractères au plus).';
 
   @override
+  String get classroomAssessmentPresetStart => 'Début d\'année';
+
+  @override
+  String get classroomAssessmentPresetMiddle => 'Milieu d\'année';
+
+  @override
+  String get classroomAssessmentPresetEnd => 'Fin d\'année';
+
+  @override
   String get classroomAssessmentStart => 'Lancer';
 
   @override

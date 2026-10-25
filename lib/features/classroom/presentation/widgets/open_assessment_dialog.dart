@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assessment_rules.dart';
 
@@ -44,21 +45,46 @@ class _OpenAssessmentDialogState extends State<OpenAssessmentDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(context.l10n.classroomAssessmentNew),
-      content: TextField(
-        controller: _label,
-        autofocus: true,
-        maxLength: AssessmentRules.maxLabelLength,
-        textCapitalization: TextCapitalization.sentences,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-        onSubmitted: (_) => _submit(),
-        decoration: InputDecoration(
-          labelText: context.l10n.classroomAssessmentLabelLabel,
-          hintText: context.l10n.classroomAssessmentLabelHint,
-          errorText: _isInvalid
-              ? context.l10n.classroomAssessmentLabelError
-              : null,
-        ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Wrap(
+            spacing: AppSizes.space8,
+            runSpacing: AppSizes.space8,
+            children: <Widget>[
+              for (final String preset in <String>[
+                context.l10n.classroomAssessmentPresetStart,
+                context.l10n.classroomAssessmentPresetMiddle,
+                context.l10n.classroomAssessmentPresetEnd,
+              ])
+                ActionChip(
+                  label: Text(preset),
+                  onPressed: () => setState(() {
+                    _label.text = preset;
+                    _isInvalid = false;
+                  }),
+                ),
+            ],
+          ),
+          const SizedBox(height: AppSizes.space8),
+          TextField(
+            controller: _label,
+            autofocus: true,
+            maxLength: AssessmentRules.maxLabelLength,
+            textCapitalization: TextCapitalization.sentences,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) => _submit(),
+            decoration: InputDecoration(
+              labelText: context.l10n.classroomAssessmentLabelLabel,
+              hintText: context.l10n.classroomAssessmentLabelHint,
+              errorText: _isInvalid
+                  ? context.l10n.classroomAssessmentLabelError
+                  : null,
+            ),
+          ),
+        ],
       ),
       actions: <Widget>[
         TextButton(

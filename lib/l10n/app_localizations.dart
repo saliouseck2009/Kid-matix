@@ -826,6 +826,24 @@ abstract class AppLocalizations {
   /// **'Donne un nom à la période (30 caractères au plus).'**
   String get classroomAssessmentLabelError;
 
+  /// Class mode, suggested name of an assessment period, a chip that fills the period name field. Use the same words every time: periods are grouped by name.
+  ///
+  /// In fr, this message translates to:
+  /// **'Début d\'année'**
+  String get classroomAssessmentPresetStart;
+
+  /// Class mode, suggested name of an assessment period, a chip that fills the period name field.
+  ///
+  /// In fr, this message translates to:
+  /// **'Milieu d\'année'**
+  String get classroomAssessmentPresetMiddle;
+
+  /// Class mode, suggested name of an assessment period, a chip that fills the period name field.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin d\'année'**
+  String get classroomAssessmentPresetEnd;
+
   /// Class mode, confirm button of the dialog that opens a new assessment. A verb, one word.
   ///
   /// In fr, this message translates to:

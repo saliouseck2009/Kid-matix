@@ -531,6 +531,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ponle un nombre al periodo (30 caracteres como máximo).';
 
   @override
+  String get classroomAssessmentPresetStart => 'Inicio de curso';
+
+  @override
+  String get classroomAssessmentPresetMiddle => 'Mitad de curso';
+
+  @override
+  String get classroomAssessmentPresetEnd => 'Final de curso';
+
+  @override
   String get classroomAssessmentStart => 'Iniciar';
 
   @override
