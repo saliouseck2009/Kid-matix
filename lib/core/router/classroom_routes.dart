@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/results_qr_pages.dart';
 
 /// The routes of the class mode, outside the tabs: the teacher area
 /// (its door, « Mes classes », the creation of a class, the page of a
@@ -14,6 +15,7 @@ import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 List<RouteBase> createClassroomRoutes({
   required ClassroomPages pages,
   ClassAssessmentPages? assessmentPages,
+  ResultsQrPages? qrPages,
 }) {
   return <RouteBase>[
     GoRoute(
@@ -23,7 +25,7 @@ List<RouteBase> createClassroomRoutes({
           onBack: () => context.go(AppRoutes.whoIsPlaying),
         );
       },
-      routes: <RouteBase>[_classroomsRoute(pages, assessmentPages)],
+      routes: <RouteBase>[_classroomsRoute(pages, assessmentPages, qrPages)],
     ),
     GoRoute(
       path: AppRoutes.pupilPicker,
@@ -40,6 +42,7 @@ List<RouteBase> createClassroomRoutes({
 GoRoute _classroomsRoute(
   ClassroomPages pages,
   ClassAssessmentPages? assessmentPages,
+  ResultsQrPages? qrPages,
 ) {
   return GoRoute(
     path: _lastSegment(AppRoutes.teacherClassrooms),
@@ -50,6 +53,9 @@ GoRoute _classroomsRoute(
         onCreate: () => context.go(AppRoutes.classroomCreation),
         onLeave: () => context.go(AppRoutes.whoIsPlaying),
         actions: <Widget>[
+          ?qrPages?.buildReceiveButton(
+            onOpen: () => context.go(AppRoutes.resultsQrScan),
+          ),
           ?assessmentPages?.reports.buildProgramReportButton(
             onOpen: () => context.go(AppRoutes.programReport),
           ),
@@ -58,6 +64,7 @@ GoRoute _classroomsRoute(
     },
     routes: <RouteBase>[
       ?_programReportRoute(assessmentPages),
+      ?_qrScanRoute(qrPages),
       GoRoute(
         path: _lastSegment(AppRoutes.classroomCreation),
         builder: (BuildContext context, GoRouterState state) {
@@ -81,6 +88,9 @@ GoRoute _classroomsRoute(
             onGiveAssignment: () =>
                 context.go(AppRoutes.classroomAssignmentOf(classroomId)),
             actions: <Widget>[
+              ?qrPages?.buildSendButton(
+                onOpen: () => context.go(AppRoutes.resultsQrOf(classroomId)),
+              ),
               ?assessmentPages?.buildAssessmentsButton(
                 onOpen: () =>
                     context.go(AppRoutes.classroomAssessmentsOf(classroomId)),
@@ -92,6 +102,7 @@ GoRoute _classroomsRoute(
           _pupilsAdditionRoute(pages),
           _assignmentRoute(pages),
           ?_assessmentsRoute(assessmentPages),
+          ?_qrSendRoute(qrPages),
         ],
       ),
     ],
@@ -122,6 +133,32 @@ GoRoute _assignmentRoute(ClassroomPages pages) {
     builder: (BuildContext context, GoRouterState state) {
       final String classroomId = _classroomIdOf(state);
       return pages.buildAssignmentPage(
+        classroomId: classroomId,
+        onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
+      );
+    },
+  );
+}
+
+GoRoute? _qrScanRoute(ResultsQrPages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.resultsQrScan),
+    builder: (BuildContext context, GoRouterState state) {
+      return pages.buildReceivePage(
+        onBack: () => context.go(AppRoutes.teacherClassrooms),
+      );
+    },
+  );
+}
+
+GoRoute? _qrSendRoute(ResultsQrPages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.resultsQr),
+    builder: (BuildContext context, GoRouterState state) {
+      final String classroomId = _classroomIdOf(state);
+      return pages.buildSendPage(
         classroomId: classroomId,
         onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
       );

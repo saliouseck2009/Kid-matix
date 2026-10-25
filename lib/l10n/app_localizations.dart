@@ -1179,6 +1179,96 @@ abstract class AppLocalizations {
   /// **'Programme'**
   String get classroomProgramFileName;
 
+  /// Teacher area, button of the page of a class that shows its new results as a QR code for the teacher's tablet. Also the title of that page. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer par QR code'**
+  String get classroomQrSend;
+
+  /// Teacher area, explanation under the QR code of the results (informal "tu").
+  ///
+  /// In fr, this message translates to:
+  /// **'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.'**
+  String get classroomQrSendHint;
+
+  /// Teacher area, what the QR code of the results carries, above the code.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Seulement des résultats d\'évaluation} =1{1 nouvelle séance} other{{count} nouvelles séances}}'**
+  String classroomQrSessions(int count);
+
+  /// Screen-reader label of the QR code image of the results.
+  ///
+  /// In fr, this message translates to:
+  /// **'QR code des nouveaux résultats'**
+  String get classroomQrImageLabel;
+
+  /// Teacher area, button under the QR code of the results, to press once the teacher's tablet has read it (the next code starts after these results). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est reçu'**
+  String get classroomQrDone;
+
+  /// Teacher area, message once the teacher said the QR code was received.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces résultats ne seront plus renvoyés.'**
+  String get classroomQrSent;
+
+  /// Teacher area, QR code page when there is no new result to send.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien de nouveau à envoyer depuis le dernier envoi.'**
+  String get classroomQrNothing;
+
+  /// Teacher area, QR code page when the results are too big for a code (the class file is the fallback). Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop de résultats pour un QR code : envoie plutôt le fichier de la classe.'**
+  String get classroomQrTooBig;
+
+  /// Teacher area, button of « Mes classes » that opens the camera to read the QR code of results shown by another tablet. Also the title of that page. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir par QR code'**
+  String get classroomQrReceive;
+
+  /// Teacher area, explanation above the camera view that reads a QR code of results.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vise le QR code affiché sur l\'autre tablette. La caméra ne sert qu\'à lire ce code.'**
+  String get classroomQrScanHint;
+
+  /// Teacher area, button to read another QR code after one was merged or refused. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lire un autre code'**
+  String get classroomQrScanAgain;
+
+  /// Teacher area, error when the QR code read is not a results code.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce QR code ne vient pas de Kid Matix, ou il est abîmé.'**
+  String get classroomQrInvalid;
+
+  /// Teacher area, error when the QR code was made by a newer version of the app. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce QR code vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
+  String get classroomQrVersion;
+
+  /// Teacher area, error when the QR code read refers to a class, pupil or assessment this tablet does not have.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette tablette n\'a pas encore la classe, ses élèves ou son évaluation : reçois d\'abord le fichier de la classe.'**
+  String get classroomQrUnknown;
+
+  /// Teacher area, message in place of the camera view when the camera is refused or missing.
+  ///
+  /// In fr, this message translates to:
+  /// **'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.'**
+  String get classroomQrCameraError;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

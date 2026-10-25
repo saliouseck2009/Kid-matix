@@ -81,7 +81,7 @@ et doit respecter ses règles. État pour la version 1.0 :
 | Contenu adapté aux enfants | Oui : questions de multiplication, mascotte, monstres dessinés |
 | Pas de publicité, ou SDK publicitaires certifiés Familles | Aucune publicité, aucun SDK publicitaire |
 | SDK tiers conformes aux règles Familles | Aucun SDK tiers qui communique (liste des paquets dans l'audit) |
-| Pas de collecte d'identifiants de l'appareil (identifiant publicitaire, Android ID...) | Aucune collecte ; seule autorisation demandée : les notifications, quand on active le rappel quotidien (F18) |
+| Pas de collecte d'identifiants de l'appareil (identifiant publicitaire, Android ID...) | Aucune collecte ; côté enfant, seule autorisation demandée : les notifications, quand on active le rappel quotidien (F18). Dans l'espace enseignant seulement (code de l'enseignant) : `CAMERA` pour lire le QR code des résultats d'une autre tablette, `RECORD_AUDIO` pour enregistrer l'explication d'un mot (F31) ; demandées à la première utilisation, rien n'est envoyé |
 | Pas de localisation précise | Aucune |
 | Achats protégés par un contrôle parental | Aucun achat |
 | Liens sortants protégés | Aucun lien vers l'extérieur |
@@ -125,4 +125,4 @@ dans ce formulaire. Voir `docs/release/audit-1.0.md`, point 3.
 | Application de santé | Non |
 | Application d'actualités | Non |
 | Identifiant publicitaire utilisé | Non |
-| Autorisations sensibles (SMS, journal d'appels, localisation en arrière-plan, accès à tous les fichiers...) | Aucune (notifications et redémarrage ne sont pas sensibles ; pas d'alarme exacte, F18) |
+| Autorisations sensibles (SMS, journal d'appels, localisation en arrière-plan, accès à tous les fichiers...) | Aucune (notifications et redémarrage ne sont pas sensibles ; pas d'alarme exacte, F18). Caméra et micro (F31) : espace enseignant seulement, au premier usage, jamais sur un écran d'enfant ; à déclarer dans « Sécurité des données » comme non collectées (rien ne quitte l'appareil) |

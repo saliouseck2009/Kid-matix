@@ -33,6 +33,10 @@ import 'package:kid_matix/features/learning_path/domain/services/placement_resul
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assessment_local_data_source_impl.dart';
+import 'package:kid_matix/features/classroom/data/datasources/qr_results_codec_impl.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/confirm_results_qr_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/make_results_qr_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/receive_results_qr_use_case.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/assessment_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
@@ -339,13 +343,38 @@ final class ClassroomDevice {
   /// Receives a class file.
   late final ImportClassroomUseCase importClassroom = ImportClassroomUseCase(
     transfers: transfers,
-    merger: ClassroomMerger(
-      classrooms: classrooms,
-      roster: roster,
-      assignments: assignments,
-      journal: journal,
-      assessments: assessments,
-    ),
+    merger: merger,
+  );
+
+  /// Merges class files and QR codes.
+  late final ClassroomMerger merger = ClassroomMerger(
+    classrooms: classrooms,
+    roster: roster,
+    assignments: assignments,
+    journal: journal,
+    assessments: assessments,
+  );
+
+  /// Makes the QR code of new results.
+  late final MakeResultsQrUseCase makeQr = MakeResultsQrUseCase(
+    journal: journal,
+    assessments: assessments,
+    transfers: transfers,
+    codec: const QrResultsCodecImpl(),
+  );
+
+  /// Remembers a QR code read.
+  late final ConfirmResultsQrUseCase confirmQr = ConfirmResultsQrUseCase(
+    transfers: transfers,
+    clock: clock,
+  );
+
+  /// Merges a QR code read.
+  late final ReceiveResultsQrUseCase receiveQr = ReceiveResultsQrUseCase(
+    codec: const QrResultsCodecImpl(),
+    getRoster: getRoster,
+    assessments: assessments,
+    merger: merger,
   );
 
   /// Closes the device.

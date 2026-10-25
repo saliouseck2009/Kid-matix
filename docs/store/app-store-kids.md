@@ -42,7 +42,7 @@ plus être retirée de l'app.
 | Pas d'envoi de données personnelles ou d'informations sur l'appareil à des tiers | Rien n'est envoyé : aucune connexion réseau |
 | Politique de confidentialité publiée | Brouillon prêt, à héberger |
 | Respect des lois sur les données des enfants (COPPA, RGPD) | Aucune collecte ; le pseudo reste sur l'appareil |
-| Pas de demande d'autorisation sans nécessité | Seulement les notifications, demandées quand on active le rappel quotidien (désactivé par défaut, F18) ; pas de photo, micro, localisation, suivi |
+| Pas de demande d'autorisation sans nécessité | Côté enfant, seulement les notifications, demandées quand on active le rappel quotidien (désactivé par défaut, F18). Caméra (lire le QR code des résultats) et micro (enregistrer l'explication d'un mot) : demandés dans l'espace enseignant seulement, derrière le code de l'enseignant, à la première utilisation (F31) ; `NSCameraUsageDescription` et `NSMicrophoneUsageDescription` dans `Info.plist`. Pas de photo, localisation, suivi |
 
 ## Confidentialité de l'app (« étiquette de confidentialité »)
 

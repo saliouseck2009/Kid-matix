@@ -791,6 +791,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomProgramFileName => 'Programme';
 
   @override
+  String get classroomQrSend => 'Send as a QR code';
+
+  @override
+  String get classroomQrSendHint =>
+      'On the teacher\'s tablet, open “Receive a QR code” and point the camera at this code.';
+
+  @override
+  String classroomQrSessions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count new sessions',
+      one: '1 new session',
+      zero: 'Only assessment results',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomQrImageLabel => 'QR code of the new results';
+
+  @override
+  String get classroomQrDone => 'It\'s received';
+
+  @override
+  String get classroomQrSent => 'These results will not be sent again.';
+
+  @override
+  String get classroomQrNothing => 'Nothing new to send since the last time.';
+
+  @override
+  String get classroomQrTooBig =>
+      'Too many results for a QR code: send the class file instead.';
+
+  @override
+  String get classroomQrReceive => 'Receive a QR code';
+
+  @override
+  String get classroomQrScanHint =>
+      'Point the camera at the QR code shown on the other tablet. The camera is only used to read that code.';
+
+  @override
+  String get classroomQrScanAgain => 'Read another code';
+
+  @override
+  String get classroomQrInvalid =>
+      'This QR code does not come from Kid Matix, or it is damaged.';
+
+  @override
+  String get classroomQrVersion =>
+      'This QR code comes from a newer version of Kid Matix. Update the app, then try again.';
+
+  @override
+  String get classroomQrUnknown =>
+      'This tablet does not have the class, its pupils or its assessment yet: first receive the class file.';
+
+  @override
+  String get classroomQrCameraError =>
+      'The camera is not available. Allow it in the settings, or use the class file.';
+
+  @override
   String get profileCreationTitle => 'New player';
 
   @override

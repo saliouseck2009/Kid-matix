@@ -797,6 +797,68 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomProgramFileName => 'Programme';
 
   @override
+  String get classroomQrSend => 'Envoyer par QR code';
+
+  @override
+  String get classroomQrSendHint =>
+      'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.';
+
+  @override
+  String classroomQrSessions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nouvelles séances',
+      one: '1 nouvelle séance',
+      zero: 'Seulement des résultats d\'évaluation',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomQrImageLabel => 'QR code des nouveaux résultats';
+
+  @override
+  String get classroomQrDone => 'C\'est reçu';
+
+  @override
+  String get classroomQrSent => 'Ces résultats ne seront plus renvoyés.';
+
+  @override
+  String get classroomQrNothing =>
+      'Rien de nouveau à envoyer depuis le dernier envoi.';
+
+  @override
+  String get classroomQrTooBig =>
+      'Trop de résultats pour un QR code : envoie plutôt le fichier de la classe.';
+
+  @override
+  String get classroomQrReceive => 'Recevoir par QR code';
+
+  @override
+  String get classroomQrScanHint =>
+      'Vise le QR code affiché sur l\'autre tablette. La caméra ne sert qu\'à lire ce code.';
+
+  @override
+  String get classroomQrScanAgain => 'Lire un autre code';
+
+  @override
+  String get classroomQrInvalid =>
+      'Ce QR code ne vient pas de Kid Matix, ou il est abîmé.';
+
+  @override
+  String get classroomQrVersion =>
+      'Ce QR code vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
+
+  @override
+  String get classroomQrUnknown =>
+      'Cette tablette n\'a pas encore la classe, ses élèves ou son évaluation : reçois d\'abord le fichier de la classe.';
+
+  @override
+  String get classroomQrCameraError =>
+      'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.';
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override

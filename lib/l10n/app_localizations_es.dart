@@ -796,6 +796,68 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomProgramFileName => 'Programa';
 
   @override
+  String get classroomQrSend => 'Enviar con código QR';
+
+  @override
+  String get classroomQrSendHint =>
+      'En la tableta del docente, abre «Recibir con código QR» y apunta a este código.';
+
+  @override
+  String classroomQrSessions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sesiones nuevas',
+      one: '1 sesión nueva',
+      zero: 'Solo resultados de evaluación',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomQrImageLabel => 'Código QR de los nuevos resultados';
+
+  @override
+  String get classroomQrDone => 'Ya está recibido';
+
+  @override
+  String get classroomQrSent => 'Estos resultados ya no se volverán a enviar.';
+
+  @override
+  String get classroomQrNothing =>
+      'Nada nuevo que enviar desde el último envío.';
+
+  @override
+  String get classroomQrTooBig =>
+      'Demasiados resultados para un código QR: envía mejor el archivo de la clase.';
+
+  @override
+  String get classroomQrReceive => 'Recibir con código QR';
+
+  @override
+  String get classroomQrScanHint =>
+      'Apunta al código QR que muestra la otra tableta. La cámara solo sirve para leer ese código.';
+
+  @override
+  String get classroomQrScanAgain => 'Leer otro código';
+
+  @override
+  String get classroomQrInvalid =>
+      'Este código QR no viene de Kid Matix o está dañado.';
+
+  @override
+  String get classroomQrVersion =>
+      'Este código QR viene de una versión más reciente de Kid Matix. Actualiza la app y vuelve a intentarlo.';
+
+  @override
+  String get classroomQrUnknown =>
+      'Esta tableta aún no tiene la clase, sus alumnos o su evaluación: recibe primero el archivo de la clase.';
+
+  @override
+  String get classroomQrCameraError =>
+      'La cámara no está disponible. Permítela en los ajustes o usa el archivo de la clase.';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override
