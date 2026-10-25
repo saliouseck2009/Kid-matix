@@ -4,36 +4,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/entities/shared_file.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assessment_period.dart';
-import 'package:kid_matix/features/classroom/domain/entities/class_progress_report.dart';
-import 'package:kid_matix/features/classroom/domain/usecases/get_class_report_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/share_files_use_case.dart';
-import 'package:kid_matix/features/classroom/presentation/bloc/class_report_state.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/report_export_state.dart';
+
+/// Computes a report of type [R] between the periods [fromKey], or none,
+/// and [toKey].
+typedef ReportSource<R> = Future<DataState<R>> Function({
+  String? fromKey,
+  required String toKey,
+});
 
 /// Turns a report into the files to share, in the language of the
 /// screen.
-typedef ReportRenderer = Future<List<SharedFile>> Function(
-  ClassProgressReport report,
-);
+typedef ReportRenderer<R> = Future<List<SharedFile>> Function(R report);
 
-/// The report card of the class [classroomId]: the two periods compared,
-/// then the report computed, made into files and shared.
-final class ClassReportCubit extends Cubit<ClassReportState> {
-  /// Creates the Cubit over the [periods] of the class (at least one),
-  /// comparing the first and the last by default.
-  ClassReportCubit({
-    required this._classroomId,
+/// A report card of the teacher area: the two periods compared, then the
+/// report of type [R] computed, made into files and shared.
+final class ReportExportCubit<R> extends Cubit<ReportExportState> {
+  /// Creates the Cubit over [periods] (at least one), comparing the first
+  /// and the last by default.
+  ReportExportCubit({
     required List<AssessmentPeriod> periods,
-    required this._getReport,
+    required this._source,
     required this._share,
   }) : super(
-         ClassReportState(
+         ReportExportState(
            fromKey: periods.length > 1 ? periods.first.key : null,
            toKey: periods.last.key,
          ),
        );
 
-  final String _classroomId;
-  final GetClassReportUseCase _getReport;
+  final ReportSource<R> _source;
   final ShareFilesUseCase _share;
 
   /// Compares the period [fromKey], or none, with [toKey].
@@ -48,17 +49,14 @@ final class ClassReportCubit extends Cubit<ClassReportState> {
 
   /// Computes the report, makes its files with [render] and opens the
   /// share sheet.
-  Future<void> export(ReportRenderer render) async {
+  Future<void> export(ReportRenderer<R> render) async {
     if (state.isBusy) return;
     emit(state.busy);
-    final DataState<ClassProgressReport> report = await _getReport(
-      params: (
-        classroomId: _classroomId,
-        fromKey: state.fromKey,
-        toKey: state.toKey,
-      ),
+    final DataState<R> report = await _source(
+      fromKey: state.fromKey,
+      toKey: state.toKey,
     );
-    if (report case DataFailed<ClassProgressReport>(:final exception)) {
+    if (report case DataFailed<R>(:final exception)) {
       if (!isClosed) {
         emit(state.done(ReportExportOutcome.failed, code: exception.code));
       }
@@ -66,7 +64,7 @@ final class ClassReportCubit extends Cubit<ClassReportState> {
     }
     final List<SharedFile>? files = await _render(
       render,
-      (report as DataSuccess<ClassProgressReport>).data,
+      (report as DataSuccess<R>).data,
     );
     if (files == null) {
       if (!isClosed) emit(state.done(ReportExportOutcome.failed));
@@ -88,9 +86,9 @@ final class ClassReportCubit extends Cubit<ClassReportState> {
   }
 
   /// The files [render] makes of [report], or `null` when it fails.
-  static Future<List<SharedFile>?> _render(
-    ReportRenderer render,
-    ClassProgressReport report,
+  static Future<List<SharedFile>?> _render<R>(
+    ReportRenderer<R> render,
+    R report,
   ) async {
     try {
       return await render(report);

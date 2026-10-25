@@ -14,6 +14,8 @@ import 'package:kid_matix/main.dart';
 
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/create_classroom_params.dart';
+import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
+import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 
 import '../features/classroom/helpers/classroom_fakes.dart';
@@ -49,6 +51,7 @@ void main() {
     AppColorTheme theme = AppColorTheme.lavender,
     Locale locale = const Locale('fr'),
     ClassroomPages? classroomPages,
+    ClassAssessmentPages? assessmentPages,
   }) async {
     tester.view
       ..physicalSize = _phone
@@ -64,6 +67,7 @@ void main() {
         activeProfileId: classroomPages == null ? 'p-1' : null,
       ),
       classroomPages: classroomPages,
+      assessmentPages: assessmentPages,
       teacherSession: classroomPages == null ? null : OpenTeacherSession(),
       profilePages: buildProfilePages(getProfiles: _twoPlayers()),
       quizPages: buildTestQuizPages(speech: speech),
@@ -167,10 +171,20 @@ void main() {
             nicknames: ClassroomRules.numberNicknames(count: 40),
           ),
         )).requireData.id;
+        await stack.assessments.saveAssessment(
+          assessment: ClassAssessment(
+            id: 'a1',
+            classroomId: classroomId,
+            periodLabel: "Début d'année scolaire",
+            openedAt: DateTime(2026, 10),
+            updatedAt: DateTime(2026, 10),
+          ),
+        );
         await pumpApp(
           tester,
           locale: Locale(language),
           classroomPages: buildTestClassroomPages(stack, OpenTeacherSession()),
+          assessmentPages: buildTestAssessmentPages(stack),
         );
         // Act and assert
         for (final String location in <String>[
@@ -180,6 +194,8 @@ void main() {
           AppRoutes.teacherClassroomOf(classroomId),
           AppRoutes.classroomPupilsAdditionOf(classroomId),
           AppRoutes.pupilPickerOf(classroomId),
+          AppRoutes.classroomAssessmentsOf(classroomId),
+          AppRoutes.programReport,
         ]) {
           await visit(tester, location);
           expect(tester.takeException(), isNull, reason: location);

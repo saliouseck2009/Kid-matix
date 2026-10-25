@@ -756,6 +756,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomReportFileAnonymous => 'anonimo';
 
   @override
+  String get classroomProgramOpen => 'Informe de escuela o de programa';
+
+  @override
+  String get classroomProgramHint =>
+      'Para un coordinador: primero recibe los archivos de las clases y luego compara dos evaluaciones en todas las clases de esta tableta. Este informe siempre es anónimo.';
+
+  @override
+  String get classroomProgramEmpty =>
+      'Todavía no hay evaluaciones en esta tableta.';
+
+  @override
+  String classroomProgramPeriods(String from, String to) {
+    return 'De «$from» a «$to»';
+  }
+
+  @override
+  String classroomProgramOnePeriod(String label) {
+    return '«$label»';
+  }
+
+  @override
+  String get classroomProgramNote =>
+      'Informe anónimo: solo contiene cifras por clase, ningún alumno.';
+
+  @override
+  String get classroomProgramClass => 'Clase';
+
+  @override
+  String get classroomProgramPupils => 'Alumnos';
+
+  @override
+  String get classroomProgramAssessed => 'Evaluados';
+
+  @override
+  String get classroomProgramTotal => 'Todas las clases';
+
+  @override
+  String get classroomProgramFileName => 'Programa';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override

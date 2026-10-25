@@ -33,6 +33,22 @@ ClassroomFileModel _$ClassroomFileModelFromJson(
           )
           .toList() ??
       const <ClassSessionFileModel>[],
+  assessments:
+      (json['assessments'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                ClassAssessmentLocalModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList() ??
+      const <ClassAssessmentLocalModel>[],
+  assessmentResults:
+      (json['assessmentResults'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                AssessmentResultFileModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList() ??
+      const <AssessmentResultFileModel>[],
 );
 
 Map<String, dynamic> _$ClassroomFileModelToJson(ClassroomFileModel instance) =>
@@ -45,4 +61,8 @@ Map<String, dynamic> _$ClassroomFileModelToJson(ClassroomFileModel instance) =>
       'pupils': instance.pupils.map((e) => e.toJson()).toList(),
       'assignments': instance.assignments.map((e) => e.toJson()).toList(),
       'sessions': instance.sessions.map((e) => e.toJson()).toList(),
+      'assessments': instance.assessments.map((e) => e.toJson()).toList(),
+      'assessmentResults': instance.assessmentResults
+          .map((e) => e.toJson())
+          .toList(),
     };

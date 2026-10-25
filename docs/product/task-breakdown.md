@@ -777,7 +777,7 @@ Ce que les ONG doivent pouvoir montrer : des progrès mesurés, des rapports sim
 
 - [x] **F31-01** Évaluation de début et de fin de période, lancée depuis le mode enseignant : positionnement (F27) et compréhension des mots (F28), datée et conservée.
 - [x] **F31-02** Rapport de classe : progression entre deux évaluations, compétences acquises, temps de pratique, mots compris ; export en PDF et en CSV par la feuille de partage.
-- [ ] **F31-03** Rapport d'école ou de programme : un appareil coordinateur (celui de l'ONG) importe les fichiers de plusieurs classes et produit un rapport consolidé.
+- [x] **F31-03** Rapport d'école ou de programme : un appareil coordinateur (celui de l'ONG) importe les fichiers de plusieurs classes et produit un rapport consolidé.
 - [x] **F31-04** Exports anonymes : numéros à la place des pseudos ; aucune donnée personnelle dans les rapports.
 - [ ] **F31-05** Transfert de petits résultats par QR code, sans fichier.
 - [ ] **F31-06** L'enseignant enregistre lui-même l'explication d'un mot ou d'un énoncé dans sa langue, depuis le mode enseignant ; l'enregistrement remplace le pack audio sur cet appareil et s'exporte comme pack.

@@ -122,6 +122,9 @@ abstract final class AppRoutes {
   /// Creation of a class with its pupils, in the teacher area.
   static const String classroomCreation = '/players/teacher/classes/new';
 
+  /// « Rapport d'école ou de programme »: every class of the device.
+  static const String programReport = '/players/teacher/classes/report';
+
   /// Page of the class given as path parameter, in the teacher area.
   static const String teacherClassroom =
       '/players/teacher/classes/:$classroomIdParameter';

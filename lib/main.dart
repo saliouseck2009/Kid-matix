@@ -37,6 +37,7 @@ import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/report_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
 import 'package:kid_matix/features/mascot/presentation/bloc/mascot_use_cases.dart';
@@ -292,7 +293,13 @@ ClassAssessmentPages _createAssessmentPages() {
       getPending: sl(),
       watchChanges: sl(),
     ),
-    reports: ClassReportUseCases(getClassReport: sl(), share: sl()),
+    reports: ReportPages(
+      useCases: ClassReportUseCases(
+        getClassReport: sl(),
+        getProgramReport: sl(),
+        share: sl(),
+      ),
+    ),
     domains: sl(),
   );
 }

@@ -49,9 +49,15 @@ GoRoute _classroomsRoute(
             context.go(AppRoutes.teacherClassroomOf(classroomId)),
         onCreate: () => context.go(AppRoutes.classroomCreation),
         onLeave: () => context.go(AppRoutes.whoIsPlaying),
+        actions: <Widget>[
+          ?assessmentPages?.reports.buildProgramReportButton(
+            onOpen: () => context.go(AppRoutes.programReport),
+          ),
+        ],
       );
     },
     routes: <RouteBase>[
+      ?_programReportRoute(assessmentPages),
       GoRoute(
         path: _lastSegment(AppRoutes.classroomCreation),
         builder: (BuildContext context, GoRouterState state) {
@@ -118,6 +124,18 @@ GoRoute _assignmentRoute(ClassroomPages pages) {
       return pages.buildAssignmentPage(
         classroomId: classroomId,
         onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
+      );
+    },
+  );
+}
+
+GoRoute? _programReportRoute(ClassAssessmentPages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.programReport),
+    builder: (BuildContext context, GoRouterState state) {
+      return pages.reports.buildProgramReportPage(
+        onBack: () => context.go(AppRoutes.teacherClassrooms),
       );
     },
   );

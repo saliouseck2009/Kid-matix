@@ -1006,6 +1006,66 @@
   "@classroomReportFileAnonymous": {
     "description": "Last word of the name of the anonymous version of a report file, such as KidMatix-Rapport-CE1-B-2026-11-01-anonyme.pdf. One word, lowercase, no accents."
   },
+  "classroomProgramOpen": "Rapport d'école ou de programme",
+  "@classroomProgramOpen": {
+    "description": "Teacher area, button of « Mes classes » that opens the consolidated report of every class of the device (for an NGO coordinator); also the title of that page and of its PDF. One line."
+  },
+  "classroomProgramHint": "Pour un coordinateur : reçois d'abord les fichiers des classes, puis compare deux évaluations sur toutes les classes de cette tablette. Ce rapport est toujours anonyme.",
+  "@classroomProgramHint": {
+    "description": "Explanation on the school or programme report page, addressed to the coordinator (informal \"tu\"). Three lines at most."
+  },
+  "classroomProgramEmpty": "Aucune évaluation sur cette tablette pour l'instant.",
+  "@classroomProgramEmpty": {
+    "description": "School or programme report page when no class of the device has an assessment."
+  },
+  "classroomProgramPeriods": "De « {from} » à « {to} »",
+  "@classroomProgramPeriods": {
+    "description": "Subtitle of the PDF school or programme report: the two assessment periods compared.",
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Début d'année"
+      },
+      "to": {
+        "type": "String",
+        "example": "Fin d'année"
+      }
+    }
+  },
+  "classroomProgramOnePeriod": "« {label} »",
+  "@classroomProgramOnePeriod": {
+    "description": "Subtitle of the PDF school or programme report of a single period.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Début d'année"
+      }
+    }
+  },
+  "classroomProgramNote": "Rapport anonyme : il ne contient que des chiffres par classe, aucun élève.",
+  "@classroomProgramNote": {
+    "description": "Line under the title of the PDF school or programme report."
+  },
+  "classroomProgramClass": "Classe",
+  "@classroomProgramClass": {
+    "description": "Column header of the school or programme report: the class."
+  },
+  "classroomProgramPupils": "Élèves",
+  "@classroomProgramPupils": {
+    "description": "Column header of the school or programme report: pupils of the class."
+  },
+  "classroomProgramAssessed": "Évalués",
+  "@classroomProgramAssessed": {
+    "description": "Short word for the pupils who took an assessment, in the column headers « Évalués début » / « Évalués fin » of the school or programme report (masculine plural in French)."
+  },
+  "classroomProgramTotal": "Toutes les classes",
+  "@classroomProgramTotal": {
+    "description": "Last row of the school or programme report: every class together."
+  },
+  "classroomProgramFileName": "Programme",
+  "@classroomProgramFileName": {
+    "description": "Word in the name of the school or programme report file, such as KidMatix-Rapport-Programme-2026-11-01-anonyme.pdf. One word, no accents preferred."
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."

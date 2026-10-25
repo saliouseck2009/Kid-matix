@@ -403,7 +403,7 @@ void main() {
         jsonEncode(<String, Object?>{...input, 'format': 'kidmatix-profile'}),
       );
       final AppErrorCode? actualNewer = codeOf(
-        jsonEncode(<String, Object?>{...input, 'version': 2}),
+        jsonEncode(<String, Object?>{...input, 'version': 3}),
       );
       final Map<String, Object?> inputClassroom =
           input['classroom']! as Map<String, Object?>;

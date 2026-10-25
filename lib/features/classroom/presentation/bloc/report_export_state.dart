@@ -12,9 +12,9 @@ enum ReportExportOutcome {
 
 /// The choices of the report card of a class and its last export.
 @immutable
-final class ClassReportState {
+final class ReportExportState {
   /// Creates the state.
-  const ClassReportState({
+  const ReportExportState({
     required this.toKey,
     this.fromKey,
     this.isBusy = false,
@@ -38,20 +38,20 @@ final class ClassReportState {
   final AppErrorCode? errorCode;
 
   /// Returns a copy with new periods and no outcome.
-  ClassReportState withPeriods({
+  ReportExportState withPeriods({
     required String? fromKey,
     required String toKey,
   }) {
-    return ClassReportState(fromKey: fromKey, toKey: toKey);
+    return ReportExportState(fromKey: fromKey, toKey: toKey);
   }
 
   /// Returns a copy while files are made.
-  ClassReportState get busy =>
-      ClassReportState(fromKey: fromKey, toKey: toKey, isBusy: true);
+  ReportExportState get busy =>
+      ReportExportState(fromKey: fromKey, toKey: toKey, isBusy: true);
 
   /// Returns a copy after an export.
-  ClassReportState done(ReportExportOutcome outcome, {AppErrorCode? code}) {
-    return ClassReportState(
+  ReportExportState done(ReportExportOutcome outcome, {AppErrorCode? code}) {
+    return ReportExportState(
       fromKey: fromKey,
       toKey: toKey,
       outcome: outcome,

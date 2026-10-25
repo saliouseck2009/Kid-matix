@@ -13,6 +13,7 @@ import 'package:kid_matix/features/classroom/domain/usecases/close_assessment_us
 import 'package:kid_matix/features/classroom/domain/usecases/get_class_assessments_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_class_report_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/get_pending_assessment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_program_report_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/open_assessment_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/share_files_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/watch_assessment_changes_use_case.dart';
@@ -68,6 +69,14 @@ void _registerReports(GetIt sl) {
       getRoster: sl(),
       assessments: sl(),
       journal: sl(),
+      clock: sl(),
+    ),
+  );
+  sl.registerLazySingleton<GetProgramReportUseCase>(
+    () => GetProgramReportUseCase(
+      getClassrooms: sl(),
+      assessments: sl(),
+      getClassReport: sl(),
       clock: sl(),
     ),
   );

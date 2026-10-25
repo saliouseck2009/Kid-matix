@@ -24,6 +24,7 @@ void registerClassroomTransfer(GetIt sl) {
       roster: sl(),
       assignments: sl(),
       journal: sl(),
+      assessments: sl(),
     ),
   );
   sl.registerLazySingleton<ExportClassroomUseCase>(
@@ -31,6 +32,7 @@ void registerClassroomTransfer(GetIt sl) {
       getRoster: sl(),
       assignments: sl(),
       journal: sl(),
+      assessments: sl(),
       transfers: sl(),
       clock: sl(),
     ),

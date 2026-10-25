@@ -1113,6 +1113,72 @@ abstract class AppLocalizations {
   /// **'anonyme'**
   String get classroomReportFileAnonymous;
 
+  /// Teacher area, button of « Mes classes » that opens the consolidated report of every class of the device (for an NGO coordinator); also the title of that page and of its PDF. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport d\'école ou de programme'**
+  String get classroomProgramOpen;
+
+  /// Explanation on the school or programme report page, addressed to the coordinator (informal "tu"). Three lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour un coordinateur : reçois d\'abord les fichiers des classes, puis compare deux évaluations sur toutes les classes de cette tablette. Ce rapport est toujours anonyme.'**
+  String get classroomProgramHint;
+
+  /// School or programme report page when no class of the device has an assessment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune évaluation sur cette tablette pour l\'instant.'**
+  String get classroomProgramEmpty;
+
+  /// Subtitle of the PDF school or programme report: the two assessment periods compared.
+  ///
+  /// In fr, this message translates to:
+  /// **'De « {from} » à « {to} »'**
+  String classroomProgramPeriods(String from, String to);
+
+  /// Subtitle of the PDF school or programme report of a single period.
+  ///
+  /// In fr, this message translates to:
+  /// **'« {label} »'**
+  String classroomProgramOnePeriod(String label);
+
+  /// Line under the title of the PDF school or programme report.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport anonyme : il ne contient que des chiffres par classe, aucun élève.'**
+  String get classroomProgramNote;
+
+  /// Column header of the school or programme report: the class.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classe'**
+  String get classroomProgramClass;
+
+  /// Column header of the school or programme report: pupils of the class.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élèves'**
+  String get classroomProgramPupils;
+
+  /// Short word for the pupils who took an assessment, in the column headers « Évalués début » / « Évalués fin » of the school or programme report (masculine plural in French).
+  ///
+  /// In fr, this message translates to:
+  /// **'Évalués'**
+  String get classroomProgramAssessed;
+
+  /// Last row of the school or programme report: every class together.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les classes'**
+  String get classroomProgramTotal;
+
+  /// Word in the name of the school or programme report file, such as KidMatix-Rapport-Programme-2026-11-01-anonyme.pdf. One word, no accents preferred.
+  ///
+  /// In fr, this message translates to:
+  /// **'Programme'**
+  String get classroomProgramFileName;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:

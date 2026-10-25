@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_card.dart';
-import 'package:kid_matix/core/widgets/app_pill.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
@@ -90,35 +89,27 @@ class _AssessmentTile extends StatelessWidget {
     final TextStyle? muted = textTheme.bodySmall?.copyWith(
       color: context.palette.mutedText,
     );
-    return Row(
-      spacing: AppSizes.space8,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: AppSizes.space4,
       children: <Widget>[
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: AppSizes.space4,
-            children: <Widget>[
-              Text(assessment.periodLabel, style: textTheme.titleMedium),
-              Text(
-                context.l10n.classroomAssessmentOpenedOn(assessment.openedAt),
-                style: muted,
-              ),
-              if (assessment.closedAt case final DateTime closedAt)
-                Text(
-                  context.l10n.classroomAssessmentClosedOn(closedAt),
-                  style: muted,
-                )
-              else
-                AppPill(label: context.l10n.classroomAssessmentIsOpen),
-              Text(
-                context.l10n.classroomAssessmentTaken(
-                  status.takenCount,
-                  pupilCount,
-                ),
-                style: muted,
-              ),
-            ],
+        Text(assessment.periodLabel, style: textTheme.titleMedium),
+        Text(
+          context.l10n.classroomAssessmentOpenedOn(assessment.openedAt),
+          style: muted,
+        ),
+        if (assessment.closedAt case final DateTime closedAt)
+          Text(context.l10n.classroomAssessmentClosedOn(closedAt), style: muted)
+        else
+          Text(
+            context.l10n.classroomAssessmentIsOpen,
+            style: textTheme.labelLarge?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
           ),
+        Text(
+          context.l10n.classroomAssessmentTaken(status.takenCount, pupilCount),
+          style: muted,
         ),
         if (assessment.isOpen)
           TextButton(
