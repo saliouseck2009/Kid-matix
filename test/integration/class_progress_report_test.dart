@@ -28,6 +28,7 @@ import 'package:kid_matix/l10n/app_localizations.dart';
 
 import '../features/classroom/helpers/classroom_device.dart';
 import '../helpers/in_memory_local_storage.dart';
+import '../helpers/pdf_text.dart';
 import 'helpers/assessment_journey.dart';
 import 'helpers/test_app.dart';
 
@@ -176,6 +177,20 @@ void main() {
       expect(actualAnonymousTable, isNot(contains(pupil.id)));
     }
     expect(actualAnonymousTable, contains('Élève 1;'));
+    // Assert: the text the PDFs print, read back (streams uncompressed).
+    final List<SharedFile> actualReadable = await ClassReportFiles(
+      l10n: lookupAppLocalizations(const Locale('fr')),
+      compress: false,
+    ).filesOf(actual, ReportFileKind.pdf);
+    final String actualNamedText = pdfTextOf(actualReadable.first.bytes);
+    final String actualAnonymousText = pdfTextOf(actualReadable.last.bytes);
+    expect(actualNamedText, contains('Awa'));
+    expect(actualNamedText, contains('Rapport de la classe CE1 B'));
+    expect(actualAnonymousText, contains('Élève 1'));
+    expect(actualAnonymousText, contains('Version anonyme'));
+    for (final PupilEntity pupil in roster.pupils) {
+      expect(actualAnonymousText, isNot(contains(pupil.nickname)));
+    }
     expect(utf8.decode(actualTables.first.bytes), contains('Awa;'));
   });
 

@@ -20,6 +20,7 @@ final class ClassReportPdf {
     required this.report,
     required AppLocalizations l10n,
     required this.fonts,
+    this.compress = true,
   }) : _table = ClassReportTable(report, l10n);
 
   /// The report.
@@ -27,6 +28,10 @@ final class ClassReportPdf {
 
   /// The fonts.
   final ReportFonts fonts;
+
+  /// Whether the streams are compressed; off only to read the text back
+  /// in tests.
+  final bool compress;
 
   final ClassReportTable _table;
 
@@ -37,6 +42,7 @@ final class ClassReportPdf {
   /// The bytes of the PDF file.
   Future<List<int>> build() {
     final pw.Document document = pw.Document(
+      compress: compress,
       theme: fonts.theme,
       title: _l10n.classroomReportTitle(report.classroomName),
       creator: 'Kid Matix',
