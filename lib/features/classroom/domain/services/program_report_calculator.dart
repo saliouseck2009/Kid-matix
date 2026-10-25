@@ -25,7 +25,11 @@ abstract final class ProgramReportCalculator {
       generatedAt: generatedAt,
       classes: <ProgramReportRow>[
         for (final ClassProgressReport report in classes)
-          rowOf(report.pupils, name: report.classroomName),
+          rowOf(
+            report.pupils,
+            name: report.classroomName,
+            isSecondPeriodOnly: fromLabel != null && report.from == null,
+          ),
       ],
       total: rowOf(everyPupil),
       domainIds: <String>{
@@ -36,7 +40,11 @@ abstract final class ProgramReportCalculator {
   }
 
   /// The row of [pupils], those of the class [name] or of every class.
-  static ProgramReportRow rowOf(List<PupilReportRow> pupils, {String? name}) {
+  static ProgramReportRow rowOf(
+    List<PupilReportRow> pupils, {
+    String? name,
+    bool isSecondPeriodOnly = false,
+  }) {
     final Set<String> domainIds = <String>{
       for (final PupilReportRow row in pupils) ...<String>[
         ...row.levelsFrom.keys,
@@ -45,6 +53,7 @@ abstract final class ProgramReportCalculator {
     };
     return ProgramReportRow(
       name: name,
+      isSecondPeriodOnly: isSecondPeriodOnly,
       pupilCount: pupils.length,
       assessedFromCount: pupils.where(_wasAssessedFrom).length,
       assessedToCount: pupils.where(_wasAssessedTo).length,

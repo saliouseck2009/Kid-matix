@@ -1078,6 +1078,24 @@
   "@classroomProgramTotal": {
     "description": "Last row of the school or programme report: every class together."
   },
+  "classroomProgramSecondOnly": "Sans évaluation « {from} », reportées sur « {to} » seulement : {classes}.",
+  "@classroomProgramSecondOnly": {
+    "description": "Line of the school or programme report naming the classes that have no assessment of the first period and are reported on the second alone (their progress cannot be measured).",
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Début d'année"
+      },
+      "to": {
+        "type": "String",
+        "example": "Fin d'année"
+      },
+      "classes": {
+        "type": "String",
+        "example": "CE1 A, CE2 B"
+      }
+    }
+  },
   "classroomProgramFileName": "Programme",
   "@classroomProgramFileName": {
     "description": "Word in the name of the school or programme report file, such as KidMatix-Rapport-Programme-2026-11-01-anonyme.pdf. One word, no accents preferred."

@@ -101,6 +101,8 @@ class _PeriodChoice<R> extends StatelessWidget {
       spacing: AppSizes.space12,
       children: <Widget>[
         DropdownButtonFormField<String?>(
+          // initialValue is read once: a new value needs a new field.
+          key: ValueKey<String?>('from-${state.fromKey}'),
           initialValue: state.fromKey,
           isExpanded: true,
           decoration: InputDecoration(
@@ -120,6 +122,7 @@ class _PeriodChoice<R> extends StatelessWidget {
               cubit.choose(fromKey: key, toKey: state.toKey),
         ),
         DropdownButtonFormField<String>(
+          key: ValueKey<String>('to-${state.toKey}'),
           initialValue: state.toKey,
           isExpanded: true,
           decoration: InputDecoration(

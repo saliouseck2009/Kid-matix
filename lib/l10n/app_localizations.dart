@@ -1197,6 +1197,12 @@ abstract class AppLocalizations {
   /// **'Toutes les classes'**
   String get classroomProgramTotal;
 
+  /// Line of the school or programme report naming the classes that have no assessment of the first period and are reported on the second alone (their progress cannot be measured).
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans évaluation « {from} », reportées sur « {to} » seulement : {classes}.'**
+  String classroomProgramSecondOnly(String from, String to, String classes);
+
   /// Word in the name of the school or programme report file, such as KidMatix-Rapport-Programme-2026-11-01-anonyme.pdf. One word, no accents preferred.
   ///
   /// In fr, this message translates to:

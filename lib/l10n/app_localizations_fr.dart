@@ -807,6 +807,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomProgramTotal => 'Toutes les classes';
 
   @override
+  String classroomProgramSecondOnly(String from, String to, String classes) {
+    return 'Sans évaluation « $from », reportées sur « $to » seulement : $classes.';
+  }
+
+  @override
   String get classroomProgramFileName => 'Programme';
 
   @override

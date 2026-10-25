@@ -229,4 +229,32 @@ void main() {
     expect(actual.total.domainOf('numbers')?.progressedCount, isNotNull);
     expect(actual.total.wordsTo, greaterThan(actual.total.wordsFrom!));
   });
+
+  test('a class without the first period is reported on the second', () async {
+    // Arrange
+    final ClassroomRoster both = await AssessmentJourney.createClass('A', 1);
+    final ClassroomRoster late = await AssessmentJourney.createClass('B', 1);
+    final ClassAssessment start = await AssessmentJourney.open(
+      both.classroom.id,
+      'Début',
+    );
+    await assess(both, start, rightPlacement: 2, rightWords: 2);
+    clock.current = DateTime(2026, 11, 1, 8);
+    for (final ClassroomRoster roster in <ClassroomRoster>[both, late]) {
+      final ClassAssessment end = await AssessmentJourney.open(
+        roster.classroom.id,
+        'Fin',
+      );
+      await assess(roster, end, rightPlacement: 15, rightWords: 8);
+    }
+    // Act
+    final ProgramReport actual = ((await sl<GetProgramReportUseCase>()(
+      params: (fromKey: 'debut', toKey: 'fin'),
+    )) as DataSuccess<ProgramReport>).data;
+    // Assert
+    expect(
+      actual.classes.map((ProgramReportRow row) => row.isSecondPeriodOnly),
+      <bool>[false, true],
+    );
+  });
 }

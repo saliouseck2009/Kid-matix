@@ -182,6 +182,7 @@
   "classroomProgramPupils": "Pupils",
   "classroomProgramAssessed": "Assessed",
   "classroomProgramTotal": "All classes",
+  "classroomProgramSecondOnly": "Without a “{from}” assessment, reported on “{to}” only: {classes}.",
   "classroomProgramFileName": "Programme",
   "classroomQrSend": "Send as a QR code",
   "classroomQrSendHint": "On the teacher's tablet, open “Receive a QR code” and point the camera at this code.",

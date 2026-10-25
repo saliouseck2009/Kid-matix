@@ -182,6 +182,7 @@
   "classroomProgramPupils": "Alumnos",
   "classroomProgramAssessed": "Evaluados",
   "classroomProgramTotal": "Todas las clases",
+  "classroomProgramSecondOnly": "Sin evaluación «{from}», informadas solo sobre «{to}»: {classes}.",
   "classroomProgramFileName": "Programa",
   "classroomQrSend": "Enviar con código QR",
   "classroomQrSendHint": "En la tableta del docente, abre «Recibir con código QR» y apunta a este código.",

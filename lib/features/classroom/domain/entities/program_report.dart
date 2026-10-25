@@ -17,10 +17,15 @@ final class ProgramReportRow {
     this.name,
     this.wordsFrom,
     this.wordsTo,
+    this.isSecondPeriodOnly = false,
   }) : domains = List<DomainProgress>.unmodifiable(domains);
 
   /// Name of the class, or `null` for the total.
   final String? name;
+
+  /// Whether the class has no assessment of the first period and is
+  /// reported on the second alone.
+  final bool isSecondPeriodOnly;
 
   /// Pupils of the class.
   final int pupilCount;
