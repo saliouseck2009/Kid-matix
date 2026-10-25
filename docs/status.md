@@ -35,8 +35,8 @@ middle of one). Last update: 2026-10-18.
 | F25 · + et − | **Done** (closed 2026-10-19, wave 2) |
 | F26 · Division | **Done** (closed 2026-10-19, wave 2) |
 | F28 · Math words | **Merged** (wave 1 #102, wave 2 #112 and #114); closes after the recordings, the device check and the validation of its screens (F28-12) |
-| F27 · Placement by skill | **Merged** (wave 3, #118); closes after the owner's device check |
-| F29 · Class mode | **Merged** (wave 3, #119, #120, #121); closes after the tablet check and the validation of its screens (F29-11) |
+| F27 · Placement by skill | **Done** (closed 2026-10-25, wave 3) |
+| F29 · Class mode | **Done** (closed 2026-10-25, wave 3) |
 | F30 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
@@ -598,7 +598,7 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Version 2.0, wave 3 (merged, device checks pending)
+## Version 2.0, wave 3: F27 and F29 closure
 
 Run on 2026-10-20: two `lot-implementer` (Sonnet for F27, Opus for F29)
 in their own worktrees after the owner answered F29-01 (#117); every pull
@@ -637,28 +637,20 @@ then #119, #120, #121 (F29, stacked, main merged in bottom-up).
   `ClassDashboardCalculator`, `LevelGroupRule`, `ClassChallengeRule`,
   `ClassItemCatalog`, over `PracticeSession` lists only.
 
-To check on a device (owner), short:
-
-- F27: a profile that can count but cannot add starts on « Additions
-  jusqu'à 5 », and its dated result shows on the Profile card.
-- F29, on a tablet: create a class of 30, assign « Additions jusqu'à 20 »,
-  three pupils play, the dashboard shows who is stuck and on which facts;
-  one export and one import between two tablets.
-
-Waiting for the owner: the screens of F27 (skill rows, « Tu commences
-par », Profile card) and of F29 (F29-11 stays open: teacher door, « Mes
-classes », class creation, class page, homework, « Qui es-tu ? », banner,
-transfer) and their texts in fr, en and es; the feature name `classroom`
-and the file name `kidmatix-class`.
+Checked by the owner on 2026-10-25, both "done when" criteria OK: a
+profile that counts but cannot add starts on « Additions jusqu'à 5 » with
+its dated result on the Profile card; on a tablet, a class of 30 with
+« Additions jusqu'à 20 » assigned, three pupils playing and the dashboard
+showing who is stuck and on which facts. Both lots closed; the screens
+built without a mockup (F29-11) and the texts are kept as built.
 
 Known gaps: no class deletion; a removed pupil comes back from another
 tablet's file (no tombstone); « Code oublié ? » makes the teacher area as
 strong as the adult gate (« Code changé le … » warns the teacher); a
 pupil's game progress stays on one tablet (owner: one tablet per pupil).
 
-Next: the device checks, then F27 and F29 close here; wave 4 (F30 word
-problems with `problems.md` first, F31 progress measurement with
-migration 017) and F28's recordings.
+Next: wave 4 (F30 word problems with `problems.md` first, F31 progress
+measurement with migration 017) and F28's recordings.
 
 ## Version 2.0, wave 2 (F25 and F26 closed, F28 pending)
 
