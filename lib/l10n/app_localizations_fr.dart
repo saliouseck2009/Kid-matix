@@ -506,6 +506,88 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ce fichier vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.';
 
   @override
+  String get classroomAssessmentsOpen => 'Évaluations et rapports';
+
+  @override
+  String get classroomAssessmentsTitle => 'Évaluations';
+
+  @override
+  String get classroomAssessmentsHint =>
+      'Lance une évaluation au début et à la fin d\'une période pour mesurer les progrès. Chaque élève passe le test de niveau, puis 12 mots des maths.';
+
+  @override
+  String get classroomAssessmentsEmpty => 'Pas encore d\'évaluation.';
+
+  @override
+  String get classroomAssessmentNew => 'Lancer une évaluation';
+
+  @override
+  String get classroomAssessmentLabelLabel => 'Nom de la période';
+
+  @override
+  String get classroomAssessmentLabelHint => 'Par exemple Début d\'année';
+
+  @override
+  String get classroomAssessmentLabelError =>
+      'Donne un nom à la période (30 caractères au plus).';
+
+  @override
+  String get classroomAssessmentStart => 'Lancer';
+
+  @override
+  String classroomAssessmentOpenedOn(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Ouverte le $dateString';
+  }
+
+  @override
+  String classroomAssessmentClosedOn(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Close le $dateString';
+  }
+
+  @override
+  String classroomAssessmentTaken(int taken, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      taken,
+      locale: localeName,
+      other: '$taken élèves sur $total l\'ont passée.',
+      one: '1 élève sur $total l\'a passée.',
+      zero: 'Aucun élève sur $total ne l\'a passée.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomAssessmentClose => 'Clore';
+
+  @override
+  String classroomAssessmentCloseTitle(String label) {
+    return 'Clore « $label » ?';
+  }
+
+  @override
+  String get classroomAssessmentCloseMessage =>
+      'Les élèves qui ne l\'ont pas encore passée ne la verront plus. Les résultats déjà là restent.';
+
+  @override
+  String get classroomAssessmentIsOpen => 'Ouverte aux élèves';
+
+  @override
+  String get classroomAssessmentBannerTitle => 'Évaluation de la classe';
+
+  @override
+  String get classroomAssessmentBannerText =>
+      'Montre ce que tu sais faire : quelques calculs, puis des mots des maths.';
+
+  @override
+  String get classroomAssessmentBannerStart => 'Commencer';
+
+  @override
   String get profileCreationTitle => 'Nouveau joueur';
 
   @override
@@ -1301,6 +1383,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quizModeMonsterHunt => 'Chasse aux monstres';
+
+  @override
+  String get quizModeAssessment => 'Évaluation';
 
   @override
   String quizScoreSpoken(int count) {

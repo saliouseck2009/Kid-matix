@@ -27,12 +27,14 @@ import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/bloc/duel_use_cases.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_assessment_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_work_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_form_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_list_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/classroom_roster_use_cases.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_access_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
@@ -213,6 +215,7 @@ GoRouter _createRouter(
     ),
     languagePages: languagePages,
     classroomPages: _createClassroomPages(profilePages),
+    assessmentPages: _createAssessmentPages(),
     teacherSession: sl<TeacherSessionService>(),
     leaderboardPages: LeaderboardPages(
       useCases: LeaderboardUseCases(
@@ -275,6 +278,20 @@ GoRouter _createRouter(
         stop: sl(),
       ),
     ),
+  );
+}
+
+/// The pages of the class assessments and reports, with their use cases.
+ClassAssessmentPages _createAssessmentPages() {
+  return ClassAssessmentPages(
+    useCases: ClassAssessmentUseCases(
+      getAssessments: sl(),
+      open: sl(),
+      close: sl(),
+      getPending: sl(),
+      watchChanges: sl(),
+    ),
+    domains: sl(),
   );
 }
 

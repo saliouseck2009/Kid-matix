@@ -778,6 +778,120 @@ abstract class AppLocalizations {
   /// **'Ce fichier vient d\'une version plus récente de Kid Matix. Mets l\'app à jour, puis réessaie.'**
   String get classroomImportVersion;
 
+  /// Class mode, button at the bottom of the page of a class that opens its assessments and progress reports. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Évaluations et rapports'**
+  String get classroomAssessmentsOpen;
+
+  /// Class mode, title of the card listing the dated assessments of a class (start and end of a period). A noun, one line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Évaluations'**
+  String get classroomAssessmentsTitle;
+
+  /// Class mode, explanation under the title of the assessments card, addressed to the teacher (informal "tu"). Two or three lines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lance une évaluation au début et à la fin d\'une période pour mesurer les progrès. Chaque élève passe le test de niveau, puis 12 mots des maths.'**
+  String get classroomAssessmentsHint;
+
+  /// Class mode, assessments card when the class has none yet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore d\'évaluation.'**
+  String get classroomAssessmentsEmpty;
+
+  /// Class mode, button that opens a new dated assessment for the class (pupils then find it on their home). Also the title of its dialog. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lancer une évaluation'**
+  String get classroomAssessmentNew;
+
+  /// Class mode, label of the text field naming the period of a new assessment ("Beginning of the year").
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de la période'**
+  String get classroomAssessmentLabelLabel;
+
+  /// Class mode, hint inside the text field naming the period of a new assessment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Par exemple Début d\'année'**
+  String get classroomAssessmentLabelHint;
+
+  /// Class mode, error under the period name field when it is empty or too long. Informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Donne un nom à la période (30 caractères au plus).'**
+  String get classroomAssessmentLabelError;
+
+  /// Class mode, confirm button of the dialog that opens a new assessment. A verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lancer'**
+  String get classroomAssessmentStart;
+
+  /// Class mode, date an assessment was opened, under its period name (an assessment is feminine in French: « une évaluation »).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverte le {date}'**
+  String classroomAssessmentOpenedOn(DateTime date);
+
+  /// Class mode, date an assessment was closed by the teacher, after its opening date (feminine in French).
+  ///
+  /// In fr, this message translates to:
+  /// **'Close le {date}'**
+  String classroomAssessmentClosedOn(DateTime date);
+
+  /// Class mode, how many pupils of the class finished an assessment, under its dates.
+  ///
+  /// In fr, this message translates to:
+  /// **'{taken, plural, =0{Aucun élève sur {total} ne l\'a passée.} =1{1 élève sur {total} l\'a passée.} other{{taken} élèves sur {total} l\'ont passée.}}'**
+  String classroomAssessmentTaken(int taken, int total);
+
+  /// Class mode, button that closes an open assessment (pupils who have not taken it no longer see it). Also the confirm button of its dialog. A verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clore'**
+  String get classroomAssessmentClose;
+
+  /// Class mode, title of the dialog confirming that the teacher closes the assessment of the period named label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clore « {label} » ?'**
+  String classroomAssessmentCloseTitle(String label);
+
+  /// Class mode, message of the dialog confirming the closing of an assessment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les élèves qui ne l\'ont pas encore passée ne la verront plus. Les résultats déjà là restent.'**
+  String get classroomAssessmentCloseMessage;
+
+  /// Class mode, small tag on an assessment pupils can still take (feminine in French). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverte aux élèves'**
+  String get classroomAssessmentIsOpen;
+
+  /// Home of a pupil, title of the card offering the assessment the teacher opened. Speaks to a child. One line.
+  ///
+  /// In fr, this message translates to:
+  /// **'Évaluation de la classe'**
+  String get classroomAssessmentBannerTitle;
+
+  /// Home of a pupil, text of the assessment card, under the period name. Speaks to a child, informal "tu". Two lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Montre ce que tu sais faire : quelques calculs, puis des mots des maths.'**
+  String get classroomAssessmentBannerText;
+
+  /// Home of a pupil, button of the assessment card that starts the level test then the word check. A verb, one word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get classroomAssessmentBannerStart;
+
   /// Title at the top of the screen that creates a player ("New player"). Same French words as newPlayerButton but this one is a screen title. One line.
   ///
   /// In fr, this message translates to:
@@ -1929,6 +2043,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Chasse aux monstres'**
   String get quizModeMonsterHunt;
+
+  /// Name of the word check a pupil takes during an assessment opened by the teacher (class mode), shown under the results title next to the unit ("Assessment", a noun).
+  ///
+  /// In fr, this message translates to:
+  /// **'Évaluation'**
+  String get quizModeAssessment;
 
   /// Screen-reader text of the live score pill of a quiz against the clock, whose visible text is only the number.
   ///

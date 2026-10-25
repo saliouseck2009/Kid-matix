@@ -20,4 +20,8 @@ enum QuizMode {
 
   /// Monster hunt: the facts the player keeps missing, each asked twice.
   monsterHunt,
+
+  /// An assessment a teacher opened for the class: the check of the
+  /// math words that follows the placement test (lot F31).
+  assessment,
 }

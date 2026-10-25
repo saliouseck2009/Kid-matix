@@ -1,3 +1,4 @@
+import 'package:kid_matix/core/entities/domain_placement.dart';
 import 'package:kid_matix/core/entities/placement_level.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/placement_result_service.dart';
@@ -24,6 +25,37 @@ final class PlacementResultServiceImpl implements PlacementResultService {
       DataSuccess<List<PlacementResultEntity>>(:final data) =>
         DataSuccess<PlacementLevel?>(_latestOf(data, domainId)),
     };
+  }
+
+  @override
+  Future<DataState<List<DomainPlacement>?>> readTestTakenSince({
+    required String profileId,
+    required DateTime since,
+  }) async {
+    return switch (await _results.getHistory(profileId: profileId)) {
+      DataFailed<List<PlacementResultEntity>>(:final exception) =>
+        DataFailed<List<DomainPlacement>?>(exception),
+      DataSuccess<List<PlacementResultEntity>>(:final data) =>
+        DataSuccess<List<DomainPlacement>?>(_levelsSince(data, since)),
+    };
+  }
+
+  /// The levels of the first test of [history] (latest first) taken at or
+  /// after [since].
+  static List<DomainPlacement>? _levelsSince(
+    List<PlacementResultEntity> history,
+    DateTime since,
+  ) {
+    final PlacementResultEntity? latest = history.firstOrNull;
+    if (latest == null || latest.takenAt.isBefore(since)) return null;
+    return <DomainPlacement>[
+      for (final DomainResultEntity domain in latest.domains)
+        DomainPlacement(
+          domainId: domain.domainId,
+          level: domain.level,
+          skillCount: domain.skillCount,
+        ),
+    ];
   }
 
   /// The level of the first test of [history] (latest first) that

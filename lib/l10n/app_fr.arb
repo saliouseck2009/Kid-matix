@@ -652,6 +652,112 @@
   "@classroomImportVersion": {
     "description": "Class mode, error snack bar when the class file was written by a newer version of the app. Informal \"tu\"."
   },
+  "classroomAssessmentsOpen": "Évaluations et rapports",
+  "@classroomAssessmentsOpen": {
+    "description": "Class mode, button at the bottom of the page of a class that opens its assessments and progress reports. One line."
+  },
+  "classroomAssessmentsTitle": "Évaluations",
+  "@classroomAssessmentsTitle": {
+    "description": "Class mode, title of the card listing the dated assessments of a class (start and end of a period). A noun, one line."
+  },
+  "classroomAssessmentsHint": "Lance une évaluation au début et à la fin d'une période pour mesurer les progrès. Chaque élève passe le test de niveau, puis 12 mots des maths.",
+  "@classroomAssessmentsHint": {
+    "description": "Class mode, explanation under the title of the assessments card, addressed to the teacher (informal \"tu\"). Two or three lines."
+  },
+  "classroomAssessmentsEmpty": "Pas encore d'évaluation.",
+  "@classroomAssessmentsEmpty": {
+    "description": "Class mode, assessments card when the class has none yet."
+  },
+  "classroomAssessmentNew": "Lancer une évaluation",
+  "@classroomAssessmentNew": {
+    "description": "Class mode, button that opens a new dated assessment for the class (pupils then find it on their home). Also the title of its dialog. One line."
+  },
+  "classroomAssessmentLabelLabel": "Nom de la période",
+  "@classroomAssessmentLabelLabel": {
+    "description": "Class mode, label of the text field naming the period of a new assessment (\"Beginning of the year\")."
+  },
+  "classroomAssessmentLabelHint": "Par exemple Début d'année",
+  "@classroomAssessmentLabelHint": {
+    "description": "Class mode, hint inside the text field naming the period of a new assessment."
+  },
+  "classroomAssessmentLabelError": "Donne un nom à la période (30 caractères au plus).",
+  "@classroomAssessmentLabelError": {
+    "description": "Class mode, error under the period name field when it is empty or too long. Informal \"tu\"."
+  },
+  "classroomAssessmentStart": "Lancer",
+  "@classroomAssessmentStart": {
+    "description": "Class mode, confirm button of the dialog that opens a new assessment. A verb, one word."
+  },
+  "classroomAssessmentOpenedOn": "Ouverte le {date}",
+  "@classroomAssessmentOpenedOn": {
+    "description": "Class mode, date an assessment was opened, under its period name (an assessment is feminine in French: « une évaluation »).",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "2026-10-25"
+      }
+    }
+  },
+  "classroomAssessmentClosedOn": "Close le {date}",
+  "@classroomAssessmentClosedOn": {
+    "description": "Class mode, date an assessment was closed by the teacher, after its opening date (feminine in French).",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "2026-11-25"
+      }
+    }
+  },
+  "classroomAssessmentTaken": "{taken, plural, =0{Aucun élève sur {total} ne l'a passée.} =1{1 élève sur {total} l'a passée.} other{{taken} élèves sur {total} l'ont passée.}}",
+  "@classroomAssessmentTaken": {
+    "description": "Class mode, how many pupils of the class finished an assessment, under its dates.",
+    "placeholders": {
+      "taken": {
+        "type": "int",
+        "example": "12"
+      },
+      "total": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "classroomAssessmentClose": "Clore",
+  "@classroomAssessmentClose": {
+    "description": "Class mode, button that closes an open assessment (pupils who have not taken it no longer see it). Also the confirm button of its dialog. A verb, one word."
+  },
+  "classroomAssessmentCloseTitle": "Clore « {label} » ?",
+  "@classroomAssessmentCloseTitle": {
+    "description": "Class mode, title of the dialog confirming that the teacher closes the assessment of the period named label.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Début d'année"
+      }
+    }
+  },
+  "classroomAssessmentCloseMessage": "Les élèves qui ne l'ont pas encore passée ne la verront plus. Les résultats déjà là restent.",
+  "@classroomAssessmentCloseMessage": {
+    "description": "Class mode, message of the dialog confirming the closing of an assessment."
+  },
+  "classroomAssessmentIsOpen": "Ouverte aux élèves",
+  "@classroomAssessmentIsOpen": {
+    "description": "Class mode, small tag on an assessment pupils can still take (feminine in French). Short."
+  },
+  "classroomAssessmentBannerTitle": "Évaluation de la classe",
+  "@classroomAssessmentBannerTitle": {
+    "description": "Home of a pupil, title of the card offering the assessment the teacher opened. Speaks to a child. One line."
+  },
+  "classroomAssessmentBannerText": "Montre ce que tu sais faire : quelques calculs, puis des mots des maths.",
+  "@classroomAssessmentBannerText": {
+    "description": "Home of a pupil, text of the assessment card, under the period name. Speaks to a child, informal \"tu\". Two lines at most."
+  },
+  "classroomAssessmentBannerStart": "Commencer",
+  "@classroomAssessmentBannerStart": {
+    "description": "Home of a pupil, button of the assessment card that starts the level test then the word check. A verb, one word."
+  },
   "profileCreationTitle": "Nouveau joueur",
   "@profileCreationTitle": {
     "description": "Title at the top of the screen that creates a player (\"New player\"). Same French words as newPlayerButton but this one is a screen title. One line."
@@ -1757,6 +1863,10 @@
   "quizModeMonsterHunt": "Chasse aux monstres",
   "@quizModeMonsterHunt": {
     "description": "Name of the monster hunt (10 questions on the facts the player keeps missing, drawn as little monsters), shown as the title of its card on the challenges screen and under the results title (\"Monster hunt\")."
+  },
+  "quizModeAssessment": "Évaluation",
+  "@quizModeAssessment": {
+    "description": "Name of the word check a pupil takes during an assessment opened by the teacher (class mode), shown under the results title next to the unit (\"Assessment\", a noun)."
   },
   "quizScoreSpoken": "{count, plural, =0{Aucune bonne réponse} =1{1 bonne réponse} other{{count} bonnes réponses}}",
   "@quizScoreSpoken": {

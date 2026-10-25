@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:kid_matix/features/classroom/assessment_injection.dart';
 import 'package:kid_matix/features/classroom/teacher_access_injection.dart';
 import 'package:kid_matix/features/classroom/transfer_injection.dart';
 import 'package:kid_matix/core/services/teacher_area_lock.dart';
@@ -47,6 +48,7 @@ void registerClassroomFeature(GetIt sl) {
   _registerClassrooms(sl);
   _registerClassWork(sl);
   registerClassroomTransfer(sl);
+  registerClassAssessments(sl);
   sl<SessionSavedHooks>().add(
     ClassroomSessionHook(
       roster: () => sl<PupilRosterService>(),

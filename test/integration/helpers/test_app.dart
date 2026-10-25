@@ -46,10 +46,12 @@ import '../../helpers/test_quiz_pages.dart';
 /// and the notifications.
 abstract final class TestApp {
   /// Starts the app with its databases in [databasesPath] and [storage] as
-  /// the phone's key-value storage.
+  /// the phone's key-value storage; [clock], when given, replaces the
+  /// phone's clock everywhere.
   static Future<void> start({
     required String databasesPath,
     required LocalStorage storage,
+    Clock? clock,
   }) async {
     // The bundled assets (math words, audio packs) are read at start.
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +65,7 @@ abstract final class TestApp {
     sl.registerLazySingleton<NotificationScheduler>(
       FakeNotificationScheduler.new,
     );
+    if (clock != null) sl.registerLazySingleton<Clock>(() => clock);
     sl.allowReassignment = false;
   }
 

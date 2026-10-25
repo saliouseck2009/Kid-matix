@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/router/app_shell.dart';
+import 'package:kid_matix/core/router/assessment_routes.dart';
 import 'package:kid_matix/core/router/challenge_code_routes.dart';
 import 'package:kid_matix/core/router/classroom_routes.dart';
 import 'package:kid_matix/core/router/play_routes.dart';
@@ -13,6 +14,7 @@ import 'package:kid_matix/core/services/teacher_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/duel_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
@@ -48,6 +50,7 @@ GoRouter createAppRouter({
   ShopPages? shopPages,
   LanguagePages? languagePages,
   ClassroomPages? classroomPages,
+  ClassAssessmentPages? assessmentPages,
   TeacherSessionService? teacherSession,
 }) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -114,7 +117,17 @@ GoRouter createAppRouter({
         },
       ),
       if (classroomPages != null)
-        ...createClassroomRoutes(pages: classroomPages),
+        ...createClassroomRoutes(
+          pages: classroomPages,
+          assessmentPages: assessmentPages,
+        ),
+      if (assessmentPages != null)
+        createAssessmentRoute(
+          session: session,
+          pathPages: pathPages,
+          quizPages: quizPages,
+          assessmentPages: assessmentPages,
+        ),
       ...createPlayRoutes(
         session: session,
         pathPages: pathPages,
@@ -122,6 +135,7 @@ GoRouter createAppRouter({
         rewardPages: rewardPages,
         challengePages: challengePages,
         codePages: codePages,
+        assessmentPages: assessmentPages,
       ),
       StatefulShellRoute.indexedStack(
         builder: (
@@ -143,10 +157,18 @@ GoRouter createAppRouter({
                         context.go(AppRoutes.tableDetailOf(unitKey)),
                     onPlay: (StageSource source) =>
                         playStage(context, pathPages, source),
-                    banner: classroomPages?.buildHomeBanner(
-                      profileId: profileId,
-                      onOpenUnit: (String unitKey) =>
-                          context.go(AppRoutes.tableDetailOf(unitKey)),
+                    banner: _HomeBanners(
+                      assessment: assessmentPages?.buildPendingBanner(
+                        profileId: profileId,
+                        onStart: (String assessmentId) => context.go(
+                          AppRoutes.classAssessmentOf(assessmentId),
+                        ),
+                      ),
+                      classroom: classroomPages?.buildHomeBanner(
+                        profileId: profileId,
+                        onOpenUnit: (String unitKey) =>
+                            context.go(AppRoutes.tableDetailOf(unitKey)),
+                      ),
                     ),
                     mascot: mascotPages.buildMapMascot(
                       bubble: rewardPages.buildGoalReminder(
@@ -306,6 +328,24 @@ GoRouter createAppRouter({
       ),
     ],
   );
+}
+
+/// The banners of the class at the top of the home of a pupil: the
+/// assessment to take, then the homework and the class challenge.
+class _HomeBanners extends StatelessWidget {
+  const _HomeBanners({this.assessment, this.classroom});
+
+  final Widget? assessment;
+  final Widget? classroom;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[?assessment, ?classroom],
+    );
+  }
 }
 
 /// The redirect of the teacher area, when the app has one.
