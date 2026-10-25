@@ -78,10 +78,14 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Exporter en PDF'));
     await tester.pumpAndSettle();
+    // The next export is anonymous again.
+    await tester.tap(find.text('Exporter en CSV'));
+    await tester.pumpAndSettle();
     // Assert
     expect(share.shares, <List<String>>[
       <String>['anonymous'],
       <String>['named'],
+      <String>['anonymous'],
     ]);
   });
 }

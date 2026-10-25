@@ -64,12 +64,12 @@ final class ReportExportState {
     isBusy: true,
   );
 
-  /// Returns a copy after an export.
+  /// Returns a copy after an export, back on the anonymous version: the
+  /// named one is chosen again for each export.
   ReportExportState done(ReportExportOutcome outcome, {AppErrorCode? code}) {
     return ReportExportState(
       fromKey: fromKey,
       toKey: toKey,
-      isNamed: isNamed,
       outcome: outcome,
       errorCode: code,
     );
