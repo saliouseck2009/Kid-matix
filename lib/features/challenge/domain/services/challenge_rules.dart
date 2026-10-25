@@ -83,12 +83,20 @@ abstract final class ChallengeRules {
     QuestionTypeIds.whichOperation,
   ];
 
+  /// The formats of the word problems (lot F30): the bar model and the
+  /// choice of the operation; the guided solving is a lesson of the path.
+  static const List<String> problemQuestionTypeIds = <String>[
+    QuestionTypeIds.barModel,
+    QuestionTypeIds.problemOperation,
+  ];
+
   /// Question types of the daily review: the mastery engine picks among
   /// them by box, among those that fit each item.
   static const List<String> dailyReviewQuestionTypeIds = <String>[
     ...versionOneQuestionTypeIds,
     ...numberQuestionTypeIds,
     ...wordQuestionTypeIds,
+    ...problemQuestionTypeIds,
   ];
 
   /// Questions of a monster hunt: each monster twice, completed like a

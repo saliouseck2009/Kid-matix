@@ -1375,6 +1375,53 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get problemsDomainName => 'Problèmes';
+
+  @override
+  String get masteryGridTitleProblems => 'Mes problèmes';
+
+  @override
+  String problemsUnitName(String operation, String level) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Ajouter',
+        'subtract': 'Enlever',
+        'multiply': 'Grouper',
+        'divide': 'Partager',
+        'trap': 'Les pièges',
+        'other': '',
+      },
+    );
+    String _temp1 = intl.Intl.selectLogic(
+      level,
+      {
+        '1': 'avec images',
+        '2': 'phrases courtes',
+        '3': 'énoncés',
+        'other': '',
+      },
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String problemsUnitTip(String operation) {
+    String _temp0 = intl.Intl.selectLogic(
+      operation,
+      {
+        'add': 'Quand on réunit des quantités, on en a plus qu\'avant. Dessine le tout et ses parties.',
+        'subtract': 'Quand on enlève, il en reste moins. Dessine le tout, la partie qui s\'en va et celle qui reste.',
+        'multiply': 'Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.',
+        'divide': 'Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.',
+        'trap': 'Attention : un mot de l\'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get resultsStageTitle => 'Étape terminée !';
 
   @override

@@ -126,6 +126,55 @@ final class MathWordCatalog {
     return parts;
   }
 
+  /// [text] cut into pieces for the word problems (lot F30): each math
+  /// word it contains, in the form the word has in its example, is a piece
+  /// that can be touched (its first whole-word match). Longer forms win
+  /// over the shorter ones they contain.
+  List<SentencePart> splitText(String text) {
+    final String lower = text.toLowerCase();
+    final List<({int start, int end, String key})> spans =
+        <({int start, int end, String key})>[];
+    final List<MathWord> longestFirst = <MathWord>[...words]
+      ..sort(
+        (MathWord a, MathWord b) =>
+            b.surface.length.compareTo(a.surface.length),
+      );
+    for (final MathWord word in longestFirst) {
+      final int at = _findWhole(lower, word.surface.toLowerCase());
+      if (at < 0) continue;
+      final int end = at + word.surface.length;
+      final bool overlaps = spans.any(
+        (({int start, int end, String key}) span) =>
+            at < span.end && end > span.start,
+      );
+      final bool isTaken = spans.any(
+        (({int start, int end, String key}) span) => span.key == word.wordKey,
+      );
+      if (!overlaps && !isTaken) {
+        spans.add((start: at, end: end, key: word.wordKey));
+      }
+    }
+    spans.sort(
+      (
+        ({int start, int end, String key}) a,
+        ({int start, int end, String key}) b,
+      ) => a.start.compareTo(b.start),
+    );
+    final List<SentencePart> parts = <SentencePart>[];
+    int cursor = 0;
+    for (final ({int start, int end, String key}) span in spans) {
+      if (span.start > cursor) {
+        parts.add(SentencePart(text.substring(cursor, span.start)));
+      }
+      parts.add(
+        SentencePart(text.substring(span.start, span.end), wordKey: span.key),
+      );
+      cursor = span.end;
+    }
+    if (cursor < text.length) parts.add(SentencePart(text.substring(cursor)));
+    return parts;
+  }
+
   static final RegExp _letter = RegExp(r'\p{L}', unicode: true);
 
   /// Position of the first occurrence of [needle] in [text] that is not

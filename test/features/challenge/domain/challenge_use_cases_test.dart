@@ -197,7 +197,7 @@ void main() {
         domains: buildDomainRegistry(),
       )(params: 'p1')).requireData;
       // Assert
-      expect(actualOverview, const ReviewOverview(dueCount: 10, seenCount: 50));
+      expect(actualOverview, const ReviewOverview(dueCount: 12, seenCount: 60));
     });
     test('fails when the progress cannot be read', () async {
       // Act

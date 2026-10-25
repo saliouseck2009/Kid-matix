@@ -1828,6 +1828,30 @@ abstract class AppLocalizations {
   /// **'{unit, select, add{Quand on ajoute, on a plus qu\'avant. Écoute les mots « en plus », « en tout », « ensemble » : ils disent qu\'on réunit.} remove{Quand on enlève, il en reste moins. Les mots « il reste », « vendre », « perdre » disent que la quantité diminue.} compare{Pour comparer, regarde deux quantités : l\'une est plus grande, l\'autre plus petite, ou elles sont égales.} group{Des paquets de la même taille, ce sont des groupes égaux. Les mots « dans chaque » et « par paquets de » les annoncent.} share{Partager, c\'est faire des parts égales : chacun en reçoit autant que les autres.} ask{Ces mots disent ce qu\'on cherche (« combien », « le total ») ou à quel moment ça se passe (« au départ », « à la fin »).} other{}}'**
   String mathWordsUnitTip(String unit);
 
+  /// Name of the word problems domain in the switch of the domains above the map and above the Profile progress cards ("Problems"). One word, a segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problèmes'**
+  String get problemsDomainName;
+
+  /// Title of the mastery grid card of the Profile tab when the word problems domain is chosen above it ("My problems"): one row per unit, one cell per problem colored by how well it is known. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes problèmes'**
+  String get masteryGridTitleProblems;
+
+  /// Name of a unit of the word problems path, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Add · with images", "Take away · short sentences", "The traps · full statements"). {operation} is add, subtract, multiply or divide (the real operation of the problems of the unit), or trap for the unit of the trap problems whose keyword suggests another operation; {level} is 1 (problems told with images), 2 (short sentences) or 3 (full statements). Both are slugs, never shown. Short title.
+  ///
+  /// In fr, this message translates to:
+  /// **'{operation, select, add{Ajouter} subtract{Enlever} multiply{Grouper} divide{Partager} trap{Les pièges} other{}} · {level, select, 1{avec images} 2{phrases courtes} 3{énoncés} other{}}'**
+  String problemsUnitName(String operation, String level);
+
+  /// Tip of a unit of the word problems path, shown at its Discovery stage, by operation. Never says that a word means an operation: it asks to draw the story. {operation} is the slug add, subtract, multiply, divide or trap (the unit of the traps), never shown.
+  ///
+  /// In fr, this message translates to:
+  /// **'{operation, select, add{Quand on réunit des quantités, on en a plus qu\'avant. Dessine le tout et ses parties.} subtract{Quand on enlève, il en reste moins. Dessine le tout, la partie qui s\'en va et celle qui reste.} multiply{Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.} divide{Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.} trap{Attention : un mot de l\'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.} other{}}'**
+  String problemsUnitTip(String operation);
+
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///
   /// In fr, this message translates to:

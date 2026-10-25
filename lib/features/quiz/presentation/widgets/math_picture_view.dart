@@ -61,6 +61,7 @@ class MathPictureView extends StatelessWidget {
         WordPicture(:final String wordKey) => WordPictureView(
           wordKey: wordKey,
         ),
+        BarModelPicture() => const SizedBox.shrink(),
       },
     );
   }

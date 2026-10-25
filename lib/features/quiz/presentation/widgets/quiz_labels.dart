@@ -54,7 +54,10 @@ final class QuizLabels {
         ObjectsPicture() => l10n.quizCountLabel,
         TenBundlesPicture() => l10n.quizBundlesLabel,
         NumberLinePicture() => l10n.quizNumberLineLabel,
-        WordPicture() || null => describeUnitOf(question, domainId),
+        WordPicture() || BarModelPicture() || null => describeUnitOf(
+          question,
+          domainId,
+        ),
       },
     };
   }
@@ -118,7 +121,7 @@ final class QuizLabels {
       final NumberLinePicture line => l10n.quizNumberLineSpoken(
         MathPictureLabels(l10n).listNumbers(line),
       ),
-      WordPicture() || null => null,
+      WordPicture() || BarModelPicture() || null => null,
     };
   }
 

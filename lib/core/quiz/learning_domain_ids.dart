@@ -23,4 +23,7 @@ abstract final class LearningDomainIds {
   /// The words of mathematics: add, take away, compare, group, share
   /// (version 2.0).
   static const String mathWords = 'math_words';
+
+  /// Word problems: bar models, guided steps and traps (version 2.0).
+  static const String problems = 'problems';
 }

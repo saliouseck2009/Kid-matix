@@ -57,6 +57,8 @@ class MonsterPainter extends CustomPainter {
         _paintWings(canvas);
       case MonsterFamily.bubble:
         _paintBubble(canvas);
+      case MonsterFamily.barred:
+        _paintBars(canvas);
     }
     _paintArms(canvas);
     canvas.drawRRect(
@@ -125,6 +127,24 @@ class MonsterPainter extends CustomPainter {
       canvas.drawOval(
         Rect.fromCenter(center: Offset(x, 58), width: 36, height: 20),
         wing,
+      );
+    }
+  }
+
+  /// Three stacked bars on the head, like the bar model of a problem.
+  void _paintBars(Canvas canvas) {
+    final Paint bar = Paint()..color = _horn;
+    for (final (double, double) row in <(double, double)>[
+      (70, 6),
+      (82, 14),
+      (62, 22),
+    ]) {
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(row.$1, row.$2, 200 - 2 * row.$1, 8),
+          const Radius.circular(4),
+        ),
+        bar,
       );
     }
   }

@@ -73,7 +73,7 @@ class MultipleChoiceAnswers extends StatelessWidget {
         OperatorToken(operator),
       ].toDisplayText(),
       WordAnswer(:final String text) => text,
-      BooleanAnswer() || PairsAnswer() => '',
+      BooleanAnswer() || PairsAnswer() || ProblemAnswer() => '',
     };
   }
 }
