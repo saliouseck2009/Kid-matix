@@ -26,7 +26,9 @@ typedef ClassReportParams = ({
 
 /// Computes the progress report of a class between two of its periods,
 /// from its assessments and the class results of its pupils, never from
-/// the quiz journal; the earlier period is always the first.
+/// the quiz journal; the earlier period is always the first. Pupils
+/// without a class number (F31-04) get the next numbers of the class
+/// first, so it writes `class_pupil_number` when needed.
 ///
 /// Fails with a `NotFoundException` when a period does not exist.
 class GetClassReportUseCase
