@@ -122,6 +122,9 @@ abstract final class AppRoutes {
   /// Creation of a class with its pupils, in the teacher area.
   static const String classroomCreation = '/players/teacher/classes/new';
 
+  /// « Rapport d'école ou de programme »: every class of the device.
+  static const String programReport = '/players/teacher/classes/report';
+
   /// Page of the class given as path parameter, in the teacher area.
   static const String teacherClassroom =
       '/players/teacher/classes/:$classroomIdParameter';
@@ -133,6 +136,17 @@ abstract final class AppRoutes {
   /// « Donner un devoir » to the class given as path parameter.
   static const String classroomAssignment =
       '/players/teacher/classes/:$classroomIdParameter/assignment';
+
+  /// « Évaluations et rapports » of the class given as path parameter.
+  static const String classroomAssessments =
+      '/players/teacher/classes/:$classroomIdParameter/assessments';
+
+  /// The assessment given as path parameter, taken by the active pupil:
+  /// the placement test, then the word check.
+  static const String classAssessment = '/assessment/:$assessmentIdParameter';
+
+  /// Name of the assessment parameter of [classAssessment].
+  static const String assessmentIdParameter = 'assessmentId';
 
   /// « Qui es-tu ? »: a pupil finds their name in the class given as path
   /// parameter, opened from [whoIsPlaying].
@@ -154,6 +168,16 @@ abstract final class AppRoutes {
   /// Path of « Donner un devoir » to the class [classroomId].
   static String classroomAssignmentOf(String classroomId) {
     return '${teacherClassroomOf(classroomId)}/assignment';
+  }
+
+  /// Path of « Évaluations et rapports » of the class [classroomId].
+  static String classroomAssessmentsOf(String classroomId) {
+    return '${teacherClassroomOf(classroomId)}/assessments';
+  }
+
+  /// Path of the assessment [assessmentId], taken by the active pupil.
+  static String classAssessmentOf(String assessmentId) {
+    return '/assessment/${Uri.encodeComponent(assessmentId)}';
   }
 
   /// Path of « Qui es-tu ? » in the class [classroomId].

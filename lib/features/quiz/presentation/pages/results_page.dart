@@ -254,6 +254,7 @@ class _ResultsView extends StatelessWidget {
       QuizMode.survival => context.l10n.quizModeSurvival,
       QuizMode.dailyReview => context.l10n.quizModeDailyReview,
       QuizMode.monsterHunt => context.l10n.quizModeMonsterHunt,
+      QuizMode.assessment => context.l10n.quizModeAssessment,
     };
   }
 }

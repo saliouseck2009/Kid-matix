@@ -2,19 +2,23 @@ import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
+import 'package:kid_matix/features/classroom/domain/entities/assessment_result.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
+import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_merge_report.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/entities/pupil_entity.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/class_journal_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/pupil_merge.dart';
 
 /// Merges a class file into this tablet, without duplicates: the class,
-/// then its pupils one by one, its assignments and the sessions of its
-/// pupils, each by its identifier.
+/// then its pupils one by one, its assignments, its assessments, the
+/// sessions of its pupils and their assessment results, each by its
+/// identifier (a result by its assessment and pupil).
 ///
 /// Every step only adds what is missing, or a class name, goal or
 /// assignment whose `updated_at` is newer (so the clocks of the tablets
@@ -28,12 +32,14 @@ class ClassroomMerger {
     required this._roster,
     required this._assignments,
     required this._journal,
+    required this._assessments,
   });
 
   final ClassroomRepository _classrooms;
   final PupilRosterService _roster;
   final AssignmentRepository _assignments;
   final ClassJournalRepository _journal;
+  final AssessmentRepository _assessments;
 
   /// Merges [transfer]; fails with an `InvalidFileException` when a part
   /// of it points to another class or to a pupil it does not carry, and
@@ -60,7 +66,8 @@ class ClassroomMerger {
     if (pupils case DataFailed<PupilMerge>(:final exception)) {
       return DataFailed<ClassroomMergeReport>(exception);
     }
-    final AppException? failure = await _mergeAssignments(transfer);
+    final AppException? failure =
+        await _mergeAssignments(transfer) ?? await _mergeAssessments(transfer);
     if (failure != null) return DataFailed<ClassroomMergeReport>(failure);
     return _mergeSessions(transfer, (pupils as DataSuccess<PupilMerge>).data);
   }
@@ -69,6 +76,12 @@ class ClassroomMerger {
     ClassroomTransfer transfer,
     PupilMerge pupils,
   ) async {
+    final DataState<int> results = await _assessments.addResults(
+      results: transfer.assessmentResults,
+    );
+    if (results case DataFailed<int>(:final exception)) {
+      return DataFailed<ClassroomMergeReport>(exception);
+    }
     return switch (await _journal.addSessions(sessions: transfer.sessions)) {
       DataFailed<int>(:final exception) => DataFailed<ClassroomMergeReport>(
         exception,
@@ -88,6 +101,16 @@ class ClassroomMerger {
     for (final AssignmentEntity assignment in transfer.assignments) {
       final DataState<void> saved = await _assignments.saveAssignment(
         assignment: assignment,
+      );
+      if (saved case DataFailed<void>(:final exception)) return exception;
+    }
+    return null;
+  }
+
+  Future<AppException?> _mergeAssessments(ClassroomTransfer transfer) async {
+    for (final ClassAssessment assessment in transfer.assessments) {
+      final DataState<void> saved = await _assessments.saveAssessment(
+        assessment: assessment,
       );
       if (saved case DataFailed<void>(:final exception)) return exception;
     }
@@ -126,9 +149,30 @@ class ClassroomMerger {
         transfer.sessions.every(
           (PracticeSession s) =>
               s.classroomId == classroomId && pupilIds.contains(s.pupilId),
-        );
+        ) &&
+        _areAssessmentsConsistent(transfer, pupilIds);
     return isConsistent
         ? null
         : const InvalidFileException(message: 'Class file not consistent.');
+  }
+
+  /// Whether the assessments of [transfer] are of its class and each of
+  /// its results is of a pupil and an assessment it carries.
+  static bool _areAssessmentsConsistent(
+    ClassroomTransfer transfer,
+    Set<String> pupilIds,
+  ) {
+    final Set<String> assessmentIds = <String>{
+      for (final ClassAssessment assessment in transfer.assessments)
+        assessment.id,
+    };
+    return transfer.assessments.every(
+          (ClassAssessment a) => a.classroomId == transfer.classroom.id,
+        ) &&
+        transfer.assessmentResults.every(
+          (AssessmentResult r) =>
+              pupilIds.contains(r.pupilId) &&
+              assessmentIds.contains(r.assessmentId),
+        );
   }
 }
