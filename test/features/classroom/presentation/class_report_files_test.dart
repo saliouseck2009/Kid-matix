@@ -107,4 +107,30 @@ void main() {
     );
     expect(actualLines[1], 'Awa;50;100;4;9;75;14;6');
   });
+
+  test('always gives the anonymous version next to the named one', () async {
+    // Act
+    final List<SharedFile> actual = await ClassReportFiles(
+      l10n: l10n,
+    ).filesOf(_report(), ReportFileKind.csv);
+    // Assert
+    expect(actual.map((SharedFile file) => file.name), <String>[
+      'KidMatix-Rapport-CE1-B-2026-11-02.csv',
+      'KidMatix-Rapport-CE1-B-2026-11-02-anonyme.csv',
+    ]);
+    final String actualAnonymous = utf8.decode(actual.last.bytes);
+    expect(actualAnonymous, isNot(contains('Awa')));
+    expect(actualAnonymous, contains('Élève 1;50;100;4;9;75;14;6'));
+  });
+
+  test('prints the anonymous PDF with its note and no nickname', () async {
+    // Act
+    final List<SharedFile> actual = await ClassReportFiles(
+      l10n: l10n,
+    ).filesOf(_report(), ReportFileKind.pdf);
+    // Assert
+    expect(actual, hasLength(2));
+    expect(actual.last.name, endsWith('-anonyme.pdf'));
+    expect(ascii.decode(actual.last.bytes.take(5).toList()), '%PDF-');
+  });
 }

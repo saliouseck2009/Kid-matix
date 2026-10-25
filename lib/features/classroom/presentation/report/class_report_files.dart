@@ -1,5 +1,6 @@
 import 'package:kid_matix/core/entities/shared_file.dart';
 import 'package:kid_matix/features/classroom/domain/entities/class_progress_report.dart';
+import 'package:kid_matix/features/classroom/domain/services/report_anonymizer.dart';
 import 'package:kid_matix/features/classroom/presentation/report/class_report_pdf.dart';
 import 'package:kid_matix/features/classroom/presentation/report/class_report_table.dart';
 import 'package:kid_matix/features/classroom/presentation/report/report_csv.dart';
@@ -31,12 +32,20 @@ final class ClassReportFiles {
   final Future<ReportFonts> Function() _loadFonts;
   Future<ReportFonts>? _fonts;
 
-  /// The files of [report] of [kind].
+  /// The files of [report] of [kind]: the named version, and always the
+  /// anonymous one next to it.
   Future<List<SharedFile>> filesOf(
     ClassProgressReport report,
     ReportFileKind kind,
   ) async {
-    return <SharedFile>[await fileOf(report, kind)];
+    return <SharedFile>[
+      await fileOf(report, kind),
+      await fileOf(
+        ReportAnonymizer.anonymize(report),
+        kind,
+        suffix: l10n.classroomReportFileAnonymous,
+      ),
+    ];
   }
 
   /// The file of [report] of [kind]; [suffix] ends its name.
