@@ -14,7 +14,10 @@ import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use
 import 'package:kid_matix/features/classroom/domain/usecases/set_weekly_goal_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/class_overview_use_cases.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/features/classroom/domain/entities/assessment_result.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
+import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
@@ -54,6 +57,20 @@ import 'package:kid_matix/features/classroom/domain/usecases/export_classroom_us
 import 'package:kid_matix/features/classroom/domain/usecases/get_export_mark_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/import_classroom_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
+import 'package:kid_matix/core/entities/shared_file.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/report_share_repository.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/close_assessment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_class_assessments_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_class_report_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_pending_assessment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/get_program_report_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/open_assessment_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/share_files_use_case.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/watch_assessment_changes_use_case.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_assessment_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/bloc/class_report_use_cases.dart';
+import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/report_pages.dart';
 
 import '../../../helpers/in_memory_local_storage.dart';
 import '../../../helpers/test_path_pages.dart';
@@ -138,6 +155,85 @@ final class InMemoryAssignments implements AssignmentRepository {
 
   @override
   Stream<void> watchChanges() => const Stream<void>.empty();
+}
+
+/// [AssessmentRepository] kept in memory.
+final class InMemoryAssessments implements AssessmentRepository {
+  /// The assessments, by identifier.
+  final Map<String, ClassAssessment> rows = <String, ClassAssessment>{};
+
+  /// The results, in the order they were added.
+  final List<AssessmentResult> results = <AssessmentResult>[];
+
+  final StreamController<void> _changes = StreamController<void>.broadcast();
+
+  @override
+  Future<DataState<List<ClassAssessment>>> getAssessments({
+    required String classroomId,
+  }) async {
+    return DataSuccess<List<ClassAssessment>>(
+      rows.values
+          .where((ClassAssessment a) => a.classroomId == classroomId)
+          .toList()
+        ..sort(
+          (ClassAssessment a, ClassAssessment b) =>
+              a.openedAt.compareTo(b.openedAt),
+        ),
+    );
+  }
+
+  @override
+  Future<DataState<ClassAssessment?>> getAssessment({
+    required String assessmentId,
+  }) async => DataSuccess<ClassAssessment?>(rows[assessmentId]);
+
+  @override
+  Future<DataState<void>> saveAssessment({
+    required ClassAssessment assessment,
+  }) async {
+    final ClassAssessment? kept = rows[assessment.id];
+    if (kept == null || assessment.updatedAt.isAfter(kept.updatedAt)) {
+      rows[assessment.id] = assessment;
+      _changes.add(null);
+    }
+    return const DataSuccess<void>(null);
+  }
+
+  @override
+  Future<DataState<List<AssessmentResult>>> getResults({
+    required String classroomId,
+  }) async {
+    return DataSuccess<List<AssessmentResult>>(
+      results
+          .where(
+            (AssessmentResult r) =>
+                rows[r.assessmentId]?.classroomId == classroomId,
+          )
+          .toList(),
+    );
+  }
+
+  @override
+  Future<DataState<int>> addResults({
+    required List<AssessmentResult> results,
+  }) async {
+    int added = 0;
+    for (final AssessmentResult result in results) {
+      final bool isKept = this.results.any(
+        (AssessmentResult r) =>
+            r.assessmentId == result.assessmentId &&
+            r.pupilId == result.pupilId,
+      );
+      if (isKept) continue;
+      this.results.add(result);
+      added++;
+    }
+    if (added > 0) _changes.add(null);
+    return DataSuccess<int>(added);
+  }
+
+  @override
+  Stream<void> watchChanges() => _changes.stream;
 }
 
 /// [ClassJournalRepository] kept in memory.
@@ -289,6 +385,9 @@ final class FakeClassroomStack {
   /// The results.
   final InMemoryJournal journal = InMemoryJournal();
 
+  /// The assessments and their results.
+  final InMemoryAssessments assessments = InMemoryAssessments();
+
   /// Identifiers.
   final CountingIds ids = CountingIds('id');
 
@@ -302,7 +401,7 @@ final class FakeClassroomStack {
     roster: roster,
   );
 
-  late final WatchClassroomChangesUseCase _watch = WatchClassroomChangesUseCase(
+  late final WatchClassroomChangesUseCase watch = WatchClassroomChangesUseCase(
     repository: classrooms,
     roster: roster,
     assignments: assignments,
@@ -329,7 +428,7 @@ final class FakeClassroomStack {
   late final ClassroomRosterUseCases rosterUseCases = ClassroomRosterUseCases(
     getRoster: _getRoster,
     selectPupil: SelectPupilUseCase(roster: roster),
-    watchChanges: _watch,
+    watchChanges: watch,
     resetPupil: ResetPupilUseCase(roster: roster),
     removePupil: RemovePupilUseCase(roster: roster),
   );
@@ -356,7 +455,7 @@ final class FakeClassroomStack {
       repository: classrooms,
       clock: MovableClock(DateTime(2026, 10, 21, 9)),
     ),
-    watchChanges: _watch,
+    watchChanges: watch,
   );
 
   /// Gives assignments.
@@ -377,7 +476,7 @@ final class FakeClassroomStack {
         repository: classrooms,
         roster: roster,
       ),
-      watchChanges: _watch,
+      watchChanges: watch,
       closeArea: closeArea,
       getCodeChange: GetTeacherCodeChangeUseCase(
         codes: TeacherCodeRepositoryImpl(
@@ -456,6 +555,7 @@ ClassroomPages buildTestClassroomPages(
         ),
         assignments: stack.assignments,
         journal: stack.journal,
+        assessments: stack.assessments,
         transfers: const _NoTransfers(),
         clock: MovableClock(DateTime(2026, 10, 21, 9)),
       ),
@@ -467,12 +567,79 @@ ClassroomPages buildTestClassroomPages(
           roster: stack.roster,
           assignments: stack.assignments,
           journal: stack.journal,
+          assessments: stack.assessments,
         ),
       ),
     ),
     domains: stack.domains,
     avatarOf: boxAvatar,
   );
+}
+
+/// The pages of the assessments and reports over [stack].
+ClassAssessmentPages buildTestAssessmentPages(FakeClassroomStack stack) {
+  final MovableClock clock = MovableClock(DateTime(2026, 10, 21, 9));
+  final GetClassroomRosterUseCase getRoster = GetClassroomRosterUseCase(
+    repository: stack.classrooms,
+    roster: stack.roster,
+  );
+  final GetClassReportUseCase getClassReport = GetClassReportUseCase(
+    getRoster: getRoster,
+    assessments: stack.assessments,
+    journal: stack.journal,
+    clock: clock,
+  );
+  return ClassAssessmentPages(
+    useCases: ClassAssessmentUseCases(
+      getAssessments: GetClassAssessmentsUseCase(
+        getRoster: getRoster,
+        assessments: stack.assessments,
+      ),
+      open: OpenAssessmentUseCase(
+        repository: stack.assessments,
+        ids: stack.ids,
+        clock: clock,
+      ),
+      close: CloseAssessmentUseCase(
+        repository: stack.assessments,
+        clock: clock,
+      ),
+      getPending: GetPendingAssessmentUseCase(
+        roster: stack.roster,
+        assessments: stack.assessments,
+      ),
+      watchChanges: WatchAssessmentChangesUseCase(
+        classroom: stack.watch,
+        assessments: stack.assessments,
+      ),
+    ),
+    reports: ReportPages(
+      useCases: ClassReportUseCases(
+        getClassReport: getClassReport,
+        getProgramReport: GetProgramReportUseCase(
+          getClassrooms: GetClassroomsUseCase(
+            repository: stack.classrooms,
+            roster: stack.roster,
+          ),
+          assessments: stack.assessments,
+          getClassReport: getClassReport,
+          clock: clock,
+        ),
+        share: const ShareFilesUseCase(repository: _NoReportShare()),
+      ),
+    ),
+    domains: stack.domains,
+  );
+}
+
+/// A share sheet that is always closed.
+final class _NoReportShare implements ReportShareRepository {
+  const _NoReportShare();
+
+  @override
+  Future<DataState<bool>> share({required List<SharedFile> files}) async {
+    return const DataSuccess<bool>(false);
+  }
 }
 
 /// Class files that go nowhere: shared, never picked.

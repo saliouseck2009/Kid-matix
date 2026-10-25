@@ -505,6 +505,297 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este archivo viene de una versión más reciente de Kid Matix. Actualiza la app y vuelve a intentarlo.';
 
   @override
+  String get classroomAssessmentsOpen => 'Evaluaciones e informes';
+
+  @override
+  String get classroomAssessmentsTitle => 'Evaluaciones';
+
+  @override
+  String get classroomAssessmentsHint =>
+      'Inicia una evaluación al principio y al final de un periodo para medir el progreso. Cada alumno hace la prueba de nivel y luego 12 palabras de las mates.';
+
+  @override
+  String get classroomAssessmentsEmpty => 'Todavía no hay evaluaciones.';
+
+  @override
+  String get classroomAssessmentNew => 'Iniciar una evaluación';
+
+  @override
+  String get classroomAssessmentLabelLabel => 'Nombre del periodo';
+
+  @override
+  String get classroomAssessmentLabelHint => 'Por ejemplo Inicio de curso';
+
+  @override
+  String get classroomAssessmentLabelError =>
+      'Ponle un nombre al periodo (30 caracteres como máximo).';
+
+  @override
+  String get classroomAssessmentStart => 'Iniciar';
+
+  @override
+  String classroomAssessmentOpenedOn(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Abierta el $dateString';
+  }
+
+  @override
+  String classroomAssessmentClosedOn(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Cerrada el $dateString';
+  }
+
+  @override
+  String classroomAssessmentTaken(int taken, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      taken,
+      locale: localeName,
+      other: '$taken alumnos de $total la han hecho.',
+      one: '1 alumno de $total la ha hecho.',
+      zero: 'Ningún alumno de $total la ha hecho.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomAssessmentClose => 'Cerrar';
+
+  @override
+  String classroomAssessmentCloseTitle(String label) {
+    return '¿Cerrar «$label»?';
+  }
+
+  @override
+  String get classroomAssessmentCloseMessage =>
+      'Los alumnos que aún no la han hecho ya no la verán. Los resultados que ya están se conservan.';
+
+  @override
+  String get classroomAssessmentIsOpen => 'Abierta a los alumnos';
+
+  @override
+  String get classroomAssessmentBannerTitle => 'Evaluación de la clase';
+
+  @override
+  String get classroomAssessmentBannerText =>
+      'Muestra lo que sabes hacer: unas cuentas y luego palabras de las mates.';
+
+  @override
+  String get classroomAssessmentBannerStart => 'Empezar';
+
+  @override
+  String get classroomReportCardTitle => 'Informe de la clase';
+
+  @override
+  String get classroomReportCardHint =>
+      'Compara dos evaluaciones: niveles, palabras entendidas, tiempo de práctica y hechos aprendidos. Cada exportación da también una versión anónima.';
+
+  @override
+  String get classroomReportNeedsAssessment =>
+      'El informe aparecerá después de la primera evaluación.';
+
+  @override
+  String get classroomReportFrom => 'Inicio';
+
+  @override
+  String get classroomReportTo => 'Final';
+
+  @override
+  String get classroomReportNone => 'Ninguna';
+
+  @override
+  String get classroomReportPdf => 'Exportar en PDF';
+
+  @override
+  String get classroomReportCsv => 'Exportar en CSV';
+
+  @override
+  String get classroomReportShared => 'El informe está listo.';
+
+  @override
+  String classroomReportTitle(String name) {
+    return 'Informe de la clase $name';
+  }
+
+  @override
+  String classroomReportPeriods(
+    String from,
+    DateTime fromDate,
+    String to,
+    DateTime toDate,
+  ) {
+    final intl.DateFormat fromDateDateFormat = intl.DateFormat.yMMMMd(
+      localeName,
+    );
+    final String fromDateString = fromDateDateFormat.format(fromDate);
+    final intl.DateFormat toDateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String toDateString = toDateDateFormat.format(toDate);
+
+    return 'De «$from» ($fromDateString) a «$to» ($toDateString)';
+  }
+
+  @override
+  String classroomReportOnePeriod(String label, DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '«$label» ($dateString)';
+  }
+
+  @override
+  String classroomReportGenerated(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Hecho el $dateString con Kid Matix, sin conexión.';
+  }
+
+  @override
+  String get classroomReportClassTitle => 'La clase';
+
+  @override
+  String get classroomReportDomain => 'Ámbito';
+
+  @override
+  String get classroomReportProgressed => 'Alumnos que progresaron';
+
+  @override
+  String classroomReportCount(int count, int total) {
+    return '$count de $total';
+  }
+
+  @override
+  String classroomReportPercent(int percent) {
+    return '$percent %';
+  }
+
+  @override
+  String get classroomReportNoValue => '–';
+
+  @override
+  String get classroomReportWords => 'Palabras de las mates entendidas';
+
+  @override
+  String classroomReportPractice(int sessions, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other:
+          'Tiempo de práctica entre las dos evaluaciones: $time en $sessions sesiones.',
+      one: 'Tiempo de práctica entre las dos evaluaciones: $time en 1 sesión.',
+      zero: 'Ninguna sesión entre las dos evaluaciones.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String classroomReportHours(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String classroomReportAcquired(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count hechos y palabras aprendidos entre las dos evaluaciones (correctos las 3 últimas veces).',
+      one: '1 hecho o palabra aprendido entre las dos evaluaciones (correcto las 3 últimas veces).',
+      zero: 'Ningún hecho o palabra aprendidos entre las dos evaluaciones.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get classroomReportPupilsTitle => 'Los alumnos';
+
+  @override
+  String get classroomReportPupil => 'Alumno';
+
+  @override
+  String classroomReportPupilNumber(int number) {
+    return 'Alumno $number';
+  }
+
+  @override
+  String classroomReportColumnStart(String name) {
+    return '$name inicio';
+  }
+
+  @override
+  String classroomReportColumnEnd(String name) {
+    return '$name final';
+  }
+
+  @override
+  String get classroomReportWordsShort => 'Palabras';
+
+  @override
+  String get classroomReportPracticeShort => 'Práctica';
+
+  @override
+  String get classroomReportPracticeMinutes => 'Práctica (min)';
+
+  @override
+  String get classroomReportSessions => 'Sesiones';
+
+  @override
+  String get classroomReportAcquiredShort => 'Aprendidos';
+
+  @override
+  String get classroomReportFileName => 'Informe';
+
+  @override
+  String get classroomReportAnonymousNote =>
+      'Versión anónima: cada alumno aparece con su número en la lista de la clase.';
+
+  @override
+  String get classroomReportFileAnonymous => 'anonimo';
+
+  @override
+  String get classroomProgramOpen => 'Informe de escuela o de programa';
+
+  @override
+  String get classroomProgramHint =>
+      'Para un coordinador: primero recibe los archivos de las clases y luego compara dos evaluaciones en todas las clases de esta tableta. Este informe siempre es anónimo.';
+
+  @override
+  String get classroomProgramEmpty =>
+      'Todavía no hay evaluaciones en esta tableta.';
+
+  @override
+  String classroomProgramPeriods(String from, String to) {
+    return 'De «$from» a «$to»';
+  }
+
+  @override
+  String classroomProgramOnePeriod(String label) {
+    return '«$label»';
+  }
+
+  @override
+  String get classroomProgramNote =>
+      'Informe anónimo: solo contiene cifras por clase, ningún alumno.';
+
+  @override
+  String get classroomProgramClass => 'Clase';
+
+  @override
+  String get classroomProgramPupils => 'Alumnos';
+
+  @override
+  String get classroomProgramAssessed => 'Evaluados';
+
+  @override
+  String get classroomProgramTotal => 'Todas las clases';
+
+  @override
+  String get classroomProgramFileName => 'Programa';
+
+  @override
   String get profileCreationTitle => 'Nuevo jugador';
 
   @override
@@ -1395,6 +1686,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizModeMonsterHunt => 'Caza de monstruos';
+
+  @override
+  String get quizModeAssessment => 'Evaluación';
 
   @override
   String quizScoreSpoken(int count) {

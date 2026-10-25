@@ -49,6 +49,7 @@ const _$QuizModeEnumMap = {
   QuizMode.survival: 'survival',
   QuizMode.dailyReview: 'dailyReview',
   QuizMode.monsterHunt: 'monsterHunt',
+  QuizMode.assessment: 'assessment',
 };
 
 const _$QuizSessionStatusEnumMap = {

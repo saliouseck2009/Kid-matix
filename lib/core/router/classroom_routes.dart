@@ -1,15 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kid_matix/core/router/app_routes.dart';
+import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/classroom/presentation/classroom_pages.dart';
 
 /// The routes of the class mode, outside the tabs: the teacher area
 /// (its door, « Mes classes », the creation of a class, the page of a
-/// class and « Ajouter des élèves ») and « Qui es-tu ? » of a class.
+/// class, « Ajouter des élèves », « Évaluations et rapports ») and « Qui
+/// es-tu ? » of a class.
 ///
 /// The router redirect keeps the area behind its door
 /// (`redirectForTeacherArea`).
-List<RouteBase> createClassroomRoutes({required ClassroomPages pages}) {
+List<RouteBase> createClassroomRoutes({
+  required ClassroomPages pages,
+  ClassAssessmentPages? assessmentPages,
+}) {
   return <RouteBase>[
     GoRoute(
       path: AppRoutes.teacherArea,
@@ -18,7 +23,7 @@ List<RouteBase> createClassroomRoutes({required ClassroomPages pages}) {
           onBack: () => context.go(AppRoutes.whoIsPlaying),
         );
       },
-      routes: <RouteBase>[_classroomsRoute(pages)],
+      routes: <RouteBase>[_classroomsRoute(pages, assessmentPages)],
     ),
     GoRoute(
       path: AppRoutes.pupilPicker,
@@ -32,7 +37,10 @@ List<RouteBase> createClassroomRoutes({required ClassroomPages pages}) {
   ];
 }
 
-GoRoute _classroomsRoute(ClassroomPages pages) {
+GoRoute _classroomsRoute(
+  ClassroomPages pages,
+  ClassAssessmentPages? assessmentPages,
+) {
   return GoRoute(
     path: _lastSegment(AppRoutes.teacherClassrooms),
     builder: (BuildContext context, GoRouterState state) {
@@ -41,9 +49,15 @@ GoRoute _classroomsRoute(ClassroomPages pages) {
             context.go(AppRoutes.teacherClassroomOf(classroomId)),
         onCreate: () => context.go(AppRoutes.classroomCreation),
         onLeave: () => context.go(AppRoutes.whoIsPlaying),
+        actions: <Widget>[
+          ?assessmentPages?.reports.buildProgramReportButton(
+            onOpen: () => context.go(AppRoutes.programReport),
+          ),
+        ],
       );
     },
     routes: <RouteBase>[
+      ?_programReportRoute(assessmentPages),
       GoRoute(
         path: _lastSegment(AppRoutes.classroomCreation),
         builder: (BuildContext context, GoRouterState state) {
@@ -66,11 +80,18 @@ GoRoute _classroomsRoute(ClassroomPages pages) {
             ),
             onGiveAssignment: () =>
                 context.go(AppRoutes.classroomAssignmentOf(classroomId)),
+            actions: <Widget>[
+              ?assessmentPages?.buildAssessmentsButton(
+                onOpen: () =>
+                    context.go(AppRoutes.classroomAssessmentsOf(classroomId)),
+              ),
+            ],
           );
         },
         routes: <RouteBase>[
           _pupilsAdditionRoute(pages),
           _assignmentRoute(pages),
+          ?_assessmentsRoute(assessmentPages),
         ],
       ),
     ],
@@ -101,6 +122,32 @@ GoRoute _assignmentRoute(ClassroomPages pages) {
     builder: (BuildContext context, GoRouterState state) {
       final String classroomId = _classroomIdOf(state);
       return pages.buildAssignmentPage(
+        classroomId: classroomId,
+        onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
+      );
+    },
+  );
+}
+
+GoRoute? _programReportRoute(ClassAssessmentPages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.programReport),
+    builder: (BuildContext context, GoRouterState state) {
+      return pages.reports.buildProgramReportPage(
+        onBack: () => context.go(AppRoutes.teacherClassrooms),
+      );
+    },
+  );
+}
+
+GoRoute? _assessmentsRoute(ClassAssessmentPages? pages) {
+  if (pages == null) return null;
+  return GoRoute(
+    path: _lastSegment(AppRoutes.classroomAssessments),
+    builder: (BuildContext context, GoRouterState state) {
+      final String classroomId = _classroomIdOf(state);
+      return pages.buildAssessmentsPage(
         classroomId: classroomId,
         onBack: () => context.go(AppRoutes.teacherClassroomOf(classroomId)),
       );

@@ -32,7 +32,10 @@ import 'package:kid_matix/features/learning_path/data/repositories/placement_res
 import 'package:kid_matix/features/learning_path/domain/services/placement_result_service_impl.dart';
 import 'package:kid_matix/core/storage/session_saved_hook.dart';
 import 'package:kid_matix/features/addition/domain/services/addition_domain.dart';
+import 'package:kid_matix/features/classroom/data/datasources/assessment_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source_impl.dart';
+import 'package:kid_matix/features/classroom/data/repositories/assessment_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
 import 'package:kid_matix/features/classroom/data/datasources/class_journal_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/assignment_repository_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/class_journal_repository_impl.dart';
@@ -44,6 +47,7 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_class_overview_
 import 'package:kid_matix/features/classroom/domain/usecases/get_pupil_class_view_use_case.dart';
 import 'package:kid_matix/features/classroom/domain/usecases/give_assignment_use_case.dart';
 import 'package:kid_matix/features/multiplication/domain/services/multiplication_domain.dart';
+import 'package:kid_matix/core/entities/shared_file.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/classroom/data/repositories/classroom_transfer_repository_impl.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
@@ -107,6 +111,16 @@ final class FakeSharedFiles implements SharedFileDataSource {
 
   @override
   Future<String?> pickFile() async => fileToPick;
+
+  /// The files of the last multi-file share, such as a report.
+  List<SharedFile> sharedFiles = <SharedFile>[];
+
+  @override
+  Future<bool> shareFiles({required List<SharedFile> files}) async {
+    if (!isSharing) return false;
+    sharedFiles = files;
+    return true;
+  }
 }
 
 /// One tablet of a class: a real in-memory database with the profile and
@@ -236,6 +250,13 @@ final class ClassroomDevice {
     changeBus: changeBus,
   );
 
+  /// The assessments and their results.
+  late final AssessmentRepository assessments = AssessmentRepositoryImpl(
+    assessments: AssessmentLocalDataSourceImpl(database: database),
+    clock: clock,
+    changeBus: changeBus,
+  );
+
   /// The items of the domains.
   late final ClassItemCatalog catalog = ClassItemCatalog(domains: domains);
 
@@ -310,6 +331,7 @@ final class ClassroomDevice {
     getRoster: getRoster,
     assignments: assignments,
     journal: journal,
+    assessments: assessments,
     transfers: transfers,
     clock: clock,
   );
@@ -322,6 +344,7 @@ final class ClassroomDevice {
       roster: roster,
       assignments: assignments,
       journal: journal,
+      assessments: assessments,
     ),
   );
 

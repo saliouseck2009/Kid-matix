@@ -5,6 +5,7 @@ import 'package:kid_matix/core/router/app_routes.dart';
 import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/features/challenge/presentation/challenge_pages.dart';
 import 'package:kid_matix/features/challenge/presentation/code_challenge_pages.dart';
+import 'package:kid_matix/features/classroom/presentation/class_assessment_pages.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_kind.dart';
 import 'package:kid_matix/features/learning_path/domain/entities/stage_source.dart';
 import 'package:kid_matix/features/learning_path/presentation/learning_path_pages.dart';
@@ -22,6 +23,7 @@ List<RouteBase> createPlayRoutes({
   required RewardPages rewardPages,
   required ChallengePages challengePages,
   required CodeChallengePages codePages,
+  ClassAssessmentPages? assessmentPages,
 }) {
   final _Origins origins = _Origins(pathPages, challengePages);
   return <RouteBase>[
@@ -75,7 +77,9 @@ List<RouteBase> createPlayRoutes({
         final String sourceKey =
             state.pathParameters[AppRoutes.sourceKeyParameter]!;
         final QuizSpec? spec =
-            pathPages.specOf(sourceKey) ?? challengePages.specOf(sourceKey);
+            pathPages.specOf(sourceKey) ??
+            challengePages.specOf(sourceKey) ??
+            assessmentPages?.specOf(sourceKey);
         if (profileId == null || spec == null) return const SizedBox.shrink();
         return quizPages.buildQuizPage(
           profileId: profileId,

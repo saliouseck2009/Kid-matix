@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:kid_matix/core/error/app_exception.dart';
+import 'package:kid_matix/features/classroom/data/models/assessment_result_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/assignment_local_model.dart';
+import 'package:kid_matix/features/classroom/data/models/class_assessment_local_model.dart';
 import 'package:kid_matix/features/classroom/data/models/class_pupil_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/class_session_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/classroom_file_model.dart';
 import 'package:kid_matix/features/classroom/data/models/classroom_local_model.dart';
+import 'package:kid_matix/features/classroom/domain/entities/assessment_result.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
+import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/entities/pupil_entity.dart';
@@ -63,6 +67,12 @@ final class ClassroomFileCodec {
           for (final PracticeSession session in transfer.sessions)
             ClassSessionFileModel.fromEntity(session, exportedAt: exportedAt),
         ],
+        assessments: transfer.assessments
+            .map(ClassAssessmentLocalModel.fromEntity)
+            .toList(),
+        assessmentResults: transfer.assessmentResults
+            .map(AssessmentResultFileModel.fromEntity)
+            .toList(),
       ).toJson(),
     );
   }
@@ -108,6 +118,14 @@ final class ClassroomFileCodec {
       ],
       sessions: <PracticeSession>[
         for (final ClassSessionFileModel entry in file.sessions)
+          entry.toEntity(),
+      ],
+      assessments: <ClassAssessment>[
+        for (final ClassAssessmentLocalModel row in file.assessments)
+          row.toEntity(),
+      ],
+      assessmentResults: <AssessmentResult>[
+        for (final AssessmentResultFileModel entry in file.assessmentResults)
           entry.toEntity(),
       ],
     );

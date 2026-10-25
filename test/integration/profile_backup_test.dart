@@ -18,6 +18,7 @@ import 'package:kid_matix/features/learning_path/data/repositories/stage_progres
 import 'package:kid_matix/features/mascot/data/repositories/mascot_backup_part.dart';
 import 'package:kid_matix/features/mastery/data/repositories/mastery_backup_part.dart';
 import 'package:kid_matix/features/profile/data/datasources/active_profile_local_data_source_impl.dart';
+import 'package:kid_matix/core/entities/shared_file.dart';
 import 'package:kid_matix/core/storage/shared_file_data_source.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_codec.dart';
 import 'package:kid_matix/features/profile/data/datasources/profile_backup_local_data_source_impl.dart';
@@ -62,6 +63,9 @@ final class _FakeFiles implements SharedFileDataSource {
 
   @override
   Future<String?> pickFile() async => fileToPick;
+
+  @override
+  Future<bool> shareFiles({required List<SharedFile> files}) async => false;
 }
 
 /// One phone: its database, preferences and backup use cases.

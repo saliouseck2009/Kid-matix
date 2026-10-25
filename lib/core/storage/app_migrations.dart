@@ -14,6 +14,8 @@ import 'package:kid_matix/core/storage/migrations/migration_012_add_read_aloud_s
 import 'package:kid_matix/core/storage/migrations/migration_013_add_help_audio_setting.dart';
 import 'package:kid_matix/core/storage/migrations/migration_014_create_placement_result_table.dart';
 import 'package:kid_matix/core/storage/migrations/migration_015_create_classroom_tables.dart';
+import 'package:kid_matix/core/storage/migrations/migration_016_reserved_step.dart';
+import 'package:kid_matix/core/storage/migrations/migration_017_create_assessment_tables.dart';
 
 /// Every schema migration of the app database, in version order.
 ///
@@ -35,4 +37,6 @@ const List<DatabaseMigration> appMigrations = <DatabaseMigration>[
   Migration013AddHelpAudioSetting(),
   Migration014CreatePlacementResultTable(),
   Migration015CreateClassroomTables(),
+  Migration016ReservedStep(),
+  Migration017CreateAssessmentTables(),
 ];

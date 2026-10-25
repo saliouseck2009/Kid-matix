@@ -1,11 +1,15 @@
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/clock.dart';
 import 'package:kid_matix/core/usecases/usecase.dart';
+import 'package:kid_matix/features/classroom/domain/entities/assessment_result.dart';
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
+import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_roster.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_transfer.dart';
 import 'package:kid_matix/features/classroom/domain/entities/export_mark.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
+import 'package:kid_matix/features/classroom/domain/entities/pupil_entity.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/class_journal_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_transfer_repository.dart';
@@ -20,7 +24,9 @@ import 'package:kid_matix/features/classroom/domain/usecases/get_classroom_roste
 /// the local sequence its last shared file reached, plus every session
 /// of the last [overlap] (resent on purpose: a second receiver or a lost
 /// file still gets them, and the merge ignores duplicates); `isFull`
-/// sends them all. The mark moves only once the share succeeded.
+/// sends them all. The mark moves only once the share succeeded. The
+/// assessments of the class and their results always go whole: they are
+/// few, and the merge ignores those already kept.
 class ExportClassroomUseCase
     implements UseCase<DataState<bool>, ({String classroomId, bool isFull})> {
   /// Creates the use case.
@@ -28,6 +34,7 @@ class ExportClassroomUseCase
     required this._getRoster,
     required this._assignments,
     required this._journal,
+    required this._assessments,
     required this._transfers,
     required this._clock,
   });
@@ -38,6 +45,7 @@ class ExportClassroomUseCase
   final GetClassroomRosterUseCase _getRoster;
   final AssignmentRepository _assignments;
   final ClassJournalRepository _journal;
+  final AssessmentRepository _assessments;
   final ClassroomTransferRepository _transfers;
   final Clock _clock;
 
@@ -60,10 +68,12 @@ class ExportClassroomUseCase
       case _:
         break;
     }
-    final DataState<ClassroomTransfer> transfer = await _transferOf(
-      classroomId,
-      (mark as DataSuccess<ExportMark?>).data?.sequence,
-      now.subtract(overlap),
+    final DataState<ClassroomTransfer> transfer = await _withAssessments(
+      await _transferOf(
+        classroomId,
+        (mark as DataSuccess<ExportMark?>).data?.sequence,
+        now.subtract(overlap),
+      ),
     );
     if (transfer case DataFailed<ClassroomTransfer>(:final exception)) {
       return DataFailed<bool>(exception);
@@ -81,6 +91,44 @@ class ExportClassroomUseCase
       );
     }
     return shared;
+  }
+
+  /// [transfer] with the assessments of its class and the results of its
+  /// pupils in them.
+  Future<DataState<ClassroomTransfer>> _withAssessments(
+    DataState<ClassroomTransfer> transfer,
+  ) async {
+    if (transfer is! DataSuccess<ClassroomTransfer>) return transfer;
+    final ClassroomTransfer data = transfer.data;
+    final String id = data.classroom.id;
+    final DataState<List<ClassAssessment>> assessments = await _assessments
+        .getAssessments(classroomId: id);
+    final DataState<List<AssessmentResult>> results = await _assessments
+        .getResults(classroomId: id);
+    final Set<String> pupilIds = <String>{
+      for (final PupilEntity pupil in data.pupils) pupil.id,
+    };
+    return switch ((assessments, results)) {
+      (
+        DataSuccess<List<ClassAssessment>>(data: final List<ClassAssessment> a),
+        DataSuccess<List<AssessmentResult>>(
+          data: final List<AssessmentResult> r,
+        ),
+      ) =>
+        DataSuccess<ClassroomTransfer>(
+          data.copyWith(
+            assessments: a,
+            assessmentResults: r
+                .where((AssessmentResult x) => pupilIds.contains(x.pupilId))
+                .toList(),
+          ),
+        ),
+      (DataFailed<List<ClassAssessment>>(:final exception), _) ||
+      (
+        _,
+        DataFailed<List<AssessmentResult>>(:final exception),
+      ) => DataFailed<ClassroomTransfer>(exception),
+    };
   }
 
   Future<DataState<ClassroomTransfer>> _transferOf(

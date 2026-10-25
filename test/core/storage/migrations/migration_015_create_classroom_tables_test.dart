@@ -77,7 +77,10 @@ void main() {
       );
       await versionThirteen.close();
       // Act
-      final AppDatabase upgraded = _openDatabase(appMigrations, inputPath);
+      final AppDatabase upgraded = _openDatabase(
+        appMigrations.take(15).toList(),
+        inputPath,
+      );
       final Database upgradedDatabase = await upgraded.database;
       // Assert
       final List<Map<String, Object?>> actualRows = await upgradedDatabase
