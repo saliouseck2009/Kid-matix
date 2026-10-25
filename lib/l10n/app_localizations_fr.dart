@@ -1136,17 +1136,27 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String quizBarSlotEmpty(String name) {
-    return '$name : à remplir';
+    return '$name : à remplir';
   }
 
   @override
   String quizBarSlotUnknown(String name) {
-    return '$name : à trouver';
+    return '$name : à trouver';
   }
 
   @override
   String quizBarSlotValue(String name, String value) {
-    return '$name : $value';
+    return '$name : $value';
+  }
+
+  @override
+  String quizBarSlotWrong(String name) {
+    return '$name : pas la bonne place';
+  }
+
+  @override
+  String quizProblemChoiceWrong(String choice) {
+    return '$choice : faux';
   }
 
   @override
@@ -1169,7 +1179,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Pose les nombres de l\'histoire sur le schéma';
 
   @override
-  String get quizProblemStepOperation => 'Quelle opération trouve la réponse ?';
+  String get quizProblemStepOperation => 'Quelle opération trouve la réponse ?';
 
   @override
   String get quizProblemStepCompute => 'Calcule la réponse';
@@ -1929,40 +1939,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get masteryGridTitleProblems => 'Mes problèmes';
 
   @override
-  String problemsUnitName(String operation, String level) {
+  String problemsUnitName(String kind, String number) {
     String _temp0 = intl.Intl.selectLogic(
-      operation,
+      kind,
       {
-        'add': 'Ajouter',
-        'subtract': 'Enlever',
-        'multiply': 'Grouper',
-        'divide': 'Partager',
+        'img': 'Histoires avec images',
+        'short': 'Phrases courtes',
+        'full': 'Énoncés',
         'trap': 'Les pièges',
         'other': '',
       },
     );
-    String _temp1 = intl.Intl.selectLogic(
-      level,
-      {
-        '1': 'avec images',
-        '2': 'phrases courtes',
-        '3': 'énoncés',
-        'other': '',
-      },
-    );
-    return '$_temp0 · $_temp1';
+    return '$_temp0 $number';
   }
 
   @override
-  String problemsUnitTip(String operation) {
+  String problemsUnitTip(String kind) {
     String _temp0 = intl.Intl.selectLogic(
-      operation,
+      kind,
       {
-        'add': 'Quand on réunit des quantités, on en a plus qu\'avant. Dessine le tout et ses parties.',
-        'subtract': 'Quand on enlève, il en reste moins. Dessine le tout, la partie qui s\'en va et celle qui reste.',
-        'multiply': 'Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.',
-        'divide': 'Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.',
-        'trap': 'Attention : un mot de l\'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.',
+        'img': 'Écoute l\'histoire et regarde les images, puis fais le schéma pour voir ce qui se passe avant de calculer.',
+        'short': 'Lis la phrase en entier, fais le schéma, puis vérifie ta réponse avec l\'histoire.',
+        'full': 'Lis ou écoute tout l\'énoncé, fais le schéma, choisis l\'opération, puis vérifie que ta réponse a du sens.',
+        'trap': 'Attention : un mot de l\'histoire peut te tromper. Fais le schéma pour voir ce qui se passe vraiment.',
         'other': '',
       },
     );

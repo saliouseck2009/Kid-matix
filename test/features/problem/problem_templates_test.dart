@@ -1,57 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/currency.dart';
-import 'package:kid_matix/core/quiz/bar_model.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
-import 'package:kid_matix/core/quiz/math_picture.dart';
+import 'package:kid_matix/core/services/dart_random_source.dart';
+import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_instance.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_template.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_templates.dart';
+
+import 'helpers/problem_checks.dart';
 
 /// The numbers of every template, over every value its ranges allow
 /// (F30-02, F30-10): each story keeps its model true, its answer whole and
 /// positive, its numbers under the cap of the level, and one operation
 /// only that gives the answer.
 void main() {
-  /// The relation the bar model of each shape holds.
-  bool holds(BarModelPicture picture) {
-    final Map<BarRole, int> v = picture.values;
-    return switch (picture.shape) {
-      BarModelShape.partWhole =>
-        v[BarRole.whole] == v[BarRole.partA]! + v[BarRole.partB]!,
-      BarModelShape.compare =>
-        v[BarRole.big] == v[BarRole.small]! + v[BarRole.gap]!,
-      BarModelShape.groups =>
-        v[BarRole.total] == v[BarRole.groups]! * v[BarRole.each]!,
-      BarModelShape.ratio =>
-        v[BarRole.big] == v[BarRole.small]! * v[BarRole.times]!,
-    };
-  }
-
-  /// Every operation that gives [answer] from the two known numbers.
-  Set<MathOperator> operationsGiving(BarModelPicture picture) {
-    final List<int> known = <int>[
-      for (final BarRole role in picture.knownRoles) picture.values[role]!,
-    ];
-    final int answer = picture.answer;
-    bool gives(int x, int y, MathOperator operator) => switch (operator) {
-      MathOperator.add => x + y == answer,
-      MathOperator.subtract => x - y == answer,
-      MathOperator.multiply => x * y == answer,
-      _ => y != 0 && x % y == 0 && x ~/ y == answer,
-    };
-    return <MathOperator>{
-      for (final MathOperator operator in <MathOperator>[
-        MathOperator.add,
-        MathOperator.subtract,
-        MathOperator.multiply,
-        MathOperator.divide,
-      ])
-        if (gives(known[0], known[1], operator) ||
-            gives(known[1], known[0], operator))
-          operator,
-    };
-  }
-
   for (final ProblemTemplate template in ProblemTemplates.all) {
     group(template.problemKey, () {
       test('draws many numbers, all in the cap of its level', () {
@@ -73,11 +36,9 @@ void main() {
       test('holds its bar model and one operation for every draw', () {
         for (final Map<String, int> values in template.validValues) {
           // Act
-          final ProblemInstance instance = template.drawnInstance(
-            (int count) => template.validValues.indexOf(values),
-          );
+          final ProblemInstance instance = template.instanceOf(values);
           // Assert
-          expect(holds(instance.picture), isTrue, reason: '$values');
+          expect(modelHolds(instance.picture), isTrue, reason: '$values');
           expect(instance.answer, greaterThan(0));
           expect(
             operationsGiving(instance.picture),
@@ -87,10 +48,40 @@ void main() {
         }
       });
 
+      test('draws valid numbers one placeholder after the other', () {
+        // Arrange
+        final RandomSource random = DartRandomSource(seed: 11);
+        // Act
+        final List<ProblemInstance> drawn = <ProblemInstance>[
+          for (int i = 0; i < 60; i++) template.drawnInstance(random),
+        ];
+        // Assert
+        for (final ProblemInstance instance in drawn) {
+          expect(
+            template.validValues.any(
+              (Map<String, int> v) => mapEquals(v, instance.values),
+            ),
+            isTrue,
+            reason: '${instance.values}',
+          );
+          expect(instance.isRecorded, isFalse);
+        }
+      });
+
+      test('falls back on the list when every try is rejected', () {
+        // Act: a draw that always takes the last option breaks the cap of
+        // some templates; the answer still is a valid set of numbers.
+        final ProblemInstance actual = template.drawnInstance(
+          _LastOptionRandom(),
+        );
+        // Assert
+        expect(template.isValid(actual.values), isTrue);
+      });
+
       test('writes every number and no placeholder in its statement', () {
         for (final ProblemInstance instance in <ProblemInstance>[
           template.fixedInstance(),
-          template.drawnInstance((int count) => count - 1),
+          template.drawnInstance(DartRandomSource(seed: 9)),
         ]) {
           // Assert
           expect(instance.statement, isNot(contains('{')));
@@ -134,4 +125,14 @@ void main() {
       allOf(contains('100 dalasis'), isNot(contains('francs'))),
     );
   });
+}
+
+/// A draw that always takes the last option, which breaks the cap of some
+/// templates and so exercises the fallback.
+final class _LastOptionRandom implements RandomSource {
+  @override
+  int nextInt(int max) => max - 1;
+
+  @override
+  List<T> shuffled<T>(List<T> items) => List<T>.of(items);
 }

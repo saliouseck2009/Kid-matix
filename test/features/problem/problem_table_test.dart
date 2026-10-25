@@ -5,6 +5,7 @@ import 'package:kid_matix/core/quiz/bar_model.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/sentence_part.dart';
 import 'package:kid_matix/features/math_word/domain/entities/math_word_catalog.dart';
+import 'package:kid_matix/features/problem/domain/entities/problem_draw.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_instance.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_ref.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_template.dart';
@@ -12,12 +13,20 @@ import 'package:kid_matix/features/problem/domain/entities/problem_templates.dar
 import 'package:kid_matix/features/problem/domain/services/problem_calculation.dart';
 
 import '../math_word/helpers/math_word_fixtures.dart';
+import 'helpers/problem_checks.dart';
 import 'helpers/problems_table.dart';
+import 'helpers/ranges_grammar.dart';
 
 /// The typed content of `ProblemTemplates` against the table
 /// `docs/product/problems.md`, which the owner edits: a difference in a
 /// key, a level, an operation, a form, a role, a statement, a check
 /// sentence, a trap or a touchable word fails here.
+/// A set of numbers as text, to compare lists of them.
+String _canonical(Map<String, int> values) {
+  final List<String> keys = values.keys.toList()..sort();
+  return keys.map((String key) => '$key=${values[key]}').join(',');
+}
+
 void main() {
   final List<ProblemRow> rows = readProblemsTable();
   final MathWordCatalog words = loadMathWordCatalog();
@@ -150,6 +159,49 @@ void main() {
         // Assert
         expect(template.statement.replaceAll('{currency}', unit), row.template);
         expect(template.check.replaceAll('{currency}', unit), row.check);
+      });
+
+      test('asks for the role that holds the answer r', () {
+        // Arrange
+        final Map<String, BarRole> names = roleNames[row.form]!;
+        final String roleOfAnswer = row.roles.entries
+            .singleWhere((MapEntry<String, String> e) => e.value == 'r')
+            .key;
+        // Assert
+        expect(template.unknown, names[roleOfAnswer]);
+      });
+
+      test('draws the numbers in the order and the ranges of the table', () {
+        // Arrange
+        final RangesGrammar grammar = RangesGrammar.parse(row.ranges);
+        final Set<String> expected = <String>{
+          for (final Map<String, int> v in grammar.enumerate(
+            ProblemTemplate.levelCaps[row.level]!,
+          ))
+            _canonical(v),
+        };
+        final Set<String> actual = <String>{
+          for (final Map<String, int> v in template.validValues) _canonical(v),
+        };
+        // Assert
+        expect(
+          template.draws.map((ProblemDraw draw) => draw.name).toList(),
+          grammar.names,
+        );
+        expect(actual.difference(expected), isEmpty, reason: 'outside table');
+        // What the table allows and the template leaves out has two
+        // operations that give the answer.
+        for (final Map<String, int> v in grammar.enumerate(
+          ProblemTemplate.levelCaps[row.level]!,
+        )) {
+          if (actual.contains(_canonical(v))) continue;
+          expect(
+            operationsGiving(template.instanceOf(v).picture).length,
+            greaterThan(1),
+            reason: 'left out: $v',
+          );
+        }
+        expect(actual, isNotEmpty);
       });
 
       test('makes the calculation of the table with the recorded numbers', () {

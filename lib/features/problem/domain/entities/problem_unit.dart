@@ -3,8 +3,9 @@ import 'package:kid_matix/core/quiz/learning_unit.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_template.dart';
 import 'package:meta/meta.dart';
 
-/// A world of the path « Problèmes »: the problems of one operation at one
-/// level (`add1`), or the trap problems of one level (`trap1`).
+/// A world of the path « Problèmes »: the problems of one level told one
+/// way (`img1`, `short2`, `full1`), or the trap problems of one level
+/// (`trap1`). Its name says the level, never an operation.
 ///
 /// The traps have a unit of their own after the plain problems of their
 /// level, so a trap is only met once the plain twin has been played.
@@ -20,7 +21,7 @@ final class ProblemUnit implements LearningUnit {
   /// Prefix of every key of a unit.
   static const String keyPrefix = 'probs';
 
-  /// Short stable name inside the key, such as `add1` or `trap2`.
+  /// Short stable name inside the key, such as `img1` or `trap2`.
   final String slug;
 
   /// Position of the unit on the path, from 1.

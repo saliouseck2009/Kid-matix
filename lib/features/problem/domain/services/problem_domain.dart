@@ -161,7 +161,7 @@ final class ProblemDomain implements LearningDomain, RecognitionCap {
     };
     final ProblemInstance instance = isRecorded
         ? problem.fixedInstance(currency: currency)
-        : problem.drawnInstance(random.nextInt, currency: currency);
+        : problem.drawnInstance(random, currency: currency);
     final bool asksOperation =
         questionTypeId == QuestionTypeIds.problemOperation;
     return Question(
