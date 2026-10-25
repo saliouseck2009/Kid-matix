@@ -40,6 +40,7 @@
   "classroomPupilCount": "{count, plural, =0{No pupils} =1{1 pupil} other{{count} pupils}}",
   "classroomNameLabel": "Class name",
   "classroomNameHint": "For example Year 2 B",
+  "classroomNamePrivacyHint": "The class name also appears in anonymous reports: do not put a person's name in it.",
   "classroomPupilsTitle": "Pupils",
   "classroomPupilsByList": "Nicknames",
   "classroomPupilsByNumber": "Numbers",

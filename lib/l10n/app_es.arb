@@ -40,6 +40,7 @@
   "classroomPupilCount": "{count, plural, =0{Ningún alumno} =1{1 alumno} other{{count} alumnos}}",
   "classroomNameLabel": "Nombre de la clase",
   "classroomNameHint": "Por ejemplo 2.º B",
+  "classroomNamePrivacyHint": "El nombre de la clase también aparece en los informes anónimos: no pongas el nombre de una persona.",
   "classroomPupilsTitle": "Alumnos",
   "classroomPupilsByList": "Apodos",
   "classroomPupilsByNumber": "Números",

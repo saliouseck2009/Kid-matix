@@ -340,6 +340,12 @@ abstract class AppLocalizations {
   /// **'Par exemple CE1 B'**
   String get classroomNameHint;
 
+  /// Class creation, helper line under the class name field: the name stays in anonymous reports, so it must not hold a person's name (teacher's name). Informal "tu". Two lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le nom de la classe figure aussi dans les rapports anonymes : n\'y mets pas le nom d\'une personne.'**
+  String get classroomNamePrivacyHint;
+
   /// Class mode, title of the pupils part of the creation of a class and of the list of pupils of the class page ("Pupils"). One word.
   ///
   /// In fr, this message translates to:

@@ -160,6 +160,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomNameHint => 'Por ejemplo 2.º B';
 
   @override
+  String get classroomNamePrivacyHint =>
+      'El nombre de la clase también aparece en los informes anónimos: no pongas el nombre de una persona.';
+
+  @override
   String get classroomPupilsTitle => 'Alumnos';
 
   @override
