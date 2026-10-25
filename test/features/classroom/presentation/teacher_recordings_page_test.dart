@@ -28,6 +28,9 @@ final class _FakeTeacherAudio implements TeacherAudioService {
   bool isAllowed = true;
   bool isRecording = false;
 
+  /// When set, the microphone starts only once it completes.
+  Completer<void>? startGate;
+
   @override
   List<String> get packLanguages => const <String>['wo'];
 
@@ -46,6 +49,7 @@ final class _FakeTeacherAudio implements TeacherAudioService {
 
   @override
   Future<DataState<void>> startRecording() async {
+    await startGate?.future;
     if (!isAllowed) {
       return const DataFailed<void>(
         PermissionDeniedException(message: 'No microphone.'),
@@ -171,6 +175,24 @@ void main() {
     await startRecording(tester);
     // Act
     await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpAndSettle();
+    // Assert
+    expect(audio.isRecording, isFalse);
+    expect(audio.recorded, isEmpty);
+  });
+
+  testWidgets('stops a microphone that starts after the page closed', (
+    WidgetTester tester,
+  ) async {
+    // Arrange: the microphone takes time to start.
+    audio.startGate = Completer<void>();
+    await pumpLocalized(tester, pages.buildPage(onBack: () {}));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Enregistrer «\u00a0ajouter\u00a0»'));
+    await tester.pump();
+    // Act: the page closes, then the microphone starts.
+    await tester.pumpWidget(const SizedBox.shrink());
+    audio.startGate!.complete();
     await tester.pumpAndSettle();
     // Assert
     expect(audio.isRecording, isFalse);

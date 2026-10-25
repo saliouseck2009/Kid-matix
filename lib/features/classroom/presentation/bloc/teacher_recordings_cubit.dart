@@ -36,6 +36,11 @@ final class TeacherRecordingsCubit extends Cubit<TeacherRecordingsState> {
   final Ticker _ticker;
   StreamSubscription<int>? _clock;
 
+  // Set by pause or close while the microphone is still starting: the
+  // start then stops it at once.
+  bool _cancelRequested = false;
+  bool _isStarting = false;
+
   /// Reads the words in [languageCode] for [kind].
   Future<void> load({
     String? languageCode,
@@ -57,8 +62,15 @@ final class TeacherRecordingsCubit extends Cubit<TeacherRecordingsState> {
   Future<void> start(String wordKey) async {
     if (state.isBusy || state.recordingWordKey != null) return;
     emit(state.busy);
+    _cancelRequested = false;
+    _isStarting = true;
     final DataState<void> started = await _useCases.record.start();
-    if (isClosed) return;
+    _isStarting = false;
+    if (isClosed || _cancelRequested) {
+      if (started is DataSuccess<void>) await _useCases.record.cancel();
+      if (!isClosed) emit(state.recording(null));
+      return;
+    }
     emit(switch (started) {
       DataSuccess<void>() => state.recording(wordKey),
       DataFailed<void>(:final exception) => state.after(
@@ -82,7 +94,10 @@ final class TeacherRecordingsCubit extends Cubit<TeacherRecordingsState> {
 
   /// Throws away the recording in progress, if any: the app went to the
   /// background.
-  Future<void> pause() => cancel();
+  Future<void> pause() {
+    if (_isStarting) _cancelRequested = true;
+    return cancel();
+  }
 
   /// Stops and keeps the recording in progress.
   Future<void> keep() async {
@@ -111,6 +126,7 @@ final class TeacherRecordingsCubit extends Cubit<TeacherRecordingsState> {
 
   @override
   Future<void> close() async {
+    if (_isStarting) _cancelRequested = true;
     await cancel();
     return super.close();
   }
