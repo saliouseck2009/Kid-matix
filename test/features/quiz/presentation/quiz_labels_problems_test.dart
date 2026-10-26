@@ -70,12 +70,12 @@ void main() {
     // Act
     final Question asked = build(QuestionTypeIds.barModel);
     // Assert
-    expect(labels.describeUnitOf(asked, 'problems'), 'Enlever · avec images');
+    expect(labels.describeUnitOf(asked, 'problems'), 'Histoires avec images 1');
     expect(
       labels.describeBoss(asked, 'problems'),
-      contains('Enlever · avec images'),
+      contains('Histoires avec images 1'),
     );
-    expect(labels.unitNumberOf(asked, 'problems'), 2);
+    expect(labels.unitNumberOf(asked, 'problems'), 1);
   });
 
   test('describes a missed problem by its own calculation', () {

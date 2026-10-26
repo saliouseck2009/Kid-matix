@@ -1,34 +1,28 @@
 import 'package:kid_matix/core/extensions/domain_names/domain_names.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 
-/// Names of the units of the word problems, by slug: an operation and a
-/// level (`add1`, `div3`), or the traps of a level (`trap2`).
+/// Names of the units of the word problems, by slug: a level and a number
+/// (`img1`, `short2`, `full1`), or the traps of a level (`trap2`). A name
+/// says the level, never an operation.
 final class ProblemNames implements DomainNames {
   /// Creates the names.
   const ProblemNames();
 
-  /// The real operation of each unit slug prefix, as the texts select it.
-  static const Map<String, String> _operations = <String, String>{
-    'add': 'add',
-    'sub': 'subtract',
-    'mul': 'multiply',
-    'div': 'divide',
-    'trap': 'trap',
-  };
-
-  /// Marks of the units: signs the same in every language.
+  /// Marks of the units: the level, or an exclamation mark for the traps.
+  /// Signs the same in every language.
   static const Map<String, String> _marks = <String, String>{
-    'add': '+',
-    'sub': '−',
-    'mul': '×',
-    'div': '÷',
+    'img': '1',
+    'short': '2',
+    'full': '3',
     'trap': '!',
   };
 
-  static String? _prefixOf(String slug) {
-    for (final String prefix in _operations.keys) {
-      if (slug.startsWith(prefix) && slug.length == prefix.length + 1) {
-        return prefix;
+  /// The kind and the number of [slug], or `null` when it is not a unit.
+  static (String, String)? _partsOf(String slug) {
+    for (final String kind in _marks.keys) {
+      final String number = slug.substring(kind.length.clamp(0, slug.length));
+      if (slug.startsWith(kind) && RegExp(r'^\d$').hasMatch(number)) {
+        return (kind, number);
       }
     }
     return null;
@@ -39,21 +33,17 @@ final class ProblemNames implements DomainNames {
 
   @override
   String unitName(AppLocalizations l10n, String slug) {
-    final String? prefix = _prefixOf(slug);
-    if (prefix == null) return '';
-    return l10n.problemsUnitName(
-      _operations[prefix]!,
-      slug.substring(prefix.length),
-    );
+    final (String, String)? parts = _partsOf(slug);
+    return parts == null ? '' : l10n.problemsUnitName(parts.$1, parts.$2);
   }
 
   @override
-  String unitMark(String slug) => _marks[_prefixOf(slug)] ?? '';
+  String unitMark(String slug) => _marks[_partsOf(slug)?.$1] ?? '';
 
   @override
   String unitTip(AppLocalizations l10n, String slug) {
-    final String? prefix = _prefixOf(slug);
-    return prefix == null ? '' : l10n.problemsUnitTip(_operations[prefix]!);
+    final (String, String)? parts = _partsOf(slug);
+    return parts == null ? '' : l10n.problemsUnitTip(parts.$1);
   }
 
   @override

@@ -2424,20 +2424,32 @@ abstract class AppLocalizations {
   /// What a screen reader says for an empty place of the bar model ("the whole: to fill in"). {name} is the name of the place.
   ///
   /// In fr, this message translates to:
-  /// **'{name} : à remplir'**
+  /// **'{name} : à remplir'**
   String quizBarSlotEmpty(String name);
 
   /// What a screen reader says for the place of the bar model whose number is the answer to find ("the whole: to find"). {name} is the name of the place.
   ///
   /// In fr, this message translates to:
-  /// **'{name} : à trouver'**
+  /// **'{name} : à trouver'**
   String quizBarSlotUnknown(String name);
 
   /// What a screen reader says for a filled place of the bar model ("the whole: 12"). {name} is the name of the place, {value} its number.
   ///
   /// In fr, this message translates to:
-  /// **'{name} : {value}'**
+  /// **'{name} : {value}'**
   String quizBarSlotValue(String name, String value);
+
+  /// What a screen reader says for the place of the bar model where the child just put a wrong number ("the whole: not the right place"); the place also shows a cross. {name} is the name of the place.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} : pas la bonne place'**
+  String quizBarSlotWrong(String name);
+
+  /// What a screen reader says for a number or a sign the child picked wrongly on a step of a word problem ("7: wrong"); the button also shows a cross. {choice} is the number or the sign.
+  ///
+  /// In fr, this message translates to:
+  /// **'{choice} : faux'**
+  String quizProblemChoiceWrong(String choice);
 
   /// Label of a question where the child solves a word problem step by step ("Solve the problem"). Short, imperative.
   ///
@@ -2472,7 +2484,7 @@ abstract class AppLocalizations {
   /// Instruction of the step where the child picks +, −, × or ÷ for a word problem. Question, informal.
   ///
   /// In fr, this message translates to:
-  /// **'Quelle opération trouve la réponse ?'**
+  /// **'Quelle opération trouve la réponse ?'**
   String get quizProblemStepOperation;
 
   /// Instruction of the step where the child picks the result of the calculation of a word problem among four numbers ("Work out the answer"). Imperative, informal "tu".
@@ -3321,17 +3333,17 @@ abstract class AppLocalizations {
   /// **'Mes problèmes'**
   String get masteryGridTitleProblems;
 
-  /// Name of a unit of the word problems path, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Add · with images", "Take away · short sentences", "The traps · full statements"). {operation} is add, subtract, multiply or divide (the real operation of the problems of the unit), or trap for the unit of the trap problems whose keyword suggests another operation; {level} is 1 (problems told with images), 2 (short sentences) or 3 (full statements). Both are slugs, never shown. Short title.
+  /// Name of a unit of the word problems path, shown on its node of the map, its detail, its Discovery page, the quiz, the help card and the Profile ("Stories with pictures 1", "Short sentences 2", "Full statements 1", "The traps 3"). It names the level and never an operation. {kind} is img (level 1, told with images), short (level 2), full (level 3) or trap (the problems whose keyword suggests another operation than the real one, one unit per level); {number} is the number of the unit inside its level, or the level for the traps. Both are slugs and numbers, never shown as such. Short title.
   ///
   /// In fr, this message translates to:
-  /// **'{operation, select, add{Ajouter} subtract{Enlever} multiply{Grouper} divide{Partager} trap{Les pièges} other{}} · {level, select, 1{avec images} 2{phrases courtes} 3{énoncés} other{}}'**
-  String problemsUnitName(String operation, String level);
+  /// **'{kind, select, img{Histoires avec images} short{Phrases courtes} full{Énoncés} trap{Les pièges} other{}} {number}'**
+  String problemsUnitName(String kind, String number);
 
-  /// Tip of a unit of the word problems path, shown at its Discovery stage, by operation. Never says that a word means an operation: it asks to draw the story. {operation} is the slug add, subtract, multiply, divide or trap (the unit of the traps), never shown.
+  /// Tip of a unit of the word problems path, shown at its Discovery stage, by level: it teaches the method (listen, draw the model, check) and never says that a word means an operation. {kind} is the slug img, short, full or trap (the unit of the traps), never shown.
   ///
   /// In fr, this message translates to:
-  /// **'{operation, select, add{Quand on réunit des quantités, on en a plus qu\'avant. Dessine le tout et ses parties.} subtract{Quand on enlève, il en reste moins. Dessine le tout, la partie qui s\'en va et celle qui reste.} multiply{Des groupes égaux : dessine les groupes, tous de la même taille, et compte le total.} divide{Partager en parts égales, ou chercher combien de parts : dessine le tout coupé en parts.} trap{Attention : un mot de l\'histoire peut te tromper. Dessine le schéma pour voir ce qui se passe vraiment.} other{}}'**
-  String problemsUnitTip(String operation);
+  /// **'{kind, select, img{Écoute l\'histoire et regarde les images, puis fais le schéma pour voir ce qui se passe avant de calculer.} short{Lis la phrase en entier, fais le schéma, puis vérifie ta réponse avec l\'histoire.} full{Lis ou écoute tout l\'énoncé, fais le schéma, choisis l\'opération, puis vérifie que ta réponse a du sens.} trap{Attention : un mot de l\'histoire peut te tromper. Fais le schéma pour voir ce qui se passe vraiment.} other{}}'**
+  String problemsUnitTip(String kind);
 
   /// Title of the results screen after a stage of the learning path ("Stage done!").
   ///

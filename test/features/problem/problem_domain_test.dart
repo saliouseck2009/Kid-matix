@@ -29,31 +29,94 @@ void main() {
 
   group('the path', () {
     test('goes level by level, the traps after the plain problems', () {
-      // Assert
+      // Assert: the keys are released with the lot, so they are pinned.
       expect(
         domain.units.map((LearningUnit unit) => unit.key).toList(),
         <String>[
-          'probs:add1',
-          'probs:sub1',
-          'probs:mul1',
-          'probs:div1',
+          'probs:img1',
+          'probs:img2',
           'probs:trap1',
-          'probs:add2',
-          'probs:sub2',
-          'probs:mul2',
-          'probs:div2',
+          'probs:short1',
+          'probs:short2',
           'probs:trap2',
-          'probs:add3',
-          'probs:sub3',
-          'probs:mul3',
-          'probs:div3',
+          'probs:full1',
+          'probs:full2',
           'probs:trap3',
         ],
       );
       expect(
         domain.units.map((LearningUnit unit) => unit.number).toList(),
-        List<int>.generate(15, (int index) => index + 1),
+        List<int>.generate(9, (int index) => index + 1),
       );
+    });
+
+    test('pins the problems of every unit', () {
+      // Assert
+      expect(
+        <String, List<String>>{
+          for (final LearningUnit unit in domain.units)
+            unit.key: <String>[
+              for (final LearningItem item in unit.items)
+                item.key.substring('problem:'.length),
+            ],
+        },
+        <String, List<String>>{
+          'probs:img1': <String>[
+            'mangues_donnees',
+            'billes_recues',
+            'car_personnes',
+            'pains_vendus',
+          ],
+          'probs:img2': <String>[
+            'mangues_caisses',
+            'mangues_partagees',
+            'chaises_tabaski',
+            'sucre_theieres',
+          ],
+          'probs:trap1': <String>[
+            'mangues_donnees_piege',
+            'biscuits_en_tout_piege',
+          ],
+          'probs:short1': <String>[
+            'moussa_paniers',
+            'fatou_sachets',
+            'billes_difference',
+            'mamadou_gagne',
+          ],
+          'probs:short2': <String>[
+            'billes_sacs',
+            'billes_tas',
+            'biscuits_range',
+          ],
+          'probs:trap2': <String>[
+            'billes_chacun_piege',
+            'tas_fois_piege',
+            'billes_mamadou_moins_piege',
+          ],
+          'probs:full1': <String>[
+            'mangues_difference',
+            'achat_sachet_eau',
+            'awa_marche_francs',
+            'awa_moussa_plus',
+          ],
+          'probs:full2': <String>[
+            'biscuits_paquets',
+            'mangues_deux_fois_plus',
+            'rangees_tabaski',
+          ],
+          'probs:trap3': <String>[
+            'mangues_de_plus_que_piege',
+            'biscuits_partages_piege',
+            'mangues_moitie_piege',
+          ],
+        },
+      );
+    });
+
+    test('holds at least two problems in every unit', () {
+      for (final LearningUnit unit in domain.units) {
+        expect(unit.items.length, greaterThanOrEqualTo(2), reason: unit.key);
+      }
     });
 
     test('puts every problem in one unit and every trap after its twin', () {
@@ -80,9 +143,9 @@ void main() {
       expect(domain.findItem('problem:billes_recues'), isNotNull);
       expect(domain.findItem('word:il_reste'), isNull);
       expect(domain.findItem('problem:unknown'), isNull);
-      expect(domain.findUnit('probs:mul2')?.items, hasLength(1));
+      expect(domain.findUnit('probs:img2')?.items, hasLength(4));
       expect(domain.findUnit('word:add'), isNull);
-      expect(ProblemCatalog.slugOf(ProblemTemplates.all.first), 'sub1');
+      expect(ProblemCatalog.slugOf(ProblemTemplates.all.first), 'img1');
     });
 
     test('rejects a duplicate key and a trap without twin', () {
@@ -113,7 +176,7 @@ void main() {
       // Assert
       final BarModelPicture picture = actual.picture! as BarModelPicture;
       expect(actual.itemKey, 'problem:mangues_donnees');
-      expect(actual.unitKey, 'probs:sub1');
+      expect(actual.unitKey, 'probs:img1');
       expect(
         actual.prompt.single.toString(),
         'Awa a 12 mangues. Elle en donne 5 à sa petite sœur. '

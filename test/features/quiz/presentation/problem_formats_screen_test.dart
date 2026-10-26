@@ -397,6 +397,28 @@ void main() {
         await tester.pumpAndSettle();
         // Assert
         expect(find.textContaining('Bravo'), findsOneWidget);
+        // Act: then the trap version, « Awa donne 5 mangues, il lui en
+        // reste 7 », on the same bar model: the whole is the answer.
+        await tester.pumpWidget(const SizedBox());
+        await pumpQuiz(
+          tester,
+          itemKey: 'problem:mangues_donnees_piege',
+          questionTypeId: QuestionTypeIds.barModel,
+          audio: audio,
+        );
+        final BarModelPicture trap =
+            currentQuestion(tester).picture! as BarModelPicture;
+        final int given = trap.values[BarRole.partA]!;
+        final int left = trap.values[BarRole.partB]!;
+        await place(tester, '$given', 'une partie');
+        await place(tester, '$left', "l'autre partie");
+        await tester.tap(find.text('+'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('${given + left}'));
+        await tester.pumpAndSettle();
+        // Assert
+        expect(trap.operator, MathOperator.add);
+        expect(find.textContaining('Bravo'), findsOneWidget);
       },
     );
 

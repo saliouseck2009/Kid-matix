@@ -3,6 +3,7 @@ import 'package:kid_matix/core/quiz/bar_model.dart';
 import 'package:kid_matix/core/quiz/learning_item.dart';
 import 'package:kid_matix/core/quiz/math_operator.dart';
 import 'package:kid_matix/core/quiz/math_picture.dart';
+import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_draw.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_instance.dart';
 import 'package:kid_matix/features/problem/domain/entities/problem_ref.dart';
@@ -27,7 +28,6 @@ final class ProblemTemplate implements LearningItem {
     required this.check,
     required Map<String, int> fixed,
     required List<ProblemDraw> draws,
-    this.cap,
     this.isRemoval = false,
     this.trapOf,
     this.accepts,
@@ -77,9 +77,6 @@ final class ProblemTemplate implements LearningItem {
   /// How the numbers are drawn, in order.
   final List<ProblemDraw> draws;
 
-  /// Greatest number allowed, when not the cap of the level.
-  final int? cap;
-
   /// Whether the story takes a part away.
   final bool isRemoval;
 
@@ -99,39 +96,66 @@ final class ProblemTemplate implements LearningItem {
   /// Name of the recording of the statement in the audio packs.
   String get recordingKey => '${keyPrefix}_$problemKey';
 
-  int get _cap => cap ?? levelCaps[level]!;
-
   late final List<ProblemValues> _valid = _enumerate();
 
   /// Every set of numbers the draw allows, without ambiguity.
   List<ProblemValues> get validValues => _valid;
 
   /// The recorded statement, with its fixed numbers.
-  ProblemInstance fixedInstance({Currency currency = Currency.cfaFranc}) {
+  ProblemInstance fixedInstance({
+    Currency currency = Currency.defaultCurrency,
+  }) {
     return _instanceOf(fixed, currency, isRecorded: true);
   }
 
-  /// An instance with numbers chosen by [pick] among the valid ones: given
-  /// the count, it returns an index.
+  /// Most tries of the step-by-step draw before it falls back on the list.
+  static const int drawAttempts = 40;
+
+  /// An instance with drawn numbers. Each number is drawn uniformly in its
+  /// range, from left to right as the table gives them, and a draw that
+  /// breaks a rule (the level cap, a constraint, an ambiguity) is rejected
+  /// and made again; after [drawAttempts] failures, a set of numbers is
+  /// picked in the list of every valid one, so a draw always ends.
   ProblemInstance drawnInstance(
-    int Function(int count) pick, {
-    Currency currency = Currency.cfaFranc,
+    RandomSource random, {
+    Currency currency = Currency.defaultCurrency,
   }) {
-    return _instanceOf(
-      _valid[pick(_valid.length)],
-      currency,
-      isRecorded: false,
+    for (int attempt = 0; attempt < drawAttempts; attempt++) {
+      final ProblemValues drawn = <String, int>{};
+      for (final ProblemDraw draw in draws) {
+        final List<int> options = draw.options(drawn).toList();
+        if (options.isEmpty) break;
+        drawn[draw.name] = options[random.nextInt(options.length)];
+      }
+      if (drawn.length == draws.length && isValid(drawn)) {
+        return instanceOf(drawn, currency: currency);
+      }
+    }
+    return instanceOf(
+      _valid[random.nextInt(_valid.length)],
+      currency: currency,
     );
+  }
+
+  /// The instance of [values], numbers that are not the recorded ones.
+  ProblemInstance instanceOf(
+    ProblemValues values, {
+    Currency currency = Currency.defaultCurrency,
+  }) {
+    return _instanceOf(values, currency, isRecorded: false);
   }
 
   /// Whether [values] respects the caps and the draw rules, and leaves only
   /// one operation that gives the answer.
   bool isValid(ProblemValues values) {
     for (final int value in values.values) {
-      if (value < 1 || value > _cap) return false;
+      if (value < 1 || value > levelCaps[level]!) return false;
     }
     if (accepts != null && !accepts!(values)) return false;
-    final BarModelPicture picture = _pictureOf(values, Currency.cfaFranc);
+    final BarModelPicture picture = _pictureOf(
+      values,
+      Currency.defaultCurrency,
+    );
     return _isUnambiguous(picture);
   }
 
@@ -160,6 +184,10 @@ final class ProblemTemplate implements LearningItem {
       operator: operation,
       check: _write(check, values, currency),
       isRemoval: isRemoval,
+      prefilled: <BarRole>{
+        for (final MapEntry<BarRole, ProblemRef> entry in roles.entries)
+          if (entry.value.constant != null) entry.key,
+      },
     );
   }
 

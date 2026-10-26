@@ -15,6 +15,67 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import process_audio as audio  # noqa: E402
 
 KEYS = ["il_reste", "de_plus_que"]
+PROBLEMS = ["mangues_donnees", "billes_recues"]
+
+
+class ProblemRecordingsTest(unittest.TestCase):
+    def test_problem_statement_has_one_file_and_no_example(self):
+        self.assertEqual(
+            audio.classify("wo_problem_mangues_donnees", "wo", KEYS, PROBLEMS),
+            ("problem_mangues_donnees", "explanation"),
+        )
+        self.assertEqual(
+            audio.classify("WO_Problem_Billes_Recues", "wo", KEYS, PROBLEMS),
+            ("problem_billes_recues", "explanation"),
+        )
+        self.assertIsNone(
+            audio.classify("wo_problem_mangues_donnees_exemple", "wo", KEYS, PROBLEMS)
+        )
+        self.assertIsNone(audio.classify("wo_problem_inconnu", "wo", KEYS, PROBLEMS))
+        self.assertIsNone(
+            audio.classify("wo_problem_mangues_donnees", "wo", KEYS)
+        )
+
+    def test_missing_lists_the_problems_after_the_words(self):
+        found = {("il_reste", "explanation"): None, ("problem_billes_recues", "explanation"): None}
+        self.assertEqual(
+            audio.missing(found, KEYS, PROBLEMS),
+            [
+                ("il_reste", "example"),
+                ("de_plus_que", "explanation"),
+                ("de_plus_que", "example"),
+                ("problem_mangues_donnees", "explanation"),
+            ],
+        )
+
+    def test_manifest_and_pack_hold_the_problem_files(self):
+        present = {("problem_mangues_donnees", "explanation")}
+        self.assertEqual(
+            audio.build_manifest("wo", KEYS, present, PROBLEMS),
+            {
+                "language": "wo",
+                "format": "m4a",
+                "words": {
+                    "problem_mangues_donnees": {
+                        "explanation": "wo_problem_mangues_donnees.m4a"
+                    }
+                },
+            },
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / "wo"
+            output.mkdir()
+            (output / "wo_problem_billes_recues.m4a").write_bytes(b"")
+            self.assertEqual(
+                audio.present_in(output, "wo", KEYS, PROBLEMS),
+                {("problem_billes_recues", "explanation")},
+            )
+
+    def test_keys_come_from_the_audio_column_of_the_table(self):
+        keys = audio.load_problem_keys()
+        self.assertEqual(len(keys), 30)
+        self.assertIn("mangues_donnees", keys)
+        self.assertEqual(len(set(keys)), 30)
 
 
 class ClassifyTest(unittest.TestCase):

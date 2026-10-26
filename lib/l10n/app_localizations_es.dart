@@ -1660,6 +1660,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String quizBarSlotWrong(String name) {
+    return '$name: no es el lugar correcto';
+  }
+
+  @override
+  String quizProblemChoiceWrong(String choice) {
+    return '$choice: incorrecto';
+  }
+
+  @override
   String get quizProblemSolveLabel => 'Resuelve el problema';
 
   @override
@@ -2440,40 +2450,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get masteryGridTitleProblems => 'Mis problemas';
 
   @override
-  String problemsUnitName(String operation, String level) {
+  String problemsUnitName(String kind, String number) {
     String _temp0 = intl.Intl.selectLogic(
-      operation,
+      kind,
       {
-        'add': 'Sumar',
-        'subtract': 'Quitar',
-        'multiply': 'Agrupar',
-        'divide': 'Repartir',
+        'img': 'Historias con dibujos',
+        'short': 'Frases cortas',
+        'full': 'Enunciados',
         'trap': 'Las trampas',
         'other': '',
       },
     );
-    String _temp1 = intl.Intl.selectLogic(
-      level,
-      {
-        '1': 'con dibujos',
-        '2': 'frases cortas',
-        '3': 'enunciados',
-        'other': '',
-      },
-    );
-    return '$_temp0 · $_temp1';
+    return '$_temp0 $number';
   }
 
   @override
-  String problemsUnitTip(String operation) {
+  String problemsUnitTip(String kind) {
     String _temp0 = intl.Intl.selectLogic(
-      operation,
+      kind,
       {
-        'add': 'Cuando juntamos cantidades, tenemos más que antes. Dibuja el todo y sus partes.',
-        'subtract': 'Cuando quitamos, queda menos. Dibuja el todo, la parte que se va y la que queda.',
-        'multiply': 'Grupos iguales: dibuja los grupos, todos del mismo tamaño, y halla el total.',
-        'divide': 'Repartir en partes iguales, o buscar cuántas partes: dibuja el todo cortado en partes.',
-        'trap': 'Cuidado: una palabra de la historia puede engañarte. Dibuja el esquema para ver qué pasa de verdad.',
+        'img': 'Escucha la historia y mira los dibujos; luego haz el esquema para ver qué pasa antes de calcular.',
+        'short': 'Lee la frase entera, haz el esquema y comprueba tu respuesta con la historia.',
+        'full': 'Lee o escucha todo el enunciado, haz el esquema, elige la operación y comprueba que tu respuesta tiene sentido.',
+        'trap': 'Cuidado: una palabra de la historia puede engañarte. Haz el esquema para ver qué pasa de verdad.',
         'other': '',
       },
     );

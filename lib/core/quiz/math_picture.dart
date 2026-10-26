@@ -150,12 +150,14 @@ final class BarModelPicture extends MathPicture {
     required this.operator,
     required this.check,
     this.isRemoval = false,
+    Set<BarRole> prefilled = const <BarRole>{},
   }) : assert(
          shape.roles.every(values.containsKey),
          'every place holds a number',
        ),
        assert(values.length == shape.roles.length, 'no place of another shape'),
-       values = Map<BarRole, int>.unmodifiable(values);
+       values = Map<BarRole, int>.unmodifiable(values),
+       prefilled = Set<BarRole>.unmodifiable(prefilled);
 
   /// Which drawing it is.
   final BarModelShape shape;
@@ -176,6 +178,11 @@ final class BarModelPicture extends MathPicture {
   /// Whether the story takes a part away: the part is drawn cut out.
   final bool isRemoval;
 
+  /// The places the story fills for the child with a number it does not
+  /// write, such as the 2 of « la moitié »: they start filled and are not
+  /// among the numbers to place.
+  final Set<BarRole> prefilled;
+
   /// The number the child looks for.
   int get answer => values[unknown]!;
 
@@ -183,6 +190,12 @@ final class BarModelPicture extends MathPicture {
   List<BarRole> get knownRoles => <BarRole>[
     for (final BarRole role in shape.roles)
       if (role != unknown) role,
+  ];
+
+  /// The known places the child fills, in the order they are shown.
+  List<BarRole> get placeableRoles => <BarRole>[
+    for (final BarRole role in knownRoles)
+      if (!prefilled.contains(role)) role,
   ];
 
   /// The calculation that finds the answer as a prompt: `12 − 5 = 7`. The
@@ -215,7 +228,9 @@ final class BarModelPicture extends MathPicture {
         other.unknown != unknown ||
         other.operator != operator ||
         other.check != check ||
-        other.isRemoval != isRemoval) {
+        other.isRemoval != isRemoval ||
+        other.prefilled.length != prefilled.length ||
+        !other.prefilled.containsAll(prefilled)) {
       return false;
     }
     return shape.roles.every(
@@ -230,6 +245,7 @@ final class BarModelPicture extends MathPicture {
     operator,
     check,
     isRemoval,
+    Object.hashAllUnordered(prefilled),
     Object.hashAll(shape.roles.map((BarRole role) => values[role])),
   );
 

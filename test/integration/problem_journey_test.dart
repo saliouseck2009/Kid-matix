@@ -78,7 +78,7 @@ void main() {
       StageKind.speed,
       StageKind.boss,
     ]) {
-      await playStage(inputPlayer.id, 'probs:add1', stage);
+      await playStage(inputPlayer.id, 'probs:img1', stage);
     }
     await TestApp.stop();
     await TestApp.start(
@@ -90,11 +90,11 @@ void main() {
       inputPlayer.id,
       domainId: LearningDomainIds.problems,
     );
-    expect(actualPath.tables, hasLength(15));
+    expect(actualPath.tables, hasLength(9));
     final TablePathNode actualUnit = actualPath.tables.first;
-    expect(actualUnit.unitKey, 'probs:add1');
+    expect(actualUnit.unitKey, 'probs:img1');
     expect(actualUnit.stageOf(StageKind.discovery).stars, 3);
-    expect(actualPath.tables[1].unitKey, 'probs:sub1');
+    expect(actualPath.tables[1].unitKey, 'probs:img2');
     expect(actualPath.tables[1].status, TableStatus.current);
     final MasteryGridEntity actualGrid = ((await sl<GetMasteryGridUseCase>()(
       params: MasteryScope(
