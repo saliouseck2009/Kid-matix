@@ -330,6 +330,9 @@ void main() {
         (word! as Map<String, Object?>)['key']! as String,
     };
     final String pubspec = File('pubspec.yaml').readAsStringSync();
+    final String problems = File(
+      'docs/product/problems.md',
+    ).readAsStringSync();
 
     for (final Object? language in index['languages']! as List<Object?>) {
       test('the pack $language is declared, named and complete', () {
@@ -343,7 +346,14 @@ void main() {
         expect(manifest.language, language);
         expect(pubspec, contains('- assets/audio/$language/'));
         for (final String key in manifest.wordKeys) {
-          expect(wordKeys, contains(key));
+          // A problem statement is named problem_<key> in its table.
+          expect(
+            wordKeys.contains(key) ||
+                (key.startsWith('problem_') &&
+                    problems.contains('${language}_$key.m4a')),
+            isTrue,
+            reason: key,
+          );
           for (final WordAudioKind kind in WordAudioKind.values) {
             final String? file = manifest.fileOf(key, kind);
             if (file == null) continue;

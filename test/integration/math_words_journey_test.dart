@@ -107,6 +107,6 @@ void main() {
     };
     expect(actualStatuses['word:ajouter'], isNot(MasteryStatus.notSeen));
     expect(sl<WordAudioService>().defaultLanguage, 'wo');
-    expect(sl<WordAudioService>().languages, isEmpty);
+    expect(sl<WordAudioService>().languages, <String>['wo']);
   });
 }
