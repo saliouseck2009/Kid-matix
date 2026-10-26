@@ -114,6 +114,6 @@ void main() {
       actualStatuses['problem:mangues_donnees_piege'],
       MasteryStatus.notSeen,
     );
-    expect(sl<WordAudioService>().languages, <String>['wo']);
+    expect(sl<WordAudioService>().languages, isEmpty);
   });
 }

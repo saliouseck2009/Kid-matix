@@ -106,10 +106,7 @@ void main() {
         for (final ItemMasteryEntity cell in row) cell.itemKey: cell.status,
     };
     expect(actualStatuses['word:ajouter'], isNot(MasteryStatus.notSeen));
-    // The shipped pack is made of provisional stand-ins: a child who never
-    // chose does not get it.
-    expect(sl<WordAudioService>().isProvisional('wo'), isTrue);
-    expect(sl<WordAudioService>().defaultLanguage, isNull);
-    expect(sl<WordAudioService>().languages, <String>['wo']);
+    expect(sl<WordAudioService>().defaultLanguage, 'wo');
+    expect(sl<WordAudioService>().languages, isEmpty);
   });
 }
