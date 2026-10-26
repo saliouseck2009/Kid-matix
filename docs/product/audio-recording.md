@@ -120,10 +120,10 @@ Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrement
 
 ### Corriger un texte wolof et refaire la voix (deux minutes, sans toucher au code)
 
-Les colonnes wolof des deux tableaux sont la seule source : `docs/product/math-words.md` (« Explication en wolof » et « Exemple en wolof ») et `docs/product/problems.md` (« Wolof : énoncé »).
+Les colonnes wolof des deux tableaux sont la seule source (le français des cartes imprimables reste la seule langue imprimée : le wolof des cellules n'est pas copié dans les fiches) : `docs/product/math-words.md` (« Explication en wolof » et « Exemple en wolof ») et `docs/product/problems.md` (« Wolof : énoncé »).
 
 1. Ouvre le tableau dans n'importe quel éditeur et corrige le texte d'une cellule.
-2. Quand tu as vérifié le texte, **supprime la mention** « (Google, à relire) » de la cellule. Une cellule sans mention est considérée comme relue : son enregistrement ne sera plus listé comme provisoire. Une cellule qui garde la mention reste provisoire.
+2. Quand tu as vérifié le texte, tu peux **supprimer la mention** « (Google, à relire) » de la cellule. **Enlever la mention signifie « texte relu », pas « voix réelle »** : la voix reste une synthèse automatique, donc un enregistrement provisoire, tant que tu n'as pas livré de vrai enregistrement (voir plus bas). Le script ne retire jamais un fichier de la liste des fichiers provisoires.
 3. Pour qu'un mot ne soit jamais prononcé (par exemple « franc »), ajoute-le sur une ligne de `tool/placeholder_audio/rules.txt` (déjà dedans : `franc` et `francs`). Les montants sont lus sans le mot de la monnaie.
 4. Lance **une seule commande** depuis le dossier du projet :
 
@@ -134,7 +134,7 @@ Les colonnes wolof des deux tableaux sont la seule source : `docs/product/math-w
    Elle crée l'environnement Python au premier lancement (il faut `ffmpeg` : `brew install ffmpeg`), puis ne refait la voix que des cellules dont le texte a changé depuis le dernier lancement (ce qui prend quelques secondes par texte), met à jour `assets/audio/wo/` et `assets/math_words/math_words.json`. Une cellule laissée vide est traduite par le modèle hors ligne.
 5. Écoute sur un téléphone, puis garde les fichiers modifiés (les tableaux et `assets/`).
 
-À savoir : un enregistrement dont tu as supprimé la mention ne redevient pas provisoire par erreur ; pour le refaire provisoire, supprime son fichier `.m4a` dans `assets/audio/wo/`.
+À savoir : un vrai enregistrement (livré avec `process_audio.py` sans `--provisional`) n'est jamais remplacé par le script, même si tu modifies le texte de sa cellule ; pour le remplacer par une synthèse, supprime son fichier `.m4a` dans `assets/audio/wo/`. Le dossier `tool/placeholder_audio/build/` est un état local (non versionné) : sur un clone neuf, la commande refait toute la voix (les fichiers `.m4a` sont alors réécrits, sans autre conséquence).
 
 ### Les remplacer par tes vrais enregistrements
 

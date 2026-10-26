@@ -1,39 +1,43 @@
 """Builds the provisional, machine-made Wolof audio of Kid Matix.
 
-The Wolof text and the voice here are produced by machines and never
-reviewed: the text by Meta NLLB-200 (CC-BY-NC 4.0), the voice by Meta
-MMS Wolof, exported to ONNX (jaguaman09/mms-tts-wol-onnx, a public model,
-licence CC-BY-NC 4.0: no account, no token). They stand in for the
-owner's real recordings so that the Wolof buttons and « Aide audio » can be
-tried on a device. Replace them before any release (see
-docs/product/audio-recording.md, « Fichiers provisoires »).
+The source of truth is the Wolof columns of the two content tables
+(docs/product/math-words.md, docs/product/problems.md). Their text today
+comes from Google Translate, pasted by the owner by hand (--engine file) and
+marked « (Google, à relire) »; a cell that is still empty is translated
+offline by Meta NLLB-200 (CC-BY-NC 4.0) and marked « (machine, à relire) ».
+Nobody who speaks Wolof has reviewed the text. The mark only tracks the
+review of the text in the tables: removing it means « text checked », not
+« real voice ».
 
-Steps, each one resumable (what is already made is skipped):
+The voice is Meta MMS Wolof exported to ONNX (jaguaman09/mms-tts-wol-onnx,
+public, CC-BY-NC 4.0: no account, no token). Everything this script
+synthesizes is a stand-in and goes through process_audio.py --provisional:
+only process_audio.py run on real recordings takes a file out of the
+provisional list of the manifest. Replace the stand-ins before any release
+(docs/product/audio-recording.md, « Fichiers provisoires »).
 
-  1. extract    the French explanation and example of the 40 words
-                (docs/product/math-words.md) and the French statement of the
-                30 problems (docs/product/problems.md);
-  2. translate  French -> Wolof with Meta NLLB-200 (offline CTranslate2
-                model), or from a Wolof file made by hand with
-                --engine file --wolof FILE (see --print-french), cached in
-                wolof_machine.json (committed: a re-run needs no network
-                for the text);
-  3. tables     the Wolof cells of both tables, each marked
-                « (machine, à relire) », and a status line at the top;
+Steps (the usual way to run them is bash tool/placeholder_audio/regenerate.sh):
+
+  1. extract    the French explanation and example of the 40 words and the
+                French statement of the 30 problems;
+  2. translate  --engine file --wolof FILE imports a hand-made Wolof file
+                (see --print-french); otherwise NLLB fills the empty cells;
+  3. tables     the status line at the top of each table (only while a cell
+                carries a mark);
   4. speak      one 16 kHz wav per text, with the MMS Wolof model
-                (onnxruntime on the CPU, no torch);
-  5. pack       tool/process_audio.py on the wav folder with --provisional,
+                (onnxruntime on the CPU, no torch); the text is the cell
+                without its mark and without the words of rules.txt; only
+                the cells whose spoken text changed are spoken again;
+  5. pack       tool/process_audio.py --provisional on the changed wavs,
                 then tool/build_math_words.py.
-
-Run it inside the virtualenv of this folder (see README.md):
 
   python make_wolof_placeholders.py                 every step
   python make_wolof_placeholders.py --until tables  translation only
   python make_wolof_placeholders.py --from speak    voice and pack only
 
-Numbers are spelled in French before the translation (« 12 » becomes
-« douze »): the voice cannot read digits. The mark « (machine, à relire) »
-is never spoken.
+Numbers are spelled in French before an NLLB translation (« 12 » becomes
+« douze »); a text typed or pasted in a cell is spoken as it is (whether the
+voice reads digits is not verified). The marks are never spoken.
 """
 
 import argparse
@@ -52,6 +56,8 @@ PROBLEMS_TABLE = ROOT / "docs" / "product" / "problems.md"
 CACHE = HERE / "wolof_machine.json"
 RULES = HERE / "rules.txt"
 CONVERTED_DIR = HERE / "build" / "converted"
+STAGE_DIR = HERE / "build" / "stage"
+PACK_DIR = ROOT / "assets" / "audio" / "wo"
 WAV_DIR = HERE / "build" / "wav"
 
 MODEL_REPO = "jaguaman09/mms-tts-wol-onnx"  # public, CC-BY-NC 4.0
@@ -195,7 +201,9 @@ def rewrite_problems(markdown, wolof_of, overwrite=True):
 
 
 def with_status(markdown):
-    """Puts the provisional-Wolof status line right under the status line."""
+    """Puts the provisional-Wolof status line right under the status line,
+    only while a table cell carries a « à relire » mark (otherwise the line
+    is removed)."""
     lines = []
     for line in markdown.splitlines():
         if line.startswith(STATUS_PREFIX):
@@ -204,6 +212,12 @@ def with_status(markdown):
                 lines.pop()
             continue
         lines.append(line)
+    marked = any(
+        line.startswith("|") and any(m in line for m in MARKS.values())
+        for line in lines
+    )
+    if not marked:
+        return "\n".join(lines) + "\n"
     for index, line in enumerate(lines):
         if re.match(r"Statut\s:", line):
             lines[index + 1 : index + 1] = ["", STATUS_LINE]
@@ -551,71 +565,57 @@ def _convert_state(name):
     return CONVERTED_DIR / f".{name}.txt"
 
 
-def stage(provisional_names, texts, marked):
-    """Copies the wavs to convert into two folders, by provenance.
+def stage(provisional_names, texts):
+    """Copies the wavs to convert into the staging folder; returns
+    (folder, count).
 
-    A wav is staged when its m4a is missing, when the text it was spoken
-    from is not the text last converted, or when its status (still marked
-    « à relire », or checked) is not the one of the manifest. Returns
-    ({"provisional": folder, "real": folder}, count).
+    A slot is staged when its m4a is missing, or when it is a stand-in (in
+    the provisional list) whose text changed since it was last converted.
+    A slot whose m4a exists and is NOT in the provisional list is a real
+    recording: it is never staged, whatever the text or the notes say.
     """
     import shutil
 
-    folders = {"provisional": HERE / "build" / "stage-provisional",
-               "real": HERE / "build" / "stage-real"}
-    for folder in folders.values():
-        shutil.rmtree(folder, ignore_errors=True)
-        folder.mkdir(parents=True)
+    shutil.rmtree(STAGE_DIR, ignore_errors=True)
+    STAGE_DIR.mkdir(parents=True)
     count = 0
     for name, text in texts.items():
         wav = WAV_DIR / f"{name}.wav"
         if not wav.exists():
             continue
-        m4a = ROOT / "assets" / "audio" / "wo" / f"{name}.m4a"
-        file = f"{name}.m4a"
-        is_marked = marked[name]
-        status_ok = (file in provisional_names) == is_marked
-        note = _convert_state(name)
-        same = note.exists() and note.read_text(encoding="utf-8") == text
-        if is_marked and m4a.exists() and file not in provisional_names:
-            # A checked recording must never become a stand-in again.
-            if same:
-                print(f"  {name}: already a checked recording, its cell is "
-                      "marked « à relire » again: mark ignored", file=sys.stderr)
-                continue
-            raise SystemExit(
-                f"{name}: the text changed but the cell is still marked « à "
-                "relire » while its recording was checked. Remove the mark "
-                f"(or delete assets/audio/wo/{file} to make it provisional again)."
-            )
-        if m4a.exists() and same and status_ok:
-            continue
-        shutil.copy(wav, folders["provisional" if is_marked else "real"] / wav.name)
+        m4a = PACK_DIR / f"{name}.m4a"
+        if m4a.exists():
+            if m4a.name not in provisional_names:
+                continue  # a real recording
+            note = _convert_state(name)
+            if note.exists() and note.read_text(encoding="utf-8") == text:
+                continue  # the stand-in is current
+        shutil.copy(wav, STAGE_DIR / wav.name)
         count += 1
-    return folders, count
+    return STAGE_DIR, count
 
 
-def pack(texts=None, marked=None):
-    """Converts the changed wavs: the ones of cells still marked « à relire »
-    with --provisional, the ones the owner checked without it, so that the
-    manifest lists exactly the provisional files. Then rebuilds the asset."""
+def pack(texts):
+    """Converts the changed wavs with process_audio.py --provisional (all that
+    this script makes is a stand-in: only process_audio.py run on real
+    recordings takes a file out of the provisional list), then rebuilds the
+    math words asset."""
     sys.path.insert(0, str(ROOT / "tool"))
     import process_audio
 
-    out = ROOT / "assets" / "audio" / "wo"
-    previous = process_audio.read_provisional(out)
-    folders, count = stage(previous, texts, marked)
+    previous = process_audio.read_provisional(PACK_DIR)
+    folder, count = stage(previous, texts)
     print(f"{count} recording(s) to convert")
-    for kind, folder in folders.items():
-        if not any(folder.iterdir()):
-            continue
-        command = [sys.executable, str(ROOT / "tool" / "process_audio.py"), str(folder)]
-        if kind == "provisional":
-            command.append("--provisional")
-        subprocess.run(command, check=True)
+    if count:
+        subprocess.run(
+            [sys.executable, str(ROOT / "tool" / "process_audio.py"),
+             str(folder), "--provisional"],
+            check=True,
+        )
     CONVERTED_DIR.mkdir(parents=True, exist_ok=True)
+    provisional = process_audio.read_provisional(PACK_DIR)
     for name, text in texts.items():
-        if (out / f"{name}.m4a").exists():
+        if f"{name}.m4a" in provisional:
             _convert_state(name).write_text(text, encoding="utf-8")
     subprocess.run(
         [sys.executable, str(ROOT / "tool" / "build_math_words.py")], check=True
@@ -677,15 +677,13 @@ def main():
         raise SystemExit(f"{len(empty)} Wolof cell(s) are empty, e.g. {empty[0]}")
     rules = load_rules()
     texts = {}
-    marked = {}
     for name, cell in cells.items():
-        text, mark = split_mark(cell)
+        text, _ = split_mark(cell)
         texts[name] = apply_rules(text, rules)
-        marked[name] = bool(mark)
     if "speak" in wanted:
         speak(texts)
     if "pack" in wanted:
-        pack(texts, marked)
+        pack(texts)
 
 
 def write_tables(entries, overwrite):

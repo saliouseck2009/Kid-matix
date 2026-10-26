@@ -122,7 +122,7 @@ class TablesTest(unittest.TestCase):
         self.assertIn("| `mangues_donnees` | {a} mangues | tout=a |", text)
 
     def test_the_status_line_is_added_once(self):
-        once = make.with_status(WORDS)
+        once = make.with_status(make.rewrite_words(WORDS, self.wolof))
         self.assertEqual(once.count(make.STATUS_PREFIX), 1)
         self.assertEqual(make.with_status(once), once)
         lines = once.splitlines()
@@ -155,7 +155,9 @@ class MarksTest(unittest.TestCase):
         self.assertIn("| NNN (machine, à relire) |", again)
 
     def test_the_status_line_goes_under_a_status_with_a_no_break_space(self):
-        text = make.with_status("# T\n\nStatut\u00a0: brouillon.\n\nSuite\n")
+        text = make.with_status(
+            "# T\n\nStatut\u00a0: brouillon.\n\nSuite\n| a (Google, à relire) |\n"
+        )
         lines = text.splitlines()
         self.assertTrue(lines[4].startswith("Wolof provisoire"))
         self.assertEqual(make.with_status(text), text)
@@ -329,6 +331,64 @@ class TablesAreTheSourceTest(unittest.TestCase):
         for name, entry_ in make.load_cache().items():
             if entry_.get("engine") == "nllb":
                 self.assertIsNone(make.looks_wrong(entry_["fr"], entry_["wo"]), name)
+
+
+class StageTest(unittest.TestCase):
+    """What the script converts: stand-ins only, never a real recording."""
+
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        root = Path(self.folder.name)
+        self.saved = (make.WAV_DIR, make.PACK_DIR, make.CONVERTED_DIR, make.STAGE_DIR)
+        make.WAV_DIR = root / "wav"
+        make.PACK_DIR = root / "pack"
+        make.CONVERTED_DIR = root / "converted"
+        make.STAGE_DIR = root / "stage"
+        for folder in (make.WAV_DIR, make.PACK_DIR, make.CONVERTED_DIR):
+            folder.mkdir()
+        (make.WAV_DIR / "wo_a.wav").write_bytes(b"")
+
+    def tearDown(self):
+        (make.WAV_DIR, make.PACK_DIR, make.CONVERTED_DIR, make.STAGE_DIR) = self.saved
+        self.folder.cleanup()
+
+    def staged(self, provisional, texts):
+        folder, count = make.stage(provisional, texts)
+        return sorted(p.name for p in folder.iterdir()), count
+
+    def test_a_missing_recording_is_staged(self):
+        self.assertEqual(self.staged(set(), {"wo_a": "x"}), (["wo_a.wav"], 1))
+
+    def test_a_real_recording_is_never_staged_even_with_a_changed_text(self):
+        (make.PACK_DIR / "wo_a.m4a").write_bytes(b"")
+        # The cell is unmarked (text checked) and its text changed.
+        make._convert_state("wo_a").write_text("old", encoding="utf-8")
+        self.assertEqual(self.staged(set(), {"wo_a": "new"}), ([], 0))
+
+    def test_a_real_recording_is_never_staged_without_its_note(self):
+        (make.PACK_DIR / "wo_a.m4a").write_bytes(b"")
+        self.assertEqual(self.staged(set(), {"wo_a": "new"}), ([], 0))
+
+    def test_a_stand_in_is_staged_only_when_its_text_changed(self):
+        (make.PACK_DIR / "wo_a.m4a").write_bytes(b"")
+        make._convert_state("wo_a").write_text("old", encoding="utf-8")
+        provisional = {"wo_a.m4a"}
+        self.assertEqual(self.staged(provisional, {"wo_a": "new"}), (["wo_a.wav"], 1))
+        self.assertEqual(self.staged(provisional, {"wo_a": "old"}), ([], 0))
+
+    def test_a_stand_in_without_its_note_is_staged(self):
+        (make.PACK_DIR / "wo_a.m4a").write_bytes(b"")
+        self.assertEqual(self.staged({"wo_a.m4a"}, {"wo_a": "x"}), (["wo_a.wav"], 1))
+
+
+class StatusLineTest(unittest.TestCase):
+    def test_the_status_line_goes_when_no_cell_is_marked(self):
+        marked = make.with_status("# T\n\nStatut : x.\n\n| a (Google, à relire) |\n")
+        self.assertIn(make.STATUS_PREFIX, marked)
+        checked = marked.replace(" (Google, à relire)", "")
+        cleaned = make.with_status(checked)
+        self.assertNotIn(make.STATUS_PREFIX, cleaned)
+        self.assertEqual(make.with_status(cleaned), cleaned)
 
 
 class NumbersTest(unittest.TestCase):

@@ -4,9 +4,12 @@ Machine-made stand-ins for the Wolof recordings of Kid Matix, so that the
 Wolof buttons and « Aide audio » work on a device until the owner delivers
 real recordings.
 
-- **Text**: the French explanation and example of the 40 math words and the
-  French statement of the 30 problems, translated to Wolof by Meta NLLB-200
-  (`fra_Latn` to `wol_Latn`), run offline with `ctranslate2` on the public
+- **Text**: the Wolof cells of the content tables. Today they hold Google
+  Translate text pasted by the owner by hand (`wolof_google.txt`, marked
+  « (Google, à relire) »). A cell that is still empty is translated offline
+  from the French explanation, example or statement by Meta NLLB-200
+  (`fra_Latn` to `wol_Latn`, marked « (machine, à relire) »), run with
+  `ctranslate2` on the public
   int8 conversion `JustFrederik/nllb-200-distilled-600M-ct2-int8` (about
   600 MB, downloaded once into `build/nllb/`, pinned to a revision). **The
   quality is poor** (numbers are often wrong, some sentences lose their
@@ -51,16 +54,20 @@ account or token is needed.
 bash tool/placeholder_audio/regenerate.sh
 ```
 
-The Wolof cells of the two content tables are the source of truth (edit a
-cell in any editor, remove its « (…, à relire) » mark once checked). The
-script creates the virtualenv if missing, installs the pinned requirements,
-fills the cells still empty with NLLB, speaks again only the cells whose
-text changed (the spoken text is kept in `build/wav/.<name>.txt`), converts
-the changed recordings (cells still marked go through `process_audio.py
---provisional`, checked cells without it, so the manifest lists exactly the
-provisional files) and rebuilds `math_words.json`. `rules.txt` lists the
-words never spoken (`franc`, `francs`). The owner's workflow in French is in
-`docs/product/audio-recording.md`, section 11.
+The Wolof cells of the two content tables are the source of truth: edit a
+cell in any editor. The « (…, à relire) » mark only tracks the review of the
+text; removing it means « text checked », **not** « real voice ». Everything
+this script synthesizes is a stand-in and goes through `process_audio.py
+--provisional`; only `process_audio.py` run on real recordings takes a file
+out of the provisional list, and a real recording is never overwritten by
+this script. The command creates the virtualenv if missing, installs the
+pinned requirements, fills the cells still empty with NLLB, speaks again
+only the cells whose spoken text changed (kept in `build/wav/.<name>.txt`),
+converts the changed recordings and rebuilds `math_words.json`. `rules.txt`
+lists the words never spoken (`franc`, `francs`). `build/` is local state,
+not versioned: on a fresh clone the command speaks everything again (the
+`.m4a` files are rewritten, nothing else changes). The owner's workflow in
+French is in `docs/product/audio-recording.md`, section 11.
 
 ## Run
 
@@ -113,7 +120,8 @@ line count or a blank line is refused. The cache entries get
 
 The vocabulary of the voice has no é, ë, à, ó or ñ: such a letter is read
 without its mark (ñ as n). Digits are spelled in French (« 12 » becomes
-« douze ») before the translation, because the voice cannot read digits. The
+« douze ») before an NLLB translation; a text typed or pasted in a cell is
+spoken as it is, and whether the voice reads digits is not verified. The
 marks are never spoken.
 
 ## Replacing the stand-ins
