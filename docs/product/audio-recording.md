@@ -109,36 +109,35 @@ Le script :
 
 Format du pack (`assets/audio/<langue>/`) : `manifest.json` avec la langue, le format (`m4a`) et, pour chaque clé de mot, les noms de ses fichiers `explanation` et `example`, et pour chaque problème (clé `problem_<clé>`) son seul fichier `explanation`. Pour ajouter une autre langue d'aide, on dépose un autre dossier avec son manifeste ; le code ne change pas.
 
-## 11. Fichiers provisoires
+## 11. Enregistrer soi-même : la marche à suivre
 
-Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrements, l'app embarque des fichiers wolof provisoires, faits par des machines, pour que les boutons wolof et « Aide audio » fonctionnent sur un téléphone.
+Décision du propriétaire du 2026-10-26 : c'est lui qui enregistre sa voix. L'app ne livre aucun fichier audio pour l'instant (`assets/audio/wo/` ne contient que le manifeste vide) : tant qu'un fichier manque, le bouton « Écouter en wolof » du mot est simplement caché.
 
-- **Le texte** wolof vient de Google Translate (collé à la main par le propriétaire depuis translate.google.com, fichier `tool/placeholder_audio/wolof_google.txt`) ; il n'a jamais été relu. Chaque cellule porte la mention « (Google, à relire) » (ou « (machine, à relire) » si le texte vient du modèle hors ligne NLLB-200, de mauvaise qualité).
-- **La voix** est une synthèse automatique (modèle Meta MMS wolof exporté en ONNX, `jaguaman09/mms-tts-wol-onnx`, licence CC-BY-NC 4.0, usage non commercial). Ces fichiers ne doivent jamais partir dans une version publiée.
-- **La liste** : le manifeste `assets/audio/wo/manifest.json` porte `"provisional": [noms des fichiers provisoires]`. Tant qu'elle n'est pas vide, l'espace enseignant (page « Enregistrer les explications ») et la ligne « Aide audio » des réglages affichent : « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » Un enfant qui n'a jamais choisi de langue d'aide n'entend pas ces voix (« Aucune » par défaut) : un adulte choisit le wolof dans « Aide audio ».
-- **Le garde-fou de sortie** : `tool/build_release.sh` lance `tool/check_release_content.sh`, qui refuse la version tant que la liste n'est pas vide ou qu'un tableau contient « (machine, à relire) » ou « (Google, à relire) ».
+Les colonnes wolof des tableaux contiennent un **brouillon** : une traduction de Google Translate, collée à la main, jamais relue. Chaque cellule porte la mention « (Google, à relire) ». Ce texte sert de point de départ, tu le corriges avant d'enregistrer.
 
-### Corriger un texte wolof et refaire la voix (deux minutes, sans toucher au code)
-
-Les colonnes wolof des deux tableaux sont la seule source (le français des cartes imprimables reste la seule langue imprimée : le wolof des cellules n'est pas copié dans les fiches) : `docs/product/math-words.md` (« Explication en wolof » et « Exemple en wolof ») et `docs/product/problems.md` (« Wolof : énoncé »).
-
-1. Ouvre le tableau dans n'importe quel éditeur et corrige le texte d'une cellule.
-2. Quand tu as vérifié le texte, tu peux **supprimer la mention** « (Google, à relire) » de la cellule. **Enlever la mention signifie « texte relu », pas « voix réelle »** : la voix reste une synthèse automatique, donc un enregistrement provisoire, tant que tu n'as pas livré de vrai enregistrement (voir plus bas). Le script ne retire jamais un fichier de la liste des fichiers provisoires.
-3. Pour qu'un mot ne soit jamais prononcé (par exemple « franc »), ajoute-le sur une ligne de `tool/placeholder_audio/rules.txt` (déjà dedans : `franc` et `francs`). Les montants sont lus sans le mot de la monnaie.
-4. Lance **une seule commande** depuis le dossier du projet :
+1. **Corrige le wolof** dans les colonnes des deux tableaux : `docs/product/math-words.md` (« Explication en wolof » et « Exemple en wolof ») et `docs/product/problems.md` (« Wolof : énoncé »). Quand une cellule est vérifiée, **supprime sa mention** « (Google, à relire) ». Dis les nombres en lettres, et sans le mot « franc ».
+2. **Génère la feuille d'enregistrement** : `python3 tool/make_recording_sheet.py`. Elle écrit `docs/product/recording-sheet.md` : une ligne numérotée par fichier à enregistrer, dans l'ordre (les 80 fichiers des mots, puis les 30 problèmes), avec le nom exact du fichier, le texte à dire, le français pour repère et une case à cocher. Imprime-la. Chaque fois que tu corriges un tableau, relance la commande (la vérification de `bash tool/check.sh` échoue si la feuille n'est plus à jour).
+3. **Enregistre** en suivant les sections 1 à 8 de ce guide et les règles en tête de la feuille : un fichier par ligne, le nom exact, deux secondes de silence avant et après, voix lente et chaleureuse, de 5 à 10 secondes, un essai raté supprimé et refait en entier.
+4. **Mets tous les fichiers dans un seul dossier** (sans les renommer ni les convertir).
+5. **Prépare-les pour l'app** (il faut `ffmpeg` : `brew install ffmpeg`) :
 
    ```
-   bash tool/placeholder_audio/regenerate.sh
+   python3 tool/process_audio.py <dossier>
+   python3 tool/build_math_words.py
+   bash tool/check.sh
    ```
 
-   Elle crée l'environnement Python au premier lancement (il faut `ffmpeg` : `brew install ffmpeg`), puis ne refait la voix que des cellules dont le texte a changé depuis le dernier lancement (ce qui prend quelques secondes par texte), met à jour `assets/audio/wo/` et `assets/math_words/math_words.json`. Une cellule laissée vide est traduite par le modèle hors ligne.
-5. Écoute sur un téléphone, puis garde les fichiers modifiés (les tableaux et `assets/`).
+   Le premier écrit les fichiers `.m4a` et le manifeste dans `assets/audio/wo/` ; il liste ce qui manque. Le deuxième recopie le texte wolof des tableaux dans le fichier de données de l'app.
+6. **Garde le résultat** : committe `assets/audio/wo/` et les deux tableaux.
 
-À savoir : un vrai enregistrement (livré avec `process_audio.py` sans `--provisional`) n'est jamais remplacé par le script, même si tu modifies le texte de sa cellule ; pour le remplacer par une synthèse, supprime son fichier `.m4a` dans `assets/audio/wo/`. Le dossier `tool/placeholder_audio/build/` est un état local (non versionné) : sur un clone neuf, la commande refait toute la voix (les fichiers `.m4a` sont alors réécrits, sans autre conséquence).
+**Une livraison partielle est possible** : le pack est ce que le dossier `assets/audio/wo/` contient, donc une deuxième livraison s'ajoute à la première. Relance simplement `process_audio.py` sur le dossier complet, ou sur un dossier qui ne contient que les nouveaux fichiers. Les mots sans fichier n'ont pas de bouton.
 
-### Les remplacer par tes vrais enregistrements
+**Remplacer un seul fichier plus tard** : réenregistre-le avec le même nom, mets-le seul dans un dossier et lance `python3 tool/process_audio.py <dossier>` : seul ce fichier est réécrit, les autres restent.
 
-1. Enregistre les fichiers comme dans les sections 1 à 8 de ce guide (`wo_<clé>.m4a`, `wo_<clé>_exemple.m4a`, `wo_problem_<clé>.m4a`).
-2. Lance le script sur le dossier des vrais fichiers, sans l'option `--provisional` : `python3 tool/process_audio.py DOSSIER_REEL`, puis `python3 tool/build_math_words.py`.
-3. Les fichiers remplacés sont réécrits et sortent de la liste `provisional`. Si tu livres seulement une partie des fichiers, les autres restent dans la liste (le script le dit) ; la clé disparaît quand la liste est vide.
-4. Avant la sortie, lance `bash tool/check_release_content.sh` : il doit répondre OK (plus de fichier provisoire, plus de cellule « (machine, à relire) » ou « (Google, à relire) »).
+### Outils facultatifs : voix de synthèse provisoire
+
+Ce n'est plus la voie principale. `tool/placeholder_audio/` (voir son `README.md`) sait fabriquer des voix de synthèse provisoires (`bash tool/placeholder_audio/regenerate.sh`), au cas où il faudrait essayer l'app avec un pack partiel de voix de machine. Alors :
+
+- le manifeste porte `"provisional": [noms des fichiers]` ; un enfant qui n'a jamais choisi de langue d'aide n'entend pas ce pack, un adulte le choisit dans « Aide audio » (avec la question « Demande à un adulte ») et voit la mention « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » ;
+- `process_audio.py` sans `--provisional` sur de vrais enregistrements retire les fichiers de la liste ; elle disparaît quand elle est vide ;
+- `tool/build_release.sh` lance `tool/check_release_content.sh`, qui **refuse la version** tant que la liste n'est pas vide ou qu'un tableau contient encore « (machine, à relire) » ou « (Google, à relire) » : avant la sortie, il faut donc avoir relu (et enlevé la mention de) toutes les cellules.

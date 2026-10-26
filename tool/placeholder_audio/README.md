@@ -1,4 +1,9 @@
-# Provisional Wolof audio
+# Provisional Wolof audio (optional tooling)
+
+> **Not the main path any more.** The owner records his own voice: see
+> « Enregistrer soi-même » (section 11 of `docs/product/audio-recording.md`)
+> and `tool/make_recording_sheet.py`. This folder is kept to try the app with
+> a machine-made voice; no machine audio is shipped in `assets/audio/wo/`.
 
 Machine-made stand-ins for the Wolof recordings of Kid Matix, so that the
 Wolof buttons and « Aide audio » work on a device until the owner delivers
@@ -19,7 +24,7 @@ real recordings.
   (`jaguaman09/mms-tts-wol-onnx`, public, no account, pinned to a
   revision), run on the CPU with `onnxruntime` (no torch). About 114 MB,
   downloaded once into `build/model/`.
-- **Result**: `assets/audio/wo/wo_<key>.m4a`, `wo_<key>_exemple.m4a`,
+- **Result** (when run; the committed pack is empty): `assets/audio/wo/wo_<key>.m4a`, `wo_<key>_exemple.m4a`,
   `wo_problem_<key>.m4a` and `assets/audio/wo/manifest.json` whose
   `"provisional"` list names every stand-in file. While the list is not
   empty the app shows a notice to adults (teacher area, next to
@@ -82,8 +87,8 @@ python tool/placeholder_audio/make_wolof_placeholders.py --back-translate 10
 Steps: `extract`, `translate`, `tables`, `speak`, `pack`. The script is
 idempotent and resumable:
 
-- NLLB translates only cells that are empty (cache `wolof_machine.json`,
-  committed); a cell that has a text is never overwritten except by
+- NLLB translates only cells that are empty (local cache `wolof_machine.json`,
+  git-ignored); a cell that has a text is never overwritten except by
   `--engine file`;
 - NLLB is decoded with a repetition penalty and a no-repeat n-gram size; an
   output that is far longer than its source or repeats a word is decoded
