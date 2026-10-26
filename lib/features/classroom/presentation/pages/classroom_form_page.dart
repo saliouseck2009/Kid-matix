@@ -77,6 +77,8 @@ class _FormView extends StatelessWidget {
             decoration: InputDecoration(
               labelText: context.l10n.classroomNameLabel,
               hintText: context.l10n.classroomNameHint,
+              helperText: context.l10n.classroomNamePrivacyHint,
+              helperMaxLines: 3,
             ),
             onChanged: cubit.changeName,
           ),

@@ -81,7 +81,7 @@ void main() {
   setUpAll(sqfliteFfiInit);
 
   group('Migrations 16 and 17', () {
-    test('are the last migrations of the app, 16 changing nothing', () {
+    test('are migrations 16 and 17 of the app, 16 changing nothing', () {
       // Assert
       expect(appMigrations[15].version, 16);
       expect(appMigrations[16].version, 17);

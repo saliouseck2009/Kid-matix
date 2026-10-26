@@ -20,7 +20,10 @@ import 'package:kid_matix/features/learning_path/presentation/widgets/placement_
 /// (mockup 18, adapted).
 ///
 /// [onDone] opens the path, whether the test was skipped, left midway or
-/// finished.
+/// finished. In a class assessment ([isAssessment]), the test cannot be
+/// skipped, its end goes on with [onDone] (« Continuer », the word
+/// check), and leaving it goes to [onLeave]: the assessment stays
+/// pending.
 class PlacementTestPage extends StatelessWidget {
   /// Creates the page.
   const PlacementTestPage({
@@ -29,6 +32,8 @@ class PlacementTestPage extends StatelessWidget {
     required this.clock,
     required this.slots,
     required this.onDone,
+    this.isAssessment = false,
+    this.onLeave,
     super.key,
   });
 
@@ -44,40 +49,46 @@ class PlacementTestPage extends StatelessWidget {
   /// Question card and keypad of the quiz.
   final PlacementSlots slots;
 
-  /// Opens the path.
+  /// Opens the path, or goes on with the class assessment.
   final VoidCallback onDone;
+
+  /// Whether the test is part of a class assessment.
+  final bool isAssessment;
+
+  /// Leaves the test before its end; [onDone] when `null`.
+  final VoidCallback? onLeave;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PlacementBloc>(
       create: (_) =>
           PlacementBloc(profileId: profileId, useCases: useCases, clock: clock),
-      child: _PlacementScaffold(
-        profileId: profileId,
-        slots: slots,
-        onDone: onDone,
-      ),
+      child: _PlacementScaffold(page: this),
     );
   }
 }
 
 class _PlacementScaffold extends StatelessWidget {
-  const _PlacementScaffold({
-    required this.profileId,
-    required this.slots,
-    required this.onDone,
-  });
+  const _PlacementScaffold({required this.page});
 
-  final String profileId;
-  final PlacementSlots slots;
-  final VoidCallback onDone;
+  final PlacementTestPage page;
+
+  VoidCallback get _leaveTo => page.onLeave ?? page.onDone;
 
   Future<void> _leave(BuildContext context) async {
-    if (context.read<PlacementBloc>().state is PlacementAsking) {
-      final bool isConfirmed = await confirmQuitPlacement(context);
+    final PlacementState state = context.read<PlacementBloc>().state;
+    if (state is PlacementFinished) {
+      page.onDone();
+      return;
+    }
+    if (state is PlacementAsking) {
+      final bool isConfirmed = await confirmQuitPlacement(
+        context,
+        isAssessment: page.isAssessment,
+      );
       if (!isConfirmed) return;
     }
-    onDone();
+    _leaveTo();
   }
 
   @override
@@ -96,27 +107,28 @@ class _PlacementScaffold extends StatelessWidget {
                   onStart: () => context.read<PlacementBloc>().add(
                     const PlacementStarted(),
                   ),
-                  onSkip: onDone,
+                  onSkip: page.isAssessment ? null : page.onDone,
                 ),
                 PlacementLoading() => const Center(
                   child: CircularProgressIndicator(),
                 ),
                 PlacementAsking() => PlacementQuestionView(
-                  profileId: profileId,
+                  profileId: page.profileId,
                   state: state,
-                  slots: slots,
+                  slots: page.slots,
                   onQuit: () => _leave(context),
                 ),
                 PlacementFinished() => PlacementResultView(
                   outcome: state.outcome,
-                  onSeePath: onDone,
+                  isAssessment: page.isAssessment,
+                  onSeePath: page.onDone,
                 ),
                 PlacementFailure(:final errorCode) => _PlacementError(
                   message: switch (errorCode) {
                     AppErrorCode.cache => context.l10n.errorStorage,
                     _ => context.l10n.errorUnknown,
                   },
-                  onDone: onDone,
+                  onDone: _leaveTo,
                 ),
               };
             },

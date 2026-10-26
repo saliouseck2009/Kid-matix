@@ -18,6 +18,7 @@ import 'package:kid_matix/features/classroom/domain/entities/assessment_result.d
 import 'package:kid_matix/features/classroom/domain/entities/assignment_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/class_assessment.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/pupil_number_repository.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_entity.dart';
 import 'package:kid_matix/features/classroom/domain/entities/practice_session.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
@@ -236,6 +237,27 @@ final class InMemoryAssessments implements AssessmentRepository {
   Stream<void> watchChanges() => _changes.stream;
 }
 
+/// [PupilNumberRepository] kept in memory.
+final class InMemoryPupilNumbers implements PupilNumberRepository {
+  /// The numbers, by class then pupil.
+  final Map<String, Map<String, int>> rows = <String, Map<String, int>>{};
+
+  @override
+  Future<DataState<Map<String, int>>> assign({
+    required String classroomId,
+    required List<String> pupilIds,
+  }) async {
+    final Map<String, int> numbers = rows.putIfAbsent(
+      classroomId,
+      () => <String, int>{},
+    );
+    for (final String pupilId in pupilIds) {
+      numbers.putIfAbsent(pupilId, () => numbers.length + 1);
+    }
+    return DataSuccess<Map<String, int>>(Map<String, int>.of(numbers));
+  }
+}
+
 /// [ClassJournalRepository] kept in memory.
 final class InMemoryJournal implements ClassJournalRepository {
   /// The sessions, by identifier.
@@ -388,12 +410,16 @@ final class FakeClassroomStack {
   /// The assessments and their results.
   final InMemoryAssessments assessments = InMemoryAssessments();
 
+  /// The numbers of the pupils.
+  final InMemoryPupilNumbers numbers = InMemoryPupilNumbers();
+
   /// Identifiers.
   final CountingIds ids = CountingIds('id');
 
   late final PupilEnrollment _enrollment = PupilEnrollment(
     roster: roster,
     ids: ids,
+    numbers: numbers,
   );
 
   late final GetClassroomRosterUseCase _getRoster = GetClassroomRosterUseCase(
@@ -568,6 +594,7 @@ ClassroomPages buildTestClassroomPages(
           assignments: stack.assignments,
           journal: stack.journal,
           assessments: stack.assessments,
+          numbers: stack.numbers,
         ),
       ),
     ),
@@ -587,6 +614,7 @@ ClassAssessmentPages buildTestAssessmentPages(FakeClassroomStack stack) {
     getRoster: getRoster,
     assessments: stack.assessments,
     journal: stack.journal,
+    numbers: stack.numbers,
     clock: clock,
   );
   return ClassAssessmentPages(

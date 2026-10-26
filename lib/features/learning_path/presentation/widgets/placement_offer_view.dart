@@ -12,7 +12,7 @@ class PlacementOfferView extends StatelessWidget {
   /// Creates the offer.
   const PlacementOfferView({
     required this.onStart,
-    required this.onSkip,
+    this.onSkip,
     super.key,
   });
 
@@ -21,8 +21,9 @@ class PlacementOfferView extends StatelessWidget {
   /// Starts the test.
   final VoidCallback onStart;
 
-  /// Skips the test.
-  final VoidCallback onSkip;
+  /// Skips the test, or `null` when it cannot be skipped (a class
+  /// assessment).
+  final VoidCallback? onSkip;
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +67,12 @@ class PlacementOfferView extends StatelessWidget {
             label: context.l10n.placementOfferStart,
             onPressed: onStart,
           ),
-          DepthButton(
-            label: context.l10n.placementOfferSkip,
-            variant: DepthButtonVariant.secondary,
-            onPressed: onSkip,
-          ),
+          if (onSkip case final VoidCallback skip)
+            DepthButton(
+              label: context.l10n.placementOfferSkip,
+              variant: DepthButtonVariant.secondary,
+              onPressed: skip,
+            ),
         ],
       ),
     );

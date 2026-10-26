@@ -20,18 +20,21 @@ void main() {
   late InMemoryPlacementResultRepository results;
   late LearningPathPages pages;
   late int doneCount;
+  late int leaveCount;
 
   setUp(() {
     repository = InMemoryStageProgressRepository();
     results = InMemoryPlacementResultRepository(clock: FakeClock(quizStart));
     pages = buildTestPathPages(repository: repository, results: results);
     doneCount = 0;
+    leaveCount = 0;
   });
 
   Future<void> pumpPage(
     WidgetTester tester, {
     FakeSpeechService? speech,
     bool readsByItself = false,
+    bool isAssessment = false,
   }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -48,6 +51,8 @@ void main() {
           questionCard: quizPages.buildQuestionCard,
         ),
         onDone: () => doneCount++,
+        isAssessment: isAssessment,
+        onLeave: isAssessment ? () => leaveCount++ : null,
       ),
     );
     await tester.pumpAndSettle();
@@ -274,6 +279,51 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.byTooltip('Écouter'), findsNothing);
+    });
+  });
+
+  group('In a class assessment', () {
+    testWidgets('cannot be skipped', (WidgetTester tester) async {
+      // Act
+      await pumpPage(tester, isAssessment: true);
+      // Assert
+      expect(find.text('Faire le test'), findsOneWidget);
+      expect(find.text('Passer'), findsNothing);
+    });
+
+    testWidgets('leaving midway keeps the assessment pending', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpPage(tester, isAssessment: true);
+      await tester.tap(find.text('Faire le test'));
+      await tester.pumpAndSettle();
+      // Act
+      await tester.tap(find.byTooltip('Arrêter le test'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('reste à faire'), findsOneWidget);
+      await tester.tap(find.text('Arrêter'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(leaveCount, 1);
+      expect(doneCount, 0);
+    });
+
+    testWidgets('goes on with « Continuer » at the end', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpPage(tester, isAssessment: true);
+      await tester.tap(find.text('Faire le test'));
+      await tester.pumpAndSettle();
+      // Act: nothing is known, the test stops after the first skill.
+      while (find.byType(PlacementQuestionView).evaluate().isNotEmpty) {
+        await answerShown(tester, isRight: false);
+      }
+      await tester.tap(find.text('Continuer'));
+      // Assert
+      expect(doneCount, 1);
+      expect(find.text('Voir mon parcours'), findsNothing);
     });
   });
 }

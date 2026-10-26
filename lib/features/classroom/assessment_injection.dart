@@ -75,6 +75,7 @@ void _registerReports(GetIt sl) {
       getRoster: sl(),
       assessments: sl(),
       journal: sl(),
+      numbers: sl(),
       clock: sl(),
     ),
   );

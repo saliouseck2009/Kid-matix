@@ -137,6 +137,7 @@ final class ProgramReportFiles {
                 : l10n.classroomProgramPeriods(from, report.toLabel),
           ),
           ReportPdfParts.line(l10n.classroomProgramNote),
+          ?_secondOnlyLine(report),
           pw.SizedBox(height: ReportPdfParts.gap),
           ReportPdfParts.table(
             header: headerOf(
@@ -157,5 +158,18 @@ final class ProgramReportFiles {
       ),
     );
     return document.save();
+  }
+
+  /// The classes reported on the second period alone, or nothing.
+  pw.Widget? _secondOnlyLine(ProgramReport report) {
+    final String? from = report.fromLabel;
+    final List<String> names = <String>[
+      for (final ProgramReportRow row in report.classes)
+        if (row.isSecondPeriodOnly) row.name ?? '',
+    ];
+    if (from == null || names.isEmpty) return null;
+    return ReportPdfParts.line(
+      l10n.classroomProgramSecondOnly(from, report.toLabel, names.join(', ')),
+    );
   }
 }

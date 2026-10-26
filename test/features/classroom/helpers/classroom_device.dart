@@ -39,6 +39,8 @@ import 'package:kid_matix/features/classroom/domain/usecases/make_results_qr_use
 import 'package:kid_matix/features/classroom/domain/usecases/receive_results_qr_use_case.dart';
 import 'package:kid_matix/features/classroom/data/datasources/assignment_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/assessment_repository_impl.dart';
+import 'package:kid_matix/features/classroom/data/repositories/pupil_number_repository_impl.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/pupil_number_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/assessment_repository.dart';
 import 'package:kid_matix/features/classroom/data/datasources/class_journal_local_data_source_impl.dart';
 import 'package:kid_matix/features/classroom/data/repositories/assignment_repository_impl.dart';
@@ -207,6 +209,13 @@ final class ClassroomDevice {
   late final PupilEnrollment enrollment = PupilEnrollment(
     roster: roster,
     ids: ids,
+    numbers: numbers,
+  );
+
+  /// The number of each pupil in their class.
+  late final PupilNumberRepository numbers = PupilNumberRepositoryImpl(
+    database: database,
+    clock: clock,
   );
 
   /// Creates a class.
@@ -356,6 +365,7 @@ final class ClassroomDevice {
     assignments: assignments,
     journal: journal,
     assessments: assessments,
+    numbers: numbers,
   );
 
   /// Makes the QR code of new results.

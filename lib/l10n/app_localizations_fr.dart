@@ -161,6 +161,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get classroomNameHint => 'Par exemple CE1 B';
 
   @override
+  String get classroomNamePrivacyHint =>
+      'Le nom de la classe figure aussi dans les rapports anonymes : n\'y mets pas le nom d\'une personne.';
+
+  @override
   String get classroomPupilsTitle => 'Élèves';
 
   @override
@@ -532,6 +536,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Donne un nom à la période (30 caractères au plus).';
 
   @override
+  String get classroomAssessmentPresetStart => 'Début d\'année';
+
+  @override
+  String get classroomAssessmentPresetMiddle => 'Milieu d\'année';
+
+  @override
+  String get classroomAssessmentPresetEnd => 'Fin d\'année';
+
+  @override
   String get classroomAssessmentStart => 'Lancer';
 
   @override
@@ -592,7 +605,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get classroomReportCardHint =>
-      'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.';
+      'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Partage la version anonyme ; garde la version nominative pour toi.';
 
   @override
   String get classroomReportNeedsAssessment =>
@@ -606,6 +619,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get classroomReportNone => 'Aucune';
+
+  @override
+  String get classroomReportAnonymousVersion => 'Version anonyme (à partager)';
+
+  @override
+  String get classroomReportNamedVersion => 'Version nominative (pour moi)';
 
   @override
   String get classroomReportPdf => 'Exporter en PDF';
@@ -792,6 +811,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get classroomProgramTotal => 'Toutes les classes';
+
+  @override
+  String classroomProgramSecondOnly(String from, String to, String classes) {
+    return 'Sans évaluation « $from », reportées sur « $to » seulement : $classes.';
+  }
 
   @override
   String get classroomProgramFileName => 'Programme';
@@ -2112,6 +2136,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get placementQuitMessage =>
       'Les unités déjà trouvées restent ouvertes dans ton parcours.';
+
+  @override
+  String get placementQuitAssessmentMessage =>
+      'Ton évaluation reste à faire : tu pourras la reprendre depuis l\'accueil.';
+
+  @override
+  String get placementAssessmentContinue => 'Continuer';
 
   @override
   String get placementQuitCancel => 'Continuer le test';

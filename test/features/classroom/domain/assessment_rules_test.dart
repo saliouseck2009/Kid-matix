@@ -48,6 +48,12 @@ void main() {
         AssessmentRules.periodKeyOf('Début'),
         isNot(AssessmentRules.periodKeyOf('Fin')),
       );
+      for (final String apostrophe in <String>['’', '‘', 'ʼ']) {
+        expect(
+          AssessmentRules.periodKeyOf('Fin d${apostrophe}année'),
+          AssessmentRules.periodKeyOf("Fin d'année"),
+        );
+      }
     });
 
     test('reads back the assessment of its word check only', () {

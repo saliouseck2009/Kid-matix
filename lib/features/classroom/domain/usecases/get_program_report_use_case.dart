@@ -134,7 +134,11 @@ class GetProgramReportUseCase
     final DataState<ClassProgressReport> both = await _getClassReport(
       params: (classroomId: classroomId, fromKey: fromKey, toKey: toKey),
     );
-    if (fromKey == null || both is! DataFailed<ClassProgressReport>) {
+    // Only a class without the first period is reported on the second
+    // alone; any other failure stops the report.
+    if (fromKey == null ||
+        both is! DataFailed<ClassProgressReport> ||
+        both.exception is! NotFoundException) {
       return both;
     }
     return _getClassReport(

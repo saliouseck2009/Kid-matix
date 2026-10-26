@@ -11,10 +11,11 @@ import 'package:kid_matix/features/classroom/presentation/bloc/report_export_sta
 import 'package:kid_matix/features/classroom/presentation/report/class_report_files.dart';
 
 /// Makes the renderer of the files of [kind] in the language of the
-/// screen.
+/// screen: the named version when [isNamed], else the anonymous one.
 typedef ReportRendererOf<R> = ReportRenderer<R> Function(
   BuildContext context,
   ReportFileKind kind,
+  bool isNamed,
 );
 
 /// A report of the teacher area: [title], [hint], the two periods
@@ -27,6 +28,7 @@ class ReportExportCard<R> extends StatelessWidget {
     required this.hint,
     required this.periods,
     required this.rendererOf,
+    this.hasNamedVersion = false,
     super.key,
   });
 
@@ -41,6 +43,10 @@ class ReportExportCard<R> extends StatelessWidget {
 
   /// Makes the files.
   final ReportRendererOf<R> rendererOf;
+
+  /// Whether a named version exists next to the anonymous one: the
+  /// teacher then chooses which one to export, never both at once.
+  final bool hasNamedVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +72,14 @@ class ReportExportCard<R> extends StatelessWidget {
                 ),
               ),
               _PeriodChoice<R>(periods: periods, state: state),
+              if (hasNamedVersion) _VersionChoice<R>(isNamed: state.isNamed),
               if (state.isBusy)
                 const Center(child: CircularProgressIndicator())
               else
-                _ExportButtons<R>(rendererOf: rendererOf),
+                _ExportButtons<R>(
+                  rendererOf: rendererOf,
+                  isNamed: hasNamedVersion && state.isNamed,
+                ),
             ],
           ),
         );
@@ -101,6 +111,8 @@ class _PeriodChoice<R> extends StatelessWidget {
       spacing: AppSizes.space12,
       children: <Widget>[
         DropdownButtonFormField<String?>(
+          // initialValue is read once: a new value needs a new field.
+          key: ValueKey<String?>('from-${state.fromKey}'),
           initialValue: state.fromKey,
           isExpanded: true,
           decoration: InputDecoration(
@@ -120,6 +132,7 @@ class _PeriodChoice<R> extends StatelessWidget {
               cubit.choose(fromKey: key, toKey: state.toKey),
         ),
         DropdownButtonFormField<String>(
+          key: ValueKey<String>('to-${state.toKey}'),
           initialValue: state.toKey,
           isExpanded: true,
           decoration: InputDecoration(
@@ -141,10 +154,40 @@ class _PeriodChoice<R> extends StatelessWidget {
   }
 }
 
+/// « Version anonyme (à partager) », chosen by default, or « Version
+/// nominative (pour moi) ».
+class _VersionChoice<R> extends StatelessWidget {
+  const _VersionChoice({required this.isNamed});
+
+  final bool isNamed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton<bool>(
+      showSelectedIcon: false,
+      segments: <ButtonSegment<bool>>[
+        ButtonSegment<bool>(
+          value: false,
+          label: Text(context.l10n.classroomReportAnonymousVersion),
+        ),
+        ButtonSegment<bool>(
+          value: true,
+          label: Text(context.l10n.classroomReportNamedVersion),
+        ),
+      ],
+      selected: <bool>{isNamed},
+      onSelectionChanged: (Set<bool> choice) => context
+          .read<ReportExportCubit<R>>()
+          .chooseVersion(isNamed: choice.single),
+    );
+  }
+}
+
 class _ExportButtons<R> extends StatelessWidget {
-  const _ExportButtons({required this.rendererOf});
+  const _ExportButtons({required this.rendererOf, required this.isNamed});
 
   final ReportRendererOf<R> rendererOf;
+  final bool isNamed;
 
   @override
   Widget build(BuildContext context) {
@@ -158,14 +201,14 @@ class _ExportButtons<R> extends StatelessWidget {
           icon: Icons.picture_as_pdf_rounded,
           variant: DepthButtonVariant.secondary,
           onPressed: () =>
-              cubit.export(rendererOf(context, ReportFileKind.pdf)),
+              cubit.export(rendererOf(context, ReportFileKind.pdf, isNamed)),
         ),
         DepthButton(
           label: context.l10n.classroomReportCsv,
           icon: Icons.table_chart_rounded,
           variant: DepthButtonVariant.secondary,
           onPressed: () =>
-              cubit.export(rendererOf(context, ReportFileKind.csv)),
+              cubit.export(rendererOf(context, ReportFileKind.csv, isNamed)),
         ),
       ],
     );

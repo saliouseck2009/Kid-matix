@@ -22,12 +22,12 @@ abstract final class AssessmentRules {
     return cleaned;
   }
 
-  /// The key two labels of one period share: case, accents and spaces
-  /// left out, so « Début d'année » on one tablet and « debut d'annee »
-  /// on another are one period.
+  /// The key two labels of one period share: case, accents, spaces and
+  /// the kind of apostrophe left out, so « Début d'année » on one tablet
+  /// and « debut d’annee » on another are one period.
   static String periodKeyOf(String label) {
-    const String accented = 'àâäáãçéèêëíìîïñóòôöõúùûüýÿœæ';
-    const String plain = 'aaaaaceeeeiiiinooooouuuuyyoa';
+    const String accented = 'àâäáãçéèêëíìîïñóòôöõúùûüýÿœæ’‘ʼ';
+    const String plain = "aaaaaceeeeiiiinooooouuuuyyoa'''";
     final StringBuffer key = StringBuffer();
     for (final int rune in label.trim().toLowerCase().runes) {
       final String character = String.fromCharCode(rune);

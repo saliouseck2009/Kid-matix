@@ -108,6 +108,7 @@ void main() {
         _session('after', 'p2', DateTime(2026, 11, 2), 3),
       ],
       generatedAt: _end,
+      numbers: const <String, int>{'p1': 1, 'p2': 2, 'p3': 3},
     ));
     // Assert: the class.
     final DomainProgress actualNumbers = actual.domains.single;
@@ -150,6 +151,7 @@ void main() {
         _session('before', 'p1', DateTime(2026, 9, 20), 3),
       ],
       generatedAt: _start,
+      numbers: const <String, int>{},
     ));
     // Assert
     expect(actual.domains.single.averageFrom, isNull);

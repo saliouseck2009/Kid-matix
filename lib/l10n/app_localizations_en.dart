@@ -160,6 +160,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomNameHint => 'For example Year 2 B';
 
   @override
+  String get classroomNamePrivacyHint =>
+      'The class name also appears in anonymous reports: do not put a person\'s name in it.';
+
+  @override
   String get classroomPupilsTitle => 'Pupils';
 
   @override
@@ -527,6 +531,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Give the period a name (30 characters at most).';
 
   @override
+  String get classroomAssessmentPresetStart => 'Start of the year';
+
+  @override
+  String get classroomAssessmentPresetMiddle => 'Middle of the year';
+
+  @override
+  String get classroomAssessmentPresetEnd => 'End of the year';
+
+  @override
   String get classroomAssessmentStart => 'Start';
 
   @override
@@ -587,7 +600,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomReportCardHint =>
-      'Compare two assessments: levels, words understood, practice time and facts learned. Each export also gives an anonymous version.';
+      'Compare two assessments: levels, words understood, practice time and facts learned. Share the anonymous version; keep the named one for yourself.';
 
   @override
   String get classroomReportNeedsAssessment =>
@@ -601,6 +614,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomReportNone => 'None';
+
+  @override
+  String get classroomReportAnonymousVersion => 'Anonymous version (to share)';
+
+  @override
+  String get classroomReportNamedVersion => 'Named version (for me)';
 
   @override
   String get classroomReportPdf => 'Export as PDF';
@@ -786,6 +805,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomProgramTotal => 'All classes';
+
+  @override
+  String classroomProgramSecondOnly(String from, String to, String classes) {
+    return 'Without a “$from” assessment, reported on “$to” only: $classes.';
+  }
 
   @override
   String get classroomProgramFileName => 'Programme';
@@ -2102,6 +2126,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get placementQuitMessage =>
       'The units you already found stay open in your path.';
+
+  @override
+  String get placementQuitAssessmentMessage =>
+      'Your assessment is still to do: you can start it again from the home screen.';
+
+  @override
+  String get placementAssessmentContinue => 'Continue';
 
   @override
   String get placementQuitCancel => 'Keep going';

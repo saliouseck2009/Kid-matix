@@ -13,6 +13,7 @@ import 'package:kid_matix/features/classroom/domain/repositories/assessment_repo
 import 'package:kid_matix/features/classroom/domain/repositories/assignment_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/class_journal_repository.dart';
 import 'package:kid_matix/features/classroom/domain/repositories/classroom_repository.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/pupil_number_repository.dart';
 import 'package:kid_matix/features/classroom/domain/services/pupil_merge.dart';
 
 /// Merges a class file into this tablet, without duplicates: the class,
@@ -33,6 +34,7 @@ class ClassroomMerger {
     required this._assignments,
     required this._journal,
     required this._assessments,
+    required this._numbers,
   });
 
   final ClassroomRepository _classrooms;
@@ -40,6 +42,7 @@ class ClassroomMerger {
   final AssignmentRepository _assignments;
   final ClassJournalRepository _journal;
   final AssessmentRepository _assessments;
+  final PupilNumberRepository _numbers;
 
   /// Merges [transfer]; fails with an `InvalidFileException` when a part
   /// of it points to another class or to a pupil it does not carry, and
@@ -64,6 +67,14 @@ class ClassroomMerger {
       pupils: transfer.pupils,
     );
     if (pupils case DataFailed<PupilMerge>(:final exception)) {
+      return DataFailed<ClassroomMergeReport>(exception);
+    }
+    // A pupil new on this tablet gets the next number of the class here.
+    final DataState<Map<String, int>> numbered = await _numbers.assign(
+      classroomId: transfer.classroom.id,
+      pupilIds: transfer.pupils.map((PupilEntity pupil) => pupil.id).toList(),
+    );
+    if (numbered case DataFailed<Map<String, int>>(:final exception)) {
       return DataFailed<ClassroomMergeReport>(exception);
     }
     final AppException? failure =

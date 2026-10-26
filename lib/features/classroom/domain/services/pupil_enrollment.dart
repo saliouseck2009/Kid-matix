@@ -4,15 +4,21 @@ import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/id_generator.dart';
 import 'package:kid_matix/core/services/pupil_roster_service.dart';
 import 'package:kid_matix/features/classroom/domain/entities/classroom_rules.dart';
+import 'package:kid_matix/features/classroom/domain/repositories/pupil_number_repository.dart';
 
 /// Adds a list of nicknames to a class as new pupils, shared by the
 /// creation of a class and the « Ajouter des élèves » of its page.
 class PupilEnrollment {
   /// Creates the helper.
-  const PupilEnrollment({required this._roster, required this._ids});
+  const PupilEnrollment({
+    required this._roster,
+    required this._ids,
+    required this._numbers,
+  });
 
   final PupilRosterService _roster;
   final IdGenerator _ids;
+  final PupilNumberRepository _numbers;
 
   /// The nicknames of [nicknames] that cannot be used: they break the
   /// nickname rules or repeat an earlier one.
@@ -41,18 +47,31 @@ class PupilEnrollment {
     return null;
   }
 
-  /// Adds [nicknames] to [classroomId], each with a new identifier;
-  /// resolves to how many pupils were added.
+  /// Adds [nicknames] to [classroomId], each with a new identifier and
+  /// the next number of the class; resolves to how many pupils were
+  /// added.
   Future<DataState<int>> enroll({
     required String classroomId,
     required List<String> nicknames,
-  }) {
-    return _roster.addPupils(
+  }) async {
+    final List<PupilDraft> pupils = <PupilDraft>[
+      for (final String nickname in nicknames)
+        PupilDraft(id: _ids.generateId(), nickname: nickname),
+    ];
+    final DataState<int> added = await _roster.addPupils(
       classroomId: classroomId,
-      pupils: <PupilDraft>[
-        for (final String nickname in nicknames)
-          PupilDraft(id: _ids.generateId(), nickname: nickname),
-      ],
+      pupils: pupils,
     );
+    if (added is DataFailed<int>) return added;
+    final DataState<Map<String, int>> numbered = await _numbers.assign(
+      classroomId: classroomId,
+      pupilIds: pupils.map((PupilDraft pupil) => pupil.id).toList(),
+    );
+    return switch (numbered) {
+      DataSuccess<Map<String, int>>() => added,
+      DataFailed<Map<String, int>>(:final exception) => DataFailed<int>(
+        exception,
+      ),
+    };
   }
 }

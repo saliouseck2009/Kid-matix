@@ -340,6 +340,12 @@ abstract class AppLocalizations {
   /// **'Par exemple CE1 B'**
   String get classroomNameHint;
 
+  /// Class creation, helper line under the class name field: the name stays in anonymous reports, so it must not hold a person's name (teacher's name). Informal "tu". Two lines at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le nom de la classe figure aussi dans les rapports anonymes : n\'y mets pas le nom d\'une personne.'**
+  String get classroomNamePrivacyHint;
+
   /// Class mode, title of the pupils part of the creation of a class and of the list of pupils of the class page ("Pupils"). One word.
   ///
   /// In fr, this message translates to:
@@ -826,6 +832,24 @@ abstract class AppLocalizations {
   /// **'Donne un nom à la période (30 caractères au plus).'**
   String get classroomAssessmentLabelError;
 
+  /// Class mode, suggested name of an assessment period, a chip that fills the period name field. Use the same words every time: periods are grouped by name.
+  ///
+  /// In fr, this message translates to:
+  /// **'Début d\'année'**
+  String get classroomAssessmentPresetStart;
+
+  /// Class mode, suggested name of an assessment period, a chip that fills the period name field.
+  ///
+  /// In fr, this message translates to:
+  /// **'Milieu d\'année'**
+  String get classroomAssessmentPresetMiddle;
+
+  /// Class mode, suggested name of an assessment period, a chip that fills the period name field.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin d\'année'**
+  String get classroomAssessmentPresetEnd;
+
   /// Class mode, confirm button of the dialog that opens a new assessment. A verb, one word.
   ///
   /// In fr, this message translates to:
@@ -901,7 +925,7 @@ abstract class AppLocalizations {
   /// Class mode, explanation of the class report card, addressed to the teacher. Two or three lines.
   ///
   /// In fr, this message translates to:
-  /// **'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Chaque export donne aussi une version anonyme.'**
+  /// **'Compare deux évaluations : niveaux, mots compris, temps de pratique et faits acquis. Partage la version anonyme ; garde la version nominative pour toi.'**
   String get classroomReportCardHint;
 
   /// Class mode, class report card when the class has no assessment yet.
@@ -927,6 +951,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune'**
   String get classroomReportNone;
+
+  /// Class report card, first choice of the version to export, selected by default: pupils as numbers, the one to share with others. Short segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version anonyme (à partager)'**
+  String get classroomReportAnonymousVersion;
+
+  /// Class report card, second choice of the version to export: with the pupils' nicknames, for the teacher only. Short segment label.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version nominative (pour moi)'**
+  String get classroomReportNamedVersion;
 
   /// Class mode, button that makes the report as PDF files (named and anonymous) and opens the share sheet. One line.
   ///
@@ -1172,6 +1208,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Toutes les classes'**
   String get classroomProgramTotal;
+
+  /// Line of the school or programme report naming the classes that have no assessment of the first period and are reported on the second alone (their progress cannot be measured).
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans évaluation « {from} », reportées sur « {to} » seulement : {classes}.'**
+  String classroomProgramSecondOnly(String from, String to, String classes);
 
   /// Word in the name of the school or programme report file, such as KidMatix-Rapport-Programme-2026-11-01-anonyme.pdf. One word, no accents preferred.
   ///
@@ -3080,6 +3122,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Les unités déjà trouvées restent ouvertes dans ton parcours.'**
   String get placementQuitMessage;
+
+  /// Message of the dialog confirming that a pupil leaves the placement test of a class assessment: the assessment stays pending on the home. Speaks to a child, informal "tu".
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton évaluation reste à faire : tu pourras la reprendre depuis l\'accueil.'**
+  String get placementQuitAssessmentMessage;
+
+  /// Button of the result of the placement test during a class assessment: goes on to the word check ("Continue", infinitive verb). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get placementAssessmentContinue;
 
   /// Dialog button that stays in the placement test ("Go on with the test"). "Continuer" is an infinitive verb. Short, one line.
   ///
