@@ -78,6 +78,43 @@ class ProblemRecordingsTest(unittest.TestCase):
         self.assertEqual(len(set(keys)), 30)
 
 
+class ProvisionalTest(unittest.TestCase):
+    present = {("il_reste", "explanation"), ("il_reste", "example")}
+
+    def test_manifest_has_the_flag_only_when_provisional(self):
+        flagged = audio.build_manifest("wo", KEYS, self.present, provisional=True)
+        self.assertIs(flagged["provisional"], True)
+        plain = audio.build_manifest("wo", KEYS, self.present)
+        self.assertNotIn("provisional", plain)
+        self.assertEqual(
+            audio.build_manifest("wo", KEYS, self.present, provisional=False), plain
+        )
+
+    def test_requested_flag_always_wins(self):
+        self.assertTrue(audio.is_provisional(True, False, self.present, self.present))
+        self.assertTrue(audio.is_provisional(True, True, self.present, set()))
+
+    def test_real_recordings_over_all_the_standins_clear_the_flag(self):
+        self.assertFalse(audio.is_provisional(False, True, self.present, self.present))
+        self.assertFalse(audio.is_provisional(False, False, self.present, set()))
+
+    def test_partial_delivery_keeps_the_flag(self):
+        converted = {("il_reste", "explanation")}
+        self.assertTrue(audio.is_provisional(False, True, self.present, converted))
+
+    def test_flag_is_read_from_the_manifest_on_disk(self):
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder)
+            self.assertFalse(audio.read_provisional(output))
+            manifest = output / "manifest.json"
+            manifest.write_text('{"provisional": true, "words": {}}')
+            self.assertTrue(audio.read_provisional(output))
+            manifest.write_text('{"words": {}}')
+            self.assertFalse(audio.read_provisional(output))
+            manifest.write_text("not json")
+            self.assertFalse(audio.read_provisional(output))
+
+
 class ClassifyTest(unittest.TestCase):
     def test_explanation_and_example(self):
         self.assertEqual(audio.classify("wo_il_reste", "wo", KEYS), ("il_reste", "explanation"))
@@ -159,6 +196,28 @@ class ConvertTest(unittest.TestCase):
                 capture_output=True, text=True, check=True,
             ).stdout.strip()
             self.assertEqual(channels, "1")
+
+    def test_converts_a_16_khz_wav_like_the_voice_makes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "wo_il_reste.wav"
+            target = Path(folder) / "out.m4a"
+            subprocess.run(
+                [
+                    "ffmpeg", "-y", "-loglevel", "error",
+                    "-f", "lavfi", "-i", "sine=frequency=300:sample_rate=16000:d=1",
+                    "-ac", "1", "-c:a", "pcm_s16le", str(source),
+                ],
+                check=True,
+            )
+            self.assertGreater(audio.convert(source, target), 0.5)
+            rate = subprocess.run(
+                [
+                    "ffprobe", "-v", "error", "-show_entries", "stream=sample_rate",
+                    "-of", "default=nw=1:nk=1", str(target),
+                ],
+                capture_output=True, text=True, check=True,
+            ).stdout.strip()
+            self.assertEqual(rate, "32000")
 
     def test_scan_accepts_other_extensions(self):
         with tempfile.TemporaryDirectory() as folder:

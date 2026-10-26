@@ -8,6 +8,8 @@ of the recorder, never renamed) and writes the language pack of the app:
   assets/audio/<language>/wo_<key>_exemple.m4a    its example
   assets/audio/<language>/wo_problem_<key>.m4a    the statement of a problem
   assets/audio/<language>/manifest.json           what the pack holds
+                                                  ("provisional": true when
+                                                  --provisional)
   assets/audio/packs.json                         the list of languages
 
 For each file it trims the silence at the start and at the end, keeping a
@@ -24,6 +26,10 @@ package is involved.
 Usage:
   python3 tool/process_audio.py INPUT_DIR [--language wo] [--output DIR]
   python3 tool/process_audio.py INPUT_DIR --check     names only, no ffmpeg
+  python3 tool/process_audio.py INPUT_DIR --provisional   mark the pack as
+      machine-made stand-ins (tool/placeholder_audio/); the app then shows a
+      notice to the teacher. A later run without the option removes the mark
+      once every file of the pack comes from that run.
 
 The file names keep the language code as a prefix (`wo_`), so the guide and
 the table stay the reference. Exit status 1 when a file is missing or not
@@ -155,13 +161,42 @@ def present_in(output, language, keys, problem_keys=()):
     }
 
 
-def build_manifest(language, keys, present, problem_keys=()):
-    """The manifest dict for the slots in `present`."""
+def build_manifest(language, keys, present, problem_keys=(), provisional=False):
+    """The manifest dict for the slots in `present`; `provisional` adds the
+    flag that tells the app the voices are machine-made stand-ins."""
     words = {}
     for key, kind in slots(keys, problem_keys):
         if (key, kind) in present:
             words.setdefault(key, {})[kind] = file_name(language, key, kind)
-    return {"language": language, "format": "m4a", "words": words}
+    manifest = {"language": language, "format": "m4a"}
+    if provisional:
+        manifest["provisional"] = True
+    manifest["words"] = words
+    return manifest
+
+
+def read_provisional(output):
+    """Whether the manifest already in `output` is flagged provisional."""
+    manifest = output / "manifest.json"
+    if not manifest.exists():
+        return False
+    try:
+        return json.loads(manifest.read_text(encoding="utf-8")).get("provisional") is True
+    except (ValueError, AttributeError):
+        return False
+
+
+def is_provisional(requested, was_provisional, present, converted):
+    """The flag of the new manifest.
+
+    Asked with --provisional: set. Otherwise it stays set while the pack
+    still holds a file that this run did not convert (a partial delivery of
+    real recordings over the stand-ins), and goes away when every file of
+    the pack comes from this run (or the pack was never provisional).
+    """
+    if requested:
+        return True
+    return was_provisional and not set(present) <= set(converted)
 
 
 def convert(source, target):
@@ -208,6 +243,8 @@ def main():
     parser.add_argument("input_dir", type=Path)
     parser.add_argument("--language", default="wo")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--provisional", action="store_true",
+                        help="flag the pack as machine-made stand-ins")
     parser.add_argument("--check", action="store_true",
                         help="only check the names and the missing files")
     args = parser.parse_args()
@@ -225,6 +262,8 @@ def main():
         if shutil.which("ffmpeg") is None or shutil.which("ffprobe") is None:
             raise SystemExit("ffmpeg and ffprobe are needed: brew install ffmpeg")
         output.mkdir(parents=True, exist_ok=True)
+        was_provisional = read_provisional(output)
+        converted = set(found)
         for (key, kind), source in found.items():
             target = output / file_name(args.language, key, kind)
             seconds = convert(source, target)
@@ -233,7 +272,16 @@ def main():
         # The pack is what the output folder holds, so a second partial
         # delivery adds to the first instead of erasing it.
         found = {slot: None for slot in present_in(output, args.language, keys, problem_keys)}
-        manifest = build_manifest(args.language, keys, set(found), problem_keys)
+        provisional = is_provisional(
+            args.provisional, was_provisional, set(found), set(converted)
+        )
+        if was_provisional and not provisional:
+            print("the pack is no longer provisional")
+        elif provisional and not args.provisional:
+            print("the pack stays provisional: some files are still stand-ins")
+        manifest = build_manifest(
+            args.language, keys, set(found), problem_keys, provisional
+        )
         (output / "manifest.json").write_text(
             json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
         )
