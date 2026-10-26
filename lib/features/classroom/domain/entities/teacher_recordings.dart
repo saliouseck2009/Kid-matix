@@ -42,6 +42,7 @@ final class TeacherRecordings {
     required this.languageCode,
     required this.kind,
     required List<RecordingWord> words,
+    this.isProvisional = false,
   }) : languages = List<String>.unmodifiable(languages),
        words = List<RecordingWord>.unmodifiable(words);
 
@@ -56,4 +57,8 @@ final class TeacherRecordings {
 
   /// Each math word, in the order of the families.
   final List<RecordingWord> words;
+
+  /// Whether the pack of [languageCode] is made of machine-made stand-ins,
+  /// to be replaced by real recordings.
+  final bool isProvisional;
 }

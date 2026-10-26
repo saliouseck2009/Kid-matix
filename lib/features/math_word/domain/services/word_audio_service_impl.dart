@@ -39,6 +39,10 @@ final class WordAudioServiceImpl implements WordAudioService {
   String? get defaultLanguage => _packs.keys.firstOrNull;
 
   @override
+  bool isProvisional(String languageCode) =>
+      _packs[languageCode]?.isProvisional ?? false;
+
+  @override
   bool hasAudio({
     required String languageCode,
     required String wordKey,

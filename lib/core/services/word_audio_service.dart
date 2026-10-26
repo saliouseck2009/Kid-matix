@@ -17,6 +17,11 @@ abstract interface class WordAudioService {
   /// index, or `null` when the app ships none.
   String? get defaultLanguage;
 
+  /// Whether the pack of [languageCode] holds machine-made stand-ins
+  /// (`"provisional": true` in its manifest) instead of real recordings.
+  /// Screens for the teacher and the « Aide audio » setting then say so.
+  bool isProvisional(String languageCode);
+
   /// Whether the pack of [languageCode] holds the recording [kind] of the
   /// word [wordKey].
   bool hasAudio({

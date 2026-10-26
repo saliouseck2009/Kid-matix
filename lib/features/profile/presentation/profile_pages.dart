@@ -46,6 +46,7 @@ final class ProfilePages {
     required this._backupUseCases,
     this._gateRandom,
     this.helpAudioLanguages = const <String>[],
+    this.provisionalHelpAudioLanguages = const <String>{},
   });
 
   final GetProfilesUseCase _getProfiles;
@@ -63,6 +64,10 @@ final class ProfilePages {
   /// Codes of the help languages that have an audio pack, offered by the
   /// "Aide audio" setting; none hides it.
   final List<String> helpAudioLanguages;
+
+  /// Codes among [helpAudioLanguages] whose pack is made of machine-made
+  /// stand-ins, flagged by a notice under the "Aide audio" setting.
+  final Set<String> provisionalHelpAudioLanguages;
 
   /// "Qui joue ?"; [header] goes above the players, such as the classes
   /// of the device, [footer] at the bottom, such as the entry of the
@@ -180,6 +185,7 @@ final class ProfilePages {
         reminderRows: reminderRows,
         languageRows: languageRows,
         helpAudioLanguages: helpAudioLanguages,
+        provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
       ),
     );
   }

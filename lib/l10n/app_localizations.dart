@@ -1947,6 +1947,12 @@ abstract class AppLocalizations {
   /// **'Aucune'**
   String get helpAudioNone;
 
+  /// One-line notice shown under the « Aide audio » setting and at the top of the teacher's recordings page while the audio pack of the help language is made of machine-made stand-ins (manifest flag provisional). It tells the adult that the voices are an automatic synthesis to be replaced by real recordings. Never shown on the child's screens. Wolof is named because the stand-in pack is the Wolof one.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements.'**
+  String get audioPackProvisionalNotice;
+
   /// Name of a help language, from the code of its audio pack: it fills the audio help setting and the "Listen in..." button. Lower case in French and Spanish (a language name), as it is used inside a sentence. A new language adds one choice here; an unknown code is shown as it is.
   ///
   /// In fr, this message translates to:

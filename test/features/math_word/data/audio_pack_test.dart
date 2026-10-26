@@ -78,6 +78,67 @@ void main() {
       expect(actualManifest.wordKeys, <String>['il_reste', 'ajouter']);
     });
 
+    test('is not provisional without the flag', () {
+      // Act
+      final AudioPackManifest actualManifest = _manifest();
+      // Assert
+      expect(actualManifest.isProvisional, isFalse);
+      expect(actualManifest.toJson().containsKey('provisional'), isFalse);
+    });
+
+    test('reads the provisional flag and keeps it when it changes', () {
+      // Arrange
+      final AudioPackManifest provisional = AudioPackManifest.fromJson(
+        <String, Object?>{
+          'language': 'wo',
+          'provisional': true,
+          'words': <String, Object?>{
+            'ajouter': <String, Object?>{'explanation': 'wo_ajouter.m4a'},
+          },
+        },
+      );
+      // Act
+      final AudioPackManifest actualWith = provisional.withFile(
+        'il_reste',
+        WordAudioKind.explanation,
+        'wo_il_reste.m4a',
+      );
+      final AudioPackManifest actualWithout = provisional.withoutFile(
+        'ajouter',
+        WordAudioKind.explanation,
+      );
+      // Assert
+      expect(provisional.isProvisional, isTrue);
+      expect(actualWith.isProvisional, isTrue);
+      expect(actualWithout.isProvisional, isTrue);
+      expect(provisional.toJson()['provisional'], isTrue);
+    });
+
+    test('treats an explicit false flag as not provisional', () {
+      // Act
+      final AudioPackManifest actualManifest = AudioPackManifest.fromJson(
+        <String, Object?>{
+          'language': 'wo',
+          'provisional': false,
+          'words': <String, Object?>{},
+        },
+      );
+      // Assert
+      expect(actualManifest.isProvisional, isFalse);
+    });
+
+    test('refuses a provisional flag that is not a boolean', () {
+      // Assert
+      expect(
+        () => AudioPackManifest.fromJson(<String, Object?>{
+          'language': 'wo',
+          'provisional': 'yes',
+          'words': <String, Object?>{},
+        }),
+        throwsFormatException,
+      );
+    });
+
     test('refuses a manifest of the wrong shape', () {
       // Assert
       expect(

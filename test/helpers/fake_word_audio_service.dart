@@ -14,6 +14,7 @@ final class FakeWordAudioService implements WordAudioService {
     this.recorded = const <String>{},
     this.withExample = const <String>{},
     this.isInstant = true,
+    this.isPackProvisional = false,
   });
 
   /// Code of the only language of the pack.
@@ -29,6 +30,9 @@ final class FakeWordAudioService implements WordAudioService {
   /// [stop] or [finishSound].
   final bool isInstant;
 
+  /// Whether the pack is made of machine-made stand-ins.
+  final bool isPackProvisional;
+
   /// What was played, as `<language>:<key>:<kind>`, in order.
   final List<String> played = <String>[];
 
@@ -40,6 +44,10 @@ final class FakeWordAudioService implements WordAudioService {
 
   @override
   String? get defaultLanguage => language;
+
+  @override
+  bool isProvisional(String languageCode) =>
+      languageCode == language && isPackProvisional;
 
   @override
   bool hasAudio({

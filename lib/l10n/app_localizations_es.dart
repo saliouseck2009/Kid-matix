@@ -1306,6 +1306,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get helpAudioNone => 'Ninguna';
 
   @override
+  String get audioPackProvisionalNotice =>
+      'Voz wolof provisional (síntesis automática): se sustituirá por grabaciones reales.';
+
+  @override
   String helpAudioLanguageName(String code) {
     String _temp0 = intl.Intl.selectLogic(
       code,

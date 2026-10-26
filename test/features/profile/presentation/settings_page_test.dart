@@ -13,6 +13,9 @@ import 'package:mocktail/mocktail.dart';
 import '../../../helpers/pump_localized.dart';
 import '../helpers/profile_fixtures.dart';
 
+const String _provisionalNotice =
+    'Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements.';
+
 void main() {
   late MockUpdateSettingsUseCase mockUpdate;
   late MockResetProgressUseCase mockReset;
@@ -32,12 +35,14 @@ void main() {
   Future<void> pumpSettings(
     WidgetTester tester, {
     List<String> helpAudioLanguages = const <String>[],
+    Set<String> provisionalHelpAudioLanguages = const <String>{},
     GetProfileUseCase? getProfile,
   }) async {
     tester.view.physicalSize = const Size(1080, 3000);
     addTearDown(tester.view.resetPhysicalSize);
     final ProfilePages pages = buildProfilePages(
       helpAudioLanguages: helpAudioLanguages,
+      provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
       settingsUseCases: buildSettingsUseCases(
         getProfile: getProfile,
         updateSettings: mockUpdate,
@@ -116,6 +121,26 @@ void main() {
       expect(find.text('Aide audio'), findsOneWidget);
       expect(find.text('Wolof'), findsOneWidget);
       expect(lastSaved().helpAudioLanguage, HelpAudio.none);
+    });
+    testWidgets('says the Wolof voice is provisional when the pack is', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(
+        tester,
+        helpAudioLanguages: <String>['wo'],
+        provisionalHelpAudioLanguages: <String>{'wo'},
+      );
+      // Assert
+      expect(find.text(_provisionalNotice), findsOneWidget);
+    });
+    testWidgets('shows no notice for a real pack', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(tester, helpAudioLanguages: <String>['wo']);
+      // Assert
+      expect(find.text(_provisionalNotice), findsNothing);
     });
     testWidgets('saves the timer and the daily goal chosen', (
       WidgetTester tester,

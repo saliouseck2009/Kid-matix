@@ -12,12 +12,17 @@ import 'package:meta/meta.dart';
 ///  "words": {"il_reste": {"explanation": "wo_il_reste.m4a",
 ///                         "example": "wo_il_reste_exemple.m4a"}}}
 /// ```
+///
+/// A pack of machine-made stand-ins also holds `"provisional": true`
+/// (absent means `false`); the teacher area and the « Aide audio » setting
+/// then say so.
 @immutable
 final class AudioPackManifest {
   /// Creates the manifest of [language] holding [files].
   AudioPackManifest({
     required this.language,
     required Map<String, Map<WordAudioKind, String>> files,
+    this.isProvisional = false,
   }) : _files = <String, Map<WordAudioKind, String>>{
          for (final MapEntry<String, Map<WordAudioKind, String>> entry
              in files.entries)
@@ -51,11 +56,23 @@ final class AudioPackManifest {
       }
       if (kinds.isNotEmpty) files[key] = kinds;
     }
-    return AudioPackManifest(language: language, files: files);
+    final Object? provisional = json['provisional'];
+    if (provisional != null && provisional is! bool) {
+      throw const FormatException('Bad provisional flag in the manifest');
+    }
+    return AudioPackManifest(
+      language: language,
+      files: files,
+      isProvisional: provisional == true,
+    );
   }
 
   /// Code of the help language, such as `wo`.
   final String language;
+
+  /// Whether the recordings are machine-made stand-ins, to be replaced by
+  /// real ones before any release.
+  final bool isProvisional;
 
   final Map<String, Map<WordAudioKind, String>> _files;
 
@@ -85,6 +102,7 @@ final class AudioPackManifest {
   AudioPackManifest withFile(String wordKey, WordAudioKind kind, String file) {
     return AudioPackManifest(
       language: language,
+      isProvisional: isProvisional,
       files: <String, Map<WordAudioKind, String>>{
         ..._files,
         wordKey: <WordAudioKind, String>{...?_files[wordKey], kind: file},
@@ -96,6 +114,7 @@ final class AudioPackManifest {
   AudioPackManifest withoutFile(String wordKey, WordAudioKind kind) {
     return AudioPackManifest(
       language: language,
+      isProvisional: isProvisional,
       files: <String, Map<WordAudioKind, String>>{
         for (final MapEntry<String, Map<WordAudioKind, String>> entry
             in _files.entries)
@@ -114,6 +133,7 @@ final class AudioPackManifest {
     return <String, Object?>{
       'language': language,
       'format': format,
+      if (isProvisional) 'provisional': true,
       'words': <String, Object?>{
         for (final MapEntry<String, Map<WordAudioKind, String>> entry
             in _files.entries)

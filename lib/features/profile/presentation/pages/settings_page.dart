@@ -8,6 +8,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/choice_segments.dart';
+import 'package:kid_matix/core/widgets/provisional_audio_notice.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_cubit.dart';
@@ -29,6 +30,7 @@ class SettingsPage extends StatelessWidget {
     this.reminderRows = const <Widget>[],
     this.languageRows = const <Widget>[],
     this.helpAudioLanguages = const <String>[],
+    this.provisionalHelpAudioLanguages = const <String>{},
     super.key,
   });
 
@@ -50,6 +52,10 @@ class SettingsPage extends StatelessWidget {
   /// Codes of the help languages the app has an audio pack for; the "Aide
   /// audio" row is hidden when empty.
   final List<String> helpAudioLanguages;
+
+  /// Codes among [helpAudioLanguages] whose pack is made of machine-made
+  /// stand-ins: the row then carries a notice.
+  final Set<String> provisionalHelpAudioLanguages;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,7 @@ class SettingsPage extends StatelessWidget {
                   reminderRows: reminderRows,
                   languageRows: languageRows,
                   helpAudioLanguages: helpAudioLanguages,
+                  provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
                 ),
               };
             },
@@ -108,6 +115,7 @@ class _SettingsView extends StatelessWidget {
     required this.reminderRows,
     required this.languageRows,
     required this.helpAudioLanguages,
+    required this.provisionalHelpAudioLanguages,
   });
 
   static const double _gap = 20;
@@ -119,6 +127,7 @@ class _SettingsView extends StatelessWidget {
   final List<Widget> reminderRows;
   final List<Widget> languageRows;
   final List<String> helpAudioLanguages;
+  final Set<String> provisionalHelpAudioLanguages;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -243,6 +252,7 @@ class _SettingsView extends StatelessWidget {
             if (helpAudioLanguages.isNotEmpty)
               _HelpAudioRow(
                 languages: helpAudioLanguages,
+                provisionalLanguages: provisionalHelpAudioLanguages,
                 selected: settings.helpAudioLanguage,
                 backgroundColor: band,
                 onSelected: (String language) => cubit.update(
@@ -298,12 +308,14 @@ class _SettingsView extends StatelessWidget {
 class _HelpAudioRow extends StatelessWidget {
   const _HelpAudioRow({
     required this.languages,
+    required this.provisionalLanguages,
     required this.selected,
     required this.backgroundColor,
     required this.onSelected,
   });
 
   final List<String> languages;
+  final Set<String> provisionalLanguages;
   final String? selected;
   final Color backgroundColor;
   final ValueChanged<String> onSelected;
@@ -311,17 +323,18 @@ class _HelpAudioRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> choices = <String>[...languages, HelpAudio.none];
-    return SettingsChoiceRow(
+    // Never chosen: the first pack. A language the app no longer ships
+    // counts as none.
+    final String current = switch (selected) {
+      null => languages.first,
+      final String code when choices.contains(code) => code,
+      _ => HelpAudio.none,
+    };
+    final Widget row = SettingsChoiceRow(
       label: context.l10n.settingsHelpAudio,
       choices: ChoiceSegments<String>(
         choices: choices,
-        // Never chosen: the first pack. A language the app no longer ships
-        // counts as none.
-        selected: switch (selected) {
-          null => languages.first,
-          final String code when choices.contains(code) => code,
-          _ => HelpAudio.none,
-        },
+        selected: current,
         backgroundColor: backgroundColor,
         labelOf: (String code) => code == HelpAudio.none
             ? context.l10n.helpAudioNone
@@ -330,6 +343,17 @@ class _HelpAudioRow extends StatelessWidget {
               ),
         onSelected: onSelected,
       ),
+    );
+    if (!provisionalLanguages.contains(current)) return row;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        row,
+        const Padding(
+          padding: EdgeInsets.only(bottom: AppSizes.space16),
+          child: ProvisionalAudioNotice(),
+        ),
+      ],
     );
   }
 }
