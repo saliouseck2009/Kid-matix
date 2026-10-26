@@ -14,6 +14,10 @@ abstract interface class TeacherAudioService {
   /// this device by pack file only.
   List<String> get packLanguages;
 
+  /// Whether the bundled pack of [languageCode] is made of machine-made
+  /// stand-ins (`"provisional": true` in its manifest).
+  bool isPackProvisional(String languageCode);
+
   /// Whether the bundled pack of [languageCode] holds the recording
   /// [kind] of [wordKey].
   bool hasPackAudio({

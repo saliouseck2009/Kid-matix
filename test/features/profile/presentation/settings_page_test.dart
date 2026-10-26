@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/widgets/choice_segments.dart';
+import 'package:kid_matix/core/widgets/parental_gate.dart';
 import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
@@ -12,6 +16,15 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/pump_localized.dart';
 import '../helpers/profile_fixtures.dart';
+
+const int _seed = 11;
+const String _provisionalNotice =
+    'Voix wolof provisoire (synthèse automatique)\u00a0: '
+    'à remplacer par de vrais enregistrements.';
+
+int _gateNumber() =>
+    ParentalGate.minNumber +
+    Random(_seed).nextInt(ParentalGate.maxNumber - ParentalGate.minNumber + 1);
 
 void main() {
   late MockUpdateSettingsUseCase mockUpdate;
@@ -32,12 +45,15 @@ void main() {
   Future<void> pumpSettings(
     WidgetTester tester, {
     List<String> helpAudioLanguages = const <String>[],
+    Set<String> provisionalHelpAudioLanguages = const <String>{},
     GetProfileUseCase? getProfile,
   }) async {
     tester.view.physicalSize = const Size(1080, 3000);
     addTearDown(tester.view.resetPhysicalSize);
     final ProfilePages pages = buildProfilePages(
       helpAudioLanguages: helpAudioLanguages,
+      provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
+      gateRandom: Random(_seed),
       settingsUseCases: buildSettingsUseCases(
         getProfile: getProfile,
         updateSettings: mockUpdate,
@@ -116,6 +132,117 @@ void main() {
       expect(find.text('Aide audio'), findsOneWidget);
       expect(find.text('Wolof'), findsOneWidget);
       expect(lastSaved().helpAudioLanguage, HelpAudio.none);
+    });
+    testWidgets('says the Wolof voice is provisional when the pack is', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(
+        tester,
+        helpAudioLanguages: <String>['wo'],
+        provisionalHelpAudioLanguages: <String>{'wo'},
+      );
+      // Assert
+      expect(find.text(_provisionalNotice), findsOneWidget);
+    });
+    testWidgets(
+      'does not offer a provisional Wolof to a child who never chose',
+      (
+        WidgetTester tester,
+      ) async {
+        // Act
+        await pumpSettings(
+          tester,
+          helpAudioLanguages: <String>['wo'],
+          provisionalHelpAudioLanguages: <String>{'wo'},
+        );
+        // Assert: « Aucune » is the selection, Wolof stays one tap away.
+        final ChoiceSegments<String> actualRow = tester.widget(
+          find.byWidgetPredicate(
+            (Widget w) =>
+                w is ChoiceSegments<String> &&
+                w.choices.contains(HelpAudio.none),
+          ),
+        );
+        expect(actualRow.selected, HelpAudio.none);
+        expect(find.text('Wolof'), findsOneWidget);
+      },
+    );
+    testWidgets('lets an adult pick a provisional Wolof through the gate', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpSettings(
+        tester,
+        helpAudioLanguages: <String>['wo'],
+        provisionalHelpAudioLanguages: <String>{'wo'},
+      );
+      // Act
+      await tester.tap(find.text('Wolof'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), '${_gateNumber()}');
+      await tester.tap(find.text('Valider'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(lastSaved().helpAudioLanguage, 'wo');
+      expect(find.text(_provisionalNotice), findsOneWidget);
+    });
+    testWidgets('keeps a child from turning a provisional Wolof on alone', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpSettings(
+        tester,
+        helpAudioLanguages: <String>['wo'],
+        provisionalHelpAudioLanguages: <String>{'wo'},
+      );
+      // Act: a wrong answer, then closing the gate.
+      await tester.tap(find.text('Wolof'));
+      await tester.pumpAndSettle();
+      expect(find.byType(ParentalGate), findsOneWidget);
+      await tester.enterText(find.byType(TextField), '${_gateNumber() + 1}');
+      await tester.tap(find.text('Valider'));
+      await tester.pumpAndSettle();
+      // Assert
+      verifyNever(() => mockUpdate.call(params: any(named: 'params')));
+    });
+    testWidgets('turns the help off without the gate', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpSettings(
+        tester,
+        helpAudioLanguages: <String>['wo'],
+        provisionalHelpAudioLanguages: <String>{'wo'},
+      );
+      // Act
+      await tester.tap(find.text('Aucune'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(ParentalGate), findsNothing);
+      expect(lastSaved().helpAudioLanguage, HelpAudio.none);
+    });
+    testWidgets('keeps a real Wolof as the default help language', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(tester, helpAudioLanguages: <String>['wo']);
+      // Assert
+      final ChoiceSegments<String> actualRow = tester.widget(
+        find.byWidgetPredicate(
+          (Widget w) =>
+              w is ChoiceSegments<String> && w.choices.contains(HelpAudio.none),
+        ),
+      );
+      expect(actualRow.selected, 'wo');
+    });
+    testWidgets('shows no notice for a real pack', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(tester, helpAudioLanguages: <String>['wo']);
+      // Assert
+      expect(find.text(_provisionalNotice), findsNothing);
     });
     testWidgets('saves the timer and the daily goal chosen', (
       WidgetTester tester,

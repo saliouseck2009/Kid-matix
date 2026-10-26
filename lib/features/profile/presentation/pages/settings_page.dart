@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +10,8 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/choice_segments.dart';
+import 'package:kid_matix/core/widgets/parental_gate.dart';
+import 'package:kid_matix/core/widgets/provisional_audio_notice.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
 import 'package:kid_matix/features/profile/presentation/bloc/settings_cubit.dart';
@@ -29,6 +33,8 @@ class SettingsPage extends StatelessWidget {
     this.reminderRows = const <Widget>[],
     this.languageRows = const <Widget>[],
     this.helpAudioLanguages = const <String>[],
+    this.provisionalHelpAudioLanguages = const <String>{},
+    this.gateRandom,
     super.key,
   });
 
@@ -50,6 +56,14 @@ class SettingsPage extends StatelessWidget {
   /// Codes of the help languages the app has an audio pack for; the "Aide
   /// audio" row is hidden when empty.
   final List<String> helpAudioLanguages;
+
+  /// Codes among [helpAudioLanguages] whose pack is made of machine-made
+  /// stand-ins: the row then carries a notice.
+  final Set<String> provisionalHelpAudioLanguages;
+
+  /// Source of the numbers of the parental gate that guards a provisional
+  /// help language, or `null` for a new one (seeded in tests).
+  final Random? gateRandom;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +92,8 @@ class SettingsPage extends StatelessWidget {
                   reminderRows: reminderRows,
                   languageRows: languageRows,
                   helpAudioLanguages: helpAudioLanguages,
+                  provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
+                  gateRandom: gateRandom,
                 ),
               };
             },
@@ -108,6 +124,8 @@ class _SettingsView extends StatelessWidget {
     required this.reminderRows,
     required this.languageRows,
     required this.helpAudioLanguages,
+    required this.provisionalHelpAudioLanguages,
+    required this.gateRandom,
   });
 
   static const double _gap = 20;
@@ -119,6 +137,8 @@ class _SettingsView extends StatelessWidget {
   final List<Widget> reminderRows;
   final List<Widget> languageRows;
   final List<String> helpAudioLanguages;
+  final Set<String> provisionalHelpAudioLanguages;
+  final Random? gateRandom;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -243,6 +263,8 @@ class _SettingsView extends StatelessWidget {
             if (helpAudioLanguages.isNotEmpty)
               _HelpAudioRow(
                 languages: helpAudioLanguages,
+                provisionalLanguages: provisionalHelpAudioLanguages,
+                gateRandom: gateRandom,
                 selected: settings.helpAudioLanguage,
                 backgroundColor: band,
                 onSelected: (String language) => cubit.update(
@@ -298,12 +320,16 @@ class _SettingsView extends StatelessWidget {
 class _HelpAudioRow extends StatelessWidget {
   const _HelpAudioRow({
     required this.languages,
+    required this.provisionalLanguages,
+    required this.gateRandom,
     required this.selected,
     required this.backgroundColor,
     required this.onSelected,
   });
 
   final List<String> languages;
+  final Set<String> provisionalLanguages;
+  final Random? gateRandom;
   final String? selected;
   final Color backgroundColor;
   final ValueChanged<String> onSelected;
@@ -311,25 +337,52 @@ class _HelpAudioRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> choices = <String>[...languages, HelpAudio.none];
-    return SettingsChoiceRow(
+    // A language the app no longer ships counts as none.
+    final String current = switch (selected) {
+      // Never chosen: the first pack that is not provisional, else none.
+      null => languages.firstWhere(
+        (String code) => !provisionalLanguages.contains(code),
+        orElse: () => HelpAudio.none,
+      ),
+      final String code when choices.contains(code) => code,
+      _ => HelpAudio.none,
+    };
+    final Widget row = SettingsChoiceRow(
       label: context.l10n.settingsHelpAudio,
       choices: ChoiceSegments<String>(
         choices: choices,
-        // Never chosen: the first pack. A language the app no longer ships
-        // counts as none.
-        selected: switch (selected) {
-          null => languages.first,
-          final String code when choices.contains(code) => code,
-          _ => HelpAudio.none,
-        },
+        selected: current,
         backgroundColor: backgroundColor,
         labelOf: (String code) => code == HelpAudio.none
             ? context.l10n.helpAudioNone
             : toBeginningOfSentenceCase(
                 context.l10n.helpAudioLanguageName(code),
               ),
-        onSelected: onSelected,
+        // A provisional (machine-made) language is for adults: a child
+        // cannot turn it on alone.
+        onSelected: (String code) async {
+          if (provisionalLanguages.contains(code) &&
+              !await askAnAdult(context, random: gateRandom)) {
+            return;
+          }
+          onSelected(code);
+        },
       ),
+    );
+    // The adult who picks a provisional language sees why next to it.
+    final String? provisional = languages
+        .where(provisionalLanguages.contains)
+        .firstOrNull;
+    if (provisional == null) return row;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        row,
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppSizes.space16),
+          child: ProvisionalAudioNotice(languageCode: provisional),
+        ),
+      ],
     );
   }
 }

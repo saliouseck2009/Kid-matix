@@ -4,6 +4,7 @@ import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/entities/word_audio_kind.dart';
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/widgets/provisional_audio_notice.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
@@ -179,6 +180,8 @@ class _RecordingsHeader extends StatelessWidget {
           onBack: onBack,
         ),
         Text(context.l10n.classroomRecordingsHint),
+        if (language != null && page.isProvisional)
+          ProvisionalAudioNotice(languageCode: language),
         if (language == null) Text(context.l10n.classroomRecordingsNoPack),
         if (page.languages.length > 1)
           DropdownButtonFormField<String>(

@@ -8,6 +8,8 @@ of the recorder, never renamed) and writes the language pack of the app:
   assets/audio/<language>/wo_<key>_exemple.m4a    its example
   assets/audio/<language>/wo_problem_<key>.m4a    the statement of a problem
   assets/audio/<language>/manifest.json           what the pack holds
+                                                  ("provisional": the file names
+                                                  converted with --provisional)
   assets/audio/packs.json                         the list of languages
 
 For each file it trims the silence at the start and at the end, keeping a
@@ -24,6 +26,13 @@ package is involved.
 Usage:
   python3 tool/process_audio.py INPUT_DIR [--language wo] [--output DIR]
   python3 tool/process_audio.py INPUT_DIR --check     names only, no ffmpeg
+  python3 tool/process_audio.py INPUT_DIR --provisional   mark the pack as
+      machine-made stand-ins (tool/placeholder_audio/): their names go in
+      the manifest, the app shows a notice to adults and does not offer them
+      to a child who never chose. It never overwrites a file that is not
+      marked provisional, and fails on a file over 15 s. A later run without
+      the option removes the names of the files it converts, and the list
+      goes away when none is left.
 
 The file names keep the language code as a prefix (`wo_`), so the guide and
 the table stay the reference. Exit status 1 when a file is missing or not
@@ -155,13 +164,68 @@ def present_in(output, language, keys, problem_keys=()):
     }
 
 
-def build_manifest(language, keys, present, problem_keys=()):
-    """The manifest dict for the slots in `present`."""
+def build_manifest(language, keys, present, problem_keys=(), provisional=()):
+    """The manifest dict for the slots in `present`.
+
+    `provisional` is the set of file names that are machine-made stand-ins;
+    when not empty it is written as a sorted list (the app treats a pack
+    with a non-empty list as provisional), otherwise the key is omitted.
+    """
     words = {}
     for key, kind in slots(keys, problem_keys):
         if (key, kind) in present:
             words.setdefault(key, {})[kind] = file_name(language, key, kind)
-    return {"language": language, "format": "m4a", "words": words}
+    manifest = {"language": language, "format": "m4a"}
+    if provisional:
+        manifest["provisional"] = sorted(provisional)
+    manifest["words"] = words
+    return manifest
+
+
+def read_provisional(output):
+    """The file names the manifest already in `output` marks as provisional.
+
+    An old manifest with `"provisional": true` counts every file it lists.
+    """
+    manifest = output / "manifest.json"
+    if not manifest.exists():
+        return set()
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        flag = data.get("provisional")
+        if flag is True:
+            return {
+                name for kinds in data.get("words", {}).values() for name in kinds.values()
+            }
+        if isinstance(flag, list):
+            return {name for name in flag if isinstance(name, str)}
+    except (ValueError, AttributeError):
+        pass
+    return set()
+
+
+def provisional_after(requested, previous, converted, present):
+    """The provisional file names of the new manifest.
+
+    A run with --provisional adds the files it converted; a run without it
+    removes them (they are real now); the files it did not touch keep their
+    status, so two partial deliveries of real recordings clear the list
+    only when together they replace every stand-in. Only files that are in
+    the pack are listed.
+    """
+    names = set(previous) - set(converted)
+    if requested:
+        names |= set(converted)
+    return names & set(present)
+
+
+def refused_overwrites(requested, previous, targets):
+    """The existing files a --provisional run would overwrite although they
+    are not marked provisional (real recordings must never be replaced by
+    stand-ins)."""
+    if not requested:
+        return []
+    return [t for t in targets if t.exists() and t.name not in previous]
 
 
 def convert(source, target):
@@ -183,6 +247,22 @@ def convert(source, target):
         check=True, capture_output=True, text=True,
     )
     return float(probe.stdout.strip() or 0)
+
+
+def convert_checked(source, target, provisional):
+    """Converts to a temporary file next to [target], checks the duration,
+    then replaces [target]. A stand-in (provisional) over MAX_SECONDS is a
+    failed synthesis: it is dropped, [target] is left as it was, and None is
+    returned, so the manifest never points to a missing file."""
+    temporary = target.with_name(f".{target.stem}.part{target.suffix}")
+    try:
+        seconds = convert(source, temporary)
+        if provisional and seconds > MAX_SECONDS:
+            return None
+        temporary.replace(target)
+        return seconds
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def register_language(language, output):
@@ -208,6 +288,8 @@ def main():
     parser.add_argument("input_dir", type=Path)
     parser.add_argument("--language", default="wo")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--provisional", action="store_true",
+                        help="flag the pack as machine-made stand-ins")
     parser.add_argument("--check", action="store_true",
                         help="only check the names and the missing files")
     args = parser.parse_args()
@@ -225,15 +307,47 @@ def main():
         if shutil.which("ffmpeg") is None or shutil.which("ffprobe") is None:
             raise SystemExit("ffmpeg and ffprobe are needed: brew install ffmpeg")
         output.mkdir(parents=True, exist_ok=True)
-        for (key, kind), source in found.items():
-            target = output / file_name(args.language, key, kind)
-            seconds = convert(source, target)
+        previous = read_provisional(output)
+        converted = set(found)
+        targets = {
+            slot: output / file_name(args.language, *slot) for slot in found
+        }
+        protected = refused_overwrites(args.provisional, previous, targets.values())
+        if protected:
+            for target in protected:
+                print(f"refused: {target.name} is not provisional", file=sys.stderr)
+            raise SystemExit("--provisional never overwrites a real recording")
+        too_long = []
+        for slot, source in found.items():
+            target = targets[slot]
+            seconds = convert_checked(source, target, args.provisional)
+            if seconds is None:
+                too_long.append(target)
+                continue
             note = " (long: shorten it)" if seconds > MAX_SECONDS else ""
             print(f"{source.name} -> {target.name}  {seconds:.1f} s{note}")
+        if too_long:
+            for target in too_long:
+                print(f"failed: {target.name} is over {MAX_SECONDS:.0f} s "
+                      "(the existing file, if any, is kept)", file=sys.stderr)
+            raise SystemExit(1)
         # The pack is what the output folder holds, so a second partial
         # delivery adds to the first instead of erasing it.
         found = {slot: None for slot in present_in(output, args.language, keys, problem_keys)}
-        manifest = build_manifest(args.language, keys, set(found), problem_keys)
+        names = {file_name(args.language, *slot) for slot in found}
+        provisional = provisional_after(
+            args.provisional,
+            previous,
+            {file_name(args.language, *slot) for slot in converted},
+            names,
+        )
+        if previous and not provisional:
+            print("the pack is no longer provisional")
+        elif provisional and not args.provisional:
+            print(f"{len(provisional)} files are still stand-ins")
+        manifest = build_manifest(
+            args.language, keys, set(found), problem_keys, provisional
+        )
         (output / "manifest.json").write_text(
             json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
         )

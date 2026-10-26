@@ -12,13 +12,21 @@ import 'package:meta/meta.dart';
 ///  "words": {"il_reste": {"explanation": "wo_il_reste.m4a",
 ///                         "example": "wo_il_reste_exemple.m4a"}}}
 /// ```
+///
+/// The recordings that are machine-made stand-ins are listed by file name
+/// in `"provisional": ["wo_il_reste.m4a", ...]` (absent or empty means none
+/// is); while the list is not empty the pack is provisional: the teacher
+/// area and the « Aide audio » setting say so, and a child who never chose
+/// a help language does not get it by default.
 @immutable
 final class AudioPackManifest {
   /// Creates the manifest of [language] holding [files].
   AudioPackManifest({
     required this.language,
     required Map<String, Map<WordAudioKind, String>> files,
-  }) : _files = <String, Map<WordAudioKind, String>>{
+    Set<String> provisionalFiles = const <String>{},
+  }) : provisionalFiles = Set<String>.unmodifiable(provisionalFiles),
+       _files = <String, Map<WordAudioKind, String>>{
          for (final MapEntry<String, Map<WordAudioKind, String>> entry
              in files.entries)
            entry.key: Map<WordAudioKind, String>.unmodifiable(entry.value),
@@ -51,11 +59,30 @@ final class AudioPackManifest {
       }
       if (kinds.isNotEmpty) files[key] = kinds;
     }
-    return AudioPackManifest(language: language, files: files);
+    final Object? provisional = json['provisional'];
+    if (provisional != null &&
+        (provisional is! List ||
+            provisional.any((Object? f) => f is! String))) {
+      throw const FormatException('Bad provisional list in the manifest');
+    }
+    return AudioPackManifest(
+      language: language,
+      files: files,
+      provisionalFiles: <String>{
+        if (provisional is List) ...provisional.cast<String>(),
+      },
+    );
   }
 
   /// Code of the help language, such as `wo`.
   final String language;
+
+  /// Names of the recordings that are machine-made stand-ins, to be
+  /// replaced by real ones before any release.
+  final Set<String> provisionalFiles;
+
+  /// Whether the pack holds at least one stand-in.
+  bool get isProvisional => provisionalFiles.isNotEmpty;
 
   final Map<String, Map<WordAudioKind, String>> _files;
 
@@ -85,6 +112,7 @@ final class AudioPackManifest {
   AudioPackManifest withFile(String wordKey, WordAudioKind kind, String file) {
     return AudioPackManifest(
       language: language,
+      provisionalFiles: provisionalFiles,
       files: <String, Map<WordAudioKind, String>>{
         ..._files,
         wordKey: <WordAudioKind, String>{...?_files[wordKey], kind: file},
@@ -96,6 +124,7 @@ final class AudioPackManifest {
   AudioPackManifest withoutFile(String wordKey, WordAudioKind kind) {
     return AudioPackManifest(
       language: language,
+      provisionalFiles: provisionalFiles,
       files: <String, Map<WordAudioKind, String>>{
         for (final MapEntry<String, Map<WordAudioKind, String>> entry
             in _files.entries)
@@ -114,6 +143,7 @@ final class AudioPackManifest {
     return <String, Object?>{
       'language': language,
       'format': format,
+      if (isProvisional) 'provisional': provisionalFiles.toList()..sort(),
       'words': <String, Object?>{
         for (final MapEntry<String, Map<WordAudioKind, String>> entry
             in _files.entries)

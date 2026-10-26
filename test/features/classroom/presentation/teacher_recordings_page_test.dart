@@ -27,12 +27,16 @@ final class _FakeTeacherAudio implements TeacherAudioService {
   final Set<String> recorded = <String>{};
   bool isAllowed = true;
   bool isRecording = false;
+  bool isProvisional = false;
 
   /// When set, the microphone starts only once it completes.
   Completer<void>? startGate;
 
   @override
   List<String> get packLanguages => const <String>['wo'];
+
+  @override
+  bool isPackProvisional(String languageCode) => isProvisional;
 
   @override
   bool hasPackAudio({
@@ -150,6 +154,34 @@ void main() {
     await tester.pumpAndSettle();
     expect(audio.isRecording, isTrue);
   }
+
+  testWidgets('says the pack voice is provisional when it is', (
+    WidgetTester tester,
+  ) async {
+    // Arrange
+    audio.isProvisional = true;
+    // Act
+    await pumpLocalized(tester, pages.buildPage(onBack: () {}));
+    await tester.pumpAndSettle();
+    // Assert
+    expect(
+      find.text(
+        'Voix wolof provisoire (synthèse automatique)\u00a0: '
+        'à remplacer par de vrais enregistrements.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('shows no provisional notice for a real pack', (
+    WidgetTester tester,
+  ) async {
+    // Act
+    await pumpLocalized(tester, pages.buildPage(onBack: () {}));
+    await tester.pumpAndSettle();
+    // Assert
+    expect(find.textContaining('Voix wolof provisoire'), findsNothing);
+  });
 
   testWidgets('stops and keeps a recording after 30 seconds', (
     WidgetTester tester,

@@ -49,3 +49,8 @@ app.*.map.json
 
 # Output of tool/check.sh
 tool/logs/
+
+# Provisional Wolof audio tool (virtualenv and generated wav files)
+tool/placeholder_audio/.venv/
+tool/placeholder_audio/build/
+tool/placeholder_audio/wolof_machine.json

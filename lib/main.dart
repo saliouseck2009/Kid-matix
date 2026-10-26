@@ -386,6 +386,10 @@ ShopPages _createShopPages() {
 ProfilePages _createProfilePages() {
   return ProfilePages(
     helpAudioLanguages: sl<WordAudioService>().languages,
+    provisionalHelpAudioLanguages: <String>{
+      for (final String code in sl<WordAudioService>().languages)
+        if (sl<WordAudioService>().isProvisional(code)) code,
+    },
     getProfiles: sl(),
     getProfile: sl(),
     createProfile: sl(),

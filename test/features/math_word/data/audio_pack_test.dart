@@ -78,6 +78,75 @@ void main() {
       expect(actualManifest.wordKeys, <String>['il_reste', 'ajouter']);
     });
 
+    test('is not provisional without the list', () {
+      // Act
+      final AudioPackManifest actualManifest = _manifest();
+      // Assert
+      expect(actualManifest.isProvisional, isFalse);
+      expect(actualManifest.toJson().containsKey('provisional'), isFalse);
+    });
+
+    test('reads the provisional files and keeps them when it changes', () {
+      // Arrange
+      final AudioPackManifest provisional = AudioPackManifest.fromJson(
+        <String, Object?>{
+          'language': 'wo',
+          'provisional': <String>['wo_ajouter.m4a'],
+          'words': <String, Object?>{
+            'ajouter': <String, Object?>{'explanation': 'wo_ajouter.m4a'},
+          },
+        },
+      );
+      // Act
+      final AudioPackManifest actualWith = provisional.withFile(
+        'il_reste',
+        WordAudioKind.explanation,
+        'wo_il_reste.m4a',
+      );
+      final AudioPackManifest actualWithout = provisional.withoutFile(
+        'ajouter',
+        WordAudioKind.explanation,
+      );
+      // Assert
+      expect(provisional.isProvisional, isTrue);
+      expect(provisional.provisionalFiles, <String>{'wo_ajouter.m4a'});
+      expect(actualWith.isProvisional, isTrue);
+      expect(actualWithout.isProvisional, isTrue);
+      expect(provisional.toJson()['provisional'], <String>['wo_ajouter.m4a']);
+    });
+
+    test('treats an empty or absent list as not provisional', () {
+      // Act
+      final AudioPackManifest actualEmpty = AudioPackManifest.fromJson(
+        <String, Object?>{
+          'language': 'wo',
+          'provisional': <String>[],
+          'words': <String, Object?>{},
+        },
+      );
+      // Assert
+      expect(actualEmpty.isProvisional, isFalse);
+      expect(actualEmpty.toJson().containsKey('provisional'), isFalse);
+    });
+
+    test('refuses a provisional entry that is not a list of names', () {
+      // Assert
+      for (final Object bad in <Object>[
+        'yes',
+        true,
+        <Object>[3],
+      ]) {
+        expect(
+          () => AudioPackManifest.fromJson(<String, Object?>{
+            'language': 'wo',
+            'provisional': bad,
+            'words': <String, Object?>{},
+          }),
+          throwsFormatException,
+        );
+      }
+    });
+
     test('refuses a manifest of the wrong shape', () {
       // Assert
       expect(
@@ -164,6 +233,34 @@ void main() {
       // Assert
       expect(service.languages, <String>['wo']);
       expect(service.defaultLanguage, 'wo');
+    });
+
+    test('never defaults to a provisional pack', () {
+      // Arrange
+      final AudioPackManifest provisional = AudioPackManifest.fromJson(
+        <String, Object?>{
+          'language': 'pp',
+          'provisional': <String>['pp_total.m4a'],
+          'words': <String, Object?>{
+            'total': <String, Object?>{'explanation': 'pp_total.m4a'},
+          },
+        },
+      );
+      // Act
+      final WordAudioServiceImpl actualOnly = WordAudioServiceImpl(
+        packs: <AudioPackManifest>[provisional],
+        player: player,
+      );
+      final WordAudioServiceImpl actualMixed = WordAudioServiceImpl(
+        packs: <AudioPackManifest>[provisional, _manifest()],
+        player: player,
+      );
+      // Assert
+      expect(actualOnly.languages, <String>['pp']);
+      expect(actualOnly.defaultLanguage, isNull);
+      expect(actualOnly.isProvisional('pp'), isTrue);
+      expect(actualMixed.defaultLanguage, 'wo');
+      expect(actualMixed.isProvisional('wo'), isFalse);
     });
 
     test('offers a pack only once it holds a recording', () {
@@ -269,6 +366,9 @@ void main() {
         (word! as Map<String, Object?>)['key']! as String,
     };
     final String pubspec = File('pubspec.yaml').readAsStringSync();
+    final String problems = File(
+      'docs/product/problems.md',
+    ).readAsStringSync();
 
     for (final Object? language in index['languages']! as List<Object?>) {
       test('the pack $language is declared, named and complete', () {
@@ -282,7 +382,14 @@ void main() {
         expect(manifest.language, language);
         expect(pubspec, contains('- assets/audio/$language/'));
         for (final String key in manifest.wordKeys) {
-          expect(wordKeys, contains(key));
+          // A problem statement is named problem_<key> in its table.
+          expect(
+            wordKeys.contains(key) ||
+                (key.startsWith('problem_') &&
+                    problems.contains('${language}_$key.m4a')),
+            isTrue,
+            reason: key,
+          );
           for (final WordAudioKind kind in WordAudioKind.values) {
             final String? file = manifest.fileOf(key, kind);
             if (file == null) continue;

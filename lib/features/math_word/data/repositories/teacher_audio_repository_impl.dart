@@ -31,6 +31,10 @@ final class TeacherAudioRepositoryImpl implements TeacherAudioService {
   });
 
   @override
+  bool isPackProvisional(String languageCode) =>
+      _packs[languageCode]?.isProvisional ?? false;
+
+  @override
   bool hasPackAudio({
     required String languageCode,
     required String wordKey,

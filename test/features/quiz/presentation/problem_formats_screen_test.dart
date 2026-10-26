@@ -60,6 +60,7 @@ void main() {
     bool isBossFight = false,
     Size size = const Size(1170, 2532),
     double textScale = 1,
+    bool hasChosenHelp = true,
   }) async {
     tester.view.physicalSize = size;
     tester.platformDispatcher.textScaleFactorTestValue = textScale;
@@ -72,7 +73,7 @@ void main() {
         child: WordAudioScope(
           audio: audio,
           child: HelpAudioLanguageScope(
-            language: 'wo',
+            language: hasChosenHelp ? 'wo' : null,
             child: QuizPage(
               request: QuizRequest(
                 profileId: 'profile-1',
@@ -293,6 +294,29 @@ void main() {
   });
 
   group('the operation of a statement', () {
+    testWidgets('plays nothing for a child who never chose, pack provisional', (
+      WidgetTester tester,
+    ) async {
+      // Arrange: only an adult turns a provisional pack on.
+      final FakeWordAudioService audio = FakeWordAudioService(
+        recorded: <String>{'donner'},
+        isPackProvisional: true,
+      );
+      await pumpQuiz(
+        tester,
+        itemKey: 'problem:mangues_donnees',
+        questionTypeId: QuestionTypeIds.problemOperation,
+        audio: audio,
+        hasChosenHelp: false,
+      );
+      // Act
+      await tester.tap(find.text('donne').first);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(audio.played, isEmpty);
+      expect(find.textContaining('en wolof'), findsNothing);
+    });
+
     testWidgets('has touchable words, then shows the model once answered', (
       WidgetTester tester,
     ) async {

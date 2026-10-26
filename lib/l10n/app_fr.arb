@@ -1774,6 +1774,16 @@
   "@helpAudioNone": {
     "description": "Choice of the audio help setting that turns the recorded help off (\"None\"). One word."
   },
+  "audioPackProvisionalNotice": "Voix {language} provisoire (synthèse automatique) : à remplacer par de vrais enregistrements.",
+  "@audioPackProvisionalNotice": {
+    "description": "One-line notice shown under the « Aide audio » setting and at the top of the teacher's recordings page while the audio pack of the help language is made of machine-made stand-ins (manifest flag provisional). It tells the adult that the voices are an automatic synthesis to be replaced by real recordings. Never shown on the child's screens. {language} is the name from helpAudioLanguageName.",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "wolof"
+      }
+    }
+  },
   "helpAudioLanguageName": "{code, select, wo{wolof} other{{code}}}",
   "@helpAudioLanguageName": {
     "description": "Name of a help language, from the code of its audio pack: it fills the audio help setting and the \"Listen in...\" button. Lower case in French and Spanish (a language name), as it is used inside a sentence. A new language adds one choice here; an unknown code is shown as it is.",

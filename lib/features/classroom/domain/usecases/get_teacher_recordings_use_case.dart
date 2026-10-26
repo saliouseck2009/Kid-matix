@@ -58,6 +58,7 @@ class GetTeacherRecordingsUseCase
           languageCode: language,
           kind: params.kind,
           words: _wordsOf(language, params.kind, data),
+          isProvisional: _audio.isPackProvisional(language),
         ),
       ),
     };

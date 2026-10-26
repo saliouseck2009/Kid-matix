@@ -96,6 +96,7 @@ Le propriétaire ne lance rien : le développeur traite les fichiers reçus avec
 ```
 python3 tool/process_audio.py DOSSIER_RECU                # traite et écrit le pack
 python3 tool/process_audio.py DOSSIER_RECU --check        # vérifie seulement les noms
+python3 tool/process_audio.py DOSSIER --provisional      # pack de fichiers provisoires (section 11)
 python3 -m unittest tool/process_audio_test.py            # tests du script
 ```
 
@@ -107,3 +108,36 @@ Le script :
 - vérifie que chaque clé de `assets/math_words/math_words.json` (dérivé du tableau par `tool/build_math_words.py`) a ses deux fichiers, et que chaque problème de `docs/product/problems.md` a son fichier unique `wo_problem_<clé>.m4a` (un seul fichier par problème, pas de fichier d'exemple ; les clés sont lues dans la colonne « Audio » du tableau), liste ceux qui manquent, signale les fichiers non reconnus ou en double et les fichiers de plus de 15 secondes ; il se termine avec un code d'erreur tant qu'un fichier manque, mais le manifeste ne liste que les fichiers présents, donc un pack incomplet peut être livré : l'app masque le bouton des mots sans fichier.
 
 Format du pack (`assets/audio/<langue>/`) : `manifest.json` avec la langue, le format (`m4a`) et, pour chaque clé de mot, les noms de ses fichiers `explanation` et `example`, et pour chaque problème (clé `problem_<clé>`) son seul fichier `explanation`. Pour ajouter une autre langue d'aide, on dépose un autre dossier avec son manifeste ; le code ne change pas.
+
+## 11. Enregistrer soi-même : la marche à suivre
+
+Décision du propriétaire du 2026-10-26 : c'est lui qui enregistre sa voix. L'app ne livre aucun fichier audio pour l'instant (`assets/audio/wo/` ne contient que le manifeste vide) : tant qu'un fichier manque, le bouton « Écouter en wolof » du mot est simplement caché.
+
+Les colonnes wolof des tableaux contiennent un **brouillon** : une traduction de Google Translate, collée à la main, jamais relue. Chaque cellule porte la mention « (Google, à relire) ». Ce texte sert de point de départ, tu le corriges avant d'enregistrer.
+
+1. **Corrige le wolof** dans les colonnes des deux tableaux : `docs/product/math-words.md` (« Explication en wolof » et « Exemple en wolof ») et `docs/product/problems.md` (« Wolof : énoncé »). Quand une cellule est vérifiée, **supprime sa mention** « (Google, à relire) ». Dis les nombres en lettres, et sans le mot « franc ».
+2. **Génère la feuille d'enregistrement** : `python3 tool/make_recording_sheet.py`. Elle écrit `docs/product/recording-sheet.md` : une ligne numérotée par fichier à enregistrer, dans l'ordre (les 80 fichiers des mots, puis les 30 problèmes), avec le nom exact du fichier, le texte à dire, le français pour repère et une case à cocher. Imprime-la. Chaque fois que tu corriges un tableau, relance la commande (la vérification de `bash tool/check.sh` échoue si la feuille n'est plus à jour).
+3. **Enregistre** en suivant les sections 1 à 8 de ce guide et les règles en tête de la feuille : un fichier par ligne, le nom exact, deux secondes de silence avant et après, voix lente et chaleureuse, de 5 à 10 secondes, un essai raté supprimé et refait en entier.
+4. **Mets tous les fichiers dans un seul dossier** (sans les renommer ni les convertir).
+5. **Prépare-les pour l'app** (il faut `ffmpeg` : `brew install ffmpeg`) :
+
+   ```
+   python3 tool/process_audio.py <dossier>
+   python3 tool/build_math_words.py
+   bash tool/check.sh
+   ```
+
+   Le premier écrit les fichiers `.m4a` et le manifeste dans `assets/audio/wo/` ; il liste ce qui manque. Le deuxième recopie le texte wolof des tableaux dans le fichier de données de l'app.
+6. **Garde le résultat** : committe `assets/audio/wo/` et les deux tableaux.
+
+**Une livraison partielle est possible** : le pack est ce que le dossier `assets/audio/wo/` contient, donc une deuxième livraison s'ajoute à la première. Relance simplement `process_audio.py` sur le dossier complet, ou sur un dossier qui ne contient que les nouveaux fichiers. Les mots sans fichier n'ont pas de bouton.
+
+**Remplacer un seul fichier plus tard** : réenregistre-le avec le même nom, mets-le seul dans un dossier et lance `python3 tool/process_audio.py <dossier>` : seul ce fichier est réécrit, les autres restent.
+
+### Outils facultatifs : voix de synthèse provisoire
+
+Ce n'est plus la voie principale. `tool/placeholder_audio/` (voir son `README.md`) sait fabriquer des voix de synthèse provisoires (`bash tool/placeholder_audio/regenerate.sh`), au cas où il faudrait essayer l'app avec un pack partiel de voix de machine. Alors :
+
+- le manifeste porte `"provisional": [noms des fichiers]` ; un enfant qui n'a jamais choisi de langue d'aide n'entend pas ce pack, un adulte le choisit dans « Aide audio » (avec la question « Demande à un adulte ») et voit la mention « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » ;
+- `process_audio.py` sans `--provisional` sur de vrais enregistrements retire les fichiers de la liste ; elle disparaît quand elle est vide ;
+- `tool/build_release.sh` lance `tool/check_release_content.sh`, qui **refuse la version** tant que la liste n'est pas vide ou qu'un tableau contient encore « (machine, à relire) » ou « (Google, à relire) » : avant la sortie, il faut donc avoir relu (et enlevé la mention de) toutes les cellules.
