@@ -28,16 +28,20 @@ print(len(flag) if isinstance(flag, list) else (1 if flag is True else 0))
   fi
 done
 
-for file in \
-  "$root/docs/product/math-words.md" \
-  "$root/docs/product/problems.md" \
-  "$root/assets/math_words/math_words.json"; do
+# In the tables only a row (a line starting with a bar) counts: the status
+# line at the top of a file may quote the marks.
+for file in "$root/docs/product/math-words.md" "$root/docs/product/problems.md"; do
   [ -e "$file" ] || continue
-  if grep -q -e '(machine, à relire)' -e '(Google, à relire)' "$file"; then
-    echo "machine-made Wolof text left in $file" >&2
+  if grep -qE '^\|.*\((machine|Google), à relire\)' "$file"; then
+    echo "machine-made Wolof text left in a table of $file" >&2
     failed=1
   fi
 done
+asset="$root/assets/math_words/math_words.json"
+if [ -e "$asset" ] && grep -qE '\((machine|Google), à relire\)' "$asset"; then
+  echo "machine-made Wolof text left in $asset" >&2
+  failed=1
+fi
 
 if [ "$failed" -ne 0 ]; then
   echo "Release refused: replace the provisional Wolof with real recordings" \

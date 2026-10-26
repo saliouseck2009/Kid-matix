@@ -31,9 +31,12 @@ fixture empty_list '"provisional":[],' '| texte |'
 fixture provisional_audio '"provisional":["wo_a.m4a"],' '| texte |'
 fixture old_flag '"provisional":true,' '| texte |'
 fixture machine_text '' '| wolof (machine, à relire) |'
+fixture status_line_only '' 'Wolof provisoire : cellules « (machine, à relire) ».
+| texte |'
 fixture google_text '' '| wolof (Google, à relire) |'
 
 expect clean 0
+expect status_line_only 0
 expect empty_list 0
 expect provisional_audio 1
 expect old_flag 1
