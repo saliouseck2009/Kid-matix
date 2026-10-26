@@ -45,6 +45,23 @@ install` fails, use `brew install python@3.12` and create the venv with
 `python3.12 -m venv`. `.venv/` and `build/` are git-ignored. No Hugging Face
 account or token is needed.
 
+## The one command
+
+```bash
+bash tool/placeholder_audio/regenerate.sh
+```
+
+The Wolof cells of the two content tables are the source of truth (edit a
+cell in any editor, remove its « (…, à relire) » mark once checked). The
+script creates the virtualenv if missing, installs the pinned requirements,
+fills the cells still empty with NLLB, speaks again only the cells whose
+text changed (the spoken text is kept in `build/wav/.<name>.txt`), converts
+the changed recordings (cells still marked go through `process_audio.py
+--provisional`, checked cells without it, so the manifest lists exactly the
+provisional files) and rebuilds `math_words.json`. `rules.txt` lists the
+words never spoken (`franc`, `francs`). The owner's workflow in French is in
+`docs/product/audio-recording.md`, section 11.
+
 ## Run
 
 ```bash
@@ -58,21 +75,22 @@ python tool/placeholder_audio/make_wolof_placeholders.py --back-translate 10
 Steps: `extract`, `translate`, `tables`, `speak`, `pack`. The script is
 idempotent and resumable:
 
-- translations are cached in `wolof_machine.json` (committed); a text is
-  asked again only when its French source changed or when the cached NLLB
-  output loops, so a re-run needs no model for the text;
+- NLLB translates only cells that are empty (cache `wolof_machine.json`,
+  committed); a cell that has a text is never overwritten except by
+  `--engine file`;
 - NLLB is decoded with a repetition penalty and a no-repeat n-gram size; an
   output that is far longer than its source or repeats a word is decoded
   again with a stronger penalty, then refused (the run stops and names the
   text);
 - the Wolof columns of `docs/product/math-words.md` and
-  `docs/product/problems.md` get every cell suffixed « (machine, à relire) »
+  `docs/product/problems.md` get the cells filled by the script suffixed « (machine, à relire) »
   (NLLB) or « (Google, à relire) » (file engine), and a status line is set
   under « Statut » at the top of each file; a cell the owner wrote by hand
   is never overwritten; `tool/build_math_words.py` leaves both marks out of
   the asset;
-- a wav in `build/wav/` is made again when its text changed (a hidden
-  `.<name>.txt` next to it holds the text it was spoken from);
+- a wav in `build/wav/` is made again when its spoken text changed (a
+  hidden `.<name>.txt` next to it holds it; the text is the cell without
+  its mark and without the words of `rules.txt`);
 - `pack` runs `tool/process_audio.py build/wav --provisional`, then
   `tool/build_math_words.py`. `--provisional` never overwrites a file that
   is not marked provisional and fails on a file over 15 s.
@@ -87,7 +105,8 @@ python tool/placeholder_audio/make_wolof_placeholders.py \
     --engine file --wolof wolof.txt
 ```
 
-The 110 lines are the 80 word texts of `math-words.md` (explanation, then
+The import writes the Wolof cells too (marked « (Google, à relire) »). The
+110 lines are the 80 word texts of `math-words.md` (explanation, then
 example, per word) then the 30 problem statements of `problems.md`. A wrong
 line count or a blank line is refused. The cache entries get
 `engine: "google-web"`.

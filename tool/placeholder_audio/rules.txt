@@ -1,0 +1,5 @@
+# Words that are never spoken, one per line (any case, whole words).
+# Edit this file and run bash tool/placeholder_audio/regenerate.sh.
+# Amounts are read without the currency word in Wolof.
+franc
+francs

@@ -287,31 +287,43 @@ class WavNotesTest(unittest.TestCase):
                 make.WAV_DIR = original
 
 
-class ConsistencyTest(unittest.TestCase):
-    def test_every_wolof_cell_of_the_tables_comes_from_the_cache(self):
-        cache = make.load_cache()
-        for path, rows, column in (
-            (make.WORDS_TABLE, make.word_rows, None),
-            (make.PROBLEMS_TABLE, make.problem_rows, 10),
-        ):
-            markdown = path.read_text(encoding="utf-8")
-            for _, row in rows(markdown):
-                key = row[0].strip("`")
-                cells = (
-                    [(6, f"wo_{key}"), (7, f"wo_{key}_exemple")]
-                    if column is None
-                    else [(10, f"wo_problem_{key}")]
-                )
-                for index, name in cells:
-                    cell = row[index]
-                    if cell == "" or not cell.endswith(tuple(make.MARKS.values())):
-                        continue  # written by hand: not ours
-                    self.assertIn(name, cache, name)
-                    self.assertEqual(
-                        cell,
-                        make.with_mark(cache[name]["wo"], cache[name]["engine"]),
-                        name,
-                    )
+class TablesAreTheSourceTest(unittest.TestCase):
+    def test_every_text_of_the_pack_has_a_wolof_cell(self):
+        cells = make.cells_of(make.extract())
+        self.assertEqual(len(cells), 110)
+        self.assertEqual([n for n, c in cells.items() if not c], [])
+
+    def test_split_mark_tells_checked_from_provisional(self):
+        self.assertEqual(make.split_mark("Waaw (Google, à relire)"), ("Waaw", " (Google, à relire)"))
+        self.assertEqual(make.split_mark("Waaw (machine, à relire)")[0], "Waaw")
+        self.assertEqual(make.split_mark("Waaw"), ("Waaw", ""))
+
+    def test_an_edited_marked_cell_is_not_overwritten_by_the_cache(self):
+        edited = WORDS.replace("| écrit à la main |", "| ma version (machine, à relire) |")
+        text = make.rewrite_words(edited, {"wo_en_plus": entry("CCC")}, overwrite=False)
+        self.assertIn("ma version (machine, à relire)", text)
+        self.assertNotIn("CCC", text)
+
+    def test_an_empty_cell_is_filled_even_without_overwrite(self):
+        text = make.rewrite_words(WORDS, {"wo_ajouter": entry("AAA")}, overwrite=False)
+        self.assertIn("AAA (machine, à relire)", text)
+
+    def test_words_of_rules_are_never_spoken(self):
+        rules = ["franc", "francs"]
+        self.assertEqual(make.apply_rules("Dafa jar 100 francs, waaw.", rules), "Dafa jar 100, waaw.")
+        self.assertEqual(make.apply_rules("Fukk Franc ak juróom", rules), "Fukk ak juróom")
+        self.assertEqual(make.apply_rules("francophone", rules), "francophone")
+        self.assertEqual(make.apply_rules("  a   b ", []), "a b")
+
+    def test_rules_file_skips_comments_and_blank_lines(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "rules.txt"
+            path.write_text("# c\nfranc  # trailing\n\nFRANCS\n", encoding="utf-8")
+            self.assertEqual(make.load_rules(path), ["franc", "francs"])
+            self.assertEqual(make.load_rules(Path(folder) / "none.txt"), [])
+
+    def test_the_shipped_rules_hold_the_currency_word(self):
+        self.assertIn("franc", make.load_rules())
 
     def test_no_cached_nllb_text_loops(self):
         for name, entry_ in make.load_cache().items():

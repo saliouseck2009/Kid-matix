@@ -113,16 +113,32 @@ Format du pack (`assets/audio/<langue>/`) : `manifest.json` avec la langue, le f
 
 Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrements, l'app embarque des fichiers wolof provisoires, faits par des machines, pour que les boutons wolof et « Aide audio » fonctionnent sur un téléphone.
 
-- **Le texte** wolof des colonnes « Explication en wolof », « Exemple en wolof » (`math-words.md`) et « Wolof : énoncé » (`problems.md`) est une traduction automatique (Meta NLLB-200, licence CC-BY-NC 4.0), de mauvaise qualité et jamais relue. Chaque cellule porte la mention « (machine, à relire) ».
+- **Le texte** wolof vient de Google Translate (collé à la main par le propriétaire depuis translate.google.com, fichier `tool/placeholder_audio/wolof_google.txt`) ; il n'a jamais été relu. Chaque cellule porte la mention « (Google, à relire) » (ou « (machine, à relire) » si le texte vient du modèle hors ligne NLLB-200, de mauvaise qualité).
 - **La voix** est une synthèse automatique (modèle Meta MMS wolof exporté en ONNX, `jaguaman09/mms-tts-wol-onnx`, licence CC-BY-NC 4.0, usage non commercial). Ces fichiers ne doivent jamais partir dans une version publiée.
 - **La liste** : le manifeste `assets/audio/wo/manifest.json` porte `"provisional": [noms des fichiers provisoires]`. Tant qu'elle n'est pas vide, l'espace enseignant (page « Enregistrer les explications ») et la ligne « Aide audio » des réglages affichent : « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » Un enfant qui n'a jamais choisi de langue d'aide n'entend pas ces voix (« Aucune » par défaut) : un adulte choisit le wolof dans « Aide audio ».
 - **Le garde-fou de sortie** : `tool/build_release.sh` lance `tool/check_release_content.sh`, qui refuse la version tant que la liste n'est pas vide ou qu'un tableau contient « (machine, à relire) » ou « (Google, à relire) ».
-- Les outils sont dans `tool/placeholder_audio/` (voir son `README.md`).
+
+### Corriger un texte wolof et refaire la voix (deux minutes, sans toucher au code)
+
+Les colonnes wolof des deux tableaux sont la seule source : `docs/product/math-words.md` (« Explication en wolof » et « Exemple en wolof ») et `docs/product/problems.md` (« Wolof : énoncé »).
+
+1. Ouvre le tableau dans n'importe quel éditeur et corrige le texte d'une cellule.
+2. Quand tu as vérifié le texte, **supprime la mention** « (Google, à relire) » de la cellule. Une cellule sans mention est considérée comme relue : son enregistrement ne sera plus listé comme provisoire. Une cellule qui garde la mention reste provisoire.
+3. Pour qu'un mot ne soit jamais prononcé (par exemple « franc »), ajoute-le sur une ligne de `tool/placeholder_audio/rules.txt` (déjà dedans : `franc` et `francs`). Les montants sont lus sans le mot de la monnaie.
+4. Lance **une seule commande** depuis le dossier du projet :
+
+   ```
+   bash tool/placeholder_audio/regenerate.sh
+   ```
+
+   Elle crée l'environnement Python au premier lancement (il faut `ffmpeg` : `brew install ffmpeg`), puis ne refait la voix que des cellules dont le texte a changé depuis le dernier lancement (ce qui prend quelques secondes par texte), met à jour `assets/audio/wo/` et `assets/math_words/math_words.json`. Une cellule laissée vide est traduite par le modèle hors ligne.
+5. Écoute sur un téléphone, puis garde les fichiers modifiés (les tableaux et `assets/`).
+
+À savoir : un enregistrement dont tu as supprimé la mention ne redevient pas provisoire par erreur ; pour le refaire provisoire, supprime son fichier `.m4a` dans `assets/audio/wo/`.
 
 ### Les remplacer par tes vrais enregistrements
 
-1. Écris ou corrige le wolof dans les colonnes des deux tableaux : une cellule sans la mention « (machine, à relire) » n'est plus jamais réécrite par le script.
-2. Enregistre les fichiers comme dans les sections 1 à 8 de ce guide (`wo_<clé>.m4a`, `wo_<clé>_exemple.m4a`, `wo_problem_<clé>.m4a`).
-3. Lance le script sur le dossier des vrais fichiers, sans l'option `--provisional` : `python3 tool/process_audio.py DOSSIER_REEL`, puis `python3 tool/build_math_words.py`.
-4. Les fichiers remplacés sont réécrits et sortent de la liste `provisional`. Si tu livres seulement une partie des fichiers, les autres restent dans la liste (le script le dit) ; la clé disparaît quand la liste est vide.
-5. Avant la sortie, lance `bash tool/check_release_content.sh` : il doit répondre OK (plus de fichier provisoire, plus de cellule « (machine, à relire) » ou « (Google, à relire) »).
+1. Enregistre les fichiers comme dans les sections 1 à 8 de ce guide (`wo_<clé>.m4a`, `wo_<clé>_exemple.m4a`, `wo_problem_<clé>.m4a`).
+2. Lance le script sur le dossier des vrais fichiers, sans l'option `--provisional` : `python3 tool/process_audio.py DOSSIER_REEL`, puis `python3 tool/build_math_words.py`.
+3. Les fichiers remplacés sont réécrits et sortent de la liste `provisional`. Si tu livres seulement une partie des fichiers, les autres restent dans la liste (le script le dit) ; la clé disparaît quand la liste est vide.
+4. Avant la sortie, lance `bash tool/check_release_content.sh` : il doit répondre OK (plus de fichier provisoire, plus de cellule « (machine, à relire) » ou « (Google, à relire) »).

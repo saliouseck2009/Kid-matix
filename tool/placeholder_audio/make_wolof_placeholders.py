@@ -50,6 +50,8 @@ ROOT = HERE.parent.parent
 WORDS_TABLE = ROOT / "docs" / "product" / "math-words.md"
 PROBLEMS_TABLE = ROOT / "docs" / "product" / "problems.md"
 CACHE = HERE / "wolof_machine.json"
+RULES = HERE / "rules.txt"
+CONVERTED_DIR = HERE / "build" / "converted"
 WAV_DIR = HERE / "build" / "wav"
 
 MODEL_REPO = "jaguaman09/mms-tts-wol-onnx"  # public, CC-BY-NC 4.0
@@ -150,17 +152,22 @@ def is_ours(cell):
     return cell == "" or cell.endswith(tuple(MARKS.values()))
 
 
-def fill(markdown, rows, columns_of, wolof_of):
+def fill(markdown, rows, columns_of, wolof_of, overwrite=True):
     """The table text with the Wolof cells of [rows] filled.
 
     columns_of(row) lists (column, id) pairs to fill; wolof_of maps an id to
-    its cache entry ({"wo": text, "engine": engine}).
+    its cache entry ({"wo": text, "engine": engine}). With overwrite, a cell
+    that is empty or marked as machine text is replaced; without it only an
+    empty cell is filled (the table is the source of truth: a marked cell the
+    owner edited stays as he left it).
     """
     lines = markdown.splitlines()
     for number, row in rows:
         changed = False
         for column, name in columns_of(row):
-            if name in wolof_of and is_ours(row[column]):
+            if name not in wolof_of:
+                continue
+            if row[column] == "" or (overwrite and is_ours(row[column])):
                 row[column] = with_mark(wolof_of[name]["wo"], wolof_of[name]["engine"])
                 changed = True
         if changed:
@@ -168,23 +175,23 @@ def fill(markdown, rows, columns_of, wolof_of):
     return "\n".join(lines) + "\n"
 
 
-def rewrite_words(markdown, wolof_of):
+def rewrite_words(markdown, wolof_of, overwrite=True):
     """The words table with the Wolof columns (6 and 7) filled."""
 
     def columns(row):
         key = row[0].strip("`")
         return [(6, f"wo_{key}"), (7, f"wo_{key}_exemple")]
 
-    return fill(markdown, list(word_rows(markdown)), columns, wolof_of)
+    return fill(markdown, list(word_rows(markdown)), columns, wolof_of, overwrite)
 
 
-def rewrite_problems(markdown, wolof_of):
+def rewrite_problems(markdown, wolof_of, overwrite=True):
     """The statement tables with the « Wolof : énoncé » column (10) filled."""
 
     def columns(row):
         return [(10, f"wo_problem_{row[0].strip('`')}")]
 
-    return fill(markdown, list(problem_rows(markdown)), columns, wolof_of)
+    return fill(markdown, list(problem_rows(markdown)), columns, wolof_of, overwrite)
 
 
 def with_status(markdown):
@@ -204,6 +211,54 @@ def with_status(markdown):
     else:
         lines[1:1] = ["", STATUS_LINE]
     return "\n".join(lines) + "\n"
+
+
+def split_mark(cell):
+    """(text, mark) of a table cell: the Wolof text without its mark, and the
+    mark ('' when the owner removed it, meaning he checked the text)."""
+    for mark in MARKS.values():
+        if cell.endswith(mark):
+            return cell[: -len(mark)], mark
+    return cell, ""
+
+
+def cells_of(items):
+    """{id: cell} for every text of the pack, read from the two tables (the
+    source of truth); '' when a cell is empty."""
+    cells = {}
+    words = WORDS_TABLE.read_text(encoding="utf-8")
+    for _, row in word_rows(words):
+        key = row[0].strip("`")
+        cells[f"wo_{key}"] = row[6]
+        cells[f"wo_{key}_exemple"] = row[7]
+    problems = PROBLEMS_TABLE.read_text(encoding="utf-8")
+    for _, row in problem_rows(problems):
+        cells[f"wo_problem_{row[0].strip('`')}"] = row[10]
+    return {name: cells.get(name, "") for name, _ in items}
+
+
+def load_rules(path=None):
+    """Words never spoken (one per line of rules.txt, # for comments)."""
+    path = path or RULES
+    if not Path(path).exists():
+        return []
+    words = []
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
+        line = line.split("#", 1)[0].strip().lower()
+        if line:
+            words.append(line)
+    return words
+
+
+def apply_rules(text, words):
+    """[text] without the words that are never spoken (« franc »): whole
+    words, any case; the spaces and the punctuation are tidied."""
+    if words:
+        pattern = r"(?<!\w)(?:" + "|".join(re.escape(w) for w in words) + r")(?!\w)"
+        text = re.sub(pattern, "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"\s+([,.;:!?])", r"\1", text)
+    return text.strip()
 
 
 # ------------------------------------------------------------- translate
@@ -492,14 +547,76 @@ def speak(texts):
 # ------------------------------------------------------------------ pack
 
 
-def pack():
-    subprocess.run(
-        [
-            sys.executable, str(ROOT / "tool" / "process_audio.py"),
-            str(WAV_DIR), "--provisional",
-        ],
-        check=True,
-    )
+def _convert_state(name):
+    return CONVERTED_DIR / f".{name}.txt"
+
+
+def stage(provisional_names, texts, marked):
+    """Copies the wavs to convert into two folders, by provenance.
+
+    A wav is staged when its m4a is missing, when the text it was spoken
+    from is not the text last converted, or when its status (still marked
+    « à relire », or checked) is not the one of the manifest. Returns
+    ({"provisional": folder, "real": folder}, count).
+    """
+    import shutil
+
+    folders = {"provisional": HERE / "build" / "stage-provisional",
+               "real": HERE / "build" / "stage-real"}
+    for folder in folders.values():
+        shutil.rmtree(folder, ignore_errors=True)
+        folder.mkdir(parents=True)
+    count = 0
+    for name, text in texts.items():
+        wav = WAV_DIR / f"{name}.wav"
+        if not wav.exists():
+            continue
+        m4a = ROOT / "assets" / "audio" / "wo" / f"{name}.m4a"
+        file = f"{name}.m4a"
+        is_marked = marked[name]
+        status_ok = (file in provisional_names) == is_marked
+        note = _convert_state(name)
+        same = note.exists() and note.read_text(encoding="utf-8") == text
+        if is_marked and m4a.exists() and file not in provisional_names:
+            # A checked recording must never become a stand-in again.
+            if same:
+                print(f"  {name}: already a checked recording, its cell is "
+                      "marked « à relire » again: mark ignored", file=sys.stderr)
+                continue
+            raise SystemExit(
+                f"{name}: the text changed but the cell is still marked « à "
+                "relire » while its recording was checked. Remove the mark "
+                f"(or delete assets/audio/wo/{file} to make it provisional again)."
+            )
+        if m4a.exists() and same and status_ok:
+            continue
+        shutil.copy(wav, folders["provisional" if is_marked else "real"] / wav.name)
+        count += 1
+    return folders, count
+
+
+def pack(texts=None, marked=None):
+    """Converts the changed wavs: the ones of cells still marked « à relire »
+    with --provisional, the ones the owner checked without it, so that the
+    manifest lists exactly the provisional files. Then rebuilds the asset."""
+    sys.path.insert(0, str(ROOT / "tool"))
+    import process_audio
+
+    out = ROOT / "assets" / "audio" / "wo"
+    previous = process_audio.read_provisional(out)
+    folders, count = stage(previous, texts, marked)
+    print(f"{count} recording(s) to convert")
+    for kind, folder in folders.items():
+        if not any(folder.iterdir()):
+            continue
+        command = [sys.executable, str(ROOT / "tool" / "process_audio.py"), str(folder)]
+        if kind == "provisional":
+            command.append("--provisional")
+        subprocess.run(command, check=True)
+    CONVERTED_DIR.mkdir(parents=True, exist_ok=True)
+    for name, text in texts.items():
+        if (out / f"{name}.m4a").exists():
+            _convert_state(name).write_text(text, encoding="utf-8")
     subprocess.run(
         [sys.executable, str(ROOT / "tool" / "build_math_words.py")], check=True
     )
@@ -513,16 +630,15 @@ def main():
     parser.add_argument("--from", dest="first", choices=STEPS, default=STEPS[0])
     parser.add_argument("--until", dest="last", choices=STEPS, default=STEPS[-1])
     parser.add_argument("--engine", choices=["nllb", "file"], default="nllb",
-                        help="nllb (default, offline) or file: a Wolof text file "
-                        "made by hand with translate.google.com, see --wolof")
+                        help="nllb (default): translates the cells still empty, "
+                        "offline; file: imports a Wolof text file made by hand "
+                        "with translate.google.com, see --wolof")
     parser.add_argument("--wolof", type=Path, metavar="FILE",
                         help="with --engine file: one Wolof line per text, in "
                         "pack order (see --print-french)")
     parser.add_argument("--print-french", action="store_true",
                         help="print the 110 French texts, one per line, in the "
                         "order --wolof expects, and stop")
-    parser.add_argument("--retranslate", action="store_true",
-                        help="translate again what the cache already holds")
     parser.add_argument("--back-translate", type=int, metavar="N",
                         help="print N cached translations with their back-translation")
     args = parser.parse_args()
@@ -536,31 +652,52 @@ def main():
     wanted = STEPS[STEPS.index(args.first) : STEPS.index(args.last) + 1]
     problems = sum(name.startswith("wo_problem_") for name, _ in items)
     print(f"{len(items)} texts ({problems} problems)")
+
     if "translate" in wanted:
         if args.engine == "file":
             if args.wolof is None:
                 raise SystemExit("--engine file needs --wolof FILE")
-            wolof_of = translate_from_file(items, args.wolof)
+            imported = translate_from_file(items, args.wolof)
+            write_tables(imported, overwrite=True)
         else:
-            wolof_of = translate(
-                items, lambda text: Nllb_instance().french_to_wolof(text),
-                "nllb", args.retranslate,
-            )
-    else:
-        cache = load_cache()
-        wolof_of = {name: cache[name] for name, _ in items if name in cache}
+            cells = cells_of(items)
+            empty = [(n, f) for n, f in items if not cells[n]]
+            print(f"{len(empty)} cell(s) still empty")
+            if empty:
+                done = translate(
+                    empty, lambda text: Nllb_instance().french_to_wolof(text), "nllb"
+                )
+                write_tables(done, overwrite=False)
     if "tables" in wanted:
-        words = rewrite_words(WORDS_TABLE.read_text(encoding="utf-8"), wolof_of)
-        WORDS_TABLE.write_text(with_status(words), encoding="utf-8")
-        statements = rewrite_problems(
-            PROBLEMS_TABLE.read_text(encoding="utf-8"), wolof_of
-        )
-        PROBLEMS_TABLE.write_text(with_status(statements), encoding="utf-8")
-        print("tables written")
+        write_tables({}, overwrite=False)
+
+    cells = cells_of(items)
+    empty = [name for name, cell in cells.items() if not cell]
+    if empty and ("speak" in wanted or "pack" in wanted):
+        raise SystemExit(f"{len(empty)} Wolof cell(s) are empty, e.g. {empty[0]}")
+    rules = load_rules()
+    texts = {}
+    marked = {}
+    for name, cell in cells.items():
+        text, mark = split_mark(cell)
+        texts[name] = apply_rules(text, rules)
+        marked[name] = bool(mark)
     if "speak" in wanted:
-        speak({name: entry["wo"] for name, entry in wolof_of.items()})
+        speak(texts)
     if "pack" in wanted:
-        pack()
+        pack(texts, marked)
+
+
+def write_tables(entries, overwrite):
+    """Writes [entries] in the empty (or, with overwrite, machine) cells of
+    the two tables and puts the status line at the top of each."""
+    words = rewrite_words(WORDS_TABLE.read_text(encoding="utf-8"), entries, overwrite)
+    WORDS_TABLE.write_text(with_status(words), encoding="utf-8")
+    statements = rewrite_problems(
+        PROBLEMS_TABLE.read_text(encoding="utf-8"), entries, overwrite
+    )
+    PROBLEMS_TABLE.write_text(with_status(statements), encoding="utf-8")
+    print("tables written")
 
 
 _nllb = None
