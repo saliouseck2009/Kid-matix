@@ -29,6 +29,9 @@ build_ios() {
     --split-debug-info="$symbols/ios"
 }
 
+# No provisional Wolof audio or machine text in a store build.
+bash tool/check_release_content.sh
+
 flutter pub get
 case "$target" in
   android) build_android ;;

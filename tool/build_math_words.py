@@ -30,6 +30,10 @@ FAMILIES = {
     "Questions": "ask",
 }
 OPERATIONS = {"+": "add", "−": "subtract", "×": "multiply", "÷": "divide"}
+# Cells filled by tool/placeholder_audio/ end with one of these marks. They are
+# provisional machine text, never copied into the asset (the printable word
+# cards only carry what the owner wrote).
+PROVISIONAL_MARKS = (" (machine, à relire)", " (Google, à relire)")
 KEY_PATTERN = re.compile(r"^[a-z]+(_[a-z]+)*$")
 
 
@@ -40,10 +44,12 @@ def cells(line):
 
 def help_of(row):
     """The Wolof texts of a word row (explanation, example) the owner wrote;
-    an empty column is left out."""
+    an empty column, or a provisional machine text, is left out."""
     texts = {}
     for name, index in (("explanation", 6), ("example", 7)):
-        if len(row) > index and row[index]:
+        if len(row) > index and row[index] and not row[index].endswith(
+            PROVISIONAL_MARKS
+        ):
             texts[name] = row[index]
     return texts
 

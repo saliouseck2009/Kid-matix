@@ -76,6 +76,7 @@ run_analyze() {
 run_test() {
   run_step "test" flutter test --coverage
   run_step "git hooks" bash tool/hooks_test.sh
+  run_step "release guard" bash tool/check_release_content_test.sh
   run_step "audio script" python3 -m unittest tool/process_audio_test.py
   run_step "placeholder audio script" python3 -m unittest tool/placeholder_audio/make_wolof_placeholders_test.py
   run_step "math words asset" python3 tool/build_math_words.py --check
