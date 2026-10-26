@@ -1,5 +1,257 @@
 {
   "language": "wo",
   "format": "m4a",
-  "words": {}
+  "provisional": true,
+  "words": {
+    "ajouter": {
+      "explanation": "wo_ajouter.m4a",
+      "example": "wo_ajouter_exemple.m4a"
+    },
+    "en_plus": {
+      "explanation": "wo_en_plus.m4a",
+      "example": "wo_en_plus_exemple.m4a"
+    },
+    "en_tout": {
+      "explanation": "wo_en_tout.m4a",
+      "example": "wo_en_tout_exemple.m4a"
+    },
+    "ensemble": {
+      "explanation": "wo_ensemble.m4a",
+      "example": "wo_ensemble_exemple.m4a"
+    },
+    "gagner": {
+      "explanation": "wo_gagner.m4a",
+      "example": "wo_gagner_exemple.m4a"
+    },
+    "recevoir": {
+      "explanation": "wo_recevoir.m4a",
+      "example": "wo_recevoir_exemple.m4a"
+    },
+    "augmenter": {
+      "explanation": "wo_augmenter.m4a",
+      "example": "wo_augmenter_exemple.m4a"
+    },
+    "enlever": {
+      "explanation": "wo_enlever.m4a",
+      "example": "wo_enlever_exemple.m4a"
+    },
+    "il_reste": {
+      "explanation": "wo_il_reste.m4a",
+      "example": "wo_il_reste_exemple.m4a"
+    },
+    "retirer": {
+      "explanation": "wo_retirer.m4a",
+      "example": "wo_retirer_exemple.m4a"
+    },
+    "vendre": {
+      "explanation": "wo_vendre.m4a",
+      "example": "wo_vendre_exemple.m4a"
+    },
+    "donner": {
+      "explanation": "wo_donner.m4a",
+      "example": "wo_donner_exemple.m4a"
+    },
+    "perdre": {
+      "explanation": "wo_perdre.m4a",
+      "example": "wo_perdre_exemple.m4a"
+    },
+    "acheter": {
+      "explanation": "wo_acheter.m4a",
+      "example": "wo_acheter_exemple.m4a"
+    },
+    "de_plus_que": {
+      "explanation": "wo_de_plus_que.m4a",
+      "example": "wo_de_plus_que_exemple.m4a"
+    },
+    "de_moins_que": {
+      "explanation": "wo_de_moins_que.m4a",
+      "example": "wo_de_moins_que_exemple.m4a"
+    },
+    "autant_que": {
+      "explanation": "wo_autant_que.m4a",
+      "example": "wo_autant_que_exemple.m4a"
+    },
+    "le_plus_grand": {
+      "explanation": "wo_le_plus_grand.m4a",
+      "example": "wo_le_plus_grand_exemple.m4a"
+    },
+    "le_plus_petit": {
+      "explanation": "wo_le_plus_petit.m4a",
+      "example": "wo_le_plus_petit_exemple.m4a"
+    },
+    "difference": {
+      "explanation": "wo_difference.m4a",
+      "example": "wo_difference_exemple.m4a"
+    },
+    "egal": {
+      "explanation": "wo_egal.m4a",
+      "example": "wo_egal_exemple.m4a"
+    },
+    "par_paquets_de": {
+      "explanation": "wo_par_paquets_de.m4a",
+      "example": "wo_par_paquets_de_exemple.m4a"
+    },
+    "chacun": {
+      "explanation": "wo_chacun.m4a",
+      "example": "wo_chacun_exemple.m4a"
+    },
+    "fois": {
+      "explanation": "wo_fois.m4a",
+      "example": "wo_fois_exemple.m4a"
+    },
+    "dans_chaque": {
+      "explanation": "wo_dans_chaque.m4a",
+      "example": "wo_dans_chaque_exemple.m4a"
+    },
+    "rangee": {
+      "explanation": "wo_rangee.m4a",
+      "example": "wo_rangee_exemple.m4a"
+    },
+    "double": {
+      "explanation": "wo_double.m4a",
+      "example": "wo_double_exemple.m4a"
+    },
+    "partager": {
+      "explanation": "wo_partager.m4a",
+      "example": "wo_partager_exemple.m4a"
+    },
+    "partager_egalement": {
+      "explanation": "wo_partager_egalement.m4a",
+      "example": "wo_partager_egalement_exemple.m4a"
+    },
+    "repartir": {
+      "explanation": "wo_repartir.m4a",
+      "example": "wo_repartir_exemple.m4a"
+    },
+    "par_personne": {
+      "explanation": "wo_par_personne.m4a",
+      "example": "wo_par_personne_exemple.m4a"
+    },
+    "diviser": {
+      "explanation": "wo_diviser.m4a",
+      "example": "wo_diviser_exemple.m4a"
+    },
+    "moitie": {
+      "explanation": "wo_moitie.m4a",
+      "example": "wo_moitie_exemple.m4a"
+    },
+    "quart": {
+      "explanation": "wo_quart.m4a",
+      "example": "wo_quart_exemple.m4a"
+    },
+    "combien": {
+      "explanation": "wo_combien.m4a",
+      "example": "wo_combien_exemple.m4a"
+    },
+    "combien_de_fois": {
+      "explanation": "wo_combien_de_fois.m4a",
+      "example": "wo_combien_de_fois_exemple.m4a"
+    },
+    "total": {
+      "explanation": "wo_total.m4a",
+      "example": "wo_total_exemple.m4a"
+    },
+    "au_depart": {
+      "explanation": "wo_au_depart.m4a",
+      "example": "wo_au_depart_exemple.m4a"
+    },
+    "a_la_fin": {
+      "explanation": "wo_a_la_fin.m4a",
+      "example": "wo_a_la_fin_exemple.m4a"
+    },
+    "apres": {
+      "explanation": "wo_apres.m4a",
+      "example": "wo_apres_exemple.m4a"
+    },
+    "problem_mangues_donnees": {
+      "explanation": "wo_problem_mangues_donnees.m4a"
+    },
+    "problem_mangues_donnees_piege": {
+      "explanation": "wo_problem_mangues_donnees_piege.m4a"
+    },
+    "problem_billes_recues": {
+      "explanation": "wo_problem_billes_recues.m4a"
+    },
+    "problem_mangues_caisses": {
+      "explanation": "wo_problem_mangues_caisses.m4a"
+    },
+    "problem_mangues_partagees": {
+      "explanation": "wo_problem_mangues_partagees.m4a"
+    },
+    "problem_chaises_tabaski": {
+      "explanation": "wo_problem_chaises_tabaski.m4a"
+    },
+    "problem_car_personnes": {
+      "explanation": "wo_problem_car_personnes.m4a"
+    },
+    "problem_sucre_theieres": {
+      "explanation": "wo_problem_sucre_theieres.m4a"
+    },
+    "problem_biscuits_en_tout_piege": {
+      "explanation": "wo_problem_biscuits_en_tout_piege.m4a"
+    },
+    "problem_pains_vendus": {
+      "explanation": "wo_problem_pains_vendus.m4a"
+    },
+    "problem_billes_chacun_piege": {
+      "explanation": "wo_problem_billes_chacun_piege.m4a"
+    },
+    "problem_billes_sacs": {
+      "explanation": "wo_problem_billes_sacs.m4a"
+    },
+    "problem_tas_fois_piege": {
+      "explanation": "wo_problem_tas_fois_piege.m4a"
+    },
+    "problem_billes_tas": {
+      "explanation": "wo_problem_billes_tas.m4a"
+    },
+    "problem_moussa_paniers": {
+      "explanation": "wo_problem_moussa_paniers.m4a"
+    },
+    "problem_fatou_sachets": {
+      "explanation": "wo_problem_fatou_sachets.m4a"
+    },
+    "problem_billes_difference": {
+      "explanation": "wo_problem_billes_difference.m4a"
+    },
+    "problem_biscuits_range": {
+      "explanation": "wo_problem_biscuits_range.m4a"
+    },
+    "problem_mamadou_gagne": {
+      "explanation": "wo_problem_mamadou_gagne.m4a"
+    },
+    "problem_billes_mamadou_moins_piege": {
+      "explanation": "wo_problem_billes_mamadou_moins_piege.m4a"
+    },
+    "problem_mangues_de_plus_que_piege": {
+      "explanation": "wo_problem_mangues_de_plus_que_piege.m4a"
+    },
+    "problem_mangues_difference": {
+      "explanation": "wo_problem_mangues_difference.m4a"
+    },
+    "problem_biscuits_partages_piege": {
+      "explanation": "wo_problem_biscuits_partages_piege.m4a"
+    },
+    "problem_biscuits_paquets": {
+      "explanation": "wo_problem_biscuits_paquets.m4a"
+    },
+    "problem_mangues_deux_fois_plus": {
+      "explanation": "wo_problem_mangues_deux_fois_plus.m4a"
+    },
+    "problem_mangues_moitie_piege": {
+      "explanation": "wo_problem_mangues_moitie_piege.m4a"
+    },
+    "problem_achat_sachet_eau": {
+      "explanation": "wo_problem_achat_sachet_eau.m4a"
+    },
+    "problem_awa_marche_francs": {
+      "explanation": "wo_problem_awa_marche_francs.m4a"
+    },
+    "problem_rangees_tabaski": {
+      "explanation": "wo_problem_rangees_tabaski.m4a"
+    },
+    "problem_awa_moussa_plus": {
+      "explanation": "wo_problem_awa_moussa_plus.m4a"
+    }
+  }
 }

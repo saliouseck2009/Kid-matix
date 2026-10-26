@@ -1,1 +1,552 @@
-{}
+{
+  "wo_a_la_fin": {
+    "engine": "nllb",
+    "fr": "Après tout ce qui s'est passé, à la dernière étape.",
+    "wo": "Bi loolu wéyee, ci wàllu mujj."
+  },
+  "wo_a_la_fin_exemple": {
+    "engine": "nllb",
+    "fr": "À la fin de la journée, Fatou a neuf mangues.",
+    "wo": "Ba bés ba wéyee, Fatou am na ci juróom-ñaari mango."
+  },
+  "wo_acheter": {
+    "engine": "nllb",
+    "fr": "Donner de l'argent pour avoir quelque chose : tu as une chose de plus, mais moins d'argent.",
+    "wo": "Jëfandikoo xaalis ngir am lu nga am; nga am lu ëpp, waaye xaalis gu néew."
+  },
+  "wo_acheter_exemple": {
+    "engine": "nllb",
+    "fr": "Au marché, Moussa achète trois mangues avec ses cinq cents francs. Il a trois mangues de plus, mais moins d'argent.",
+    "wo": "Moussa jënd na ñetti mango ak juróomi téeméeri frank, te am na ñetti mangoo yu ëpp, waaye ñàkk xaalis."
+  },
+  "wo_ajouter": {
+    "engine": "nllb",
+    "fr": "Mettre quelque chose en plus de ce que tu as déjà.",
+    "wo": "Dafa teg lu gën ci lu nga am."
+  },
+  "wo_ajouter_exemple": {
+    "engine": "nllb",
+    "fr": "Au marché, Awa a quatre mangues. Elle en ajoute trois à son panier.",
+    "wo": "Awa am na ñeenti mango ci suufe bi."
+  },
+  "wo_apres": {
+    "engine": "nllb",
+    "fr": "Ce qui arrive plus tard, une fois qu'une chose est passée.",
+    "wo": "Li ci ëllëg, ci lu jëm ci lu jëm ci lu yàgg."
+  },
+  "wo_apres_exemple": {
+    "engine": "nllb",
+    "fr": "Après le marché, Awa rentre à la maison avec trois mangues.",
+    "wo": "Bi ñu sàkk, Awa dugal këram ak ñetti mango."
+  },
+  "wo_au_depart": {
+    "engine": "nllb",
+    "fr": "Au tout début, avant ce qui change.",
+    "wo": "Ci njàlbéen bu jëkk, ba noppi lu dul tollu."
+  },
+  "wo_au_depart_exemple": {
+    "engine": "nllb",
+    "fr": "Au départ, Mamadou a cinq cents francs.",
+    "wo": "Ci njàlbéen bi, Mamadou am na juróomi téeméeri frank."
+  },
+  "wo_augmenter": {
+    "engine": "nllb",
+    "fr": "Devenir plus grand ou plus cher : le nombre monte.",
+    "wo": "Bëj-gànnaay bu mag mbaa bu màgg: ñu gën a màgg."
+  },
+  "wo_augmenter_exemple": {
+    "engine": "nllb",
+    "fr": "Le pain coûte cent cinquante francs. Son prix augmente de cinquante francs.",
+    "wo": "Jëf bu ñu sàkk di téeméer ak juróom-ñaari frank, te lu ñu sàkk di téeméer ak juróom-ñaari frank."
+  },
+  "wo_autant_que": {
+    "engine": "nllb",
+    "fr": "Il y a la même quantité des deux côtés.",
+    "wo": "Am na noonu ci ñaari wàllu yi."
+  },
+  "wo_autant_que_exemple": {
+    "engine": "nllb",
+    "fr": "Ibrahima a autant de billes que Mamadou : ils en ont sept chacun.",
+    "wo": "Ibraahiima am na juróom ñaari ball yu mel ni Mamadu."
+  },
+  "wo_chacun": {
+    "engine": "nllb",
+    "fr": "Pour chaque personne ou chaque chose, la même quantité.",
+    "wo": "Ku nekk mbaa lu nekk, lu mel noonu."
+  },
+  "wo_chacun_exemple": {
+    "engine": "nllb",
+    "fr": "Pour la fête, les quatre enfants reçoivent chacun trois billes.",
+    "wo": "Ci njariñ bi, ñeenti doom yi, kenn ci ñoom, jot na ñetti ball."
+  },
+  "wo_combien": {
+    "engine": "nllb",
+    "fr": "Tu demandes une quantité : tu cherches un nombre.",
+    "wo": "Dinaa laaj lu bare: nga ngi wut lu bare."
+  },
+  "wo_combien_de_fois": {
+    "engine": "nllb",
+    "fr": "Chercher combien de paquets de même taille on peut faire avec un nombre donné.",
+    "wo": "Jëfandikoo ci lu ëpp ci ay xët yu mel ni ñoom, ngir mën a jëfandikoo lu ëpp ci lu ëpp."
+  },
+  "wo_combien_de_fois_exemple": {
+    "engine": "nllb",
+    "fr": "Aminata a douze billes. Combien de fois peut-elle faire un tas de trois billes ?",
+    "wo": "Aminata am na fukk ak ñaar."
+  },
+  "wo_combien_exemple": {
+    "engine": "nllb",
+    "fr": "Au marché, une cliente demande : combien coûtent les mangues ?",
+    "wo": "Ci suulet bi, ku nekk laaj na ne: luy jële mango yi?"
+  },
+  "wo_dans_chaque": {
+    "engine": "nllb",
+    "fr": "Le même nombre se répète dans chacun des groupes.",
+    "wo": "Amoon na ci ñeneen ci ñeneen."
+  },
+  "wo_dans_chaque_exemple": {
+    "engine": "nllb",
+    "fr": "Dans chaque panier, Fatou range six mangues. Elle a trois paniers.",
+    "wo": "Fatou dafa sàkk juróom benni mandor ci benn sàq, am na ñetti sàq."
+  },
+  "wo_de_moins_que": {
+    "engine": "nllb",
+    "fr": "Une des deux quantités est plus petite que l'autre. Pour savoir quoi faire, lis bien la question.",
+    "wo": "Kenn ci ñaari taxawaay yi gën a ndaw, ngir xam lu nga def, jàngal ci laaj bi."
+  },
+  "wo_de_moins_que_exemple": {
+    "engine": "nllb",
+    "fr": "Fatou a cinq cents francs. Aminata en a cent de moins que Fatou.",
+    "wo": "Fatou am na juróomi téeméeri frank. Aminata am na ci téeméeri frank ci Fatou."
+  },
+  "wo_de_plus_que": {
+    "engine": "nllb",
+    "fr": "Une des deux quantités est plus grande que l'autre. Pour savoir quoi faire, lis bien la question.",
+    "wo": "Kenn ci ñaari taxawaay yi moo gën a màgg."
+  },
+  "wo_de_plus_que_exemple": {
+    "engine": "nllb",
+    "fr": "Awa a douze mangues. Moussa en a neuf. Awa en a trois de plus que lui.",
+    "wo": "Awa am na fukk ak ñaar, Musaa am na juróom-ñeen, Awa am na ñetti."
+  },
+  "wo_difference": {
+    "engine": "nllb",
+    "fr": "Ce qui sépare deux quantités : la partie en plus de la plus grande.",
+    "wo": "Li di séddoo ñaari jëfandikukat yi: ci lu gën a màgg."
+  },
+  "wo_difference_exemple": {
+    "engine": "nllb",
+    "fr": "Mamadou a neuf mangues dans son panier, et Moussa en a quatre. Quelle est la différence entre leurs paniers ?",
+    "wo": "Mamadou am na juróom-ñeen mbëj ci sàrtam, Moussa am na ñeenti mbëj."
+  },
+  "wo_diviser": {
+    "engine": "nllb",
+    "fr": "Partager en parts égales.",
+    "wo": "Jëf-jëf-jëf."
+  },
+  "wo_diviser_exemple": {
+    "engine": "nllb",
+    "fr": "Aminata veut diviser ses quinze billes en trois tas égaux.",
+    "wo": "Aminata bëggoon a séddale ay 15 ballam ci ñetti benn."
+  },
+  "wo_donner": {
+    "engine": "nllb",
+    "fr": "Passer quelque chose à quelqu'un : celui qui donne en a moins, celui qui reçoit en a plus.",
+    "wo": "Kon nag, ku jox, am na lu néew, te ku jot, am na lu bare."
+  },
+  "wo_donner_exemple": {
+    "engine": "nllb",
+    "fr": "Fatou donne deux mangues à sa petite sœur.",
+    "wo": "Fatou jox na sa jigéen ju ndaw ñaari mangue."
+  },
+  "wo_double": {
+    "engine": "nllb",
+    "fr": "Deux fois la même quantité.",
+    "wo": "Ñaari yoon."
+  },
+  "wo_double_exemple": {
+    "engine": "nllb",
+    "fr": "Mamadou a six mangues. Moussa en a le double : douze mangues.",
+    "wo": "Mamadu am na juróom-ñeen mango, Musaa am na ñaar: fukki mango."
+  },
+  "wo_egal": {
+    "engine": "nllb",
+    "fr": "Les deux quantités sont les mêmes : rien ne dépasse.",
+    "wo": "Ñaareel xaalis yi amoon nañu noonu: kenn du gën."
+  },
+  "wo_egal_exemple": {
+    "engine": "nllb",
+    "fr": "Fatou a cinq mangues et Ibrahima en a cinq aussi : leurs tas sont égaux.",
+    "wo": "Fatou am na juróomi mangoo, Ibraahiima am na juróomi mangoo itam."
+  },
+  "wo_en_plus": {
+    "engine": "nllb",
+    "fr": "Tu as déjà des choses, et on t'en donne encore.",
+    "wo": "Dafa nga am ay yëf, te dinañuy wax tamit ay yëf."
+  },
+  "wo_en_plus_exemple": {
+    "engine": "nllb",
+    "fr": "Fatou a six mangues. Sa tante lui en donne quatre en plus.",
+    "wo": "Fatou am na juróom benni mangoo, ak sa xarit di ko jox ñeent yu ëpp."
+  },
+  "wo_en_tout": {
+    "engine": "nllb",
+    "fr": "Le nombre que tu obtiens en comptant toutes les parties.",
+    "wo": "Xale bi nga jële bu nga xeex mboolem cér yi."
+  },
+  "wo_en_tout_exemple": {
+    "engine": "nllb",
+    "fr": "Le matin, Ibrahima achète trois mangues ; le soir, il en achète quatre. Il en a sept en tout.",
+    "wo": "Ibraayma jënd na ñetti njaam ci suba bi, ñeenti njaam ci guddi bi, ba juróom-ñaari."
+  },
+  "wo_enlever": {
+    "engine": "nllb",
+    "fr": "Prendre des choses et les sortir du groupe : il en reste moins.",
+    "wo": "Jëfandikoo ay jëfandikoo ngir génne ko ci jëfandikukat bi: amoon na lu néew."
+  },
+  "wo_enlever_exemple": {
+    "engine": "nllb",
+    "fr": "Au marché, la vendeuse enlève deux mangues abîmées du panier.",
+    "wo": "Ci suucu bi, jaaykat bi jël ñaari mango yu yàq yu bari ci kas."
+  },
+  "wo_ensemble": {
+    "engine": "nllb",
+    "fr": "Réunir des choses au même endroit.",
+    "wo": "Jëfandikoo yëf yi ci benn bérab."
+  },
+  "wo_ensemble_exemple": {
+    "engine": "nllb",
+    "fr": "Aminata met ensemble huit billes rouges et six billes bleues dans une boîte.",
+    "wo": "Aminata daal na juróom-ñeen ball yu xumb ak juróom-ñeen ball yu xumb ci benn bokk."
+  },
+  "wo_fois": {
+    "engine": "nllb",
+    "fr": "Répéter le même nombre plusieurs fois : quatre fois six, ce sont quatre groupes de six.",
+    "wo": "Jëfalu ko lu mel noonu lu ëpp yoon: ñeenti yoon ci juróom-ñeent, ñeent ci juróom-ñeent."
+  },
+  "wo_fois_exemple": {
+    "engine": "nllb",
+    "fr": "Pour l'attaya, Mamadou prépare quatre théières et met deux morceaux de sucre dans chaque théière : quatre fois deux morceaux.",
+    "wo": "Mamadou def na ñeenti téer, teg ca nekk ñaari coppite sukk, ñeenti coppite ñaari coppite."
+  },
+  "wo_gagner": {
+    "engine": "nllb",
+    "fr": "Tu reçois de l'argent ou des points en plus de ce que tu avais.",
+    "wo": "Dinaa jot ay xaalis walla ay xët yu gën a bare ci li nga am."
+  },
+  "wo_gagner_exemple": {
+    "engine": "nllb",
+    "fr": "Moussa lave une voiture et gagne cinq cents francs.",
+    "wo": "Moussa dafa sàkk oto te am juróomi téeméeri frank."
+  },
+  "wo_il_reste": {
+    "engine": "nllb",
+    "fr": "Ce qui n'est pas parti : ce qui est encore là après avoir enlevé.",
+    "wo": "Li mu dul dem, mooy li mu jële."
+  },
+  "wo_il_reste_exemple": {
+    "engine": "nllb",
+    "fr": "Aminata a dix mangues. Elle en vend quatre au marché. Il lui reste six mangues.",
+    "wo": "Aminata am na fukki mangoo. Mu tàkk na ñeenti mangoo ca bérab bi, ba noppi am na juróom-ñetti mangoo."
+  },
+  "wo_le_plus_grand": {
+    "engine": "nllb",
+    "fr": "Celui qui a la plus grande quantité, parmi tous.",
+    "wo": "Ku am lu bare ci ñoom ñépp."
+  },
+  "wo_le_plus_grand_exemple": {
+    "engine": "nllb",
+    "fr": "Au jeu de billes, Mamadou a le plus grand tas : neuf billes.",
+    "wo": "Ci jokkoo ball yi, Mamadou am na lu gën a màgg: juróom-ñaari ball."
+  },
+  "wo_le_plus_petit": {
+    "engine": "nllb",
+    "fr": "Celui qui a la plus petite quantité, parmi tous.",
+    "wo": "Ku am gën a ndaw ci ñoom ñépp."
+  },
+  "wo_le_plus_petit_exemple": {
+    "engine": "nllb",
+    "fr": "Parmi trois sacs de mangues, Aminata prend le plus petit : elle contient trois mangues.",
+    "wo": "Aminata jël ca ñetti sàkku mango yi gën a ndaw: dafa am ñetti mango."
+  },
+  "wo_moitie": {
+    "engine": "nllb",
+    "fr": "Une des deux parts égales d'un tout, si tu le coupes en deux.",
+    "wo": "Kenn ci ñaari wàll yu mel ni benn, su nga jël ci ñaari wàll."
+  },
+  "wo_moitie_exemple": {
+    "engine": "nllb",
+    "fr": "Fatou a quatorze mangues et en donne la moitié à Aminata.",
+    "wo": "Fatou am na fukk ak ñeenti mangoo, jox Aminata genn-wàll."
+  },
+  "wo_par_paquets_de": {
+    "engine": "nllb",
+    "fr": "Des objets rangés en paquets, avec le même nombre dans chaque paquet.",
+    "wo": "Jëfandikukat yu ñu sàkk, ak lim yu njëkk ci benn sàkk."
+  },
+  "wo_par_paquets_de_exemple": {
+    "engine": "nllb",
+    "fr": "Au marché, Aminata achète des biscuits par paquets de trois. Elle prend cinq paquets.",
+    "wo": "Aminata di jëkka jëkka jëkka jëkka jëkka jëkka jëkka jëkka."
+  },
+  "wo_par_personne": {
+    "engine": "nllb",
+    "fr": "Ce que reçoit chaque personne d'une même quantité.",
+    "wo": "Li nit ku nekk jot ci noonu."
+  },
+  "wo_par_personne_exemple": {
+    "engine": "nllb",
+    "fr": "Pour le goûter, il y a douze mangues pour quatre enfants. Combien de mangues par personne ?",
+    "wo": "Ndax am na fukki mango ci ñeent doomam. Ñaata mango ci nit?"
+  },
+  "wo_partager": {
+    "engine": "nllb",
+    "fr": "Couper une quantité en parts pour que chacun ait sa part.",
+    "wo": "Jëf-jëf-jëf-jëf-jëf-jëf-jëf-jëf-jëf."
+  },
+  "wo_partager_egalement": {
+    "engine": "nllb",
+    "fr": "Donner à chacun la même part, sans en garder plus pour soi.",
+    "wo": "Jëfleen ñépp ci lu mat sëriñ, te bañ a sàkk lu mat sëriñ."
+  },
+  "wo_partager_egalement_exemple": {
+    "engine": "nllb",
+    "fr": "Mamadou partage également ses douze mangues entre trois amis : chacun en reçoit quatre.",
+    "wo": "Mamadou di séddoo ay fukki mangoom itam ci ñetti xarit: ku nekk di jot ñeent."
+  },
+  "wo_partager_exemple": {
+    "engine": "nllb",
+    "fr": "Mamadou partage ses douze mangues entre trois amis.",
+    "wo": "Mamadu di séddoo ay fukki mangoom ci ñetti xaritam."
+  },
+  "wo_perdre": {
+    "engine": "nllb",
+    "fr": "Ne plus avoir quelque chose que tu avais.",
+    "wo": "Duñu am lu nga amoon."
+  },
+  "wo_perdre_exemple": {
+    "engine": "nllb",
+    "fr": "Mamadou perd trois billes pendant le jeu.",
+    "wo": "Mamadou ñàkk na ñetti ball ci biir xëtu."
+  },
+  "wo_problem_achat_sachet_eau": {
+    "engine": "nllb",
+    "fr": "Au départ, Ibrahima a cent francs. Il achète un sachet d'eau à vingt-cinq francs. Combien d'argent lui reste-t-il à la fin ?",
+    "wo": "Ibraayma am na benn frank ci njàlbéen bi. Jëfandikoo ko ci njëkk ndox ci ñaar fukk ak juróom frank."
+  },
+  "wo_problem_awa_marche_francs": {
+    "engine": "nllb",
+    "fr": "Awa achète des mangues à cinquante francs et du thé à vingt-cinq francs. Quel est le total ?",
+    "wo": "Awa di jënd mango ci 50 francs ak té ci 25 francs."
+  },
+  "wo_problem_awa_moussa_plus": {
+    "engine": "nllb",
+    "fr": "Moussa a vingt-cinq francs. Awa en a soixante-quinze de plus que lui. Combien de francs Awa a-t-elle ?",
+    "wo": "Moussa am na 25 francs. Awa am na 75 francs yu ëpp."
+  },
+  "wo_problem_billes_chacun_piege": {
+    "engine": "nllb",
+    "fr": "Chacun des quatre enfants reçoit six billes. Combien de billes faut-il ?",
+    "wo": "Ñi nekk ci ñeenti xale yi, am na juróom-ñeen fànn. Ñaat fànn lañu war?"
+  },
+  "wo_problem_billes_difference": {
+    "engine": "nllb",
+    "fr": "Mamadou a cinq billes. Ibrahima en a huit. Quelle est la différence entre leurs billes ?",
+    "wo": "Mamadou am na juróomi xumb, Ibrahima am na ñetti xumb."
+  },
+  "wo_problem_billes_mamadou_moins_piege": {
+    "engine": "nllb",
+    "fr": "Mamadou a cinq billes. Il en a trois de moins que son ami Ibrahima. Combien de billes a Ibrahima ?",
+    "wo": "Mamadou am na juróomi xànk. Am na ñetti xànk yu néew ni sa xarit Ibraayma."
+  },
+  "wo_problem_billes_recues": {
+    "engine": "nllb",
+    "fr": "Mamadou a six billes. Il reçoit quatre billes de son ami. Combien de billes a-t-il maintenant ?",
+    "wo": "Mamadou am na juróom ñaari ball. Mu jot na ñeenti ball ci xaritam. Ñaata ball la am léegi?"
+  },
+  "wo_problem_billes_sacs": {
+    "engine": "nllb",
+    "fr": "Il y a quatre sacs. Dans chaque sac, il y a six billes. Combien de billes y a-t-il ?",
+    "wo": "Am na ñeenti sàrt, ci benn sàrt am na juróom-ñeen ball."
+  },
+  "wo_problem_billes_tas": {
+    "engine": "nllb",
+    "fr": "Awa a vingt-quatre billes. Elle fait des tas de trois billes. Combien de tas peut-elle faire ?",
+    "wo": "Awa am na ñaar fukk ak ñeent fànn. Mu def na ñetti fànn. Ñaata fànn mu mën a def?"
+  },
+  "wo_problem_biscuits_en_tout_piege": {
+    "engine": "nllb",
+    "fr": "Aminata achète cinq paquets de trois biscuits. Combien de biscuits a-t-elle en tout ?",
+    "wo": "Aminata di jënd juróomi pakk yu ñetti biskuit. Ñaata biskuit la am?"
+  },
+  "wo_problem_biscuits_paquets": {
+    "engine": "nllb",
+    "fr": "Au marché, Moussa achète des biscuits par paquets de douze. Il prend quatre paquets. Combien de biscuits a-t-il ?",
+    "wo": "Ci suulet bi, Moussa di jënd biskuit yi ci 12 paket."
+  },
+  "wo_problem_biscuits_partages_piege": {
+    "engine": "nllb",
+    "fr": "Moussa a quatre paquets de douze biscuits. Il veut les partager avec ses amis. Combien de biscuits a-t-il à partager ?",
+    "wo": "Moussa am na ñeenti pakk yu tollu biskuit yu mu bëgg a séddoo ak ay xaritam. Ñaata biskuit la mu am?"
+  },
+  "wo_problem_biscuits_range": {
+    "engine": "nllb",
+    "fr": "Aminata a quarante-huit biscuits. Elle les range en six paquets égaux. Combien de biscuits y a-t-il dans chaque paquet ?",
+    "wo": "Aminata am na ñeent fukk ak juróom-ñeent biskuit. Mu sàkk leen ci juróom-ñeent benn benn benn. Ñaat biskuit la nekk ci benn benn benn benn?"
+  },
+  "wo_problem_car_personnes": {
+    "engine": "nllb",
+    "fr": "Dans le car rapide, il y a neuf personnes. quatre personnes descendent. Il reste combien de personnes ?",
+    "wo": "Ci otobus bi, amoon na ñetti nit, ñeenti nit ñu wàcc. Ñaata nit ñu sax?"
+  },
+  "wo_problem_chaises_tabaski": {
+    "engine": "nllb",
+    "fr": "Pour la Tabaski, Awa a dix chaises. Elle les range en deux rangées égales. Combien de chaises y a-t-il dans chaque rangée ?",
+    "wo": "Ci Tabaski Awa am na fukki gànnaaw, di leen teg ci ñaari xët yu mel ni ñoom."
+  },
+  "wo_problem_fatou_sachets": {
+    "engine": "nllb",
+    "fr": "Fatou a trente-six sachets d'eau. Elle en vend quatorze au marché. Combien lui en reste-t-il ?",
+    "wo": "Fatou am na ñetti fukk ak juróom-ñett ak juroom-ñett ak juroom-ñett ci ndox."
+  },
+  "wo_problem_mamadou_gagne": {
+    "engine": "nllb",
+    "fr": "Au départ, Mamadou a trente billes. Il joue et gagne douze billes. Après le jeu, combien en a-t-il ?",
+    "wo": "Ci njàlbéen bi, Mamadou am na 30 ball. Mu xeex te am na 12 ball. Bi xeex ba noppi, meloon la am?"
+  },
+  "wo_problem_mangues_caisses": {
+    "engine": "nllb",
+    "fr": "Au marché, Fatou a trois caisses. Dans chaque caisse, il y a cinq mangues. Combien de mangues a-t-elle ?",
+    "wo": "Fatou am na ñetti caatu ci xarnu bi. Ci benn caatu bi am na juróomi mango. Ñaata mango la am?"
+  },
+  "wo_problem_mangues_de_plus_que_piege": {
+    "engine": "nllb",
+    "fr": "Awa a quatre-vingt-quatre mangues. Elle en a quarante-cinq de plus que Moussa. Combien de mangues a Moussa ?",
+    "wo": "Awa am na ñeent fukk ak ñeent. Mu am na ñeent fukk ak juróomi lu ëpp Musaa. Ñaata fukk Moussa am na?"
+  },
+  "wo_problem_mangues_deux_fois_plus": {
+    "engine": "nllb",
+    "fr": "Aminata a vingt-cinq mangues. Fatou en a deux fois plus. Combien de mangues Fatou a-t-elle ?",
+    "wo": "Aminata am na ñaar fukk ak juróomi mango. Fatou am na ñaari yoon. Fatou am na ñaat mango?"
+  },
+  "wo_problem_mangues_difference": {
+    "engine": "nllb",
+    "fr": "Awa a quatre-vingt-quatre mangues. Moussa en a trente-neuf. Quelle est la différence entre leurs mangues ?",
+    "wo": "Awa am na ñeent fukk ak juróom ñett, Musaa am na fukk ak juróom ñett. Lii mooy li ëpp ci ñoom?"
+  },
+  "wo_problem_mangues_donnees": {
+    "engine": "nllb",
+    "fr": "Awa a douze mangues. Elle en donne cinq à sa petite sœur. Combien de mangues lui reste-t-il ?",
+    "wo": "Awa am na fukk ak ñaar ay mangal. Mu jox ay juróomi ay mangal ci sa jigéen ju ndaw. Ñaata mangal la am?"
+  },
+  "wo_problem_mangues_donnees_piege": {
+    "engine": "nllb",
+    "fr": "Awa donne cinq mangues à sa petite sœur. Il lui en reste sept. Combien de mangues avait-elle au départ ?",
+    "wo": "Awa jox na ndaw ya juróom-ñaari mango, ba noppi am na juróom-ñaari."
+  },
+  "wo_problem_mangues_moitie_piege": {
+    "engine": "nllb",
+    "fr": "Aminata a vingt-cinq mangues. Elle a la moitié des mangues de Fatou. Combien de mangues Fatou a-t-elle ?",
+    "wo": "Aminata am na ñaar fukk ak juróom mangue. Fatou am na genn-wàllu mangue yi. Fatou am na ñakk mangue."
+  },
+  "wo_problem_mangues_partagees": {
+    "engine": "nllb",
+    "fr": "Fatou a douze mangues. Elle les partage également entre trois amis. Combien de mangues reçoit chacun ?",
+    "wo": "Fatou am na fukki mango, di leen di séddoo ak ñetti xarit."
+  },
+  "wo_problem_moussa_paniers": {
+    "engine": "nllb",
+    "fr": "Moussa met ensemble ses dix-huit et ses quinze mangues dans un grand panier. Combien de mangues y a-t-il dans le grand panier ?",
+    "wo": "Musaa dajale fukki juróom fukk ak juróom fukk ak juróom-ñaari mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom."
+  },
+  "wo_problem_pains_vendus": {
+    "engine": "nllb",
+    "fr": "Aminata a dix pains. Elle en vend quatre au marché. Combien de pains lui reste-t-il ?",
+    "wo": "Aminata am na fukki mburu. Am na ñeenti mburu ci xaalis bi."
+  },
+  "wo_problem_rangees_tabaski": {
+    "engine": "nllb",
+    "fr": "Pour la Tabaski, on met quarante-huit chaises en six rangées égales dans la cour. Combien de chaises y a-t-il dans chaque rangée ?",
+    "wo": "Ci Tabaski, dañu sàkk ñeent fukk ak juróom-ñaari gànnaaw ci juróom-ñaari gànnaaw yu mel ni gànnaaw."
+  },
+  "wo_problem_sucre_theieres": {
+    "engine": "nllb",
+    "fr": "Mamadou a huit morceaux de sucre. Il les répartit dans deux théières, le même nombre dans chaque. Combien de morceaux y a-t-il dans chaque théière ?",
+    "wo": "Mamadou am na juróom-ñetti xarnu sukkër. Mu di leen séddale ci ñaari xarnu, ci xarnu xarnu xarnu xarnu."
+  },
+  "wo_problem_tas_fois_piege": {
+    "engine": "nllb",
+    "fr": "Awa a vingt-quatre billes. Combien de fois peut-elle faire un tas de trois billes ?",
+    "wo": "Awa am na ñaar fukk ak ñeent bala."
+  },
+  "wo_quart": {
+    "engine": "nllb",
+    "fr": "Une des quatre parts égales d'un tout, si tu le coupes en quatre.",
+    "wo": "Kenn ci ñeenti cér yu mel ni benn, su nga jële ko ci ñeent."
+  },
+  "wo_quart_exemple": {
+    "engine": "nllb",
+    "fr": "Moussa a huit billes. Il en donne un quart à Ibrahima : deux billes.",
+    "wo": "Moussa am na juróom ñetti xànk, jox Ibraayma ñeent fukk, ñaari xànk."
+  },
+  "wo_rangee": {
+    "engine": "nllb",
+    "fr": "Des objets alignés en ligne, avec le même nombre dans chaque ligne.",
+    "wo": "Jëfandikukat yi ñu wàcce ci wàll, ak lim gu mel ci wàll gu nekk."
+  },
+  "wo_rangee_exemple": {
+    "engine": "nllb",
+    "fr": "Pour la Tabaski, il y a quatre rangées de six chaises dans la cour.",
+    "wo": "Ci Tabaski, am na ñeent taxawaay yu tollook juróom-ñeent ci kër gi."
+  },
+  "wo_recevoir": {
+    "engine": "nllb",
+    "fr": "Quelqu'un te donne quelque chose : tu en as plus qu'avant.",
+    "wo": "Am na ku la jox dara: nga am na lu gën a réy."
+  },
+  "wo_recevoir_exemple": {
+    "engine": "nllb",
+    "fr": "Mamadou reçoit cent francs de son oncle pour acheter du thé.",
+    "wo": "Mamadou di jël ay téeméeri francs ci baayam ngir jënd té."
+  },
+  "wo_repartir": {
+    "engine": "nllb",
+    "fr": "Mettre une quantité dans plusieurs endroits, en parts égales.",
+    "wo": "Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ"
+  },
+  "wo_repartir_exemple": {
+    "engine": "nllb",
+    "fr": "Ibrahima répartit vingt billes dans quatre sacs, le même nombre dans chaque sac.",
+    "wo": "Ibraayma daldi séddoo téeméeri xànk ci ñeenti xànk, ci benn xànk."
+  },
+  "wo_retirer": {
+    "engine": "nllb",
+    "fr": "Prendre une partie et la mettre à part.",
+    "wo": "Jël-leen benn wàllu, di ko wàcc."
+  },
+  "wo_retirer_exemple": {
+    "engine": "nllb",
+    "fr": "Ibrahima retire cent cinquante francs de sa tirelire pour acheter un pain.",
+    "wo": "Ibraayma génne na ci ay téeméer ak juróom-ñaari frank ci ay xaalisam, ngir jënd mburu."
+  },
+  "wo_total": {
+    "engine": "nllb",
+    "fr": "Le résultat de tout ce qu'on a réuni ou compté.",
+    "wo": "Li mu am ci lépp lu nu boole, mbaa lu nu teg."
+  },
+  "wo_total_exemple": {
+    "engine": "nllb",
+    "fr": "Ibrahima a acheté trois mangues le matin et quatre le soir. Quel est le total ?",
+    "wo": "Ibrahima jënd na ñetti mango ci suba ak ñeenti mango ci guddi."
+  },
+  "wo_vendre": {
+    "engine": "nllb",
+    "fr": "Donner quelque chose à quelqu'un qui te paie : ce n'est plus à toi, mais tu reçois de l'argent.",
+    "wo": "Xam nga lu nga jële ci lu nga jële, te du sa bopp, waaye nga jot xaalis."
+  },
+  "wo_vendre_exemple": {
+    "engine": "nllb",
+    "fr": "Aminata vend cinq sachets d'eau au marché.",
+    "wo": "Aminata di jaay juróomi jaatu ndox ci suulet bi."
+  }
+}
