@@ -43,7 +43,7 @@ final class FakeWordAudioService implements WordAudioService {
   List<String> get languages => <String>[language];
 
   @override
-  String? get defaultLanguage => language;
+  String? get defaultLanguage => isPackProvisional ? null : language;
 
   @override
   bool isProvisional(String languageCode) =>

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +10,7 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/choice_segments.dart';
+import 'package:kid_matix/core/widgets/parental_gate.dart';
 import 'package:kid_matix/core/widgets/provisional_audio_notice.dart';
 import 'package:kid_matix/features/profile/domain/entities/daily_goal.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_settings_entity.dart';
@@ -31,6 +34,7 @@ class SettingsPage extends StatelessWidget {
     this.languageRows = const <Widget>[],
     this.helpAudioLanguages = const <String>[],
     this.provisionalHelpAudioLanguages = const <String>{},
+    this.gateRandom,
     super.key,
   });
 
@@ -56,6 +60,10 @@ class SettingsPage extends StatelessWidget {
   /// Codes among [helpAudioLanguages] whose pack is made of machine-made
   /// stand-ins: the row then carries a notice.
   final Set<String> provisionalHelpAudioLanguages;
+
+  /// Source of the numbers of the parental gate that guards a provisional
+  /// help language, or `null` for a new one (seeded in tests).
+  final Random? gateRandom;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +93,7 @@ class SettingsPage extends StatelessWidget {
                   languageRows: languageRows,
                   helpAudioLanguages: helpAudioLanguages,
                   provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
+                  gateRandom: gateRandom,
                 ),
               };
             },
@@ -116,6 +125,7 @@ class _SettingsView extends StatelessWidget {
     required this.languageRows,
     required this.helpAudioLanguages,
     required this.provisionalHelpAudioLanguages,
+    required this.gateRandom,
   });
 
   static const double _gap = 20;
@@ -128,6 +138,7 @@ class _SettingsView extends StatelessWidget {
   final List<Widget> languageRows;
   final List<String> helpAudioLanguages;
   final Set<String> provisionalHelpAudioLanguages;
+  final Random? gateRandom;
 
   Future<void> _reset(BuildContext context) async {
     final SettingsCubit cubit = context.read<SettingsCubit>();
@@ -253,6 +264,7 @@ class _SettingsView extends StatelessWidget {
               _HelpAudioRow(
                 languages: helpAudioLanguages,
                 provisionalLanguages: provisionalHelpAudioLanguages,
+                gateRandom: gateRandom,
                 selected: settings.helpAudioLanguage,
                 backgroundColor: band,
                 onSelected: (String language) => cubit.update(
@@ -309,6 +321,7 @@ class _HelpAudioRow extends StatelessWidget {
   const _HelpAudioRow({
     required this.languages,
     required this.provisionalLanguages,
+    required this.gateRandom,
     required this.selected,
     required this.backgroundColor,
     required this.onSelected,
@@ -316,6 +329,7 @@ class _HelpAudioRow extends StatelessWidget {
 
   final List<String> languages;
   final Set<String> provisionalLanguages;
+  final Random? gateRandom;
   final String? selected;
   final Color backgroundColor;
   final ValueChanged<String> onSelected;
@@ -344,7 +358,15 @@ class _HelpAudioRow extends StatelessWidget {
             : toBeginningOfSentenceCase(
                 context.l10n.helpAudioLanguageName(code),
               ),
-        onSelected: onSelected,
+        // A provisional (machine-made) language is for adults: a child
+        // cannot turn it on alone.
+        onSelected: (String code) async {
+          if (provisionalLanguages.contains(code) &&
+              !await askAnAdult(context, random: gateRandom)) {
+            return;
+          }
+          onSelected(code);
+        },
       ),
     );
     // The adult who picks a provisional language sees why next to it.

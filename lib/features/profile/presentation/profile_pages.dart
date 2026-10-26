@@ -186,6 +186,7 @@ final class ProfilePages {
         languageRows: languageRows,
         helpAudioLanguages: helpAudioLanguages,
         provisionalHelpAudioLanguages: provisionalHelpAudioLanguages,
+        gateRandom: _gateRandom,
       ),
     );
   }
