@@ -96,6 +96,7 @@ Le propriétaire ne lance rien : le développeur traite les fichiers reçus avec
 ```
 python3 tool/process_audio.py DOSSIER_RECU                # traite et écrit le pack
 python3 tool/process_audio.py DOSSIER_RECU --check        # vérifie seulement les noms
+python3 tool/process_audio.py DOSSIER --provisional      # pack de fichiers provisoires (section 11)
 python3 -m unittest tool/process_audio_test.py            # tests du script
 ```
 
@@ -107,3 +108,20 @@ Le script :
 - vérifie que chaque clé de `assets/math_words/math_words.json` (dérivé du tableau par `tool/build_math_words.py`) a ses deux fichiers, et que chaque problème de `docs/product/problems.md` a son fichier unique `wo_problem_<clé>.m4a` (un seul fichier par problème, pas de fichier d'exemple ; les clés sont lues dans la colonne « Audio » du tableau), liste ceux qui manquent, signale les fichiers non reconnus ou en double et les fichiers de plus de 15 secondes ; il se termine avec un code d'erreur tant qu'un fichier manque, mais le manifeste ne liste que les fichiers présents, donc un pack incomplet peut être livré : l'app masque le bouton des mots sans fichier.
 
 Format du pack (`assets/audio/<langue>/`) : `manifest.json` avec la langue, le format (`m4a`) et, pour chaque clé de mot, les noms de ses fichiers `explanation` et `example`, et pour chaque problème (clé `problem_<clé>`) son seul fichier `explanation`. Pour ajouter une autre langue d'aide, on dépose un autre dossier avec son manifeste ; le code ne change pas.
+
+## 11. Fichiers provisoires
+
+Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrements, l'app embarque des fichiers wolof provisoires, faits par des machines, pour que les boutons wolof et « Aide audio » fonctionnent sur un téléphone.
+
+- **Le texte** wolof des colonnes « Explication en wolof », « Exemple en wolof » (`math-words.md`) et « Wolof : énoncé » (`problems.md`) est une traduction automatique (Google Translate), jamais relue. Chaque cellule porte la mention « (machine, à relire) ».
+- **La voix** est une synthèse automatique (Meta MMS, modèle `facebook/mms-tts-wol`, licence CC-BY-NC 4.0, usage non commercial). Ces fichiers ne doivent jamais partir dans une version publiée.
+- **Le drapeau** : le manifeste `assets/audio/wo/manifest.json` porte `"provisional": true`. Tant qu'il est là, l'espace enseignant (page « Enregistrer les explications ») et la ligne « Aide audio » des réglages affichent : « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » Côté enfant, rien ne change.
+- Les outils sont dans `tool/placeholder_audio/` (voir son `README.md`).
+
+### Les remplacer par tes vrais enregistrements
+
+1. Écris ou corrige le wolof dans les colonnes des deux tableaux : une cellule sans la mention « (machine, à relire) » n'est plus jamais réécrite par le script.
+2. Enregistre les fichiers comme dans les sections 1 à 8 de ce guide (`wo_<clé>.m4a`, `wo_<clé>_exemple.m4a`, `wo_problem_<clé>.m4a`).
+3. Lance le script sur le dossier des vrais fichiers, sans l'option `--provisional` : `python3 tool/process_audio.py DOSSIER_REEL`, puis `python3 tool/build_math_words.py`.
+4. Les fichiers remplacés sont réécrits. Le drapeau `provisional` disparaît du manifeste dès que tous les fichiers du pack viennent de cette livraison. Si tu livres seulement une partie des fichiers, les autres restent provisoires, le drapeau reste et le script le dit.
+5. Avant la sortie, vérifie que `manifest.json` ne contient plus `provisional` et qu'aucune cellule wolof ne porte « (machine, à relire) ».
