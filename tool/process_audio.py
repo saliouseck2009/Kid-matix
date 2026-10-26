@@ -249,6 +249,22 @@ def convert(source, target):
     return float(probe.stdout.strip() or 0)
 
 
+def convert_checked(source, target, provisional):
+    """Converts to a temporary file next to [target], checks the duration,
+    then replaces [target]. A stand-in (provisional) over MAX_SECONDS is a
+    failed synthesis: it is dropped, [target] is left as it was, and None is
+    returned, so the manifest never points to a missing file."""
+    temporary = target.with_name(f".{target.stem}.part{target.suffix}")
+    try:
+        seconds = convert(source, temporary)
+        if provisional and seconds > MAX_SECONDS:
+            return None
+        temporary.replace(target)
+        return seconds
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def register_language(language, output):
     """Lists the language in packs.json; warns when pubspec lacks its folder."""
     index = output.parent / "packs.json"
@@ -304,18 +320,16 @@ def main():
         too_long = []
         for slot, source in found.items():
             target = targets[slot]
-            seconds = convert(source, target)
+            seconds = convert_checked(source, target, args.provisional)
+            if seconds is None:
+                too_long.append(target)
+                continue
             note = " (long: shorten it)" if seconds > MAX_SECONDS else ""
             print(f"{source.name} -> {target.name}  {seconds:.1f} s{note}")
-            if args.provisional and seconds > MAX_SECONDS:
-                too_long.append(target)
         if too_long:
-            # A stand-in that long is a failed synthesis: drop it so that the
-            # next run makes it again.
             for target in too_long:
-                target.unlink()
-                print(f"failed: {target.name} is over {MAX_SECONDS:.0f} s",
-                      file=sys.stderr)
+                print(f"failed: {target.name} is over {MAX_SECONDS:.0f} s "
+                      "(the existing file, if any, is kept)", file=sys.stderr)
             raise SystemExit(1)
         # The pack is what the output folder holds, so a second partial
         # delivery adds to the first instead of erasing it.

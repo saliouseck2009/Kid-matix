@@ -224,6 +224,35 @@ class ConvertTest(unittest.TestCase):
             ).stdout.strip()
             self.assertEqual(channels, "1")
 
+    def make_tone(self, path, seconds):
+        subprocess.run(
+            [
+                "ffmpeg", "-y", "-loglevel", "error",
+                "-f", "lavfi", "-i", f"sine=frequency=300:sample_rate=16000:d={seconds}",
+                "-ac", "1", "-c:a", "pcm_s16le", str(path),
+            ],
+            check=True,
+        )
+
+    def test_a_too_long_stand_in_is_dropped_and_the_old_file_kept(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "wo_il_reste.wav"
+            target = Path(folder) / "out.m4a"
+            self.make_tone(source, 17)
+            target.write_bytes(b"old")
+            self.assertIsNone(audio.convert_checked(source, target, True))
+            self.assertEqual(target.read_bytes(), b"old")
+            self.assertEqual([p.name for p in Path(folder).iterdir() if p.suffix == ".m4a"], ["out.m4a"])
+            self.assertEqual(list(Path(folder).glob(".*part*")), [])
+
+    def test_a_too_long_file_is_kept_for_real_recordings(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "wo_il_reste.wav"
+            target = Path(folder) / "out.m4a"
+            self.make_tone(source, 17)
+            self.assertGreater(audio.convert_checked(source, target, False), 15)
+            self.assertTrue(target.exists())
+
     def test_converts_a_16_khz_wav_like_the_voice_makes(self):
         with tempfile.TemporaryDirectory() as folder:
             source = Path(folder) / "wo_il_reste.wav"
