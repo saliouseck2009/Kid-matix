@@ -69,7 +69,7 @@ each bringing `main` in before its merge.
 | 3 | F29 · Class mode | `lot-implementer` (Opus) | 015 (classes, students, assignments) | Starts only after the owner answers F29-01 (shared tablets or families' phones, class size) |
 | 4 | F30 · Word problems | `content-writer` (Haiku) for F30-01, then `lot-implementer` (Sonnet) | 016 (only if needed) | The code starts once `problems.md` is written, so templates and content agree |
 | 4 | F31 · Progress measurement | `lot-implementer` (Opus) | 017 | The owner chose a Claude subagent over Codex (2026-10-25); includes the teacher's own recordings (microphone) and QR codes (camera), both asked only from the teacher area |
-| 5 | F32 · Other help languages | To decide with the partners | 018 | F32-03 needs the owner's decision first |
+| 5 | F32 · Other help languages | To decide with the partners | 019 (018 was taken by F31 for the pupil numbers) | F32-03 needs the owner's decision first |
 
 ## How to launch
 
