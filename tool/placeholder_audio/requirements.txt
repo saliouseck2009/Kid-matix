@@ -1,9 +1,7 @@
-ctranslate2
-sentencepiece
-num2words
-requests
-onnxruntime
-numpy
-scipy
-# only for --engine google
-deep-translator
+ctranslate2==4.8.4
+sentencepiece==0.2.2
+num2words==0.5.14
+requests==2.34.2
+onnxruntime==1.31.0
+numpy==2.5.4
+scipy==1.18.1

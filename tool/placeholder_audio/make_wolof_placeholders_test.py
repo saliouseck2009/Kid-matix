@@ -3,7 +3,9 @@
   python3 -m unittest tool/placeholder_audio/make_wolof_placeholders_test.py
 """
 
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -50,6 +52,10 @@ Statut : brouillon.
 """
 
 
+def entry(text, engine="nllb"):
+    return {"fr": "x", "wo": text, "engine": engine}
+
+
 class ExtractTest(unittest.TestCase):
     def test_words_give_an_explanation_and_an_example(self):
         self.assertEqual(
@@ -79,11 +85,11 @@ class ExtractTest(unittest.TestCase):
 
 class TablesTest(unittest.TestCase):
     wolof = {
-        "wo_ajouter": "AAA",
-        "wo_ajouter_exemple": "BBB",
-        "wo_en_plus": "CCC",
-        "wo_en_plus_exemple": "DDD",
-        "wo_problem_mangues_donnees": "EEE",
+        "wo_ajouter": entry("AAA"),
+        "wo_ajouter_exemple": entry("BBB"),
+        "wo_en_plus": entry("CCC"),
+        "wo_en_plus_exemple": entry("DDD"),
+        "wo_problem_mangues_donnees": entry("EEE"),
     }
 
     def test_every_cell_gets_the_machine_mark(self):
@@ -102,12 +108,12 @@ class TablesTest(unittest.TestCase):
 
     def test_a_new_translation_replaces_a_machine_cell(self):
         once = make.rewrite_words(WORDS, self.wolof)
-        again = make.rewrite_words(once, {**self.wolof, "wo_ajouter": "ZZZ"})
+        again = make.rewrite_words(once, {**self.wolof, "wo_ajouter": entry("ZZZ")})
         self.assertIn("ZZZ (machine, à relire)", again)
         self.assertNotIn("AAA", again)
 
     def test_a_bar_in_the_translation_cannot_break_the_table(self):
-        text = make.rewrite_words(WORDS, {"wo_ajouter": "a|b"})
+        text = make.rewrite_words(WORDS, {"wo_ajouter": entry("a|b")})
         self.assertIn("a/b (machine, à relire)", text)
 
     def test_the_problem_column_is_filled_in_the_first_table_only(self):
@@ -136,6 +142,181 @@ class TokensTest(unittest.TestCase):
     def test_unknown_characters_are_dropped_and_upper_case_lowered(self):
         self.assertEqual(make.token_ids("A?z", self.vocab), [0, 1, 0])
         self.assertEqual(make.token_ids("?", self.vocab), [])
+
+
+class MarksTest(unittest.TestCase):
+    def test_a_google_cell_carries_its_own_mark(self):
+        text = make.rewrite_words(WORDS, {"wo_ajouter": entry("GGG", "google-web")})
+        self.assertIn("| GGG (Google, à relire) |", text)
+
+    def test_either_mark_lets_the_script_rewrite_a_cell(self):
+        google = make.rewrite_words(WORDS, {"wo_ajouter": entry("GGG", "google-web")})
+        again = make.rewrite_words(google, {"wo_ajouter": entry("NNN")})
+        self.assertIn("| NNN (machine, à relire) |", again)
+
+    def test_the_status_line_goes_under_a_status_with_a_no_break_space(self):
+        text = make.with_status("# T\n\nStatut\u00a0: brouillon.\n\nSuite\n")
+        lines = text.splitlines()
+        self.assertTrue(lines[4].startswith("Wolof provisoire"))
+        self.assertEqual(make.with_status(text), text)
+
+    def test_math_words_asset_ignores_both_marks(self):
+        sys.path.insert(0, str(make.ROOT / "tool"))
+        import build_math_words as words
+
+        row = ["", "", "", "", "", "", "texte A (machine, à relire)", "vrai texte"]
+        self.assertEqual(words.help_of(row), {"example": "vrai texte"})
+        row[6] = "texte B (Google, à relire)"
+        self.assertEqual(words.help_of(row), {"example": "vrai texte"})
+
+
+class LoopTest(unittest.TestCase):
+    def test_a_looping_output_is_refused(self):
+        source = "Partager des choses entre des personnes."
+        self.assertIsNotNone(make.looks_wrong(source, "Sëriñ " * 64))
+        self.assertIsNotNone(make.looks_wrong(source, "x" * 300))
+        self.assertIsNotNone(make.looks_wrong(source, ""))
+        self.assertIsNone(make.looks_wrong(source, "Séddoo yëf yi ak nit ñi."))
+
+
+class TranslateTest(unittest.TestCase):
+    items = [("wo_a", "Un."), ("wo_b", "Deux.")]
+
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        self.original = (make.CACHE, make.spell_numbers)
+        make.CACHE = Path(self.folder.name) / "cache.json"
+        make.spell_numbers = lambda text: text
+
+    def tearDown(self):
+        make.CACHE, make.spell_numbers = self.original
+        self.folder.cleanup()
+
+    def test_translates_once_and_caches(self):
+        calls = []
+
+        def fake(text):
+            calls.append(text)
+            return f"wo:{text}"
+
+        first = make.translate(self.items, fake)
+        self.assertEqual(first["wo_a"], {"fr": "Un.", "wo": "wo:Un.", "engine": "nllb"})
+        make.translate(self.items, fake)
+        self.assertEqual(calls, ["Un.", "Deux."])
+        make.translate(self.items, fake, force=True)
+        self.assertEqual(len(calls), 4)
+
+    def test_a_changed_french_text_is_translated_again(self):
+        make.translate(self.items, lambda t: "old")
+        again = make.translate([("wo_a", "Un !"), ("wo_b", "Deux.")], lambda t: "new")
+        self.assertEqual(again["wo_a"]["wo"], "new")
+        self.assertEqual(again["wo_b"]["wo"], "old")
+
+    def test_a_looping_cached_translation_is_made_again(self):
+        make.save_cache({"wo_a": {"fr": "Un.", "wo": "Sëriñ " * 64, "engine": "nllb"}})
+        done = make.translate([("wo_a", "Un.")], lambda t: "bon")
+        self.assertEqual(done["wo_a"]["wo"], "bon")
+
+    def test_a_refusal_stops_and_keeps_what_is_done(self):
+        def fake(text):
+            if text == "Deux.":
+                raise ValueError("no usable translation")
+            return "ok"
+
+        with self.assertRaises(SystemExit) as stop:
+            make.translate(self.items, fake)
+        self.assertIn("wo_b", str(stop.exception))
+        self.assertEqual(make.load_cache()["wo_a"]["wo"], "ok")
+
+
+class FileEngineTest(unittest.TestCase):
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        self.original = (make.CACHE, make.spell_numbers)
+        make.CACHE = Path(self.folder.name) / "cache.json"
+        make.spell_numbers = lambda text: text
+        self.items = make.extract()
+
+    def tearDown(self):
+        make.CACHE, make.spell_numbers = self.original
+        self.folder.cleanup()
+
+    def write(self, lines):
+        path = Path(self.folder.name) / "wolof.txt"
+        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        return path
+
+    def test_110_lines_fill_the_cache_as_google_web(self):
+        path = self.write([f"wolof {number}" for number in range(110)])
+        done = make.translate_from_file(self.items, path)
+        self.assertEqual(len(done), 110)
+        first = done[self.items[0][0]]
+        self.assertEqual(first["wo"], "wolof 0")
+        self.assertEqual(first["engine"], "google-web")
+        self.assertEqual(done[self.items[-1][0]]["wo"], "wolof 109")
+        self.assertEqual(len(json.loads(make.CACHE.read_text(encoding="utf-8"))), 110)
+
+    def test_a_wrong_line_count_is_refused(self):
+        for count in (109, 111):
+            path = self.write([f"wolof {number}" for number in range(count)])
+            with self.assertRaises(SystemExit) as stop:
+                make.translate_from_file(self.items, path)
+            self.assertIn("110", str(stop.exception))
+        self.assertFalse(make.CACHE.exists())
+
+    def test_a_blank_line_is_refused(self):
+        lines = [f"wolof {number}" for number in range(110)]
+        lines[5] = ""
+        with self.assertRaises(SystemExit):
+            make.translate_from_file(self.items, self.write(lines))
+
+
+class WavNotesTest(unittest.TestCase):
+    def test_a_wav_is_current_only_with_the_same_text(self):
+        with tempfile.TemporaryDirectory() as folder:
+            original = make.WAV_DIR
+            make.WAV_DIR = Path(folder)
+            try:
+                self.assertFalse(make.wav_is_current("wo_a", "x"))
+                (Path(folder) / "wo_a.wav").write_bytes(b"")
+                self.assertFalse(make.wav_is_current("wo_a", "x"))
+                make._note("wo_a").write_text("x", encoding="utf-8")
+                self.assertTrue(make.wav_is_current("wo_a", "x"))
+                self.assertFalse(make.wav_is_current("wo_a", "y"))
+            finally:
+                make.WAV_DIR = original
+
+
+class ConsistencyTest(unittest.TestCase):
+    def test_every_wolof_cell_of_the_tables_comes_from_the_cache(self):
+        cache = make.load_cache()
+        for path, rows, column in (
+            (make.WORDS_TABLE, make.word_rows, None),
+            (make.PROBLEMS_TABLE, make.problem_rows, 10),
+        ):
+            markdown = path.read_text(encoding="utf-8")
+            for _, row in rows(markdown):
+                key = row[0].strip("`")
+                cells = (
+                    [(6, f"wo_{key}"), (7, f"wo_{key}_exemple")]
+                    if column is None
+                    else [(10, f"wo_problem_{key}")]
+                )
+                for index, name in cells:
+                    cell = row[index]
+                    if cell == "" or not cell.endswith(tuple(make.MARKS.values())):
+                        continue  # written by hand: not ours
+                    self.assertIn(name, cache, name)
+                    self.assertEqual(
+                        cell,
+                        make.with_mark(cache[name]["wo"], cache[name]["engine"]),
+                        name,
+                    )
+
+    def test_no_cached_nllb_text_loops(self):
+        for name, entry_ in make.load_cache().items():
+            if entry_.get("engine") == "nllb":
+                self.assertIsNone(make.looks_wrong(entry_["fr"], entry_["wo"]), name)
 
 
 class NumbersTest(unittest.TestCase):

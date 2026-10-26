@@ -115,7 +115,8 @@ Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrement
 
 - **Le texte** wolof des colonnes « Explication en wolof », « Exemple en wolof » (`math-words.md`) et « Wolof : énoncé » (`problems.md`) est une traduction automatique (Meta NLLB-200, licence CC-BY-NC 4.0), de mauvaise qualité et jamais relue. Chaque cellule porte la mention « (machine, à relire) ».
 - **La voix** est une synthèse automatique (modèle Meta MMS wolof exporté en ONNX, `jaguaman09/mms-tts-wol-onnx`, licence CC-BY-NC 4.0, usage non commercial). Ces fichiers ne doivent jamais partir dans une version publiée.
-- **Le drapeau** : le manifeste `assets/audio/wo/manifest.json` porte `"provisional": true`. Tant qu'il est là, l'espace enseignant (page « Enregistrer les explications ») et la ligne « Aide audio » des réglages affichent : « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » Côté enfant, rien ne change.
+- **La liste** : le manifeste `assets/audio/wo/manifest.json` porte `"provisional": [noms des fichiers provisoires]`. Tant qu'elle n'est pas vide, l'espace enseignant (page « Enregistrer les explications ») et la ligne « Aide audio » des réglages affichent : « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » Un enfant qui n'a jamais choisi de langue d'aide n'entend pas ces voix (« Aucune » par défaut) : un adulte choisit le wolof dans « Aide audio ».
+- **Le garde-fou de sortie** : `tool/build_release.sh` lance `tool/check_release_content.sh`, qui refuse la version tant que la liste n'est pas vide ou qu'un tableau contient « (machine, à relire) » ou « (Google, à relire) ».
 - Les outils sont dans `tool/placeholder_audio/` (voir son `README.md`).
 
 ### Les remplacer par tes vrais enregistrements
@@ -123,5 +124,5 @@ Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrement
 1. Écris ou corrige le wolof dans les colonnes des deux tableaux : une cellule sans la mention « (machine, à relire) » n'est plus jamais réécrite par le script.
 2. Enregistre les fichiers comme dans les sections 1 à 8 de ce guide (`wo_<clé>.m4a`, `wo_<clé>_exemple.m4a`, `wo_problem_<clé>.m4a`).
 3. Lance le script sur le dossier des vrais fichiers, sans l'option `--provisional` : `python3 tool/process_audio.py DOSSIER_REEL`, puis `python3 tool/build_math_words.py`.
-4. Les fichiers remplacés sont réécrits. Le drapeau `provisional` disparaît du manifeste dès que tous les fichiers du pack viennent de cette livraison. Si tu livres seulement une partie des fichiers, les autres restent provisoires, le drapeau reste et le script le dit.
-5. Avant la sortie, vérifie que `manifest.json` ne contient plus `provisional` et qu'aucune cellule wolof ne porte « (machine, à relire) ».
+4. Les fichiers remplacés sont réécrits et sortent de la liste `provisional`. Si tu livres seulement une partie des fichiers, les autres restent dans la liste (le script le dit) ; la clé disparaît quand la liste est vide.
+5. Avant la sortie, lance `bash tool/check_release_content.sh` : il doit répondre OK (plus de fichier provisoire, plus de cellule « (machine, à relire) » ou « (Google, à relire) »).
