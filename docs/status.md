@@ -37,7 +37,9 @@ middle of one). Last update: 2026-10-18.
 | F28 · Math words | **Merged** (wave 1 #102, wave 2 #112 and #114); closes after the recordings, the device check and the validation of its screens (F28-12) |
 | F27 · Placement by skill | **Done** (closed 2026-10-25, wave 3) |
 | F29 · Class mode | **Done** (closed 2026-10-25, wave 3) |
-| F30 – F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
+| F30 · Word problems | **Merged** (wave 4, #123, #124, #125, #129); closes after the owner's device check and the validation of its screens (F30-09) |
+| F31 · Progress measurement | **Merged** (wave 4, #126 to #128, #130 to #132); closes after the owner's tablet check |
+| F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
@@ -597,6 +599,74 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 (no mockup: trophy, "Awa gagne !", "+120 XP", "Pas d'XP pour un invité",
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
+
+## Version 2.0, wave 4 (merged, device checks pending)
+
+Run on 2026-10-25 and 26: `content-writer` (Haiku) for `problems.md`,
+then `lot-implementer` Sonnet for F30 and Opus for F31, in their own
+worktrees; every pull request reviewed by `code-reviewer`. Several pull
+requests were merged before their review verdict (#124, #125, #126, #127,
+#128), so their fixes landed in follow-up pull requests (#129, #130, #131,
+#132); from now on the owner merges only on the orchestrator's go, at the
+commit named. Merged: #123, #124, #125, #129 (F30); #126, #127, #128,
+#130, #131, #132 (F31).
+
+- F30 · Word problems: `docs/product/problems.md` (30 problems in three
+  levels, templates with ranges, eight traps with their twins, the
+  "done when" pair `mangues_donnees` / `mangues_donnees_piege`, empty
+  Wolof columns, 30 recordings `wo_problem_<key>.m4a` to come); feature
+  `problem`, 30 templates typed in Dart and checked against the table,
+  items `problem:<key>`, 9 units named by level (« Histoires avec images
+  1, 2 », « Phrases courtes 1, 2 », « Énoncés 1, 2 », « Les pièges 1, 2,
+  3 »), the bar model (numbers placed on whole and parts, operation,
+  result), guided steps (listen, model, operation, compute, check), F28
+  words touchable in every statement and « Écouter en wolof » on
+  recorded statements, traps corrected by the model, `Currency` in core
+  (CFA franc). No migration. `tool/process_audio.py` now checks the
+  problem recordings too (110 files expected in all).
+- F31 · Progress measurement: migration 017 (teacher assessments:
+  `class_assessment`, `assessment_result`, `assessment_level`,
+  `assessment_word`, kept through a pupil's reset), 016 an empty step,
+  018 (`class_pupil_number`, stable anonymous numbers); assessments
+  launched from the teacher area (placement by skill without « Passer »,
+  then 12 fixed words), periods by label with presets; class report in
+  PDF and CSV, anonymous version by default and never shared with the
+  named one; anonymous school report from several class files
+  (`kidmatix-class` v2); QR transfer of small results (`kidmatix-qr` v1,
+  ≤ 1,000 characters); the teacher's own recordings (30 s, over the
+  packs, exported and imported as zip packs, any language code);
+  printable exercise sheets and word cards. Packages `pdf`, `qr_flutter`,
+  `mobile_scanner`, `record`, `path_provider`, `archive`; camera and
+  microphone permissions asked from the teacher area only; the release
+  APK is checked for network permissions by `tool/check.sh build-android`
+  (ML Kit's `INTERNET` removed from the manifest).
+
+To check on a device (owner), short:
+
+- F30: « Awa a 12 mangues, elle en donne 5 » solved on the bar model,
+  then its trap twin; the touchable words; the Wolof button stays hidden
+  until the recordings exist.
+- F31, on a tablet: two assessments (any labels) give a class PDF with
+  progress and an anonymous version without nicknames; the camera and
+  microphone prompts on Android and iPad; a QR code read between two
+  tablets; a printed report and sheet (variable fonts).
+
+Waiting for the owner: the Wolof columns of `problems.md` and the 30
+problem recordings, with the 80 word recordings of F28; the screens
+without a mockup (F30-09 open: problem board, guided steps, correction;
+F31: assessments, reports, school report, QR, camera, recordings,
+printables pages and the PDF layouts) and their texts in fr, en and es;
+the en/es iOS usage strings.
+
+Known gaps: level-1 object pictures of `problems.md` are not drawn (the
+bar model is the only drawing); anonymous pupil numbers are local to each
+tablet (the teacher's tablet makes the reports); a pupil who leaves the
+word check redoes the placement part; `math_word_catalog.dart` is over the
+class size limit; the release APK is about 88 MB as one file (split per
+ABI on the store).
+
+Next: the device checks, then F30 and F31 close here; F28 and F30
+recordings; F32 (migration 019) with the partners.
 
 ## Version 2.0, wave 3: F27 and F29 closure
 
