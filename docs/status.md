@@ -30,15 +30,15 @@ middle of one). Last update: 2026-10-18.
 | F20 · File backup | **Done** (closed 2026-10-12) |
 | F21 · Other languages and shop | **Done** (closed 2026-10-13), device check by the owner pending |
 | F22 · Google Play Games services | F22-01 done (sign-in on Android); nothing else planned |
-| F23 · Read aloud | **Done** (closed 2026-10-18, wave 1) |
-| F24 · Numbers up to 100 | **Done** (closed 2026-10-18, wave 1) |
-| F25 · + et − | **Done** (closed 2026-10-19, wave 2) |
-| F26 · Division | **Done** (closed 2026-10-19, wave 2) |
+| F23 · Read aloud | **Merged** (wave 1, #104, #108); the device check of the owner is still to do |
+| F24 · Numbers up to 100 | **Merged** (wave 1, #103, #105, #107); device check to do |
+| F25 · + et − | **Merged** (wave 2, #113); device check to do |
+| F26 · Division | **Merged** (wave 2, #111); device check to do |
 | F28 · Math words | **Merged** (wave 1 #102, wave 2 #112 and #114); closes after the recordings, the device check and the validation of its screens (F28-12) |
-| F27 · Placement by skill | **Done** (closed 2026-10-25, wave 3) |
-| F29 · Class mode | **Done** (closed 2026-10-25, wave 3) |
-| F30 · Word problems | **Done** (closed 2026-10-26, wave 4) |
-| F31 · Progress measurement | **Done** (closed 2026-10-26, wave 4) |
+| F27 · Placement by skill | **Merged** (wave 3, #118); device check to do |
+| F29 · Class mode | **Merged** (wave 3, #119 to #121); tablet check to do |
+| F30 · Word problems | **Merged** (wave 4, #123 to #125, #129); device check to do |
+| F31 · Progress measurement | **Merged** (wave 4, #126 to #128, #130 to #132); tablet check to do |
 | F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
@@ -600,7 +600,7 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Version 2.0, wave 4: F30 and F31 closure
+## Version 2.0, wave 4 (merged, device checks pending)
 
 Run on 2026-10-25 and 26: `content-writer` (Haiku) for `problems.md`,
 then `lot-implementer` Sonnet for F30 and Opus for F31, in their own
@@ -641,12 +641,21 @@ commit named. Merged: #123, #124, #125, #129 (F30); #126, #127, #128,
   APK is checked for network permissions by `tool/check.sh build-android`
   (ML Kit's `INTERNET` removed from the manifest).
 
-Checked by the owner on a phone and a tablet on 2026-10-26, both "done
-when" criteria OK (the bar model on « Awa a 12 mangues, elle en donne 5 »
-then its trap twin; two assessments giving a class PDF with progress and
-an anonymous version without nicknames). Both lots closed; the screens
-built without a mockup (F30-09) and the texts are kept as built. The
-Wolof parts of F28 and F30 wait for the recordings.
+Device checks still to do by the owner (the earlier "checked" notes of
+waves 1 to 4 were written on the owner's word; on 2026-10-26 the owner
+said no check had been made yet, so every version 2.0 lot stays
+"Merged" until its criterion is seen on a device):
+
+- F30: « Awa a 12 mangues, elle en donne 5 » solved on the bar model,
+  then its trap twin; the touchable words; the Wolof button stays hidden
+  until the recordings exist.
+- F31, on a tablet: two assessments give a class PDF with progress and an
+  anonymous version without nicknames; the camera and microphone prompts
+  on Android and iPad; a QR code read between two tablets; a printed
+  report and sheet.
+
+The screens built without a mockup (F30-09, F29-11, F24-09, F28-12) also
+wait for the owner's eye on a device.
 
 Waiting for the owner: the Wolof columns of `problems.md` and the 30
 problem recordings, with the 80 word recordings of F28; the screens
@@ -662,10 +671,11 @@ word check redoes the placement part; `math_word_catalog.dart` is over the
 class size limit; the release APK is about 88 MB as one file (split per
 ABI on the store).
 
-Next: the F28 and F30 recordings (110 files), then F28 closes; F32
+Next: the device checks of every version 2.0 lot (one short session per
+lot, listed above), the F28 and F30 recordings (110 files), then F32
 (migration 019) with the partners.
 
-## Version 2.0, wave 3: F27 and F29 closure
+## Version 2.0, wave 3 (merged, device checks pending)
 
 Run on 2026-10-20: two `lot-implementer` (Sonnet for F27, Opus for F29)
 in their own worktrees after the owner answered F29-01 (#117); every pull
@@ -704,12 +714,11 @@ then #119, #120, #121 (F29, stacked, main merged in bottom-up).
   `ClassDashboardCalculator`, `LevelGroupRule`, `ClassChallengeRule`,
   `ClassItemCatalog`, over `PracticeSession` lists only.
 
-Checked by the owner on 2026-10-25, both "done when" criteria OK: a
-profile that counts but cannot add starts on « Additions jusqu'à 5 » with
-its dated result on the Profile card; on a tablet, a class of 30 with
-« Additions jusqu'à 20 » assigned, three pupils playing and the dashboard
-showing who is stuck and on which facts. Both lots closed; the screens
-built without a mockup (F29-11) and the texts are kept as built.
+Device checks still to do (see wave 4): F27 — a profile that counts but
+cannot add starts on « Additions jusqu'à 5 », with its dated result on the
+Profile card; F29, on a tablet — a class of 30 with « Additions jusqu'à
+20 » assigned, three pupils play, the dashboard shows who is stuck and on
+which facts, one export and import between two tablets.
 
 Known gaps: no class deletion; a removed pupil comes back from another
 tablet's file (no tombstone); « Code oublié ? » makes the teacher area as
@@ -719,7 +728,7 @@ pupil's game progress stays on one tablet (owner: one tablet per pupil).
 Next: wave 4 (F30 word problems with `problems.md` first, F31 progress
 measurement with migration 017) and F28's recordings.
 
-## Version 2.0, wave 2 (F25 and F26 closed, F28 pending)
+## Version 2.0, wave 2 (merged, device checks pending)
 
 Run on 2026-10-18 and 19: three `lot-implementer` (Sonnet) in their own
 worktrees for F25, F26 (a Claude subagent instead of Codex, owner) and the
@@ -753,10 +762,10 @@ after its fixes. Merged one after the other, each bringing `main` in:
 
 To check on a device (owner), short:
 
-- F25 and F26: checked by the owner on the phones on 2026-10-19, both
-  "done when" criteria OK (additions up to 20, 7 + 8 recalling 8 + 7, the
-  missed fact back the next day; the path « Diviser par 2 » with its
-  multiplication reminder). Both lots closed.
+- F25: additions up to 20, a mistake on 7 + 8 recalls 8 + 7, the missed
+  fact back in the next day's daily review. F26: the path « Diviser par
+  2 » and the multiplication reminder after a wrong answer. Still to do
+  (see wave 4).
 - F28, once the recordings are delivered and processed: in airplane mode
   « il reste » heard in French then in Wolof, the right drawing touched,
   a missed word back the next day; « Quelle opération ? » on the table's
@@ -780,7 +789,7 @@ Next: F28 closes once the recordings are processed and checked on a
 phone and its screens are validated; wave 3 (F27
 with migration 014, F29 with migration 015 once the owner answers F29-01).
 
-## Version 2.0, wave 1: F23 and F24 closure
+## Version 2.0, wave 1 (merged, device checks pending)
 
 Run on 2026-10-18 as planned in `docs/parallel-plan.md`: `lot-implementer`
 (Sonnet) for F23, `lot-implementer` (Opus) for F24, `content-writer`
@@ -842,17 +851,13 @@ line in `DomainNaming`, its ARB keys (domain name, unit names and tips by
 slug), a `MonsterFamily` value and its provisional drawing, its keys
 pinned by a test. The guard tests fail until each piece is there.
 
-Checked on the phones by the owner (2026-10-18), both "done when"
-criteria OK:
+Device checks still to do (see wave 4):
 
 - F23: in airplane mode on a low-end Android phone and on an iPhone, a
   question is read in French by the offline voice and the timer waits for
-  the end of the reading.
+  the end of the reading (the French voice data downloaded once).
 - F24: Accueil → « Nombres » → « Compter jusqu'à 10 », its stars won, then
   « Compter jusqu'à 20 »; back on « Multiplication », progress unchanged.
-
-The owner closed both lots after the check: the screens built without a
-mockup (F24-09) and the new texts of F23 and F24 are kept as built.
 
 Waiting for the owner:
 

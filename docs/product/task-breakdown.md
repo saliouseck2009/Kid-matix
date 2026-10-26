@@ -675,7 +675,7 @@ Le parcours commence plus bas, pour les enfants qui n'ont pas encore les bases :
 - [x] **F24-06** Profil : grille de maîtrise et monstres par domaine, avec un choix du domaine.
 - [x] **F24-07** Combat de boss à la fin de chaque unité, avec un monstre par unité (dessins provisoires).
 - [x] **F24-08** Astuce et aide visuelle par unité (fiche d'aide après deux erreurs, comme en multiplication).
-- [x] **F24-09** Maquettes à proposer et faire valider : sélecteur de domaine, carte du domaine, les quatre nouveaux formats.
+- [ ] **F24-09** Maquettes à proposer et faire valider : sélecteur de domaine, carte du domaine, les quatre nouveaux formats.
 - [x] **F24-10** Tests : clés uniques et stables, génération sans ambiguïté, validation de chaque type, progression de la multiplication intacte, test de widget de chaque format.
 
 **Terminé quand :** un nouveau joueur choisit « Nombres », réussit l'étape « compter jusqu'à 20 », gagne ses étoiles, et sa progression en multiplication n'a pas bougé.
@@ -749,7 +749,7 @@ L'enseignant suit sa classe sans Internet : élèves, devoirs, tableau de bord, 
 - [x] **F29-08** Groupes de niveau proposés à partir du positionnement (F27) et de la maîtrise.
 - [x] **F29-09** Défi de classe : un objectif commun de la semaine (par exemple 1 000 bonnes réponses), une jauge visible par toute la classe, aucun classement individuel.
 - [x] **F29-10** Transfert sans réseau : exporter les résultats d'une tablette vers celle de l'enseignant par fichier (format versionné de F20, partagé par la feuille de partage ou Bluetooth), puis fusion sans doublon.
-- [x] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
+- [ ] **F29-11** Maquettes à proposer et faire valider : accès enseignant, classe, devoirs, tableau de bord, défi de classe.
 - [x] **F29-12** Tests : code enseignant, classe de 40 élèves, devoirs, calculs du tableau de bord, fusion d'un fichier reçu deux fois.
 
 **Terminé quand :** sur une tablette, un enseignant crée une classe de 30 élèves et donne un devoir sur les additions jusqu'à 20 ; trois élèves jouent, et le tableau de bord montre qui bloque et sur quels faits.
@@ -766,7 +766,7 @@ Les enfants apprennent à comprendre une situation, pas à réagir à un mot-cl�
 - [x] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
 - [x] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
 - [x] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
-- [x] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
+- [ ] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
 - [x] **F30-10** Tests : gabarits sans ambiguïté, schéma, étapes, piège du mot-clé.
 
 **Terminé quand :** un enfant résout « Awa a 12 mangues, elle en donne 5 » avec le schéma en barres, en écoutant l'énoncé en wolof, puis réussit la version piège du même problème.
