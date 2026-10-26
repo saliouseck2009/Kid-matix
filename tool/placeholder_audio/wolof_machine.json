@@ -287,7 +287,7 @@
   "wo_par_paquets_de_exemple": {
     "engine": "nllb",
     "fr": "Au marché, Aminata achète des biscuits par paquets de trois. Elle prend cinq paquets.",
-    "wo": "Aminata di jëkka jëkka jëkka jëkka jëkka jëkka jëkka jëkka."
+    "wo": "Aminata di jënd biscoot yi ci ñetti xëtu."
   },
   "wo_par_personne": {
     "engine": "nllb",
@@ -302,7 +302,7 @@
   "wo_partager": {
     "engine": "nllb",
     "fr": "Couper une quantité en parts pour que chacun ait sa part.",
-    "wo": "Jëf-jëf-jëf-jëf-jëf-jëf-jëf-jëf-jëf."
+    "wo": "Jëf-jëf bu ñu séddoo, ngir ku nekk am seen cér."
   },
   "wo_partager_egalement": {
     "engine": "nllb",
@@ -392,7 +392,7 @@
   "wo_problem_biscuits_range": {
     "engine": "nllb",
     "fr": "Aminata a quarante-huit biscuits. Elle les range en six paquets égaux. Combien de biscuits y a-t-il dans chaque paquet ?",
-    "wo": "Aminata am na ñeent fukk ak juróom-ñeent biskuit. Mu sàkk leen ci juróom-ñeent benn benn benn. Ñaat biskuit la nekk ci benn benn benn benn?"
+    "wo": "Aminata am na ñeent fukk ak juróom-ñeen biskuit. Mu sàkk leen ci ñetti xëtu yu mel noonu. Ñaari biskuyt la nekk ca benn xëttu?"
   },
   "wo_problem_car_personnes": {
     "engine": "nllb",
@@ -457,7 +457,7 @@
   "wo_problem_moussa_paniers": {
     "engine": "nllb",
     "fr": "Moussa met ensemble ses dix-huit et ses quinze mangues dans un grand panier. Combien de mangues y a-t-il dans le grand panier ?",
-    "wo": "Musaa dajale fukki juróom fukk ak juróom fukk ak juróom-ñaari mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom mbooloom."
+    "wo": "Musaa dajale juróom-ñaari fukk ak juroom-ñett yi ci benn sàq. Lu ëpp màngoon ca benn sàqa?"
   },
   "wo_problem_pains_vendus": {
     "engine": "nllb",
@@ -472,7 +472,7 @@
   "wo_problem_sucre_theieres": {
     "engine": "nllb",
     "fr": "Mamadou a huit morceaux de sucre. Il les répartit dans deux théières, le même nombre dans chaque. Combien de morceaux y a-t-il dans chaque théière ?",
-    "wo": "Mamadou am na juróom-ñetti xarnu sukkër. Mu di leen séddale ci ñaari xarnu, ci xarnu xarnu xarnu xarnu."
+    "wo": "Mamadou am na juróom-ñetti xarnu sukari. Mu di leen séddale ci ñaari xërëm, ñu mel ni ñoom. Ñaata xarnu xaalis la nekk?"
   },
   "wo_problem_tas_fois_piege": {
     "engine": "nllb",
@@ -512,7 +512,7 @@
   "wo_repartir": {
     "engine": "nllb",
     "fr": "Mettre une quantité dans plusieurs endroits, en parts égales.",
-    "wo": "Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ"
+    "wo": "Sëriñ bi dafa wax ne:"
   },
   "wo_repartir_exemple": {
     "engine": "nllb",

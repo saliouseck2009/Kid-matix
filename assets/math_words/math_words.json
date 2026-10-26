@@ -7,12 +7,6 @@
       "meaning": "Mettre quelque chose en plus de ce que tu as déjà.",
       "example": "Au marché, Awa a 4 mangues. Elle en ajoute 3 à son panier.",
       "surface": "ajoute",
-      "help": {
-        "wo": {
-          "explanation": "Dafa teg lu gën ci lu nga am. (machine, à relire)",
-          "example": "Awa am na ñeenti mango ci suufe bi. (machine, à relire)"
-        }
-      },
       "notion": "ajouter"
     },
     {
@@ -22,12 +16,6 @@
       "meaning": "Tu as déjà des choses, et on t'en donne encore.",
       "example": "Fatou a 6 mangues. Sa tante lui en donne 4 en plus.",
       "surface": "en plus",
-      "help": {
-        "wo": {
-          "explanation": "Dafa nga am ay yëf, te dinañuy wax tamit ay yëf. (machine, à relire)",
-          "example": "Fatou am na juróom benni mangoo, ak sa xarit di ko jox ñeent yu ëpp. (machine, à relire)"
-        }
-      },
       "notion": "ajouter"
     },
     {
@@ -37,12 +25,6 @@
       "meaning": "Le nombre que tu obtiens en comptant toutes les parties.",
       "example": "Le matin, Ibrahima achète 3 mangues ; le soir, il en achète 4. Il en a 7 en tout.",
       "surface": "en tout",
-      "help": {
-        "wo": {
-          "explanation": "Xale bi nga jële bu nga xeex mboolem cér yi. (machine, à relire)",
-          "example": "Ibraayma jënd na ñetti njaam ci suba bi, ñeenti njaam ci guddi bi, ba juróom-ñaari. (machine, à relire)"
-        }
-      },
       "notion": "en_tout"
     },
     {
@@ -52,12 +34,6 @@
       "meaning": "Réunir des choses au même endroit.",
       "example": "Aminata met ensemble 8 billes rouges et 6 billes bleues dans une boîte.",
       "surface": "ensemble",
-      "help": {
-        "wo": {
-          "explanation": "Jëfandikoo yëf yi ci benn bérab. (machine, à relire)",
-          "example": "Aminata daal na juróom-ñeen ball yu xumb ak juróom-ñeen ball yu xumb ci benn bokk. (machine, à relire)"
-        }
-      },
       "notion": "ajouter"
     },
     {
@@ -67,12 +43,6 @@
       "meaning": "Tu reçois de l'argent ou des points en plus de ce que tu avais.",
       "example": "Moussa lave une voiture et gagne 500 francs.",
       "surface": "gagne",
-      "help": {
-        "wo": {
-          "explanation": "Dinaa jot ay xaalis walla ay xët yu gën a bare ci li nga am. (machine, à relire)",
-          "example": "Moussa dafa sàkk oto te am juróomi téeméeri frank. (machine, à relire)"
-        }
-      },
       "notion": "ajouter"
     },
     {
@@ -82,12 +52,6 @@
       "meaning": "Quelqu'un te donne quelque chose : tu en as plus qu'avant.",
       "example": "Mamadou reçoit 100 francs de son oncle pour acheter du thé.",
       "surface": "reçoit",
-      "help": {
-        "wo": {
-          "explanation": "Am na ku la jox dara: nga am na lu gën a réy. (machine, à relire)",
-          "example": "Mamadou di jël ay téeméeri francs ci baayam ngir jënd té. (machine, à relire)"
-        }
-      },
       "notion": "ajouter"
     },
     {
@@ -97,12 +61,6 @@
       "meaning": "Devenir plus grand ou plus cher : le nombre monte.",
       "example": "Le pain coûte 150 francs. Son prix augmente de 50 francs.",
       "surface": "augmente",
-      "help": {
-        "wo": {
-          "explanation": "Bëj-gànnaay bu mag mbaa bu màgg: ñu gën a màgg. (machine, à relire)",
-          "example": "Jëf bu ñu sàkk di téeméer ak juróom-ñaari frank, te lu ñu sàkk di téeméer ak juróom-ñaari frank. (machine, à relire)"
-        }
-      },
       "notion": "ajouter"
     },
     {
@@ -112,12 +70,6 @@
       "meaning": "Prendre des choses et les sortir du groupe : il en reste moins.",
       "example": "Au marché, la vendeuse enlève 2 mangues abîmées du panier.",
       "surface": "enlève",
-      "help": {
-        "wo": {
-          "explanation": "Jëfandikoo ay jëfandikoo ngir génne ko ci jëfandikukat bi: amoon na lu néew. (machine, à relire)",
-          "example": "Ci suucu bi, jaaykat bi jël ñaari mango yu yàq yu bari ci kas. (machine, à relire)"
-        }
-      },
       "notion": "enlever"
     },
     {
@@ -127,12 +79,6 @@
       "meaning": "Ce qui n'est pas parti : ce qui est encore là après avoir enlevé.",
       "example": "Aminata a 10 mangues. Elle en vend 4 au marché. Il lui reste 6 mangues.",
       "surface": "reste",
-      "help": {
-        "wo": {
-          "explanation": "Li mu dul dem, mooy li mu jële. (machine, à relire)",
-          "example": "Aminata am na fukki mangoo. Mu tàkk na ñeenti mangoo ca bérab bi, ba noppi am na juróom-ñetti mangoo. (machine, à relire)"
-        }
-      },
       "notion": "il_reste"
     },
     {
@@ -142,12 +88,6 @@
       "meaning": "Prendre une partie et la mettre à part.",
       "example": "Ibrahima retire 150 francs de sa tirelire pour acheter un pain.",
       "surface": "retire",
-      "help": {
-        "wo": {
-          "explanation": "Jël-leen benn wàllu, di ko wàcc. (machine, à relire)",
-          "example": "Ibraayma génne na ci ay téeméer ak juróom-ñaari frank ci ay xaalisam, ngir jënd mburu. (machine, à relire)"
-        }
-      },
       "notion": "enlever"
     },
     {
@@ -157,12 +97,6 @@
       "meaning": "Donner quelque chose à quelqu'un qui te paie : ce n'est plus à toi, mais tu reçois de l'argent.",
       "example": "Aminata vend 5 sachets d'eau au marché.",
       "surface": "vend",
-      "help": {
-        "wo": {
-          "explanation": "Xam nga lu nga jële ci lu nga jële, te du sa bopp, waaye nga jot xaalis. (machine, à relire)",
-          "example": "Aminata di jaay juróomi jaatu ndox ci suulet bi. (machine, à relire)"
-        }
-      },
       "notion": "enlever"
     },
     {
@@ -172,12 +106,6 @@
       "meaning": "Passer quelque chose à quelqu'un : celui qui donne en a moins, celui qui reçoit en a plus.",
       "example": "Fatou donne 2 mangues à sa petite sœur.",
       "surface": "donne",
-      "help": {
-        "wo": {
-          "explanation": "Kon nag, ku jox, am na lu néew, te ku jot, am na lu bare. (machine, à relire)",
-          "example": "Fatou jox na sa jigéen ju ndaw ñaari mangue. (machine, à relire)"
-        }
-      },
       "notion": "enlever"
     },
     {
@@ -187,12 +115,6 @@
       "meaning": "Ne plus avoir quelque chose que tu avais.",
       "example": "Mamadou perd 3 billes pendant le jeu.",
       "surface": "perd",
-      "help": {
-        "wo": {
-          "explanation": "Duñu am lu nga amoon. (machine, à relire)",
-          "example": "Mamadou ñàkk na ñetti ball ci biir xëtu. (machine, à relire)"
-        }
-      },
       "notion": "enlever"
     },
     {
@@ -202,12 +124,6 @@
       "meaning": "Donner de l'argent pour avoir quelque chose : tu as une chose de plus, mais moins d'argent.",
       "example": "Au marché, Moussa achète 3 mangues avec ses 500 francs. Il a 3 mangues de plus, mais moins d'argent.",
       "surface": "achète",
-      "help": {
-        "wo": {
-          "explanation": "Jëfandikoo xaalis ngir am lu nga am; nga am lu ëpp, waaye xaalis gu néew. (machine, à relire)",
-          "example": "Moussa jënd na ñetti mango ak juróomi téeméeri frank, te am na ñetti mangoo yu ëpp, waaye ñàkk xaalis. (machine, à relire)"
-        }
-      },
       "notion": "enlever"
     },
     {
@@ -217,12 +133,6 @@
       "meaning": "Une des deux quantités est plus grande que l'autre. Pour savoir quoi faire, lis bien la question.",
       "example": "Awa a 12 mangues. Moussa en a 9. Awa en a 3 de plus que lui.",
       "surface": "de plus que",
-      "help": {
-        "wo": {
-          "explanation": "Kenn ci ñaari taxawaay yi moo gën a màgg. (machine, à relire)",
-          "example": "Awa am na fukk ak ñaar, Musaa am na juróom-ñeen, Awa am na ñetti. (machine, à relire)"
-        }
-      },
       "notion": "de_plus_que"
     },
     {
@@ -232,12 +142,6 @@
       "meaning": "Une des deux quantités est plus petite que l'autre. Pour savoir quoi faire, lis bien la question.",
       "example": "Fatou a 500 francs. Aminata en a 100 de moins que Fatou.",
       "surface": "de moins que",
-      "help": {
-        "wo": {
-          "explanation": "Kenn ci ñaari taxawaay yi gën a ndaw, ngir xam lu nga def, jàngal ci laaj bi. (machine, à relire)",
-          "example": "Fatou am na juróomi téeméeri frank. Aminata am na ci téeméeri frank ci Fatou. (machine, à relire)"
-        }
-      },
       "notion": "de_plus_que"
     },
     {
@@ -247,12 +151,6 @@
       "meaning": "Il y a la même quantité des deux côtés.",
       "example": "Ibrahima a autant de billes que Mamadou : ils en ont 7 chacun.",
       "surface": "autant",
-      "help": {
-        "wo": {
-          "explanation": "Am na noonu ci ñaari wàllu yi. (machine, à relire)",
-          "example": "Ibraahiima am na juróom ñaari ball yu mel ni Mamadu. (machine, à relire)"
-        }
-      },
       "notion": "autant_que"
     },
     {
@@ -262,12 +160,6 @@
       "meaning": "Celui qui a la plus grande quantité, parmi tous.",
       "example": "Au jeu de billes, Mamadou a le plus grand tas : 9 billes.",
       "surface": "le plus grand",
-      "help": {
-        "wo": {
-          "explanation": "Ku am lu bare ci ñoom ñépp. (machine, à relire)",
-          "example": "Ci jokkoo ball yi, Mamadou am na lu gën a màgg: juróom-ñaari ball. (machine, à relire)"
-        }
-      },
       "notion": "le_plus_grand"
     },
     {
@@ -277,12 +169,6 @@
       "meaning": "Celui qui a la plus petite quantité, parmi tous.",
       "example": "Parmi trois sacs de mangues, Aminata prend le plus petit : elle contient 3 mangues.",
       "surface": "le plus petit",
-      "help": {
-        "wo": {
-          "explanation": "Ku am gën a ndaw ci ñoom ñépp. (machine, à relire)",
-          "example": "Aminata jël ca ñetti sàkku mango yi gën a ndaw: dafa am ñetti mango. (machine, à relire)"
-        }
-      },
       "notion": "le_plus_grand"
     },
     {
@@ -292,12 +178,6 @@
       "meaning": "Ce qui sépare deux quantités : la partie en plus de la plus grande.",
       "example": "Mamadou a 9 mangues dans son panier, et Moussa en a 4. Quelle est la différence entre leurs paniers ?",
       "surface": "différence",
-      "help": {
-        "wo": {
-          "explanation": "Li di séddoo ñaari jëfandikukat yi: ci lu gën a màgg. (machine, à relire)",
-          "example": "Mamadou am na juróom-ñeen mbëj ci sàrtam, Moussa am na ñeenti mbëj. (machine, à relire)"
-        }
-      },
       "notion": "difference"
     },
     {
@@ -307,12 +187,6 @@
       "meaning": "Les deux quantités sont les mêmes : rien ne dépasse.",
       "example": "Fatou a 5 mangues et Ibrahima en a 5 aussi : leurs tas sont égaux.",
       "surface": "égaux",
-      "help": {
-        "wo": {
-          "explanation": "Ñaareel xaalis yi amoon nañu noonu: kenn du gën. (machine, à relire)",
-          "example": "Fatou am na juróomi mangoo, Ibraahiima am na juróomi mangoo itam. (machine, à relire)"
-        }
-      },
       "notion": "autant_que"
     },
     {
@@ -322,12 +196,6 @@
       "meaning": "Des objets rangés en paquets, avec le même nombre dans chaque paquet.",
       "example": "Au marché, Aminata achète des biscuits par paquets de 3. Elle prend 5 paquets.",
       "surface": "par paquets de",
-      "help": {
-        "wo": {
-          "explanation": "Jëfandikukat yu ñu sàkk, ak lim yu njëkk ci benn sàkk. (machine, à relire)",
-          "example": "Aminata di jëkka jëkka jëkka jëkka jëkka jëkka jëkka jëkka. (machine, à relire)"
-        }
-      },
       "notion": "par_paquets_de"
     },
     {
@@ -337,12 +205,6 @@
       "meaning": "Pour chaque personne ou chaque chose, la même quantité.",
       "example": "Pour la fête, les 4 enfants reçoivent chacun 3 billes.",
       "surface": "chacun",
-      "help": {
-        "wo": {
-          "explanation": "Ku nekk mbaa lu nekk, lu mel noonu. (machine, à relire)",
-          "example": "Ci njariñ bi, ñeenti doom yi, kenn ci ñoom, jot na ñetti ball. (machine, à relire)"
-        }
-      },
       "notion": "chacun"
     },
     {
@@ -352,12 +214,6 @@
       "meaning": "Répéter le même nombre plusieurs fois : 4 fois 6, ce sont 4 groupes de 6.",
       "example": "Pour l'attaya, Mamadou prépare 4 théières et met 2 morceaux de sucre dans chaque théière : 4 fois 2 morceaux.",
       "surface": "fois",
-      "help": {
-        "wo": {
-          "explanation": "Jëfalu ko lu mel noonu lu ëpp yoon: ñeenti yoon ci juróom-ñeent, ñeent ci juróom-ñeent. (machine, à relire)",
-          "example": "Mamadou def na ñeenti téer, teg ca nekk ñaari coppite sukk, ñeenti coppite ñaari coppite. (machine, à relire)"
-        }
-      },
       "notion": "par_paquets_de"
     },
     {
@@ -367,12 +223,6 @@
       "meaning": "Le même nombre se répète dans chacun des groupes.",
       "example": "Dans chaque panier, Fatou range 6 mangues. Elle a 3 paniers.",
       "surface": "Dans chaque",
-      "help": {
-        "wo": {
-          "explanation": "Amoon na ci ñeneen ci ñeneen. (machine, à relire)",
-          "example": "Fatou dafa sàkk juróom benni mandor ci benn sàq, am na ñetti sàq. (machine, à relire)"
-        }
-      },
       "notion": "par_paquets_de"
     },
     {
@@ -382,12 +232,6 @@
       "meaning": "Des objets alignés en ligne, avec le même nombre dans chaque ligne.",
       "example": "Pour la Tabaski, il y a 4 rangées de 6 chaises dans la cour.",
       "surface": "rangées",
-      "help": {
-        "wo": {
-          "explanation": "Jëfandikukat yi ñu wàcce ci wàll, ak lim gu mel ci wàll gu nekk. (machine, à relire)",
-          "example": "Ci Tabaski, am na ñeent taxawaay yu tollook juróom-ñeent ci kër gi. (machine, à relire)"
-        }
-      },
       "notion": "par_paquets_de"
     },
     {
@@ -397,12 +241,6 @@
       "meaning": "Deux fois la même quantité.",
       "example": "Mamadou a 6 mangues. Moussa en a le double : 12 mangues.",
       "surface": "le double",
-      "help": {
-        "wo": {
-          "explanation": "Ñaari yoon. (machine, à relire)",
-          "example": "Mamadu am na juróom-ñeen mango, Musaa am na ñaar: fukki mango. (machine, à relire)"
-        }
-      },
       "notion": "par_paquets_de"
     },
     {
@@ -412,12 +250,6 @@
       "meaning": "Couper une quantité en parts pour que chacun ait sa part.",
       "example": "Mamadou partage ses 12 mangues entre 3 amis.",
       "surface": "partage",
-      "help": {
-        "wo": {
-          "explanation": "Jëf-jëf-jëf-jëf-jëf-jëf-jëf-jëf-jëf. (machine, à relire)",
-          "example": "Mamadu di séddoo ay fukki mangoom ci ñetti xaritam. (machine, à relire)"
-        }
-      },
       "notion": "partager"
     },
     {
@@ -427,12 +259,6 @@
       "meaning": "Donner à chacun la même part, sans en garder plus pour soi.",
       "example": "Mamadou partage également ses 12 mangues entre 3 amis : chacun en reçoit 4.",
       "surface": "partage également",
-      "help": {
-        "wo": {
-          "explanation": "Jëfleen ñépp ci lu mat sëriñ, te bañ a sàkk lu mat sëriñ. (machine, à relire)",
-          "example": "Mamadou di séddoo ay fukki mangoom itam ci ñetti xarit: ku nekk di jot ñeent. (machine, à relire)"
-        }
-      },
       "notion": "partager"
     },
     {
@@ -442,12 +268,6 @@
       "meaning": "Mettre une quantité dans plusieurs endroits, en parts égales.",
       "example": "Ibrahima répartit 20 billes dans 4 sacs, le même nombre dans chaque sac.",
       "surface": "répartit",
-      "help": {
-        "wo": {
-          "explanation": "Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ Sëriñ (machine, à relire)",
-          "example": "Ibraayma daldi séddoo téeméeri xànk ci ñeenti xànk, ci benn xànk. (machine, à relire)"
-        }
-      },
       "notion": "partager"
     },
     {
@@ -457,12 +277,6 @@
       "meaning": "Ce que reçoit chaque personne d'une même quantité.",
       "example": "Pour le goûter, il y a 12 mangues pour 4 enfants. Combien de mangues par personne ?",
       "surface": "par personne",
-      "help": {
-        "wo": {
-          "explanation": "Li nit ku nekk jot ci noonu. (machine, à relire)",
-          "example": "Ndax am na fukki mango ci ñeent doomam. Ñaata mango ci nit? (machine, à relire)"
-        }
-      },
       "notion": "partager"
     },
     {
@@ -472,12 +286,6 @@
       "meaning": "Partager en parts égales.",
       "example": "Aminata veut diviser ses 15 billes en 3 tas égaux.",
       "surface": "diviser",
-      "help": {
-        "wo": {
-          "explanation": "Jëf-jëf-jëf. (machine, à relire)",
-          "example": "Aminata bëggoon a séddale ay 15 ballam ci ñetti benn. (machine, à relire)"
-        }
-      },
       "notion": "partager"
     },
     {
@@ -487,12 +295,6 @@
       "meaning": "Une des deux parts égales d'un tout, si tu le coupes en deux.",
       "example": "Fatou a 14 mangues et en donne la moitié à Aminata.",
       "surface": "la moitié",
-      "help": {
-        "wo": {
-          "explanation": "Kenn ci ñaari wàll yu mel ni benn, su nga jël ci ñaari wàll. (machine, à relire)",
-          "example": "Fatou am na fukk ak ñeenti mangoo, jox Aminata genn-wàll. (machine, à relire)"
-        }
-      },
       "notion": "moitie"
     },
     {
@@ -502,12 +304,6 @@
       "meaning": "Une des quatre parts égales d'un tout, si tu le coupes en quatre.",
       "example": "Moussa a 8 billes. Il en donne un quart à Ibrahima : 2 billes.",
       "surface": "un quart",
-      "help": {
-        "wo": {
-          "explanation": "Kenn ci ñeenti cér yu mel ni benn, su nga jële ko ci ñeent. (machine, à relire)",
-          "example": "Moussa am na juróom ñetti xànk, jox Ibraayma ñeent fukk, ñaari xànk. (machine, à relire)"
-        }
-      },
       "notion": "moitie"
     },
     {
@@ -517,12 +313,6 @@
       "meaning": "Tu demandes une quantité : tu cherches un nombre.",
       "example": "Au marché, une cliente demande : combien coûtent les mangues ?",
       "surface": "combien",
-      "help": {
-        "wo": {
-          "explanation": "Dinaa laaj lu bare: nga ngi wut lu bare. (machine, à relire)",
-          "example": "Ci suulet bi, ku nekk laaj na ne: luy jële mango yi? (machine, à relire)"
-        }
-      },
       "notion": "combien"
     },
     {
@@ -532,12 +322,6 @@
       "meaning": "Chercher combien de paquets de même taille on peut faire avec un nombre donné.",
       "example": "Aminata a 12 billes. Combien de fois peut-elle faire un tas de 3 billes ?",
       "surface": "Combien de fois",
-      "help": {
-        "wo": {
-          "explanation": "Jëfandikoo ci lu ëpp ci ay xët yu mel ni ñoom, ngir mën a jëfandikoo lu ëpp ci lu ëpp. (machine, à relire)",
-          "example": "Aminata am na fukk ak ñaar. (machine, à relire)"
-        }
-      },
       "notion": "combien"
     },
     {
@@ -547,12 +331,6 @@
       "meaning": "Le résultat de tout ce qu'on a réuni ou compté.",
       "example": "Ibrahima a acheté 3 mangues le matin et 4 le soir. Quel est le total ?",
       "surface": "le total",
-      "help": {
-        "wo": {
-          "explanation": "Li mu am ci lépp lu nu boole, mbaa lu nu teg. (machine, à relire)",
-          "example": "Ibrahima jënd na ñetti mango ci suba ak ñeenti mango ci guddi. (machine, à relire)"
-        }
-      },
       "notion": "en_tout"
     },
     {
@@ -562,12 +340,6 @@
       "meaning": "Au tout début, avant ce qui change.",
       "example": "Au départ, Mamadou a 500 francs.",
       "surface": "Au départ",
-      "help": {
-        "wo": {
-          "explanation": "Ci njàlbéen bu jëkk, ba noppi lu dul tollu. (machine, à relire)",
-          "example": "Ci njàlbéen bi, Mamadou am na juróomi téeméeri frank. (machine, à relire)"
-        }
-      },
       "notion": "au_depart"
     },
     {
@@ -577,12 +349,6 @@
       "meaning": "Après tout ce qui s'est passé, à la dernière étape.",
       "example": "À la fin de la journée, Fatou a 9 mangues.",
       "surface": "À la fin",
-      "help": {
-        "wo": {
-          "explanation": "Bi loolu wéyee, ci wàllu mujj. (machine, à relire)",
-          "example": "Ba bés ba wéyee, Fatou am na ci juróom-ñaari mango. (machine, à relire)"
-        }
-      },
       "notion": "au_depart"
     },
     {
@@ -592,12 +358,6 @@
       "meaning": "Ce qui arrive plus tard, une fois qu'une chose est passée.",
       "example": "Après le marché, Awa rentre à la maison avec 3 mangues.",
       "surface": "Après",
-      "help": {
-        "wo": {
-          "explanation": "Li ci ëllëg, ci lu jëm ci lu jëm ci lu yàgg. (machine, à relire)",
-          "example": "Bi ñu sàkk, Awa dugal këram ak ñetti mango. (machine, à relire)"
-        }
-      },
       "notion": "au_depart"
     }
   ],
