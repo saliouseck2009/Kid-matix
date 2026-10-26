@@ -1,0 +1,7 @@
+deep-translator
+num2words
+torch
+transformers
+scipy
+numpy
+huggingface_hub
