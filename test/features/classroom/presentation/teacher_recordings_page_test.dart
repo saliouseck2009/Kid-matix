@@ -166,7 +166,8 @@ void main() {
     // Assert
     expect(
       find.text(
-        'Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements.',
+        'Voix wolof provisoire (synthèse automatique) : '
+        'à remplacer par de vrais enregistrements.',
       ),
       findsOneWidget,
     );

@@ -14,7 +14,8 @@ import '../../../helpers/pump_localized.dart';
 import '../helpers/profile_fixtures.dart';
 
 const String _provisionalNotice =
-    'Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements.';
+    'Voix wolof provisoire (synthèse automatique) : '
+    'à remplacer par de vrais enregistrements.';
 
 void main() {
   late MockUpdateSettingsUseCase mockUpdate;
