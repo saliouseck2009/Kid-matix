@@ -45,17 +45,37 @@ class _CameraQrScannerState extends State<CameraQrScanner> {
       child: MobileScanner(
         controller: _controller,
         onDetect: _onDetect,
-        errorBuilder: (BuildContext context, MobileScannerException error) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSizes.space16),
-              child: Text(
-                context.l10n.classroomQrCameraError,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
-        },
+        errorBuilder: (BuildContext context, MobileScannerException error) =>
+            QrCameraErrorView(errorCode: error.errorCode),
+      ),
+    );
+  }
+}
+
+/// What shows in place of the camera when it cannot open: how to allow
+/// it when it was refused, the class file when there is none.
+class QrCameraErrorView extends StatelessWidget {
+  /// Creates the view of [errorCode].
+  const QrCameraErrorView({required this.errorCode, super.key});
+
+  /// Why the camera did not open.
+  final MobileScannerErrorCode errorCode;
+
+  @override
+  Widget build(BuildContext context) {
+    final String message = switch (errorCode) {
+      MobileScannerErrorCode.permissionDenied =>
+        context.l10n.classroomQrCameraDenied,
+      MobileScannerErrorCode.unsupported => context.l10n.classroomQrNoCamera,
+      _ => context.l10n.classroomQrCameraError,
+    };
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.space16),
+        child: Semantics(
+          liveRegion: true,
+          child: Text(message, textAlign: TextAlign.center),
+        ),
       ),
     );
   }

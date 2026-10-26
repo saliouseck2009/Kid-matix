@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/word_audio_kind.dart';
 import 'package:kid_matix/core/error/app_error_code.dart';
 import 'package:kid_matix/core/error/data_state.dart';
+import 'package:kid_matix/features/math_word/data/datasources/audio_pack_zip.dart';
 import 'package:kid_matix/features/math_word/data/datasources/audio_recorder_data_source.dart';
 import 'package:kid_matix/features/math_word/data/datasources/teacher_audio_store.dart';
 import 'package:kid_matix/features/math_word/data/repositories/teacher_audio_repository_impl.dart';
@@ -228,5 +229,83 @@ void main() {
       restarted.recordedKeys('wo', WordAudioKind.explanation),
       <String>{'ajouter'},
     );
+  });
+
+  test('imports a pack all or nothing', () async {
+    // Arrange: a sound recording, then one entry the manifest does not
+    // name.
+    final Archive inputArchive = Archive()
+      ..add(
+        ArchiveFile.bytes(
+          'wo/manifest.json',
+          utf8.encode(
+            '{"language": "wo", "words": '
+            '{"ajouter": {"explanation": "wo_ajouter.m4a"}}}',
+          ),
+        ),
+      )
+      ..add(ArchiveFile.bytes('wo/wo_ajouter.m4a', <int>[1, 2]))
+      ..add(ArchiveFile.bytes('wo/extra.m4a', <int>[3]));
+    // Act
+    final DataState<int> actual = await teacherAudio.importPack(
+      bytes: ZipEncoder().encodeBytes(inputArchive),
+    );
+    // Assert
+    expect(
+      (actual as DataFailed<int>).exception.code,
+      AppErrorCode.invalidFile,
+    );
+    expect(store.recordedKeys('wo', WordAudioKind.explanation), isEmpty);
+    expect(File('${folder.path}/wo/wo_ajouter.m4a').existsSync(), isFalse);
+  });
+
+  test('refuses a recording over 2 MB', () async {
+    // Arrange
+    final Archive inputArchive = Archive()
+      ..add(
+        ArchiveFile.bytes(
+          'wo/manifest.json',
+          utf8.encode(
+            '{"language": "wo", "words": '
+            '{"ajouter": {"explanation": "wo_ajouter.m4a"}}}',
+          ),
+        ),
+      )
+      ..add(
+        ArchiveFile.bytes(
+          'wo/wo_ajouter.m4a',
+          List<int>.filled(AudioPackZip.maxFileBytes + 1, 0),
+        ),
+      );
+    // Act
+    final DataState<int> actual = await teacherAudio.importPack(
+      bytes: ZipEncoder().encodeBytes(inputArchive),
+    );
+    // Assert
+    expect(actual, isA<DataFailed<int>>());
+    expect(store.recordedKeys('wo', WordAudioKind.explanation), isEmpty);
+  });
+
+  test('accepts a language the app does not ship yet', () async {
+    // Arrange
+    final Archive inputArchive = Archive()
+      ..add(
+        ArchiveFile.bytes(
+          'ff/manifest.json',
+          utf8.encode(
+            '{"language": "ff", "words": '
+            '{"ajouter": {"explanation": "ff_ajouter.m4a"}}}',
+          ),
+        ),
+      )
+      ..add(ArchiveFile.bytes('ff/ff_ajouter.m4a', <int>[1, 2]));
+    // Act
+    final DataState<int> actual = await teacherAudio.importPack(
+      bytes: ZipEncoder().encodeBytes(inputArchive),
+    );
+    // Assert
+    expect((actual as DataSuccess<int>).data, 1);
+    expect(teacherAudio.packLanguages, <String>['wo', 'ff']);
+    expect(Directory('${folder.path}/.import').existsSync(), isFalse);
   });
 }

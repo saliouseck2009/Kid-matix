@@ -8,6 +8,7 @@ import 'package:kid_matix/core/widgets/back_to_parent.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/features/classroom/domain/entities/teacher_recordings.dart';
+import 'package:kid_matix/features/classroom/domain/usecases/record_explanation_use_case.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_recordings_cubit.dart';
 import 'package:kid_matix/features/classroom/presentation/bloc/teacher_recordings_state.dart';
 import 'package:kid_matix/features/classroom/presentation/widgets/class_item_labels.dart';
@@ -119,6 +120,8 @@ class _RecordingsView extends StatelessWidget {
                       .firstWhere((RecordingWord w) => w.wordKey == recording)
                       .itemKey,
                 ),
+                seconds: state.recordedSeconds,
+                maxSeconds: RecordExplanationUseCase.maxLength.inSeconds,
                 onKeep: cubit.keep,
                 onCancel: cubit.cancel,
               ),

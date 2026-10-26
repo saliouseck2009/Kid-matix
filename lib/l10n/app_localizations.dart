@@ -1188,7 +1188,7 @@ abstract class AppLocalizations {
   /// Teacher area, explanation under the QR code of the results (informal "tu").
   ///
   /// In fr, this message translates to:
-  /// **'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.'**
+  /// **'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code. Touche « C\'est reçu » seulement quand l\'autre tablette a affiché les nouvelles séances : sinon, elles ne seraient plus renvoyées.'**
   String get classroomQrSendHint;
 
   /// Teacher area, what the QR code of the results carries, above the code.
@@ -1269,6 +1269,18 @@ abstract class AppLocalizations {
   /// **'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.'**
   String get classroomQrCameraError;
 
+  /// Teacher area, in place of the camera view when the camera permission was refused: how to allow it in the system settings (informal "tu").
+  ///
+  /// In fr, this message translates to:
+  /// **'La caméra est refusée. Pour l\'autoriser, ouvre les réglages du téléphone, puis les autorisations de Kid Matix. Sinon, utilise le fichier de la classe.'**
+  String get classroomQrCameraDenied;
+
+  /// Teacher area, in place of the camera view when the device has no usable camera.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette tablette n\'a pas de caméra : utilise le fichier de la classe.'**
+  String get classroomQrNoCamera;
+
   /// Teacher area, button of « Mes classes » that opens the page where the teacher records their own explanation of each maths word in the help language. Also the title of that page. One line.
   ///
   /// In fr, this message translates to:
@@ -1346,6 +1358,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Enregistrement de « {word} »…'**
   String classroomRecordingsRecording(String word);
+
+  /// Teacher area, timer under the recording banner: seconds recorded out of the longest recording; it then stops and is kept automatically.
+  ///
+  /// In fr, this message translates to:
+  /// **'{seconds} s sur {max} s : l\'enregistrement s\'arrête tout seul à la fin.'**
+  String classroomRecordingsTime(int seconds, int max);
 
   /// Teacher area, button that stops the recording and keeps it for the word. One line.
   ///

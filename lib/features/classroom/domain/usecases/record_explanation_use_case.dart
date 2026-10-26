@@ -17,6 +17,10 @@ class RecordExplanationUseCase {
     required this._words,
   });
 
+  /// Longest recording: it stops and is kept by itself then (a pack
+  /// recording lasts 15 s; the microphone is never left on).
+  static const Duration maxLength = Duration(seconds: 30);
+
   final TeacherAudioService _audio;
   final WordAudioService _words;
 

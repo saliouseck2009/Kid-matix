@@ -795,7 +795,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomQrSendHint =>
-      'On the teacher\'s tablet, open “Receive a QR code” and point the camera at this code.';
+      'On the teacher\'s tablet, open “Receive a QR code” and point the camera at this code. Tap “It\'s received” only once the other tablet has shown the new sessions: otherwise they would not be sent again.';
 
   @override
   String classroomQrSessions(int count) {
@@ -852,6 +852,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'The camera is not available. Allow it in the settings, or use the class file.';
 
   @override
+  String get classroomQrCameraDenied =>
+      'The camera is refused. To allow it, open the phone settings, then the permissions of Kid Matix. Otherwise, use the class file.';
+
+  @override
+  String get classroomQrNoCamera =>
+      'This tablet has no camera: use the class file.';
+
+  @override
   String get classroomRecordingsOpen => 'Record the explanations';
 
   @override
@@ -897,6 +905,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String classroomRecordingsRecording(String word) {
     return 'Recording “$word”…';
+  }
+
+  @override
+  String classroomRecordingsTime(int seconds, int max) {
+    return '$seconds s of $max s: the recording stops by itself at the end.';
   }
 
   @override

@@ -1070,7 +1070,7 @@
   "@classroomQrSend": {
     "description": "Teacher area, button of the page of a class that shows its new results as a QR code for the teacher's tablet. Also the title of that page. One line."
   },
-  "classroomQrSendHint": "Sur la tablette de l'enseignant, ouvre « Recevoir par QR code » et vise ce code.",
+  "classroomQrSendHint": "Sur la tablette de l'enseignant, ouvre « Recevoir par QR code » et vise ce code. Touche « C'est reçu » seulement quand l'autre tablette a affiché les nouvelles séances : sinon, elles ne seraient plus renvoyées.",
   "@classroomQrSendHint": {
     "description": "Teacher area, explanation under the QR code of the results (informal \"tu\")."
   },
@@ -1131,6 +1131,14 @@
   "classroomQrCameraError": "La caméra n'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.",
   "@classroomQrCameraError": {
     "description": "Teacher area, message in place of the camera view when the camera is refused or missing."
+  },
+  "classroomQrCameraDenied": "La caméra est refusée. Pour l'autoriser, ouvre les réglages du téléphone, puis les autorisations de Kid Matix. Sinon, utilise le fichier de la classe.",
+  "@classroomQrCameraDenied": {
+    "description": "Teacher area, in place of the camera view when the camera permission was refused: how to allow it in the system settings (informal \"tu\")."
+  },
+  "classroomQrNoCamera": "Cette tablette n'a pas de caméra : utilise le fichier de la classe.",
+  "@classroomQrNoCamera": {
+    "description": "Teacher area, in place of the camera view when the device has no usable camera."
   },
   "classroomRecordingsOpen": "Enregistrer les explications",
   "@classroomRecordingsOpen": {
@@ -1205,6 +1213,20 @@
       "word": {
         "type": "String",
         "example": "il reste"
+      }
+    }
+  },
+  "classroomRecordingsTime": "{seconds} s sur {max} s : l'enregistrement s'arrête tout seul à la fin.",
+  "@classroomRecordingsTime": {
+    "description": "Teacher area, timer under the recording banner: seconds recorded out of the longest recording; it then stops and is kept automatically.",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "30"
       }
     }
   },

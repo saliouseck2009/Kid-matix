@@ -25,7 +25,10 @@ final class TeacherAudioRepositoryImpl implements TeacherAudioService {
   final AudioRecorderDataSource _recorder;
 
   @override
-  List<String> get packLanguages => List<String>.unmodifiable(_packs.keys);
+  List<String> get packLanguages => List<String>.unmodifiable(<String>{
+    ..._packs.keys,
+    ..._store.languages,
+  });
 
   @override
   bool hasPackAudio({

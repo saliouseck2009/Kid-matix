@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Daily reminder (F18): local notifications only, no network. The
          plugin declares POST_NOTIFICATIONS, asked only when the reminder is
          switched on; the boot permission brings the scheduled reminders
@@ -13,6 +14,11 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+    <!-- No network, ever: ML Kit (mobile_scanner) declares these for its
+         downloadable models and telemetry; the bundled barcode model works
+         offline. tool/check.sh build fails if they come back. -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove"/>
     <!-- allowBackup is off: nothing leaves the phone, not even to the
          player's Google account (specifications, section 16). -->
     <application

@@ -801,7 +801,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get classroomQrSendHint =>
-      'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code.';
+      'Sur la tablette de l\'enseignant, ouvre « Recevoir par QR code » et vise ce code. Touche « C\'est reçu » seulement quand l\'autre tablette a affiché les nouvelles séances : sinon, elles ne seraient plus renvoyées.';
 
   @override
   String classroomQrSessions(int count) {
@@ -859,6 +859,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'La caméra n\'est pas disponible. Autorise-la dans les réglages, ou utilise le fichier de la classe.';
 
   @override
+  String get classroomQrCameraDenied =>
+      'La caméra est refusée. Pour l\'autoriser, ouvre les réglages du téléphone, puis les autorisations de Kid Matix. Sinon, utilise le fichier de la classe.';
+
+  @override
+  String get classroomQrNoCamera =>
+      'Cette tablette n\'a pas de caméra : utilise le fichier de la classe.';
+
+  @override
   String get classroomRecordingsOpen => 'Enregistrer les explications';
 
   @override
@@ -905,6 +913,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String classroomRecordingsRecording(String word) {
     return 'Enregistrement de « $word »…';
+  }
+
+  @override
+  String classroomRecordingsTime(int seconds, int max) {
+    return '$seconds s sur $max s : l\'enregistrement s\'arrête tout seul à la fin.';
   }
 
   @override
