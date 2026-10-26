@@ -323,10 +323,13 @@ class _HelpAudioRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> choices = <String>[...languages, HelpAudio.none];
-    // Never chosen: the first pack. A language the app no longer ships
-    // counts as none.
+    // A language the app no longer ships counts as none.
     final String current = switch (selected) {
-      null => languages.first,
+      // Never chosen: the first pack that is not provisional, else none.
+      null => languages.firstWhere(
+        (String code) => !provisionalLanguages.contains(code),
+        orElse: () => HelpAudio.none,
+      ),
       final String code when choices.contains(code) => code,
       _ => HelpAudio.none,
     };
@@ -344,14 +347,18 @@ class _HelpAudioRow extends StatelessWidget {
         onSelected: onSelected,
       ),
     );
-    if (!provisionalLanguages.contains(current)) return row;
+    // The adult who picks a provisional language sees why next to it.
+    final String? provisional = languages
+        .where(provisionalLanguages.contains)
+        .firstOrNull;
+    if (provisional == null) return row;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         row,
-        const Padding(
-          padding: EdgeInsets.only(bottom: AppSizes.space16),
-          child: ProvisionalAudioNotice(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppSizes.space16),
+          child: ProvisionalAudioNotice(languageCode: provisional),
         ),
       ],
     );

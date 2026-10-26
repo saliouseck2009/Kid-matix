@@ -78,7 +78,7 @@ void main() {
       expect(actualManifest.wordKeys, <String>['il_reste', 'ajouter']);
     });
 
-    test('is not provisional without the flag', () {
+    test('is not provisional without the list', () {
       // Act
       final AudioPackManifest actualManifest = _manifest();
       // Assert
@@ -86,12 +86,12 @@ void main() {
       expect(actualManifest.toJson().containsKey('provisional'), isFalse);
     });
 
-    test('reads the provisional flag and keeps it when it changes', () {
+    test('reads the provisional files and keeps them when it changes', () {
       // Arrange
       final AudioPackManifest provisional = AudioPackManifest.fromJson(
         <String, Object?>{
           'language': 'wo',
-          'provisional': true,
+          'provisional': <String>['wo_ajouter.m4a'],
           'words': <String, Object?>{
             'ajouter': <String, Object?>{'explanation': 'wo_ajouter.m4a'},
           },
@@ -109,34 +109,42 @@ void main() {
       );
       // Assert
       expect(provisional.isProvisional, isTrue);
+      expect(provisional.provisionalFiles, <String>{'wo_ajouter.m4a'});
       expect(actualWith.isProvisional, isTrue);
       expect(actualWithout.isProvisional, isTrue);
-      expect(provisional.toJson()['provisional'], isTrue);
+      expect(provisional.toJson()['provisional'], <String>['wo_ajouter.m4a']);
     });
 
-    test('treats an explicit false flag as not provisional', () {
+    test('treats an empty or absent list as not provisional', () {
       // Act
-      final AudioPackManifest actualManifest = AudioPackManifest.fromJson(
+      final AudioPackManifest actualEmpty = AudioPackManifest.fromJson(
         <String, Object?>{
           'language': 'wo',
-          'provisional': false,
+          'provisional': <String>[],
           'words': <String, Object?>{},
         },
       );
       // Assert
-      expect(actualManifest.isProvisional, isFalse);
+      expect(actualEmpty.isProvisional, isFalse);
+      expect(actualEmpty.toJson().containsKey('provisional'), isFalse);
     });
 
-    test('refuses a provisional flag that is not a boolean', () {
+    test('refuses a provisional entry that is not a list of names', () {
       // Assert
-      expect(
-        () => AudioPackManifest.fromJson(<String, Object?>{
-          'language': 'wo',
-          'provisional': 'yes',
-          'words': <String, Object?>{},
-        }),
-        throwsFormatException,
-      );
+      for (final Object bad in <Object>[
+        'yes',
+        true,
+        <Object>[3],
+      ]) {
+        expect(
+          () => AudioPackManifest.fromJson(<String, Object?>{
+            'language': 'wo',
+            'provisional': bad,
+            'words': <String, Object?>{},
+          }),
+          throwsFormatException,
+        );
+      }
     });
 
     test('refuses a manifest of the wrong shape', () {
@@ -225,6 +233,34 @@ void main() {
       // Assert
       expect(service.languages, <String>['wo']);
       expect(service.defaultLanguage, 'wo');
+    });
+
+    test('never defaults to a provisional pack', () {
+      // Arrange
+      final AudioPackManifest provisional = AudioPackManifest.fromJson(
+        <String, Object?>{
+          'language': 'pp',
+          'provisional': <String>['pp_total.m4a'],
+          'words': <String, Object?>{
+            'total': <String, Object?>{'explanation': 'pp_total.m4a'},
+          },
+        },
+      );
+      // Act
+      final WordAudioServiceImpl actualOnly = WordAudioServiceImpl(
+        packs: <AudioPackManifest>[provisional],
+        player: player,
+      );
+      final WordAudioServiceImpl actualMixed = WordAudioServiceImpl(
+        packs: <AudioPackManifest>[provisional, _manifest()],
+        player: player,
+      );
+      // Assert
+      expect(actualOnly.languages, <String>['pp']);
+      expect(actualOnly.defaultLanguage, isNull);
+      expect(actualOnly.isProvisional('pp'), isTrue);
+      expect(actualMixed.defaultLanguage, 'wo');
+      expect(actualMixed.isProvisional('wo'), isFalse);
     });
 
     test('offers a pack only once it holds a recording', () {

@@ -307,7 +307,7 @@
   "settingsReadAloud": "Leer las preguntas en voz alta",
   "settingsHelpAudio": "Ayuda de audio",
   "helpAudioNone": "Ninguna",
-  "audioPackProvisionalNotice": "Voz wolof provisional (síntesis automática): se sustituirá por grabaciones reales.",
+  "audioPackProvisionalNotice": "Voz {language} provisional (síntesis automática): se sustituirá por grabaciones reales.",
   "helpAudioLanguageName": "{code, select, wo{wolof} other{{code}}}",
   "helpAudioListen": "Escuchar en {language}",
   "helpAudioListenExample": "Ejemplo en {language}",

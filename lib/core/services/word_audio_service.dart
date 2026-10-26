@@ -14,7 +14,8 @@ abstract interface class WordAudioService {
   List<String> get languages;
 
   /// The language of a player who never chose: the first pack of the
-  /// index, or `null` when the app ships none.
+  /// index that is not provisional, or `null` when the app ships none (a
+  /// child hears machine-made stand-ins only when an adult chose them).
   String? get defaultLanguage;
 
   /// Whether the pack of [languageCode] holds machine-made stand-ins

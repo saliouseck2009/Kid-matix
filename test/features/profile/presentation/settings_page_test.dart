@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kid_matix/core/widgets/choice_segments.dart';
 import 'package:kid_matix/core/entities/help_audio.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
@@ -14,7 +15,7 @@ import '../../../helpers/pump_localized.dart';
 import '../helpers/profile_fixtures.dart';
 
 const String _provisionalNotice =
-    'Voix wolof provisoire (synthèse automatique) : '
+    'Voix wolof provisoire (synthèse automatique)\u00a0: '
     'à remplacer par de vrais enregistrements.';
 
 void main() {
@@ -134,6 +135,59 @@ void main() {
       );
       // Assert
       expect(find.text(_provisionalNotice), findsOneWidget);
+    });
+    testWidgets(
+      'does not offer a provisional Wolof to a child who never chose',
+      (
+        WidgetTester tester,
+      ) async {
+        // Act
+        await pumpSettings(
+          tester,
+          helpAudioLanguages: <String>['wo'],
+          provisionalHelpAudioLanguages: <String>{'wo'},
+        );
+        // Assert: « Aucune » is the selection, Wolof stays one tap away.
+        final ChoiceSegments<String> actualRow = tester.widget(
+          find.byWidgetPredicate(
+            (Widget w) =>
+                w is ChoiceSegments<String> &&
+                w.choices.contains(HelpAudio.none),
+          ),
+        );
+        expect(actualRow.selected, HelpAudio.none);
+        expect(find.text('Wolof'), findsOneWidget);
+      },
+    );
+    testWidgets('lets an adult pick a provisional Wolof next to the notice', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpSettings(
+        tester,
+        helpAudioLanguages: <String>['wo'],
+        provisionalHelpAudioLanguages: <String>{'wo'},
+      );
+      // Act
+      await tester.tap(find.text('Wolof'));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(lastSaved().helpAudioLanguage, 'wo');
+      expect(find.text(_provisionalNotice), findsOneWidget);
+    });
+    testWidgets('keeps a real Wolof as the default help language', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpSettings(tester, helpAudioLanguages: <String>['wo']);
+      // Assert
+      final ChoiceSegments<String> actualRow = tester.widget(
+        find.byWidgetPredicate(
+          (Widget w) =>
+              w is ChoiceSegments<String> && w.choices.contains(HelpAudio.none),
+        ),
+      );
+      expect(actualRow.selected, 'wo');
     });
     testWidgets('shows no notice for a real pack', (
       WidgetTester tester,

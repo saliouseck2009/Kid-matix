@@ -1297,8 +1297,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpAudioNone => 'None';
 
   @override
-  String get audioPackProvisionalNotice =>
-      'Provisional Wolof voice (automatic synthesis): to be replaced by real recordings.';
+  String audioPackProvisionalNotice(String language) {
+    return 'Provisional $language voice (automatic synthesis): to be replaced by real recordings.';
+  }
 
   @override
   String helpAudioLanguageName(String code) {

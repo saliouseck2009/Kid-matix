@@ -180,7 +180,8 @@ class _RecordingsHeader extends StatelessWidget {
           onBack: onBack,
         ),
         Text(context.l10n.classroomRecordingsHint),
-        if (page.isProvisional) const ProvisionalAudioNotice(),
+        if (language != null && page.isProvisional)
+          ProvisionalAudioNotice(languageCode: language),
         if (language == null) Text(context.l10n.classroomRecordingsNoPack),
         if (page.languages.length > 1)
           DropdownButtonFormField<String>(

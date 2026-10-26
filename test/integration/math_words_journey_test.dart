@@ -106,7 +106,11 @@ void main() {
         for (final ItemMasteryEntity cell in row) cell.itemKey: cell.status,
     };
     expect(actualStatuses['word:ajouter'], isNot(MasteryStatus.notSeen));
-    expect(sl<WordAudioService>().defaultLanguage, 'wo');
+    // A provisional pack is never the default of a child who never chose.
+    expect(
+      sl<WordAudioService>().defaultLanguage,
+      sl<WordAudioService>().isProvisional('wo') ? isNull : 'wo',
+    );
     expect(sl<WordAudioService>().languages, <String>['wo']);
   });
 }

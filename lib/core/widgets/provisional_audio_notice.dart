@@ -10,7 +10,10 @@ import 'package:kid_matix/core/extensions/build_context_extension.dart';
 /// screens.
 class ProvisionalAudioNotice extends StatelessWidget {
   /// Creates the notice.
-  const ProvisionalAudioNotice({super.key});
+  const ProvisionalAudioNotice({required this.languageCode, super.key});
+
+  /// Code of the help language whose pack is provisional, such as `wo`.
+  final String languageCode;
 
   static const double _iconSize = 18;
 
@@ -30,7 +33,9 @@ class ProvisionalAudioNotice extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            context.l10n.audioPackProvisionalNotice,
+            context.l10n.audioPackProvisionalNotice(
+              context.l10n.helpAudioLanguageName(languageCode),
+            ),
             style: theme.textTheme.bodySmall,
           ),
         ),

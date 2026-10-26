@@ -45,7 +45,11 @@ void main() {
       );
       // The Wolof pack is the default language and holds recordings (the
       // provisional machine-made ones until the owner's arrive).
-      expect(inputLocator<WordAudioService>().defaultLanguage, 'wo');
+      // A provisional pack is never the default of a child who never chose.
+      expect(
+        inputLocator<WordAudioService>().defaultLanguage,
+        inputLocator<WordAudioService>().isProvisional('wo') ? isNull : 'wo',
+      );
       expect(inputLocator<WordAudioService>().languages, <String>['wo']);
     },
   );
