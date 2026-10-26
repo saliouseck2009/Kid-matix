@@ -80,39 +80,66 @@ class ProblemRecordingsTest(unittest.TestCase):
 
 class ProvisionalTest(unittest.TestCase):
     present = {("il_reste", "explanation"), ("il_reste", "example")}
+    names = {"wo_il_reste.m4a", "wo_il_reste_exemple.m4a"}
 
-    def test_manifest_has_the_flag_only_when_provisional(self):
-        flagged = audio.build_manifest("wo", KEYS, self.present, provisional=True)
-        self.assertIs(flagged["provisional"], True)
+    def test_manifest_lists_the_provisional_files_only_when_there_are_some(self):
+        listed = audio.build_manifest(
+            "wo", KEYS, self.present, provisional={"wo_il_reste_exemple.m4a"}
+        )
+        self.assertEqual(listed["provisional"], ["wo_il_reste_exemple.m4a"])
         plain = audio.build_manifest("wo", KEYS, self.present)
         self.assertNotIn("provisional", plain)
         self.assertEqual(
-            audio.build_manifest("wo", KEYS, self.present, provisional=False), plain
+            audio.build_manifest("wo", KEYS, self.present, provisional=set()), plain
         )
 
-    def test_requested_flag_always_wins(self):
-        self.assertTrue(audio.is_provisional(True, False, self.present, self.present))
-        self.assertTrue(audio.is_provisional(True, True, self.present, set()))
+    def test_provisional_run_adds_the_files_it_converts(self):
+        after = audio.provisional_after(True, set(), self.names, self.names)
+        self.assertEqual(after, self.names)
 
-    def test_real_recordings_over_all_the_standins_clear_the_flag(self):
-        self.assertFalse(audio.is_provisional(False, True, self.present, self.present))
-        self.assertFalse(audio.is_provisional(False, False, self.present, set()))
+    def test_real_run_removes_the_files_it_converts(self):
+        after = audio.provisional_after(False, self.names, {"wo_il_reste.m4a"}, self.names)
+        self.assertEqual(after, {"wo_il_reste_exemple.m4a"})
 
-    def test_partial_delivery_keeps_the_flag(self):
-        converted = {("il_reste", "explanation")}
-        self.assertTrue(audio.is_provisional(False, True, self.present, converted))
+    def test_two_partial_real_deliveries_clear_the_list(self):
+        first = audio.provisional_after(False, self.names, {"wo_il_reste.m4a"}, self.names)
+        self.assertEqual(first, {"wo_il_reste_exemple.m4a"})
+        second = audio.provisional_after(
+            False, first, {"wo_il_reste_exemple.m4a"}, self.names
+        )
+        self.assertEqual(second, set())
 
-    def test_flag_is_read_from_the_manifest_on_disk(self):
+    def test_a_file_that_left_the_pack_is_not_listed(self):
+        after = audio.provisional_after(True, {"wo_gone.m4a"}, {"wo_il_reste.m4a"}, self.names)
+        self.assertEqual(after, {"wo_il_reste.m4a"})
+
+    def test_manifest_on_disk_is_read_as_a_set_and_the_old_flag_as_all(self):
         with tempfile.TemporaryDirectory() as folder:
             output = Path(folder)
-            self.assertFalse(audio.read_provisional(output))
+            self.assertEqual(audio.read_provisional(output), set())
             manifest = output / "manifest.json"
-            manifest.write_text('{"provisional": true, "words": {}}')
-            self.assertTrue(audio.read_provisional(output))
+            manifest.write_text('{"provisional": ["wo_a.m4a"], "words": {}}')
+            self.assertEqual(audio.read_provisional(output), {"wo_a.m4a"})
+            manifest.write_text(
+                '{"provisional": true, "words": {"a": {"explanation": "wo_a.m4a"}}}'
+            )
+            self.assertEqual(audio.read_provisional(output), {"wo_a.m4a"})
             manifest.write_text('{"words": {}}')
-            self.assertFalse(audio.read_provisional(output))
+            self.assertEqual(audio.read_provisional(output), set())
             manifest.write_text("not json")
-            self.assertFalse(audio.read_provisional(output))
+            self.assertEqual(audio.read_provisional(output), set())
+
+    def test_provisional_run_refuses_to_overwrite_a_real_recording(self):
+        with tempfile.TemporaryDirectory() as folder:
+            real = Path(folder) / "wo_il_reste.m4a"
+            stand_in = Path(folder) / "wo_il_reste_exemple.m4a"
+            fresh = Path(folder) / "wo_de_plus_que.m4a"
+            real.write_bytes(b"")
+            stand_in.write_bytes(b"")
+            targets = [real, stand_in, fresh]
+            previous = {"wo_il_reste_exemple.m4a"}
+            self.assertEqual(audio.refused_overwrites(True, previous, targets), [real])
+            self.assertEqual(audio.refused_overwrites(False, previous, targets), [])
 
 
 class ClassifyTest(unittest.TestCase):

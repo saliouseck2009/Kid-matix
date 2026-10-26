@@ -83,9 +83,6 @@ void main() {
     final Map<String, Object?> inputJson = jsonDecode(
       File('assets/math_words/math_words.json').readAsStringSync(),
     ) as Map<String, Object?>;
-    for (final Object? word in inputJson['words']! as List<Object?>) {
-      (word! as Map<String, Object?>).remove('help');
-    }
     final Map<String, Object?> inputFirst =
         (inputJson['words']! as List<Object?>).first! as Map<String, Object?>
           ..['help'] = <String, Object?>{
@@ -108,10 +105,9 @@ void main() {
     expect(actualCards.first.helpExamples['wo'], '(exemple du propriétaire)');
     expect(actualCards[1].helpExplanations, isEmpty);
     expect(
-      WordCardServiceImpl(catalog: loadMathWordCatalog()).readCards().every(
-        (WordCard card) =>
-            card.helpExplanations.keys.every((String code) => code == 'wo'),
-      ),
+      WordCardServiceImpl(catalog: loadMathWordCatalog())
+          .readCards()
+          .every((WordCard card) => card.helpExplanations.isEmpty),
       isTrue,
     );
     expect(actual.name, 'KidMatix-Mots-2026-11-02.pdf');
