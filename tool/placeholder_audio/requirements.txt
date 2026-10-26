@@ -1,7 +1,6 @@
 deep-translator
 num2words
-torch
-transformers
-scipy
+requests
+onnxruntime
 numpy
-huggingface_hub
+scipy

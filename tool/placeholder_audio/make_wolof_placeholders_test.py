@@ -123,6 +123,21 @@ class TablesTest(unittest.TestCase):
         self.assertTrue(lines[lines.index("Statut : brouillon.") + 2].startswith(make.STATUS_PREFIX))
 
 
+class TokensTest(unittest.TestCase):
+    vocab = {"a": 1, "e": 4, "n": 5, "o": 2, " ": 40, "|": 0, "'": 19}
+
+    def test_a_blank_surrounds_every_character(self):
+        self.assertEqual(make.token_ids("an", self.vocab), [0, 1, 0, 5, 0])
+
+    def test_marks_are_read_without_the_accent(self):
+        self.assertEqual(make.token_ids("é", self.vocab), [0, 4, 0])
+        self.assertEqual(make.token_ids("ñ", self.vocab), [0, 5, 0])
+
+    def test_unknown_characters_are_dropped_and_upper_case_lowered(self):
+        self.assertEqual(make.token_ids("A?z", self.vocab), [0, 1, 0])
+        self.assertEqual(make.token_ids("?", self.vocab), [])
+
+
 class NumbersTest(unittest.TestCase):
     def test_digits_are_spelled_in_french(self):
         try:

@@ -2,7 +2,8 @@
 
 The Wolof text and the voice here are produced by machines and never
 reviewed: the text by Google Translate (deep-translator), the voice by Meta
-MMS (facebook/mms-tts-wol, licence CC-BY-NC 4.0). They stand in for the
+MMS Wolof, exported to ONNX (jaguaman09/mms-tts-wol-onnx, a public model,
+licence CC-BY-NC 4.0: no account, no token). They stand in for the
 owner's real recordings so that the Wolof buttons and « Aide audio » can be
 tried on a device. Replace them before any release (see
 docs/product/audio-recording.md, « Fichiers provisoires »).
@@ -16,7 +17,8 @@ Steps, each one resumable (what is already made is skipped):
                 a re-run needs no network);
   3. tables     the Wolof cells of both tables, each marked
                 « (machine, à relire) », and a status line at the top;
-  4. speak      one 16 kHz wav per text, with the MMS Wolof model (CPU);
+  4. speak      one 16 kHz wav per text, with the MMS Wolof model
+                (onnxruntime on the CPU, no torch);
   5. pack       tool/process_audio.py on the wav folder with --provisional,
                 then tool/build_math_words.py.
 
@@ -37,6 +39,7 @@ import re
 import subprocess
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -46,10 +49,14 @@ PROBLEMS_TABLE = ROOT / "docs" / "product" / "problems.md"
 CACHE = HERE / "wolof_machine.json"
 WAV_DIR = HERE / "build" / "wav"
 
-MODEL = "facebook/mms-tts-wol"
-MODEL_PAGE = f"https://huggingface.co/{MODEL}"
-SPEAKING_RATE = 0.9  # a little slower than the model default, for children
-SEED = 0
+MODEL_REPO = "jaguaman09/mms-tts-wol-onnx"  # public, CC-BY-NC 4.0
+MODEL_URL = f"https://huggingface.co/{MODEL_REPO}/resolve/main"
+MODEL_DIR = HERE / "build" / "model"
+MODEL_FILES = {
+    "model.onnx": "onnx/model.onnx",
+    "vocab.json": "vocab.json",
+    "config.json": "config.json",
+}
 MARK = " (machine, à relire)"
 STATUS_PREFIX = "Wolof provisoire :"
 STATUS_LINE = (
@@ -239,11 +246,11 @@ def translate(items):
         entry = cache.get(name)
         if entry and entry.get("fr") == source and entry.get("wo"):
             continue
-        if translator is None:
-            translator = french_to_wolof()
         wolof = None
         for attempt in range(4):
             try:
+                if translator is None:
+                    translator = french_to_wolof()
                 wolof = translator.translate(source)
                 break
             except Exception as error:  # noqa: BLE001 - network or quota
@@ -266,22 +273,43 @@ def translate(items):
 
 # ----------------------------------------------------------------- speak
 
-TOKEN_HELP = f"""\
-The Wolof voice needs a Hugging Face account, because the model is gated:
-  1. Create an account at https://huggingface.co/join
-  2. Open {MODEL_PAGE} and accept the licence (CC-BY-NC 4.0).
-  3. Run:  huggingface-cli login   (newer versions: hf auth login)
-     or:   export HF_TOKEN=<your token>
-Then run this script again: it resumes where it stopped."""
+
+def download_model():
+    """Fetches the ONNX model and its vocabulary once (no account needed)."""
+    import requests
+
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    for name, remote in MODEL_FILES.items():
+        target = MODEL_DIR / name
+        if target.exists() and target.stat().st_size > 0:
+            continue
+        print(f"downloading {remote} ...")
+        partial = target.with_suffix(target.suffix + ".part")
+        with requests.get(f"{MODEL_URL}/{remote}", stream=True, timeout=60) as r:
+            r.raise_for_status()
+            with partial.open("wb") as out:
+                for chunk in r.iter_content(1 << 20):
+                    out.write(chunk)
+        partial.rename(target)
 
 
-def hugging_face_token():
-    from huggingface_hub import get_token
+def token_ids(text, vocab):
+    """The ids the voice reads for [text], as the MMS tokenizer builds them:
+    lower case, only characters of the vocabulary, a blank (0) between and
+    around them.
 
-    token = get_token()
-    if not token:
-        raise SystemExit(TOKEN_HELP)
-    return token
+    The vocabulary has no é, ë, à, ó or ñ: such a letter is read without its
+    mark (ñ as n); anything else unknown is dropped.
+    """
+    ids = [0]
+    for char in text.lower().replace("’", "'"):
+        if char not in vocab:
+            plain = unicodedata.normalize("NFD", char)
+            char = "".join(c for c in plain if not unicodedata.combining(c))
+        for one in char:
+            if one in vocab and one != "|":
+                ids += [vocab[one], 0]
+    return ids if len(ids) > 1 else []
 
 
 def speak(wolof_of):
@@ -290,31 +318,31 @@ def speak(wolof_of):
     if not todo:
         print("all wav files exist")
         return
-    token = hugging_face_token()
+    download_model()
     import numpy
-    import torch
+    import onnxruntime
     from scipy.io import wavfile
-    from transformers import AutoTokenizer, VitsModel
 
-    try:
-        tokenizer = AutoTokenizer.from_pretrained(MODEL, token=token)
-        model = VitsModel.from_pretrained(MODEL, token=token)
-    except OSError as error:
-        raise SystemExit(f"{error}\n\n{TOKEN_HELP}") from error
-    model.speaking_rate = SPEAKING_RATE
-    model.eval()
+    vocab = json.loads((MODEL_DIR / "vocab.json").read_text(encoding="utf-8"))
+    rate = json.loads((MODEL_DIR / "config.json").read_text(encoding="utf-8"))[
+        "sampling_rate"
+    ]
+    session = onnxruntime.InferenceSession(
+        str(MODEL_DIR / "model.onnx"), providers=["CPUExecutionProvider"]
+    )
     WAV_DIR.mkdir(parents=True, exist_ok=True)
     for number, name in enumerate(todo, start=1):
-        inputs = tokenizer(wolof_of[name], return_tensors="pt")
-        if inputs["input_ids"].shape[-1] == 0:
+        ids = token_ids(wolof_of[name], vocab)
+        if not ids:
             print(f"skipped {name}: nothing the voice can read", file=sys.stderr)
             continue
-        torch.manual_seed(SEED)  # same text, same voice
-        with torch.no_grad():
-            wave = model(**inputs).waveform[0].numpy()
+        batch = numpy.array([ids], dtype=numpy.int64)
+        wave = session.run(
+            None, {"input_ids": batch, "attention_mask": numpy.ones_like(batch)}
+        )[0][0]
         pcm = (numpy.clip(wave, -1.0, 1.0) * 32767).astype("int16")
-        wavfile.write(WAV_DIR / f"{name}.wav", model.config.sampling_rate, pcm)
-        print(f"[{number}/{len(todo)}] {name}.wav")
+        wavfile.write(WAV_DIR / f"{name}.wav", rate, pcm)
+        print(f"[{number}/{len(todo)}] {name}.wav {len(pcm) / rate:.1f} s")
 
 
 # ------------------------------------------------------------------ pack

@@ -114,7 +114,7 @@ Format du pack (`assets/audio/<langue>/`) : `manifest.json` avec la langue, le f
 Décision du propriétaire du 2026-10-26 : en attendant tes vrais enregistrements, l'app embarque des fichiers wolof provisoires, faits par des machines, pour que les boutons wolof et « Aide audio » fonctionnent sur un téléphone.
 
 - **Le texte** wolof des colonnes « Explication en wolof », « Exemple en wolof » (`math-words.md`) et « Wolof : énoncé » (`problems.md`) est une traduction automatique (Google Translate), jamais relue. Chaque cellule porte la mention « (machine, à relire) ».
-- **La voix** est une synthèse automatique (Meta MMS, modèle `facebook/mms-tts-wol`, licence CC-BY-NC 4.0, usage non commercial). Ces fichiers ne doivent jamais partir dans une version publiée.
+- **La voix** est une synthèse automatique (modèle Meta MMS wolof exporté en ONNX, `jaguaman09/mms-tts-wol-onnx`, licence CC-BY-NC 4.0, usage non commercial). Ces fichiers ne doivent jamais partir dans une version publiée.
 - **Le drapeau** : le manifeste `assets/audio/wo/manifest.json` porte `"provisional": true`. Tant qu'il est là, l'espace enseignant (page « Enregistrer les explications ») et la ligne « Aide audio » des réglages affichent : « Voix wolof provisoire (synthèse automatique) : à remplacer par de vrais enregistrements. » Côté enfant, rien ne change.
 - Les outils sont dans `tool/placeholder_audio/` (voir son `README.md`).
 

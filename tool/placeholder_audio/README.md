@@ -7,45 +7,31 @@ real recordings.
 - **Text**: the French explanation and example of the 40 math words and the
   French statement of the 30 problems, translated to Wolof by Google
   Translate (`deep-translator`). Never reviewed by anybody who speaks Wolof.
-- **Voice**: Meta MMS Wolof (`facebook/mms-tts-wol`), run on the CPU.
+- **Voice**: the Meta MMS Wolof VITS model exported to ONNX
+  (`jaguaman09/mms-tts-wol-onnx`, public, no account), run on the CPU with
+  `onnxruntime` (no torch). About 114 MB, downloaded once into `build/model/`.
 - **Result**: `assets/audio/wo/wo_<key>.m4a`, `wo_<key>_exemple.m4a`,
   `wo_problem_<key>.m4a` and `assets/audio/wo/manifest.json` with
   `"provisional": true`. The app shows a notice in the teacher area and
   next to « Aide audio » while the pack carries that flag.
 
-> **Licence**: the MMS models are CC-BY-NC 4.0 (non-commercial). These files
-> are placeholders and must be replaced by real recordings before any
-> release.
+> **Licence**: the model is CC-BY-NC 4.0 (non-commercial, like Meta MMS).
+> The files are placeholders and must be replaced by real recordings before
+> any release.
 
 ## Setup
 
-The system Python of the project is 3.14. `torch` and `transformers` ship
-wheels for it; if `pip install` fails on one of them, use Python 3.12:
-
 ```bash
-brew install python@3.12        # only when 3.14 fails
-python3.12 -m venv tool/placeholder_audio/.venv
-```
-
-```bash
-python3 -m venv tool/placeholder_audio/.venv       # skip if made above
+python3 -m venv tool/placeholder_audio/.venv
 source tool/placeholder_audio/.venv/bin/activate
 pip install -r tool/placeholder_audio/requirements.txt
 brew install ffmpeg                                 # if not installed yet
 ```
 
-`.venv/` and `build/` are git-ignored.
-
-## The voice needs a Hugging Face login
-
-The MMS model is gated. Once:
-
-1. Create an account at <https://huggingface.co/join>.
-2. Open <https://huggingface.co/facebook/mms-tts-wol> and accept the licence.
-3. `huggingface-cli login` (newer versions: `hf auth login`), or
-   `export HF_TOKEN=<your token>`.
-
-Without it the script prints these steps and stops before the voice.
+`onnxruntime` has wheels for Python 3.14; if `pip install` fails, use
+`brew install python@3.12` and create the venv with `python3.12 -m venv`.
+`.venv/` and `build/` are git-ignored. No Hugging Face account or token is
+needed.
 
 ## Run
 
@@ -68,16 +54,18 @@ idempotent and resumable:
   by hand is never overwritten;
 - a wav that already exists in `build/wav/` is not made again (delete it to
   redo one);
-- `pack` runs `tool/process_audio.py build/wav --provisional`, then
+- `speak` downloads the model once; `pack` runs `tool/process_audio.py build/wav --provisional`, then
   `tool/build_math_words.py`.
 
-Digits are spelled in French (« 12 » becomes « douze ») before the
+The vocabulary of the voice has no é, ë, à, ó or ñ: such a letter is read
+without its mark (ñ as n). Digits are spelled in French (« 12 » becomes « douze ») before the
 translation, because the voice cannot read digits. The mark « (machine, à
 relire) » is never spoken.
 
 Google Translate may answer « too many requests » (HTTP 429) on a shared or
-flagged network address: wait, or run from another network, then run the
-script again; what is translated is kept.
+flagged network address. The script then stops before the tables and the
+voice (it does not look for another way in): wait, or run from another
+network, then run it again; what is translated is kept.
 
 ## Replacing the stand-ins
 
