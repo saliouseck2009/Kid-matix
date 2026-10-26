@@ -1,7 +1,7 @@
 """Builds the provisional, machine-made Wolof audio of Kid Matix.
 
 The Wolof text and the voice here are produced by machines and never
-reviewed: the text by Google Translate (deep-translator), the voice by Meta
+reviewed: the text by Meta NLLB-200 (CC-BY-NC 4.0), the voice by Meta
 MMS Wolof, exported to ONNX (jaguaman09/mms-tts-wol-onnx, a public model,
 licence CC-BY-NC 4.0: no account, no token). They stand in for the
 owner's real recordings so that the Wolof buttons and « Aide audio » can be
@@ -13,8 +13,10 @@ Steps, each one resumable (what is already made is skipped):
   1. extract    the French explanation and example of the 40 words
                 (docs/product/math-words.md) and the French statement of the
                 30 problems (docs/product/problems.md);
-  2. translate  French -> Wolof, cached in wolof_machine.json (committed:
-                a re-run needs no network);
+  2. translate  French -> Wolof with Meta NLLB-200 (offline CTranslate2
+                model, --engine google as a fallback), cached in
+                wolof_machine.json (committed: a re-run needs no network
+                for the text);
   3. tables     the Wolof cells of both tables, each marked
                 « (machine, à relire) », and a status line at the top;
   4. speak      one 16 kHz wav per text, with the MMS Wolof model
@@ -61,7 +63,7 @@ MARK = " (machine, à relire)"
 STATUS_PREFIX = "Wolof provisoire :"
 STATUS_LINE = (
     f"{STATUS_PREFIX} les colonnes en wolof sont un texte provisoire, traduit "
-    "par une machine (Google Translate) et non relu ; chaque cellule porte la "
+    "par une machine (Meta NLLB-200) et non relu ; chaque cellule porte la "
     "mention « (machine, à relire) ». Les voix sont une synthèse automatique "
     "(Meta MMS) à remplacer par de vrais enregistrements (voir "
     "`tool/placeholder_audio/README.md` et `docs/product/audio-recording.md`)."
@@ -236,22 +238,73 @@ def french_to_wolof():
         return translator
 
 
-def translate(items):
-    """Fills the cache; returns {id: wolof}. Stops with a message when the
-    translator refuses."""
+NLLB_REPO = "JustFrederik/nllb-200-distilled-600M-ct2-int8"  # public, CC-BY-NC 4.0
+NLLB_FILES = ["model.bin", "config.json", "shared_vocabulary.txt", "sentencepiece.bpe.model"]
+NLLB_DIR = HERE / "build" / "nllb"
+
+
+class Nllb:
+    """Meta NLLB-200 (distilled 600M, int8 CTranslate2 conversion), offline."""
+
+    def __init__(self):
+        import ctranslate2
+        import requests
+        import sentencepiece
+
+        NLLB_DIR.mkdir(parents=True, exist_ok=True)
+        for name in NLLB_FILES:
+            target = NLLB_DIR / name
+            if target.exists() and target.stat().st_size > 0:
+                continue
+            print(f"downloading {NLLB_REPO}/{name} ...")
+            url = f"https://huggingface.co/{NLLB_REPO}/resolve/main/{name}"
+            partial = target.with_suffix(target.suffix + ".part")
+            with requests.get(url, stream=True, timeout=60) as r:
+                r.raise_for_status()
+                with partial.open("wb") as out:
+                    for chunk in r.iter_content(1 << 20):
+                        out.write(chunk)
+            partial.rename(target)
+        self._model = ctranslate2.Translator(str(NLLB_DIR), device="cpu")
+        self._sp = sentencepiece.SentencePieceProcessor(
+            str(NLLB_DIR / "sentencepiece.bpe.model")
+        )
+
+    def translate(self, text, source="fra_Latn", target="wol_Latn"):
+        tokens = [source] + self._sp.encode(text, out_type=str) + ["</s>"]
+        result = self._model.translate_batch(
+            [tokens], target_prefix=[[target]], beam_size=4, max_decoding_length=200
+        )
+        return self._sp.decode(result[0].hypotheses[0][1:]).strip()
+
+    def back(self, text):
+        """Wolof back to French, to judge a translation."""
+        return self.translate(text, source="wol_Latn", target="fra_Latn")
+
+
+def translator_for(engine):
+    """A function French -> Wolof for [engine] ('nllb' or 'google')."""
+    if engine == "google":
+        return french_to_wolof().translate
+    return Nllb().translate
+
+
+def translate(items, engine="nllb", force=False):
+    """Fills the cache; returns {id: wolof}. With the google engine, stops
+    with a message when Google refuses."""
     cache = load_cache()
-    translator = None
+    translate_text = None
     for name, french in items:
         source = spell_numbers(french)
         entry = cache.get(name)
-        if entry and entry.get("fr") == source and entry.get("wo"):
+        if not force and entry and entry.get("fr") == source and entry.get("wo"):
             continue
+        if translate_text is None:
+            translate_text = translator_for(engine)
         wolof = None
         for attempt in range(4):
             try:
-                if translator is None:
-                    translator = french_to_wolof()
-                wolof = translator.translate(source)
+                wolof = translate_text(source)
                 break
             except Exception as error:  # noqa: BLE001 - network or quota
                 print(f"  {name}: {error}; retry {attempt + 1}/3", file=sys.stderr)
@@ -259,16 +312,28 @@ def translate(items):
         if not wolof:
             save_cache(cache)
             raise SystemExit(
-                f"Google Translate refused {name}: the pipeline stops here. "
+                f"The {engine} engine refused {name}: the pipeline stops here. "
                 "Re-run later; what is translated is kept in wolof_machine.json."
             )
         if wolof.strip().lower() == source.lower():
             print(f"  {name}: the translation equals the French text", file=sys.stderr)
-        cache[name] = {"fr": source, "wo": wolof.strip()}
+        cache[name] = {"fr": source, "wo": wolof.strip(), "engine": engine}
         print(f"translated {name}")
-        time.sleep(0.3)
     save_cache(cache)
     return {name: cache[name]["wo"] for name, _ in items}
+
+
+def back_translate(count):
+    """Prints [count] evenly spread translations with their back-translation
+    to French (NLLB), so that the quality can be judged."""
+    cache = load_cache()
+    names = sorted(cache)
+    step = max(1, len(names) // count)
+    model = Nllb()
+    for name in names[::step][:count]:
+        entry = cache[name]
+        print(f"{name}\n  FR   {entry['fr']}\n  WO   {entry['wo']}\n"
+              f"  BACK {model.back(entry['wo'])}")
 
 
 # ----------------------------------------------------------------- speak
@@ -368,14 +433,23 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--from", dest="first", choices=STEPS, default=STEPS[0])
     parser.add_argument("--until", dest="last", choices=STEPS, default=STEPS[-1])
+    parser.add_argument("--engine", choices=["nllb", "google"], default="nllb",
+                        help="translation engine (google: optional fallback)")
+    parser.add_argument("--retranslate", action="store_true",
+                        help="translate again what the cache already holds")
+    parser.add_argument("--back-translate", type=int, metavar="N",
+                        help="print N cached translations with their back-translation")
     args = parser.parse_args()
+    if args.back_translate:
+        back_translate(args.back_translate)
+        return
     wanted = STEPS[STEPS.index(args.first) : STEPS.index(args.last) + 1]
 
     items = extract()
     problems = sum(name.startswith("wo_problem_") for name, _ in items)
     print(f"{len(items)} texts ({problems} problems)")
     if "translate" in wanted:
-        wolof_of = translate(items)
+        wolof_of = translate(items, args.engine, args.retranslate)
     else:
         cache = load_cache()
         wolof_of = {name: cache[name]["wo"] for name, _ in items if name in cache}

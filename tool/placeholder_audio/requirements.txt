@@ -1,6 +1,9 @@
-deep-translator
+ctranslate2
+sentencepiece
 num2words
 requests
 onnxruntime
 numpy
 scipy
+# only for --engine google
+deep-translator

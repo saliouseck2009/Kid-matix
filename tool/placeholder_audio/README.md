@@ -5,8 +5,13 @@ Wolof buttons and « Aide audio » work on a device until the owner delivers
 real recordings.
 
 - **Text**: the French explanation and example of the 40 math words and the
-  French statement of the 30 problems, translated to Wolof by Google
-  Translate (`deep-translator`). Never reviewed by anybody who speaks Wolof.
+  French statement of the 30 problems, translated to Wolof by Meta NLLB-200
+  (`fra_Latn` to `wol_Latn`), run offline with `ctranslate2` on the public
+  int8 conversion `JustFrederik/nllb-200-distilled-600M-ct2-int8` (about
+  600 MB, downloaded once into `build/nllb/`). `--engine google` uses Google
+  Translate (`deep-translator`) instead. **The quality is poor** (numbers are
+  often wrong, some sentences lose their meaning) and nobody who speaks
+  Wolof has reviewed it.
 - **Voice**: the Meta MMS Wolof VITS model exported to ONNX
   (`jaguaman09/mms-tts-wol-onnx`, public, no account), run on the CPU with
   `onnxruntime` (no torch). About 114 MB, downloaded once into `build/model/`.
@@ -15,8 +20,9 @@ real recordings.
   `"provisional": true`. The app shows a notice in the teacher area and
   next to « Aide audio » while the pack carries that flag.
 
-> **Licence**: the model is CC-BY-NC 4.0 (non-commercial, like Meta MMS).
-> The files are placeholders and must be replaced by real recordings before
+> **Licences**: the translation model (NLLB-200) and the voice model
+> (`jaguaman09/mms-tts-wol-onnx`, from Meta MMS) are both CC-BY-NC 4.0
+> (non-commercial). The files are placeholders and must be replaced by real recordings before
 > any release.
 
 ## Setup
@@ -45,6 +51,8 @@ python tool/placeholder_audio/make_wolof_placeholders.py --from speak     # voic
 Steps: `extract`, `translate`, `tables`, `speak`, `pack`. The script is
 idempotent and resumable:
 
+- `--back-translate N` prints N cached translations with their NLLB
+  back-translation to French, to judge the quality;
 - translations are cached in `wolof_machine.json` (committed); a text is
   asked again only when its French source changed, so a re-run needs no
   network;
@@ -62,7 +70,7 @@ without its mark (ñ as n). Digits are spelled in French (« 12 » becomes « do
 translation, because the voice cannot read digits. The mark « (machine, à
 relire) » is never spoken.
 
-Google Translate may answer « too many requests » (HTTP 429) on a shared or
+With `--engine google`, Google Translate may answer « too many requests » (HTTP 429) on a shared or
 flagged network address. The script then stops before the tables and the
 voice (it does not look for another way in): wait, or run from another
 network, then run it again; what is translated is kept.
