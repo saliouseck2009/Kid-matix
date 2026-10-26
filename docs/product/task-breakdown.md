@@ -766,7 +766,7 @@ Les enfants apprennent à comprendre une situation, pas à réagir à un mot-cl�
 - [x] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
 - [x] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
 - [x] **F30-08** Monnaie et unités : francs CFA par défaut, prévu pour d'autres monnaies selon la région.
-- [ ] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
+- [x] **F30-09** Maquettes à proposer et faire valider : énoncé, schéma en barres, étapes guidées.
 - [x] **F30-10** Tests : gabarits sans ambiguïté, schéma, étapes, piège du mot-clé.
 
 **Terminé quand :** un enfant résout « Awa a 12 mangues, elle en donne 5 » avec le schéma en barres, en écoutant l'énoncé en wolof, puis réussit la version piège du même problème.

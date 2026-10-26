@@ -37,8 +37,8 @@ middle of one). Last update: 2026-10-18.
 | F28 · Math words | **Merged** (wave 1 #102, wave 2 #112 and #114); closes after the recordings, the device check and the validation of its screens (F28-12) |
 | F27 · Placement by skill | **Done** (closed 2026-10-25, wave 3) |
 | F29 · Class mode | **Done** (closed 2026-10-25, wave 3) |
-| F30 · Word problems | **Merged** (wave 4, #123, #124, #125, #129); closes after the owner's device check and the validation of its screens (F30-09) |
-| F31 · Progress measurement | **Merged** (wave 4, #126 to #128, #130 to #132); closes after the owner's tablet check |
+| F30 · Word problems | **Done** (closed 2026-10-26, wave 4) |
+| F31 · Progress measurement | **Done** (closed 2026-10-26, wave 4) |
 | F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
@@ -600,7 +600,7 @@ personne ne gagne d'XP.", "Reprendre", "Arrêter le duel"), the end screen
 "Rejouer", "Quitter"). A level reached in a duel is not celebrated (the
 celebrations belong to the quiz results).
 
-## Version 2.0, wave 4 (merged, device checks pending)
+## Version 2.0, wave 4: F30 and F31 closure
 
 Run on 2026-10-25 and 26: `content-writer` (Haiku) for `problems.md`,
 then `lot-implementer` Sonnet for F30 and Opus for F31, in their own
@@ -641,15 +641,12 @@ commit named. Merged: #123, #124, #125, #129 (F30); #126, #127, #128,
   APK is checked for network permissions by `tool/check.sh build-android`
   (ML Kit's `INTERNET` removed from the manifest).
 
-To check on a device (owner), short:
-
-- F30: « Awa a 12 mangues, elle en donne 5 » solved on the bar model,
-  then its trap twin; the touchable words; the Wolof button stays hidden
-  until the recordings exist.
-- F31, on a tablet: two assessments (any labels) give a class PDF with
-  progress and an anonymous version without nicknames; the camera and
-  microphone prompts on Android and iPad; a QR code read between two
-  tablets; a printed report and sheet (variable fonts).
+Checked by the owner on a phone and a tablet on 2026-10-26, both "done
+when" criteria OK (the bar model on « Awa a 12 mangues, elle en donne 5 »
+then its trap twin; two assessments giving a class PDF with progress and
+an anonymous version without nicknames). Both lots closed; the screens
+built without a mockup (F30-09) and the texts are kept as built. The
+Wolof parts of F28 and F30 wait for the recordings.
 
 Waiting for the owner: the Wolof columns of `problems.md` and the 30
 problem recordings, with the 80 word recordings of F28; the screens
@@ -665,8 +662,8 @@ word check redoes the placement part; `math_word_catalog.dart` is over the
 class size limit; the release APK is about 88 MB as one file (split per
 ABI on the store).
 
-Next: the device checks, then F30 and F31 close here; F28 and F30
-recordings; F32 (migration 019) with the partners.
+Next: the F28 and F30 recordings (110 files), then F28 closes; F32
+(migration 019) with the partners.
 
 ## Version 2.0, wave 3: F27 and F29 closure
 
