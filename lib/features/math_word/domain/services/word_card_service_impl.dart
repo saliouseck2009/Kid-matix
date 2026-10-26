@@ -20,6 +20,7 @@ final class WordCardServiceImpl implements WordCardService {
           meaning: word.meaning,
           example: word.example,
           helpExplanations: _catalog.helpExplanationsOf(word.wordKey),
+          helpExamples: _catalog.helpExamplesOf(word.wordKey),
         ),
     ];
   }

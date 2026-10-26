@@ -966,7 +966,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get classroomPrintablesHint =>
-      'Des exercices et des cartes de mots à imprimer, en français et dans la langue d\'aide. Les lignes de la langue d\'aide restent vides tant que leur texte n\'est pas écrit : complète-les à la main.';
+      'Des exercices et des cartes de mots à imprimer. Les cartes ont aussi des lignes dans la langue d\'aide : vides tant que leur texte n\'est pas écrit, à compléter à la main.';
 
   @override
   String get classroomPrintablesExercisesTitle => 'Fiche d\'exercices';
@@ -1008,6 +1008,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String printHelpLine(String language) {
     return 'En $language :';
+  }
+
+  @override
+  String printHelpExample(String language) {
+    return 'Exemple en $language :';
   }
 
   @override

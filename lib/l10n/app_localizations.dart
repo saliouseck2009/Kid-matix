@@ -1434,7 +1434,7 @@ abstract class AppLocalizations {
   /// Teacher area, explanation at the top of the printable sheets page (informal "tu"). Three lines at most.
   ///
   /// In fr, this message translates to:
-  /// **'Des exercices et des cartes de mots à imprimer, en français et dans la langue d\'aide. Les lignes de la langue d\'aide restent vides tant que leur texte n\'est pas écrit : complète-les à la main.'**
+  /// **'Des exercices et des cartes de mots à imprimer. Les cartes ont aussi des lignes dans la langue d\'aide : vides tant que leur texte n\'est pas écrit, à compléter à la main.'**
   String get classroomPrintablesHint;
 
   /// Teacher area, title of the card that prints the exercises of a unit. One line.
@@ -1508,6 +1508,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'En {language} :'**
   String printHelpLine(String language);
+
+  /// Start of the help-language example line of a printed word card ("Example in Wolof:"), followed by its text or a blank line to fill in by hand.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exemple en {language} :'**
+  String printHelpExample(String language);
 
   /// Title of the answer page of a printed exercise sheet, for the teacher, with the name of the unit.
   ///

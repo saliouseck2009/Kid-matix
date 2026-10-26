@@ -1280,7 +1280,7 @@
   "@classroomPrintablesOpen": {
     "description": "Teacher area, button of « Mes classes » that opens the printable sheets (exercises and word cards as PDF). Also the title of that page. One line."
   },
-  "classroomPrintablesHint": "Des exercices et des cartes de mots à imprimer, en français et dans la langue d'aide. Les lignes de la langue d'aide restent vides tant que leur texte n'est pas écrit : complète-les à la main.",
+  "classroomPrintablesHint": "Des exercices et des cartes de mots à imprimer. Les cartes ont aussi des lignes dans la langue d'aide : vides tant que leur texte n'est pas écrit, à compléter à la main.",
   "@classroomPrintablesHint": {
     "description": "Teacher area, explanation at the top of the printable sheets page (informal \"tu\"). Three lines at most."
   },
@@ -1337,6 +1337,16 @@
   "printHelpLine": "En {language} :",
   "@printHelpLine": {
     "description": "Start of the help-language line of a printed sheet or card (\"In Wolof:\"), followed by its text or a blank line to fill in by hand.",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "wolof"
+      }
+    }
+  },
+  "printHelpExample": "Exemple en {language} :",
+  "@printHelpExample": {
+    "description": "Start of the help-language example line of a printed word card (\"Example in Wolof:\"), followed by its text or a blank line to fill in by hand.",
     "placeholders": {
       "language": {
         "type": "String",

@@ -158,11 +158,7 @@ class _ExercisesCard extends StatelessWidget {
                       l10n: context.l10n,
                     );
                     cubit.printExercises(
-                      (sheet, day, language) => files.exerciseSheetOf(
-                        sheet,
-                        day: day,
-                        helpLanguage: language,
-                      ),
+                      (sheet, day) => files.exerciseSheetOf(sheet, day: day),
                     );
                   },
           ),

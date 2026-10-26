@@ -12,7 +12,9 @@ final class WordCard {
     required this.meaning,
     required this.example,
     Map<String, String> helpExplanations = const <String, String>{},
-  }) : helpExplanations = Map<String, String>.unmodifiable(helpExplanations);
+    Map<String, String> helpExamples = const <String, String>{},
+  }) : helpExplanations = Map<String, String>.unmodifiable(helpExplanations),
+       helpExamples = Map<String, String>.unmodifiable(helpExamples);
 
   /// Key of the word, such as `il_reste`.
   final String wordKey;
@@ -29,6 +31,9 @@ final class WordCard {
   /// Its explanation written in each help language, by language code;
   /// a language is missing until the owner writes it (never invented).
   final Map<String, String> helpExplanations;
+
+  /// Its example written in each help language, by language code.
+  final Map<String, String> helpExamples;
 
   @override
   String toString() => 'WordCard($wordKey)';

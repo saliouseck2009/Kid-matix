@@ -24,7 +24,12 @@ final class ClassReportFiles {
   ClassReportFiles({
     required this.l10n,
     Future<ReportFonts> Function()? loadFonts,
+    this.compress = true,
   }) : _loadFonts = loadFonts ?? ReportFonts.load;
+
+  /// Whether the PDF streams are compressed; off only to read the text
+  /// back in tests.
+  final bool compress;
 
   /// Texts of the app.
   final AppLocalizations l10n;
@@ -67,6 +72,7 @@ final class ClassReportFiles {
           report: report,
           l10n: l10n,
           fonts: await (_fonts ??= _loadFonts()),
+          compress: compress,
         ).build(),
         mimeType: SharedFile.pdfType,
       ),

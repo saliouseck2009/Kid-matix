@@ -958,7 +958,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomPrintablesHint =>
-      'Exercises and word cards to print, in French and in the help language. The help-language lines stay blank until their text is written: fill them in by hand.';
+      'Exercises and word cards to print. The cards also have lines in the help language: blank until their text is written, to fill in by hand.';
 
   @override
   String get classroomPrintablesExercisesTitle => 'Exercise sheet';
@@ -999,6 +999,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String printHelpLine(String language) {
     return 'In $language:';
+  }
+
+  @override
+  String printHelpExample(String language) {
+    return 'Example in $language:';
   }
 
   @override

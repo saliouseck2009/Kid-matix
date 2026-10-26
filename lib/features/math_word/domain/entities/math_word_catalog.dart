@@ -18,6 +18,8 @@ final class MathWordCatalog {
     required List<OperationStatement> statements,
     Map<String, Map<String, String>> helpExplanations =
         const <String, Map<String, String>>{},
+    Map<String, Map<String, String>> helpExamples =
+        const <String, Map<String, String>>{},
   }) {
     final Set<String> keys = words.map((MathWord word) => word.wordKey).toSet();
     if (keys.length != words.length) {
@@ -30,7 +32,12 @@ final class MathWordCatalog {
         }
       }
     }
-    return MathWordCatalog._(words, statements, helpExplanations);
+    return MathWordCatalog._(
+      words,
+      statements,
+      helpExplanations,
+      helpExamples,
+    );
   }
 
   /// Reads the decoded data asset.
@@ -43,7 +50,17 @@ final class MathWordCatalog {
     return MathWordCatalog(
       helpExplanations: <String, Map<String, String>>{
         for (final Object? entry in words)
-          _stringOf(_objectOf(entry), 'key'): _helpOf(_objectOf(entry)),
+          _stringOf(_objectOf(entry), 'key'): _helpOf(
+            _objectOf(entry),
+            'explanation',
+          ),
+      },
+      helpExamples: <String, Map<String, String>>{
+        for (final Object? entry in words)
+          _stringOf(_objectOf(entry), 'key'): _helpOf(
+            _objectOf(entry),
+            'example',
+          ),
       },
       words: <MathWord>[
         for (final Object? entry in words) _wordOf(_objectOf(entry)),
@@ -58,7 +75,9 @@ final class MathWordCatalog {
     List<MathWord> words,
     List<OperationStatement> statements,
     Map<String, Map<String, String>> helpExplanations,
+    Map<String, Map<String, String>> helpExamples,
   ) : _helpExplanations = helpExplanations,
+      _helpExamples = helpExamples,
       words = List<MathWord>.unmodifiable(words),
       statements = List<OperationStatement>.unmodifiable(statements),
       families = List<MathWordFamily>.unmodifiable(_familiesOf(words));
@@ -73,12 +92,19 @@ final class MathWordCatalog {
   final List<MathWordFamily> families;
 
   final Map<String, Map<String, String>> _helpExplanations;
+  final Map<String, Map<String, String>> _helpExamples;
 
   /// The explanation of [wordKey] written in each help language, by
   /// language code (`"help": {"wo": {"explanation": …}}` in the asset);
   /// empty until the owner writes them.
   Map<String, String> helpExplanationsOf(String wordKey) {
     return _helpExplanations[wordKey] ?? const <String, String>{};
+  }
+
+  /// The example of [wordKey] written in each help language
+  /// (`"help": {"wo": {"example": …}}`); empty until the owner writes them.
+  Map<String, String> helpExamplesOf(String wordKey) {
+    return _helpExamples[wordKey] ?? const <String, String>{};
   }
 
   late final Map<String, MathWord> _wordsByKey = <String, MathWord>{
@@ -251,15 +277,16 @@ final class MathWordCatalog {
     );
   }
 
-  /// The explanations of a word entry by help language.
-  static Map<String, String> _helpOf(Map<String, Object?> json) {
+  /// The [field] (`explanation` or `example`) of a word entry by help
+  /// language.
+  static Map<String, String> _helpOf(Map<String, Object?> json, String field) {
     final Object? help = json['help'];
     if (help is! Map) return const <String, String>{};
     return <String, String>{
       for (final MapEntry<Object?, Object?> language in help.entries)
         if (language.key case final String code)
-          if (language.value case {'explanation': final String text})
-            code: text,
+          if (language.value case final Map<Object?, Object?> texts)
+            if (texts[field] case final String text) code: text,
     };
   }
 
