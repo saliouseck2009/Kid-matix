@@ -8,7 +8,8 @@ is untouched. The videos go to `marketing/videos/`, which git ignores.
 ```
 integration_test/marketing/
 ├── first_launch_test.dart   ~10 s: a child creates the player "Awa"
-├── play_stage_test.dart     ~45 s: Awa discovers the table of 5
+├── play_stage_test.dart     ~35 s: Awa discovers the table of 5
+├── boss_fight_test.dart     ~32 s: Awa defeats the boss of the table of 5
 └── support/
     ├── marketing_harness.dart   clean start, seed, pauses, gestures
     └── demo_player.dart         the demo player and their progress
@@ -128,12 +129,46 @@ recording does: tables 1, 2 and 10 crowned (five stages at three stars,
 their facts "acquired"), 650 XP so level 4, and a streak of 6 days that
 ended yesterday — today's quiz makes it 7 on screen.
 
+## The boss video
+
+`boss_fight` plays the rules of the app as they are: a right answer under
+3 seconds is an "Éclair", a critical hit worth 2 of the 12 hit points of
+the boss; a slower right answer is worth 1; a mistake makes the boss
+strike back. The fight is a list of `BossMove`s (`_fight` in the
+scenario), each answered on the quiz's own clock. The scenario then walks
+through the badge sheets, holds the results, and goes back to the map
+where the table wears its new crown. The crown is drawn at once: version
+1.0.1 has no landing animation for it.
+
+```bash
+AVD=KidMatix_Marketing bash tool/marketing/record.sh android boss_fight
+bash tool/marketing/edit.sh --input marketing/videos/raw/boss_fight-<date>.mp4 \
+  --output marketing/videos/01-boss.mp4 --start 0.5 \
+  --caption "0-2|Ton enfant peut-il battre ce *boss* ?" \
+  --caption "3-5|*Coup critique* !" \
+  --caption "19.5-22.5|*Boss vaincu* !"
+bash tool/marketing/edit.sh --input marketing/videos/raw/boss_fight-<date>.mp4 \
+  --output marketing/videos/01-boss-brut.mp4 --start 0.5 --no-end-card
+```
+
+The caption times above fit the draw of `_randomSeed`; another seed draws
+other formats and shifts the moments. Read them from a contact sheet:
+
+```bash
+ffmpeg -i <raw>.mp4 -vf "fps=1,scale=150:-1,drawtext=text='%{pts\:hms}':fontsize=24:fontcolor=white:box=1:boxcolor=black,tile=10x4" -frames:v 1 sheet.png
+```
+
 Known limits:
 
 - The taps are sent inside Flutter, so the recording shows the buttons
   being pressed but no finger or touch mark.
 - Letters are sent straight to the text field: the system keyboard, which
   would cover half of the screen, never opens.
+- After the reward sheets of the results, the test pointer events no
+  longer reach the widgets (the navigator keeps absorbing them,
+  flutter/flutter#4770), so the scenarios press those buttons from code
+  (`pressButton`, `pressIconButton`): the recording shows no press
+  animation on them.
 - On a 9:16 device the banner covers the top of the app. Keep the texts
   for the moments when the header does not matter, or move the banner
   with `--caption-y`.

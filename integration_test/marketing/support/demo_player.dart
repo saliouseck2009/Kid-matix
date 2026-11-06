@@ -17,6 +17,8 @@ import '../../../test/helpers/data_state_test_extension.dart';
 const String demoNickname = 'Awa';
 
 /// Tables whose five stages are won, boss included: they wear a crown.
+/// The badges such a player holds are written too, so a video shows only
+/// the badges its own quiz earns.
 /// They are the first three of the learning path, so the table of 5 is
 /// the one to play.
 const List<int> crownedTables = <int>[1, 2, 10];
@@ -44,9 +46,46 @@ const int _stars = 3;
 const int _acquiredBox = 4;
 const int _reviewInDays = 7;
 
+/// Table whose boss the demo player is about to fight in the boss video.
+const int bossTable = 5;
+
+/// The demo player one fight away from a fourth crown: the first four
+/// stages of the table of [bossTable] are won, its boss is waiting.
+Future<void> seedBossChallenger() async {
+  final String playerId = await _seedPlayer();
+  final Database database = await sl<AppDatabase>().database;
+  final int playedAt = _yesterdayEvening().millisecondsSinceEpoch;
+  final Batch batch = database.batch();
+  for (final String stage in _tableStages.take(_tableStages.length - 1)) {
+    batch.insert('stage_progress', <String, Object?>{
+      'profile_id': playerId,
+      'domain_id': _domainId,
+      'unit_key': 'mul:$bossTable',
+      'stage': stage,
+      'best_stars': _stars,
+      'best_score': _lastMultiplier,
+      'completed_at': playedAt,
+      'updated_at': playedAt,
+    });
+  }
+  await batch.commit(noResult: true);
+  (await sl<SelectProfileUseCase>()(params: playerId)).requireData;
+}
+
+DateTime _yesterdayEvening() {
+  final DateTime now = DateTime.now();
+  return DateTime(now.year, now.month, now.day - 1, 17);
+}
+
 /// Creates the demo player with the progress above and opens their
 /// session: the app starts on their learning path.
 Future<void> seedDemoPlayer() async {
+  final String playerId = await _seedPlayer();
+  (await sl<SelectProfileUseCase>()(params: playerId)).requireData;
+}
+
+/// Writes the demo player and their progress; returns the player's id.
+Future<String> _seedPlayer() async {
   final ProfileEntity player = (await sl<CreateProfileUseCase>()(
     params: const CreateProfileParams(
       nickname: demoNickname,
@@ -93,6 +132,19 @@ Future<void> seedDemoPlayer() async {
       });
     }
   }
+  for (final String badge in <String>[
+    'firstStep',
+    'perfect',
+    'lightning',
+    for (final int table in crownedTables) 'tamer:mul:$table',
+  ]) {
+    batch.insert('badge_unlock', <String, Object?>{
+      'profile_id': player.id,
+      'badge_key': badge,
+      'unlocked_at': playedAt,
+      'updated_at': playedAt,
+    });
+  }
   batch.insert('xp_award', <String, Object?>{
     'id': 'marketing-seed',
     'profile_id': player.id,
@@ -115,5 +167,5 @@ Future<void> seedDemoPlayer() async {
     'updated_at': playedAt,
   });
   await batch.commit(noResult: true);
-  (await sl<SelectProfileUseCase>()(params: player.id)).requireData;
+  return player.id;
 }
