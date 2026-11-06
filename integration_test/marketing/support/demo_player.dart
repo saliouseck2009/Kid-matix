@@ -38,6 +38,10 @@ const int demoXp = 650;
 /// Level reached with [demoXp].
 const int demoLevel = 4;
 
+/// XP of the demo player one short stage away from level 5, where the
+/// mascot reaches its second stage.
+const int almostLevelFiveXp = 980;
+
 /// Days of the streak; the last one is yesterday, so today's quiz makes
 /// it grow on screen.
 const int demoStreakDays = 6;
@@ -110,8 +114,15 @@ Future<void> seedDemoPlayer() async {
   (await sl<SelectProfileUseCase>()(params: playerId)).requireData;
 }
 
+/// The demo player at [almostLevelFiveXp] XP: the next stage won makes
+/// the mascot grow.
+Future<void> seedMascotGrower() async {
+  final String playerId = await _seedPlayer(xp: almostLevelFiveXp);
+  (await sl<SelectProfileUseCase>()(params: playerId)).requireData;
+}
+
 /// Writes the demo player and their progress; returns the player's id.
-Future<String> _seedPlayer() async {
+Future<String> _seedPlayer({int xp = demoXp}) async {
   final ProfileEntity player = (await sl<CreateProfileUseCase>()(
     params: const CreateProfileParams(
       nickname: demoNickname,
@@ -175,13 +186,13 @@ Future<String> _seedPlayer() async {
     'id': 'marketing-seed',
     'profile_id': player.id,
     'source_key': 'marketing',
-    'xp_earned': demoXp,
+    'xp_earned': xp,
     'earned_at': playedAt,
     'updated_at': playedAt,
   });
   batch.update(
     'profile',
-    <String, Object?>{'total_xp': demoXp, 'level': demoLevel},
+    <String, Object?>{'total_xp': xp, 'level': demoLevel},
     where: 'id = ?',
     whereArgs: <Object?>[player.id],
   );

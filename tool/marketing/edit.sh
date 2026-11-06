@@ -182,10 +182,17 @@ for segment in "${segments[@]}"; do
   IFS='|' read -r kind a b c <<<"$segment"
   if [ "$kind" = "clip" ]; then
     [ -f "$a" ] || { echo "No such recording: $a" >&2; exit 1; }
-    clip_time=(-ss "$b")
-    [ -z "$c" ] || clip_time+=(-t "$c")
-    ffmpeg -hide_banner -loglevel error -y "${clip_time[@]}" -i "$a" \
-      -vf "fps=$fps,$frame,setsar=1,format=yuv420p" -an "${encode[@]}" "$part"
+    # The screen recorder writes a frame only when the screen changes, so
+    # a still screen ends the recording early: the last frame is held to
+    # fill the duration asked.
+    clip_length=()
+    hold="null"
+    if [ -n "$c" ]; then
+      clip_length=(-t "$c")
+      hold="tpad=stop_mode=clone:stop_duration=$c"
+    fi
+    ffmpeg -hide_banner -loglevel error -y -ss "$b" -i "$a" "${clip_length[@]}" \
+      -vf "fps=$fps,$hold,$frame,setsar=1,format=yuv420p" -an "${encode[@]}" "$part"
   else
     ass_header >"$work/title-$index.ass"
     {

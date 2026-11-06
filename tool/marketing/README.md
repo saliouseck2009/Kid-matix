@@ -14,6 +14,9 @@ integration_test/marketing/
 │                            mastery grid of the Profile tab
 ├── duel_test.dart           ~16 s: "Qui joue ?" with three players, a duel
 ├── offline_play_test.dart   ~11 s: a stage played with the airplane mode on
+├── path_scroll_test.dart    ~7 s: the map scrolls from the table of 1 to 5
+├── mascot_growth_test.dart  ~33 s: level 5 reached, the mascot grows, its
+│                            page with the cap on
 └── support/
     ├── marketing_harness.dart   clean start, seed, pauses, gestures
     └── demo_player.dart         the demo player and their progress
@@ -120,6 +123,25 @@ A dedicated device also keeps the takes away from the emulator used for
 development: while that one runs, start the marketing device by hand
 (`emulator -avd KidMatix_Marketing -port 5556`) and pass
 `DEVICE=emulator-5556`.
+
+## Short shots without text
+
+The screen recorder writes a frame only when the screen changes, so a
+recording ends on its last change: a clip that asks for more holds its
+last frame (`tpad` in `edit.sh`). The shots of 2026-11-06:
+
+```bash
+e() { bash tool/marketing/edit.sh --no-end-card "$@"; }
+e --output marketing/videos/plans/03a-parcours.mp4 --clip <path_scroll>.mp4:0.7:6
+e --output marketing/videos/plans/03b-quiz.mp4 --clip <play_stage>.mp4:7.3:6
+e --output marketing/videos/plans/03c-mascotte.mp4 \
+  --clip <mascot_growth>.mp4:27.3:2.8 --clip <mascot_growth>.mp4:31:3.2
+e --output marketing/videos/plans/03d-resultats.mp4 --clip <play_stage>.mp4:28:5
+```
+
+The mascot grows with the level (`MascotRules.stageLevels`: stage 2 at
+level 5); `seedMascotGrower()` puts Awa at 980 XP so one stage takes her
+there, and the celebration shows on the map.
 
 ## What the scenarios guarantee
 

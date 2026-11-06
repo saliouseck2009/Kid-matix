@@ -24,7 +24,10 @@ void main() {
       before: const Duration(seconds: 3),
     );
     await playQuiz(tester);
-    await endScenario(tester, hold: const Duration(seconds: 5));
+    // The results with their stars, once the badge sheets are closed.
+    await waitFor(tester, findLabel('Continuer'));
+    await closeCelebrations(tester);
+    await endScenario(tester, hold: const Duration(seconds: 6));
     // Assert
     expect(find.byType(QuizPlayView), findsNothing);
   });
