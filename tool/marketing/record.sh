@@ -17,6 +17,11 @@
 #   IOS_DEVICE   simulator to boot when none runs (default: first iPhone)
 #   MODE         profile | debug (default: profile on Android; debug on iOS,
 #                where the simulator cannot run a profile build)
+#   AIRPLANE_MODE=1
+#                Android only: films with the airplane mode on and its icon
+#                in the status bar, then puts the mode back as it was. The
+#                demo status bar hides that icon, so this take keeps the
+#                real status bar: real time and battery.
 #
 # Then cut and caption the recording with tool/marketing/edit.sh.
 set -euo pipefail
@@ -37,7 +42,7 @@ readonly device_file="/sdcard/kid_matix_marketing.mp4"
 readonly sdk="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/Library/Android/sdk}}"
 
 usage() {
-  sed -n '2,21p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
   echo
   echo "Scenarios:"
   for file in integration_test/marketing/*_test.dart; do
@@ -53,6 +58,7 @@ mkdir -p "$out_dir" "$log_dir"
 readonly output="$out_dir/$scenario-$platform-$(date +%Y%m%d-%H%M%S).mp4"
 drive_pid=""
 recorder_pid=""
+airplane_before=""
 
 # Waits until the drive log holds $1, for at most $2 seconds; fails when
 # flutter drive ends first.
@@ -105,6 +111,13 @@ android_prepare() {
   for scale in window_animation_scale transition_animation_scale animator_duration_scale; do
     "$adb" -s "$serial" shell settings put global "$scale" 1
   done
+  if [ "${AIRPLANE_MODE:-0}" = "1" ]; then
+    airplane_before="$("$adb" -s "$serial" shell settings get global airplane_mode_on | tr -d '\r')"
+    "$adb" -s "$serial" shell cmd connectivity airplane-mode enable
+    # The icon only shows on the real status bar.
+    sleep 2
+    return
+  fi
   # Demo status bar: 9:41, full battery, full signal, no notification.
   "$adb" -s "$serial" shell settings put global sysui_demo_allowed 1
   demo_broadcast -e command enter
@@ -116,6 +129,12 @@ android_prepare() {
 }
 
 android_restore() {
+  if [ "${AIRPLANE_MODE:-0}" = "1" ]; then
+    if [ "${airplane_before:-1}" != "1" ]; then
+      "$adb" -s "$serial" shell cmd connectivity airplane-mode disable || true
+    fi
+    return
+  fi
   demo_broadcast -e command exit || true
 }
 

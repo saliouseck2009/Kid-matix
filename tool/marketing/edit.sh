@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Turns a raw screen recording of tool/marketing/record.sh into a vertical
+# Turns raw screen recordings of tool/marketing/record.sh into a vertical
 # video ready for TikTok, Reels or Shorts: 1080x1920, 30 frames per second,
-# H.264 MP4, on-screen texts, and a 3-second end card. No sound: add the
-# music in the app you publish with.
+# H.264 MP4, on-screen texts, title cards and a 3-second end card. No
+# sound: add the music in the app you publish with.
 #
 # Usage, from anywhere:
 #   bash tool/marketing/edit.sh --input marketing/videos/raw/<file>.mp4 \
@@ -11,15 +11,27 @@
 #     --caption "0-4|Apprends tes *tables*" \
 #     --caption "4-10|en *jouant* !"
 #
+#   bash tool/marketing/edit.sh --output marketing/videos/<name>.mp4 \
+#     --title "1|Les erreurs reviennent au bon moment" \
+#     --clip marketing/videos/raw/<take-1>.mp4:3:12 \
+#     --title "2|Plusieurs enfants, un seul téléphone" \
+#     --clip marketing/videos/raw/<take-2>.mp4 \
+#     --caption "2-6|Une *erreur* ? Elle revient."
+#
 # Options:
-#   --input FILE       raw recording (required)
-#   --output FILE      video to write (required)
-#   --start SECONDS    where the clip starts in the recording (default 0)
-#   --duration SECONDS length of the clip, end card excluded (default: all)
+#   --input FILE       the one raw recording (same as a single --clip)
+#   --start SECONDS    where the clip of --input starts (default 0)
+#   --duration SECONDS length of the clip of --input (default: all)
+#   --clip FILE[:START[:DURATION]]
+#                      a clip of a recording; repeat the option to chain
+#                      clips, in order with the title cards
+#   --title "NUMBER|TEXT"
+#                      a 2-second card: the number in big, then the text
 #   --caption "FROM-TO|TEXT"
-#                      text shown from FROM to TO, in seconds of the clip,
-#                      white on a violet banner; *word* is yellow; \n starts
-#                      a second line. Repeat the option for more texts.
+#                      text shown from FROM to TO, in seconds of the
+#                      finished video (end card excluded), white on a
+#                      violet banner; *word* is yellow; \n starts a second
+#                      line. Repeat the option for more texts.
 #   --caption-y PIXELS top of the banner (default 150, under the TikTok
 #                      header)
 #   --fit pad|crop     pad (default): the whole screen, violet bars on the
@@ -41,12 +53,14 @@ readonly font_dir="$root/assets/fonts"
 readonly font_name="Fredoka Light"
 readonly logo="$root/tool/icon/out/icon.png"
 readonly end_card_seconds=3
+readonly title_card_seconds=2
 readonly end_title="Kid Matix"
 readonly end_line="Gratuit · sans pub · sans Internet"
 readonly end_stores="Android et iPhone"
 readonly caption_font_size=68
 readonly caption_line_height=92
 readonly caption_padding=44
+readonly encode=(-c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -r "$fps")
 
 input=""
 output=""
@@ -56,9 +70,12 @@ fit="pad"
 caption_y=150
 has_end_card=true
 captions=()
+# The segments of the video, in order: "clip|FILE|START|DURATION" or
+# "title|NUMBER|TEXT".
+segments=()
 
 usage() {
-  sed -n '2,27p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'
   exit 2
 }
 
@@ -68,6 +85,12 @@ while [ $# -gt 0 ]; do
     --output) output="$2"; shift 2 ;;
     --start) start="$2"; shift 2 ;;
     --duration) duration="$2"; shift 2 ;;
+    --clip)
+      IFS=: read -r file from length <<<"$2"
+      segments+=("clip|$file|${from:-0}|${length:-}")
+      shift 2
+      ;;
+    --title) segments+=("title|${2%%|*}|${2#*|}"); shift 2 ;;
     --caption) captions+=("$2"); shift 2 ;;
     --caption-y) caption_y="$2"; shift 2 ;;
     --fit) fit="$2"; shift 2 ;;
@@ -75,8 +98,8 @@ while [ $# -gt 0 ]; do
     *) usage ;;
   esac
 done
-[ -n "$input" ] && [ -n "$output" ] || usage
-[ -f "$input" ] || { echo "No such recording: $input" >&2; exit 1; }
+[ -z "$input" ] || segments+=("clip|$input|$start|$duration")
+[ -n "$output" ] && [ "${#segments[@]}" -gt 0 ] || usage
 case "$fit" in pad | crop) ;; *) usage ;; esac
 
 if ! command -v ffmpeg >/dev/null 2>&1; then
@@ -129,15 +152,56 @@ ass_line() {
     "$(ass_time "$1")" "$(ass_time "$2")" "$4" "$5" "${6:-}" "$text"
 }
 
-# ---------------------------------------------------------------- Clip
+# A card of $1 seconds on the violet background with the ASS file $2,
+# written to $3.
+render_card() {
+  ffmpeg -hide_banner -loglevel error -y \
+    -f lavfi -i "color=c=0x$violet:s=${width}x$height:r=$fps:d=$1" \
+    -vf "ass=$2:fontsdir=$font_dir,fade=t=in:st=0:d=0.3,setsar=1,format=yuv420p" \
+    "${encode[@]}" "$3"
+}
+
+# Length in seconds of the video $1.
+duration_of() {
+  ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$1"
+}
+
+# ------------------------------------------------------------ Segments
 
 if [ "$fit" = "pad" ]; then
   frame="scale=$width:$height:force_original_aspect_ratio=decrease:flags=lanczos,pad=$width:$height:(ow-iw)/2:(oh-ih)/2:color=0x$violet"
 else
   frame="scale=$width:$height:force_original_aspect_ratio=increase:flags=lanczos,crop=$width:$height"
 fi
-clip_filter="fps=$fps,$frame,setsar=1"
 
+index=0
+: >"$work/segments.txt"
+for segment in "${segments[@]}"; do
+  index=$((index + 1))
+  part="$work/segment-$index.mp4"
+  IFS='|' read -r kind a b c <<<"$segment"
+  if [ "$kind" = "clip" ]; then
+    [ -f "$a" ] || { echo "No such recording: $a" >&2; exit 1; }
+    clip_time=(-ss "$b")
+    [ -z "$c" ] || clip_time+=(-t "$c")
+    ffmpeg -hide_banner -loglevel error -y "${clip_time[@]}" -i "$a" \
+      -vf "fps=$fps,$frame,setsar=1,format=yuv420p" -an "${encode[@]}" "$part"
+  else
+    ass_header >"$work/title-$index.ass"
+    {
+      ass_line 0 "$title_card_seconds" "$a" 540 760 '\fs360'
+      ass_line 0 "$title_card_seconds" "$b" 540 1080 '\fs76'
+    } >>"$work/title-$index.ass"
+    render_card "$title_card_seconds" "$work/title-$index.ass" "$part"
+  fi
+  echo "file '$part'" >>"$work/segments.txt"
+done
+ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i "$work/segments.txt" \
+  -c copy "$work/body.mp4"
+
+# ------------------------------------------------------------ Captions
+
+body_filter="null"
 if [ "${#captions[@]}" -gt 0 ]; then
   ass_header >"$work/captions.ass"
   for caption in "${captions[@]}"; do
@@ -147,15 +211,12 @@ if [ "${#captions[@]}" -gt 0 ]; then
     to="${range#*-}"
     lines="$(printf '%s' "$text" | awk -F'\\\\n' '{ print NF }')"
     banner_height=$((caption_padding * 2 + caption_line_height * lines))
-    clip_filter="$clip_filter,drawbox=x=0:y=$caption_y:w=$width:h=$banner_height:color=0x$violet:t=fill:enable='between(t,$from,$to)'"
+    body_filter="$body_filter,drawbox=x=0:y=$caption_y:w=$width:h=$banner_height:color=0x$violet:t=fill:enable='between(t,$from,$to)'"
     ass_line "$from" "$to" "$text" $((width / 2)) $((caption_y + banner_height / 2)) \
       >>"$work/captions.ass"
   done
-  clip_filter="$clip_filter,ass=$work/captions.ass:fontsdir=$font_dir"
+  body_filter="$body_filter,ass=$work/captions.ass:fontsdir=$font_dir"
 fi
-
-clip_time=(-ss "$start")
-[ -z "$duration" ] || clip_time+=(-t "$duration")
 
 # ------------------------------------------------------------ End card
 
@@ -167,23 +228,19 @@ if [ "$has_end_card" = true ]; then
     ass_line 0 "$end_card_seconds" "*$end_stores*" 540 1390 '\fs58'
   } >>"$work/end.ass"
   ffmpeg -hide_banner -loglevel error -y \
-    "${clip_time[@]}" -i "$input" \
+    -i "$work/body.mp4" \
     -f lavfi -i "color=c=0x$violet:s=${width}x$height:r=$fps:d=$end_card_seconds" \
     -loop 1 -t "$end_card_seconds" -i "$logo" \
     -filter_complex "
-      [0:v]$clip_filter,format=yuv420p[clip];
+      [0:v]$body_filter,format=yuv420p[body];
       [2:v]scale=560:560:flags=lanczos[logo];
       [1:v][logo]overlay=(W-w)/2:440,ass=$work/end.ass:fontsdir=$font_dir,
         fade=t=in:st=0:d=0.3,fps=$fps,setsar=1,format=yuv420p[end];
-      [clip][end]concat=n=2:v=1:a=0[out]" \
-    -map "[out]" -an -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p \
-    -r "$fps" -movflags +faststart "$output"
+      [body][end]concat=n=2:v=1:a=0[out]" \
+    -map "[out]" -an "${encode[@]}" -movflags +faststart "$output"
 else
-  ffmpeg -hide_banner -loglevel error -y \
-    "${clip_time[@]}" -i "$input" \
-    -vf "$clip_filter,format=yuv420p" \
-    -an -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p \
-    -r "$fps" -movflags +faststart "$output"
+  ffmpeg -hide_banner -loglevel error -y -i "$work/body.mp4" \
+    -vf "$body_filter,format=yuv420p" -an "${encode[@]}" -movflags +faststart "$output"
 fi
 
 echo "Video: $output"

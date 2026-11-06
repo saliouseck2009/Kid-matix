@@ -2,6 +2,7 @@
 // "Awa" is the placeholder nickname of the mockups: no real child.
 
 import 'package:kid_matix/core/di/injection_container.dart';
+import 'package:kid_matix/core/services/profile_session_service.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_avatar.dart';
 import 'package:kid_matix/features/profile/domain/entities/profile_color.dart';
@@ -15,6 +16,14 @@ import '../../../test/helpers/data_state_test_extension.dart';
 
 /// Nickname of the demo player.
 const String demoNickname = 'Awa';
+
+/// The other players of the phone in the duel video, with their avatar
+/// and color. Placeholder names, no real child.
+const List<(String, ProfileAvatar, ProfileColor)> demoFriends =
+    <(String, ProfileAvatar, ProfileColor)>[
+      ('Moussa', ProfileAvatar.avatar2, ProfileColor.green),
+      ('Lina', ProfileAvatar.avatar9, ProfileColor.red),
+    ];
 
 /// Tables whose five stages are won, boss included: they wear a crown.
 /// The badges such a player holds are written too, so a video shows only
@@ -75,6 +84,23 @@ Future<void> seedBossChallenger() async {
 DateTime _yesterdayEvening() {
   final DateTime now = DateTime.now();
   return DateTime(now.year, now.month, now.day - 1, 17);
+}
+
+/// The demo player and two friends, nobody playing: the app goes to
+/// "Qui joue ?" once the session learns about them.
+Future<void> seedThreePlayers() async {
+  await _seedPlayer();
+  for (final (String nickname, ProfileAvatar avatar, ProfileColor color)
+      in demoFriends) {
+    (await sl<CreateProfileUseCase>()(
+      params: CreateProfileParams(
+        nickname: nickname,
+        avatar: avatar,
+        color: color,
+      ),
+    )).requireData;
+  }
+  await sl<ProfileSessionService>().restore();
 }
 
 /// Creates the demo player with the progress above and opens their

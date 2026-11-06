@@ -10,6 +10,10 @@ integration_test/marketing/
 ├── first_launch_test.dart   ~10 s: a child creates the player "Awa"
 ├── play_stage_test.dart     ~35 s: Awa discovers the table of 5
 ├── boss_fight_test.dart     ~32 s: Awa defeats the boss of the table of 5
+├── review_mistake_test.dart ~35 s: 7 × 8 missed, back a little later, the
+│                            mastery grid of the Profile tab
+├── duel_test.dart           ~16 s: "Qui joue ?" with three players, a duel
+├── offline_play_test.dart   ~11 s: a stage played with the airplane mode on
 └── support/
     ├── marketing_harness.dart   clean start, seed, pauses, gestures
     └── demo_player.dart         the demo player and their progress
@@ -46,7 +50,11 @@ Needs the Android SDK (emulator, `adb`) or Xcode, and `ffmpeg` with libass
    one by its serial (`adb devices`) or its simulator UDID.
 2. Locks portrait, sets the animation scales back to 1 and switches the
    status bar to demo mode: 9:41, full battery, full signal, no
-   notification. The status bar is restored at the end.
+   notification. The status bar is restored at the end. With
+   `AIRPLANE_MODE=1` (Android only) the take runs with the airplane mode
+   on and its icon in the status bar; the demo status bar hides that icon,
+   so this take keeps the real one (real time and battery). The mode is
+   put back as it was at the end.
 3. Runs the scenario with `flutter drive`, in profile mode on Android. The
    iOS simulator cannot run a profile build, so iOS uses a debug build
    (`MODE=debug|profile` overrides the choice).
@@ -70,12 +78,21 @@ build also replaces an installed copy of the app.
 
 | Option | Effect |
 | --- | --- |
-| `--start S` | Start of the clip in the recording, in seconds (default 0) |
-| `--duration S` | Length of the clip, end card excluded (default: all) |
+| `--start S` | Start of the clip of `--input` in the recording, in seconds (default 0) |
+| `--duration S` | Length of the clip of `--input` (default: all) |
+| `--clip FILE[:START[:DURATION]]` | A clip of a recording; repeat it to chain clips, in order with the title cards. `--input` is one `--clip` |
+| `--title "N\|TEXT"` | A 2-second violet card: `N` in big, then the text |
 | `--caption "FROM-TO\|TEXT"` | Text from `FROM` to `TO` seconds of the clip. `*word*` is yellow, `\n` starts a second line. Repeatable |
 | `--caption-y PX` | Top of the banner (default 150, below the TikTok header) |
 | `--fit pad\|crop` | `pad` (default) keeps the whole screen with violet side bars; `crop` fills the frame and cuts the top and bottom |
 | `--no-end-card` | Leaves the end card out |
+
+Captions are timed on the finished video (title cards included, end card
+excluded). A contact sheet with timestamps helps to place them:
+
+```bash
+ffmpeg -i <raw>.mp4 -vf "fps=1,scale=150:-1,drawtext=text='%{pts\:hms}':fontsize=24:fontcolor=white:box=1:boxcolor=black,tile=10x4" -frames:v 1 sheet.png
+```
 
 Output: 1080x1920, 30 frames per second, H.264 (`yuv420p`, `faststart`),
 no audio track — the music is added in the publishing app. Texts use
@@ -152,11 +169,31 @@ bash tool/marketing/edit.sh --input marketing/videos/raw/boss_fight-<date>.mp4 \
 ```
 
 The caption times above fit the draw of `_randomSeed`; another seed draws
-other formats and shifts the moments. Read them from a contact sheet:
+other formats and shifts the moments.
+
+## The "three things" video
+
+Three takes, cut and chained with title cards:
 
 ```bash
-ffmpeg -i <raw>.mp4 -vf "fps=1,scale=150:-1,drawtext=text='%{pts\:hms}':fontsize=24:fontcolor=white:box=1:boxcolor=black,tile=10x4" -frames:v 1 sheet.png
+AVD=KidMatix_Marketing bash tool/marketing/record.sh android review_mistake
+AVD=KidMatix_Marketing bash tool/marketing/record.sh android duel
+AIRPLANE_MODE=1 AVD=KidMatix_Marketing bash tool/marketing/record.sh android offline_play
+bash tool/marketing/edit.sh --output marketing/videos/02-trois-choses.mp4 \
+  --title "1|Les erreurs reviennent au bon moment" \
+  --clip <review_mistake>.mp4:5.9:6.6 --clip <review_mistake>.mp4:30:3 \
+  --title "2|Plusieurs enfants, un seul téléphone" \
+  --clip <duel>.mp4:1.5:3 --clip <duel>.mp4:8.5:7.5 \
+  --title "3|Ça marche sans Internet" \
+  --clip <offline_play>.mp4:1.5:9 \
+  --caption "3-6|Une *erreur* ? Elle *revient* un peu plus tard" \
+  --caption "26.8-29.8|Mode avion : tout marche *sans Internet*"
 ```
+
+The clip times fit the takes of 2026-11-06; read new ones from a contact
+sheet. In `review_mistake`, 7 × 8 is missed when it comes as a question of
+its own (`_randomSeed` picks such a draw); the app brings a missed fact
+back two questions later (`SubmitAnswerUseCase.retryDelay`).
 
 Known limits:
 

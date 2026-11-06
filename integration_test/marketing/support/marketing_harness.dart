@@ -17,6 +17,8 @@ import 'package:kid_matix/core/services/random_source.dart';
 import 'package:kid_matix/core/services/seeded_random_source.dart';
 import 'package:kid_matix/core/storage/app_database.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
+import 'package:kid_matix/core/widgets/app_tab_bar.dart';
+import 'package:kid_matix/core/widgets/app_tab_item.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_bloc.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
@@ -27,6 +29,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/multiple_choice_ans
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_answer_button.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_play_view.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/true_false_answers.dart';
+import 'package:kid_matix/features/reward/presentation/widgets/reward_celebration.dart';
 import 'package:kid_matix/features/setting/data/datasources/language_local_data_source_impl.dart';
 import 'package:kid_matix/features/setting/domain/services/sound_player.dart';
 import 'package:kid_matix/features/setting/domain/services/vibrator.dart';
@@ -124,10 +127,15 @@ Future<void> _printMarker(WidgetTester tester, String marker) async {
 }
 
 /// A player selected from the creation screen is offered the placement
-/// test; a seeded player skips it before the recording starts.
+/// test; a seeded player skips it before the recording starts. Nothing
+/// to skip when the seed selects nobody.
 Future<void> _skipPlacementOffer(WidgetTester tester) async {
   final Finder skip = findLabel('Passer');
-  await waitFor(tester, skip);
+  final DateTime end = DateTime.now().add(const Duration(seconds: 5));
+  while (skip.evaluate().isEmpty) {
+    if (DateTime.now().isAfter(end)) return;
+    await tester.pump(_frame);
+  }
   await tester.tap(skip);
   while (skip.evaluate().isNotEmpty) {
     await tester.pump(_frame);
@@ -252,6 +260,52 @@ Future<void> pressIconButton(
   await tester.pump(_frame);
 }
 
+/// Closes the badge sheets shown over the results, one by one, after a
+/// pause to read them. The sheets follow one another through route
+/// transitions, so the wait goes on until none has shown for a while.
+Future<void> closeCelebrations(WidgetTester tester) async {
+  const Duration readTime = Duration(milliseconds: 1200);
+  DateTime lastSeen = DateTime.now();
+  while (DateTime.now().difference(lastSeen) < const Duration(seconds: 2)) {
+    final Element? element = _currentSheet(tester);
+    if (element == null) {
+      await pause(tester, const Duration(milliseconds: 100));
+      continue;
+    }
+    lastSeen = DateTime.now();
+    await pause(tester, readTime);
+    // A tap no longer reaches the sheet (see pressButton): close it as
+    // its own tap would.
+    Navigator.of(element).pop();
+    await pause(tester, gesturePause);
+  }
+}
+
+/// The sheet on top, or `null` while none is shown or the last one is
+/// still fading out.
+Element? _currentSheet(WidgetTester tester) {
+  for (final Element element in find.byType(RewardCelebration).evaluate()) {
+    if (ModalRoute.of(element)?.isCurrent ?? false) return element;
+  }
+  return null;
+}
+
+/// Selects the tab labelled [text] from code, as [pressButton] does.
+Future<void> pressTab(
+  WidgetTester tester,
+  String text, {
+  Duration before = gesturePause,
+}) async {
+  final Finder bar = find.byType(AppTabBar);
+  await waitFor(tester, bar);
+  await pause(tester, before);
+  final AppTabBar tabBar = tester.widget<AppTabBar>(bar.first);
+  tabBar.onTabSelected(
+    tabBar.items.indexWhere((AppTabItem item) => item.label == text),
+  );
+  await tester.pump(_frame);
+}
+
 /// Writes [text] in [field] one letter at a time.
 Future<void> typeSlowly(
   WidgetTester tester,
@@ -266,23 +320,38 @@ Future<void> typeSlowly(
   }
 }
 
-/// Answers every question of the quiz on screen with the right answer,
-/// after [answerPause] each; returns once the quiz has left the screen.
-/// [maxQuestions] stops earlier, for a short clip.
-Future<void> playQuiz(WidgetTester tester, {int? maxQuestions}) async {
+/// Answers every question of the quiz on screen after [answerPause],
+/// right unless [answerRight] says otherwise; returns once the quiz has
+/// left the screen. [maxQuestions] stops earlier, for a short clip.
+Future<void> playQuiz(
+  WidgetTester tester, {
+  int? maxQuestions,
+  bool Function(QuizAsking state)? answerRight,
+}) async {
   await waitFor(tester, find.byType(QuizPlayView));
   int answered = 0;
   while (find.byType(QuizPlayView).evaluate().isNotEmpty) {
     if (maxQuestions != null && answered >= maxQuestions) return;
-    final QuizState state = BlocProvider.of<QuizBloc>(
-      tester.element(find.byType(QuizPlayView)),
-    ).state;
+    final QuizState? state = _quizState(tester);
     if (findLabel(_continueLabel).evaluate().isNotEmpty) {
       await tapText(tester, _continueLabel);
-    } else if (state is QuizAsking && await _answer(tester, state)) {
+    } else if (state is QuizAsking && state.elapsed >= answerPause) {
+      final bool isRight = answerRight?.call(state) ?? true;
+      // ignore: avoid_print
+      print(
+        'MARKETING:QUESTION ${state.turn.question.questionTypeId} '
+        '${state.turn.question.itemKey} ${isRight ? 'right' : 'wrong'}',
+      );
+      await _answerQuestion(tester, state, isRight: isRight);
       answered++;
+      final int before = state.run.answers.length;
+      while (!_isNextQuestion(_quizState(tester), before) &&
+          find.byType(QuizPlayView).evaluate().isNotEmpty &&
+          findLabel(_continueLabel).evaluate().isEmpty) {
+        await tester.pump(_frame);
+      }
     }
-    await pause(tester, const Duration(milliseconds: 300));
+    await tester.pump(_frame);
   }
 }
 
@@ -440,39 +509,6 @@ Future<void> _matchPairs(WidgetTester tester, {required bool isRight}) async {
 
 const String _continueLabel = 'Continuer';
 const String _validateLabel = 'Valider';
-
-/// Gives the right answer of the question of [state]; returns `false`
-/// when the question is not ready to be answered yet.
-Future<bool> _answer(WidgetTester tester, QuizAsking state) async {
-  final Answer expected = state.turn.question.expectedAnswer;
-  if (expected is! NumberAnswer) {
-    fail('The marketing scenarios only answer number questions.');
-  }
-  final Finder choices = find.byType(MultipleChoiceAnswers);
-  final Finder keypad = find.byType(AnswerKeypad);
-  if (choices.evaluate().isNotEmpty) {
-    final Finder right = find.descendant(
-      of: choices,
-      matching: find.text('${expected.value}'),
-    );
-    if (right.evaluate().isEmpty) return false;
-    await pause(tester, answerPause);
-    await tester.tap(right.first);
-    return true;
-  }
-  if (keypad.evaluate().isEmpty) return false;
-  await pause(tester, answerPause);
-  for (final String digit in '${expected.value}'.split('')) {
-    await tester.tap(
-      find.descendant(of: keypad, matching: find.text(digit)).first,
-    );
-    await pause(tester, const Duration(milliseconds: 250));
-  }
-  await tester.tap(
-    find.descendant(of: keypad, matching: find.text(_validateLabel)),
-  );
-  return true;
-}
 
 /// Empties the database and the preferences, so each take starts from the
 /// same phone.
