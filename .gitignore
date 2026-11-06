@@ -49,3 +49,6 @@ app.*.map.json
 
 # Output of tool/check.sh
 tool/logs/
+
+# Marketing videos made by tool/marketing/
+marketing/videos/
