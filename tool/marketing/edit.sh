@@ -36,12 +36,17 @@
 #                      header)
 #   --fit pad|crop     pad (default): the whole screen, violet bars on the
 #                      sides; crop: fill the frame, top and bottom cut
+#   --format vertical|square
+#                      vertical (default): 1080x1920; square: 1080x1080,
+#                      the phone screen centered on the violet background
+#                      under a title (LinkedIn, X)
+#   --square-title TEXT
+#                      title at the top of the square format (default
+#                      "Kid Matix · les tables de multiplication en jouant")
 #   --no-end-card      leave the end card out
 set -euo pipefail
 readonly root="$(cd "$(dirname "$0")/../.." && pwd)"
 
-readonly width=1080
-readonly height=1920
 readonly fps=30
 readonly violet="5B3DF5"
 # ASS colors are written blue-green-red.
@@ -67,7 +72,9 @@ output=""
 start="0"
 duration=""
 fit="pad"
-caption_y=150
+format="vertical"
+caption_y=""
+square_title="Kid Matix · les tables de multiplication en jouant"
 has_end_card=true
 captions=()
 # The segments of the video, in order: "clip|FILE|START|DURATION" or
@@ -75,7 +82,7 @@ captions=()
 segments=()
 
 usage() {
-  sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,47p' "$0" | sed 's/^# \{0,1\}//'
   exit 2
 }
 
@@ -94,6 +101,8 @@ while [ $# -gt 0 ]; do
     --caption) captions+=("$2"); shift 2 ;;
     --caption-y) caption_y="$2"; shift 2 ;;
     --fit) fit="$2"; shift 2 ;;
+    --format) format="$2"; shift 2 ;;
+    --square-title) square_title="$2"; shift 2 ;;
     --no-end-card) has_end_card=false; shift ;;
     *) usage ;;
   esac
@@ -101,6 +110,29 @@ done
 [ -z "$input" ] || segments+=("clip|$input|$start|$duration")
 [ -n "$output" ] && [ "${#segments[@]}" -gt 0 ] || usage
 case "$fit" in pad | crop) ;; *) usage ;; esac
+
+# The geometry of each format: the frame, where the phone screen goes,
+# the banner, the cards.
+case "$format" in
+  vertical)
+    width=1080; height=1920
+    screen_height=1920; screen_top=0
+    caption_y="${caption_y:-150}"
+    title_number_y=760; title_number_size=360; title_text_y=1080; title_text_size=76
+    logo_size=560; logo_y=440; end_title_y=1130; end_title_size=130
+    end_line_y=1290; end_stores_y=1390; end_line_size=58
+    ;;
+  square)
+    width=1080; height=1080
+    screen_height=840; screen_top=170
+    caption_y="${caption_y:-880}"
+    title_number_y=400; title_number_size=300; title_text_y=680; title_text_size=60
+    logo_size=380; logo_y=120; end_title_y=610; end_title_size=96
+    end_line_y=720; end_stores_y=800; end_line_size=46
+    ;;
+  *) usage ;;
+esac
+readonly width height
 
 if ! command -v ffmpeg >/dev/null 2>&1; then
   echo "ffmpeg is missing; installing it with Homebrew..."
@@ -169,9 +201,9 @@ duration_of() {
 # ------------------------------------------------------------ Segments
 
 if [ "$fit" = "pad" ]; then
-  frame="scale=$width:$height:force_original_aspect_ratio=decrease:flags=lanczos,pad=$width:$height:(ow-iw)/2:(oh-ih)/2:color=0x$violet"
+  frame="scale=$width:$screen_height:force_original_aspect_ratio=decrease:flags=lanczos,pad=$width:$height:(ow-iw)/2:$screen_top+($screen_height-ih)/2:color=0x$violet"
 else
-  frame="scale=$width:$height:force_original_aspect_ratio=increase:flags=lanczos,crop=$width:$height"
+  frame="scale=$width:$screen_height:force_original_aspect_ratio=increase:flags=lanczos,crop=$width:$screen_height,pad=$width:$height:0:$screen_top:color=0x$violet"
 fi
 
 index=0
@@ -196,8 +228,8 @@ for segment in "${segments[@]}"; do
   else
     ass_header >"$work/title-$index.ass"
     {
-      ass_line 0 "$title_card_seconds" "$a" 540 760 '\fs360'
-      ass_line 0 "$title_card_seconds" "$b" 540 1080 '\fs76'
+      ass_line 0 "$title_card_seconds" "$a" 540 "$title_number_y" "\\fs$title_number_size"
+      ass_line 0 "$title_card_seconds" "$b" 540 "$title_text_y" "\\fs$title_text_size"
     } >>"$work/title-$index.ass"
     render_card "$title_card_seconds" "$work/title-$index.ass" "$part"
   fi
@@ -209,30 +241,38 @@ ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i "$work/segments.txt"
 # ------------------------------------------------------------ Captions
 
 body_filter="null"
-if [ "${#captions[@]}" -gt 0 ]; then
-  ass_header >"$work/captions.ass"
-  for caption in "${captions[@]}"; do
-    range="${caption%%|*}"
-    text="${caption#*|}"
-    from="${range%-*}"
-    to="${range#*-}"
-    lines="$(printf '%s' "$text" | awk -F'\\\\n' '{ print NF }')"
-    banner_height=$((caption_padding * 2 + caption_line_height * lines))
-    body_filter="$body_filter,drawbox=x=0:y=$caption_y:w=$width:h=$banner_height:color=0x$violet:t=fill:enable='between(t,$from,$to)'"
-    ass_line "$from" "$to" "$text" $((width / 2)) $((caption_y + banner_height / 2)) \
-      >>"$work/captions.ass"
-  done
-  body_filter="$body_filter,ass=$work/captions.ass:fontsdir=$font_dir"
+ass_header >"$work/captions.ass"
+has_texts=false
+if [ "$format" = "square" ]; then
+  body_length="$(duration_of "$work/body.mp4")"
+  ass_line 0 "$body_length" "$square_title" 540 $((screen_top / 2)) '\fs52' \
+    >>"$work/captions.ass"
+  has_texts=true
 fi
+for caption in "${captions[@]+"${captions[@]}"}"; do
+  range="${caption%%|*}"
+  text="${caption#*|}"
+  from="${range%-*}"
+  to="${range#*-}"
+  lines="$(printf '%s' "$text" | awk -F'\\\\n' '{ print NF }')"
+  banner_height=$((caption_padding * 2 + caption_line_height * lines))
+  body_filter="$body_filter,drawbox=x=0:y=$caption_y:w=$width:h=$banner_height:color=0x$violet:t=fill:enable='between(t,$from,$to)'"
+  ass_line "$from" "$to" "$text" $((width / 2)) $((caption_y + banner_height / 2)) \
+    >>"$work/captions.ass"
+  has_texts=true
+done
+# The texts come last, over the banners.
+[ "$has_texts" = false ] ||
+  body_filter="$body_filter,ass=$work/captions.ass:fontsdir=$font_dir"
 
 # ------------------------------------------------------------ End card
 
 if [ "$has_end_card" = true ]; then
   ass_header >"$work/end.ass"
   {
-    ass_line 0 "$end_card_seconds" "$end_title" 540 1130 '\fs130'
-    ass_line 0 "$end_card_seconds" "$end_line" 540 1290 '\fs58'
-    ass_line 0 "$end_card_seconds" "*$end_stores*" 540 1390 '\fs58'
+    ass_line 0 "$end_card_seconds" "$end_title" 540 "$end_title_y" "\\fs$end_title_size"
+    ass_line 0 "$end_card_seconds" "$end_line" 540 "$end_line_y" "\\fs$end_line_size"
+    ass_line 0 "$end_card_seconds" "*$end_stores*" 540 "$end_stores_y" "\\fs$end_line_size"
   } >>"$work/end.ass"
   ffmpeg -hide_banner -loglevel error -y \
     -i "$work/body.mp4" \
@@ -240,8 +280,8 @@ if [ "$has_end_card" = true ]; then
     -loop 1 -t "$end_card_seconds" -i "$logo" \
     -filter_complex "
       [0:v]$body_filter,format=yuv420p[body];
-      [2:v]scale=560:560:flags=lanczos[logo];
-      [1:v][logo]overlay=(W-w)/2:440,ass=$work/end.ass:fontsdir=$font_dir,
+      [2:v]scale=$logo_size:$logo_size:flags=lanczos[logo];
+      [1:v][logo]overlay=(W-w)/2:$logo_y,ass=$work/end.ass:fontsdir=$font_dir,
         fade=t=in:st=0:d=0.3,fps=$fps,setsar=1,format=yuv420p[end];
       [body][end]concat=n=2:v=1:a=0[out]" \
     -map "[out]" -an "${encode[@]}" -movflags +faststart "$output"

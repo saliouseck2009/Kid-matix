@@ -17,6 +17,7 @@ integration_test/marketing/
 ├── path_scroll_test.dart    ~7 s: the map scrolls from the table of 1 to 5
 ├── mascot_growth_test.dart  ~33 s: level 5 reached, the mascot grows, its
 │                            page with the cap on
+├── full_demo_test.dart      ~50 s: first launch to the first results
 └── support/
     ├── marketing_harness.dart   clean start, seed, pauses, gestures
     └── demo_player.dart         the demo player and their progress
@@ -88,6 +89,8 @@ build also replaces an installed copy of the app.
 | `--caption "FROM-TO\|TEXT"` | Text from `FROM` to `TO` seconds of the clip. `*word*` is yellow, `\n` starts a second line. Repeatable |
 | `--caption-y PX` | Top of the banner (default 150, below the TikTok header) |
 | `--fit pad\|crop` | `pad` (default) keeps the whole screen with violet side bars; `crop` fills the frame and cuts the top and bottom |
+| `--format vertical\|square` | `vertical` (default): 1080x1920. `square`: 1080x1080, the phone screen centered on the violet background under a title, the banner at the bottom (LinkedIn, X) |
+| `--square-title TEXT` | Title of the square format (default "Kid Matix · les tables de multiplication en jouant") |
 | `--no-end-card` | Leaves the end card out |
 
 Captions are timed on the finished video (title cards included, end card
@@ -123,6 +126,27 @@ A dedicated device also keeps the takes away from the emulator used for
 development: while that one runs, start the marketing device by hand
 (`emulator -avd KidMatix_Marketing -port 5556`) and pass
 `DEVICE=emulator-5556`.
+
+## The demo video, vertical and square
+
+One take of `full_demo`, cut to keep five questions, exported twice:
+
+```bash
+AVD=KidMatix_Marketing bash tool/marketing/record.sh android full_demo
+C=(--clip <full_demo>.mp4:0.5:29.5 --clip <full_demo>.mp4:36:9.3 \
+   --clip <full_demo>.mp4:45.5:4.5 \
+   --caption "1-6|Crée ton *joueur*" --caption "12-15|Ton *parcours*" \
+   --caption "16.5-20|La table et son *astuce*" \
+   --caption "21.5-26|*Touche* la bonne réponse" \
+   --caption "35-38|Badge *Premier pas* !" \
+   --caption "39.5-42.5|*3 étoiles* et des XP")
+bash tool/marketing/edit.sh --output marketing/videos/04-demo-vertical.mp4 "${C[@]}"
+bash tool/marketing/edit.sh --format square \
+  --output marketing/videos/04-demo-carre.mp4 "${C[@]}"
+```
+
+A new player who skips the placement test starts with the table of 1:
+that is the stage the demo plays.
 
 ## Short shots without text
 
