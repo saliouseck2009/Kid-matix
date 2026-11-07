@@ -63,17 +63,27 @@ const int _reviewInDays = 7;
 const int bossTable = 5;
 
 /// The demo player one fight away from a fourth crown: the first four
-/// stages of the table of [bossTable] are won, its boss is waiting.
-Future<void> seedBossChallenger() async {
+/// stages of the table of [table] are won, its boss is waiting. A table
+/// further down the path than [bossTable] is reached with "Tout
+/// débloquer" on, the setting that opens every table.
+Future<void> seedBossChallenger({int table = bossTable}) async {
   final String playerId = await _seedPlayer();
   final Database database = await sl<AppDatabase>().database;
   final int playedAt = _yesterdayEvening().millisecondsSinceEpoch;
   final Batch batch = database.batch();
+  if (table != bossTable) {
+    batch.update(
+      'profile_settings',
+      <String, Object?>{'is_everything_unlocked': 1},
+      where: 'profile_id = ?',
+      whereArgs: <Object?>[playerId],
+    );
+  }
   for (final String stage in _tableStages.take(_tableStages.length - 1)) {
     batch.insert('stage_progress', <String, Object?>{
       'profile_id': playerId,
       'domain_id': _domainId,
-      'unit_key': 'mul:$bossTable',
+      'unit_key': 'mul:$table',
       'stage': stage,
       'best_stars': _stars,
       'best_score': _lastMultiplier,

@@ -34,6 +34,13 @@ const int _randomSeed = 4;
 /// Tooltip of the arrow from a table back to the map.
 const String _backToPath = 'Retour au parcours';
 
+/// Table of the boss: [bossTable], or the one given on the command line
+/// (`DART_DEFINES=MARKETING_BOSS_TABLE=7 bash tool/marketing/record.sh ...`).
+const int _table = int.fromEnvironment(
+  'MARKETING_BOSS_TABLE',
+  defaultValue: bossTable,
+);
+
 /// Position of the boss fight among the stages of a table, from 0.
 const int _bossStageIndex = 4;
 
@@ -44,12 +51,12 @@ void main() {
     // Arrange: the recording opens on the boss.
     await startApp(
       tester,
-      seed: seedBossChallenger,
+      seed: () => seedBossChallenger(table: _table),
       randomSeed: _randomSeed,
       beforeRecording: () async {
         await tapWhenShown(
           tester,
-          _tableNode(bossTable),
+          _tableNode(_table),
           before: Duration.zero,
         );
         await tapWhenShown(

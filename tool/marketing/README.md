@@ -91,6 +91,8 @@ build also replaces an installed copy of the app.
 | `--fit pad\|crop` | `pad` (default) keeps the whole screen with violet side bars; `crop` fills the frame and cuts the top and bottom |
 | `--format vertical\|square` | `vertical` (default): 1080x1920. `square`: 1080x1080, the phone screen centered on the violet background under a title, the banner at the bottom (LinkedIn, X) |
 | `--square-title TEXT` | Title of the square format (default "Kid Matix · les tables de multiplication en jouant") |
+| `--footer TEXT` | Text on a violet pill at the bottom edge for the whole video (end card excluded), such as the app's name |
+| `--max-size MB` | Re-encodes at a lower bit rate when the file is bigger; WhatsApp takes 16 MB at most |
 | `--no-end-card` | Leaves the end card out |
 
 Captions are timed on the finished video (title cards included, end card
@@ -147,6 +149,26 @@ bash tool/marketing/edit.sh --format square \
 
 A new player who skips the placement test starts with the table of 1:
 that is the stage the demo plays.
+
+## WhatsApp statuses
+
+One sentence each, the app's name at the bottom, no end card, under 16 MB:
+
+```bash
+DART_DEFINES=MARKETING_BOSS_TABLE=7 AVD=KidMatix_Marketing \
+  bash tool/marketing/record.sh android boss_fight
+e() { bash tool/marketing/edit.sh --no-end-card --footer "Kid Matix" --max-size 16 "$@"; }
+e --output marketing/videos/05a-combo.mp4 --clip <play_stage>.mp4:7.3:9.7 \
+  --caption "0.5-9.7|Les tables, c'est un *jeu*"
+e --output marketing/videos/05b-boss.mp4 --clip <boss_fight-7>.mp4:18.5:4 \
+  --clip <boss_fight-7>.mp4:26:3 --caption "0.5-7|Il a battu le *boss* de la table de 7"
+e --output marketing/videos/05c-mascotte.mp4 --clip <mascot_growth>.mp4:26.8:6.2 \
+  --caption "0.5-6.2|Sa *mascotte* grandit avec lui"
+```
+
+`MARKETING_BOSS_TABLE` picks the table of the boss scenario; a table
+further down the path than the demo player's is reached with the "Tout
+débloquer" setting, written by the seed.
 
 ## Short shots without text
 

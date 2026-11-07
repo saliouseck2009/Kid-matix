@@ -43,6 +43,10 @@
 #   --square-title TEXT
 #                      title at the top of the square format (default
 #                      "Kid Matix · les tables de multiplication en jouant")
+#   --footer TEXT      text at the bottom of the screen for the whole
+#                      video, end card excluded, such as the app's name
+#   --max-size MB      re-encode at a lower bit rate when the file is
+#                      bigger (WhatsApp takes 16 MB at most)
 #   --no-end-card      leave the end card out
 set -euo pipefail
 readonly root="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -52,6 +56,7 @@ readonly violet="5B3DF5"
 # ASS colors are written blue-green-red.
 readonly ass_white="HFFFFFF"
 readonly ass_yellow="H31C5FF" # #FFC531
+readonly ass_violet="HF53D5B" # #5B3DF5
 readonly font_dir="$root/assets/fonts"
 # Full name of the instance the variable font opens on: libass only finds
 # the file under that name.
@@ -75,6 +80,8 @@ fit="pad"
 format="vertical"
 caption_y=""
 square_title="Kid Matix · les tables de multiplication en jouant"
+footer=""
+max_size_mb=""
 has_end_card=true
 captions=()
 # The segments of the video, in order: "clip|FILE|START|DURATION" or
@@ -82,7 +89,7 @@ captions=()
 segments=()
 
 usage() {
-  sed -n '2,47p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,51p' "$0" | sed 's/^# \{0,1\}//'
   exit 2
 }
 
@@ -103,6 +110,8 @@ while [ $# -gt 0 ]; do
     --fit) fit="$2"; shift 2 ;;
     --format) format="$2"; shift 2 ;;
     --square-title) square_title="$2"; shift 2 ;;
+    --footer) footer="$2"; shift 2 ;;
+    --max-size) max_size_mb="$2"; shift 2 ;;
     --no-end-card) has_end_card=false; shift ;;
     *) usage ;;
   esac
@@ -168,6 +177,7 @@ ScaledBorderAndShadow: yes
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, OutlineColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Text,$font_name,$caption_font_size,&$ass_white&,&$ass_white&,&H00000000&,0,0,1,2,0,5,40,40,0,1
+Style: Pill,$font_name,$caption_font_size,&$ass_white&,&$ass_violet&,&$ass_violet&,0,0,3,18,0,5,40,40,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Text
@@ -175,13 +185,15 @@ EOF
 }
 
 # One ASS line: text $3 centered on ($4, $5) from $1 to $2 seconds, with
-# the override tags $6. *word* turns yellow, outline included.
+# the override tags $6, in the style $7 (Text, or Pill for white text on
+# a violet pill). *word* turns yellow, outline included.
 ass_line() {
-  local text
+  local text outline="$ass_white"
+  [ "${7:-Text}" != "Pill" ] || outline="$ass_violet"
   text="$(printf '%s' "$3" | sed -E \
-    "s/\*([^*]+)\*/{\\\\c\&$ass_yellow\&\\\\3c\&$ass_yellow\&}\1{\\\\c\&$ass_white\&\\\\3c\&$ass_white\&}/g; s/\\\\n/\\\\N/g")"
-  printf 'Dialogue: 0,%s,%s,Text,{\\an5\\pos(%s,%s)%s}%s\n' \
-    "$(ass_time "$1")" "$(ass_time "$2")" "$4" "$5" "${6:-}" "$text"
+    "s/\*([^*]+)\*/{\\\\c\&$ass_yellow\&\\\\3c\&$ass_yellow\&}\1{\\\\c\&$ass_white\&\\\\3c\&$outline\&}/g; s/\\\\n/\\\\N/g")"
+  printf 'Dialogue: 0,%s,%s,%s,{\\an5\\pos(%s,%s)%s}%s\n' \
+    "$(ass_time "$1")" "$(ass_time "$2")" "${7:-Text}" "$4" "$5" "${6:-}" "$text"
 }
 
 # A card of $1 seconds on the violet background with the ASS file $2,
@@ -249,6 +261,12 @@ if [ "$format" = "square" ]; then
     >>"$work/captions.ass"
   has_texts=true
 fi
+if [ -n "$footer" ]; then
+  body_length="$(duration_of "$work/body.mp4")"
+  ass_line 0 "$body_length" "$footer" 540 $((height - 48)) '\fs46' Pill \
+    >>"$work/captions.ass"
+  has_texts=true
+fi
 for caption in "${captions[@]+"${captions[@]}"}"; do
   range="${caption%%|*}"
   text="${caption#*|}"
@@ -290,7 +308,24 @@ else
     -vf "$body_filter,format=yuv420p" -an "${encode[@]}" -movflags +faststart "$output"
 fi
 
-echo "Video: $output"
+# ------------------------------------------------------------ Size
+
+if [ -n "$max_size_mb" ]; then
+  limit=$((max_size_mb * 1000 * 1000))
+  size="$(stat -f %z "$output")"
+  if [ "$size" -gt "$limit" ]; then
+    # Bits per second that fit, with room for the container.
+    length="$(duration_of "$output")"
+    rate="$(awk -v b="$limit" -v d="$length" 'BEGIN { printf "%d", b * 8 * 0.92 / d }')"
+    echo "The file weighs $size bytes; re-encoding at $rate b/s to stay under $max_size_mb MB..."
+    mv "$output" "$work/big.mp4"
+    ffmpeg -hide_banner -loglevel error -y -i "$work/big.mp4" \
+      -c:v libx264 -preset slow -b:v "$rate" -maxrate "$rate" -bufsize $((rate * 2)) \
+      -pix_fmt yuv420p -an -movflags +faststart "$output"
+  fi
+fi
+
+echo "Video: $output ($(stat -f %z "$output") bytes)"
 ffprobe -v error -select_streams v:0 \
   -show_entries stream=codec_name,width,height,r_frame_rate:format=duration \
   -of default=noprint_wrappers=1 "$output"

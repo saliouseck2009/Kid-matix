@@ -17,6 +17,8 @@
 #   IOS_DEVICE   simulator to boot when none runs (default: first iPhone)
 #   MODE         profile | debug (default: profile on Android; debug on iOS,
 #                where the simulator cannot run a profile build)
+#   DART_DEFINES  values for --dart-define, separated by spaces, read by
+#                the scenario (MARKETING_BOSS_TABLE=7 for the boss video)
 #   AIRPLANE_MODE=1
 #                Android only: films with the airplane mode on and its icon
 #                in the status bar, then puts the mode back as it was. The
@@ -42,7 +44,7 @@ readonly device_file="/sdcard/kid_matix_marketing.mp4"
 readonly sdk="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/Library/Android/sdk}}"
 
 usage() {
-  sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,26p' "$0" | sed 's/^# \{0,1\}//'
   echo
   echo "Scenarios:"
   for file in integration_test/marketing/*_test.dart; do
@@ -232,7 +234,9 @@ echo "Device: $serial ($platform, $mode build)"
 
 echo "Building and starting '$scenario'; output in $drive_log"
 : >"$drive_log"
-flutter drive "--$mode" \
+defines=()
+for define in ${DART_DEFINES:-}; do defines+=("--dart-define=$define"); done
+flutter drive "--$mode" "${defines[@]+"${defines[@]}"}" \
   --driver=tool/marketing/driver.dart \
   --target="$target" \
   -d "$serial" >"$drive_log" 2>&1 &
