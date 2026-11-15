@@ -3273,6 +3273,18 @@ abstract class AppLocalizations {
   /// **'Retour au parcours'**
   String get pathTableBack;
 
+  /// Main button of the results of a stage of the learning path: starts the next stage of the same unit at once ("Next stage"). Two words at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape suivante'**
+  String get pathNextStage;
+
+  /// Second button of the results of a stage, under "Étape suivante": goes back to the unit the stage belongs to ("Back to the path"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au parcours'**
+  String get pathBackToPath;
+
   /// Screen-reader label of a finished table on the map ("Table of 1, done, 3 stars").
   ///
   /// In fr, this message translates to:
@@ -3657,11 +3669,11 @@ abstract class AppLocalizations {
   /// **'Tu passes au niveau supérieur, bravo.'**
   String get rewardLevelUpHint;
 
-  /// Small title above the badge name in its full-screen celebration ("New badge!"). Short, one line.
+  /// Title of the badges a quiz unlocked on the celebration screen: small line above the name of a single badge, or title above the list of several badges, alone or under a new level ("New badge!", "3 new badges!"). One line.
   ///
   /// In fr, this message translates to:
-  /// **'Nouveau badge !'**
-  String get rewardBadgeUnlocked;
+  /// **'{count, plural, =1{Nouveau badge !} other{{count} nouveaux badges !}}'**
+  String rewardBadgesUnlocked(int count);
 
   /// Hint at the bottom of a full-screen celebration: one tap closes it ("Tap the screen to go on"). Imperative, informal tu; also the accessibility label of the dismiss barrier. One line.
   ///

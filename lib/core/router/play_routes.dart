@@ -95,6 +95,7 @@ List<RouteBase> createPlayRoutes({
       builder: (BuildContext context, GoRouterState state) {
         final String sessionId =
             state.pathParameters[AppRoutes.sessionIdParameter]!;
+        final String? profileId = session.activeProfileId;
         return quizPages.buildResultsPage(
           sessionId: sessionId,
           onContinue: (String? sourceKey) => context.go(origins.of(sourceKey)),
@@ -108,6 +109,21 @@ List<RouteBase> createPlayRoutes({
             sessionId: sessionId,
             child: child,
           ),
+          continueOf:
+              (
+                String? sourceKey, {
+                required Widget fallback,
+                required VoidCallback onBack,
+              }) => profileId == null
+              ? null
+              : pathPages.buildNextStageActions(
+                  profileId: profileId,
+                  sourceKey: sourceKey,
+                  fallback: fallback,
+                  onBack: onBack,
+                  onPlay: (StageSource source) =>
+                      playStage(context, pathPages, source),
+                ),
           xpTile: rewardPages.buildSessionXpTile(),
           rewardsCard: rewardPages.buildSessionLevelCard(),
           actionOf: (String? sourceKey, int score) =>

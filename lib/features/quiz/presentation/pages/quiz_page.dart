@@ -17,6 +17,7 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_event.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state_run.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quit_quiz_dialog.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
@@ -141,7 +142,11 @@ class _QuizScaffold extends StatelessWidget {
 
   Future<void> _confirmQuit(BuildContext context) async {
     final QuizBloc bloc = context.read<QuizBloc>();
-    if (await confirmQuitQuiz(context)) bloc.add(const QuizAbandoned());
+    // Nothing is lost before the first answer: no question to ask.
+    final bool hasAnswered = bloc.state.playedRun?.answers.isNotEmpty ?? false;
+    if (!hasAnswered || await confirmQuitQuiz(context)) {
+      bloc.add(const QuizAbandoned());
+    }
   }
 
   @override

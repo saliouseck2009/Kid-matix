@@ -266,11 +266,26 @@ void main() {
       // Assert
       expect(completedSessionId, 'session-1');
     });
-    testWidgets('asks before leaving, then leaves', (
+    testWidgets('leaves at once before the first answer', (
       WidgetTester tester,
     ) async {
       // Arrange
       await pumpQuiz(tester, questionTypeId: QuestionTypeIds.multipleChoice);
+      // Act
+      await tester.tap(find.byTooltip('Quitter le quiz'));
+      await tester.pump();
+      await tester.pump();
+      // Assert: nothing is lost yet, so nothing is asked.
+      expect(find.text('Quitter le quiz ?'), findsNothing);
+      expect(isLeft, isTrue);
+    });
+    testWidgets('asks before leaving once an answer is given, then leaves', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(tester, questionTypeId: QuestionTypeIds.multipleChoice);
+      await tester.tap(find.text('35'));
+      await tester.pumpAndSettle();
       // Act
       await tester.tap(find.byTooltip('Quitter le quiz'));
       await tester.pumpAndSettle();
@@ -286,6 +301,9 @@ void main() {
     ) async {
       // Arrange
       await pumpQuiz(tester, questionTypeId: QuestionTypeIds.multipleChoice);
+      await tester.tap(find.text('35'));
+      await tester.pumpAndSettle();
+      await passRightAnswerPause(tester, ticker);
       // Act
       await tester.tap(find.byTooltip('Quitter le quiz'));
       await tester.pumpAndSettle();

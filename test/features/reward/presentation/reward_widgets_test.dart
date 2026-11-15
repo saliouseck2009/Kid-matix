@@ -10,11 +10,18 @@ import 'package:kid_matix/features/quiz/domain/entities/quiz_session_status.dart
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_header.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_key.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
+import 'package:kid_matix/features/reward/domain/entities/player_level.dart';
+import 'package:kid_matix/features/reward/domain/entities/session_rewards_entity.dart';
+import 'package:kid_matix/features/reward/presentation/widgets/badge_labels.dart';
+import 'package:kid_matix/features/reward/presentation/widgets/reward_celebration.dart';
+import 'package:kid_matix/core/entities/game_feedback.dart';
+import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/features/reward/domain/entities/streak_entity.dart';
 import 'package:kid_matix/features/reward/presentation/reward_pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/pump_localized.dart';
+import '../../../helpers/recording_game_feedback.dart';
 import '../../../helpers/test_quiz_pages.dart';
 import '../../../helpers/test_reward_pages.dart';
 import '../../quiz/helpers/quiz_fixtures.dart';
@@ -112,6 +119,64 @@ void main() {
       );
       expect(find.text('Nouveau badge'), findsOneWidget);
       expect(find.text('Premier pas'), findsOneWidget);
+    });
+    testWidgets('celebrate a new level and two badges on one screen', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      tester.view.physicalSize = const Size(1170, 2532);
+      addTearDown(tester.view.reset);
+      final RecordingGameFeedback feedback = RecordingGameFeedback();
+      await pumpLocalized(
+        tester,
+        Scaffold(
+          body: Builder(
+            builder: (BuildContext context) => TextButton(
+              onPressed: () => showRewardCelebration(
+                context,
+                rewards: SessionRewardsEntity(
+                  xpEarned: 130,
+                  levelBefore: const PlayerLevel(
+                    level: 4,
+                    xpIntoLevel: 90,
+                    xpForNextLevel: 100,
+                  ),
+                  levelAfter: const PlayerLevel(
+                    level: 5,
+                    xpIntoLevel: 20,
+                    xpForNextLevel: 120,
+                  ),
+                  newBadges: const <String>[
+                    BadgeKey.firstStep,
+                    BadgeKey.perfect,
+                  ],
+                ),
+                labels: BadgeLabels(
+                  domains: buildDomainRegistry(),
+                  l10n: context.l10n,
+                ),
+                feedback: feedback,
+              ),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      );
+      // Act
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      // Assert: the level and both badges show together.
+      expect(find.text('Niveau 5\u00a0!'), findsOneWidget);
+      expect(find.text('2 nouveaux badges\u00a0!'), findsOneWidget);
+      expect(find.text('Premier pas'), findsOneWidget);
+      expect(find.text('Tu as terminé ta première étape.'), findsOneWidget);
+      expect(feedback.played, <GameFeedback>[GameFeedback.celebration]);
+      // Act: one tap closes the whole celebration.
+      await tester.tap(find.text("Touche l'écran pour continuer"));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('open'), findsOneWidget);
+      expect(find.text('Premier pas'), findsNothing);
     });
   });
 

@@ -81,7 +81,10 @@ class _PlacementScaffold extends StatelessWidget {
       page.onDone();
       return;
     }
-    if (state is PlacementAsking) {
+    // Nothing is lost before the first answer: no question to ask. A
+    // class assessment always asks: it stays to do.
+    if (state is PlacementAsking &&
+        (page.isAssessment || state.journey.answeredCount > 0)) {
       final bool isConfirmed = await confirmQuitPlacement(
         context,
         isAssessment: page.isAssessment,

@@ -105,6 +105,19 @@ void main() {
     expect(results.saved, isEmpty);
   });
 
+  testWidgets('leaves at once before the first answer', (
+    WidgetTester tester,
+  ) async {
+    // Arrange
+    await startTest(tester);
+    // Act
+    await tester.tap(find.byTooltip('Arrêter le test'));
+    await tester.pumpAndSettle();
+    // Assert: nothing is lost yet, so nothing is asked.
+    expect(find.text('Continuer le test'), findsNothing);
+    expect(doneCount, 1);
+  });
+
   testWidgets('asks the counting question with its drawing', (
     WidgetTester tester,
   ) async {

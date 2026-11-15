@@ -60,8 +60,9 @@ final class QuizPages {
 
   /// Results of the session [sessionId]; [describeSource] names what the
   /// session was played for, the reward slots show what it earned,
-  /// [recordCard] the record it set, [actionOf] a last button and
-  /// [outcomeOf] a screen in place of the results.
+  /// [recordCard] the record it set, [actionOf] a last button,
+  /// [outcomeOf] a screen in place of the results and [continueOf] the
+  /// buttons in place of "Continuer".
   Widget buildResultsPage({
     required String sessionId,
     required ValueChanged<String?> onContinue,
@@ -73,6 +74,7 @@ final class QuizPages {
     Widget? recordCard,
     SessionScoreSlot? actionOf,
     SessionScoreSlot? outcomeOf,
+    SessionContinueSlot? continueOf,
   }) {
     return ResultsPage(
       sessionId: sessionId,
@@ -87,6 +89,7 @@ final class QuizPages {
       recordCard: recordCard,
       actionOf: actionOf,
       outcomeOf: outcomeOf,
+      continueOf: continueOf,
     );
   }
 

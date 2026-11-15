@@ -3092,6 +3092,14 @@
   "@pathTableBack": {
     "description": "Tooltip and screen-reader label of the back arrow of the table detail (\"Back to the learning path\")."
   },
+  "pathNextStage": "Étape suivante",
+  "@pathNextStage": {
+    "description": "Main button of the results of a stage of the learning path: starts the next stage of the same unit at once (\"Next stage\"). Two words at most."
+  },
+  "pathBackToPath": "Retour au parcours",
+  "@pathBackToPath": {
+    "description": "Second button of the results of a stage, under \"Étape suivante\": goes back to the unit the stage belongs to (\"Back to the path\"). Short."
+  },
   "pathTableNodeDone": "{name}, terminée, {stars, plural, =0{aucune étoile} =1{1 étoile} other{{stars} étoiles}}",
   "@pathTableNodeDone": {
     "description": "Screen-reader label of a finished table on the map (\"Table of 1, done, 3 stars\").",
@@ -3580,9 +3588,15 @@
   "@rewardLevelUpHint": {
     "description": "Line under the level-up title (\"You move up a level, well done.\"). Talks to the child."
   },
-  "rewardBadgeUnlocked": "Nouveau badge !",
-  "@rewardBadgeUnlocked": {
-    "description": "Small title above the badge name in its full-screen celebration (\"New badge!\"). Short, one line."
+  "rewardBadgesUnlocked": "{count, plural, =1{Nouveau badge !} other{{count} nouveaux badges !}}",
+  "@rewardBadgesUnlocked": {
+    "description": "Title of the badges a quiz unlocked on the celebration screen: small line above the name of a single badge, or title above the list of several badges, alone or under a new level (\"New badge!\", \"3 new badges!\"). One line.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
   },
   "rewardTapToContinue": "Touche l'écran pour continuer",
   "@rewardTapToContinue": {

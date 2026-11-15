@@ -26,6 +26,7 @@ import 'package:kid_matix/features/learning_path/presentation/pages/placement_te
 import 'package:kid_matix/features/learning_path/presentation/pages/table_detail_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/domain_section.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/next_stage_actions.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_card.dart';
@@ -208,6 +209,36 @@ final class LearningPathPages {
       unit: unit,
       onClose: onClose,
       onPlay: onPlay,
+    );
+  }
+
+  /// What the results of the stage [sourceKey] offer to go on: "Étape
+  /// suivante", started by [onPlay], above "Retour au parcours", which
+  /// calls [onBack]; [fallback] alone when no other stage is open. `null`
+  /// when [sourceKey] is not a stage of a unit.
+  Widget? buildNextStageActions({
+    required String profileId,
+    required String? sourceKey,
+    required Widget fallback,
+    required VoidCallback onBack,
+    required ValueChanged<StageSource> onPlay,
+  }) {
+    final StageSource? source = StageSource.tryParse(sourceKey);
+    if (source == null || source.stage == StageKind.review) return null;
+    final LearningDomain? domain = _domainOf(source.unitKey);
+    if (domain == null) return null;
+    return BlocProvider<LearningPathBloc>(
+      key: ValueKey<String>('next-stage-$profileId-$sourceKey'),
+      create: (_) => LearningPathBloc(
+        params: LearningPathParams(profileId: profileId, domainId: domain.id),
+        useCases: _useCases,
+      )..add(const LearningPathStarted()),
+      child: NextStageActions(
+        played: source,
+        fallback: fallback,
+        onBack: onBack,
+        onPlay: onPlay,
+      ),
     );
   }
 
