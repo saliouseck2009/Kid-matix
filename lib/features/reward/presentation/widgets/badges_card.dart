@@ -6,6 +6,7 @@ import 'package:kid_matix/features/reward/domain/entities/badge_key.dart';
 import 'package:kid_matix/features/reward/domain/entities/badge_unlock_entity.dart';
 import 'package:kid_matix/features/reward/presentation/bloc/reward_value_cubit.dart';
 import 'package:kid_matix/features/reward/presentation/bloc/reward_value_state.dart';
+import 'package:kid_matix/features/reward/presentation/widgets/badge_icons.dart';
 import 'package:kid_matix/features/reward/presentation/widgets/badge_labels.dart';
 
 /// "Mes badges" on the Profile tab: the badges of the launch, earned ones
@@ -84,7 +85,7 @@ class BadgesCard extends StatelessWidget {
                       child: _BadgeTile(
                         name: labels.nameOf(key),
                         hint: labels.hintOf(key),
-                        icon: _iconOf(key),
+                        icon: badgeIconOf(key),
                         isEarned: earned.contains(key),
                       ),
                     ),
@@ -95,19 +96,6 @@ class BadgesCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  static IconData _iconOf(String key) {
-    return switch (key) {
-      BadgeKey.firstStep => Icons.flag_rounded,
-      BadgeKey.perfect => Icons.verified_rounded,
-      BadgeKey.lightning => Icons.bolt_rounded,
-      BadgeKey.sprinter => Icons.timer_rounded,
-      BadgeKey.survivor => Icons.favorite_rounded,
-      BadgeKey.regular => Icons.local_fire_department_rounded,
-      BadgeKey.allFacts => Icons.emoji_events_rounded,
-      _ => Icons.military_tech_rounded,
-    };
   }
 }
 

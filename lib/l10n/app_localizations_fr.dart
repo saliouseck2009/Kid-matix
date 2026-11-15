@@ -2252,6 +2252,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pathTableBack => 'Retour au parcours';
 
   @override
+  String get pathNextStage => 'Étape suivante';
+
+  @override
+  String get pathBackToPath => 'Retour au parcours';
+
+  @override
   String pathTableNodeDone(String name, int stars) {
     String _temp0 = intl.Intl.pluralLogic(
       stars,
@@ -2698,7 +2704,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rewardLevelUpHint => 'Tu passes au niveau supérieur, bravo.';
 
   @override
-  String get rewardBadgeUnlocked => 'Nouveau badge !';
+  String rewardBadgesUnlocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nouveaux badges !',
+      one: 'Nouveau badge !',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get rewardTapToContinue => 'Touche l\'écran pour continuer';

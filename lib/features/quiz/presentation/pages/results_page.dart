@@ -35,6 +35,15 @@ typedef SessionScoreSlot = Widget? Function(
   int correctCount,
 );
 
+/// The buttons that go on after the results, in place of [fallback]
+/// ("Continuer"), built from what the session was played for; [onBack]
+/// does what "Continuer" does. `null` keeps [fallback].
+typedef SessionContinueSlot = Widget? Function(
+  String? sourceKey, {
+  required Widget fallback,
+  required VoidCallback onBack,
+});
+
 /// Results of a quiz, loaded from the session identifier alone.
 ///
 /// A stage of the learning path shows its stars; XP and level arrive
@@ -54,6 +63,7 @@ class ResultsPage extends StatelessWidget {
     this.recordCard,
     this.actionOf,
     this.outcomeOf,
+    this.continueOf,
     super.key,
   });
 
@@ -97,6 +107,10 @@ class ResultsPage extends StatelessWidget {
   /// challenge played from a code, or `null`.
   final SessionScoreSlot? outcomeOf;
 
+  /// The buttons that replace "Continuer", such as "Étape suivante" after
+  /// a stage of the path, or `null`.
+  final SessionContinueSlot? continueOf;
+
   @override
   Widget build(BuildContext context) {
     final Widget Function(Widget child) scope =
@@ -133,6 +147,7 @@ class ResultsPage extends StatelessWidget {
                           xpTile: xpTile,
                           rewardsCard: rewardsCard,
                           recordCard: recordCard,
+                          continueOf: continueOf,
                           action: actionOf?.call(
                             result.session.sourceKey,
                             result.session.correctCount,
@@ -158,6 +173,7 @@ class _ResultsView extends StatelessWidget {
     required this.xpTile,
     required this.rewardsCard,
     required this.recordCard,
+    required this.continueOf,
     required this.action,
   });
 
@@ -172,6 +188,7 @@ class _ResultsView extends StatelessWidget {
   final Widget? xpTile;
   final Widget? rewardsCard;
   final Widget? recordCard;
+  final SessionContinueSlot? continueOf;
   final Widget? action;
 
   @override
@@ -181,6 +198,10 @@ class _ResultsView extends StatelessWidget {
     final String domainId = result.session.domainId;
     final int? stars = result.stars;
     final String? sourceKey = result.session.sourceKey;
+    final Widget continueButton = DepthButton(
+      label: context.l10n.resultsContinue,
+      onPressed: () => onContinue(sourceKey),
+    );
     final LearningUnit? unit = labels.findCommonUnit(
       result.askedItemKeys,
       domainId,
@@ -225,10 +246,12 @@ class _ResultsView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSizes.space8),
-          DepthButton(
-            label: context.l10n.resultsContinue,
-            onPressed: () => onContinue(sourceKey),
-          ),
+          continueOf?.call(
+                sourceKey,
+                fallback: continueButton,
+                onBack: () => onContinue(sourceKey),
+              ) ??
+              continueButton,
           if (sourceKey != null)
             DepthButton(
               label: context.l10n.resultsReplay,

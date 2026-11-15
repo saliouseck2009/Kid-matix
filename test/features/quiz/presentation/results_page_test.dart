@@ -71,6 +71,7 @@ void main() {
     DataState<QuizResultEntity> state, {
     SessionScoreSlot? actionOf,
     SessionScoreSlot? outcomeOf,
+    SessionContinueSlot? continueOf,
   }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -92,6 +93,7 @@ void main() {
             sourceKey == null ? null : 'Entraînement',
         actionOf: actionOf,
         outcomeOf: outcomeOf,
+        continueOf: continueOf,
       ),
     );
     await tester.pumpAndSettle();
@@ -190,6 +192,27 @@ void main() {
       await tester.tap(find.text('Continuer'));
       // Assert
       expect(replayedUnit, 'path:mul:5:training');
+      expect(isContinued, isTrue);
+    });
+    testWidgets('lets the source replace "Continuer" with its own buttons', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(
+          _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
+        ),
+        continueOf: (
+          String? sourceKey, {
+          required Widget fallback,
+          required VoidCallback onBack,
+        }) => TextButton(onPressed: onBack, child: Text('next $sourceKey')),
+      );
+      // Act
+      await tester.tap(find.text('next path:mul:5:training'));
+      // Assert
+      expect(find.text('Continuer'), findsNothing);
       expect(isContinued, isTrue);
     });
     testWidgets('offers no replay nor stars without a source', (

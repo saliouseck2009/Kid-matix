@@ -229,6 +229,64 @@ void main() {
     });
   });
 
+  group('The actions after the results of a stage', () {
+    Future<void> pumpActions(WidgetTester tester, String sourceKey) {
+      return pumpPage(
+        tester,
+        Scaffold(
+          body: pages.buildNextStageActions(
+            profileId: 'p1',
+            sourceKey: sourceKey,
+            fallback: const Text('Continuer'),
+            onBack: () => openedTable = 'back',
+            onPlay: (StageSource source) => playedStage = source,
+          ),
+        ),
+      );
+    }
+
+    testWidgets('start the next stage, or go back to the path', (
+      WidgetTester tester,
+    ) async {
+      // Arrange: the Discovery of the table of 2 has its star.
+      await pumpActions(tester, 'path:mul:2:discovery');
+      // Act
+      await tester.tap(find.text('Étape suivante'));
+      await tester.tap(find.text('Retour au parcours'));
+      // Assert
+      expect(find.text('Continuer'), findsNothing);
+      expect(
+        playedStage,
+        const StageSource(unitKey: 'mul:2', stage: StageKind.training),
+      );
+      expect(openedTable, 'back');
+    });
+
+    testWidgets('keep "Continuer" when the stage played is still to pass', (
+      WidgetTester tester,
+    ) async {
+      // Act: the Training of the table of 2 has no star yet.
+      await pumpActions(tester, 'path:mul:2:training');
+      // Assert
+      expect(find.text('Continuer'), findsOneWidget);
+      expect(find.text('Étape suivante'), findsNothing);
+    });
+
+    test('are not offered after a review or outside the path', () {
+      // Act
+      Widget? actionsOf(String? sourceKey) => pages.buildNextStageActions(
+        profileId: 'p1',
+        sourceKey: sourceKey,
+        fallback: const SizedBox.shrink(),
+        onBack: () {},
+        onPlay: (StageSource source) {},
+      );
+      // Assert
+      expect(actionsOf('path:review:1:review'), isNull);
+      expect(actionsOf('duel:1'), isNull);
+      expect(actionsOf(null), isNull);
+    });
+  });
   group('LearningPathPages', () {
     test('turns a stage into its quiz and finds where to go back', () {
       // Act

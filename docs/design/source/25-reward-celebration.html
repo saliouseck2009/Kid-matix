@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Célébration regroupée</title>
+<!--
+  Standalone mockup (not a design-tool template): opens directly in a
+  browser. The celebration after a quiz of lot F34: the new level and
+  every new badge on one screen, closed by one tap, instead of one screen
+  per reward. A level alone or a badge alone keeps the big title and its
+  line, without the list. Sample data is illustrative.
+-->
+<style>
+@font-face{font-family:'Fredoka';src:url('../../../assets/fonts/Fredoka-Variable.ttf')}
+@font-face{font-family:'Nunito';src:url('../../../assets/fonts/Nunito-Variable.ttf')}
+body{margin:0;background:#FFFFFF}
+.frame{position:relative;width:390px;height:844px;box-sizing:border-box;overflow:hidden;background:#F4F1FF;color:#221A4D;font-family:'Nunito',sans-serif;display:flex;flex-direction:column;gap:16px;padding:24px}
+.display{font-family:'Fredoka',sans-serif;font-weight:600}
+.row{display:flex;align-items:center;gap:12px;padding:12px;background:#FFFFFF;border-radius:20px}
+.circle{display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex:none;background:#FFF3CF;border-radius:999px}
+</style>
+</head>
+<body>
+<div class="frame">
+
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
+
+<div style="display:flex;justify-content:center">
+<svg viewBox="0 0 64 64" width="160" height="160" aria-hidden="true">
+<path d="M10 6l8 20 14-10zM54 6l-8 20-14-10z" fill="#5B3DF5"/>
+<circle cx="32" cy="34" r="26" fill="#5B3DF5"/>
+<circle cx="23" cy="31" r="4" fill="#FFFFFF"/><circle cx="41" cy="31" r="4" fill="#FFFFFF"/>
+<path d="M21 42q11 11 22 0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
+</svg>
+</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+<span class="display" style="font-size:36px;line-height:1.1">Niveau 5 !</span>
+<span style="font-size:16px;font-weight:700;color:#5D567A">Tu passes au niveau supérieur, bravo.</span>
+</div>
+
+<span class="display" style="font-size:22px;text-align:center">2 nouveaux badges !</span>
+
+<div class="row">
+<div class="circle"><svg viewBox="0 0 24 24" width="28" height="28" fill="#5B3DF5"><path d="M6 3v18h2v-7h4l1 2h6V5h-5l-1-2z"/></svg></div>
+<div style="display:flex;flex-direction:column">
+<span class="display" style="font-size:16px">Premier pas</span>
+<span style="font-size:14px;font-weight:700;color:#5D567A">Tu as terminé ta première étape.</span>
+</div>
+</div>
+
+<div class="row">
+<div class="circle"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#5B3DF5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg></div>
+<div style="display:flex;flex-direction:column">
+<span class="display" style="font-size:16px">Sans-faute</span>
+<span style="font-size:14px;font-weight:700;color:#5D567A">Une étape sans aucune erreur.</span>
+</div>
+</div>
+
+</div>
+
+<span style="font-size:14px;font-weight:700;color:#5D567A;text-align:center">Touche l'écran pour continuer</span>
+
+</div>
+</body>
+</html>

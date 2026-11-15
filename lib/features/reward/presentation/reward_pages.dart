@@ -60,7 +60,7 @@ final class RewardPages {
                   final SessionRewardsEntity? rewards =
                       (state as RewardValueLoaded<SessionRewardsEntity?>).value;
                   if (rewards == null) return;
-                  showRewardCelebrations(
+                  showRewardCelebration(
                     context,
                     rewards: rewards,
                     labels: BadgeLabels(domains: _domains, l10n: context.l10n),
