@@ -69,7 +69,6 @@ void main() {
       for (final String digit in '${expected.value}'.split('')) {
         bloc.add(PlacementDigitTyped(digit: int.parse(digit)));
       }
-      bloc.add(const PlacementAnswerValidated());
     }
     await pumpEventQueue();
   }
@@ -243,24 +242,38 @@ void main() {
     expect(actualAsking.progress, 0.2);
   });
 
-  test('types, erases and validates digits on the keypad', () async {
+  test('types and erases digits on the keypad', () async {
     // Arrange
-    await start();
+    final PlacementAsking asking = await start();
     // Act
-    bloc
-      ..add(const PlacementAnswerValidated())
-      ..add(const PlacementDigitTyped(digit: 0))
-      ..add(const PlacementDigitTyped(digit: 4))
-      ..add(const PlacementDigitTyped(digit: 5))
-      ..add(const PlacementDigitTyped(digit: 6))
-      ..add(const PlacementDigitTyped(digit: 7))
-      ..add(const PlacementDigitErased());
+    final PlacementAsking actualAsking = asking
+        .withDigit(0)
+        .withDigit(4)
+        .withDigit(5)
+        .withDigit(6)
+        .withDigit(7)
+        .withoutLastDigit();
+    // Assert
+    expect(actualAsking.typedDigits, '45');
+  });
+
+  test('sends the number once it has the digits of the answer', () async {
+    // Arrange
+    final PlacementAsking asking = await start();
+    final int digitCount = asking.question.expectedDigitCount!;
+    // Act
+    for (int index = 0; index < digitCount - 1; index++) {
+      bloc.add(const PlacementDigitTyped(digit: 9));
+    }
     await pumpEventQueue();
     // Assert
-    final PlacementAsking actualAsking = bloc.state as PlacementAsking;
-    expect(actualAsking.journey.answeredCount, 0);
-    expect(actualAsking.typedDigits, '45');
     expect(mastery.recordedAnswers, isEmpty);
+    // Act
+    bloc.add(const PlacementDigitTyped(digit: 9));
+    await pumpEventQueue();
+    // Assert
+    expect(mastery.recordedAnswers, hasLength(1));
+    expect(mastery.recordedAnswers.single.isCorrect, isFalse);
   });
 
   test('ignores the keys outside a question', () async {
@@ -268,7 +281,6 @@ void main() {
     bloc
       ..add(const PlacementDigitTyped(digit: 4))
       ..add(const PlacementDigitErased())
-      ..add(const PlacementAnswerValidated())
       ..add(const PlacementAnswerUnknown());
     await pumpEventQueue();
     // Assert

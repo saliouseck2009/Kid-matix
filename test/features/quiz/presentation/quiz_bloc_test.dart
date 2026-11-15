@@ -63,21 +63,9 @@ void main() {
 
   setUpAll(registerQuizFallbacks);
 
-  setUp(() {
-    ticker = _FakeTicker();
-    mockSettings = _MockSettings();
-    mockRepository = MockQuizSessionRepository();
-    when(
-      () => mockSettings.readTimerMode(profileId: any(named: 'profileId')),
-    ).thenAnswer((_) async => const DataSuccess<TimerMode>(TimerMode.normal));
-    when(
-      () => mockRepository.saveSession(
-        session: any(named: 'session'),
-        answers: any(named: 'answers'),
-      ),
-    ).thenAnswer((_) async => const DataSuccess<void>(null));
+  QuizBloc buildBloc({bool advancesAfterRightAnswer = true}) {
     final FakeClock clock = FakeClock(quizStart);
-    bloc = QuizBloc(
+    return QuizBloc(
       useCases: QuizUseCases(
         getTimeLimit: GetTimeLimitUseCase(settings: mockSettings),
         buildQuiz: buildQuizUseCase(),
@@ -92,7 +80,24 @@ void main() {
         ),
       ),
       ticker: ticker,
+      advancesAfterRightAnswer: advancesAfterRightAnswer,
     );
+  }
+
+  setUp(() {
+    ticker = _FakeTicker();
+    mockSettings = _MockSettings();
+    mockRepository = MockQuizSessionRepository();
+    when(
+      () => mockSettings.readTimerMode(profileId: any(named: 'profileId')),
+    ).thenAnswer((_) async => const DataSuccess<TimerMode>(TimerMode.normal));
+    when(
+      () => mockRepository.saveSession(
+        session: any(named: 'session'),
+        answers: any(named: 'answers'),
+      ),
+    ).thenAnswer((_) async => const DataSuccess<void>(null));
+    bloc = buildBloc();
   });
 
   tearDown(() async {
@@ -339,37 +344,139 @@ void main() {
     });
     test('builds the number typed on the keypad', () async {
       // Arrange
-      await start();
+      final QuizAsking asking = await start();
       // Act
-      for (final int digit in <int>[0, 3, 5, 1, 7]) {
-        bloc.add(DigitTyped(digit: digit));
-      }
-      bloc.add(const DigitErased());
-      await pumpEventQueue();
+      final QuizAsking actualState = asking
+          .withDigit(0)
+          .withDigit(3)
+          .withDigit(5)
+          .withDigit(1)
+          .withDigit(7)
+          .withoutLastDigit();
       // Assert
-      expect((bloc.state as QuizAsking).typedDigits, '35');
+      expect(actualState.typedDigits, '35');
     });
-    test('submits the typed number on validation', () async {
+    test('sends the number once it has the digits of the answer', () async {
       // Arrange
       await start();
-      bloc
-        ..add(const DigitTyped(digit: 5))
-        ..add(const TypedAnswerValidated());
       // Act
+      bloc.add(const DigitTyped(digit: 5));
       await pumpEventQueue();
       // Assert
       final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
       expect(actualState.givenAnswer, const NumberAnswer(5));
       expect(actualState.submission.answer.isCorrect, isTrue);
     });
-    test('ignores a validation with nothing typed', () async {
+    test('sends a wrong number of the same length too', () async {
       // Arrange
       await start();
       // Act
-      bloc.add(const TypedAnswerValidated());
+      bloc.add(const DigitTyped(digit: 3));
       await pumpEventQueue();
+      // Assert
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(actualState.givenAnswer, const NumberAnswer(3));
+      expect(actualState.submission.answer.isCorrect, isFalse);
+    });
+    test('waits for the last digit of a longer answer', () async {
+      // Arrange
+      await start();
+      while ((bloc.state as QuizAsking).turn.question.expectedDigitCount != 2) {
+        bloc.add(AnswerSubmitted(answer: expectedAnswer()));
+        await pumpEventQueue();
+        bloc.add(const NextRequested());
+        await pumpEventQueue();
+      }
+      final int expected = (expectedAnswer() as NumberAnswer).value;
+      // Act
+      bloc.add(DigitTyped(digit: expected ~/ 10));
+      await pumpEventQueue();
+      // Assert
+      expect((bloc.state as QuizAsking).typedDigits, '${expected ~/ 10}');
+      // Act
+      bloc.add(DigitTyped(digit: expected % 10));
+      await pumpEventQueue();
+      // Assert
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(actualState.givenAnswer, NumberAnswer(expected));
+    });
+  });
+
+  group('QuizBloc after the feedback', () {
+    test('asks the next question by itself after a right answer', () async {
+      // Arrange
+      await start();
+      bloc.add(AnswerSubmitted(answer: expectedAnswer()));
+      await pumpEventQueue();
+      // Act
+      await tick(9);
+      // Assert
+      expect(bloc.state, isA<QuizShowingFeedback>());
+      expect((bloc.state as QuizShowingFeedback).advancesByItself, isTrue);
+      // Act
+      await tick(1);
+      // Assert
+      expect((bloc.state as QuizAsking).answeredCount, 1);
+    });
+    test('waits for "Continuer" after a mistake', () async {
+      // Arrange
+      await start();
+      bloc.add(const AnswerSubmitted(answer: NumberAnswer(3)));
+      await pumpEventQueue();
+      // Act
+      await tick(30);
+      // Assert
+      final QuizShowingFeedback actualState = bloc.state as QuizShowingFeedback;
+      expect(actualState.advancesByItself, isFalse);
+    });
+    test('does not count the feedback in the time played', () async {
+      // Arrange
+      await start();
+      await tick(20);
+      bloc.add(AnswerSubmitted(answer: expectedAnswer()));
+      await pumpEventQueue();
+      // Act
+      await tick(10);
+      // Assert
+      expect(
+        (bloc.state as QuizAsking).playedTime,
+        const Duration(seconds: 2),
+      );
+    });
+    test('holds the feedback while the app is in the background', () async {
+      // Arrange
+      await start();
+      bloc.add(AnswerSubmitted(answer: expectedAnswer()));
+      await pumpEventQueue();
+      await tick(5);
+      // Act
+      bloc.add(const QuizPaused());
+      await pumpEventQueue();
+      // Assert
+      expect(bloc.state, isA<QuizShowingFeedback>());
+      // Act
+      bloc.add(const QuizResumed());
+      await pumpEventQueue();
+      await tick(5);
       // Assert
       expect(bloc.state, isA<QuizAsking>());
     });
+    test(
+      'keeps "Continuer" after a right answer for a screen reader',
+      () async {
+        // Arrange
+        await bloc.close();
+        bloc = buildBloc(advancesAfterRightAnswer: false);
+        await start();
+        bloc.add(AnswerSubmitted(answer: expectedAnswer()));
+        await pumpEventQueue();
+        // Act
+        await tick(30);
+        // Assert
+        final QuizShowingFeedback actualState =
+            bloc.state as QuizShowingFeedback;
+        expect(actualState.advancesByItself, isFalse);
+      },
+    );
   });
 }

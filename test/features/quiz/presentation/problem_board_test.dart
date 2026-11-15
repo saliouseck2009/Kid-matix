@@ -16,7 +16,7 @@ import '../../problem/helpers/problem_fixtures.dart';
 
 /// The board of the word problems (F30-03, F30-04) over the 30 problems of
 /// the table: each one can be solved on its bar model, in three steps or in
-/// five, with the numbers of its story only.
+/// four, with the numbers of its story only.
 void main() {
   final ProblemDomain domain = buildProblemDomain();
 
@@ -84,16 +84,14 @@ void main() {
     if (isGuided) await tester.tap(find.text("J'ai écouté"));
     await tester.pumpAndSettle();
     final List<BarRole> known = model.placeableRoles;
-    for (int index = 0; index < known.length; index++) {
+    // The last number of several goes to its place by itself.
+    final int toPlace = known.length > 1 ? known.length - 1 : known.length;
+    for (int index = 0; index < toPlace; index++) {
       await tapKey(tester, 'tile-$index');
       await tapKey(tester, 'slot-${known[index].name}');
     }
     await tapKey(tester, 'operator-${model.operator.name}');
     await tapKey(tester, 'number-${model.answer}');
-    if (isGuided) {
-      await tester.tap(find.text("J'ai vérifié"));
-      await tester.pumpAndSettle();
-    }
     return solved;
   }
 
@@ -153,8 +151,6 @@ void main() {
     await tapKey(tester, 'slot-whole');
     await tapKey(tester, 'tile-0');
     await tapKey(tester, 'slot-whole');
-    await tapKey(tester, 'tile-1');
-    await tapKey(tester, 'slot-partA');
     await tapKey(tester, 'operator-add');
     await tapKey(tester, 'operator-subtract');
     final int wrong = asked.choices

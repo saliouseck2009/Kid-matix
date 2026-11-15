@@ -62,6 +62,13 @@ final class PlacementAsking extends PlacementState {
     return (journey.skillIndex + journey.probeIndex / probeCount) / skillCount;
   }
 
+  /// Whether the number typed has as many digits as the answer expected:
+  /// it is then sent by itself, right or wrong.
+  bool get isTypedAnswerComplete {
+    final int expected = question.expectedDigitCount ?? maxTypedDigits;
+    return typedDigits.length >= expected.clamp(1, maxTypedDigits);
+  }
+
   /// Returns the state with [digit] typed after the others; a leading 0
   /// is replaced, and digits past [maxTypedDigits] are ignored.
   PlacementAsking withDigit(int digit) {

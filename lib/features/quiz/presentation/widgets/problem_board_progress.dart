@@ -16,9 +16,6 @@ enum ProblemStep {
 
   /// Pick the result of the calculation.
   compute,
-
-  /// Read the check sentence.
-  check,
 }
 
 /// Where a child is in a word problem: the step, what is placed on the
@@ -28,15 +25,14 @@ enum ProblemStep {
 /// again. The problem is [isFinished] once its last step is done, and its
 /// [answer] is right when no mistake was made.
 final class ProblemBoardProgress {
-  /// Creates the progress on [model]; [isGuided] adds the listening and the
-  /// check steps.
+  /// Creates the progress on [model]; [isGuided] adds the listening
+  /// step.
   ProblemBoardProgress({required this.model, required this.isGuided})
     : steps = <ProblemStep>[
         if (isGuided) ProblemStep.listen,
         ProblemStep.model,
         ProblemStep.operation,
         ProblemStep.compute,
-        if (isGuided) ProblemStep.check,
       ],
       tiles = <int>[
         for (final BarRole role in model.placeableRoles) model.values[role]!,
@@ -48,7 +44,7 @@ final class ProblemBoardProgress {
   /// The bar model of the story.
   final BarModelPicture model;
 
-  /// Whether the problem is solved in five steps instead of three.
+  /// Whether the problem starts with the listening step.
   final bool isGuided;
 
   /// The steps, in order.
@@ -124,8 +120,26 @@ final class ProblemBoardProgress {
     usedTiles.add(tile);
     wrongRole = null;
     lastTouchWasWrong = false;
+    _placeLastTile();
     if (usedTiles.length == tiles.length) advance();
     return true;
+  }
+
+  /// Puts the last number left on the last free place: it has nowhere
+  /// else to go, so the child is not asked to move it.
+  void _placeLastTile() {
+    if (usedTiles.length != tiles.length - 1) return;
+    final List<BarRole> free = <BarRole>[
+      for (final BarRole role in model.placeableRoles)
+        if (!placed.containsKey(role)) role,
+    ];
+    if (free.length != 1) return;
+    final int last = <int>[
+      for (int index = 0; index < tiles.length; index++)
+        if (!usedTiles.contains(index)) index,
+    ].single;
+    placed[free.single] = tiles[last];
+    usedTiles.add(last);
   }
 
   /// Picks the sign [operator]. Returns whether it is the right one.

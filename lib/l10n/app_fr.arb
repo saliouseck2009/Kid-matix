@@ -2396,15 +2396,11 @@
   },
   "quizProblemStepCheck": "Vérifie ta réponse",
   "@quizProblemStepCheck": {
-    "description": "Title of the last step of a guided word problem, above the check sentence (\"Check your answer\"). Imperative, informal \"tu\"."
+    "description": "Title above the check sentence in the recap of a word problem, shown once it is answered (\"Check your answer\"). Imperative, informal \"tu\"."
   },
   "quizProblemListened": "J'ai écouté",
   "@quizProblemListened": {
     "description": "Button that ends the listening step of a guided word problem (\"I listened\"). Short."
-  },
-  "quizProblemChecked": "J'ai vérifié",
-  "@quizProblemChecked": {
-    "description": "Button that ends the check step of a guided word problem (\"I checked\"). Short."
   },
   "quizProblemPickNumberFirst": "Touche un nombre, puis sa place sur le schéma",
   "@quizProblemPickNumberFirst": {
@@ -2493,10 +2489,6 @@
   "quizKeypadErase": "Effacer",
   "@quizKeypadErase": {
     "description": "Tooltip and screen-reader label of the keypad key that erases the last digit (\"Erase\"). Infinitive verb."
-  },
-  "quizKeypadValidate": "Valider",
-  "@quizKeypadValidate": {
-    "description": "Label of the keypad key that submits the typed number (\"Submit\"). Infinitive verb, one word."
   },
   "quizFeedbackRight": "Bravo !",
   "@quizFeedbackRight": {

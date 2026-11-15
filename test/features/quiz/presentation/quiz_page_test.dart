@@ -24,11 +24,13 @@ void main() {
   late bool isLeft;
   late String? completedSessionId;
   late RecordingGameFeedback feedback;
+  late HandTicker ticker;
 
   setUpAll(registerQuizFallbacks);
 
   setUp(() {
     feedback = RecordingGameFeedback();
+    ticker = HandTicker();
     mockRepository = MockQuizSessionRepository();
     isLeft = false;
     completedSessionId = null;
@@ -44,26 +46,34 @@ void main() {
     WidgetTester tester, {
     required String questionTypeId,
     List<String> itemKeys = const <String>['mul:5x7', 'mul:5x8'],
+    bool usesScreenReader = false,
   }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
     await pumpLocalized(
       tester,
-      QuizPage(
-        request: QuizRequest(
-          profileId: 'profile-1',
-          domainId: MultiplicationDomain.domainId,
-          mode: QuizMode.freeTraining,
-          itemKeys: itemKeys,
-          questionTypeIds: <String>[questionTypeId],
-          baseTimeLimit: QuizTimeLimits.freeTraining,
+      Builder(
+        builder: (BuildContext context) => MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(accessibleNavigation: usesScreenReader),
+          child: QuizPage(
+            request: QuizRequest(
+              profileId: 'profile-1',
+              domainId: MultiplicationDomain.domainId,
+              mode: QuizMode.freeTraining,
+              itemKeys: itemKeys,
+              questionTypeIds: <String>[questionTypeId],
+              baseTimeLimit: QuizTimeLimits.freeTraining,
+            ),
+            useCases: buildTestQuizUseCases(repository: mockRepository),
+            ticker: ticker,
+            domains: buildDomainRegistry(),
+            feedback: feedback,
+            onCompleted: (String sessionId) => completedSessionId = sessionId,
+            onLeft: () => isLeft = true,
+          ),
         ),
-        useCases: buildTestQuizUseCases(repository: mockRepository),
-        ticker: const SilentTicker(),
-        domains: buildDomainRegistry(),
-        feedback: feedback,
-        onCompleted: (String sessionId) => completedSessionId = sessionId,
-        onLeft: () => isLeft = true,
       ),
     );
     await tester.pumpAndSettle();
@@ -86,7 +96,6 @@ void main() {
       await tester.tap(find.widgetWithText(InkWell, digit).first);
       await tester.pump();
     }
-    await tester.tap(find.text('Valider'));
     await tester.pumpAndSettle();
   }
 
@@ -105,8 +114,30 @@ void main() {
       // Assert
       expect(find.text('Bravo !'), findsOneWidget);
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
-      expect(find.text('Continuer'), findsOneWidget);
+      expect(find.text('Continuer'), findsNothing);
       expect(feedback.played, <GameFeedback>[GameFeedback.rightAnswer]);
+      // Act: the pause of a right answer goes by.
+      await passRightAnswerPause(tester, ticker);
+      // Assert: the next question came by itself.
+      expect(find.byIcon(Icons.check_rounded), findsNothing);
+      expect(askingState(tester).answeredCount, 1);
+    });
+    testWidgets('keeps "Continuer" after a right answer for a screen reader', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      await pumpQuiz(
+        tester,
+        questionTypeId: QuestionTypeIds.multipleChoice,
+        usesScreenReader: true,
+      );
+      // Act
+      await tester.tap(find.text('35'));
+      await tester.pumpAndSettle();
+      await passRightAnswerPause(tester, ticker);
+      // Assert
+      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+      expect(find.text('Continuer'), findsOneWidget);
     });
     testWidgets('shows the whole operation after a mistake', (
       WidgetTester tester,
@@ -128,6 +159,11 @@ void main() {
       expect(find.text('Pas grave, tu vas y arriver !'), findsOneWidget);
       expect(find.byIcon(Icons.close_rounded), findsWidgets);
       expect(feedback.played, <GameFeedback>[GameFeedback.wrongAnswer]);
+      // Act: a mistake waits for the child, however long.
+      ticker.send(50);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('Continuer'), findsOneWidget);
     });
     testWidgets('shows the help card after two mistakes on a fact', (
       WidgetTester tester,
@@ -177,12 +213,11 @@ void main() {
     ) async {
       // Arrange
       await pumpQuiz(tester, questionTypeId: QuestionTypeIds.typedAnswer);
-      expect(find.text('Valider'), findsOneWidget);
-      // Act
+      expect(find.text('Valider'), findsNothing);
+      // Act: the last digit sends the number.
       await typeNumber(tester, expectedNumber(tester));
       // Assert
       expect(find.text('Bravo !'), findsOneWidget);
-      expect(find.text('Valider'), findsNothing);
     });
     testWidgets('lets the player write the missing number', (
       WidgetTester tester,
@@ -207,10 +242,7 @@ void main() {
       // Act
       for (int index = 0; index < 3; index++) {
         await typeNumber(tester, expectedNumber(tester));
-        if (index < 2) {
-          await tester.tap(find.text('Continuer'));
-          await tester.pumpAndSettle();
-        }
+        if (index < 2) await passRightAnswerPause(tester, ticker);
       }
       // Assert
       expect(find.text('Combo de 3 !'), findsOneWidget);
@@ -227,8 +259,8 @@ void main() {
         itemKeys: const <String>['mul:5x7'],
       );
       await typeNumber(tester, 35);
-      // Act
-      await tester.tap(find.text('Continuer'));
+      // Act: the pause of the last right answer goes by.
+      ticker.send(10);
       await tester.pump();
       await tester.pump();
       // Assert

@@ -7,9 +7,11 @@ import 'package:kid_matix/features/quiz/presentation/widgets/bar_model_view.dart
 import 'package:kid_matix/features/quiz/presentation/widgets/problem_statement.dart';
 
 /// What a word problem shows once it is answered, right or wrong: the
-/// statement and the finished bar model, answer included. It is the
-/// correction of a mistake: the drawing shows what happens in the story,
-/// whatever the words of the statement suggested.
+/// statement, the finished bar model, answer included, and the sentence
+/// that checks the answer. It is the correction of a mistake: the drawing
+/// shows what happens in the story, whatever the words of the statement
+/// suggested. It is also the check that ends a problem solved: the child
+/// reads it, then taps "Continuer".
 class ProblemRecap extends StatelessWidget {
   /// Creates the recap of [question], whose picture is a bar model.
   const ProblemRecap({
@@ -47,8 +49,17 @@ class ProblemRecap extends StatelessWidget {
               context.l10n.quizProblemRecapTitle,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            if (picture is BarModelPicture)
+            if (picture is BarModelPicture) ...<Widget>[
               BarModelView(picture: picture, showsAnswer: true),
+              Text(
+                context.l10n.quizProblemStepCheck,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                picture.check,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
           ],
         ),
       ),

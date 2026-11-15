@@ -761,7 +761,7 @@ Les enfants apprennent à comprendre une situation, pas à réagir à un mot-cl�
 - [x] **F30-01** Contenu `docs/product/problems.md` : une trentaine de problèmes en trois niveaux (avec images, phrase courte, énoncé complet), dans des contextes d'ici (marché, francs CFA, mangues, car rapide, Tabaski, thé) avec des prénoms d'ici ; colonnes pour l'audio wolof enregistré par le propriétaire.
 - [x] **F30-02** Gabarits de problèmes avec des nombres tirés au sort, pour varier les énoncés ; clé stable par gabarit. Les versions enregistrées en wolof ont des nombres fixes ; les variantes générées sont lues en français par la synthèse vocale (F23).
 - [x] **F30-03** Type « Schéma en barres » : placer les nombres sur le tout et les parties, choisir l'opération, puis calculer.
-- [x] **F30-04** Résolution guidée en étapes : écouter, faire le schéma, choisir l'opération, calculer, vérifier.
+- [x] **F30-04** Résolution guidée en étapes : écouter, faire le schéma, choisir l'opération, calculer, vérifier. Depuis F34-03, la vérification s'affiche dans la correction et n'est plus une étape.
 - [x] **F30-05** Dans chaque énoncé, les mots des maths (F28) se touchent ; bouton « Écouter en wolof » sur les énoncés enregistrés.
 - [x] **F30-06** Problèmes « piège du mot-clé » (« 3 de plus que » qui demande une soustraction) : la correction montre le schéma.
 - [x] **F30-07** Parcours « Problèmes » par opération et par niveau ; maîtrise suivie par gabarit.
@@ -807,3 +807,17 @@ Le choix du parcours tient sur un bouton et un panneau qui montrent la progressi
 - [x] **F33-05** Tests : progression et parcours conseillé, panneau (badges, choix, fermeture, petit téléphone en grand texte), tests existants qui changeaient de parcours.
 
 **Terminé quand :** sur un téléphone, un enfant qui a commencé la multiplication et fini les nombres ouvre « Mes parcours » depuis la carte, voit la progression de chaque parcours, choisit la division et la carte de la division s'affiche.
+
+## F34 · Moins d'appuis
+
+Un testeur a trouvé que l'app demande trop d'appuis qui ne sont pas des réponses. Ce lot enlève ceux que l'app peut faire seule, dans le quiz d'abord, entre deux étapes ensuite. Décisions dans `docs/decisions.md`.
+
+- [x] **F34-01** Pavé sans « Valider » : le nombre part dès qu'il a autant de chiffres que la réponse attendue, juste ou faux, dans le quiz et le test de positionnement. Maquette : `24-quiz-keypad.png`.
+- [x] **F34-02** Après une bonne réponse, la question suivante arrive seule après une seconde. « Continuer » reste après une erreur, sur la fiche d'aide, avec un lecteur d'écran et après un problème à énoncé.
+- [x] **F34-03** Problème guidé en quatre étapes : la phrase de vérification s'affiche dans la correction, sans bouton « J'ai vérifié ».
+- [x] **F34-04** Schéma en barres : le dernier nombre à placer va seul à sa place.
+- [ ] **F34-05** Résultats : bouton principal « Étape suivante » qui lance l'étape suivante quand elle est ouverte, « Retour au parcours » en second.
+- [ ] **F34-06** Célébrations regroupées : un seul écran pour le niveau et les badges gagnés. Maquette à proposer.
+- [ ] **F34-07** Quitter un quiz sans confirmation tant qu'aucune réponse n'est donnée.
+
+**Terminé quand :** sur un téléphone, un enfant joue une étape de 10 questions au pavé sans autre appui que ses chiffres quand il répond juste, lit la correction d'une erreur avant de toucher « Continuer », puis lance l'étape suivante depuis les résultats en un appui.

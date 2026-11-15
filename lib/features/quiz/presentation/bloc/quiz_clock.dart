@@ -11,10 +11,11 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_state.dart';
 ///
 /// It measures every answer, even without a visible timer; holds the time
 /// of a question while the voice reads it; and, in a non-stop quiz, also
-/// counts the time of the feedback and asks for the next question by
-/// itself. It never changes the state on its own: the Bloc gives it the
-/// state and the emitter, and the events it asks for ([ClockRanOut],
-/// [TimeExpired], [NextRequested]) go back through [_addEvent].
+/// counts the time of the feedback; and asks for the next question by
+/// itself after a feedback that needs no "Continuer". It never changes
+/// the state on its own: the Bloc gives it the state and the emitter, and
+/// the events it asks for ([ClockRanOut], [TimeExpired], [NextRequested])
+/// go back through [_addEvent].
 final class QuizClock {
   /// Creates the clock; [addEvent] sends an event to the Bloc.
   QuizClock({required this._ticker, required this._addEvent});
@@ -25,6 +26,11 @@ final class QuizClock {
   /// In a non-stop quiz, how long a right answer shows before the next
   /// question.
   static const Duration rightFeedbackTime = Duration(milliseconds: 600);
+
+  /// Outside a non-stop quiz, how long a right answer shows before the
+  /// next question: the time to read "Bravo !" and see the blow of a
+  /// fight.
+  static const Duration rightAnswerPause = Duration(seconds: 1);
 
   /// In a non-stop quiz, how long a mistake and its right answer show.
   static const Duration wrongFeedbackTime = Duration(milliseconds: 1500);
@@ -85,17 +91,21 @@ final class QuizClock {
     }
   }
 
-  /// In a non-stop quiz, the feedback counts in the time and leads to
-  /// the next question by itself.
+  /// A feedback that goes on by itself leads to the next question once
+  /// shown long enough; in a non-stop quiz it also counts in the time.
   void _tickFeedback(QuizShowingFeedback current, Emitter<QuizState> emit) {
+    if (!current.advancesByItself) return;
+    final bool isNonStop = current.submission.run.isNonStop;
     final QuizShowingFeedback next = current.copyWith(
-      playedTime: current.playedTime + tickInterval,
+      playedTime: isNonStop ? current.playedTime + tickInterval : null,
       shownFor: current.shownFor + tickInterval,
     );
     emit(next);
-    final Duration shownTime = next.submission.answer.isCorrect
-        ? rightFeedbackTime
-        : wrongFeedbackTime;
+    final Duration shownTime = switch (next.submission.answer.isCorrect) {
+      true when isNonStop => rightFeedbackTime,
+      true => rightAnswerPause,
+      false => wrongFeedbackTime,
+    };
     if (_isOutOfTime(next.submission.run, next.playedTime)) {
       _addEvent(const ClockRanOut());
     } else if (next.shownFor >= shownTime) {

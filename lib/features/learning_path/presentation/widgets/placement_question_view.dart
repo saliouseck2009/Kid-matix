@@ -72,9 +72,6 @@ class PlacementQuestionView extends StatelessWidget {
           slots.keypad(
             onDigit: (int digit) => bloc.add(PlacementDigitTyped(digit: digit)),
             onErase: () => bloc.add(const PlacementDigitErased()),
-            onValidate: typed.isEmpty || state.isSubmitting
-                ? null
-                : () => bloc.add(const PlacementAnswerValidated()),
           ),
           TextButton(
             onPressed: state.isSubmitting

@@ -48,6 +48,7 @@ sample data in them (Awa, Moussa, Lina, scores, codes) is illustrative.
 | `22-shop` | Boutique | F21 | |
 | `23a-path-domain-button` | Parcours, bouton du parcours suivi | F33 | Replaces the row of domain segments; also above the Profile cards |
 | `23b-path-picker-sheet` | Mes parcours (panneau du bas) | F33 | Source `23-path-picker.html` is a standalone page (no design tool): open it in a browser; `#a` or `#b` shows one screen |
+| `24-quiz-keypad` | Quiz, pavé sans « Valider » | F34 | Replaces the keypad of `08-boss-fight`: digits and erase only, the place of « Valider » stays empty. Source `24-quiz-keypad.html` is a standalone page |
 
 Not drawn yet — derive from the existing screens and have the owner validate
 before the lot starts: fill-in-the-blank question (F3), help sheet after two

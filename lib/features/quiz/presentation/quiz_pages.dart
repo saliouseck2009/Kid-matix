@@ -90,18 +90,12 @@ final class QuizPages {
     );
   }
 
-  /// The app keypad of the quiz, for a screen of another feature;
-  /// [onValidate] is `null` while nothing is typed.
+  /// The app keypad of the quiz, for a screen of another feature.
   Widget buildKeypad({
     required ValueChanged<int> onDigit,
     required VoidCallback onErase,
-    required VoidCallback? onValidate,
   }) {
-    return AnswerKeypad(
-      onDigit: onDigit,
-      onErase: onErase,
-      onValidate: onValidate,
-    );
+    return AnswerKeypad(onDigit: onDigit, onErase: onErase);
   }
 
   /// The question card of the quiz, for a screen of another feature: the

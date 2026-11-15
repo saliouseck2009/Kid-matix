@@ -30,7 +30,6 @@ final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
     on<PlacementStarted>(_onStarted);
     on<PlacementDigitTyped>(_onDigitTyped);
     on<PlacementDigitErased>(_onDigitErased);
-    on<PlacementAnswerValidated>(_onAnswerValidated);
     on<PlacementAnswerUnknown>(_onAnswerUnknown);
   }
 
@@ -47,13 +46,16 @@ final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
     emit(await _ask(PlacementJourney.start()));
   }
 
-  void _onDigitTyped(
+  Future<void> _onDigitTyped(
     PlacementDigitTyped event,
     Emitter<PlacementState> emit,
-  ) {
+  ) async {
     final PlacementState current = state;
     if (current is! PlacementAsking || current.isSubmitting) return;
-    emit(current.withDigit(event.digit));
+    final PlacementAsking typed = current.withDigit(event.digit);
+    emit(typed);
+    if (!typed.isTypedAnswerComplete) return;
+    await _submit(typed, NumberAnswer(int.parse(typed.typedDigits)), emit);
   }
 
   void _onDigitErased(
@@ -63,15 +65,6 @@ final class PlacementBloc extends Bloc<PlacementEvent, PlacementState> {
     final PlacementState current = state;
     if (current is! PlacementAsking || current.isSubmitting) return;
     emit(current.withoutLastDigit());
-  }
-
-  Future<void> _onAnswerValidated(
-    PlacementAnswerValidated event,
-    Emitter<PlacementState> emit,
-  ) async {
-    final PlacementState current = state;
-    if (current is! PlacementAsking || current.typedDigits.isEmpty) return;
-    await _submit(current, NumberAnswer(int.parse(current.typedDigits)), emit);
   }
 
   Future<void> _onAnswerUnknown(

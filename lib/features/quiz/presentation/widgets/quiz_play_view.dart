@@ -506,9 +506,6 @@ class _AnswerZone extends StatelessWidget {
           AnswerKeypad(
             onDigit: (int digit) => bloc.add(DigitTyped(digit: digit)),
             onErase: () => bloc.add(const DigitErased()),
-            onValidate: data.typedDigits == null
-                ? null
-                : () => bloc.add(const TypedAnswerValidated()),
           )
         else if (labels.describeHint(question) case final String hint)
           QuizHintBox(
@@ -556,7 +553,7 @@ class _Feedback extends StatelessWidget {
               _ => labels.describeItem(data.answeredItemKey, data.run.domainId),
             },
       reminder: mirror == null ? null : context.l10n.quizMirrorReminder(mirror),
-      onContinue: data.run.isNonStop
+      onContinue: feedback.advancesByItself
           ? null
           : () => context.read<QuizBloc>().add(const NextRequested()),
     );

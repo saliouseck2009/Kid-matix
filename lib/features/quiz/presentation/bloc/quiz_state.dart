@@ -101,6 +101,13 @@ final class QuizAsking extends QuizState {
     return limit != null && limit - elapsed <= QuizTimeLimits.warning;
   }
 
+  /// Whether the number typed has as many digits as the answer expected:
+  /// it is then sent by itself, right or wrong.
+  bool get isTypedAnswerComplete {
+    final int expected = turn.question.expectedDigitCount ?? maxTypedDigits;
+    return typedDigits.length >= expected.clamp(1, maxTypedDigits);
+  }
+
   /// Returns the state with [digit] typed after the others; a leading 0
   /// is replaced, and digits past [maxTypedDigits] are ignored.
   QuizAsking withDigit(int digit) {
@@ -161,6 +168,7 @@ final class QuizShowingFeedback extends QuizState {
     this.givenAnswer,
     this.playedTime = Duration.zero,
     this.shownFor = Duration.zero,
+    this.advancesByItself = false,
   });
 
   /// Judged answer and the quiz after it.
@@ -172,9 +180,13 @@ final class QuizShowingFeedback extends QuizState {
   /// Time played since the first question, pauses excluded.
   final Duration playedTime;
 
-  /// Time the feedback has been shown, counted only in a non-stop quiz,
-  /// where the next question comes by itself.
+  /// Time the feedback has been shown, counted only when the next
+  /// question comes by itself.
   final Duration shownFor;
+
+  /// Whether the next question comes by itself, without "Continuer":
+  /// always in a non-stop quiz, after a right answer elsewhere.
+  final bool advancesByItself;
 
   /// Returns a copy with the times replaced.
   QuizShowingFeedback copyWith({Duration? playedTime, Duration? shownFor}) {
@@ -183,6 +195,7 @@ final class QuizShowingFeedback extends QuizState {
       givenAnswer: givenAnswer,
       playedTime: playedTime ?? this.playedTime,
       shownFor: shownFor ?? this.shownFor,
+      advancesByItself: advancesByItself,
     );
   }
 

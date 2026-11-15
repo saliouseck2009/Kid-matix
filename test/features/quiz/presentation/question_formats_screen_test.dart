@@ -350,7 +350,7 @@ void main() {
       // Assert
       expect(find.text('Bravo\u00a0!'), findsOneWidget);
       expect(find.text('4 paires trouvées sur 4'), findsOneWidget);
-      expect(find.text('Continuer'), findsOneWidget);
+      expect(find.text('Continuer'), findsNothing);
     });
     testWidgets('hits the boss once the pairs are matched', (
       WidgetTester tester,

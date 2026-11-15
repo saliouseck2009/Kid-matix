@@ -66,10 +66,16 @@ class QuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Read here, not in `create`: the language is an inherited value.
     final QuizReadAloud? reading = _readAloudOf(context);
+    // A screen reader needs the time to say the feedback: "Continuer"
+    // stays after a right answer.
+    final bool usesScreenReader = MediaQuery.accessibleNavigationOf(context);
     return BlocProvider<QuizBloc>(
-      create: (_) =>
-          QuizBloc(useCases: useCases, ticker: ticker, readAloud: reading)
-            ..add(QuizStarted(request: request)),
+      create: (_) => QuizBloc(
+        useCases: useCases,
+        ticker: ticker,
+        readAloud: reading,
+        advancesAfterRightAnswer: !usesScreenReader,
+      )..add(QuizStarted(request: request)),
       child: _QuizLifecycle(
         child: BlocListener<QuizBloc, QuizState>(
           listenWhen: (QuizState previous, QuizState current) =>

@@ -196,7 +196,6 @@ void main() {
         await tester.tap(find.widgetWithText(InkWell, digit).first);
         await tester.pump();
       }
-      await tester.tap(find.text('Valider'));
       await tester.pumpAndSettle();
       // Assert
       expect(find.text('Coup critique !\n−2'), findsOneWidget);

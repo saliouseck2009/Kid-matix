@@ -174,7 +174,7 @@ void main() {
   });
 
   group('the guided steps', () {
-    testWidgets('go from the listening to the check, and answer right', (
+    testWidgets('go from the listening to the result, then show the check', (
       WidgetTester tester,
     ) async {
       // Arrange
@@ -186,32 +186,31 @@ void main() {
       );
       // Assert
       expect(find.text('Résous le problème'), findsOneWidget);
-      expect(find.text('Étape 1 sur 5'), findsOneWidget);
+      expect(find.text('Étape 1 sur 4'), findsOneWidget);
       // Act: listen, put the numbers, pick the operation, the result.
       await tester.tap(find.text("J'ai écouté"));
       await tester.pumpAndSettle();
-      expect(find.text('Étape 2 sur 5'), findsOneWidget);
+      expect(find.text('Étape 2 sur 4'), findsOneWidget);
+      // The last number, 5, goes to its place by itself.
       await place(tester, '12', 'le tout');
-      await place(tester, '5', 'une partie');
-      expect(find.text('Étape 3 sur 5'), findsOneWidget);
+      expect(find.text('Étape 3 sur 4'), findsOneWidget);
       await tester.tap(find.text('−'));
       await tester.pumpAndSettle();
-      expect(find.text('Étape 4 sur 5'), findsOneWidget);
+      expect(find.text('Étape 4 sur 4'), findsOneWidget);
       await tester.tap(find.text('7'));
       await tester.pumpAndSettle();
-      // Assert: the check step shows the sentence of the table.
-      expect(find.text('Étape 5 sur 5'), findsOneWidget);
+      // Assert: the feedback shows the check sentence of the table and
+      // waits for "Continuer", so the child has the time to read it.
+      expect(find.textContaining('Bravo'), findsOneWidget);
+      expect(find.text('Vérifie ta réponse'), findsOneWidget);
       expect(
         find.textContaining(
           '5 + 7 = 12, c\'est bien le nombre de mangues d\'Awa',
         ),
         findsOneWidget,
       );
-      // Act
-      await tester.tap(find.text("J'ai vérifié"));
-      await tester.pumpAndSettle();
-      // Assert
-      expect(find.textContaining('Bravo'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
+      expect(find.text('Continuer'), findsOneWidget);
     });
   });
 
@@ -253,7 +252,6 @@ void main() {
       // Act: the part first on the whole (a mistake), then the right ones.
       await place(tester, '$part', 'le tout');
       await place(tester, '$whole', 'le tout');
-      await place(tester, '$part', 'une partie');
       await tester.tap(find.text('+'));
       await tester.pump();
       await tester.tap(find.text('−'));
@@ -283,7 +281,6 @@ void main() {
       final int left = model.values[model.shape.roles[2]]!;
       // Act: the two parts are interchangeable, the sum is asked.
       await place(tester, '$left', 'une partie');
-      await place(tester, '$given', "l'autre partie");
       await tester.tap(find.text('+'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('${given + left}'));
@@ -412,12 +409,9 @@ void main() {
         await tester.tap(find.text("J'ai écouté"));
         await tester.pumpAndSettle();
         await place(tester, '12', 'le tout');
-        await place(tester, '5', 'une partie');
         await tester.tap(find.text('−'));
         await tester.pumpAndSettle();
         await tester.tap(find.text('7'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text("J'ai vérifié"));
         await tester.pumpAndSettle();
         // Assert
         expect(find.textContaining('Bravo'), findsOneWidget);
@@ -435,7 +429,6 @@ void main() {
         final int given = trap.values[BarRole.partA]!;
         final int left = trap.values[BarRole.partB]!;
         await place(tester, '$given', 'une partie');
-        await place(tester, '$left', "l'autre partie");
         await tester.tap(find.text('+'));
         await tester.pumpAndSettle();
         await tester.tap(find.text('${given + left}'));
