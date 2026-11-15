@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Quiz, pavé sans « Valider »</title>
+<!--
+  Standalone mockup (not a design-tool template): opens directly in a
+  browser. The typed-answer quiz with the keypad of lot F34: no "Valider"
+  key, the number is sent once it has as many digits as the answer. Here
+  the child typed the 5 of 56; the 6 will send the answer. Sample data is
+  illustrative.
+-->
+<style>
+@font-face{font-family:'Fredoka';src:url('../../../assets/fonts/Fredoka-Variable.ttf')}
+@font-face{font-family:'Nunito';src:url('../../../assets/fonts/Nunito-Variable.ttf')}
+body{margin:0;background:#FFFFFF}
+.frame{position:relative;width:390px;height:844px;box-sizing:border-box;overflow:hidden;background:#F4F1FF;color:#221A4D;font-family:'Nunito',sans-serif;display:flex;flex-direction:column;gap:20px;padding:24px}
+.display{font-family:'Fredoka',sans-serif;font-weight:600}
+.round{display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex:none;background:#FFFFFF;border:2px solid #DDD6FF;border-radius:999px}
+.bar{flex:1;height:14px;background:#E4DEFF;border-radius:999px;overflow:hidden}
+.bar>div{width:40%;height:100%;background:#5B3DF5;border-radius:999px}
+.card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#FFFFFF;border-radius:28px}
+.blank{display:inline-flex;align-items:center;justify-content:center;min-width:92px;height:76px;padding:0 10px;border:3px dashed #5B3DF5;border-radius:18px;color:#5B3DF5}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.key{display:flex;align-items:center;justify-content:center;height:56px;background:#FFFFFF;border:2px solid #DDD6FF;border-bottom-width:5px;border-radius:18px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px}
+</style>
+</head>
+<body>
+<div class="frame">
+
+<div style="display:flex;align-items:center;gap:12px">
+<div class="round" role="button" aria-label="Quitter">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#221A4D" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</div>
+<div class="bar"><div></div></div>
+<span class="display" style="font-size:16px;color:#5D567A">5 / 10</span>
+</div>
+
+<div class="card">
+<span style="font-size:15px;font-weight:800;color:#5D567A">Table de 7</span>
+<div class="display" style="display:flex;align-items:center;gap:12px;font-size:52px">
+<span>7</span><span>×</span><span>8</span><span>=</span>
+<span class="blank">5</span>
+</div>
+<span style="font-size:14px;font-weight:700;color:#5D567A">Écris le résultat</span>
+</div>
+
+<!-- The keypad: digits and erase only. The place of "Valider" stays empty. -->
+<div class="keys">
+<div class="key">1</div><div class="key">2</div><div class="key">3</div>
+<div class="key">4</div><div class="key">5</div><div class="key">6</div>
+<div class="key">7</div><div class="key">8</div><div class="key">9</div>
+<div></div>
+<div class="key">0</div>
+<div class="key" role="button" aria-label="Effacer">
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#221A4D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-6-7z"/><path d="M12 9.5l5 5M17 9.5l-5 5"/></svg>
+</div>
+</div>
+
+</div>
+</body>
+</html>

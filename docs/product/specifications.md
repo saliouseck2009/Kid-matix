@@ -128,7 +128,7 @@ Six formats de questions alternent dans un même quiz pour éviter la routine ; 
 - Les mauvaises réponses d'un choix multiple sont plausibles : résultat voisin dans la même table (7 × 7, 7 × 9), résultat de la table voisine (6 × 8, 8 × 8), confusion avec l'addition (7 + 8), chiffres inversés (65 pour 56).
 - Jamais deux choix identiques, jamais de nombre négatif ; la position de la bonne réponse est aléatoire.
 - Une affirmation « vrai ou faux » est vraie une fois sur deux ; quand elle est fausse, l'erreur suit les mêmes règles de plausibilité.
-- Le pavé numérique est celui de l'app, pas le clavier du téléphone : chiffres 0 à 9, Effacer, Valider.
+- Le pavé numérique est celui de l'app, pas le clavier du téléphone : chiffres 0 à 9 et Effacer. Il n'a pas de touche « Valider » : le nombre part dès qu'il a autant de chiffres que la réponse attendue, qu'il soit juste ou faux. Le même envoi s'applique au test de positionnement.
 - Le même fait n'apparaît jamais deux fois de suite.
 
 **Modes de jeu**
@@ -331,7 +331,7 @@ Chaque réponse reçoit un retour clair en moins de 100 ms, et aucune informatio
 
 **Retours en cours de quiz**
 
-- Bonne réponse : le bouton passe au vert avec une coche, un son court, les XP s'envolent vers le compteur.
+- Bonne réponse : le bouton passe au vert avec une coche, un son court, les XP s'envolent vers le compteur. La question suivante arrive seule après une seconde, sans « Continuer ». Deux exceptions gardent « Continuer » : un lecteur d'écran actif, et un problème à énoncé, dont le schéma et la phrase de vérification se lisent.
 - Mauvaise réponse : le bouton passe au rouge avec une croix, une vibration légère, puis l'opération complète s'affiche (7 × 8 = 56) jusqu'à l'appui sur « Continuer ».
 - Paliers de combo, fin d'étape, montée de niveau et badge : animation de célébration courte, que l'enfant peut passer d'un appui.
 
