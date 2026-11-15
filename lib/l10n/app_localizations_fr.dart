@@ -2024,6 +2024,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resultsContinue => 'Continuer';
 
   @override
+  String get resultsNextStage => 'Étape suivante';
+
+  @override
+  String get resultsBackToPath => 'Parcours';
+
+  @override
   String get resultsReplay => 'Rejouer';
 
   @override
@@ -2250,12 +2256,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pathTableBack => 'Retour au parcours';
-
-  @override
-  String get pathNextStage => 'Étape suivante';
-
-  @override
-  String get pathBackToPath => 'Retour au parcours';
 
   @override
   String pathTableNodeDone(String name, int stars) {

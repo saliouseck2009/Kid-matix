@@ -71,9 +71,11 @@ void main() {
     DataState<QuizResultEntity> state, {
     SessionScoreSlot? actionOf,
     SessionScoreSlot? outcomeOf,
-    SessionContinueSlot? continueOf,
+    SessionNextSlot? nextOf,
+    Size? size,
   }) async {
-    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.physicalSize = size ?? const Size(1170, 2532);
+    if (size != null) tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     when(
       () => mockRepository.getResult(sessionId: any(named: 'sessionId')),
@@ -93,7 +95,7 @@ void main() {
             sourceKey == null ? null : 'Entraînement',
         actionOf: actionOf,
         outcomeOf: outcomeOf,
-        continueOf: continueOf,
+        nextOf: nextOf,
       ),
     );
     await tester.pumpAndSettle();
@@ -194,26 +196,63 @@ void main() {
       expect(replayedUnit, 'path:mul:5:training');
       expect(isContinued, isTrue);
     });
-    testWidgets('lets the source replace "Continuer" with its own buttons', (
+    testWidgets('starts the next stage, or goes back to the path', (
       WidgetTester tester,
     ) async {
       // Arrange
+      bool isNextStarted = false;
       await pumpResults(
         tester,
         DataSuccess<QuizResultEntity>(
           _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
         ),
-        continueOf: (
-          String? sourceKey, {
-          required Widget fallback,
-          required VoidCallback onBack,
-        }) => TextButton(onPressed: onBack, child: Text('next $sourceKey')),
+        nextOf: (String? sourceKey, Widget Function(VoidCallback?) builder) =>
+            builder(() => isNextStarted = true),
       );
       // Act
-      await tester.tap(find.text('next path:mul:5:training'));
+      await tester.tap(find.text('Étape suivante'));
+      await tester.tap(find.text('Parcours'));
       // Assert
       expect(find.text('Continuer'), findsNothing);
+      expect(find.text('Rejouer'), findsOneWidget);
+      expect(isNextStarted, isTrue);
       expect(isContinued, isTrue);
+    });
+    testWidgets('keeps "Continuer" when nothing comes next', (
+      WidgetTester tester,
+    ) async {
+      // Act
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(
+          _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
+        ),
+        nextOf: (String? sourceKey, Widget Function(VoidCallback?) builder) =>
+            builder(null),
+      );
+      // Assert
+      expect(find.text('Continuer'), findsOneWidget);
+      expect(find.text('Étape suivante'), findsNothing);
+      expect(find.text('Parcours'), findsNothing);
+    });
+    testWidgets('keeps its buttons in sight on a small phone', (
+      WidgetTester tester,
+    ) async {
+      // Act: a small phone, where the results are taller than the screen.
+      await pumpResults(
+        tester,
+        DataSuccess<QuizResultEntity>(
+          _buildResult(hasMistake: true, sourceKey: 'path:mul:5:training'),
+        ),
+        size: const Size(320, 568),
+        nextOf: (String? sourceKey, Widget Function(VoidCallback?) builder) =>
+            builder(() {}),
+      );
+      // Assert: nothing to scroll to reach a button.
+      expect(find.text('Étape suivante').hitTestable(), findsOneWidget);
+      expect(find.text('Rejouer').hitTestable(), findsOneWidget);
+      expect(find.text('Parcours').hitTestable(), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
     testWidgets('offers no replay nor stars without a source', (
       WidgetTester tester,

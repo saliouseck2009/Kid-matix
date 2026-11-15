@@ -9,6 +9,7 @@ import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
+import 'package:kid_matix/core/widgets/pinned_actions.dart';
 import 'package:kid_matix/core/widgets/star_row.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
@@ -35,19 +36,20 @@ typedef SessionScoreSlot = Widget? Function(
   int correctCount,
 );
 
-/// The buttons that go on after the results, in place of [fallback]
-/// ("Continuer"), built from what the session was played for; [onBack]
-/// does what "Continuer" does. `null` keeps [fallback].
-typedef SessionContinueSlot = Widget? Function(
-  String? sourceKey, {
-  required Widget fallback,
-  required VoidCallback onBack,
-});
+/// Wraps the buttons of the results for what the session was played for:
+/// [builder] gets the callback that starts what comes next, such as the
+/// next stage of the path, or `null` when nothing does. `null` when the
+/// session has nothing next.
+typedef SessionNextSlot = Widget? Function(
+  String? sourceKey,
+  Widget Function(VoidCallback? onNext) builder,
+);
 
 /// Results of a quiz, loaded from the session identifier alone.
 ///
 /// A stage of the learning path shows its stars; XP and level arrive
-/// with the rewards (F7).
+/// with the rewards (F7). The buttons stay at the bottom, on two rows at
+/// most, while the rest scrolls.
 class ResultsPage extends StatelessWidget {
   /// Creates the results of the session [sessionId].
   const ResultsPage({
@@ -63,7 +65,7 @@ class ResultsPage extends StatelessWidget {
     this.recordCard,
     this.actionOf,
     this.outcomeOf,
-    this.continueOf,
+    this.nextOf,
     super.key,
   });
 
@@ -100,16 +102,16 @@ class ResultsPage extends StatelessWidget {
   /// Card above the tiles: a new record, or `null`.
   final Widget? recordCard;
 
-  /// A last button under "Rejouer", such as "Défier un ami", or `null`.
+  /// A last button beside "Rejouer", such as "Défier un ami", or `null`.
   final SessionScoreSlot? actionOf;
 
   /// A screen that replaces the results, such as the comparison of a
   /// challenge played from a code, or `null`.
   final SessionScoreSlot? outcomeOf;
 
-  /// The buttons that replace "Continuer", such as "Étape suivante" after
-  /// a stage of the path, or `null`.
-  final SessionContinueSlot? continueOf;
+  /// Tells whether something comes next, such as the next stage of the
+  /// path, started by "Étape suivante"; or `null`.
+  final SessionNextSlot? nextOf;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +149,7 @@ class ResultsPage extends StatelessWidget {
                           xpTile: xpTile,
                           rewardsCard: rewardsCard,
                           recordCard: recordCard,
-                          continueOf: continueOf,
+                          nextOf: nextOf,
                           action: actionOf?.call(
                             result.session.sourceKey,
                             result.session.correctCount,
@@ -173,11 +175,11 @@ class _ResultsView extends StatelessWidget {
     required this.xpTile,
     required this.rewardsCard,
     required this.recordCard,
-    required this.continueOf,
+    required this.nextOf,
     required this.action,
   });
 
-  static const double _mascotSize = 140;
+  static const double _mascotSize = 96;
   static const double _starSize = 64;
 
   final QuizResultEntity result;
@@ -188,7 +190,7 @@ class _ResultsView extends StatelessWidget {
   final Widget? xpTile;
   final Widget? rewardsCard;
   final Widget? recordCard;
-  final SessionContinueSlot? continueOf;
+  final SessionNextSlot? nextOf;
   final Widget? action;
 
   @override
@@ -198,16 +200,16 @@ class _ResultsView extends StatelessWidget {
     final String domainId = result.session.domainId;
     final int? stars = result.stars;
     final String? sourceKey = result.session.sourceKey;
-    final Widget continueButton = DepthButton(
-      label: context.l10n.resultsContinue,
-      onPressed: () => onContinue(sourceKey),
-    );
     final LearningUnit? unit = labels.findCommonUnit(
       result.askedItemKeys,
       domainId,
     );
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSizes.space24),
+    return PinnedActions(
+      actions:
+          nextOf?.call(sourceKey, (VoidCallback? onNext) {
+            return _actions(context, onNext);
+          }) ??
+          _actions(context, null),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: AppSizes.space16,
@@ -238,29 +240,50 @@ class _ResultsView extends StatelessWidget {
             ),
           ?record,
           _ResultTiles(result: result, xpTile: xpTile),
-          ?rewards,
           FactsToReviewCard(
             facts: <String>[
               for (final String key in result.missedItemKeys)
                 labels.describeItem(key, domainId),
             ],
           ),
-          const SizedBox(height: AppSizes.space8),
-          continueOf?.call(
-                sourceKey,
-                fallback: continueButton,
-                onBack: () => onContinue(sourceKey),
-              ) ??
-              continueButton,
-          if (sourceKey != null)
-            DepthButton(
-              label: context.l10n.resultsReplay,
-              variant: DepthButtonVariant.secondary,
-              onPressed: () => onReplay(sourceKey),
-            ),
-          ?action,
+          ?rewards,
         ],
       ),
+    );
+  }
+
+  /// The buttons: what comes next or "Continuer" on the whole width, then
+  /// "Rejouer" beside the way back or the last button of the session.
+  Widget _actions(BuildContext context, VoidCallback? onNext) {
+    final String? sourceKey = result.session.sourceKey;
+    final Widget? action = this.action;
+    void goBack() => onContinue(sourceKey);
+    return ActionRows(
+      primary: onNext == null
+          ? DepthButton(
+              label: context.l10n.resultsContinue,
+              onPressed: goBack,
+            )
+          : DepthButton(
+              label: context.l10n.resultsNextStage,
+              onPressed: onNext,
+            ),
+      secondary: <Widget>[
+        if (sourceKey != null)
+          DepthButton(
+            label: context.l10n.resultsReplay,
+            variant: DepthButtonVariant.secondary,
+            onPressed: () => onReplay(sourceKey),
+          ),
+        if (onNext != null)
+          DepthButton(
+            label: context.l10n.resultsBackToPath,
+            variant: DepthButtonVariant.secondary,
+            onPressed: goBack,
+          )
+        else
+          ?action,
+      ],
     );
   }
 

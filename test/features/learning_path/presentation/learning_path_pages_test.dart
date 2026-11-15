@@ -229,62 +229,58 @@ void main() {
     });
   });
 
-  group('The actions after the results of a stage', () {
-    Future<void> pumpActions(WidgetTester tester, String sourceKey) {
+  group('The next stage after the results of a stage', () {
+    Future<void> pumpScope(WidgetTester tester, String sourceKey) {
       return pumpPage(
         tester,
         Scaffold(
-          body: pages.buildNextStageActions(
+          body: pages.buildNextStageScope(
             profileId: 'p1',
             sourceKey: sourceKey,
-            fallback: const Text('Continuer'),
-            onBack: () => openedTable = 'back',
             onPlay: (StageSource source) => playedStage = source,
+            builder: (VoidCallback? onNext) => onNext == null
+                ? const Text('nothing next')
+                : TextButton(onPressed: onNext, child: const Text('next')),
           ),
         ),
       );
     }
 
-    testWidgets('start the next stage, or go back to the path', (
+    testWidgets('starts once the stage played has its star', (
       WidgetTester tester,
     ) async {
       // Arrange: the Discovery of the table of 2 has its star.
-      await pumpActions(tester, 'path:mul:2:discovery');
+      await pumpScope(tester, 'path:mul:2:discovery');
       // Act
-      await tester.tap(find.text('Étape suivante'));
-      await tester.tap(find.text('Retour au parcours'));
+      await tester.tap(find.text('next'));
       // Assert
-      expect(find.text('Continuer'), findsNothing);
       expect(
         playedStage,
         const StageSource(unitKey: 'mul:2', stage: StageKind.training),
       );
-      expect(openedTable, 'back');
     });
 
-    testWidgets('keep "Continuer" when the stage played is still to pass', (
+    testWidgets('is not offered while the stage played is still to pass', (
       WidgetTester tester,
     ) async {
       // Act: the Training of the table of 2 has no star yet.
-      await pumpActions(tester, 'path:mul:2:training');
+      await pumpScope(tester, 'path:mul:2:training');
       // Assert
-      expect(find.text('Continuer'), findsOneWidget);
-      expect(find.text('Étape suivante'), findsNothing);
+      expect(find.text('nothing next'), findsOneWidget);
     });
 
-    test('are not offered after a review or outside the path', () {
+    test('is not looked for after a review or outside the path', () {
       // Act
-      Widget? actionsOf(String? sourceKey) => pages.buildNextStageActions(
+      Widget? scopeOf(String? sourceKey) => pages.buildNextStageScope(
         profileId: 'p1',
         sourceKey: sourceKey,
-        fallback: const SizedBox.shrink(),
-        onBack: () {},
         onPlay: (StageSource source) {},
+        builder: (VoidCallback? onNext) => const SizedBox.shrink(),
       );
       // Assert
-      expect(actionsOf('path:review:1:review'), isNull);
-      expect(actionsOf('duel:1'), isNull);
-      expect(actionsOf(null), isNull);
+      expect(scopeOf('path:review:1:review'), isNull);
+      expect(scopeOf('duel:1'), isNull);
+      expect(scopeOf(null), isNull);
     });
   });
   group('LearningPathPages', () {

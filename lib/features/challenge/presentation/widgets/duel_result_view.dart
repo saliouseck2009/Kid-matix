@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/theme/app_colors.dart';
+import 'package:kid_matix/core/widgets/pinned_actions.dart';
 import 'package:kid_matix/core/widgets/app_card.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
@@ -47,52 +48,59 @@ class DuelResultView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DuelSide winner = outcome.winner;
-    return ListView(
-      padding: const EdgeInsets.all(AppSizes.space24),
-      children: <Widget>[
-        const ExcludeSemantics(
-          child: Icon(
-            Icons.emoji_events_rounded,
-            size: _trophySize,
-            color: AppColors.yellow,
-          ),
+    return PinnedActions(
+      actions: ActionRows(
+        primary: DepthButton(
+          label: context.l10n.duelReplay,
+          onPressed: onReplay,
         ),
-        const SizedBox(height: AppSizes.space12),
-        Semantics(
-          header: true,
-          child: Text(
-            context.l10n.duelWinner(
-              game.of(winner).player.nameIn(context.l10n),
+        secondary: <Widget>[
+          DepthButton(
+            label: context.l10n.duelQuit,
+            variant: DepthButtonVariant.secondary,
+            onPressed: onQuit,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ExcludeSemantics(
+            child: Icon(
+              Icons.emoji_events_rounded,
+              size: _trophySize,
+              color: AppColors.yellow,
             ),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ),
-        const SizedBox(height: AppSizes.space24),
-        for (final DuelSide side in <DuelSide>[winner, winner.opponent]) ...[
-          _PlayerResult(
-            game: game,
-            side: side,
-            xp: outcome.xpOf(side),
-            avatarOf: avatarOf,
           ),
           const SizedBox(height: AppSizes.space12),
-        ],
-        if (!outcome.isXpSaved)
-          Text(
-            context.l10n.duelXpNotSaved,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: context.feedbackPalette.wrong),
+          Semantics(
+            header: true,
+            child: Text(
+              context.l10n.duelWinner(
+                game.of(winner).player.nameIn(context.l10n),
+              ),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
-        const SizedBox(height: AppSizes.space24),
-        DepthButton(label: context.l10n.duelReplay, onPressed: onReplay),
-        const SizedBox(height: AppSizes.space12),
-        DepthButton(
-          label: context.l10n.duelQuit,
-          variant: DepthButtonVariant.secondary,
-          onPressed: onQuit,
-        ),
-      ],
+          const SizedBox(height: AppSizes.space24),
+          for (final DuelSide side in <DuelSide>[winner, winner.opponent]) ...[
+            _PlayerResult(
+              game: game,
+              side: side,
+              xp: outcome.xpOf(side),
+              avatarOf: avatarOf,
+            ),
+            const SizedBox(height: AppSizes.space12),
+          ],
+          if (!outcome.isXpSaved)
+            Text(
+              context.l10n.duelXpNotSaved,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: context.feedbackPalette.wrong),
+            ),
+        ],
+      ),
     );
   }
 }

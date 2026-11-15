@@ -2925,7 +2925,19 @@ abstract class AppLocalizations {
   /// **'Continuer'**
   String get resultsContinue;
 
-  /// Second button of the results screen, plays the same quiz again ("Play again"). Infinitive verb.
+  /// Main button of the results of a stage of the learning path, on the whole width: starts the next stage of the same unit at once ("Next stage"). Two words at most.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape suivante'**
+  String get resultsNextStage;
+
+  /// Small button of the results of a stage, beside "Rejouer" and under "Étape suivante": goes back to the unit the stage belongs to, on the learning path ("Path"). One short word: the button has half of the width.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parcours'**
+  String get resultsBackToPath;
+
+  /// Second button of the results screen, plays the same quiz again ("Play again"). Infinitive verb. Short: the button has half of the width.
   ///
   /// In fr, this message translates to:
   /// **'Rejouer'**
@@ -3272,18 +3284,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Retour au parcours'**
   String get pathTableBack;
-
-  /// Main button of the results of a stage of the learning path: starts the next stage of the same unit at once ("Next stage"). Two words at most.
-  ///
-  /// In fr, this message translates to:
-  /// **'Étape suivante'**
-  String get pathNextStage;
-
-  /// Second button of the results of a stage, under "Étape suivante": goes back to the unit the stage belongs to ("Back to the path"). Short.
-  ///
-  /// In fr, this message translates to:
-  /// **'Retour au parcours'**
-  String get pathBackToPath;
 
   /// Screen-reader label of a finished table on the map ("Table of 1, done, 3 stars").
   ///

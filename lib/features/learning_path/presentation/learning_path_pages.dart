@@ -26,7 +26,7 @@ import 'package:kid_matix/features/learning_path/presentation/pages/placement_te
 import 'package:kid_matix/features/learning_path/presentation/pages/table_detail_page.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/domain_section.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/monsters_card.dart';
-import 'package:kid_matix/features/learning_path/presentation/widgets/next_stage_actions.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/next_stage_scope.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/placement_card.dart';
@@ -212,16 +212,15 @@ final class LearningPathPages {
     );
   }
 
-  /// What the results of the stage [sourceKey] offer to go on: "Étape
-  /// suivante", started by [onPlay], above "Retour au parcours", which
-  /// calls [onBack]; [fallback] alone when no other stage is open. `null`
-  /// when [sourceKey] is not a stage of a unit.
-  Widget? buildNextStageActions({
+  /// Tells the results of the stage [sourceKey] whether a next stage can
+  /// start at once: [builder] gets the callback that starts it through
+  /// [onPlay], or `null` when no other stage is open. `null` when
+  /// [sourceKey] is not a stage of a unit.
+  Widget? buildNextStageScope({
     required String profileId,
     required String? sourceKey,
-    required Widget fallback,
-    required VoidCallback onBack,
     required ValueChanged<StageSource> onPlay,
+    required Widget Function(VoidCallback? onNext) builder,
   }) {
     final StageSource? source = StageSource.tryParse(sourceKey);
     if (source == null || source.stage == StageKind.review) return null;
@@ -233,12 +232,7 @@ final class LearningPathPages {
         params: LearningPathParams(profileId: profileId, domainId: domain.id),
         useCases: _useCases,
       )..add(const LearningPathStarted()),
-      child: NextStageActions(
-        played: source,
-        fallback: fallback,
-        onBack: onBack,
-        onPlay: onPlay,
-      ),
+      child: NextStageScope(played: source, onPlay: onPlay, builder: builder),
     );
   }
 

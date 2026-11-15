@@ -109,20 +109,18 @@ List<RouteBase> createPlayRoutes({
             sessionId: sessionId,
             child: child,
           ),
-          continueOf:
+          nextOf:
               (
-                String? sourceKey, {
-                required Widget fallback,
-                required VoidCallback onBack,
-              }) => profileId == null
+                String? sourceKey,
+                Widget Function(VoidCallback? onNext) builder,
+              ) => profileId == null
               ? null
-              : pathPages.buildNextStageActions(
+              : pathPages.buildNextStageScope(
                   profileId: profileId,
                   sourceKey: sourceKey,
-                  fallback: fallback,
-                  onBack: onBack,
                   onPlay: (StageSource source) =>
                       playStage(context, pathPages, source),
+                  builder: builder,
                 ),
           xpTile: rewardPages.buildSessionXpTile(),
           rewardsCard: rewardPages.buildSessionLevelCard(),
