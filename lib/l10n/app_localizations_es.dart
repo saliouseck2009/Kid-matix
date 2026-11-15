@@ -1750,9 +1750,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quizProblemListened => 'Ya escuché';
 
   @override
-  String get quizProblemChecked => 'Ya comprobé';
-
-  @override
   String get quizProblemPickNumberFirst =>
       'Toca un número y luego su lugar en el esquema';
 
@@ -1814,9 +1811,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quizKeypadErase => 'Borrar';
-
-  @override
-  String get quizKeypadValidate => 'Aceptar';
 
   @override
   String get quizFeedbackRight => '¡Muy bien!';

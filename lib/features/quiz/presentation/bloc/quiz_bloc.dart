@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/answer.dart';
+import 'package:kid_matix/core/quiz/question_types/question_type_ids.dart';
 import 'package:kid_matix/core/services/ticker.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_request.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_run.dart';
@@ -27,14 +28,22 @@ import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 /// the one shown when the app comes back; against the clock the quiz
 /// ends when the time runs out.
 ///
+/// A number typed on the keypad is sent once it has as many digits as the
+/// answer expected. After a right answer the next question comes by
+/// itself, unless [advancesAfterRightAnswer] is off or the question
+/// leaves a correction to read; a mistake always waits for "Continuer".
+///
 /// With a [QuizReadAloud] it also reads the question aloud when the
 /// player taps the listen button; a quiz built without one reads nothing.
 final class QuizBloc extends Bloc<QuizEvent, QuizState> {
   /// Creates the Bloc; [readAloud] is `null` when nothing can be read.
+  /// [advancesAfterRightAnswer] is turned off for a player who uses a
+  /// screen reader, so the feedback is not cut.
   QuizBloc({
     required this._useCases,
     required Ticker ticker,
     QuizReadAloud? readAloud,
+    this._advancesAfterRightAnswer = true,
   }) : super(const QuizPreparing()) {
     _clock = QuizClock(ticker: ticker, addEvent: add);
     _reading = QuizReading(setup: readAloud, readState: () => state);
@@ -46,7 +55,6 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     );
     on<DigitTyped>(_onDigitTyped);
     on<DigitErased>(_onDigitErased);
-    on<TypedAnswerValidated>(_onTypedAnswerValidated);
     on<TimeExpired>(
       (TimeExpired event, Emitter<QuizState> emit) => _submit(null, emit),
     );
@@ -64,7 +72,16 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<QuizAbandoned>(_onAbandoned);
   }
 
+  /// Question types whose feedback is a correction to read, even after a
+  /// right answer: the finished model of a word problem.
+  static const Set<String> _typesWithRecap = <String>{
+    QuestionTypeIds.solveProblem,
+    QuestionTypeIds.barModel,
+    QuestionTypeIds.problemOperation,
+  };
+
   final QuizUseCases _useCases;
+  final bool _advancesAfterRightAnswer;
   late final QuizClock _clock;
   late final QuizReading _reading;
 
@@ -91,23 +108,21 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     _clock.onTicked(state, emit);
   }
 
-  void _onDigitTyped(DigitTyped event, Emitter<QuizState> emit) {
+  Future<void> _onDigitTyped(
+    DigitTyped event,
+    Emitter<QuizState> emit,
+  ) async {
     final QuizState current = state;
-    if (current is QuizAsking) emit(current.withDigit(event.digit));
+    if (current is! QuizAsking) return;
+    final QuizAsking typed = current.withDigit(event.digit);
+    emit(typed);
+    if (!typed.isTypedAnswerComplete) return;
+    await _submit(NumberAnswer(int.parse(typed.typedDigits)), emit);
   }
 
   void _onDigitErased(DigitErased event, Emitter<QuizState> emit) {
     final QuizState current = state;
     if (current is QuizAsking) emit(current.withoutLastDigit());
-  }
-
-  Future<void> _onTypedAnswerValidated(
-    TypedAnswerValidated event,
-    Emitter<QuizState> emit,
-  ) async {
-    final QuizState current = state;
-    if (current is! QuizAsking || current.typedDigits.isEmpty) return;
-    await _submit(NumberAnswer(int.parse(current.typedDigits)), emit);
   }
 
   Future<void> _submit(Answer? answer, Emitter<QuizState> emit) async {
@@ -130,6 +145,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         submission: data,
         givenAnswer: answer,
         playedTime: latest.playedTime + current.unwaitedReadingTime,
+        advancesByItself: _advancesAfter(data),
       ),
       DataFailed<QuizSubmission>(:final exception) => QuizFailure(
         errorCode: exception.code,
@@ -138,6 +154,22 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     // A reading started while the answer was judged must not outlive the
     // question.
     _reading.silence();
+    // The clock, stopped with the question, times the feedback that goes
+    // on by itself.
+    final QuizState shown = state;
+    if (shown is QuizShowingFeedback &&
+        shown.advancesByItself &&
+        !_clock.isRunning) {
+      _clock.start();
+    }
+  }
+
+  /// Whether the question after [submission] comes without "Continuer".
+  bool _advancesAfter(QuizSubmission submission) {
+    if (submission.run.isNonStop) return true;
+    return _advancesAfterRightAnswer &&
+        submission.answer.isCorrect &&
+        !_typesWithRecap.contains(submission.turn.question.questionTypeId);
   }
 
   Future<void> _onNext(NextRequested event, Emitter<QuizState> emit) async {
@@ -145,6 +177,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
     if (current is! QuizShowingFeedback) return;
     final QuizRun run = current.submission.run;
     if (!run.isFinished) return _ask(run, emit, current.playedTime);
+    _clock.stop();
     await _complete(run, emit);
   }
 
@@ -187,7 +220,7 @@ final class QuizBloc extends Bloc<QuizEvent, QuizState> {
         if (next.isFinished) return _complete(next, emit);
         _ask(next, emit, current.playedTime);
       case final QuizShowingFeedback current
-          when current.submission.run.isNonStop && !_clock.isRunning:
+          when current.advancesByItself && !_clock.isRunning:
         _clock.start();
       default:
         return;

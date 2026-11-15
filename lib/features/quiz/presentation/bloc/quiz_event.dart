@@ -25,7 +25,8 @@ final class AnswerSubmitted extends QuizEvent {
   final Answer answer;
 }
 
-/// The player typed [digit] on the keypad.
+/// The player typed [digit] on the keypad; the number is sent once it has
+/// as many digits as the answer expected.
 final class DigitTyped extends QuizEvent {
   /// Creates the event.
   const DigitTyped({required this.digit});
@@ -38,12 +39,6 @@ final class DigitTyped extends QuizEvent {
 final class DigitErased extends QuizEvent {
   /// Creates the event.
   const DigitErased();
-}
-
-/// The player validated the number typed on the keypad.
-final class TypedAnswerValidated extends QuizEvent {
-  /// Creates the event.
-  const TypedAnswerValidated();
 }
 
 /// One tick of the timer went by.
@@ -64,8 +59,8 @@ final class ClockRanOut extends QuizEvent {
   const ClockRanOut();
 }
 
-/// The player tapped "Continuer" after the feedback, or its time went by
-/// in a non-stop quiz.
+/// The player tapped "Continuer" after the feedback, or the time of a
+/// feedback that goes on by itself went by.
 final class NextRequested extends QuizEvent {
   /// Creates the event.
   const NextRequested();

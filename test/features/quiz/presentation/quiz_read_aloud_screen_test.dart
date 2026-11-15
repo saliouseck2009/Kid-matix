@@ -103,6 +103,7 @@ void main() {
     bool readsByItself = false,
     String domainId = MultiplicationDomain.domainId,
     List<String> itemKeys = const <String>['mul:4x6', 'mul:5x8'],
+    HandTicker? ticker,
   }) async {
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -119,7 +120,7 @@ void main() {
           isBossFight: isBossFight,
         ),
         useCases: buildTestQuizUseCases(repository: mockRepository),
-        ticker: const SilentTicker(),
+        ticker: ticker ?? const SilentTicker(),
         domains: buildDomainRegistry(),
         feedback: RecordingGameFeedback(),
         onCompleted: (_) {},
@@ -513,7 +514,8 @@ void main() {
     ) async {
       // Arrange
       speech.isInstant = true;
-      await pumpQuiz(tester, readsByItself: true);
+      final HandTicker ticker = HandTicker();
+      await pumpQuiz(tester, readsByItself: true, ticker: ticker);
       final QuizAsking inputAsking =
           BlocProvider.of<QuizBloc>(tester.element(find.byType(Scaffold))).state
               as QuizAsking;
@@ -522,8 +524,7 @@ void main() {
       // Act
       await tester.tap(find.text('$inputResult'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Continuer'));
-      await tester.pumpAndSettle();
+      await passRightAnswerPause(tester, ticker);
       // Assert
       expect(speech.spoken, hasLength(2));
     });

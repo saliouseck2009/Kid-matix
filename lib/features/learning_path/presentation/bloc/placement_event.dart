@@ -12,7 +12,8 @@ final class PlacementStarted extends PlacementEvent {
   const PlacementStarted();
 }
 
-/// The player typed [digit] on the keypad.
+/// The player typed [digit] on the keypad; the number is sent once it has
+/// as many digits as the answer expected.
 final class PlacementDigitTyped extends PlacementEvent {
   /// Creates the event.
   const PlacementDigitTyped({required this.digit});
@@ -25,12 +26,6 @@ final class PlacementDigitTyped extends PlacementEvent {
 final class PlacementDigitErased extends PlacementEvent {
   /// Creates the event.
   const PlacementDigitErased();
-}
-
-/// The player validated the number typed.
-final class PlacementAnswerValidated extends PlacementEvent {
-  /// Creates the event.
-  const PlacementAnswerValidated();
 }
 
 /// The player said they do not know the answer.

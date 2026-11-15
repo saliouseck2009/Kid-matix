@@ -13,7 +13,8 @@ import 'package:kid_matix/features/quiz/presentation/widgets/problem_statement.d
 import 'package:kid_matix/features/quiz/presentation/widgets/problem_step_choices.dart';
 
 /// A word problem solved on its bar model (F30-03), or step by step from
-/// the statement to the check (F30-04).
+/// the statement (F30-04). The check sentence comes with the feedback, in
+/// `ProblemRecap`.
 ///
 /// The child puts the numbers of the story on the model, picks the
 /// operation, then the result. A wrong touch never ends the problem: the
@@ -22,8 +23,8 @@ import 'package:kid_matix/features/quiz/presentation/widgets/problem_step_choice
 /// once its last step is done, with the number of mistakes: right when
 /// there was none.
 class ProblemBoard extends StatefulWidget {
-  /// Creates the board of [question]; [isGuided] adds the listening and
-  /// the check steps.
+  /// Creates the board of [question]; [isGuided] adds the listening
+  /// step.
   const ProblemBoard({
     required this.question,
     required this.isGuided,
@@ -36,7 +37,7 @@ class ProblemBoard extends StatefulWidget {
   /// The problem, whose picture is a [BarModelPicture].
   final Question question;
 
-  /// Whether the problem is solved in five steps instead of three.
+  /// Whether the problem starts with the listening step.
   final bool isGuided;
 
   /// Language of the statement, which the voice speaks.
@@ -104,11 +105,9 @@ class _ProblemBoardState extends State<ProblemBoard> {
               _update(() => _progress.pickOperator(operator)),
           onNumber: (int value) => _update(() => _progress.pickNumber(value)),
         ),
-        if (step == ProblemStep.listen || step == ProblemStep.check)
+        if (step == ProblemStep.listen)
           DepthButton(
-            label: step == ProblemStep.listen
-                ? context.l10n.quizProblemListened
-                : context.l10n.quizProblemChecked,
+            label: context.l10n.quizProblemListened,
             onPressed: () => _update(_progress.advance),
           ),
       ],
@@ -165,7 +164,7 @@ class _ProblemPage extends StatelessWidget {
               BarModelView(
                 picture: progress.model,
                 placed: progress.placed,
-                showsAnswer: progress.isComputed || step == ProblemStep.check,
+                showsAnswer: progress.isComputed,
                 wrongRole: progress.wrongRole,
                 wrongCount: progress.mistakeCount,
                 onSlotTap: step == ProblemStep.model ? onPlace : null,
@@ -182,8 +181,6 @@ class _ProblemPage extends StatelessWidget {
                   ),
                 ),
               ),
-            if (step == ProblemStep.check)
-              Text(progress.model.check, style: textTheme.titleLarge),
           ],
         ),
       ),
@@ -196,7 +193,6 @@ class _ProblemPage extends StatelessWidget {
       ProblemStep.model => context.l10n.quizProblemStepModel,
       ProblemStep.operation => context.l10n.quizProblemStepOperation,
       ProblemStep.compute => context.l10n.quizProblemStepCompute,
-      ProblemStep.check => context.l10n.quizProblemStepCheck,
     };
   }
 }

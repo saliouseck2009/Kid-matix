@@ -80,7 +80,6 @@ void main() {
         await tester.tap(find.text(digit).last);
         await tester.pump();
       }
-      await tester.tap(find.text('Valider'));
     } else {
       await tester.tap(find.text('Je ne sais pas'));
     }
@@ -114,7 +113,7 @@ void main() {
     // Assert
     expect(askingOf(tester).question.unitKey, 'num:count20');
     expect(find.text('Je ne sais pas'), findsOneWidget);
-    expect(find.text('Valider'), findsOneWidget);
+    expect(find.text('Valider'), findsNothing);
   });
 
   testWidgets('shows the levels found and where to start, then the path', (

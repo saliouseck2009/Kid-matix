@@ -1,11 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:kid_matix/core/quiz/question.dart';
 
-/// Builds the app keypad: [onValidate] is `null` while nothing is typed.
+/// Builds the app keypad.
 typedef PlacementKeypadBuilder = Widget Function({
   required ValueChanged<int> onDigit,
   required VoidCallback onErase,
-  required VoidCallback? onValidate,
 });
 
 /// Builds the card of [question], asked to [profileId] in [domainId], with

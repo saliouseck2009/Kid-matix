@@ -58,6 +58,14 @@ final class Question {
   /// The right answer.
   final Answer expectedAnswer;
 
+  /// Number of digits of the number to write, or `null` when the answer
+  /// is not a number. A written answer is sent by itself once it has that
+  /// many digits, right or wrong: the keypad has no key to validate.
+  int? get expectedDigitCount => switch (expectedAnswer) {
+    NumberAnswer(:final int value) => '$value'.length,
+    _ => null,
+  };
+
   /// Drawing shown above [prompt], such as objects to count, or `null`.
   final MathPicture? picture;
 

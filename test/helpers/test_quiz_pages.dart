@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/entities/timer_mode.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/game_feedback_service.dart';
@@ -12,6 +15,7 @@ import 'package:kid_matix/features/quiz/domain/usecases/get_read_aloud_mode_use_
 import 'package:kid_matix/features/quiz/domain/usecases/get_time_limit_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/read_aloud_use_case.dart';
 import 'package:kid_matix/features/quiz/domain/usecases/stop_read_aloud_use_case.dart';
+import 'package:kid_matix/features/quiz/presentation/bloc/quiz_clock.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_read_aloud_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/bloc/quiz_use_cases.dart';
 import 'package:kid_matix/features/quiz/presentation/quiz_pages.dart';
@@ -82,6 +86,35 @@ final class SilentTicker implements Ticker {
 
   @override
   Stream<int> tick({required Duration interval}) => const Stream<int>.empty();
+}
+
+/// [Ticker] that ticks only when the test asks, to let the pause after a
+/// right answer go by: see [passRightAnswerPause].
+final class HandTicker implements Ticker {
+  final StreamController<int> _controller = StreamController<int>.broadcast();
+
+  @override
+  Stream<int> tick({required Duration interval}) => _controller.stream;
+
+  /// Sends [count] ticks to the quiz that listens.
+  void send(int count) {
+    for (int index = 0; index < count; index++) {
+      _controller.add(index);
+    }
+  }
+}
+
+/// Lets the feedback of a right answer go by, as its pause does on a
+/// phone: the next question, or the end of the quiz, comes by itself.
+Future<void> passRightAnswerPause(
+  WidgetTester tester,
+  HandTicker ticker,
+) async {
+  ticker.send(
+    QuizClock.rightAnswerPause.inMilliseconds ~/
+        QuizClock.tickInterval.inMilliseconds,
+  );
+  await tester.pumpAndSettle();
 }
 
 /// Use cases of the quiz over the real multiplication domain, a seeded

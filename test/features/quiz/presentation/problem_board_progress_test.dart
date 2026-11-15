@@ -25,7 +25,7 @@ void main() {
   }
 
   group('the steps', () {
-    test('are three on the bar model and five when guided', () {
+    test('are three on the bar model and four when guided', () {
       // Assert
       expect(subtraction().steps, <ProblemStep>[
         ProblemStep.model,
@@ -37,7 +37,6 @@ void main() {
         ProblemStep.model,
         ProblemStep.operation,
         ProblemStep.compute,
-        ProblemStep.check,
       ]);
     });
 
@@ -47,10 +46,8 @@ void main() {
       // Act
       progress
         ..selectTile(0)
-        ..placeSelected(BarRole.whole)
-        ..selectTile(1)
-        ..placeSelected(BarRole.partA);
-      // Assert
+        ..placeSelected(BarRole.whole);
+      // Assert: the last number went to its place by itself.
       expect(progress.step, ProblemStep.operation);
       expect(progress.pickOperator(MathOperator.subtract), isTrue);
       expect(progress.step, ProblemStep.compute);
@@ -60,23 +57,31 @@ void main() {
       expect(progress.answer, const ProblemAnswer());
     });
 
-    test('wait for the check of a guided problem', () {
+    test('finish a guided problem with its calculation', () {
       // Arrange
       final ProblemBoardProgress progress = subtraction(isGuided: true)
         ..advance()
         ..selectTile(0)
         ..placeSelected(BarRole.whole)
-        ..selectTile(1)
-        ..placeSelected(BarRole.partA)
-        ..pickOperator(MathOperator.subtract)
-        ..pickNumber(7);
+        ..pickOperator(MathOperator.subtract);
       // Assert
-      expect(progress.step, ProblemStep.check);
       expect(progress.isFinished, isFalse);
       // Act
-      progress.advance();
+      progress.pickNumber(7);
       // Assert
       expect(progress.isFinished, isTrue);
+    });
+
+    test('put the last number on the last place by themselves', () {
+      // Arrange
+      final ProblemBoardProgress progress = subtraction()..selectTile(1);
+      // Act
+      progress.placeSelected(BarRole.partA);
+      // Assert
+      expect(progress.placed[BarRole.whole], 12);
+      expect(progress.usedTiles, <int>{0, 1});
+      expect(progress.step, ProblemStep.operation);
+      expect(progress.mistakeCount, 0);
     });
   });
 
@@ -149,11 +154,11 @@ void main() {
       // Act: the second part goes first, on the first place.
       progress.selectTile(1);
       final bool firstPlaced = progress.placeSelected(BarRole.partA);
-      progress.selectTile(0);
-      final bool secondPlaced = progress.placeSelected(BarRole.partB);
-      // Assert
+      // Assert: the other part took the place left by itself.
       expect(<int>{first, second}, <int>{5, 7});
-      expect(firstPlaced && secondPlaced, isTrue);
+      expect(firstPlaced, isTrue);
+      expect(progress.placed[BarRole.partA], second);
+      expect(progress.placed[BarRole.partB], first);
       expect(progress.mistakeCount, 0);
       expect(progress.step, ProblemStep.operation);
     });

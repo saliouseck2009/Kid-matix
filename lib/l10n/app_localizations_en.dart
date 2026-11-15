@@ -1739,9 +1739,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizProblemListened => 'I listened';
 
   @override
-  String get quizProblemChecked => 'I checked';
-
-  @override
   String get quizProblemPickNumberFirst =>
       'Touch a number, then its place on the model';
 
@@ -1802,9 +1799,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizKeypadErase => 'Erase';
-
-  @override
-  String get quizKeypadValidate => 'OK';
 
   @override
   String get quizFeedbackRight => 'Great job!';

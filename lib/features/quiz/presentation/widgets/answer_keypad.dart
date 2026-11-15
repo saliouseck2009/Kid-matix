@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
-import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_answer_button.dart';
 
-/// The app's own keypad: digits 0 to 9, erase and validate.
+/// The app's own keypad: digits 0 to 9 and erase.
 ///
-/// Never the phone keyboard, so the layout stays the same everywhere.
+/// Never the phone keyboard, so the layout stays the same everywhere. It
+/// has no key to validate: the number is sent once it has as many digits
+/// as the answer expected.
 class AnswerKeypad extends StatelessWidget {
   /// Creates the keypad.
   const AnswerKeypad({
     required this.onDigit,
     required this.onErase,
-    required this.onValidate,
     super.key,
   });
 
@@ -30,9 +30,6 @@ class AnswerKeypad extends StatelessWidget {
   /// Called by the erase key.
   final VoidCallback onErase;
 
-  /// Called by the validate key; `null` while nothing is typed.
-  final VoidCallback? onValidate;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,6 +45,8 @@ class AnswerKeypad extends StatelessWidget {
         Row(
           spacing: _gap,
           children: <Widget>[
+            const Expanded(child: SizedBox.shrink()),
+            _DigitKey(0, onDigit: onDigit),
             Expanded(
               child: Tooltip(
                 message: context.l10n.quizKeypadErase,
@@ -59,13 +58,6 @@ class AnswerKeypad extends StatelessWidget {
                   semanticLabel: context.l10n.quizKeypadErase,
                   onTap: onErase,
                 ),
-              ),
-            ),
-            _DigitKey(0, onDigit: onDigit),
-            Expanded(
-              child: DepthButton(
-                label: context.l10n.quizKeypadValidate,
-                onPressed: onValidate,
               ),
             ),
           ],

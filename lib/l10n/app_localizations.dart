@@ -2565,7 +2565,7 @@ abstract class AppLocalizations {
   /// **'Calcule la réponse'**
   String get quizProblemStepCompute;
 
-  /// Title of the last step of a guided word problem, above the check sentence ("Check your answer"). Imperative, informal "tu".
+  /// Title above the check sentence in the recap of a word problem, shown once it is answered ("Check your answer"). Imperative, informal "tu".
   ///
   /// In fr, this message translates to:
   /// **'Vérifie ta réponse'**
@@ -2576,12 +2576,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'J\'ai écouté'**
   String get quizProblemListened;
-
-  /// Button that ends the check step of a guided word problem ("I checked"). Short.
-  ///
-  /// In fr, this message translates to:
-  /// **'J\'ai vérifié'**
-  String get quizProblemChecked;
 
   /// Hint under the numbers to place on the bar model: touch a number, then the place it goes. Imperative, informal "tu".
   ///
@@ -2672,12 +2666,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Effacer'**
   String get quizKeypadErase;
-
-  /// Label of the keypad key that submits the typed number ("Submit"). Infinitive verb, one word.
-  ///
-  /// In fr, this message translates to:
-  /// **'Valider'**
-  String get quizKeypadValidate;
 
   /// Title of the green message after a right answer ("Well done!"). One short line.
   ///

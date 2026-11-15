@@ -86,7 +86,6 @@ void main() {
       await tester.tap(find.widgetWithText(InkWell, digit).first);
       await tester.pump();
     }
-    await tester.tap(find.text('Valider'));
     await tester.pumpAndSettle();
   }
 
@@ -127,7 +126,6 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(find.text('Valider'), findsOneWidget);
     // Act
     await typeNumber(tester, 43);
     // Assert

@@ -10,8 +10,7 @@ import 'package:kid_matix/features/quiz/presentation/widgets/problem_choice_butt
 
 /// What the child touches at the current step of a word problem: the
 /// numbers of the story to put on the model, the four signs, or the
-/// results of the calculation. The listening and the check steps have no
-/// choice.
+/// results of the calculation. The listening step has no choice.
 class ProblemStepChoices extends StatelessWidget {
   /// Creates the choices of the step of [progress].
   const ProblemStepChoices({
@@ -57,7 +56,7 @@ class ProblemStepChoices extends StatelessWidget {
         results: results,
         onNumber: onNumber,
       ),
-      ProblemStep.listen || ProblemStep.check => const SizedBox.shrink(),
+      ProblemStep.listen => const SizedBox.shrink(),
     };
   }
 }

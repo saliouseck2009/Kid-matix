@@ -1,7 +1,7 @@
 # Project status
 
 Update this file at the end of every lot (and whenever work stops in the
-middle of one). Last update: 2026-10-18.
+middle of one). Last update: 2026-11-15.
 
 ## Where we are
 
@@ -41,6 +41,7 @@ middle of one). Last update: 2026-10-18.
 | F31 · Progress measurement | **Merged** (wave 4, #126 to #128, #130 to #132); tablet check to do |
 | F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
 | F33 · Mes parcours | Built on `feat/f33-path-picker-sheet` (from `chore/v2-main-backup`); device check to do |
+| F34 · Moins d'appuis | F34-01 to F34-04 (quiz) built on `feat/f34-fewer-taps-quiz`, stacked on the F33 branch; F34-05 to F34-07 (between two stages) to do; device check to do |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.
