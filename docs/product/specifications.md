@@ -322,7 +322,8 @@ Les onglets Parcours, S'entraîner et Défis lancent tous un quiz ; après les r
 **Règles de navigation**
 
 - Quitter un quiz demande une confirmation. Les réponses déjà données restent comptées dans la maîtrise des faits ; les XP et étoiles de l'étape ne sont pas attribués.
-- Après les résultats, « Continuer » ramène à l'écran d'origine avec l'étape suivante mise en avant.
+- Après les résultats d'une étape du parcours, « Étape suivante » lance tout de suite l'étape suivante de l'unité quand l'étape jouée a gagné une étoile et qu'une autre étape est ouverte ; « Retour au parcours » ramène à l'unité. Sinon, « Continuer » ramène à l'écran d'origine avec l'étape à jouer mise en avant.
+- Quitter un quiz ou le test de positionnement ne demande une confirmation qu'après la première réponse ; une évaluation de classe la demande toujours.
 - L'app est en portrait uniquement.
 
 ## 9. Retours, sons et accessibilité
@@ -333,7 +334,7 @@ Chaque réponse reçoit un retour clair en moins de 100 ms, et aucune informatio
 
 - Bonne réponse : le bouton passe au vert avec une coche, un son court, les XP s'envolent vers le compteur. La question suivante arrive seule après une seconde, sans « Continuer ». Deux exceptions gardent « Continuer » : un lecteur d'écran actif, et un problème à énoncé, dont le schéma et la phrase de vérification se lisent.
 - Mauvaise réponse : le bouton passe au rouge avec une croix, une vibration légère, puis l'opération complète s'affiche (7 × 8 = 56) jusqu'à l'appui sur « Continuer ».
-- Paliers de combo, fin d'étape, montée de niveau et badge : animation de célébration courte, que l'enfant peut passer d'un appui.
+- Paliers de combo, fin d'étape, montée de niveau et badge : animation de célébration courte, que l'enfant peut passer d'un appui. Le niveau et les badges gagnés par un même quiz s'affichent sur un seul écran.
 
 **Sons et animations**
 
