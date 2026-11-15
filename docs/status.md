@@ -40,6 +40,7 @@ middle of one). Last update: 2026-10-18.
 | F30 · Word problems | **Merged** (wave 4, #123 to #125, #129); device check to do |
 | F31 · Progress measurement | **Merged** (wave 4, #126 to #128, #130 to #132); tablet check to do |
 | F32 · Version 2.0 "Kid Matix pour tous" | Not started (waves in `docs/parallel-plan.md`, tasks in `docs/product/task-breakdown.md`, vision in section 17 of the specifications) |
+| F33 · Mes parcours | Built on `feat/f33-path-picker-sheet` (from `chore/v2-main-backup`); device check to do |
 
 Environment used so far: Flutter 3.47.6, Dart 3.13.5, macOS. CI
 (`.github/workflows/ci.yml`) pins the same Flutter version.

@@ -126,6 +126,7 @@ abstract final class TestApp {
         getChoice: sl(),
         selectDomain: sl(),
         watchChoice: sl(),
+        getOverview: sl(),
       ),
       domains: sl(),
       clock: sl(),

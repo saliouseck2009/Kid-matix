@@ -258,6 +258,7 @@ GoRouter _createRouter(
         getChoice: sl(),
         selectDomain: sl(),
         watchChoice: sl(),
+        getOverview: sl(),
       ),
       domains: sl(),
       clock: sl(),

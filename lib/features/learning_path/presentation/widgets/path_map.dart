@@ -21,7 +21,7 @@ class PathMap extends StatefulWidget {
     required this.onOpenTable,
     required this.onPlay,
     this.header,
-    this.domainSwitch,
+    this.domainButton,
     this.mascot,
     super.key,
   });
@@ -41,8 +41,9 @@ class PathMap extends StatefulWidget {
   /// Widgets of other features at the top of the map, or `null`.
   final PathHeaderSlots? header;
 
-  /// The switch of the learning domains, under the header, or `null`.
-  final Widget? domainSwitch;
+  /// The button of the domain that opens « Mes parcours », between the
+  /// player and the daily goal, or `null`.
+  final Widget? domainButton;
 
   /// The mascot, shown under the current table, or `null`.
   final Widget? mascot;
@@ -104,8 +105,8 @@ class _PathMapState extends State<PathMap> {
       ),
     );
     final PathHeaderSlots? slots = widget.header;
-    final Widget? domainSwitch = widget.domainSwitch;
-    if (slots == null && domainSwitch == null) return map;
+    final Widget? domainButton = widget.domainButton;
+    if (slots == null && domainButton == null) return map;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -123,13 +124,14 @@ class _PathMapState extends State<PathMap> {
               if (slots != null)
                 PathHeader(
                   slots: slots,
+                  domainButton: domainButton,
                   crowns: widget.path.tables
                       .where(
                         (TablePathNode table) => table.crown != TableCrown.none,
                       )
                       .length,
                 ),
-              ?domainSwitch,
+              if (slots == null) ?domainButton,
             ],
           ),
         ),

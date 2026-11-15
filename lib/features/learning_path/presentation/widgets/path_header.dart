@@ -11,17 +11,25 @@ typedef PathHeaderSlots = ({
   Widget dailyGoal,
 });
 
-/// Top of the map: the player, the streak and the crowns, then the daily
-/// goal.
+/// Top of the map: the player, the streak and the crowns, then the button
+/// of the domain when there is one, then the daily goal.
 class PathHeader extends StatelessWidget {
   /// Creates the header with [slots] and the number of [crowns].
-  const PathHeader({required this.slots, required this.crowns, super.key});
+  const PathHeader({
+    required this.slots,
+    required this.crowns,
+    this.domainButton,
+    super.key,
+  });
 
   /// The player, the streak and the daily goal.
   final PathHeaderSlots slots;
 
   /// Tables crowned so far.
   final int crowns;
+
+  /// The button of the domain that opens « Mes parcours », or `null`.
+  final Widget? domainButton;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +72,7 @@ class PathHeader extends StatelessWidget {
             ),
           ],
         ),
+        ?domainButton,
         slots.dailyGoal,
       ],
     );

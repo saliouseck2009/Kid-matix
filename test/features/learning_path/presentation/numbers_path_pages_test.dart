@@ -63,19 +63,17 @@ void main() {
     );
   }
 
-  group('the domain switch of the map', () {
+  group('the domain button of the map', () {
     testWidgets('shows the multiplication first, then the numbers', (
       WidgetTester tester,
     ) async {
       // Arrange
       await pumpPage(tester, buildMap());
       expect(find.text('Multiplication'), findsOneWidget);
-      expect(find.text('Nombres'), findsOneWidget);
+      expect(find.text('Nombres'), findsNothing);
       expect(find.bySemanticsLabel('Table de 1, en cours'), findsOneWidget);
       // Act
-      await tester.ensureVisible(find.text('Nombres'));
-      await tester.tap(find.text('Nombres'));
-      await tester.pumpAndSettle();
+      await chooseDomain(tester, 'Nombres');
       // Assert
       expect(
         find.bySemanticsLabel(
@@ -220,8 +218,7 @@ void main() {
       );
       expect(find.text('0 sur 12'), findsOneWidget);
       // Act
-      await tester.tap(find.text('Nombres'));
-      await tester.pumpAndSettle();
+      await chooseDomain(tester, 'Nombres');
       // Assert
       expect(find.text('1 sur 7'), findsOneWidget);
       expect(

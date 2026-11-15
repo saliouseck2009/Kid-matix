@@ -12,13 +12,15 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_state.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
-import 'package:kid_matix/features/learning_path/presentation/widgets/domain_switch.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/path_overview_cubit.dart';
+import 'package:kid_matix/features/learning_path/presentation/widgets/domain_button.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_header.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_labels.dart';
 import 'package:kid_matix/features/learning_path/presentation/widgets/path_map.dart';
 
 /// The home of the app: the map of the units of the domain the player
-/// chose, the switch of the domains on top when the app has two or more.
+/// chose, under the button of the domain that opens « Mes parcours » when
+/// the app has two domains or more.
 ///
 /// Its header shows the player, the streak, the crowns and the daily
 /// goal.
@@ -42,7 +44,7 @@ class LearningPathPage extends StatelessWidget {
   /// Use cases of the path.
   final LearningPathUseCases useCases;
 
-  /// Use cases of the domain switch.
+  /// Use cases of the domain choice and of « Mes parcours ».
   final DomainChoiceUseCases domainChoice;
 
   /// Opens the detail of a table.
@@ -63,10 +65,20 @@ class LearningPathPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DomainChoiceCubit>(
-      create: (_) =>
-          DomainChoiceCubit(profileId: profileId, useCases: domainChoice)
-            ..load(),
+    return MultiBlocProvider(
+      providers: <BlocProvider<dynamic>>[
+        BlocProvider<DomainChoiceCubit>(
+          create: (_) =>
+              DomainChoiceCubit(profileId: profileId, useCases: domainChoice)
+                ..load(),
+        ),
+        BlocProvider<PathOverviewCubit>(
+          create: (_) => PathOverviewCubit(
+            profileId: profileId,
+            getOverview: domainChoice.getOverview,
+          ),
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: _WithBanner(
@@ -96,8 +108,8 @@ class LearningPathPage extends StatelessWidget {
                     domainId: choice.selectedId,
                   ),
                   useCases: useCases,
-                  domainSwitch: choice.hasChoice
-                      ? DomainSwitch(choice: choice)
+                  domainButton: choice.hasChoice
+                      ? DomainButton(domainId: choice.selectedId)
                       : null,
                   onOpenTable: onOpenTable,
                   onPlay: onPlay,
@@ -139,7 +151,7 @@ class _DomainPath extends StatelessWidget {
   const _DomainPath({
     required this.params,
     required this.useCases,
-    required this.domainSwitch,
+    required this.domainButton,
     required this.onOpenTable,
     required this.onPlay,
     required this.header,
@@ -149,7 +161,7 @@ class _DomainPath extends StatelessWidget {
 
   final LearningPathParams params;
   final LearningPathUseCases useCases;
-  final Widget? domainSwitch;
+  final Widget? domainButton;
   final ValueChanged<String> onOpenTable;
   final ValueChanged<StageSource> onPlay;
   final PathHeaderSlots? header;
@@ -180,7 +192,7 @@ class _DomainPath extends StatelessWidget {
               onOpenTable: onOpenTable,
               onPlay: onPlay,
               header: header,
-              domainSwitch: domainSwitch,
+              domainButton: domainButton,
               mascot: mascot,
             ),
           };

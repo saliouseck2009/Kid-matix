@@ -36,6 +36,7 @@ import 'package:kid_matix/features/learning_path/data/datasources/path_domain_lo
 import 'package:kid_matix/features/learning_path/data/repositories/path_domain_repository_impl.dart';
 import 'package:kid_matix/features/learning_path/domain/repositories/path_domain_repository.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_domain_choice_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/get_path_overview_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/select_domain_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_domain_choice_use_case.dart';
 
@@ -135,5 +136,12 @@ void _registerDomainChoice(GetIt sl) {
   );
   sl.registerLazySingleton<WatchDomainChoiceUseCase>(
     () => WatchDomainChoiceUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<GetPathOverviewUseCase>(
+    () => GetPathOverviewUseCase(
+      getLearningPath: sl(),
+      placements: sl<PlacementResultRepository>(),
+      domains: sl(),
+    ),
   );
 }

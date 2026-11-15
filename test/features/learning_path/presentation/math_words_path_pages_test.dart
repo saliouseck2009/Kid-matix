@@ -39,12 +39,9 @@ void main() {
         onPlay: (_) {},
       ),
     );
-    expect(find.text('Mots des maths'), findsOneWidget);
+    expect(find.text('Mots des maths'), findsNothing);
     // Act
-    await tester.ensureVisible(find.text('Mots des maths'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Mots des maths'));
-    await tester.pumpAndSettle();
+    await chooseDomain(tester, 'Mots des maths');
     // Assert
     expect(await storage.readString(key: 'path_domain.p1'), 'math_words');
     expect(
