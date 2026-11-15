@@ -16,6 +16,7 @@ import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_bloc.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_event.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/learning_path_use_cases.dart';
+import 'package:kid_matix/features/learning_path/presentation/bloc/path_overview_cubit.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_cubit.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_history_use_cases.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/placement_use_cases.dart';
@@ -126,17 +127,27 @@ final class LearningPathPages {
   }
 
   /// The cards of [profileId] that follow one domain, for the Profile tab:
-  /// the switch of the domains, then the cards [builder] gives for the
-  /// domain chosen, the same as on the map.
+  /// the button of the domain that opens « Mes parcours », then the cards
+  /// [builder] gives for the domain chosen, the same as on the map.
   Widget buildDomainSection({
     required String profileId,
     required List<Widget> Function(String domainId) builder,
   }) {
-    return BlocProvider<DomainChoiceCubit>(
+    return MultiBlocProvider(
       key: ValueKey<String>('domain-section-$profileId'),
-      create: (_) =>
-          DomainChoiceCubit(profileId: profileId, useCases: _domainChoice)
-            ..load(),
+      providers: <BlocProvider<dynamic>>[
+        BlocProvider<DomainChoiceCubit>(
+          create: (_) =>
+              DomainChoiceCubit(profileId: profileId, useCases: _domainChoice)
+                ..load(),
+        ),
+        BlocProvider<PathOverviewCubit>(
+          create: (_) => PathOverviewCubit(
+            profileId: profileId,
+            getOverview: _domainChoice.getOverview,
+          ),
+        ),
+      ],
       child: DomainSection(builder: builder),
     );
   }

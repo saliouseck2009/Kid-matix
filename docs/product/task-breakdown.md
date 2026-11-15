@@ -801,9 +801,9 @@ Ce que les ONG doivent pouvoir montrer : des progrès mesurés, des rapports sim
 Le choix du parcours tient sur un bouton et un panneau qui montrent la progression de chaque parcours, au lieu d'une rangée de segments qui défile.
 
 - [x] **F33-01** Maquettes `23a` (bouton du parcours sur la carte) et `23b` (panneau « Mes parcours ») validées par le propriétaire ; décision notée dans `docs/decisions.md`.
-- [ ] **F33-02** Domaine : `DomainProgressEntity` (unités terminées, couronnes, commencé, terminé) et `GetPathOverviewUseCase` (tous les parcours, parcours conseillé par le dernier test de placement tant qu'il n'est pas terminé).
-- [ ] **F33-03** Bouton du parcours (tuile, nom, « Changer ») sur la carte, entre le joueur et l'objectif du jour, et au-dessus des cartes du Profil ; il remplace la rangée de segments.
-- [ ] **F33-04** Panneau « Mes parcours » qui monte du bas : une carte par parcours avec sa progression et son badge (« En cours », « Terminé », « Conseillé ») ou « Pas encore commencé » ; toucher une carte suit ce parcours et ferme le panneau.
-- [ ] **F33-05** Tests : progression et parcours conseillé, panneau (badges, choix, fermeture, petit téléphone en grand texte), tests existants qui changeaient de parcours.
+- [x] **F33-02** Domaine : `DomainProgressEntity` (unités terminées, couronnes, commencé, terminé) et `GetPathOverviewUseCase` (tous les parcours, parcours conseillé par le dernier test de placement tant qu'il n'est pas terminé).
+- [x] **F33-03** Bouton du parcours (tuile, nom, « Changer ») sur la carte, entre le joueur et l'objectif du jour, et au-dessus des cartes du Profil ; il remplace la rangée de segments.
+- [x] **F33-04** Panneau « Mes parcours » qui monte du bas : une carte par parcours avec sa progression et son badge (« En cours », « Terminé », « Conseillé ») ou « Pas encore commencé » ; toucher une carte suit ce parcours et ferme le panneau.
+- [x] **F33-05** Tests : progression et parcours conseillé, panneau (badges, choix, fermeture, petit téléphone en grand texte), tests existants qui changeaient de parcours.
 
 **Terminé quand :** sur un téléphone, un enfant qui a commencé la multiplication et fini les nombres ouvre « Mes parcours » depuis la carte, voit la progression de chaque parcours, choisit la division et la carte de la division s'affiche.

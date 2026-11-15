@@ -22,6 +22,7 @@ import 'package:kid_matix/features/number/domain/services/numbers_domain.dart';
 
 import '../../../helpers/data_state_test_extension.dart';
 import '../../../helpers/in_memory_local_storage.dart';
+import '../../../helpers/test_path_pages.dart';
 
 /// [LocalStorage] that cannot be read or written.
 final class _BrokenStorage implements LocalStorage {
@@ -194,6 +195,7 @@ void main() {
           getChoice: getChoice,
           selectDomain: selectDomain,
           watchChoice: WatchDomainChoiceUseCase(repository: repository),
+          getOverview: buildTestOverviewUseCase(),
         ),
       );
     }
@@ -251,6 +253,7 @@ void main() {
           ),
           selectDomain: selectDomain,
           watchChoice: WatchDomainChoiceUseCase(repository: repository),
+          getOverview: buildTestOverviewUseCase(),
         ),
       );
       // Act
@@ -282,6 +285,7 @@ void main() {
           ),
           selectDomain: SelectDomainUseCase(repository: brokenRepository),
           watchChoice: WatchDomainChoiceUseCase(repository: brokenRepository),
+          getOverview: buildTestOverviewUseCase(),
         ),
       );
       await cubit.load();

@@ -3662,6 +3662,72 @@
       }
     }
   },
+  "pathDomainChange": "Changer",
+  "@pathDomainChange": {
+    "description": "Map and Profile, right side of the button that shows the learning domain followed (« Multiplication »): opens « Mes parcours » to choose another one (\"Change\"). Infinitive verb, one short word."
+  },
+  "pathDomainButtonSpoken": "Parcours {domain}. Changer de parcours",
+  "@pathDomainButtonSpoken": {
+    "description": "Screen-reader label of the button of the map and the Profile that shows the learning domain followed and opens « Mes parcours » (\"Multiplication path. Change path\").",
+    "placeholders": {
+      "domain": {
+        "type": "String",
+        "example": "Multiplication"
+      }
+    }
+  },
+  "pathPickerTitle": "Mes parcours",
+  "@pathPickerTitle": {
+    "description": "Title of the bottom sheet that lists every learning domain (multiplication, numbers...) with the child's progress, opened from the map (\"My paths\"). Short."
+  },
+  "pathPickerHint": "Touche un parcours pour le suivre.",
+  "@pathPickerHint": {
+    "description": "One line under the title « Mes parcours »: tapping a domain card makes it the domain shown on the map (\"Tap a path to follow it.\"). Informal « tu », for a child."
+  },
+  "pathPickerCurrent": "En cours",
+  "@pathPickerCurrent": {
+    "description": "« Mes parcours », badge of the domain card shown on the map now (\"Current\"). One or two words."
+  },
+  "pathPickerFinished": "Terminé",
+  "@pathPickerFinished": {
+    "description": "« Mes parcours », badge of a domain card whose units are all done (\"Finished\"). Agrees with « parcours » (masculine). One word."
+  },
+  "pathPickerRecommended": "Conseillé",
+  "@pathPickerRecommended": {
+    "description": "« Mes parcours », badge of the domain the placement test recommended starting with (\"Recommended\"). Agrees with « parcours » (masculine). One word."
+  },
+  "pathPickerNotStarted": "Pas encore commencé",
+  "@pathPickerNotStarted": {
+    "description": "« Mes parcours », line of a domain card where the child has no star yet, in place of the progress bar (\"Not started yet\"). Agrees with « parcours » (masculine)."
+  },
+  "pathPickerUnits": "{done} / {total}",
+  "@pathPickerUnits": {
+    "description": "« Mes parcours », numbers next to the progress bar of a domain card: units done out of the units of the domain (\"7 / 12\").",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "7"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "pathPickerUnitsSpoken": "{done} sur {total} terminées",
+  "@pathPickerUnitsSpoken": {
+    "description": "Screen-reader label of the progress of a domain card in « Mes parcours »: units done out of the units of the domain (\"7 of 12 done\"). A unit is a table (multiplication) or a lesson (other domains), both feminine in French and Spanish, hence « terminées » / « completadas ».",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "7"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
   "quizComboSpoken": "Combo de {count}",
   "@quizComboSpoken": {
     "description": "Screen-reader label of the combo pill in the quiz header, which shows only a flame icon and the number: right answers in a row (\"Combo of 5\").",

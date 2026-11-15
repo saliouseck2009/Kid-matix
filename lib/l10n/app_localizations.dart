@@ -3723,6 +3723,66 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{Aucune couronne} =1{1 couronne} other{{count} couronnes}}'**
   String pathCrownsSpoken(int count);
 
+  /// Map and Profile, right side of the button that shows the learning domain followed (« Multiplication »): opens « Mes parcours » to choose another one ("Change"). Infinitive verb, one short word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer'**
+  String get pathDomainChange;
+
+  /// Screen-reader label of the button of the map and the Profile that shows the learning domain followed and opens « Mes parcours » ("Multiplication path. Change path").
+  ///
+  /// In fr, this message translates to:
+  /// **'Parcours {domain}. Changer de parcours'**
+  String pathDomainButtonSpoken(String domain);
+
+  /// Title of the bottom sheet that lists every learning domain (multiplication, numbers...) with the child's progress, opened from the map ("My paths"). Short.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes parcours'**
+  String get pathPickerTitle;
+
+  /// One line under the title « Mes parcours »: tapping a domain card makes it the domain shown on the map ("Tap a path to follow it."). Informal « tu », for a child.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche un parcours pour le suivre.'**
+  String get pathPickerHint;
+
+  /// « Mes parcours », badge of the domain card shown on the map now ("Current"). One or two words.
+  ///
+  /// In fr, this message translates to:
+  /// **'En cours'**
+  String get pathPickerCurrent;
+
+  /// « Mes parcours », badge of a domain card whose units are all done ("Finished"). Agrees with « parcours » (masculine). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminé'**
+  String get pathPickerFinished;
+
+  /// « Mes parcours », badge of the domain the placement test recommended starting with ("Recommended"). Agrees with « parcours » (masculine). One word.
+  ///
+  /// In fr, this message translates to:
+  /// **'Conseillé'**
+  String get pathPickerRecommended;
+
+  /// « Mes parcours », line of a domain card where the child has no star yet, in place of the progress bar ("Not started yet"). Agrees with « parcours » (masculine).
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore commencé'**
+  String get pathPickerNotStarted;
+
+  /// « Mes parcours », numbers next to the progress bar of a domain card: units done out of the units of the domain ("7 / 12").
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} / {total}'**
+  String pathPickerUnits(int done, int total);
+
+  /// Screen-reader label of the progress of a domain card in « Mes parcours »: units done out of the units of the domain ("7 of 12 done"). A unit is a table (multiplication) or a lesson (other domains), both feminine in French and Spanish, hence « terminées » / « completadas ».
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} sur {total} terminées'**
+  String pathPickerUnitsSpoken(int done, int total);
+
   /// Screen-reader label of the combo pill in the quiz header, which shows only a flame icon and the number: right answers in a row ("Combo of 5").
   ///
   /// In fr, this message translates to:

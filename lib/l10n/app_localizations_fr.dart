@@ -2761,6 +2761,42 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get pathDomainChange => 'Changer';
+
+  @override
+  String pathDomainButtonSpoken(String domain) {
+    return 'Parcours $domain. Changer de parcours';
+  }
+
+  @override
+  String get pathPickerTitle => 'Mes parcours';
+
+  @override
+  String get pathPickerHint => 'Touche un parcours pour le suivre.';
+
+  @override
+  String get pathPickerCurrent => 'En cours';
+
+  @override
+  String get pathPickerFinished => 'Terminé';
+
+  @override
+  String get pathPickerRecommended => 'Conseillé';
+
+  @override
+  String get pathPickerNotStarted => 'Pas encore commencé';
+
+  @override
+  String pathPickerUnits(int done, int total) {
+    return '$done / $total';
+  }
+
+  @override
+  String pathPickerUnitsSpoken(int done, int total) {
+    return '$done sur $total terminées';
+  }
+
+  @override
   String quizComboSpoken(int count) {
     return 'Combo de $count';
   }

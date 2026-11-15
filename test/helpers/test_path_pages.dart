@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:kid_matix/core/error/app_exception.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/services/dart_random_source.dart';
@@ -10,6 +12,7 @@ import 'package:kid_matix/features/learning_path/data/datasources/path_domain_lo
 import 'package:kid_matix/features/learning_path/data/repositories/path_domain_repository_impl.dart';
 import 'package:kid_matix/features/learning_path/domain/repositories/path_domain_repository.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/get_domain_choice_use_case.dart';
+import 'package:kid_matix/features/learning_path/domain/usecases/get_path_overview_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/select_domain_use_case.dart';
 import 'package:kid_matix/features/learning_path/domain/usecases/watch_domain_choice_use_case.dart';
 import 'package:kid_matix/features/learning_path/presentation/bloc/domain_choice_use_cases.dart';
@@ -211,21 +214,51 @@ PlacementUseCases buildTestPlacementUseCases({
   );
 }
 
-/// Use cases of the domain switch over [storage], the device preferences
-/// of the test.
-DomainChoiceUseCases buildTestDomainChoiceUseCases({LocalStorage? storage}) {
-  final PathDomainRepository repository = PathDomainRepositoryImpl(
+/// « Mes parcours » over the paths of [repository] and the placement
+/// tests of [results].
+GetPathOverviewUseCase buildTestOverviewUseCase({
+  StageProgressRepository? repository,
+  PlayerSettingsService settings = const FixedPlayerSettings(),
+  PlacementResultRepository? results,
+}) {
+  final PlacementResultRepository placements =
+      results ?? InMemoryPlacementResultRepository();
+  return GetPathOverviewUseCase(
+    getLearningPath: buildTestPathUseCases(
+      repository: repository,
+      settings: settings,
+      placements: placements,
+    ).getLearningPath,
+    placements: placements,
+    domains: buildDomainRegistry(),
+  );
+}
+
+/// Use cases of the domain choice over [storage], the device preferences
+/// of the test; « Mes parcours » reads [repository] and [results].
+DomainChoiceUseCases buildTestDomainChoiceUseCases({
+  LocalStorage? storage,
+  StageProgressRepository? repository,
+  PlayerSettingsService settings = const FixedPlayerSettings(),
+  PlacementResultRepository? results,
+}) {
+  final PathDomainRepository domainRepository = PathDomainRepositoryImpl(
     domains: PathDomainLocalDataSourceImpl(
       storage: storage ?? InMemoryLocalStorage(),
     ),
   );
   return DomainChoiceUseCases(
     getChoice: GetDomainChoiceUseCase(
-      repository: repository,
+      repository: domainRepository,
       domains: buildDomainRegistry(),
     ),
-    selectDomain: SelectDomainUseCase(repository: repository),
-    watchChoice: WatchDomainChoiceUseCase(repository: repository),
+    selectDomain: SelectDomainUseCase(repository: domainRepository),
+    watchChoice: WatchDomainChoiceUseCase(repository: domainRepository),
+    getOverview: buildTestOverviewUseCase(
+      repository: repository,
+      settings: settings,
+      results: results,
+    ),
   );
 }
 
@@ -259,8 +292,25 @@ LearningPathPages buildTestPathPages({
       getHistory: GetPlacementHistoryUseCase(repository: placementResults),
       watchResults: WatchPlacementResultsUseCase(repository: placementResults),
     ),
-    domainChoice: buildTestDomainChoiceUseCases(storage: domainStorage),
+    domainChoice: buildTestDomainChoiceUseCases(
+      storage: domainStorage,
+      repository: stages,
+      settings: settings,
+      results: placementResults,
+    ),
     domains: buildDomainRegistry(),
     clock: FakeClock(quizStart),
   );
+}
+
+/// Opens « Mes parcours » with the domain button and taps the card of the
+/// domain named [name], such as « Nombres ».
+Future<void> chooseDomain(WidgetTester tester, String name) async {
+  await tester.tap(find.text('Changer'));
+  await tester.pumpAndSettle();
+  final Finder card = find.text(name).last;
+  await tester.ensureVisible(card);
+  await tester.pumpAndSettle();
+  await tester.tap(card);
+  await tester.pumpAndSettle();
 }
