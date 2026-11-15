@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Résultats, boutons fixés en bas</title>
+<!--
+  Standalone mockup (not a design-tool template): opens directly in a
+  browser. The results of a stage with the layout of F34-08: the buttons
+  stay at the bottom, on two rows at most, and only the content scrolls
+  above them. It replaces the layout of 09-results, whose buttons were at
+  the end of the scrolling page. Sample data is illustrative.
+-->
+<style>
+@font-face{font-family:'Fredoka';src:url('../../../assets/fonts/Fredoka-Variable.ttf')}
+@font-face{font-family:'Nunito';src:url('../../../assets/fonts/Nunito-Variable.ttf')}
+body{margin:0;background:#FFFFFF}
+.frame{position:relative;width:390px;height:844px;box-sizing:border-box;overflow:hidden;background:#F4F1FF;color:#221A4D;font-family:'Nunito',sans-serif;display:flex;flex-direction:column}
+.display{font-family:'Fredoka',sans-serif;font-weight:600}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:16px;padding:24px 24px 12px}
+.tile{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 6px;background:#FFFFFF;border-radius:20px}
+.card{display:flex;flex-direction:column;gap:10px;padding:16px;background:#FFFFFF;border-radius:20px}
+.chip{padding:6px 12px;background:#FFE9E7;border-radius:999px;font-weight:800;font-size:14px}
+.actions{display:flex;flex-direction:column;gap:12px;padding:12px 24px 24px}
+.btn{display:flex;align-items:center;justify-content:center;height:52px;border-radius:18px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px}
+.btn.primary{background:#5B3DF5;color:#FFFFFF;border-bottom:5px solid #3A22B8}
+.btn.secondary{flex:1;background:#FFFFFF;border:2px solid #DDD6FF;border-bottom-width:5px}
+</style>
+</head>
+<body>
+<div class="frame">
+
+<!-- The content: the only part that scrolls. -->
+<div class="content">
+<div style="display:flex;justify-content:center">
+<svg viewBox="0 0 64 64" width="96" height="96" aria-hidden="true">
+<path d="M10 6l8 20 14-10zM54 6l-8 20-14-10z" fill="#5B3DF5"/>
+<circle cx="32" cy="34" r="26" fill="#5B3DF5"/>
+<circle cx="23" cy="31" r="4" fill="#FFFFFF"/><circle cx="41" cy="31" r="4" fill="#FFFFFF"/>
+<path d="M21 42q11 11 22 0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
+</svg>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;text-align:center">
+<span class="display" style="font-size:34px;line-height:1.15">Étape terminée !</span>
+<span style="font-size:14px;font-weight:700;color:#5D567A">Table de 5 · Entraînement</span>
+</div>
+<div style="display:flex;justify-content:center;gap:6px">
+<svg viewBox="0 0 24 24" width="64" height="64" fill="#FFC531"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21l1.5-7L2 9.300l7-.8z"/></svg>
+<svg viewBox="0 0 24 24" width="64" height="64" fill="#FFC531"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.700 21l1.500-7L2 9.300l7-.8z"/></svg>
+<svg viewBox="0 0 24 24" width="64" height="64" fill="#DDD6FF"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.700 21l1.500-7L2 9.300l7-.8z"/></svg>
+</div>
+<div style="display:flex;gap:12px">
+<div class="tile" style="background:#5B3DF5;color:#FFFFFF"><span class="display" style="font-size:24px">+130</span><span style="font-size:12px;font-weight:700">XP gagnés</span></div>
+<div class="tile"><span class="display" style="font-size:24px">8 / 10</span><span style="font-size:12px;font-weight:700;color:#5D567A">réussies</span></div>
+<div class="tile"><span class="display" style="font-size:24px">4,0 s</span><span style="font-size:12px;font-weight:700;color:#5D567A">en moyenne</span></div>
+</div>
+<div class="card">
+<span class="display" style="font-size:16px">À revoir</span>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip">5 × 7 = 35</span><span class="chip">5 × 8 = 40</span></div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span class="display" style="font-size:18px">Niveau 4</span><span style="font-size:13px;font-weight:700;color:#5D567A">Encore 70 XP pour le niveau 5</span></div>
+<div style="height:12px;background:#E4DEFF;border-radius:999px;overflow:hidden"><div style="width:62%;height:100%;background:#5B3DF5;border-radius:999px"></div></div>
+</div>
+</div>
+
+<!-- The buttons: always in sight, two rows at most. -->
+<div class="actions">
+<div class="btn primary">Étape suivante</div>
+<div style="display:flex;gap:12px">
+<div class="btn secondary">Rejouer</div>
+<div class="btn secondary">Parcours</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

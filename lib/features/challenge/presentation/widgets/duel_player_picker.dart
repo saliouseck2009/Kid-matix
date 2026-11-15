@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/entities/player_identity.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/widgets/pinned_actions.dart';
 import 'package:kid_matix/core/widgets/app_icon_button.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/features/challenge/domain/entities/duel_lineup.dart';
@@ -45,47 +46,53 @@ class DuelPlayerPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DuelLineup? lineup = state.lineup;
-    return ListView(
-      padding: const EdgeInsets.all(AppSizes.space24),
-      children: <Widget>[
-        Row(
-          spacing: AppSizes.space12,
-          children: <Widget>[
-            AppIconButton(
-              icon: Icons.arrow_back_rounded,
-              tooltip: context.l10n.commonBack,
-              onPressed: onBack,
-            ),
-            Expanded(
-              child: Semantics(
-                header: true,
-                child: Text(
-                  context.l10n.duelTitle,
-                  style: Theme.of(context).textTheme.headlineSmall,
+    return PinnedActions(
+      actions: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: AppSizes.space12,
+        children: <Widget>[
+          if (lineup == null)
+            Text(context.l10n.duelPickHint, textAlign: TextAlign.center),
+          DepthButton(
+            label: context.l10n.duelStart,
+            onPressed: lineup == null ? null : () => onStart(lineup),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            spacing: AppSizes.space12,
+            children: <Widget>[
+              AppIconButton(
+                icon: Icons.arrow_back_rounded,
+                tooltip: context.l10n.commonBack,
+                onPressed: onBack,
+              ),
+              Expanded(
+                child: Semantics(
+                  header: true,
+                  child: Text(
+                    context.l10n.duelTitle,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSizes.space12),
-        Text(context.l10n.duelPickIntro),
-        for (final DuelSide side in DuelSide.values)
-          _SideChoice(
-            side: side,
-            state: state,
-            avatarOf: avatarOf,
-            onPick: onPick,
+            ],
           ),
-        const SizedBox(height: AppSizes.space24),
-        if (lineup == null) ...<Widget>[
-          Text(context.l10n.duelPickHint, textAlign: TextAlign.center),
           const SizedBox(height: AppSizes.space12),
+          Text(context.l10n.duelPickIntro),
+          for (final DuelSide side in DuelSide.values)
+            _SideChoice(
+              side: side,
+              state: state,
+              avatarOf: avatarOf,
+              onPick: onPick,
+            ),
         ],
-        DepthButton(
-          label: context.l10n.duelStart,
-          onPressed: lineup == null ? null : () => onStart(lineup),
-        ),
-      ],
+      ),
     );
   }
 }

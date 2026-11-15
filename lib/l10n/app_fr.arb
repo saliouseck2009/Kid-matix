@@ -2762,9 +2762,17 @@
   "@resultsContinue": {
     "description": "Main button of the results screen, back to the home (\"Continue\"). Infinitive verb."
   },
+  "resultsNextStage": "Étape suivante",
+  "@resultsNextStage": {
+    "description": "Main button of the results of a stage of the learning path, on the whole width: starts the next stage of the same unit at once (\"Next stage\"). Two words at most."
+  },
+  "resultsBackToPath": "Parcours",
+  "@resultsBackToPath": {
+    "description": "Small button of the results of a stage, beside \"Rejouer\" and under \"Étape suivante\": goes back to the unit the stage belongs to, on the learning path (\"Path\"). One short word: the button has half of the width."
+  },
   "resultsReplay": "Rejouer",
   "@resultsReplay": {
-    "description": "Second button of the results screen, plays the same quiz again (\"Play again\"). Infinitive verb."
+    "description": "Second button of the results screen, plays the same quiz again (\"Play again\"). Infinitive verb. Short: the button has half of the width."
   },
   "pathStageDiscovery": "Découverte",
   "@pathStageDiscovery": {
@@ -3091,14 +3099,6 @@
   "pathTableBack": "Retour au parcours",
   "@pathTableBack": {
     "description": "Tooltip and screen-reader label of the back arrow of the table detail (\"Back to the learning path\")."
-  },
-  "pathNextStage": "Étape suivante",
-  "@pathNextStage": {
-    "description": "Main button of the results of a stage of the learning path: starts the next stage of the same unit at once (\"Next stage\"). Two words at most."
-  },
-  "pathBackToPath": "Retour au parcours",
-  "@pathBackToPath": {
-    "description": "Second button of the results of a stage, under \"Étape suivante\": goes back to the unit the stage belongs to (\"Back to the path\"). Short."
   },
   "pathTableNodeDone": "{name}, terminée, {stars, plural, =0{aucune étoile} =1{1 étoile} other{{stars} étoiles}}",
   "@pathTableNodeDone": {

@@ -816,8 +816,9 @@ Un testeur a trouvé que l'app demande trop d'appuis qui ne sont pas des répons
 - [x] **F34-02** Après une bonne réponse, la question suivante arrive seule après une seconde. « Continuer » reste après une erreur, sur la fiche d'aide, avec un lecteur d'écran et après un problème à énoncé.
 - [x] **F34-03** Problème guidé en quatre étapes : la phrase de vérification s'affiche dans la correction, sans bouton « J'ai vérifié ».
 - [x] **F34-04** Schéma en barres : le dernier nombre à placer va seul à sa place.
-- [x] **F34-05** Résultats : bouton principal « Étape suivante » qui lance l'étape suivante quand elle est ouverte, « Retour au parcours » en second.
+- [x] **F34-05** Résultats : bouton principal « Étape suivante » qui lance l'étape suivante quand elle est ouverte, « Parcours » en second.
 - [x] **F34-06** Célébrations regroupées : un seul écran pour le niveau et les badges gagnés. Maquette : `25-reward-celebration.png`.
 - [x] **F34-07** Quitter un quiz ou le test de positionnement sans confirmation tant qu'aucune réponse n'est donnée ; une évaluation de classe demande toujours.
+- [x] **F34-08** Boutons toujours visibles : sur les résultats, la comparaison d'un défi par code, la fin d'un duel et le choix de ses joueurs, les boutons restent fixés en bas et seul le contenu défile ; deux rangées de boutons au plus sur les résultats. Maquette : `26-results-pinned-actions.png`.
 
-**Terminé quand :** sur un téléphone, un enfant joue une étape de 10 questions au pavé sans autre appui que ses chiffres quand il répond juste, lit la correction d'une erreur avant de toucher « Continuer », puis lance l'étape suivante depuis les résultats en un appui.
+**Terminé quand :** sur un téléphone, un enfant joue une étape de 10 questions au pavé sans autre appui que ses chiffres quand il répond juste, lit la correction d'une erreur avant de toucher « Continuer », puis lance l'étape suivante depuis les résultats en un appui, sans faire défiler l'écran.

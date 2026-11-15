@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
+import 'package:kid_matix/core/widgets/pinned_actions.dart';
 import 'package:kid_matix/core/widgets/crown_mark.dart';
 import 'package:kid_matix/core/widgets/depth_button.dart';
 import 'package:kid_matix/core/widgets/depth_button_variant.dart';
@@ -58,8 +59,23 @@ class CodeOutcomeView extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final bool isWon = score > scoreToBeat;
     final bool isLost = score < scoreToBeat;
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSizes.space24),
+    return PinnedActions(
+      actions: ActionRows(
+        primary: ChallengeShareButton(
+          label: context.l10n.challengeOutcomeResend,
+          variant: DepthButtonVariant.primary,
+          sourceKey: sourceKey,
+          score: score,
+          onShare: onShare,
+        ),
+        secondary: <Widget>[
+          DepthButton(
+            label: context.l10n.challengeOutcomeBack,
+            variant: DepthButtonVariant.secondary,
+            onPressed: onBack,
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 18,
@@ -100,19 +116,6 @@ class CodeOutcomeView extends StatelessWidget {
             xpLabel: xpLabel,
           ),
           ?recordCard,
-          const SizedBox(height: AppSizes.space8),
-          ChallengeShareButton(
-            label: context.l10n.challengeOutcomeResend,
-            variant: DepthButtonVariant.primary,
-            sourceKey: sourceKey,
-            score: score,
-            onShare: onShare,
-          ),
-          DepthButton(
-            label: context.l10n.challengeOutcomeBack,
-            variant: DepthButtonVariant.secondary,
-            onPressed: onBack,
-          ),
         ],
       ),
     );

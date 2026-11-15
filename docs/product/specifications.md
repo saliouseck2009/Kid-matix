@@ -322,7 +322,8 @@ Les onglets Parcours, S'entraîner et Défis lancent tous un quiz ; après les r
 **Règles de navigation**
 
 - Quitter un quiz demande une confirmation. Les réponses déjà données restent comptées dans la maîtrise des faits ; les XP et étoiles de l'étape ne sont pas attribués.
-- Après les résultats d'une étape du parcours, « Étape suivante » lance tout de suite l'étape suivante de l'unité quand l'étape jouée a gagné une étoile et qu'une autre étape est ouverte ; « Retour au parcours » ramène à l'unité. Sinon, « Continuer » ramène à l'écran d'origine avec l'étape à jouer mise en avant.
+- Après les résultats d'une étape du parcours, « Étape suivante » lance tout de suite l'étape suivante de l'unité quand l'étape jouée a gagné une étoile et qu'une autre étape est ouverte ; « Parcours » ramène à l'unité. Sinon, « Continuer » ramène à l'écran d'origine avec l'étape à jouer mise en avant.
+- Sur un écran qui se termine par un choix (résultats, comparaison d'un défi, fin d'un duel, choix des joueurs du duel), les boutons restent fixés en bas et seul le contenu défile ; les résultats montrent deux rangées de boutons au plus.
 - Quitter un quiz ou le test de positionnement ne demande une confirmation qu'après la première réponse ; une évaluation de classe la demande toujours.
 - L'app est en portrait uniquement.
 
