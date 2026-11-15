@@ -50,6 +50,7 @@ sample data in them (Awa, Moussa, Lina, scores, codes) is illustrative.
 | `23b-path-picker-sheet` | Mes parcours (panneau du bas) | F33 | Source `23-path-picker.html` is a standalone page (no design tool): open it in a browser; `#a` or `#b` shows one screen |
 | `24-quiz-keypad` | Quiz, pavé sans « Valider » | F34 | Replaces the keypad of `08-boss-fight`: digits and erase only, the place of « Valider » stays empty. Source `24-quiz-keypad.html` is a standalone page |
 | `25-reward-celebration` | Célébration après un quiz | F34 | The new level and every new badge on one screen, closed by one tap. A level alone or a badge alone shows the big title and its line, without the list. Source `25-reward-celebration.html` is a standalone page |
+| `26-results-pinned-actions` | Résultats, boutons fixés en bas | F34 | Replaces the layout of `09-results`: the buttons stay at the bottom on two rows at most, the content scrolls above. The rule holds for every screen that ends on a choice. Source `26-results-pinned-actions.html` is a standalone page |
 
 Not drawn yet — derive from the existing screens and have the owner validate
 before the lot starts: fill-in-the-blank question (F3), help sheet after two
@@ -126,6 +127,7 @@ offline) and wired in `AppTextTheme`.
 | Component | Where | Status |
 | --- | --- | --- |
 | Depth button (primary violet, secondary white; later green, red, yellow) | every screen | `DepthButton` in `core/widgets/` — primary and secondary done |
+| Pinned actions (buttons fixed at the bottom, content scrolling above; two rows of buttons at most) | every screen that ends on a choice: results, challenge comparison, end of a duel, duel players | `PinnedActions` and `ActionRows` in `core/widgets/pinned_actions.dart` — done. A new screen of this kind must use them: a child never scrolls to find a button |
 | Card (white, radius 24) | every screen | `AppCard` |
 | Progress bar (pill, violet or yellow fill) | quiz, results, profile | `AppProgressBar` |
 | Pill (icon + short label) | streak, combo, records | `AppPill` |
