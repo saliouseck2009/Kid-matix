@@ -46,6 +46,8 @@ sample data in them (Awa, Moussa, Lina, scores, codes) is illustrative.
 | `20-challenge-code` | Défi par code | F19 | |
 | `21-challenge-score` | Défi, comparaison des scores | F19 | |
 | `22-shop` | Boutique | F21 | |
+| `23a-path-domain-button` | Parcours, bouton du parcours suivi | F33 | Replaces the row of domain segments; also above the Profile cards |
+| `23b-path-picker-sheet` | Mes parcours (panneau du bas) | F33 | Source `23-path-picker.html` is a standalone page (no design tool): open it in a browser; `#a` or `#b` shows one screen |
 
 Not drawn yet — derive from the existing screens and have the owner validate
 before the lot starts: fill-in-the-blank question (F3), help sheet after two
