@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kid_matix/core/error/data_state.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
+import 'package:kid_matix/core/widgets/stat_tile.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_answer_entity.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_combo.dart';
 import 'package:kid_matix/features/quiz/domain/entities/quiz_result_entity.dart';
@@ -111,6 +112,12 @@ void main() {
       await tester.tap(find.text("Touche l'écran pour continuer"));
       await tester.pumpAndSettle();
       expect(find.text('+130'), findsOneWidget);
+      // The three tiles of figures share one size, the XP one included.
+      final List<Size> actualSizes = <Size>[
+        for (final Element tile in find.byType(StatTile).evaluate()) tile.size!,
+      ];
+      expect(actualSizes, hasLength(3));
+      expect(actualSizes.toSet(), hasLength(1));
       expect(find.text('XP gagnés'), findsOneWidget);
       expect(find.text('Niveau 4'), findsOneWidget);
       expect(

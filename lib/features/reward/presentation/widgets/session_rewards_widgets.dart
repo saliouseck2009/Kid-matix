@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_matix/core/constants/app_sizes.dart';
 import 'package:kid_matix/core/extensions/build_context_extension.dart';
 import 'package:kid_matix/core/widgets/app_progress_bar.dart';
+import 'package:kid_matix/core/widgets/stat_tile.dart';
 import 'package:kid_matix/features/reward/domain/entities/player_level.dart';
 import 'package:kid_matix/features/reward/domain/entities/session_rewards_entity.dart';
 import 'package:kid_matix/features/reward/presentation/bloc/reward_value_cubit.dart';
@@ -20,41 +21,20 @@ SessionRewardsEntity? _rewardsOf(BuildContext context) {
   };
 }
 
-/// First tile of the results: the XP earned, on the primary color.
+/// First tile of the results: the XP earned, on the primary color. The
+/// same tile as the other figures of its row, so they share one size.
 class SessionXpTile extends StatelessWidget {
   /// Creates the tile.
   const SessionXpTile({super.key});
-
-  static const double _radius = 20;
 
   @override
   Widget build(BuildContext context) {
     final SessionRewardsEntity? rewards = _rewardsOf(context);
     if (rewards == null) return const SizedBox.shrink();
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 6),
-      decoration: BoxDecoration(
-        color: scheme.primary,
-        borderRadius: BorderRadius.circular(_radius),
-      ),
-      child: Column(
-        spacing: 2,
-        children: <Widget>[
-          FittedBox(
-            child: Text(
-              context.l10n.rewardXpEarned(rewards.xpEarned),
-              style: textTheme.headlineSmall?.copyWith(color: scheme.onPrimary),
-            ),
-          ),
-          Text(
-            context.l10n.rewardXpEarnedLabel,
-            textAlign: TextAlign.center,
-            style: textTheme.bodySmall?.copyWith(color: scheme.onPrimary),
-          ),
-        ],
-      ),
+    return StatTile(
+      value: context.l10n.rewardXpEarned(rewards.xpEarned),
+      label: context.l10n.rewardXpEarnedLabel,
+      isHighlighted: true,
     );
   }
 }
