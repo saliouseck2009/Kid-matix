@@ -11,6 +11,7 @@ import 'package:kid_matix/core/entities/mascot_mood.dart';
 import 'package:kid_matix/core/widgets/mascot_illustration.dart';
 import 'package:kid_matix/core/widgets/pinned_actions.dart';
 import 'package:kid_matix/core/widgets/star_row.dart';
+import 'package:kid_matix/core/widgets/stat_tile.dart';
 import 'package:kid_matix/l10n/app_localizations.dart';
 import 'package:kid_matix/core/quiz/quiz_mode.dart';
 import 'package:kid_matix/features/quiz/domain/entities/boss_fight.dart';
@@ -21,7 +22,6 @@ import 'package:kid_matix/features/quiz/presentation/bloc/results_state.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/facts_to_review_card.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_labels.dart';
 import 'package:kid_matix/features/quiz/presentation/widgets/quiz_session_error_message.dart';
-import 'package:kid_matix/features/quiz/presentation/widgets/result_tile.dart';
 
 /// Names what a session was played for from its source key, or `null`.
 typedef SourceDescriber = String? Function(
@@ -348,27 +348,22 @@ class _ResultTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     final Duration? average = result.averageAnswerTime;
     final int correct = result.session.correctCount;
-    return Row(
-      spacing: AppSizes.space12,
-      children: <Widget>[
-        if (xpTile case final Widget tile) Expanded(child: tile),
-        Expanded(
-          child: ResultTile(
-            value: context.l10n.resultsCorrectCount(
-              correct,
-              result.session.questionCount,
-            ),
-            label: context.l10n.resultsCorrectLabel(correct),
+    return StatTileRow(
+      tiles: <Widget>[
+        ?xpTile,
+        StatTile(
+          value: context.l10n.resultsCorrectCount(
+            correct,
+            result.session.questionCount,
           ),
+          label: context.l10n.resultsCorrectLabel(correct),
         ),
         if (average != null)
-          Expanded(
-            child: ResultTile(
-              value: context.l10n.resultsAverageTime(
-                average.inMilliseconds / _millisecondsPerSecond,
-              ),
-              label: context.l10n.resultsAverageTimeLabel,
+          StatTile(
+            value: context.l10n.resultsAverageTime(
+              average.inMilliseconds / _millisecondsPerSecond,
             ),
+            label: context.l10n.resultsAverageTimeLabel,
           ),
       ],
     );

@@ -128,6 +128,7 @@ offline) and wired in `AppTextTheme`.
 | --- | --- | --- |
 | Depth button (primary violet, secondary white; later green, red, yellow) | every screen | `DepthButton` in `core/widgets/` — primary and secondary done |
 | Pinned actions (buttons fixed at the bottom, content scrolling above; two rows of buttons at most) | every screen that ends on a choice: results, challenge comparison, end of a duel, duel players | `PinnedActions` and `ActionRows` in `core/widgets/pinned_actions.dart` — done. A new screen of this kind must use them: a child never scrolls to find a button |
+| Stat tile (a big value over a small label, white or on the primary color) and its row | results of a quiz | `StatTile` and `StatTileRow` in `core/widgets/stat_tile.dart` — done. Tiles side by side always go through `StatTileRow`, which gives them one width and one height |
 | Card (white, radius 24) | every screen | `AppCard` |
 | Progress bar (pill, violet or yellow fill) | quiz, results, profile | `AppProgressBar` |
 | Pill (icon + short label) | streak, combo, records | `AppPill` |
